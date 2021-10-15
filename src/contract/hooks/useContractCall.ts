@@ -2,7 +2,6 @@ import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BaseWeb3Contract, callArgsHash, CALL_BLOCK_SYNC, CALL_TRANSACTION_SYNC, ContractCallSync } from '../model';
 import { callSynced, callUnsync } from '../actions';
-import { useNetworkId } from '../../config/hooks';
 import { selectContractCallByAddress, selectByAddressSingle as selectContractByAddressSingle } from '../selector';
 import { Await } from '../../types/promise';
 
@@ -26,8 +25,6 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     options?: UseContractCallOptions,
 ): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, HookHandlers] {
     const { from, defaultBlock, sync } = options ?? {};
-    const defaultNetworkId = useNetworkId();
-    networkId = networkId ?? defaultNetworkId;
 
     const contract = useSelector((state) => selectContractByAddressSingle<T>(state, address, networkId));
 

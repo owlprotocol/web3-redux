@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReturnValues } from '../../contractevent/model';
-import { useNetworkId } from '../../config/hooks';
 import { BaseWeb3Contract } from '../model';
 import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions';
 import {
@@ -14,15 +13,14 @@ export interface UseEventsOptions {
     fromBlock?: number | string;
     toBlock?: number | string;
     past?: boolean;
+    blockBatch?: number;
 }
 export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
 >(networkId?: string, address?: string, eventName?: K, filter?: { [key: string]: any }, options?: UseEventsOptions) {
-    const { fromBlock, toBlock, past } = options ?? {};
-    const defaultNetworkId = useNetworkId();
-    networkId = networkId ?? defaultNetworkId;
+    const { fromBlock, toBlock, blockBatch, past } = options ?? {};
 
     const contract = useSelector((state) => selectContractByAddressSingle(state, address, networkId));
 
@@ -44,6 +42,7 @@ export function useEvents<
                     filter,
                     fromBlock,
                     toBlock,
+                    blockBatch,
                 }),
             );
         }

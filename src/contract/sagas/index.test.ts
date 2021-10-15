@@ -307,7 +307,7 @@ describe('contract.sagas', () => {
                 }),
             );
 
-            await sleep(150);
+            await sleep(300);
 
             const value = await web3Contract.methods.getValue().call();
             assert.equal(value, 42, 'setValue() did not work!');

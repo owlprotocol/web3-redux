@@ -1,0 +1,44 @@
+{
+    "entryPoints": ["src"],
+    "out": "docs",
+    "includeVersion": true,
+    "theme": "./node_modules/typedoc-neo-theme/bin/default",
+    "plugin": "typedoc-neo-theme",
+    "outline": [
+        {
+            "Web3Redux": {
+                "actions": "actions",
+                "sagas": "saga",
+                "store": "store",
+                "orm": "orm"
+            },
+            "Block": {
+                "model": "block_model",
+                "actions": "block_actions",
+                "selector": "block_selector",
+                "reducer": "block_reducer",
+                "sagas": "block_sagas"
+            },
+            "Transaction": {
+                "model": "transaction_model",
+                "actions": "transaction_actions",
+                "selector": "transaction_selector",
+                "reducer": "transaction_reducer",
+                "sagas": "transaction_sagas"
+            },
+            "Network": {
+                "model": "network_model",
+                "actions": "network_actions",
+                "selector": "network_selector",
+                "reducer": "network_reducer"
+            },
+            "Contract": {
+                "model": "contract_model",
+                "actions": "contract_actions",
+                "selector": "contract_selector",
+                "reducer": "contract_reducer",
+                "sagas": "contract_sagas"
+            }
+        }
+    ]
+}

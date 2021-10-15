@@ -1,0 +1,58 @@
+{
+    "contractName": "BlockNumber",
+    "abi": [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "NewValue",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "blockNumber",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getValue",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "v",
+                    "type": "uint256"
+                }
+            ],
+            "name": "setValue",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ],
+    "bytecode": "608060405234801561001057600080fd5b50610122806100206000396000f3fe6080604052348015600f57600080fd5b5060043610603c5760003560e01c8063209652551460415780635524107714605d57806357e871e7146088575b600080fd5b604760a4565b6040518082815260200191505060405180910390f35b608660048036036020811015607157600080fd5b810190808035906020019092919050505060ad565b005b608e60e4565b6040518082815260200191505060405180910390f35b60008054905090565b80600081905550807fac3e966f295f2d5312f973dc6d42f30a6dc1c1f76ab8ee91cc8ca5dad1fa60fd60405160405180910390a250565b60004390509056fea264697066735822122001c0acb8aba5399e8c2935ac3bf6b7bf0ec47b37112f69945eb57ea30b0b7a3664736f6c63430007040033"
+}

@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "sourceMap": true,
+        "outDir": "lib",
+        "strict": true,
+        "lib": ["esnext", "dom"],
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "declaration": true,
+        "skipLibCheck": true
+    }
+}

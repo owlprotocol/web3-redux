@@ -19,7 +19,7 @@ function removeWeb3Contract(contract: Contract.Contract): Contract.Contract {
     return { ...contract, web3Contract: undefined, web3SenderContract: undefined };
 }
 
-describe('Network', () => {
+describe('network.actions', () => {
     let store: ReturnType<typeof createStore>;
 
     beforeEach(() => {

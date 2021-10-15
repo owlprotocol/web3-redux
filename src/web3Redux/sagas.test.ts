@@ -5,7 +5,7 @@ import { Network, Web3Redux, Block, Transaction } from '../index';
 import { sleepForPort } from '../test/utils';
 import Web3 from 'web3';
 
-describe('Web3Redux', () => {
+describe('web3Redux.sagas', () => {
     let server1: ganache.Server;
     let server2: ganache.Server;
     let store: ReturnType<typeof createStore>;

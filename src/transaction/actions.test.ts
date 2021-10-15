@@ -12,7 +12,7 @@ const network = {
     web3,
 };
 
-describe('Transaction', () => {
+describe('transaction.actions', () => {
     let store: ReturnType<typeof createStore>;
 
     beforeEach(() => {

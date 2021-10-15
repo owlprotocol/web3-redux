@@ -5,7 +5,6 @@ import { Network, Contract, ContractEvent, EthCall } from '../index';
 import { addressList, assertDeepEqual } from '../test/utils';
 import BlockNumberAbi from '../abis/BlockNumber.json';
 import { BlockNumber, NewValue } from '../types/web3/BlockNumber';
-import { setNetworkId } from '../config';
 
 const networkId = '1337';
 const web3 = new Web3('http://locahost:8545');
@@ -110,9 +109,7 @@ describe('contract.actions', () => {
         });
 
         it('selectSingleAtAddress(state, address)', async () => {
-            store.dispatch(setNetworkId(networkId));
-
-            const selected1 = Contract.selectByAddressSingle(store.getState(), contract1Address);
+            const selected1 = Contract.selectByAddressSingle(store.getState(), contract1Address, networkId);
             assert.deepEqual(
                 { ...selected1!, web3Contract: undefined, web3SenderContract: undefined },
                 { ...contract1Validated, web3Contract: undefined, web3SenderContract: undefined },
@@ -167,8 +164,6 @@ describe('contract.actions', () => {
         });
 
         it('selectContractCallByAddress(state, address)', async () => {
-            store.dispatch(setNetworkId(networkId));
-
             const methodAbi = contract1.abi.filter((f) => f.name === 'getValue')[0];
             const data = web3.eth.abi.encodeFunctionCall(methodAbi, []);
             const ethCall1 = EthCall.validatedEthCall({ networkId, from: addressList[2], to: addressList[3], data });
@@ -182,6 +177,8 @@ describe('contract.actions', () => {
                 store.getState(),
                 contract1Address,
                 'getValue',
+                undefined,
+                networkId,
             );
             assert.equal(selectedCall1, undefined, 'call not undefined');
 
@@ -195,6 +192,8 @@ describe('contract.actions', () => {
                 store.getState(),
                 contract1Address,
                 'getValue',
+                undefined,
+                networkId,
             );
             assert.equal(selectedCall2, '42', 'invalid decoding');
         });
@@ -262,8 +261,6 @@ describe('contract.actions', () => {
             });
 
             it('AtAddress(state, address, filter) => [event]', async () => {
-                store.dispatch(setNetworkId(networkId));
-
                 const selected1 = Contract.selectContractEventsByAddressFiltered(
                     store.getState(),
                     contract1Address,
@@ -271,6 +268,7 @@ describe('contract.actions', () => {
                     {
                         val: 42,
                     },
+                    networkId,
                 );
                 assert.deepEqual(selected1, [event1], 'events');
 
@@ -281,6 +279,7 @@ describe('contract.actions', () => {
                     {
                         val: 43,
                     },
+                    networkId,
                 );
                 assert.deepEqual(selected2, [], 'events');
             });

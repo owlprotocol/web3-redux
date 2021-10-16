@@ -30,7 +30,8 @@
         "lint:staged": "lint-staged",
         "ganache": "ganache-cli --blockTime 1",
         "docs": "typedoc",
-        "prepare": "husky install && npm run build"
+        "prepare": "husky install && npm run build",
+        "prepublishOnly": "npm run test"
     },
     "dependencies": {
         "@reduxjs/toolkit": "^1.6.1",

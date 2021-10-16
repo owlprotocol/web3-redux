@@ -1,4 +1,4 @@
-name: Actions
+name: Default Actions
 
 on:
   push:
@@ -16,8 +16,18 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "14.17"
+      # PNPM Cache
+      - run: npm i --global pnpm
+      - name: Cache pnpm store
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pnpm-store
+        with:
+          path: ~/.pnpm-store/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
       # Set login for package registries
       - run: npm set //registry.npmjs.org/:_authToken=${{secrets.NPMJS_TOKEN}}
       - run: npm set //npm.pkg.github.com/:_authToken=${{secrets.GPR_TOKEN}}
-      - run: npm install
-      - run: npm test
+      # Install
+      - run: pnpm i
+      - run: npm run test

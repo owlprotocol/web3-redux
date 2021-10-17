@@ -1,6 +1,6 @@
 {
     "name": "@leovigna/web3-redux",
-    "version": "0.1.2-beta.1",
+    "version": "0.1.2-beta.2",
     "private": false,
     "repository": {
         "type": "git",
@@ -20,9 +20,11 @@
         "clean:types": "rimraf src/types/ethers src/types/truffle src/types/web3",
         "test": "mocha 'lib/**/*.test.js'",
         "start": "node lib/index.js",
-        "build": "npm-run-all generate-types tsc",
+        "build": "npm-run-all generate-types tsc copy",
         "tsc": "tsc",
         "tsc:watch": "tsc -w",
+        "copy": "npm-run-all copy:prepublish",
+        "copy:prepublish": "cp package.json lib/ && cp README.md lib/ && cp LICENSE lib/",
         "generate-types": "npm-run-all -p generate-types:web3",
         "generate-types:web3": "typechain --target=web3-v1 --out-dir=src/types/web3 'src/abis/*.json'",
         "lint": "eslint src",
@@ -97,17 +99,17 @@
         "typescript": "^4.3.5"
     },
     "files": [
-        "lib",
-        "!lib/test",
-        "!lib/**/*.test.*",
-        "!lib/abis",
-        "lib/abis/Multicall.json",
-        "!lib/types/ethers",
-        "!lib/types/truffle",
-        "!lib/types/web3"
+        "*",
+        "!test",
+        "!./**/*.test.*",
+        "!abis",
+        "abis/Multicall.json",
+        "!types/ethers",
+        "!types/truffle",
+        "!types/web3"
     ],
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "index.js",
+    "types": "index.d.ts",
     "publishConfig": {
         "directory": "lib"
     }

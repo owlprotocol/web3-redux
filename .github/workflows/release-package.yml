@@ -26,7 +26,7 @@ jobs:
       - run: npm set //npm.pkg.github.com/:_authToken=${{secrets.GPR_TOKEN}}
       # Install
       - run: pnpm i
-      - run: npm publish --access public
+      - run: pnpm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPMJS_TOKEN}}
 
@@ -51,6 +51,6 @@ jobs:
       - run: npm set //npm.pkg.github.com/:_authToken=${{secrets.GPR_TOKEN}}
       # Install
       - run: pnpm i
-      - run: npm publish
+      - run: pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

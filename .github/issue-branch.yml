@@ -1,0 +1,9 @@
+mode: chatops
+defaultBranch: develop
+branchName: short
+autoCloseIssue: true
+openPR: true
+copyIssueDescriptionToPR: true
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+commentMessage: "Branch ${branchName} created! Clone with `git checkout --track origin/${branchName}`"

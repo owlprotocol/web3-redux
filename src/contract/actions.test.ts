@@ -109,7 +109,7 @@ describe('contract.actions', () => {
         });
 
         it('selectSingleAtAddress(state, address)', async () => {
-            const selected1 = Contract.selectByAddressSingle(store.getState(), contract1Address, networkId);
+            const selected1 = Contract.selectByAddressSingle(store.getState(), networkId, contract1Address);
             assert.deepEqual(
                 { ...selected1!, web3Contract: undefined, web3SenderContract: undefined },
                 { ...contract1Validated, web3Contract: undefined, web3SenderContract: undefined },
@@ -175,10 +175,9 @@ describe('contract.actions', () => {
             store.dispatch(EthCall.create(ethCall1));
             const selectedCall1 = Contract.selectContractCallByAddress<BlockNumber, 'getValue'>(
                 store.getState(),
+                networkId,
                 contract1Address,
                 'getValue',
-                undefined,
-                networkId,
             );
             assert.equal(selectedCall1, undefined, 'call not undefined');
 
@@ -190,10 +189,9 @@ describe('contract.actions', () => {
             );
             const selectedCall2 = Contract.selectContractCallByAddress<BlockNumber, 'getValue'>(
                 store.getState(),
+                networkId,
                 contract1Address,
                 'getValue',
-                undefined,
-                networkId,
             );
             assert.equal(selectedCall2, '42', 'invalid decoding');
         });
@@ -263,23 +261,23 @@ describe('contract.actions', () => {
             it('AtAddress(state, address, filter) => [event]', async () => {
                 const selected1 = Contract.selectContractEventsByAddressFiltered(
                     store.getState(),
+                    networkId,
                     contract1Address,
                     'NewValue',
                     {
                         val: 42,
                     },
-                    networkId,
                 );
                 assert.deepEqual(selected1, [event1], 'events');
 
                 const selected2 = Contract.selectContractEventsByAddressFiltered(
                     store.getState(),
+                    networkId,
                     contract1Address,
                     'NewValue',
                     {
                         val: 43,
                     },
-                    networkId,
                 );
                 assert.deepEqual(selected2, [], 'events');
             });

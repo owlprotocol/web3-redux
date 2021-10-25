@@ -26,12 +26,12 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
 ): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, HookHandlers] {
     const { from, defaultBlock, sync } = options ?? {};
 
-    const contract = useSelector((state) => selectContractByAddressSingle<T>(state, address, networkId));
+    const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
 
     const argsHash = callArgsHash({ args, from, defaultBlock });
     const dispatch = useDispatch();
     const contractCall = useSelector((state) =>
-        selectContractCallByAddress<T, K>(state, address, method, { args, from, defaultBlock }, networkId),
+        selectContractCallByAddress<T, K>(state, networkId, address, method, { args, from, defaultBlock }),
     );
 
     //Recompute subscribe function if network/contract is created, otherwise function is void

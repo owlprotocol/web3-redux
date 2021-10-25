@@ -32,8 +32,8 @@ export function selectById<T extends BaseWeb3Contract = BaseWeb3Contract>(state:
 
 export function selectByAddressSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(
     state: any,
-    address?: string,
     networkId?: string,
+    address?: string,
 ): Contract<T> | undefined {
     if (!networkId || !address) return undefined;
     if (!Web3.utils.isAddress(address)) return undefined;
@@ -45,8 +45,8 @@ export function selectByAddressSingle<T extends BaseWeb3Contract = BaseWeb3Contr
 const EMPTY_CONTRACTS: any[] = [];
 export function selectByAddressMany<T extends BaseWeb3Contract = BaseWeb3Contract>(
     state: any,
-    address?: string[],
     networkId?: string,
+    address?: string[],
 ): (Contract<T> | null)[] {
     if (!networkId || !address) return EMPTY_CONTRACTS;
 
@@ -59,13 +59,13 @@ export function selectByAddressMany<T extends BaseWeb3Contract = BaseWeb3Contrac
 
 export function selectByAddress<T extends BaseWeb3Contract = BaseWeb3Contract>(
     state: any,
-    address?: string | string[],
     networkId?: string,
+    address?: string | string[],
 ) {
     if (Array.isArray(address)) {
-        return selectByAddressMany<T>(state, address, networkId);
+        return selectByAddressMany<T>(state, networkId, address);
     } else {
-        return selectByAddressSingle<T>(state, address, networkId);
+        return selectByAddressSingle<T>(state, networkId, address);
     }
 }
 
@@ -110,20 +110,20 @@ export function selectContractCallById<
 
 type selectContractCallByAddress = (
     state: any,
+    networkId?: string,
     address?: string,
     methodName?: string,
     callArgs?: CallArgsHash,
-    networkId?: string,
 ) => any;
 export function selectContractCallByAddress<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
 >(
     state: any,
+    networkId?: string,
     address?: string,
     methodName?: K,
     callArgs?: CallArgsHash<Parameters<T['methods'][K]>>,
-    networkId?: string,
 ): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
     if (!networkId || !address || !methodName) return undefined;
     if (!Web3.utils.isAddress(address)) return undefined;
@@ -145,7 +145,7 @@ export function selectContractCallFactory<
         args?: Parameters<T['methods'][K]>,
         options?: CallArgsHash<Parameters<T['methods'][K]>>,
     ): U | undefined => {
-        return selectContractCallByAddress<T, K>(state, address, methodName, { args, ...options }, networkId);
+        return selectContractCallByAddress<T, K>(state, networkId, address, methodName, { args, ...options });
     };
 }
 
@@ -190,10 +190,10 @@ export function selectContractEventsByAddressFiltered<
     U extends ReturnValues = ReturnValues,
 >(
     state: any,
+    networkId?: string,
     address?: string,
     eventName?: K,
     returnValuesFilter?: { [key: string]: any },
-    networkId?: string,
 ): ContractEvent<U>[] | undefined {
     if (!networkId || !address || !eventName) return undefined;
     if (!Web3.utils.isAddress(address)) return undefined;
@@ -210,7 +210,7 @@ export function selectEventsFactory<
     U extends ReturnValues = ReturnValues,
 >(eventName: K) {
     return (state: any, networkId?: string, address?: string, filter?: any): U[] | undefined => {
-        return selectContractEventsByAddressFiltered<T, K, U>(state, address, eventName, filter, networkId) as
+        return selectContractEventsByAddressFiltered<T, K, U>(state, networkId, address, eventName, filter) as
             | U[]
             | undefined;
     };

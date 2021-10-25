@@ -3,7 +3,7 @@ import { selectByAddressSingle } from '../selector';
 import { contractId } from '../model';
 
 function* contractExists(networkId: string, address: string) {
-    const contract: ReturnType<typeof selectByAddressSingle> = yield select(selectByAddressSingle, address, networkId);
+    const contract: ReturnType<typeof selectByAddressSingle> = yield select(selectByAddressSingle, networkId, address);
     if (!contract) throw new Error(`Contract ${contractId({ address, networkId })} undefined`);
 
     return contract;

@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Account } from './model';
+import { accountId } from '.';
+import { Account, validatedAccount } from './model';
 
 const name = 'Account';
 
@@ -8,8 +9,17 @@ export const REMOVE = `${name}/DELETE`;
 export const FETCH_BALANCE = `${name}/FETCH_BALANCE`;
 export const FETCH_NONCE = `${name}/FETCH_NONCE`;
 
-export const create = createAction<Account>(CREATE);
-export const remove = createAction<Account>(REMOVE);
+export const create = createAction(CREATE, (account: Account) => {
+    return { payload: validatedAccount(account) };
+});
+
+export const remove = createAction(REMOVE, (accountOrId: string | Account) => {
+    if (typeof accountOrId === 'string') {
+        return { payload: accountOrId };
+    }
+    return { payload: accountId(accountOrId) };
+});
+
 export const fetchBalance = createAction<Account>(FETCH_BALANCE);
 export const fetchNonce = createAction<Account>(FETCH_NONCE);
 

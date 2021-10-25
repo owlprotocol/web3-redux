@@ -1,5 +1,5 @@
 import { ReducerAction, isCreateAction, isRemoveAction } from './actions';
-import { validatedAccount } from './model';
+import { validatedAccount, accountId } from './model';
 
 export function reducer(sess: any, action: ReducerAction) {
     const Model = sess.Account;
@@ -7,7 +7,8 @@ export function reducer(sess: any, action: ReducerAction) {
         const validated = validatedAccount(action.payload);
         Model.upsert({ ...validated });
     } else if (isRemoveAction(action)) {
-        Model.withId(action.payload).delete();
+        const id = accountId(action.payload);
+        Model.withId(id).delete();
     }
 
     return sess;

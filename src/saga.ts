@@ -5,6 +5,7 @@ import { saga as transactionSaga } from './transaction/sagas';
 import { saga as contractSaga } from './contract/sagas';
 import { saga as ethCallSaga } from './ethcall/sagas';
 import { saga as web3ReduxSaga } from './web3Redux/sagas';
+import { saga as accountSaga } from './account/sagas';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga.html
 export function* rootSaga() {
@@ -14,5 +15,6 @@ export function* rootSaga() {
         spawn(contractSaga),
         spawn(ethCallSaga),
         spawn(web3ReduxSaga),
+        spawn(accountSaga),
     ]);
 }

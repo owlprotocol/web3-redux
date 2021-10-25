@@ -1,4 +1,5 @@
 import memoize from 'fast-memoize';
+import { filter, max } from 'lodash';
 
 //https://medium.com/@ramez.aijaz/hashmap-in-javascript-plain-object-vs-map-prototype-93df80e117b1
 //primitive params memoized in Map O(1)
@@ -84,3 +85,12 @@ export function memoizeWeak(fn: (...args: any[]) => any, options?: memoizeWeakOp
 export const memoizeReturn = memoize((x: any) => {
     return x;
 });
+
+//Lodash
+//Weak memo for first arg, JSON serialize memo for second arg
+export const weakFilter = memoizeWeak(filter);
+export const memoizedLodashFilter = (x: any, f: any) => {
+    return weakFilter(x, memoizeReturn(f));
+};
+
+export const weakMax = memoizeWeak(max);

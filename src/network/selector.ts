@@ -5,6 +5,7 @@ import { Transaction } from '../transaction/model';
 import { Contract } from '../contract/model';
 import { orm } from '../orm';
 import { ContractEvent } from '../contractevent';
+import { weakMax } from '../memo';
 
 type selectByIdSingle = (state: any, id?: string) => Network | undefined;
 type selectByIdMany = (state: any, ids?: string[]) => (Network | null)[];
@@ -41,3 +42,18 @@ type selectManyEvents = (state: any, ids?: string[]) => (ContractEvent[] | null)
 export const selectEvents: selectSingleEvents | selectManyEvents = createSelector(orm.Network.events);
 export const selectSingleEvents = selectEvents as selectSingleEvents;
 export const selectManyEvents = selectEvents as selectManyEvents;
+
+type selectLatestBlock = (state: any, id: string) => Block | null;
+export const selectLatestBlock: selectLatestBlock = (state, id) => {
+    const blocks = selectSingleBlocks(state, id);
+    if (!blocks || blocks.length == 0) return null;
+    return weakMax(blocks, 'number');
+};
+
+type selectLatestBlockNumber = (state: any, id: string) => number | null;
+export const selectLatestBlockNumber: selectLatestBlockNumber = (state, id) => {
+    const block = selectLatestBlock(state, id);
+    if (!block) return null;
+
+    return block.number;
+};

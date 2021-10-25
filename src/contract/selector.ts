@@ -2,17 +2,10 @@ import { createSelector } from 'redux-orm';
 import { BaseWeb3Contract, CallArgsHash, callArgsHash, Contract, contractId } from './model';
 import { orm } from '../orm';
 import { EthCall } from '../ethcall/model';
-import { filter } from 'lodash';
 import { ContractEvent, ReturnValues } from '../contractevent/model';
 import Web3 from 'web3';
-import { memoizeWeak, memoizeReturn } from '../memo';
 import { Await } from '../types/promise';
-
-//Weak memo for first arg, JSON serialize memo for second arg
-const weakFilter = memoizeWeak(filter);
-const memoizedLodashFilter = (x: any, f: any) => {
-    return weakFilter(x, memoizeReturn(f));
-};
+import { memoizedLodashFilter } from '../memo';
 
 const select = createSelector(orm.Contract);
 export function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(

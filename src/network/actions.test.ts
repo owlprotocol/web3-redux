@@ -69,6 +69,29 @@ describe('network.actions', () => {
         });
     });
 
+    describe('selectors:latestBlock', () => {
+        it('selectLatestBlock(state, id)', async () => {
+            const block1 = { networkId, number: 1 };
+            const blockValidated1 = Block.validatedBlock(block1);
+            store.dispatch(Network.create(network));
+            store.dispatch(Block.create(block1));
+
+            const selected1 = Network.selectLatestBlock(store.getState(), network.networkId);
+
+            assert.deepEqual(selected1, blockValidated1, 'latestBlock != blockValidated1');
+        });
+
+        it('selectLatestBlockNumber(state, id)', async () => {
+            const block1 = { networkId, number: 1 };
+            store.dispatch(Network.create(network));
+            store.dispatch(Block.create(block1));
+
+            const selected1 = Network.selectLatestBlockNumber(store.getState(), network.networkId);
+
+            assert.deepEqual(selected1, 1, 'latestBlockNumber != 1');
+        });
+    });
+
     describe('selectors:many', () => {
         it('selectMany(state)', async () => {
             store.dispatch(Network.create(network));

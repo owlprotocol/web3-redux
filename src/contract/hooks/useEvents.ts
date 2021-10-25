@@ -22,12 +22,12 @@ export function useEvents<
 >(networkId?: string, address?: string, eventName?: K, filter?: { [key: string]: any }, options?: UseEventsOptions) {
     const { fromBlock, toBlock, blockBatch, past } = options ?? {};
 
-    const contract = useSelector((state) => selectContractByAddressSingle(state, address, networkId));
+    const contract = useSelector((state) => selectContractByAddressSingle(state, networkId, address));
 
     const dispatch = useDispatch();
 
     const events = useSelector((state) =>
-        selectContractEventsByAddressFiltered<T, K, U>(state, address, eventName, filter, networkId),
+        selectContractEventsByAddressFiltered<T, K, U>(state, networkId, address, eventName, filter),
     );
     const filterHash = filter ? JSON.stringify(filter) : '';
 

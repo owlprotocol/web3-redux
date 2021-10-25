@@ -7,6 +7,7 @@ import * as ContractSendActions from './contractsend/actions';
 import * as EthCallActions from './ethcall/actions';
 import * as ConfigActions from './config/actions';
 import * as Web3ReduxActions from './web3Redux/actions';
+import * as AccountActions from './account/actions';
 import { reducer as networkReducer } from './network/reducer';
 import { reducer as blockReducer } from './block/reducer';
 import { reducer as transactionReducer } from './transaction/reducer';
@@ -15,6 +16,7 @@ import { reducer as contractEventReducer } from './contractevent/reducer';
 import { reducer as contractSendReducer } from './contractsend/reducer';
 import { reducer as ethCallReducer } from './ethcall/reducer';
 import { reducer as configReducer } from './config/reducer';
+import { reducer as accountReducer } from './account/reducer';
 
 import { orm, initializeState } from './orm';
 
@@ -27,7 +29,8 @@ export type Action =
     | ContractSendActions.Action
     | EthCallActions.Action
     | ConfigActions.Action
-    | Web3ReduxActions.Action;
+    | Web3ReduxActions.Action
+    | AccountActions.Action;
 
 export function rootReducer(state: any, action: Action) {
     const sess = orm.session(state || initializeState(orm));
@@ -39,6 +42,7 @@ export function rootReducer(state: any, action: Action) {
     else if (ContractSendActions.isReducerAction(action)) contractSendReducer(sess, action);
     else if (EthCallActions.isReducerAction(action)) ethCallReducer(sess, action);
     else if (ConfigActions.isReducerAction(action)) configReducer(sess, action);
+    else if (AccountActions.isReducerAction(action)) accountReducer(sess, action);
 
     return sess.state;
 }

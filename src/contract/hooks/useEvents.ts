@@ -23,6 +23,7 @@ export function useEvents<
     const { fromBlock, toBlock, blockBatch, past } = options ?? {};
 
     const contract = useSelector((state) => selectContractByAddressSingle(state, networkId, address));
+    const contractExists = !!contract;
 
     const dispatch = useDispatch();
 
@@ -33,7 +34,7 @@ export function useEvents<
 
     //Recompute functions if network/contract is created, otherwise function is void
     const getPast = useCallback(() => {
-        if (networkId && address && contract && past) {
+        if (networkId && address && contractExists && past) {
             dispatch(
                 eventGetPast({
                     networkId,
@@ -46,10 +47,10 @@ export function useEvents<
                 }),
             );
         }
-    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, dispatch, contract, past]);
+    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, dispatch, contractExists, past]);
 
     const subscribe = useCallback(() => {
-        if (networkId && address && contract) {
+        if (networkId && address && contractExists) {
             dispatch(
                 eventSubscribe({
                     networkId,
@@ -60,10 +61,10 @@ export function useEvents<
                 }),
             );
         }
-    }, [networkId, address, eventName, filterHash, fromBlock, dispatch, contract]);
+    }, [networkId, address, eventName, filterHash, fromBlock, dispatch, contractExists]);
 
     const unsubscribe = useCallback(() => {
-        if (networkId && address && contract) {
+        if (networkId && address && contractExists) {
             dispatch(
                 eventUnsubscribe({
                     networkId,
@@ -73,7 +74,7 @@ export function useEvents<
                 }),
             );
         }
-    }, [networkId, address, eventName, filterHash, dispatch, contract]);
+    }, [networkId, address, eventName, filterHash, dispatch, contractExists]);
 
     useEffect(() => {
         getPast();
@@ -82,7 +83,7 @@ export function useEvents<
         return () => {
             unsubscribe();
         };
-    }, [networkId, address, eventName, filterHash, dispatch, contract]);
+    }, [getPast, subscribe, unsubscribe]);
 
     return [events, { subscribe, unsubscribe }];
 }

@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BaseWeb3Contract, callArgsHash } from '../model';
+import { BaseWeb3Contract } from '../model';
 import { callSynced, callUnsync } from '../actions';
 import { selectContractCallByAddress, selectByAddressSingle as selectContractByAddressSingle } from '../selector';
 import { Await } from '../../types/promise';
@@ -27,8 +27,8 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const { from, sync } = options ?? {};
 
     const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
+    const contractExists = !!contract;
 
-    const argsHash = callArgsHash({ args, from });
     const dispatch = useDispatch();
     const contractCall = useSelector((state) =>
         selectContractCallByAddress<T, K>(state, networkId, address, method, { args, from }),
@@ -51,17 +51,17 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
 
     //Recompute subscribe function if network/contract is created, otherwise function is void
     const subscribe = useCallback(() => {
-        if (contract && callSyncedAction) {
+        if (contractExists && callSyncedAction) {
             dispatch(callSyncedAction);
         }
-    }, [dispatch, contract, callSyncedAction]);
+    }, [dispatch, contractExists, callSyncedAction]);
 
     const unsubscribe = useCallback(() => {
         const syncId = callSyncedAction?.payload.sync?.id;
-        if (contract && callSyncedAction && syncId) {
+        if (contractExists && callSyncedAction && syncId) {
             dispatch(callUnsync(syncId));
         }
-    }, [dispatch, contract, callSyncedAction]);
+    }, [dispatch, contractExists, callSyncedAction]);
 
     useEffect(() => {
         subscribe();
@@ -69,7 +69,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         return () => {
             unsubscribe();
         };
-    }, [networkId, address, method, argsHash, sync, dispatch, contract]);
+    }, [subscribe, unsubscribe]);
 
     return [contractCall, { subscribe, unsubscribe }];
 }

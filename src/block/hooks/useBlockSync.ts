@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import * as BlockActions from './actions';
-import * as NetworkSelector from '../network/selector';
+import * as BlockActions from '../actions';
+import * as NetworkSelector from '../../network/selector';
 import { useEffect, useCallback } from 'react';
 
 export const useBlockSync = (networkId: string | undefined, returnTransactionObjects = false) => {
@@ -8,19 +8,20 @@ export const useBlockSync = (networkId: string | undefined, returnTransactionObj
 
     const network = useSelector((state) => NetworkSelector.selectByIdSingle(state, networkId));
     const blocks = useSelector((state) => NetworkSelector.selectSingleBlocks(state, networkId));
+    const networkExists = !!network;
 
     //Recompute subscribe function if network is created, otherwise function is void
     const subscribe = useCallback(() => {
-        if (networkId && network) {
+        if (networkId && networkExists) {
             dispatch(BlockActions.subscribe({ networkId, returnTransactionObjects }));
         }
-    }, [networkId, returnTransactionObjects, dispatch, network]);
+    }, [networkId, returnTransactionObjects, dispatch, networkExists]);
 
     const unsubscribe = useCallback(() => {
-        if (networkId && network) {
+        if (networkId && networkExists) {
             dispatch(BlockActions.unsubscribe(networkId));
         }
-    }, [networkId, dispatch, network]);
+    }, [networkId, dispatch, networkExists]);
 
     useEffect(() => {
         subscribe();
@@ -28,7 +29,7 @@ export const useBlockSync = (networkId: string | undefined, returnTransactionObj
         return () => {
             unsubscribe();
         };
-    }, [networkId, returnTransactionObjects, dispatch, subscribe, unsubscribe]);
+    }, [subscribe, unsubscribe]);
 
     //Return subscribe/unsubscribe functions if use wants to manually control flow
     return [blocks, { subscribe, unsubscribe }];

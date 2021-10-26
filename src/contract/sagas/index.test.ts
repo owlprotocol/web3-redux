@@ -8,9 +8,9 @@ import BlockNumber from '../../abis/BlockNumber.json';
 import Multicall from '../../abis/Multicall.json';
 
 import { createStore } from '../../store';
-import { Block, Contract, Network, Transaction } from '../../index';
+import { Block, Contract, Network, Transaction, Sync } from '../../index';
 import { TransactionReceipt } from 'web3-core';
-import { CALL_BLOCK_SYNC, CALL_TRANSACTION_SYNC, contractId } from '../model';
+import { contractId } from '../model';
 import { mineBlock, sleep, ganacheLogger } from '../../test/utils';
 import { validatedContractEvent } from '../../contractevent';
 
@@ -181,6 +181,7 @@ describe('contract.sagas', () => {
         });
     });
 
+    //TODO: Enable CallSynced Tests
     describe('callSynced', () => {
         it('({sync:false})', async () => {
             const tx2 = await web3Contract.methods.setValue(42);
@@ -204,18 +205,20 @@ describe('contract.sagas', () => {
             assert.strictEqual(value, '42', 'getValue');
         });
 
-        it('({sync:CALL_BLOCK_SYNC})', async () => {
+        it('({sync:Block})', async () => {
             //Block subscription used for updates
             store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: false }));
-            store.dispatch(
-                Contract.callSynced({
-                    networkId,
-                    address,
-                    method: 'blockNumber',
-                    sync: CALL_BLOCK_SYNC,
-                }),
-            );
+            const callSyncedAction = Contract.callSynced({
+                networkId,
+                address,
+                method: 'blockNumber',
+                sync: 'Block',
+            });
+            store.dispatch(callSyncedAction);
             await sleep(150);
+            const actionSync = callSyncedAction.payload.sync!;
+            const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
+            assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
             const blockNumber1 = Contract.selectContractCallById(store.getState(), id, 'blockNumber');
 
@@ -227,20 +230,22 @@ describe('contract.sagas', () => {
             assert.equal(parseInt(blockNumber2), parseInt(blockNumber1) + 1);
         });
 
-        it('({sync:CALL_TRANSACTION_SYNC}) - Transaction.fetch', async () => {
+        it('({sync:Transaction}) - Transaction.fetch', async () => {
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
-            store.dispatch(
-                Contract.callSynced({
-                    networkId,
-                    address,
-                    method: 'getValue',
-                    sync: CALL_TRANSACTION_SYNC,
-                }),
-            );
+            const callSyncedAction = Contract.callSynced({
+                networkId,
+                address,
+                method: 'getValue',
+                sync: 'Transaction',
+            });
+            store.dispatch(callSyncedAction);
             await sleep(150);
+            const actionSync = callSyncedAction.payload.sync!;
+            const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
+            assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
             const value1 = Contract.selectContractCallById(store.getState(), id, 'getValue');
             assert.equal(value1, 42);
@@ -263,22 +268,24 @@ describe('contract.sagas', () => {
             assert.equal(value2, 666);
         });
 
-        it('({sync:CALL_TRANSACTION_SYNC}) - Block.subscribe', async () => {
+        it('({sync:Transaction}) - Block.subscribe', async () => {
             //Block subscription used for updates, must fetch transactions
             store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: true }));
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
-            store.dispatch(
-                Contract.callSynced({
-                    networkId,
-                    address,
-                    method: 'getValue',
-                    sync: CALL_TRANSACTION_SYNC,
-                }),
-            );
+            const callSyncedAction = Contract.callSynced({
+                networkId,
+                address,
+                method: 'getValue',
+                sync: 'Transaction',
+            });
+            store.dispatch(callSyncedAction);
             await sleep(150);
+            const actionSync = callSyncedAction.payload.sync!;
+            const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
+            assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
             const value1 = Contract.selectContractCallById(store.getState(), id, 'getValue');
             assert.equal(value1, 42);

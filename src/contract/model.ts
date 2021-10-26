@@ -2,68 +2,9 @@ import { attr, fk, Model as ORMModel } from 'redux-orm';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import { Contract as Web3Contract, EventData } from 'web3-eth-contract';
-
-import { BlockHeader } from '../block/model';
 import { NetworkId } from '../network/model';
-import { Transaction } from '../transaction/model';
+import { Sync } from '../sync/model';
 import { ZERO_ADDRESS } from '../utils';
-
-const name = 'Contract';
-export const CALL_BLOCK_SYNC = `${name}/CALL_BLOCK_SYNC`;
-export const CALL_TRANSACTION_SYNC = `${name}/CALL_TRANSACTION_SYNC`;
-
-/**
- * Contract Call Block Sync strategy.
- * Syncs calls based on block filter. Default syncs call every block.
- *
- * @param type CALL_BLOCK_SYNC
- * @param filter Block filter function that returns true if call should be refreshed.
- */
-export interface ContractCallBlockSync {
-    type: typeof CALL_BLOCK_SYNC;
-    filter: (block: BlockHeader) => boolean;
-}
-export function isContractCallBlockSync(action: { type: string }): action is ContractCallBlockSync {
-    return action.type === CALL_BLOCK_SYNC;
-}
-export const defaultBlockSync: ContractCallBlockSync = {
-    type: CALL_BLOCK_SYNC,
-    filter: () => true,
-};
-
-export const moduloBlockSync = (period: number) => {
-    const sync: ContractCallBlockSync = {
-        type: CALL_BLOCK_SYNC,
-        filter: (block) => block.number % period == 0,
-    };
-
-    return sync;
-};
-
-/**
- * Contract Call Transaction Sync strategy.
- * Syncs calls based on transaction filter. Default syncs call every tx with to param set to contract address.
- *
- * @param type CALL_TRANSACTION_SYNC
- * @param filter Transaction filter function that returns true if call should be refreshed.
- */
-export interface ContractCallTransactionSync {
-    type: typeof CALL_TRANSACTION_SYNC;
-    filter: (transaction: Transaction) => boolean;
-}
-export function isContractCallTransactionSync(action: { type: string }): action is ContractCallTransactionSync {
-    return action.type === CALL_TRANSACTION_SYNC;
-}
-export const defaultTransactionSyncForContract: (address: string) => ContractCallTransactionSync = (
-    address: string,
-) => {
-    return {
-        type: CALL_TRANSACTION_SYNC,
-        filter: (transaction: Transaction) => transaction.to === address,
-    };
-};
-
-export type ContractCallSync = ContractCallBlockSync | ContractCallTransactionSync | false;
 
 /**
  * Contract call object. Stores a cached contract call.
@@ -77,7 +18,7 @@ export interface ContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K e
     value: any;
     defaultBlock: string | number;
     args?: Parameters<T['methods'][K]>;
-    sync: ContractCallSync | false;
+    sync: Sync['type'] | false;
 }
 
 export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' | '_jsonInterface'>;
@@ -99,7 +40,7 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
     abi: AbiItem[];
     methods: {
         [callerFunctionName: string]: {
-            [argsHash: string]: { ethCallId?: string; sync?: ContractCallSync };
+            [argsHash: string]: { ethCallId?: string; sync?: Sync['type'] | false };
         };
     };
     web3Contract?: T;
@@ -111,7 +52,7 @@ export interface ContractPartial<T extends BaseWeb3Contract = BaseWeb3Contract> 
     abi: AbiItem[];
     methods?: {
         [callerFunctionName: string]: {
-            [argsHash: string]: { ethCallId?: string; sync?: ContractCallSync };
+            [argsHash: string]: { ethCallId?: string; sync?: Sync['type'] | false };
         };
     };
     web3Contract?: T;
@@ -211,6 +152,10 @@ export function callArgsHash<P extends any[] = any[]>(callArgs?: CallArgsHash<P>
     } else {
         return `(${JSON.stringify(args)}).call(${defaultBlock},${from})`;
     }
+}
+
+export function callHash(networkId: string, address: string, method: string, callArgs?: CallArgsHash): string {
+    return `${contractId({ networkId, address })}-${method}-${callArgsHash(callArgs)}`;
 }
 
 export { Model };

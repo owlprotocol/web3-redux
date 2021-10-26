@@ -28,36 +28,14 @@ function* eventGetPastInRange(networkId: string, address: string, name: string, 
 function* eventGetPast(action: EventGetPastAction) {
     try {
         const { payload } = action;
-        const networkId = payload.networkId;
-        const address = payload.address;
+        const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch } = payload;
 
         //@ts-ignore
         const network: Network = yield call(networkExists, networkId);
         //@ts-ignore
         const contract: Contract = yield call(contractExists, networkId, address);
 
-        const web3Contract = contract.web3Contract!;
-        const eventName = payload.eventName;
-        const filter = payload.filter;
-        let fromBlock: number;
-        if (!payload.fromBlock || payload.fromBlock == 'earliest') {
-            fromBlock = 0;
-        } else if (typeof payload.fromBlock === 'string') {
-            fromBlock = parseInt(payload.fromBlock);
-        } else {
-            fromBlock = payload.fromBlock;
-        }
-
-        let toBlock: number | string;
-        if (!payload.toBlock || payload.toBlock === 'latest') {
-            toBlock = 'latest';
-        } else if (typeof payload.toBlock === 'string') {
-            toBlock = parseInt(payload.toBlock);
-        } else {
-            toBlock = payload.toBlock;
-        }
-
-        const blockBatch = payload.blockBatch ?? 100;
+        //Ranged queries
         let blockNo;
         if (toBlock === 'latest') {
             //@ts-ignore
@@ -77,6 +55,7 @@ function* eventGetPast(action: EventGetPastAction) {
         //Override fromBlock to get correct range for last range
         ranges[ranges.length - 1].fromBlock = fromBlock;
 
+        const web3Contract = contract.web3Contract!;
         const eventsPromises = ranges.map((r) => {
             const options: any = { ...r };
             if (filter) options.filter = filter;

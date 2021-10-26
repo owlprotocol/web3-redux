@@ -1,8 +1,6 @@
 import { put, call } from 'redux-saga/effects';
-import { ZERO_ADDRESS } from '../../utils';
 import { validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
-import { callArgsHash } from '../model';
 import { create, CallAction, CALL } from '../actions';
 import contractExists from './contractExists';
 import networkExists from '../../network/sagas/networkExists';
@@ -12,16 +10,12 @@ const CALL_ERROR = `${CALL}/ERROR`;
 function* contractCall(action: CallAction) {
     try {
         const { payload } = action;
-        const { networkId, address } = payload;
+        const { networkId, address, from, defaultBlock, argsHash } = payload;
 
         //@ts-ignore
         yield call(networkExists, networkId);
         //@ts-ignore
         const contract: Contract = yield call(contractExists, networkId, address);
-
-        //Defaults
-        const from: string = payload.from ?? ZERO_ADDRESS;
-        const defaultBlock = payload.defaultBlock ?? 'latest';
 
         const web3Contract = contract.web3Contract!;
         let tx: any;
@@ -44,14 +38,12 @@ function* contractCall(action: CallAction) {
         //Create base call
         yield put(createEthCall(ethCall));
 
-        //Update contract call key if not stored
-        const key = callArgsHash({ from, defaultBlock, args: payload.args });
-        const contractCallSync = contract.methods[payload.method][key];
+        const contractCallSync = contract.methods[payload.method][argsHash];
         if (!contractCallSync) {
-            contract.methods[payload.method][key] = { ethCallId: ethCall.id };
+            contract.methods[payload.method][argsHash] = { ethCallId: ethCall.id };
             yield put(create(contract));
         } else if (contractCallSync.ethCallId != ethCall.id) {
-            contract.methods[payload.method][key].ethCallId = ethCall.id;
+            contract.methods[payload.method][argsHash].ethCallId = ethCall.id;
             yield put(create(contract));
         }
 

@@ -1,16 +1,16 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BaseWeb3Contract, callArgsHash, CALL_BLOCK_SYNC, CALL_TRANSACTION_SYNC, ContractCallSync } from '../model';
+import { BaseWeb3Contract, callArgsHash } from '../model';
 import { callSynced, callUnsync } from '../actions';
 import { selectContractCallByAddress, selectByAddressSingle as selectContractByAddressSingle } from '../selector';
 import { Await } from '../../types/promise';
+import { Sync } from '../../sync/model';
 
 //Contract Call
 export interface UseContractCallOptions {
     from?: string;
-    defaultBlock?: number | string;
     gas?: string;
-    sync?: ContractCallSync | boolean | typeof CALL_BLOCK_SYNC | typeof CALL_TRANSACTION_SYNC;
+    sync?: Sync | Sync['type'] | boolean;
 }
 
 export interface HookHandlers {
@@ -24,14 +24,14 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     args?: Parameters<T['methods'][K]>,
     options?: UseContractCallOptions,
 ): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, HookHandlers] {
-    const { from, defaultBlock, sync } = options ?? {};
+    const { from, sync } = options ?? {};
 
     const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
 
-    const argsHash = callArgsHash({ args, from, defaultBlock });
+    const argsHash = callArgsHash({ args, from });
     const dispatch = useDispatch();
     const contractCall = useSelector((state) =>
-        selectContractCallByAddress<T, K>(state, networkId, address, method, { args, from, defaultBlock }),
+        selectContractCallByAddress<T, K>(state, networkId, address, method, { args, from }),
     );
 
     //Recompute subscribe function if network/contract is created, otherwise function is void
@@ -44,7 +44,6 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                     method: method as string,
                     args,
                     from,
-                    defaultBlock,
                     sync,
                 }),
             );
@@ -60,7 +59,6 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                     method: method as string,
                     args,
                     from,
-                    defaultBlock,
                 }),
             );
         }

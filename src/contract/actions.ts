@@ -1,5 +1,14 @@
 import { createAction } from '@reduxjs/toolkit';
-import { ContractCallSync, ContractId, CALL_BLOCK_SYNC, CALL_TRANSACTION_SYNC, ContractPartial } from './model';
+import { ZERO_ADDRESS } from '../utils';
+import {
+    ContractCallSync,
+    ContractId,
+    CALL_BLOCK_SYNC,
+    CALL_TRANSACTION_SYNC,
+    ContractPartial,
+    defaultTransactionSyncForContract,
+    defaultBlockSync,
+} from './model';
 
 const name = 'Contract';
 
@@ -58,7 +67,34 @@ export const callBatched = createAction<CallBatchedActionInput>(CALL_BATCHED);
 export interface CallSyncedActionInput extends CallActionInput {
     sync?: ContractCallSync | boolean | typeof CALL_BLOCK_SYNC | typeof CALL_TRANSACTION_SYNC;
 }
-export const callSynced = createAction<CallSyncedActionInput>(CALL_SYNCED);
+export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionInput) => {
+    //Defaults
+    const from: string = payload.from ?? ZERO_ADDRESS;
+    const defaultBlock = payload.defaultBlock ?? 'latest';
+
+    let sync: ContractCallSync | false;
+    const defaultTransactionSync = defaultTransactionSyncForContract(payload.address);
+
+    if (defaultBlock === 'latest') {
+        if (payload.sync === false) {
+            sync = false;
+        } else if (payload.sync === true) {
+            sync = defaultTransactionSync;
+        } else if (!payload.sync) {
+            sync = defaultTransactionSync;
+        } else if (payload.sync === CALL_TRANSACTION_SYNC) {
+            sync = defaultTransactionSync;
+        } else if (payload.sync === CALL_BLOCK_SYNC) {
+            sync = defaultBlockSync;
+        } else {
+            sync = payload.sync as ContractCallSync;
+        }
+    } else {
+        sync = false;
+    }
+
+    return { payload: { ...payload, from, defaultBlock, sync } };
+});
 
 export const callUnsync = createAction<CallActionInput>(CALL_UNSYNC);
 export interface SendActionInput {
@@ -83,7 +119,29 @@ export interface EventGetPastActionInput {
     blockBatch?: number;
 }
 
-export const eventGetPast = createAction<EventGetPastActionInput>(EVENT_GET_PAST);
+export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput) => {
+    let fromBlock: number;
+    if (!payload.fromBlock || payload.fromBlock == 'earliest') {
+        fromBlock = 0;
+    } else if (typeof payload.fromBlock === 'string') {
+        fromBlock = parseInt(payload.fromBlock);
+    } else {
+        fromBlock = payload.fromBlock;
+    }
+
+    let toBlock: number | string;
+    if (!payload.toBlock || payload.toBlock === 'latest') {
+        toBlock = 'latest';
+    } else if (typeof payload.toBlock === 'string') {
+        toBlock = parseInt(payload.toBlock);
+    } else {
+        toBlock = payload.toBlock;
+    }
+
+    const blockBatch = payload.blockBatch ?? 100;
+
+    return { payload: { ...payload, fromBlock, toBlock, blockBatch } };
+});
 
 export interface EventSubscribeActionInput {
     networkId: string;

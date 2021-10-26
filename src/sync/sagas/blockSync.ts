@@ -10,7 +10,7 @@ function* blockSync({ payload }: CreateAction) {
     const syncsFiltered = syncs.filter((s) => !!s && s?.type === 'Block') as BlockSync[];
     const actions: Action[] = [];
     syncsFiltered.map((s) => {
-        if (s?.filter(payload)) {
+        if (s?.filter(payload) && s.actions) {
             if (typeof s.actions === 'function') {
                 actions.push(...s.actions(payload));
             } else {

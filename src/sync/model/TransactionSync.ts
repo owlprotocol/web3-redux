@@ -5,10 +5,10 @@ import BaseSync from './BaseSync';
 export default interface TransactionSync extends BaseSync {
     type: 'Transaction';
     filter: (x: Transaction) => boolean;
-    actions: Action[] | ((x: Transaction) => Action[]);
+    actions?: Action[] | ((x: Transaction) => Action[]);
 }
 
-export function defaultTransactionSync(actions: TransactionSync['actions'], networkId: string, address: string) {
+export function defaultTransactionSync(networkId: string, address: string, actions: TransactionSync['actions']) {
     return {
         type: 'Transaction',
         filter: (tx) =>

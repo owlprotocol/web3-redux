@@ -82,11 +82,11 @@ export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionIn
         sync = undefined;
     } else if (!payload.sync || payload.sync === true) {
         //undefined, default as true
-        sync = defaultTransactionSync([callAction], networkId, address);
+        sync = defaultTransactionSync(networkId, address, [callAction]);
     } else if (payload.sync === 'Transaction') {
-        sync = defaultTransactionSync([callAction], networkId, address);
+        sync = defaultTransactionSync(networkId, address, [callAction]);
     } else if (payload.sync === 'Block') {
-        sync = defaultBlockSync([callAction], networkId);
+        sync = defaultBlockSync(networkId, [callAction]);
     } else if (payload.sync === 'Event') {
         sync = defaultEventSync([callAction]);
     } else {

@@ -10,7 +10,7 @@ function* transactionSync({ payload }: CreateAction) {
     const syncsFiltered = syncs.filter((s) => !!s && s?.type === 'Transaction') as TransactionSync[];
     const actions: Action[] = [];
     syncsFiltered.map((s) => {
-        if (s?.filter(payload)) {
+        if (s?.filter(payload) && s.actions) {
             if (typeof s.actions === 'function') {
                 actions.push(...s.actions(payload));
             } else {

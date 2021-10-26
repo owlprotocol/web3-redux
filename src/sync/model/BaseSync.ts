@@ -12,5 +12,5 @@ export default interface BaseSync {
     id?: string;
     type: string;
     filter: (x: any) => boolean;
-    actions: Action[] | ((x: any) => Action[]);
+    actions?: Action[] | ((x: any) => Action[]);
 }

@@ -7,10 +7,10 @@ import BaseSync from './BaseSync';
 export default interface BlockSync extends BaseSync {
     type: 'Block';
     filter: (x: Block) => boolean;
-    actions: Action[] | ((x: Block) => Action[]);
+    actions?: Action[] | ((x: Block) => Action[]);
 }
 
-export function defaultBlockSync(actions: BlockSync['actions'], networkId: string) {
+export function defaultBlockSync(networkId: string, actions?: BlockSync['actions']) {
     return {
         type: 'Block',
         filter: (block) => block.networkId === networkId,
@@ -18,7 +18,7 @@ export function defaultBlockSync(actions: BlockSync['actions'], networkId: strin
     } as BlockSync;
 }
 
-export function moduloBlockSync(actions: BlockSync['actions'], networkId: string, period: number) {
+export function moduloBlockSync(networkId: string, period: number, actions: BlockSync['actions']) {
     return {
         type: 'Block',
         filter: (block) => block.networkId === networkId && block.number % period == 0,

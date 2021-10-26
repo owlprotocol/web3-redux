@@ -7,7 +7,7 @@ import { FetchBalanceSyncedActionInput } from '../actions/fetchBalanceSynced';
 import { FetchNonceSyncedActionInput } from '../actions/fetchNonceSynced';
 import { remove as removeSync } from '../../sync/actions';
 
-export function useContract(
+export default function useAccount(
     networkId?: string,
     address?: string,
     sync?: {

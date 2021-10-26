@@ -8,10 +8,10 @@ export default interface TransactionSync extends BaseSync {
     actions: Action[] | ((x: Transaction) => Action[]);
 }
 
-export function defaultTransactionSync(actions: TransactionSync['actions'], address: string) {
+export function defaultTransactionSync(actions: TransactionSync['actions'], networkId: string, address: string) {
     return {
         type: 'Transaction',
-        filter: (tx) => tx.to?.toLowerCase() === address.toLowerCase(),
+        filter: (tx) => tx.networkId === networkId && tx.to?.toLowerCase() === address.toLowerCase(),
         actions,
     } as TransactionSync;
 }

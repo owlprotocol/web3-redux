@@ -154,4 +154,8 @@ export function callArgsHash<P extends any[] = any[]>(callArgs?: CallArgsHash<P>
     }
 }
 
+export function callHash(networkId: string, address: string, method: string, callArgs?: CallArgsHash): string {
+    return `${contractId({ networkId, address })}-${method}-${callArgsHash(callArgs)}`;
+}
+
 export { Model };

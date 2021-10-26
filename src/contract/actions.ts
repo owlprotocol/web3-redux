@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ZERO_ADDRESS } from '../utils';
 import { Sync } from '../sync/model';
-import { ContractId, ContractPartial } from './model';
+import { callArgsHash, callHash, ContractId, ContractPartial } from './model';
 import { defaultTransactionSync } from '../sync/model/TransactionSync';
 import { defaultBlockSync } from '../sync/model/BlockSync';
 import { defaultEventSync } from '../sync/model/EventSync';
@@ -37,8 +37,10 @@ export interface CallActionInput {
 export const call = createAction(CALL, (payload: CallActionInput) => {
     const from: string = payload.from ?? ZERO_ADDRESS;
     const defaultBlock = payload.defaultBlock ?? 'latest';
+    //Update contract call key if not stored
+    const argsHash = callArgsHash({ from, defaultBlock, args: payload.args });
 
-    return { payload: { ...payload, from, defaultBlock } };
+    return { payload: { ...payload, from, defaultBlock, argsHash } };
 });
 
 export interface CallBatchedActionInput {
@@ -71,24 +73,27 @@ export interface CallSyncedActionInput extends CallActionInput {
 }
 export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionInput) => {
     //Defaults
-    const address = payload.address;
-    let sync: Sync | false;
+    const { networkId, address, method, args, defaultBlock, from } = payload;
+    const callArgs = { args, defaultBlock, from };
+    let sync: Sync | undefined;
     const callAction = call(payload);
 
     if (payload.sync === false) {
-        sync = false;
+        sync = undefined;
     } else if (!payload.sync || payload.sync === true) {
         //undefined, default as true
-        sync = defaultTransactionSync([callAction], address);
+        sync = defaultTransactionSync([callAction], networkId, address);
     } else if (payload.sync === 'Transaction') {
-        sync = defaultTransactionSync([callAction], address);
+        sync = defaultTransactionSync([callAction], networkId, address);
     } else if (payload.sync === 'Block') {
-        sync = defaultBlockSync([callAction]);
+        sync = defaultBlockSync([callAction], networkId);
     } else if (payload.sync === 'Event') {
         sync = defaultEventSync([callAction]);
     } else {
         sync = payload.sync;
     }
+
+    if (sync) sync.id = `${sync.type}-${callHash(networkId, address, method, callArgs)}`;
 
     return { payload: { sync, callAction } };
 });

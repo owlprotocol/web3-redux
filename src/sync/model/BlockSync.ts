@@ -10,18 +10,18 @@ export default interface BlockSync extends BaseSync {
     actions: Action[] | ((x: Block) => Action[]);
 }
 
-export function defaultBlockSync(actions: BlockSync['actions']) {
+export function defaultBlockSync(actions: BlockSync['actions'], networkId: string) {
     return {
         type: 'Block',
-        filter: () => true,
+        filter: (block) => block.networkId === networkId,
         actions,
     } as BlockSync;
 }
 
-export function moduloBlockSync(actions: BlockSync['actions'], period: number) {
+export function moduloBlockSync(actions: BlockSync['actions'], networkId: string, period: number) {
     return {
         type: 'Block',
-        filter: (block) => block.number % period == 0,
+        filter: (block) => block.networkId === networkId && block.number % period == 0,
         actions,
     } as BlockSync;
 }

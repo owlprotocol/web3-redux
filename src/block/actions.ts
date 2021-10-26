@@ -16,7 +16,7 @@ export type CreateAction = ReturnType<typeof create>;
 export const isCreateAction = create.match;
 
 export const remove = createAction(REMOVE, (data: BlockId) => {
-    return { payload: { ...data, id: blockId(data) } };
+    return { payload: blockId(data) };
 });
 export type RemoveAction = ReturnType<typeof remove>;
 export const isRemoveAction = remove.match;

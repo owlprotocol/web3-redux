@@ -10,12 +10,14 @@ function* contractCallSynced(action: CallSyncedAction) {
         const { payload } = action;
         const { sync, callAction } = payload;
 
-        //Initial Action
-        yield put(callAction);
         //Create Sync
-        if (typeof sync != 'boolean') {
+        if (sync) {
             yield put(createSync(sync));
         }
+
+        //Initial Action
+        yield put(callAction);
+
         //TODO: Customize id of call sync
     } catch (error) {
         console.error(error);

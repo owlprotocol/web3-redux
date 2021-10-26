@@ -98,7 +98,21 @@ export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionIn
     return { payload: { sync, callAction } };
 });
 
-export const callUnsync = createAction<CallActionInput>(CALL_UNSYNC);
+export interface CallUnsyncActionInput extends CallActionInput {
+    defaultBlock?: 'latest';
+    sync?: Sync['type'];
+}
+export const callUnsync = createAction(CALL_UNSYNC, (payload: string | CallUnsyncActionInput) => {
+    if (typeof payload === 'string') return { payload };
+
+    //Defaults
+    const { networkId, address, method, args, defaultBlock, from, sync } = payload;
+    const callArgs = { args, defaultBlock, from };
+    const id = `${sync}-${callHash(networkId, address, method, callArgs)}`;
+
+    return { payload: id };
+});
+
 export interface SendActionInput {
     networkId: string;
     address: string;

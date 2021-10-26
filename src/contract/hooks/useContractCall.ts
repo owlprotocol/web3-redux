@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BaseWeb3Contract, callArgsHash } from '../model';
 import { callSynced, callUnsync } from '../actions';
@@ -34,35 +34,34 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         selectContractCallByAddress<T, K>(state, networkId, address, method, { args, from }),
     );
 
+    const callSyncedAction = useMemo(() => {
+        if (networkId && address && method) {
+            return callSynced({
+                networkId,
+                address,
+                method: method as string,
+                args,
+                from,
+                sync,
+            });
+        }
+
+        return undefined;
+    }, [networkId, address, method]);
+
     //Recompute subscribe function if network/contract is created, otherwise function is void
     const subscribe = useCallback(() => {
-        if (networkId && address && method && contract) {
-            dispatch(
-                callSynced({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args,
-                    from,
-                    sync,
-                }),
-            );
+        if (contract && callSyncedAction) {
+            dispatch(callSyncedAction);
         }
-    }, [networkId, address, method, argsHash, sync, dispatch, contract]);
+    }, [dispatch, contract, callSyncedAction]);
 
     const unsubscribe = useCallback(() => {
-        if (networkId && address && method && contract) {
-            dispatch(
-                callUnsync({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args,
-                    from,
-                }),
-            );
+        const syncId = callSyncedAction?.payload.sync?.id;
+        if (contract && callSyncedAction && syncId) {
+            dispatch(callUnsync(syncId));
         }
-    }, [networkId, address, method, argsHash, dispatch, contract]);
+    }, [dispatch, contract, callSyncedAction]);
 
     useEffect(() => {
         subscribe();

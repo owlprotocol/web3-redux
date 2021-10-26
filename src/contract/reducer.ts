@@ -1,9 +1,8 @@
-import { ZERO_ADDRESS } from '../utils';
-import { ReducerAction, isCreateAction, isRemoveAction, isCallUnsyncAction, CallUnsyncAction } from './actions';
-import { validatedContract, contractId, callArgsHash } from './model';
+import { ReducerAction, isCreateAction, isRemoveAction } from './actions';
+import { validatedContract, contractId } from './model';
 
 export function reducer(sess: any, action: ReducerAction) {
-    const { Contract, Network, Config } = sess;
+    const { Contract, Network } = sess;
 
     if (isCreateAction(action)) {
         const network = Network.withId(action.payload.networkId);
@@ -24,15 +23,7 @@ export function reducer(sess: any, action: ReducerAction) {
         } else {
             Contract.withId(contractId(action.payload)).delete();
         }
-    } else if (isCallUnsyncAction(action)) {
-        const { payload } = action as CallUnsyncAction; //Why isn't this getting inferred?
-        const networkId = payload.networkId ?? Config.withId(0).networkId;
-        const contract = Contract.withId(contractId({ address: payload.address, networkId }));
-        const from: string = payload.from ?? ZERO_ADDRESS;
-        const defaultBlock = payload.defaultBlock ?? 'latest';
-        const key = callArgsHash({ from, defaultBlock, args: payload.args });
-        const call = contract.methods[payload.method][key];
-        contract.methods[payload.method][key] = { ...call, sync: false };
     }
+
     return sess;
 }

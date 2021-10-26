@@ -208,7 +208,7 @@ export const isEventUnsubscribeAction = eventUnsubscribe.match;
 
 export type ReducerAction = CreateAction | RemoveAction | CallUnsyncAction;
 export function isReducerAction(action: { type: string }): action is ReducerAction {
-    return isCreateAction(action) || isRemoveAction(action) || isCallUnsyncAction(action);
+    return isCreateAction(action) || isRemoveAction(action);
 }
 
 export type SagaAction =

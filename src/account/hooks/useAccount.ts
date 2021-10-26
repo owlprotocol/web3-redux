@@ -11,23 +11,25 @@ export default function useAccount(
     networkId?: string,
     address?: string,
     sync?: {
-        balance: FetchBalanceSyncedActionInput['sync'];
-        nonce: FetchNonceSyncedActionInput['sync'];
+        balance?: FetchBalanceSyncedActionInput['sync'];
+        nonce?: FetchNonceSyncedActionInput['sync'];
     },
 ) {
     const dispatch = useDispatch();
 
     const account = useSelector((state) => selectByAddressSingle(state, networkId, address));
     const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
+    const networkExists = !!network;
+    const accountExists = !!account;
 
     useEffect(() => {
-        if (networkId && address && !account) {
+        if (networkId && address && !accountExists) {
             dispatch(create({ networkId, address }));
         }
 
         let fetchBalanceActionId: string | undefined;
         let fetchNonceActionId: string | undefined;
-        if (networkId && address && network && account) {
+        if (networkId && address && networkExists && accountExists) {
             //Default no sync
             const fetchBalanceAction = fetchBalanceSynced({ networkId, address, sync: sync?.balance ?? false });
             dispatch(fetchBalanceAction);
@@ -41,7 +43,7 @@ export default function useAccount(
             if (fetchBalanceActionId) dispatch(removeSync(fetchBalanceActionId));
             if (fetchNonceActionId) dispatch(removeSync(fetchNonceActionId));
         };
-    }, [networkId, address, dispatch, account, network]);
+    }, [networkId, address, dispatch, accountExists, networkExists]);
 
     return account;
 }

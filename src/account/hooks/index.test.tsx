@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
 
 import { createStore } from '../../store';
-import { Network } from '../../index';
+import { Network, Transaction } from '../../index';
 import { sleep } from '../../test/utils';
 import { useAccount } from './index';
 
@@ -50,15 +50,56 @@ describe('account.hooks', () => {
                 wrapper,
             });
 
-            const balance = await web3.eth.getBalance(address);
+            const expected1 = await web3.eth.getBalance(address);
 
             await sleep(1000);
 
-            const currentBalance = result.current?.balance;
-            //const allBalances = result.all.map((x: any) => (x ? x.balance : undefined));
-            assert.equal(currentBalance, balance, 'result.current');
-            //console.debug(allBalances)
-            //assert.deepEqual(allBalances, [undefined, balance], 'result.all');
+            const currentBalance1 = result.current?.balance;
+            assert.equal(currentBalance1, expected1, 'result.current');
+
+            await web3.eth.sendTransaction({ from: address, to: accounts[1], value: '1' });
+
+            const expected2 = await web3.eth.getBalance(address);
+            assert.notEqual(expected1, expected2, 'balance not changed');
+
+            await sleep(1000);
+
+            const currentBalance2 = result.current?.balance;
+            //No sync, balance stays unchanged
+            assert.equal(currentBalance2, expected1, 'previous balance');
+            assert.notEqual(currentBalance2, expected2, 'updated balance');
+        });
+
+        it('(networkId, address, sync: true)', async () => {
+            const { result } = renderHook(() => useAccount(networkId, address, { balance: true }), {
+                wrapper,
+            });
+
+            const expected1 = await web3.eth.getBalance(address);
+
+            await sleep(1000);
+
+            const currentBalance1 = result.current?.balance;
+            assert.equal(currentBalance1, expected1, 'result.current');
+
+            const receipt = await web3.eth.sendTransaction({ from: address, to: accounts[1], value: '1' });
+            //Fetch transaction, triggering a refresh
+            store.dispatch(
+                Transaction.fetch({
+                    networkId,
+                    hash: receipt.transactionHash,
+                }),
+            );
+
+            const expected2 = await web3.eth.getBalance(address);
+            assert.notEqual(expected1, expected2, 'balance not changed');
+
+            await sleep(1000);
+
+            const currentBalance2 = result.current?.balance;
+            //sync, balance updated
+            assert.notEqual(currentBalance2, expected1, 'previous balance');
+            assert.equal(currentBalance2, expected2, 'updated balance');
         });
     });
 });

@@ -1,13 +1,13 @@
 import { put } from 'redux-saga/effects';
 import { create as createSync } from '../../sync/actions';
-import { CallSyncedAction, CALL_SYNCED } from '../actions';
+import { FetchNonceSyncedAction, FETCH_NONCE_SYNCED } from '../actions/fetchNonceSynced';
 
-const CALL_SYNCED_ERROR = `${CALL_SYNCED}/ERROR`;
+const FETCH_NONCE_SYNCED_ERROR = `${FETCH_NONCE_SYNCED}/ERROR`;
 
-function* contractCallSynced(action: CallSyncedAction) {
+function* fetchNonceSynced(action: FetchNonceSyncedAction) {
     try {
         const { payload } = action;
-        const { sync, callAction } = payload;
+        const { sync, fetchNonceAction } = payload;
 
         //Create Sync
         if (sync) {
@@ -15,15 +15,15 @@ function* contractCallSynced(action: CallSyncedAction) {
         }
 
         //Initial Action
-        yield put(callAction);
+        yield put(fetchNonceAction);
     } catch (error) {
         console.error(error);
         yield put({
-            type: CALL_SYNCED_ERROR,
+            type: FETCH_NONCE_SYNCED_ERROR,
             error,
             action,
         });
     }
 }
 
-export default contractCallSynced;
+export default fetchNonceSynced;

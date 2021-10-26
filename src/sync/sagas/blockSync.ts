@@ -3,14 +3,15 @@ import { Action } from 'redux';
 import { CreateAction } from '../../block/actions';
 import { selectByIdMany } from '../selector';
 import { BlockSync } from '../model';
-import { create } from '../actions';
+import { update } from '../actions';
 
 //Handle on block update
 function* blockSync({ payload }: CreateAction) {
     const syncs: ReturnType<typeof selectByIdMany> = yield select(selectByIdMany);
     const syncsFiltered = syncs.filter((s) => !!s && s?.type === 'Block') as BlockSync[];
-    const filterActions: Action[] = []; //triggered actions
+
     const updateActions: Action[] = []; //update cache actions
+    const filterActions: Action[] = []; //triggered actions
 
     syncsFiltered.map((s) => {
         if (s?.filter(payload, s.cache) && s.actions) {
@@ -23,7 +24,7 @@ function* blockSync({ payload }: CreateAction) {
             if (s?.updateCache) {
                 const cache = s.cache;
                 const newCache = s.updateCache(payload, cache);
-                updateActions.push(create({ ...s, cache: newCache }));
+                updateActions.push(update({ ...s, cache: newCache }));
             }
         }
     });

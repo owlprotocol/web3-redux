@@ -17,6 +17,7 @@ class Model extends ORMModel {
         type: attr(),
         filter: attr(),
         actions: attr(),
+        cache: attr(), //persistent state, used to avoid duplicate triggers, or track anything
     };
 }
 

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Account, accountId } from '../model';
-import { name } from './index';
+import { name } from './common';
 
 import { Sync } from '../../sync/model';
 import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';

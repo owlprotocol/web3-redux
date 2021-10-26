@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Account } from '../model';
-import { name } from './index';
+import { name } from './common';
 
 export const FETCH_NONCE = `${name}/FETCH_NONCE`;
 export const fetchNonce = createAction<Account>(FETCH_NONCE);

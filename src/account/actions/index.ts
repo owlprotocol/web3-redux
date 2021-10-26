@@ -15,8 +15,6 @@ import {
     isFetchNonceSyncedAction,
 } from './fetchNonceSynced';
 
-export const name = 'Account';
-
 export type ReducerAction = CreateAction | RemoveAction;
 export function isReducerAction(action: { type: string }): action is ReducerAction {
     return isCreateAction(action) || isRemoveAction(action);

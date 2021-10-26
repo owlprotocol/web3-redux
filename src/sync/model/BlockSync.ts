@@ -18,7 +18,7 @@ export function defaultBlockSync(networkId: string, actions?: BlockSync['actions
     } as BlockSync;
 }
 
-export function moduloBlockSync(networkId: string, period: number, actions: BlockSync['actions']) {
+export function moduloBlockSync(networkId: string, period: number, actions?: BlockSync['actions']) {
     return {
         type: 'Block',
         filter: (block) => block.networkId === networkId && block.number % period == 0,

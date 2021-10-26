@@ -6,4 +6,4 @@ openPR: true
 copyIssueDescriptionToPR: true
 copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
-commentMessage: "Branch ${branchName} created!\nClone with:\n`git fetch && git checkout --track origin/${branchName}`"
+commentMessage: "Branch ${branchName} created! Clone with:\n`git fetch && git checkout --track origin/${branchName}`\nRebase `develop` branch changes with:\n`git checkout ${branchName} && git rebase develop`"

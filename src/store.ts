@@ -8,6 +8,7 @@ import { Transaction } from './transaction/model';
 import { Contract } from './contract/model';
 import { ContractSend } from './contractsend/model';
 import { EthCall } from './ethcall/model';
+import { Account } from './account/model';
 
 import { rootReducer } from './reducer';
 import { rootSaga } from './saga';
@@ -41,6 +42,11 @@ export interface Web3ReduxStore {
     EthCall: {
         itemsById: {
             [id: string]: EthCall; //`${networkId}-${from}-${to}-${data}-${gas}`.
+        };
+    };
+    Account: {
+        itemsById: {
+            [id: string]: Account; //`${networkId}-${address}`.
         };
     };
 }

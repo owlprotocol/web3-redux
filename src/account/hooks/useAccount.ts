@@ -11,8 +11,8 @@ export function useContract(
     networkId?: string,
     address?: string,
     sync?: {
-        balance: FetchBalanceSyncedActionInput['sync'] | number;
-        nonce: FetchNonceSyncedActionInput['sync'] | number;
+        balance: FetchBalanceSyncedActionInput['sync'];
+        nonce: FetchNonceSyncedActionInput['sync'];
     },
 ) {
     const dispatch = useDispatch();

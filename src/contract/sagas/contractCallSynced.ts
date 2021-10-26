@@ -1,33 +1,22 @@
-import { put, call } from 'redux-saga/effects';
-import { callArgsHash } from '../model';
-import { create, call as callAction, CallSyncedAction, CALL_SYNCED } from '../actions';
-import contractExists from './contractExists';
-import networkExists from '../../network/sagas/networkExists';
+import { put } from 'redux-saga/effects';
+import { create as createSync } from '../../sync/actions';
+//import { callArgsHash } from '../model';
+import { CallSyncedAction, CALL_SYNCED } from '../actions';
 
 const CALL_SYNCED_ERROR = `${CALL_SYNCED}/ERROR`;
 
 function* contractCallSynced(action: CallSyncedAction) {
     try {
         const { payload } = action;
-        const { networkId, address, from, defaultBlock, sync } = payload;
+        const { sync, callAction } = payload;
 
-        //@ts-ignore
-        yield call(networkExists, networkId);
-        //@ts-ignore
-        const contract: Contract = yield call(contractExists, networkId, address);
-
-        //Update contract call sync
-        const key = callArgsHash({ from, defaultBlock, args: payload.args });
-        const contractCallSync = contract.methods[payload.method][key];
-        if (!contractCallSync) {
-            contract.methods[payload.method][key] = { sync };
-            yield put(create({ ...contract }));
-            yield put(callAction(payload));
-        } else if (contractCallSync.sync != sync) {
-            contract.methods[payload.method][key].sync = sync;
-            yield put(create({ ...contract }));
-            yield put(callAction(payload));
+        //Initial Action
+        yield put(callAction);
+        //Create Sync
+        if (typeof sync != 'boolean') {
+            yield put(createSync(sync));
         }
+        //TODO: Customize id of call sync
     } catch (error) {
         console.error(error);
         yield put({

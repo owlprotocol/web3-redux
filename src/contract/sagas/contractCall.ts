@@ -1,5 +1,4 @@
 import { put, call } from 'redux-saga/effects';
-import { ZERO_ADDRESS } from '../../utils';
 import { validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
 import { callArgsHash } from '../model';
@@ -12,16 +11,12 @@ const CALL_ERROR = `${CALL}/ERROR`;
 function* contractCall(action: CallAction) {
     try {
         const { payload } = action;
-        const { networkId, address } = payload;
+        const { networkId, address, from, defaultBlock } = payload;
 
         //@ts-ignore
         yield call(networkExists, networkId);
         //@ts-ignore
         const contract: Contract = yield call(contractExists, networkId, address);
-
-        //Defaults
-        const from: string = payload.from ?? ZERO_ADDRESS;
-        const defaultBlock = payload.defaultBlock ?? 'latest';
 
         const web3Contract = contract.web3Contract!;
         let tx: any;

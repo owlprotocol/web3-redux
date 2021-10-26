@@ -1,16 +1,17 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BaseWeb3Contract, callArgsHash, CALL_BLOCK_SYNC, CALL_TRANSACTION_SYNC, ContractCallSync } from '../model';
+import { BaseWeb3Contract, callArgsHash } from '../model';
 import { callSynced, callUnsync } from '../actions';
 import { selectContractCallByAddress, selectByAddressSingle as selectContractByAddressSingle } from '../selector';
 import { Await } from '../../types/promise';
+import { Sync } from '../../sync/model';
 
 //Contract Call
 export interface UseContractCallOptions {
     from?: string;
     defaultBlock?: number | string;
     gas?: string;
-    sync?: ContractCallSync | boolean | typeof CALL_BLOCK_SYNC | typeof CALL_TRANSACTION_SYNC;
+    sync?: Sync | Sync['type'] | boolean;
 }
 
 export interface HookHandlers {

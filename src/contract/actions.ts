@@ -1,14 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ZERO_ADDRESS } from '../utils';
-import {
-    ContractCallSync,
-    ContractId,
-    CALL_BLOCK_SYNC,
-    CALL_TRANSACTION_SYNC,
-    ContractPartial,
-    defaultTransactionSyncForContract,
-    defaultBlockSync,
-} from './model';
+import { Sync } from '../sync/model';
+import { ContractId, ContractPartial } from './model';
+import { defaultTransactionSync } from '../sync/model/TransactionSync';
+import { defaultBlockSync } from '../sync/model/BlockSync';
+import { defaultEventSync } from '../sync/model/EventSync';
 
 const name = 'Contract';
 
@@ -38,7 +34,12 @@ export interface CallActionInput {
     defaultBlock?: number | string;
     gas?: string;
 }
-export const call = createAction<CallActionInput>(CALL);
+export const call = createAction(CALL, (payload: CallActionInput) => {
+    const from: string = payload.from ?? ZERO_ADDRESS;
+    const defaultBlock = payload.defaultBlock ?? 'latest';
+
+    return { payload: { ...payload, from, defaultBlock } };
+});
 
 export interface CallBatchedActionInput {
     networkId: string;
@@ -65,35 +66,31 @@ export interface CallBatchedActionInput {
 export const callBatched = createAction<CallBatchedActionInput>(CALL_BATCHED);
 
 export interface CallSyncedActionInput extends CallActionInput {
-    sync?: ContractCallSync | boolean | typeof CALL_BLOCK_SYNC | typeof CALL_TRANSACTION_SYNC;
+    defaultBlock?: 'latest';
+    sync?: Sync | Sync['type'] | boolean;
 }
 export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionInput) => {
     //Defaults
-    const from: string = payload.from ?? ZERO_ADDRESS;
-    const defaultBlock = payload.defaultBlock ?? 'latest';
+    const address = payload.address;
+    let sync: Sync | false;
+    const callAction = call(payload);
 
-    let sync: ContractCallSync | false;
-    const defaultTransactionSync = defaultTransactionSyncForContract(payload.address);
-
-    if (defaultBlock === 'latest') {
-        if (payload.sync === false) {
-            sync = false;
-        } else if (payload.sync === true) {
-            sync = defaultTransactionSync;
-        } else if (!payload.sync) {
-            sync = defaultTransactionSync;
-        } else if (payload.sync === CALL_TRANSACTION_SYNC) {
-            sync = defaultTransactionSync;
-        } else if (payload.sync === CALL_BLOCK_SYNC) {
-            sync = defaultBlockSync;
-        } else {
-            sync = payload.sync as ContractCallSync;
-        }
-    } else {
+    if (payload.sync === false) {
         sync = false;
+    } else if (!payload.sync || payload.sync === true) {
+        //undefined, default as true
+        sync = defaultTransactionSync([callAction], address);
+    } else if (payload.sync === 'Transaction') {
+        sync = defaultTransactionSync([callAction], address);
+    } else if (payload.sync === 'Block') {
+        sync = defaultBlockSync([callAction]);
+    } else if (payload.sync === 'Event') {
+        sync = defaultEventSync([callAction]);
+    } else {
+        sync = payload.sync;
     }
 
-    return { payload: { ...payload, from, defaultBlock, sync } };
+    return { payload: { sync, callAction } };
 });
 
 export const callUnsync = createAction<CallActionInput>(CALL_UNSYNC);

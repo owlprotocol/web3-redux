@@ -10,7 +10,7 @@ import Multicall from '../../abis/Multicall.json';
 import { createStore } from '../../store';
 import { Block, Contract, Network, Transaction } from '../../index';
 import { TransactionReceipt } from 'web3-core';
-import { CALL_BLOCK_SYNC, CALL_TRANSACTION_SYNC, contractId } from '../model';
+import { contractId } from '../model';
 import { mineBlock, sleep, ganacheLogger } from '../../test/utils';
 import { validatedContractEvent } from '../../contractevent';
 
@@ -181,6 +181,7 @@ describe('contract.sagas', () => {
         });
     });
 
+    //TODO: Enable CallSynced Tests
     describe('callSynced', () => {
         it('({sync:false})', async () => {
             const tx2 = await web3Contract.methods.setValue(42);
@@ -212,7 +213,7 @@ describe('contract.sagas', () => {
                     networkId,
                     address,
                     method: 'blockNumber',
-                    sync: CALL_BLOCK_SYNC,
+                    sync: 'Block',
                 }),
             );
             await sleep(150);
@@ -237,7 +238,7 @@ describe('contract.sagas', () => {
                     networkId,
                     address,
                     method: 'getValue',
-                    sync: CALL_TRANSACTION_SYNC,
+                    sync: 'Transaction',
                 }),
             );
             await sleep(150);
@@ -275,7 +276,7 @@ describe('contract.sagas', () => {
                     networkId,
                     address,
                     method: 'getValue',
-                    sync: CALL_TRANSACTION_SYNC,
+                    sync: 'Transaction',
                 }),
             );
             await sleep(150);

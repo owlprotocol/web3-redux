@@ -11,7 +11,11 @@ function* transactionSync({ payload }: CreateAction) {
     const actions: Action[] = [];
     syncsFiltered.map((s) => {
         if (s?.filter(payload)) {
-            actions.push(...s.actions);
+            if (typeof s.actions === 'function') {
+                actions.push(...s.actions(payload));
+            } else {
+                actions.push(...s.actions);
+            }
         }
     });
 

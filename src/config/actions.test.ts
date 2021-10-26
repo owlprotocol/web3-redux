@@ -43,7 +43,18 @@ describe('config.actions', () => {
 
         it('selectNetworkId => 42', async () => {
             const selected = Config.selectNetworkId(store.getState());
-            assert.deepEqual(selected, networkId);
+            assert.equal(selected, networkId);
+            store.dispatch(Config.setNetworkId(undefined));
+            const selected2 = Config.selectNetworkId(store.getState());
+            assert.equal(selected2, undefined);
+        });
+
+        it('selectAccount', async () => {
+            const selected = Config.selectAccount(store.getState());
+            assert.equal(selected, account);
+            store.dispatch(Config.setAccount(undefined));
+            const selected2 = Config.selectAccount(store.getState());
+            assert.equal(selected2, undefined);
         });
 
         it('selectNetwork => 42', async () => {

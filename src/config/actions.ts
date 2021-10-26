@@ -5,11 +5,11 @@ const name = 'Config';
 export const SET_NETWORK_ID = `${name}/SET_NETWORK_ID`;
 export const SET_ACCOUNT = `${name}/SET_ACCOUNT`;
 
-export const setNetworkId = createAction<string>(SET_NETWORK_ID);
+export const setNetworkId = createAction<string | undefined>(SET_NETWORK_ID);
 export type SetNetworkIdAction = ReturnType<typeof setNetworkId>;
 export const isSetNetworkIdAction = setNetworkId.match;
 
-export const setAccount = createAction<string>(SET_ACCOUNT);
+export const setAccount = createAction<string | undefined>(SET_ACCOUNT);
 export type SetAccountAction = ReturnType<typeof setAccount>;
 export const isSetAccountAction = setAccount.match;
 

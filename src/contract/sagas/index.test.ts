@@ -70,7 +70,7 @@ describe('contract.sagas', () => {
     });
 
     describe('call', () => {
-        it('store.dispatch(ContractSagas.call())', async () => {
+        it('()', async () => {
             const ethCallInitial = ethCall;
             const rpcBatchInitial = rpcBatch;
 
@@ -103,7 +103,7 @@ describe('contract.sagas', () => {
             assert.equal(ethCall - ethCallInitial, 1, 'eth_call rpc calls != expected');
         });
 
-        it('store.dispatch(Contract.callBatched())', async () => {
+        it('callBatched()', async () => {
             const ethCallInitial = ethCall;
             const rpcBatchInitial = rpcBatch;
 
@@ -138,7 +138,7 @@ describe('contract.sagas', () => {
             assert.equal(ethCall - ethCallInitial, 2, 'eth_call rpc calls != expected');
         });
 
-        it('store.dispatch(Contract.callBatched(multicall:true))', async () => {
+        it('callBatched(multicall:true)', async () => {
             const ethCallInitial = ethCall;
             const rpcBatchInitial = rpcBatch;
 
@@ -181,7 +181,6 @@ describe('contract.sagas', () => {
         });
     });
 
-    //TODO: Enable CallSynced Tests
     describe('callSynced', () => {
         it('({sync:false})', async () => {
             const tx2 = await web3Contract.methods.setValue(42);

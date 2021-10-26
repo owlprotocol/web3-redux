@@ -5,13 +5,16 @@ import ganache from 'ganache-core';
 import { create as createNetwork } from '../../network/actions';
 import { createStore } from '../../store';
 import { selectByAddressSingle } from '../selector';
-import { fetchBalance, fetchNonce, create } from '../actions';
+import { fetchBalance, fetchNonce, fetchBalanceSynced, create } from '../actions';
+import { Block, Transaction } from '../../index';
+import { sleep } from '../../test/utils';
 
 const networkId = '1337';
 
 describe('account.sagas', () => {
     let web3: Web3; //Web3 loaded from store
     let address: string;
+    let to: string;
     let store: ReturnType<typeof createStore>;
 
     before(async () => {
@@ -29,6 +32,7 @@ describe('account.sagas', () => {
 
         const accounts = await web3.eth.getAccounts();
         address = accounts[0]!;
+        to = accounts[1]!;
     });
 
     beforeEach(async () => {
@@ -42,7 +46,7 @@ describe('account.sagas', () => {
 
         const expected = await web3.eth.getBalance(address);
         const account = selectByAddressSingle(store.getState(), networkId, address);
-        assert.deepEqual(account!.balance, expected, 'selectByAddress');
+        assert.equal(account!.balance, expected, 'initial balance');
     });
 
     it('fetchNonce()', async () => {
@@ -50,6 +54,85 @@ describe('account.sagas', () => {
 
         const expected = await web3.eth.getTransactionCount(address);
         const account = selectByAddressSingle(store.getState(), networkId, address);
-        assert.deepEqual(account!.nonce, expected, 'selectByAddress');
+        assert.equal(account!.nonce, expected, 'initial nonce');
+    });
+
+    describe('fethBalanceSynced', () => {
+        it('({sync:false})', async () => {
+            store.dispatch(fetchBalanceSynced({ networkId, address, sync: false }));
+            const expected1 = await web3.eth.getBalance(address);
+            const account1 = selectByAddressSingle(store.getState(), networkId, address);
+            assert.equal(account1!.balance, expected1, 'initial balance');
+
+            await web3.eth.sendTransaction({ from: address, to, value: '1' });
+            const expected2 = await web3.eth.getBalance(address);
+            assert.notEqual(expected1, expected2, 'balance not changed');
+
+            const account2 = selectByAddressSingle(store.getState(), networkId, address);
+            //No sync, balance stays unchanged
+            assert.equal(account2!.balance, expected1, 'previous balance');
+            assert.notEqual(account2!.balance, expected2, 'updated balance');
+        });
+
+        it('({sync:Block})', async () => {
+            //Block subscription used for updates
+            store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: false }));
+            store.dispatch(fetchBalanceSynced({ networkId, address, sync: 'Block' }));
+            const expected1 = await web3.eth.getBalance(address);
+            const account1 = selectByAddressSingle(store.getState(), networkId, address);
+            assert.equal(account1!.balance, expected1, 'initial balance');
+
+            await web3.eth.sendTransaction({ from: address, to, value: '1' });
+            const expected2 = await web3.eth.getBalance(address);
+            assert.notEqual(expected1, expected2, 'balance not changed');
+
+            const account2 = selectByAddressSingle(store.getState(), networkId, address);
+            //sync, balance updated
+            assert.notEqual(account2!.balance, expected1, 'previous balance');
+            assert.equal(account2!.balance, expected2, 'updated balance');
+        });
+
+        it('({sync:Transaction}) - Transaction.fetch', async () => {
+            store.dispatch(fetchBalanceSynced({ networkId, address, sync: 'Transaction' }));
+            const expected1 = await web3.eth.getBalance(address);
+            const account1 = selectByAddressSingle(store.getState(), networkId, address);
+            assert.equal(account1!.balance, expected1, 'initial balance');
+
+            const receipt = await web3.eth.sendTransaction({ from: address, to, value: '1' });
+            //Fetch transaction, triggering a refresh
+            store.dispatch(
+                Transaction.fetch({
+                    networkId,
+                    hash: receipt.transactionHash,
+                }),
+            );
+            await sleep(150);
+
+            const expected2 = await web3.eth.getBalance(address);
+            assert.notEqual(expected1, expected2, 'balance not changed');
+
+            const account2 = selectByAddressSingle(store.getState(), networkId, address);
+            //sync, balance updated
+            assert.notEqual(account2!.balance, expected1, 'previous balance');
+            assert.equal(account2!.balance, expected2, 'updated balance');
+        });
+
+        it('({sync:Transaction}) - Block.subscribe', async () => {
+            //Block subscription used for updates, must fetch transactions
+            store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: true }));
+            store.dispatch(fetchBalanceSynced({ networkId, address, sync: 'Transaction' }));
+            const expected1 = await web3.eth.getBalance(address);
+            const account1 = selectByAddressSingle(store.getState(), networkId, address);
+            assert.equal(account1!.balance, expected1, 'initial balance');
+
+            await web3.eth.sendTransaction({ from: address, to, value: '1' });
+            const expected2 = await web3.eth.getBalance(address);
+            assert.notEqual(expected1, expected2, 'balance not changed');
+
+            const account2 = selectByAddressSingle(store.getState(), networkId, address);
+            //sync, balance updated
+            assert.notEqual(account2!.balance, expected1, 'previous balance');
+            assert.equal(account2!.balance, expected2, 'updated balance');
+        });
     });
 });

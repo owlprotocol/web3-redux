@@ -1,10 +1,10 @@
 import Web3 from 'web3';
 import { assert } from 'chai';
-import { createStore } from '../store';
-import { Network, Contract, ContractEvent, EthCall } from '../index';
-import { addressList, assertDeepEqual } from '../test/utils';
-import BlockNumberAbi from '../abis/BlockNumber.json';
-import { BlockNumber, NewValue } from '../types/web3/BlockNumber';
+import { createStore } from '../../store';
+import { Network, Contract, ContractEvent, EthCall } from '../../index';
+import { addressList, assertDeepEqual } from '../../test/utils';
+import BlockNumberAbi from '../../abis/BlockNumber.json';
+import { BlockNumber, NewValue } from '../../types/web3/BlockNumber';
 
 const networkId = '1337';
 const web3 = new Web3('http://locahost:8545');

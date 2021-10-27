@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo, useDebugValue } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReturnValues } from '../../contractevent/model';
 import { BaseWeb3Contract } from '../model';
@@ -12,7 +12,8 @@ import {
 export interface UseEventsOptions {
     fromBlock?: number | string;
     toBlock?: number | string;
-    past?: boolean;
+    past?: boolean; //Send event get past action
+    sync?: boolean; //Send event subscribe action
     blockBatch?: number;
 }
 export function useEvents<
@@ -20,7 +21,7 @@ export function useEvents<
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
 >(networkId?: string, address?: string, eventName?: K, filter?: { [key: string]: any }, options?: UseEventsOptions) {
-    const { fromBlock, toBlock, blockBatch, past } = options ?? {};
+    const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
 
     const contract = useSelector((state) => selectContractByAddressSingle(state, networkId, address));
     const contractExists = !!contract;
@@ -32,60 +33,73 @@ export function useEvents<
     );
     const filterHash = filter ? JSON.stringify(filter) : '';
 
-    //Recompute functions if network/contract is created, otherwise function is void
-    const getPast = useCallback(() => {
+    const getPastAction = useMemo(() => {
         if (networkId && address && contractExists && past) {
-            dispatch(
-                eventGetPast({
-                    networkId,
-                    address,
-                    eventName: eventName as string,
-                    filter,
-                    fromBlock,
-                    toBlock,
-                    blockBatch,
-                }),
-            );
+            return eventGetPast({
+                networkId,
+                address,
+                eventName: eventName as string,
+                filter,
+                fromBlock,
+                toBlock,
+                blockBatch,
+            });
         }
-    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, dispatch, contractExists, past]);
+        return undefined;
+    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blockBatch, contractExists, past]);
 
-    const subscribe = useCallback(() => {
-        if (networkId && address && contractExists) {
-            dispatch(
-                eventSubscribe({
-                    networkId,
-                    address,
-                    eventName: eventName as string,
-                    filter,
-                    fromBlock,
-                }),
-            );
+    const subscribeAction = useMemo(() => {
+        if (networkId && address && contractExists && sync) {
+            return eventSubscribe({
+                networkId,
+                address,
+                eventName: eventName as string,
+                filter,
+                fromBlock,
+            });
         }
-    }, [networkId, address, eventName, filterHash, fromBlock, dispatch, contractExists]);
+        return undefined;
+    }, [networkId, address, eventGetPast, filterHash, fromBlock, contractExists, sync]);
 
-    const unsubscribe = useCallback(() => {
-        if (networkId && address && contractExists) {
-            dispatch(
-                eventUnsubscribe({
-                    networkId,
-                    address,
-                    eventName: eventName as string,
-                    filter,
-                }),
-            );
+    const unsubscribeAction = useMemo(() => {
+        if (networkId && address && contractExists && sync) {
+            return eventUnsubscribe({
+                networkId,
+                address,
+                eventName: eventName as string,
+                filter,
+            });
         }
-    }, [networkId, address, eventName, filterHash, dispatch, contractExists]);
+        return undefined;
+    }, [networkId, address, eventName, filterHash, contractExists, sync]);
+
+    useDebugValue({ events, getPastAction, subscribeAction, unsubscribeAction });
+
+    //Send getPast action
+    const getPast = useCallback(() => {
+        if (getPastAction) dispatch(getPastAction);
+    }, [getPastAction]);
 
     useEffect(() => {
         getPast();
-        subscribe();
+    }, [getPast]);
 
+    const subscribe = useCallback(() => {
+        if (subscribeAction) dispatch(subscribeAction);
+    }, [dispatch, subscribeAction]);
+
+    const unsubscribe = useCallback(() => {
+        if (unsubscribeAction) dispatch(unsubscribeAction);
+    }, [dispatch, unsubscribeAction]);
+
+    useEffect(() => {
+        subscribe();
         return () => {
             unsubscribe();
         };
-    }, [getPast, subscribe, unsubscribe]);
+    }, [subscribe, unsubscribe]);
 
-    return [events, { subscribe, unsubscribe }];
+    return [events, { getPast, subscribe, unsubscribe }];
 }
 
 export function contractEventsHookFactory<

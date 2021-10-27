@@ -5,7 +5,7 @@ export function reducer(sess: any, action: ReducerAction) {
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
     } else if (isRemoveAction(action)) {
-        Model.withId(action.payload).delete();
+        Model.withId(action.payload)?.delete();
     } else if (isUpdateAction(action)) {
         //@ts-ignore
         Model.update(action.payload);

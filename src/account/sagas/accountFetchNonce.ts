@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects';
 import networkExists from '../../network/sagas/networkExists';
-import { create, FetchNonceAction } from '../actions';
+import { update, FetchNonceAction } from '../actions';
 import { Account } from '../model';
 import accountExists from './accountExists';
 
@@ -13,7 +13,7 @@ export function* fetchNonce(action: FetchNonceAction) {
 
     const web3 = network.web3;
     const nonce: string = yield call(web3.eth.getTransactionCount, address);
-    yield put(create({ ...account, nonce }));
+    yield put(update({ ...account, nonce }));
 }
 
 export default fetchNonce;

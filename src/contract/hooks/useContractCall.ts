@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo } from 'react';
+import { useEffect, useCallback, useMemo, useDebugValue } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BaseWeb3Contract } from '../model';
 import { callSynced, callUnsync } from '../actions';
@@ -35,7 +35,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     );
 
     const callSyncedAction = useMemo(() => {
-        if (networkId && address && method) {
+        if (networkId && address && method && contractExists && sync) {
             return callSynced({
                 networkId,
                 address,
@@ -47,21 +47,23 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         }
 
         return undefined;
-    }, [networkId, address, method]);
+    }, [networkId, address, method, contractExists, sync]);
+    const syncId = callSyncedAction?.payload.sync?.id;
+    const callUnsyncAction = useMemo(() => {
+        if (syncId) return callUnsync(syncId);
+        return undefined;
+    }, [syncId]);
+
+    useDebugValue({ contractCall, contractExists, sync, callSyncedAction, callUnsyncAction });
 
     //Recompute subscribe function if network/contract is created, otherwise function is void
     const subscribe = useCallback(() => {
-        if (contractExists && callSyncedAction) {
-            dispatch(callSyncedAction);
-        }
-    }, [dispatch, contractExists, callSyncedAction]);
+        if (callSyncedAction) dispatch(callSyncedAction);
+    }, [dispatch, callSyncedAction]);
 
     const unsubscribe = useCallback(() => {
-        const syncId = callSyncedAction?.payload.sync?.id;
-        if (contractExists && callSyncedAction && syncId) {
-            dispatch(callUnsync(syncId));
-        }
-    }, [dispatch, contractExists, callSyncedAction]);
+        if (callUnsyncAction) dispatch(callUnsyncAction);
+    }, [dispatch, callUnsyncAction]);
 
     useEffect(() => {
         subscribe();

@@ -35,7 +35,7 @@ export function useEvents<
     const filterHash = filter ? JSON.stringify(filter) : '';
 
     const getPastAction = useMemo(() => {
-        if (networkId && address && contractExists && past) {
+        if (networkId && address && eventName && contractExists && past) {
             return eventGetPast({
                 networkId,
                 address,
@@ -50,7 +50,7 @@ export function useEvents<
     }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blockBatch, contractExists, past]);
 
     const subscribeAction = useMemo(() => {
-        if (networkId && address && contractExists && sync) {
+        if (networkId && address && eventName && contractExists && sync) {
             return eventSubscribe({
                 networkId,
                 address,
@@ -60,7 +60,7 @@ export function useEvents<
             });
         }
         return undefined;
-    }, [networkId, address, eventGetPast, filterHash, fromBlock, contractExists, sync]);
+    }, [networkId, address, eventName, filterHash, fromBlock, contractExists, sync]);
 
     const unsubscribeAction = useMemo(() => {
         if (networkId && address && contractExists && sync) {
@@ -74,12 +74,12 @@ export function useEvents<
         return undefined;
     }, [networkId, address, eventName, filterHash, contractExists, sync]);
 
-    useDebugValue({ events, getPastAction, subscribeAction, unsubscribeAction });
+    useDebugValue({ events, contractExists, past, sync, getPastAction, subscribeAction, unsubscribeAction });
 
     //Send getPast action
     const getPast = useCallback(() => {
         if (getPastAction) dispatch(getPastAction);
-    }, [getPastAction]);
+    }, [dispatch, getPastAction]);
 
     useEffect(() => {
         getPast();

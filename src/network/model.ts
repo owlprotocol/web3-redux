@@ -46,6 +46,9 @@ class Model extends ORMModel {
     static fields = {
         networkId: attr(),
         web3: attr(),
+        web3Sender: attr(),
+        multicallAddress: attr(),
+        gasLimit: attr(),
     };
 }
 

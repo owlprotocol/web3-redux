@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selector';
 import { selectByAddressSingle } from '../selector';
@@ -6,6 +6,7 @@ import { create, fetchBalanceSynced, fetchNonceSynced } from '../actions';
 import { FetchBalanceSyncedActionInput } from '../actions/fetchBalanceSynced';
 import { FetchNonceSyncedActionInput } from '../actions/fetchNonceSynced';
 import { remove as removeSync } from '../../sync/actions';
+import { selectByIdExists as selectSyncExists } from '../../sync/selector';
 
 export default function useAccount(
     networkId?: string,
@@ -22,28 +23,56 @@ export default function useAccount(
     const networkExists = !!network;
     const accountExists = !!account;
 
-    useEffect(() => {
+    const createAction = useMemo(() => {
         if (networkId && address && !accountExists) {
             dispatch(create({ networkId, address }));
         }
+        return undefined;
+    }, [networkId, address, accountExists]);
 
-        let fetchBalanceActionId: string | undefined;
-        let fetchNonceActionId: string | undefined;
-        if (networkId && address && networkExists && accountExists) {
-            //Default no sync
-            const fetchBalanceAction = fetchBalanceSynced({ networkId, address, sync: sync?.balance ?? false });
+    const fetchBalanceAction = useMemo(() => {
+        if (networkId && address && networkExists && accountExists && sync?.balance) {
+            return fetchBalanceSynced({ networkId, address, sync: sync.balance });
+        }
+        return undefined;
+    }, [networkId, address, accountExists, networkExists, sync?.balance]);
+    const fetchBalanceId = fetchBalanceAction?.payload.sync?.id;
+    const fetchBalanceExists = useSelector((state) => selectSyncExists(state, fetchBalanceId));
+
+    const fetchNonceAction = useMemo(() => {
+        if (networkId && address && networkExists && accountExists && sync?.nonce) {
+            return fetchNonceSynced({ networkId, address, sync: sync.nonce });
+        }
+        return undefined;
+    }, [networkId, address, accountExists, networkExists, sync?.nonce]);
+    const fetchNonceId = fetchNonceAction?.payload.sync?.id;
+    const fetchNonceExists = useSelector((state) => selectSyncExists(state, fetchNonceId));
+
+    useEffect(() => {
+        if (createAction) dispatch(createAction);
+    }, [dispatch, createAction]);
+
+    useEffect(() => {
+        //Exists is not a dependency to avoid infinite loop
+        if (fetchBalanceAction && !fetchBalanceExists) {
             dispatch(fetchBalanceAction);
-            const fetchNonceAction = fetchNonceSynced({ networkId, address, sync: sync?.nonce ?? false });
-            dispatch(fetchNonceAction);
-            fetchBalanceActionId = fetchBalanceAction.payload.sync?.id;
-            fetchNonceActionId = fetchNonceAction.payload.sync?.id;
         }
 
         return () => {
-            if (fetchBalanceActionId) dispatch(removeSync(fetchBalanceActionId));
-            if (fetchNonceActionId) dispatch(removeSync(fetchNonceActionId));
+            if (fetchBalanceId) dispatch(removeSync(fetchBalanceId));
         };
-    }, [networkId, address, dispatch, accountExists, networkExists]);
+    }, [dispatch, fetchBalanceAction, fetchBalanceId]);
+
+    useEffect(() => {
+        //Exists is not a dependency to avoid infinite loop
+        if (fetchNonceAction && !fetchNonceExists) {
+            dispatch(fetchNonceAction);
+        }
+
+        return () => {
+            if (fetchNonceId) dispatch(removeSync(fetchNonceId));
+        };
+    }, [dispatch, fetchNonceAction, fetchNonceId]);
 
     return account;
 }

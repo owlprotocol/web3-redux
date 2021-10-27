@@ -37,7 +37,7 @@ export const fetchNonceSynced = createAction(FETCH_NONCE_SYNCED, (payload: Fetch
         sync.actions = [fetchNonceAction];
     }
 
-    if (sync) sync.id = `${sync.type}-${accountId({ networkId, address })}`;
+    if (sync) sync.id = `${sync.type}-${accountId({ networkId, address })}-fetchNonce`;
 
     return { payload: { sync, fetchNonceAction } };
 });

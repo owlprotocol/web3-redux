@@ -1,7 +1,6 @@
 import { put, call } from 'redux-saga/effects';
 import networkExists from '../../network/sagas/networkExists';
-import { update, FetchBalanceAction } from '../actions';
-import { Account } from '../model';
+import { set, FetchBalanceAction } from '../actions';
 import accountExists from './accountExists';
 
 export function* fetchBalance(action: FetchBalanceAction) {
@@ -9,11 +8,11 @@ export function* fetchBalance(action: FetchBalanceAction) {
     const { networkId, address } = payload;
     //@ts-ignore
     const network: Network = yield call(networkExists, networkId);
-    const account: Account = yield call(accountExists, networkId, address);
+    yield call(accountExists, networkId, address);
 
     const web3 = network.web3;
     const balance: string = yield call(web3.eth.getBalance, address);
-    yield put(update({ ...account, balance }));
+    yield put(set({ networkId, address, key: 'balance', value: balance }));
 }
 
 export default fetchBalance;

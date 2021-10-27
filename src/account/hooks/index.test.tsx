@@ -45,31 +45,6 @@ describe('account.hooks', () => {
     });
 
     describe('useAccount', () => {
-        it('(networkId, address, sync: false)', async () => {
-            const { result } = renderHook(() => useAccount(networkId, address), {
-                wrapper,
-            });
-
-            const expected1 = await web3.eth.getBalance(address);
-
-            await sleep(1000);
-
-            const currentBalance1 = result.current?.balance;
-            assert.equal(currentBalance1, expected1, 'result.current');
-
-            await web3.eth.sendTransaction({ from: address, to: accounts[1], value: '1' });
-
-            const expected2 = await web3.eth.getBalance(address);
-            assert.notEqual(expected1, expected2, 'balance not changed');
-
-            await sleep(1000);
-
-            const currentBalance2 = result.current?.balance;
-            //No sync, balance stays unchanged
-            assert.equal(currentBalance2, expected1, 'previous balance');
-            assert.notEqual(currentBalance2, expected2, 'updated balance');
-        });
-
         it('(networkId, address, sync: true)', async () => {
             const { result } = renderHook(() => useAccount(networkId, address, { balance: true }), {
                 wrapper,
@@ -80,7 +55,9 @@ describe('account.hooks', () => {
             await sleep(1000);
 
             const currentBalance1 = result.current?.balance;
-            assert.equal(currentBalance1, expected1, 'result.current');
+            const currentNonce1 = result.current?.nonce;
+            assert.equal(currentBalance1, expected1, 'result.current.balance');
+            assert.equal(currentNonce1, undefined, 'result.current.nonce');
 
             const receipt = await web3.eth.sendTransaction({ from: address, to: accounts[1], value: '1' });
             //Fetch transaction, triggering a refresh
@@ -97,9 +74,12 @@ describe('account.hooks', () => {
             await sleep(1000);
 
             const currentBalance2 = result.current?.balance;
+            const currentNonce2 = result.current?.nonce;
+            //console.debug(result.all);
             //sync, balance updated
             assert.notEqual(currentBalance2, expected1, 'previous balance');
             assert.equal(currentBalance2, expected2, 'updated balance');
+            assert.equal(currentNonce2, undefined, 'result2.current.nonce');
         });
     });
 });

@@ -37,7 +37,7 @@ export const fetchBalanceSynced = createAction(FETCH_BALANCE_SYNCED, (payload: F
         sync.actions = [fetchBalanceAction];
     }
 
-    if (sync) sync.id = `${sync.type}-${accountId({ networkId, address })}`;
+    if (sync) sync.id = `${sync.type}-${accountId({ networkId, address })}-fetchBalance`;
 
     return { payload: { sync, fetchBalanceAction } };
 });

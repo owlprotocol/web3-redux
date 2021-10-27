@@ -6,7 +6,7 @@ const select = createSelector(orm.Sync);
 export function selectByIdSingle(state: any, id?: string): Sync | undefined {
     if (!id) return undefined;
     //@ts-ignore
-    return select(state, id) as Contract<T> | undefined;
+    return select(state, id) as Sync | undefined;
 }
 export function selectByIdMany(state: any, ids?: string[]): (Sync | null)[] {
     return select(state, ids);
@@ -17,4 +17,8 @@ export function selectById(state: any, id?: string | string[]) {
     } else {
         return selectByIdSingle(state, id);
     }
+}
+
+export function selectByIdExists(state: any, id?: string): boolean {
+    return !!selectByIdSingle(state, id);
 }

@@ -7,7 +7,7 @@ export function reducer(sess: any, action: ReducerAction) {
     } else if (isRemoveAction(action)) {
         Model.withId(action.payload)?.delete();
     } else if (isUpdateAction(action)) {
-        //@ts-ignore
+        //@ts-expect-error
         Model.update(action.payload);
     }
 

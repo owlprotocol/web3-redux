@@ -21,7 +21,13 @@ export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
->(networkId?: string, address?: string, eventName?: K, filter?: { [key: string]: any }, options?: UseEventsOptions) {
+>(
+    networkId: string | undefined,
+    address: string | undefined,
+    eventName: K | undefined,
+    filter?: { [key: string]: any },
+    options?: UseEventsOptions,
+) {
     const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
 
     const contract = useSelector((state) => selectContractByAddressSingle(state, networkId, address));
@@ -108,7 +114,12 @@ export function contractEventsHookFactory<
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
 >(eventName: K) {
-    return (networkId?: string, address?: string, filter?: { [key: string]: any }, options?: UseEventsOptions) => {
+    return (
+        networkId: string | undefined,
+        address: string | undefined,
+        filter?: { [key: string]: any },
+        options?: UseEventsOptions,
+    ) => {
         return useEvents<T, K, U>(networkId, address, eventName, filter, options);
     };
 }

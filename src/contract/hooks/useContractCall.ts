@@ -10,7 +10,7 @@ import { Sync } from '../../sync/model';
 export interface UseContractCallOptions {
     from?: string;
     gas?: string;
-    sync?: Sync | Sync['type'] | boolean;
+    sync?: Sync | Sync['type'] | true | 'once';
 }
 
 export interface HookHandlers {
@@ -18,9 +18,9 @@ export interface HookHandlers {
     unsubscribe: () => void;
 }
 export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
-    networkId?: string,
-    address?: string,
-    method?: K,
+    networkId: string | undefined,
+    address: string | undefined,
+    method: K | undefined,
     args?: Parameters<T['methods'][K]>,
     options?: UseContractCallOptions,
 ): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, HookHandlers] {
@@ -48,7 +48,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
 
         return undefined;
     }, [networkId, address, method, contractExists, sync]);
-    const syncId = callSyncedAction?.payload.sync?.id;
+    const syncId = callSyncedAction?.payload.sync != 'once' ? callSyncedAction?.payload.sync?.id : undefined;
     const callUnsyncAction = useMemo(() => {
         if (syncId) return callUnsync(syncId);
         return undefined;
@@ -81,8 +81,8 @@ export function contractCallHookFactory<
     K extends keyof T['methods'] = string,
 >(method: K) {
     return (
-        networkId?: string,
-        address?: string,
+        networkId: string | undefined,
+        address: string | undefined,
         args?: Parameters<T['methods'][K]>,
         options?: UseContractCallOptions,
     ) => {

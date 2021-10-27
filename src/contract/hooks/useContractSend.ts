@@ -6,9 +6,9 @@ import { selectByAddressSingle as selectContractByAddressSingle } from '../selec
 
 //Contract Send
 export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
-    networkId?: string,
-    address?: string,
-    method?: K,
+    networkId: string | undefined,
+    address: string | undefined,
+    method: K | undefined,
 ) {
     const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
     const contractExists = !!contract;
@@ -40,7 +40,7 @@ export function contractSendHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
 >(method: K) {
-    return (networkId?: string, address?: string) => {
+    return (networkId: string | undefined, address: string | undefined) => {
         return useContractSend<T, K>(networkId, address, method);
     };
 }

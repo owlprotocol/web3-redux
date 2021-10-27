@@ -182,28 +182,6 @@ describe('contract.sagas', () => {
     });
 
     describe('callSynced', () => {
-        it('({sync:false})', async () => {
-            const tx2 = await web3Contract.methods.setValue(42);
-            const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
-
-            store.dispatch(
-                Contract.callSynced({
-                    networkId,
-                    address,
-                    method: 'getValue',
-                    sync: false,
-                }),
-            );
-            await sleep(150);
-
-            //Selector
-            const value = Contract.selectContractCallById(store.getState(), id, 'getValue');
-
-            assert.equal(value, 42, 'getValue');
-            assert.strictEqual(value, '42', 'getValue');
-        });
-
         it('({sync:Block})', async () => {
             //Block subscription used for updates
             store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: false }));
@@ -215,7 +193,7 @@ describe('contract.sagas', () => {
             });
             store.dispatch(callSyncedAction);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync!;
+            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
@@ -242,7 +220,7 @@ describe('contract.sagas', () => {
             });
             store.dispatch(callSyncedAction);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync!;
+            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
@@ -282,7 +260,7 @@ describe('contract.sagas', () => {
             });
             store.dispatch(callSyncedAction);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync!;
+            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 

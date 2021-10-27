@@ -1,9 +1,9 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { BlockTransaction } from '../model';
-import { create, FetchAction, isFetchAction } from '../actions';
+import { create, update, FetchAction, isFetchAction } from '../actions';
 import networkExists from '../../network/sagas/networkExists';
 
-export function* fetch(action: FetchAction, update = false) {
+export function* fetch(action: FetchAction, updateBlock = false) {
     const { payload } = action;
     const { networkId } = payload;
     //@ts-ignore
@@ -15,7 +15,11 @@ export function* fetch(action: FetchAction, update = false) {
         payload.blockHashOrBlockNumber,
         payload.returnTransactionObjects ?? true,
     );
-    if (!update) yield put(create({ ...block, networkId }));
+    if (!updateBlock) {
+        yield put(create({ ...block, networkId }));
+    } else {
+        yield put(update({ ...block, networkId }));
+    }
 }
 
 function* fetchLoop() {

@@ -16,6 +16,12 @@ export function reducer(sess: any, action: ReducerAction) {
     } else if (isRemoveAction(action)) {
         Block.withId(action.payload).delete();
     } else if (isUpdateAction(action)) {
+        const { payload } = action;
+        //transactions created in saga middleware
+        //@ts-expect-error
+        const insertData = { ...payload, transactions: undefined };
+        //@ts-ignore
+        delete insertData.transactions;
         //@ts-expect-error
         Block.update(action.payload);
     }

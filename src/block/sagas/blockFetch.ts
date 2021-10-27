@@ -3,7 +3,7 @@ import { BlockTransaction } from '../model';
 import { create, FetchAction, isFetchAction } from '../actions';
 import networkExists from '../../network/sagas/networkExists';
 
-export function* fetch(action: FetchAction) {
+export function* fetch(action: FetchAction, update = false) {
     const { payload } = action;
     const { networkId } = payload;
     //@ts-ignore
@@ -15,7 +15,7 @@ export function* fetch(action: FetchAction) {
         payload.blockHashOrBlockNumber,
         payload.returnTransactionObjects ?? true,
     );
-    yield put(create({ ...block, networkId }));
+    if (!update) yield put(create({ ...block, networkId }));
 }
 
 function* fetchLoop() {

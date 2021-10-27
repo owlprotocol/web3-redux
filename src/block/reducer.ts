@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant';
 
-import { ReducerAction, isCreateAction, isRemoveAction } from './actions';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction } from './actions';
 
 export function reducer(sess: any, action: ReducerAction) {
     const { Block } = sess;
@@ -15,6 +15,10 @@ export function reducer(sess: any, action: ReducerAction) {
         Block.upsert(insertData);
     } else if (isRemoveAction(action)) {
         Block.withId(action.payload).delete();
+    } else if (isUpdateAction(action)) {
+        //@ts-expect-error
+        Block.update(action.payload);
     }
+
     return sess;
 }

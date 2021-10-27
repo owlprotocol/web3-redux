@@ -1,4 +1,4 @@
-import { SubscribeActionInput } from '../block/actions';
+import { SubscribeActionInput } from '../block/actions/subscribe';
 import { NetworkPartial } from '../network/model';
 
 const name = 'WEB3_REDUX';

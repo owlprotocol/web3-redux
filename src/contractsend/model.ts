@@ -31,6 +31,10 @@ export interface ContractSend extends NetworkId {
     transactionId?: string;
     status: ContractSendStatus;
     error?: any;
+    confirmations?: number;
+    receipt?: any;
+    blockNumber?: number;
+    blockHash?: string;
 }
 
 class Model extends ORMModel {

@@ -7,7 +7,7 @@ export function reducer(sess: any, action: Action) {
         const { payload } = action;
         if (payload.multicallContract) {
             payload.multicallAddress = payload.multicallContract.options.address;
-        } else if (payload.multicallAddress) {
+        } else if (payload.multicallAddress && payload.web3) {
             payload.multicallContract = new payload.web3.eth.Contract(Multicall.abi as any, payload.multicallAddress);
         }
 

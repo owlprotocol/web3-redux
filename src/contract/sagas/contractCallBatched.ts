@@ -6,6 +6,7 @@ import { Contract, callArgsHash, contractId } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
 import { selectByIdMany } from '../selector';
 import networkExists from '../../network/sagas/networkExists';
+import { Network } from '../../network/model';
 
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
 
@@ -13,8 +14,8 @@ function* contractCallBatched(action: CallBatchedAction) {
     try {
         const { payload } = action;
         const { requests, networkId } = payload;
-        //@ts-ignore
-        const network = yield call(networkExists, networkId);
+        const network: Network = yield call(networkExists, networkId);
+        if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
 
         const web3 = network.web3;
         const multicallContract = network.multicallContract;

@@ -14,6 +14,7 @@ import {
 } from '../actions';
 import { fetch as blockFetch } from './blockFetch';
 import networkExists from '../../network/sagas/networkExists';
+import { Network } from '../../network/model';
 
 const SUBSCRIBE_CONNECTED = `${SUBSCRIBE}/CONNECTED`;
 const SUBSCRIBE_DATA = `${SUBSCRIBE}/DATA`;
@@ -54,8 +55,8 @@ function* subscribe(action: SubscribeAction) {
     const { payload } = action;
     const { networkId } = payload;
 
-    //@ts-ignore
     const network: Network = yield call(networkExists, networkId);
+    if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
     const web3 = network.web3;
 
     while (true) {

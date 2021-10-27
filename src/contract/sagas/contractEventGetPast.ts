@@ -5,6 +5,7 @@ import { Contract } from '../model';
 import { EventGetPastAction, EVENT_GET_PAST } from '../actions';
 import contractExists from './contractExists';
 import networkExists from '../../network/sagas/networkExists';
+import { Network } from '../../network/model';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
 
@@ -30,9 +31,8 @@ function* eventGetPast(action: EventGetPastAction) {
         const { payload } = action;
         const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch } = payload;
 
-        //@ts-ignore
         const network: Network = yield call(networkExists, networkId);
-        //@ts-ignore
+        if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
         const contract: Contract = yield call(contractExists, networkId, address);
 
         //Ranged queries

@@ -21,16 +21,7 @@ export interface NetworkId {
  */
 export interface Network {
     networkId: string;
-    web3: Web3;
-    web3Sender?: Web3;
-    multicallAddress?: string;
-    multicallContract?: Web3Contract;
-    gasLimit: number;
-}
-
-export interface NetworkPartial {
-    networkId: string;
-    web3: Web3;
+    web3?: Web3;
     web3Sender?: Web3;
     multicallAddress?: string;
     multicallContract?: Web3Contract;
@@ -49,6 +40,7 @@ class Model extends ORMModel {
         web3: attr(),
         web3Sender: attr(),
         multicallAddress: attr(),
+        multicallContract: attr(),
         gasLimit: attr(),
     };
 }

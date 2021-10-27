@@ -43,14 +43,14 @@ export const selectEvents: selectSingleEvents | selectManyEvents = createSelecto
 export const selectSingleEvents = selectEvents as selectSingleEvents;
 export const selectManyEvents = selectEvents as selectManyEvents;
 
-type selectLatestBlock = (state: any, id: string) => Block | null;
+type selectLatestBlock = (state: any, id?: string) => Block | null;
 export const selectLatestBlock: selectLatestBlock = (state, id) => {
     const blocks = selectSingleBlocks(state, id);
     if (!blocks || blocks.length == 0) return null;
     return weakMax(blocks, 'number');
 };
 
-type selectLatestBlockNumber = (state: any, id: string) => number | null;
+type selectLatestBlockNumber = (state: any, id?: string) => number | null;
 export const selectLatestBlockNumber: selectLatestBlockNumber = (state, id) => {
     const block = selectLatestBlock(state, id);
     if (!block) return null;

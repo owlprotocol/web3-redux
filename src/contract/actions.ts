@@ -82,11 +82,11 @@ export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionIn
         sync = undefined;
     } else if (!payload.sync || payload.sync === true) {
         //undefined, default as true
-        sync = defaultTransactionSync([callAction], networkId, address);
+        sync = defaultTransactionSync(networkId, address, [callAction]);
     } else if (payload.sync === 'Transaction') {
-        sync = defaultTransactionSync([callAction], networkId, address);
+        sync = defaultTransactionSync(networkId, address, [callAction]);
     } else if (payload.sync === 'Block') {
-        sync = defaultBlockSync([callAction], networkId);
+        sync = defaultBlockSync(networkId, [callAction]);
     } else if (payload.sync === 'Event') {
         sync = defaultEventSync([callAction]);
     } else {
@@ -98,7 +98,21 @@ export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionIn
     return { payload: { sync, callAction } };
 });
 
-export const callUnsync = createAction<CallActionInput>(CALL_UNSYNC);
+export interface CallUnsyncActionInput extends CallActionInput {
+    defaultBlock?: 'latest';
+    sync?: Sync['type'];
+}
+export const callUnsync = createAction(CALL_UNSYNC, (payload: string | CallUnsyncActionInput) => {
+    if (typeof payload === 'string') return { payload };
+
+    //Defaults
+    const { networkId, address, method, args, defaultBlock, from, sync } = payload;
+    const callArgs = { args, defaultBlock, from };
+    const id = `${sync}-${callHash(networkId, address, method, callArgs)}`;
+
+    return { payload: id };
+});
+
 export interface SendActionInput {
     networkId: string;
     address: string;
@@ -194,7 +208,7 @@ export const isEventUnsubscribeAction = eventUnsubscribe.match;
 
 export type ReducerAction = CreateAction | RemoveAction | CallUnsyncAction;
 export function isReducerAction(action: { type: string }): action is ReducerAction {
-    return isCreateAction(action) || isRemoveAction(action) || isCallUnsyncAction(action);
+    return isCreateAction(action) || isRemoveAction(action);
 }
 
 export type SagaAction =

@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects';
 import { validatedEthCall } from '../../ethcall/model';
-import { create as createEthCall } from '../../ethcall/actions';
+import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions';
 import { create, CallAction, CALL } from '../actions';
 import contractExists from './contractExists';
 import networkExists from '../../network/sagas/networkExists';
@@ -50,7 +50,7 @@ function* contractCall(action: CallAction) {
         const gas = ethCall.gas ?? (yield call(tx.estimateGas, { ...ethCall })); //default gas
         //@ts-ignore
         const returnValue = yield call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
-        yield put(createEthCall({ ...ethCall, returnValue }));
+        yield put(updateEthCall({ ...ethCall, returnValue }));
     } catch (error) {
         console.error(error);
         yield put({

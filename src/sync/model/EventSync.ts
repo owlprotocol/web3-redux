@@ -1,11 +1,8 @@
-import { Action } from 'redux';
 import { ContractEvent as Event } from '../../contractevent/model';
 import BaseSync from './BaseSync';
 
-export default interface EventSync extends BaseSync {
+export default interface EventSync<T extends any = { [key: string]: string }> extends BaseSync<Event, T> {
     type: 'Event';
-    filter: (x: Event) => boolean;
-    actions: Action[] | ((x: Event) => Action[]);
 }
 
 export function defaultEventSync(actions: EventSync['actions']) {

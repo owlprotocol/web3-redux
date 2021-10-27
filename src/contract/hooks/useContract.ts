@@ -15,12 +15,14 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 
     const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
     const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
+    const networkExists = !!network;
+    const contractExists = !!contract;
 
     useEffect(() => {
-        if (networkId && address && abi && network && !contract) {
+        if (networkId && address && abi && networkExists && !contractExists) {
             dispatch(create({ networkId, address, abi }));
         }
-    }, [networkId, address, dispatch, network, contract]);
+    }, [networkId, address, dispatch, networkExists, contractExists]);
 
     return contract;
 }

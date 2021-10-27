@@ -13,8 +13,8 @@ import { NetworkId } from '../network/model';
 export interface Account extends NetworkId {
     id?: string;
     address: string;
-    balance?: any;
-    nonce?: any;
+    balance?: string;
+    nonce?: number;
 }
 
 class Model extends ORMModel {

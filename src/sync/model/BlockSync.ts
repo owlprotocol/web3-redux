@@ -1,29 +1,34 @@
-import { Action } from 'redux';
 import { Block, isBlockTransactionObject, isBlockTransactionString } from '../../block/model';
 import { create as createTransaction } from '../../transaction/actions';
 import { transactionId } from '../../transaction/model';
 import BaseSync from './BaseSync';
 
-export default interface BlockSync extends BaseSync {
+export default interface BlockSync<T extends any = { [key: string]: string }> extends BaseSync<Block, T> {
     type: 'Block';
-    filter: (x: Block) => boolean;
-    actions: Action[] | ((x: Block) => Action[]);
 }
 
-export function defaultBlockSync(actions: BlockSync['actions'], networkId: string) {
+//Triggers once per block
+export function defaultBlockSync(networkId: string, actions?: BlockSync['actions']) {
     return {
         type: 'Block',
-        filter: (block) => block.networkId === networkId,
+        filter: (block, cache) => (!cache || !cache[block.id!]) && block.networkId === networkId,
+        updateCache: (block, cache) => {
+            return { ...cache, [block.id!]: true };
+        },
         actions,
     } as BlockSync;
 }
 
-export function moduloBlockSync(actions: BlockSync['actions'], networkId: string, period: number) {
+export function moduloBlockSync(networkId: string, period: number, actions?: BlockSync['actions']) {
     return {
         type: 'Block',
-        filter: (block) => block.networkId === networkId && block.number % period == 0,
+        filter: (block, cache) =>
+            (!cache || !cache[block.id!]) && block.networkId === networkId && block.number % period == 0,
+        updateCache: (block, cache) => {
+            return { ...cache, [block.id!]: true };
+        },
         actions,
-    } as BlockSync;
+    } as BlockSync<{ [key: string]: string }>;
 }
 
 export const blockTransactionsSync: BlockSync = {

@@ -8,9 +8,11 @@ import { Action } from 'redux';
  * @param filter - Filter function that serves as trigger.
  * @param actions - Actions to dispatch when triggered.
  */
-export default interface BaseSync {
+export default interface BaseSync<R extends any = any, T extends any = { [key: string]: string }> {
     id?: string;
     type: string;
-    filter: (x: any) => boolean;
-    actions: Action[] | ((x: any) => Action[]);
+    filter: (x: R, cache?: T | undefined) => boolean;
+    updateCache?: (x: R, cache: T | undefined) => T;
+    actions?: Action[] | ((x: R) => Action[]);
+    cache?: T;
 }

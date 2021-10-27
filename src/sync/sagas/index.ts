@@ -1,5 +1,5 @@
 import { all, takeEvery } from 'redux-saga/effects';
-import { CREATE as CREATE_BLOCK } from '../../block/actions';
+import { CREATE as CREATE_BLOCK, UPDATE as UPDATE_BLOCK } from '../../block/actions';
 import { CREATE as CREATE_TRANSACTION } from '../../transaction/actions';
 import { CREATE as CREATE_EVENT } from '../../contractevent/actions';
 
@@ -12,6 +12,7 @@ import transactionSync from './transactionSync';
 export function* saga() {
     yield all([
         takeEvery(CREATE_BLOCK, blockSync),
+        takeEvery(UPDATE_BLOCK, blockSync),
         takeEvery(CREATE_TRANSACTION, transactionSync),
         takeEvery(CREATE_EVENT, eventSync),
     ]);

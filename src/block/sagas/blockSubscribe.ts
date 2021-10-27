@@ -76,6 +76,7 @@ function* subscribe(action: SubscribeAction) {
                                 blockHashOrBlockNumber: newBlock.number,
                                 returnTransactionObjects: true,
                             }),
+                            true, //Use update
                         );
                     }
                 } else if (type === SUBSCRIBE_CHANGED) {
@@ -89,6 +90,7 @@ function* subscribe(action: SubscribeAction) {
                                 blockHashOrBlockNumber: newBlock.number,
                                 returnTransactionObjects: true,
                             }),
+                            true, //Use update
                         );
                     }
                 } else if (type === SUBSCRIBE_ERROR) {

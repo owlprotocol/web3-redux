@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { createStore } from '../store';
-import { Network, Block, Transaction } from '../index';
-import { validatedBlock } from './model';
+import { createStore } from '../../store';
+import { Network, Block, Transaction } from '../../index';
+import { validatedBlock } from '../model';
 
 const networkId = '1337';
 const web3 = new Web3('http://locahost:8545');

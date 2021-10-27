@@ -7,16 +7,14 @@ export interface EventGetPastActionInput {
     address: string;
     eventName: string;
     filter?: { [key: string]: any };
-    fromBlock?: number | string;
-    toBlock?: number | string;
+    fromBlock?: number | 'earliest';
+    toBlock?: number | 'latest';
     blockBatch?: number;
 }
 export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput) => {
     let fromBlock: number;
     if (!payload.fromBlock || payload.fromBlock == 'earliest') {
         fromBlock = 0;
-    } else if (typeof payload.fromBlock === 'string') {
-        fromBlock = parseInt(payload.fromBlock);
     } else {
         fromBlock = payload.fromBlock;
     }
@@ -24,8 +22,6 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
     let toBlock: number | string;
     if (!payload.toBlock || payload.toBlock === 'latest') {
         toBlock = 'latest';
-    } else if (typeof payload.toBlock === 'string') {
-        toBlock = parseInt(payload.toBlock);
     } else {
         toBlock = payload.toBlock;
     }

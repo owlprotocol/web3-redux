@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReturnValues } from '../../contractevent/model';
 import { BaseWeb3Contract } from '../model';
 import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions';
+import { EventGetPastActionInput } from '../actions/eventGetPast';
 import {
     selectByAddressSingle as selectContractByAddressSingle,
     selectContractEventsByAddressFiltered,
@@ -10,8 +11,8 @@ import {
 
 //Contract Events
 export interface UseEventsOptions {
-    fromBlock?: number | string;
-    toBlock?: number | string;
+    fromBlock?: EventGetPastActionInput['fromBlock'];
+    toBlock?: EventGetPastActionInput['toBlock'];
     past?: boolean; //Send event get past action
     sync?: boolean; //Send event subscribe action
     blockBatch?: number;

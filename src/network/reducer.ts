@@ -5,8 +5,6 @@ export function reducer(sess: any, action: Action) {
     const Model = sess.Network;
     if (isCreateAction(action)) {
         const { payload } = action;
-        if (!payload.web3Sender) payload.web3Sender = payload.web3;
-
         if (payload.multicallContract) {
             payload.multicallAddress = payload.multicallContract.options.address;
         } else if (payload.multicallAddress) {

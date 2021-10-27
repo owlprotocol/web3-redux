@@ -22,7 +22,7 @@ export interface NetworkId {
 export interface Network {
     networkId: string;
     web3: Web3;
-    web3Sender: Web3;
+    web3Sender?: Web3;
     multicallAddress?: string;
     multicallContract?: Web3Contract;
     gasLimit: number;

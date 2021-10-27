@@ -16,7 +16,7 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const dispatch = useDispatch();
 
     const sendCallback = useCallback(
-        ({ args, value, from }: { args: Parameters<T['methods'][K]>; value: string; from: string }) => {
+        ({ args, value, from }: { args: Parameters<T['methods'][K]>; value?: string; from: string }) => {
             if (networkId && address && method && contractExists) {
                 dispatch(
                     send({

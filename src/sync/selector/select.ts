@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-orm';
-import { orm } from '../orm';
+import { orm } from '../../orm';
 
 const select = createSelector(orm.Sync);
 

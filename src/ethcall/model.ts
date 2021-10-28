@@ -1,7 +1,6 @@
 import { Model as ORMModel } from 'redux-orm';
 import { toChecksumAddress } from 'web3-utils';
 import { getId } from '../contract/model';
-import { NetworkId } from '../network/model';
 
 /**
  * EthCall object. Used to index web3.eth.call().
@@ -9,8 +8,9 @@ import { NetworkId } from '../network/model';
  *
  * @param id - Call id. Computed as `${networkId}-${from}-${to}-${data}-${gas}`.
  */
-export interface EthCall extends NetworkId {
+export interface EthCall {
     id?: string;
+    networkId: string;
     to: string;
     data: string;
     defaultBlock?: number | 'latest';

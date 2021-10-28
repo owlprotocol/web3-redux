@@ -1,5 +1,4 @@
 import { attr, fk, Model as ORMModel } from 'redux-orm';
-import { NetworkId } from '../network/model';
 import { Transaction, validatedTransaction } from '../transaction/model';
 import { isStrings } from '../utils';
 
@@ -24,9 +23,10 @@ import { isStrings } from '../utils';
  * @param gasUsed- Number: The total used gas by all transactions in this block.
  * @param timestamp - Number: The unix timestamp for when the block was collated.
  */
-export interface BlockHeader extends NetworkId {
+export interface BlockHeader {
     /** Block id. Used to index blocks in redux-orm. Computed as `${networkId}-${number}`. */
     id?: string;
+    networkId: string;
     number: number;
     hash?: string;
     parentHash?: string;
@@ -86,7 +86,8 @@ export type BlockTransaction = BlockTransactionString | BlockTransactionObject;
  * @param networkId - A network id.
  * @param number - Number: The block number. null if a pending block.
  */
-export interface BlockId extends NetworkId {
+export interface BlockId {
+    networkId: string;
     number: number;
 }
 export type Block = BlockHeader | BlockTransaction;

@@ -1,7 +1,6 @@
 import { attr, fk, Model as ORMModel } from 'redux-orm';
 import { toChecksumAddress } from 'web3-utils';
 import { getId } from '../contract';
-import { NetworkId } from '../network/model';
 import { transactionId } from '../transaction/model';
 import { ZERO_ADDRESS } from '../utils';
 
@@ -22,8 +21,9 @@ export enum ContractSendStatus {
  * @param transactionHash - Transaction hash once confirmed.
  * @param transactionId -Transaction id once confirmed.
  */
-export interface ContractSend extends NetworkId {
+export interface ContractSend {
     id?: string;
+    networkId: string;
     address: string;
     methodName: string;
     args?: any[];

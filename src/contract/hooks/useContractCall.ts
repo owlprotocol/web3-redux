@@ -24,7 +24,8 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     args?: Parameters<T['methods'][K]>,
     options?: UseContractCallOptions,
 ): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, HookHandlers] {
-    const { from, sync } = options ?? {};
+    const sync = options?.sync;
+    const from = options?.from;
 
     const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
     const contractExists = !!contract;

@@ -3,9 +3,9 @@ import { BaseWeb3Contract, CallArgsHash, callArgsHash, Contract, getId } from '.
 import { orm } from '../orm';
 import { EthCall } from '../ethcall/model';
 import { ContractEvent, ReturnValues } from '../contractevent/model';
-import Web3 from 'web3';
 import { Await } from '../types/promise';
 import { memoizedLodashFilter } from '../memo';
+import { isAddress } from 'web3-utils';
 
 const select = createSelector(orm.Contract);
 export function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(
@@ -36,7 +36,7 @@ export function selectByAddressSingle<T extends BaseWeb3Contract = BaseWeb3Contr
     address: string | undefined,
 ): Contract<T> | undefined {
     if (!networkId || !address) return undefined;
-    if (!Web3.utils.isAddress(address)) return undefined;
+    if (!isAddress(address)) return undefined;
 
     const id = getId({ address, networkId });
     return selectByIdSingle(state, id);
@@ -51,7 +51,7 @@ export function selectByAddressMany<T extends BaseWeb3Contract = BaseWeb3Contrac
     if (!networkId || !address) return EMPTY_CONTRACTS;
 
     //empty string will return null in selectMany()
-    const id: string[] = address.map((address) => (Web3.utils.isAddress(address) ? getId({ address, networkId }) : ''));
+    const id: string[] = address.map((address) => (isAddress(address) ? getId({ address, networkId }) : ''));
     return selectByIdMany(state, id);
 }
 
@@ -124,7 +124,7 @@ export function selectContractCallByAddress<
     callArgs?: CallArgsHash<Parameters<T['methods'][K]>>,
 ): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
     if (!networkId || !address || !methodName) return undefined;
-    if (!Web3.utils.isAddress(address)) return undefined;
+    if (!isAddress(address)) return undefined;
 
     const id = getId({ address, networkId });
     return selectContractCallById<T, K>(state, id, methodName, callArgs);
@@ -199,7 +199,7 @@ export function selectContractEventsByAddressFiltered<
     returnValuesFilter?: { [key: string]: any },
 ): ContractEvent<U>[] | undefined {
     if (!networkId || !address || !eventName) return undefined;
-    if (!Web3.utils.isAddress(address)) return undefined;
+    if (!isAddress(address)) return undefined;
 
     const id = getId({ address, networkId });
     return selectContractEventsByIdFiltered(state, id, eventName, returnValuesFilter);

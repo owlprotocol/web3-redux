@@ -7,7 +7,6 @@ export interface EventSubscribeActionInput {
     address: string;
     eventName: string;
     filter?: { [key: string]: any };
-    fromBlock?: number | string;
 }
 export const eventSubscribe = createAction<EventSubscribeActionInput>(EVENT_SUBSCRIBE);
 

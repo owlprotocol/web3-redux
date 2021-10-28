@@ -56,8 +56,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
 
         const web3Contract = contract.web3Contract!;
         const filter = payload.filter ?? {};
-        const fromBlock = payload.fromBlock ?? 'latest';
-        const subscription = web3Contract.events[eventName]({ fromBlock, filter });
+        const subscription = web3Contract.events[eventName]({ filter });
         const channel: TakeableChannel<EventSubscribeChannelMessage> = yield call(eventSubscribeChannel, subscription);
 
         while (true) {

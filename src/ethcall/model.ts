@@ -28,7 +28,7 @@ export function validatedEthCall(ethCall: EthCall): EthCall {
     let id = '';
     const contractHash = getId({ networkId, address: toCheckSum });
     id = `${contractHash}`;
-    id = `${id}.(${data})`;
+    id = `${id}(${data})`;
 
     const options: any = {};
     if (fromCheckSum) options.from = fromCheckSum;

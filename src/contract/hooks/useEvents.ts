@@ -62,11 +62,10 @@ export function useEvents<
                 address,
                 eventName: eventName as string,
                 filter,
-                fromBlock,
             });
         }
         return undefined;
-    }, [networkId, address, eventName, filterHash, fromBlock, contractExists, sync]);
+    }, [networkId, address, eventName, filterHash, contractExists, sync]);
 
     const unsubscribeAction = useMemo(() => {
         if (networkId && address && contractExists && sync) {

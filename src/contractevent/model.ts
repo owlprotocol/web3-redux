@@ -1,7 +1,7 @@
 import { attr, fk, Model as ORMModel } from 'redux-orm';
-import Web3 from 'web3';
 import { EventData } from 'web3-eth-contract';
-import { contractId } from '../contract/model';
+import { toChecksumAddress } from 'web3-utils';
+import { getId } from '../contract/model';
 
 export interface ReturnValues {
     returnValues: any;
@@ -41,20 +41,18 @@ class Model extends ORMModel {
 }
 
 export function contractEventId(event: PartialContractEvent) {
-    return `${event.networkId}-${event.blockHash}-${event.logIndex}`;
+    return [event.networkId, event.blockHash, event.logIndex].join('-');
 }
 
 export function validatedContractEvent<T extends ReturnValues = ReturnValues>(
     event: PartialContractEvent<T>,
 ): ContractEvent<T> {
-    const addressChecksum = Web3.utils.isAddress(event.address)
-        ? Web3.utils.toChecksumAddress(event.address)
-        : event.address;
+    const addressChecksum = toChecksumAddress(event.address);
     return {
         ...event,
         address: addressChecksum,
         id: contractEventId(event),
-        contractId: contractId({ networkId: event.networkId, address: event.address }),
+        contractId: getId({ networkId: event.networkId, address: event.address }),
     };
 }
 

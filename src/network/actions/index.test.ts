@@ -168,7 +168,7 @@ describe('network.actions', () => {
                 address: addressList[0],
                 abi: BlockNumber.abi as any,
             };
-            const contractValidated1 = Contract.validatedContract(contract1);
+            const contractValidated1 = Contract.validate(contract1);
             contractValidated1.web3Contract = undefined;
             contractValidated1.web3SenderContract = undefined;
             store.dispatch(Network.create(network));

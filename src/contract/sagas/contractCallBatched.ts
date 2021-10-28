@@ -1,12 +1,12 @@
 import { put, all, select, call } from 'redux-saga/effects';
-import { ZERO_ADDRESS } from '../../utils';
 import { validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
-import { Contract, callArgsHash, contractId } from '../model';
+import { Contract, callArgsHash, getId } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
 import { selectByIdMany } from '../selector';
 import networkExists from '../../network/sagas/networkExists';
 import { Network } from '../../network/model';
+import { ZERO_ADDRESS } from '../../utils';
 
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
 
@@ -20,7 +20,7 @@ function* contractCallBatched(action: CallBatchedAction) {
         const web3 = network.web3;
         const multicallContract = network.multicallContract;
 
-        const contractIds = Array.from(new Set(requests.map((f) => contractId({ address: f.address, networkId }))));
+        const contractIds = Array.from(new Set(requests.map((f) => getId({ address: f.address, networkId }))));
         const selectResult: ReturnType<typeof selectByIdMany> = yield select(selectByIdMany, contractIds);
         const contracts = selectResult.filter((c) => !!c) as Contract[];
         const contractsByAddress: { [key: string]: Contract } = {};
@@ -74,13 +74,21 @@ function* contractCallBatched(action: CallBatchedAction) {
         yield all(contracts.map((c) => put(create(c))));
 
         //If not Multicall, or from/defaultBlock specified
-        const regularCallTasks = preCallTasks.filter(
-            (t) => !multicallContract || t.ethCall.from != ZERO_ADDRESS || t.ethCall.defaultBlock != 'latest',
-        );
+        const regularCallTasks = preCallTasks.filter((t) => {
+            return !(
+                multicallContract &&
+                (!t.ethCall.from || t.ethCall.from == ZERO_ADDRESS) &&
+                (!t.ethCall.defaultBlock || t.ethCall.defaultBlock === 'latest')
+            );
+        });
         //Batch at smart-contract level with Multicall
-        const multiCallTasks = preCallTasks.filter(
-            (t) => !(!multicallContract || t.ethCall.from != ZERO_ADDRESS || t.ethCall.defaultBlock != 'latest'),
-        );
+        const multiCallTasks = preCallTasks.filter((t) => {
+            return (
+                multicallContract &&
+                (!t.ethCall.from || t.ethCall.from == ZERO_ADDRESS) &&
+                (!t.ethCall.defaultBlock || t.ethCall.defaultBlock === 'latest')
+            );
+        });
 
         const regularCalls = regularCallTasks.map((t) => {
             //@ts-ignore

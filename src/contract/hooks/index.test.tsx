@@ -14,7 +14,7 @@ import { useContractCall, contractCallHookFactory, useEvents, contractEventsHook
 import { createStore } from '../../store';
 import { Contract, Network } from '../../index';
 import { sleep } from '../../test/utils';
-import { contractId } from '../model';
+import { getId } from '../model';
 import { validatedContractEvent } from '../../contractevent/model';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -57,7 +57,7 @@ describe('contract.hooks', () => {
         web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '10000' });
         address = web3Contract.options.address;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        id = contractId({ networkId, address });
+        id = getId({ networkId, address });
 
         store.dispatch(
             Contract.create({

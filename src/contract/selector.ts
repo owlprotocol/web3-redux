@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-orm';
-import { BaseWeb3Contract, CallArgsHash, callArgsHash, Contract, contractId } from './model';
+import { BaseWeb3Contract, CallArgsHash, callArgsHash, Contract, getId } from './model';
 import { orm } from '../orm';
 import { EthCall } from '../ethcall/model';
 import { ContractEvent, ReturnValues } from '../contractevent/model';
@@ -38,7 +38,7 @@ export function selectByAddressSingle<T extends BaseWeb3Contract = BaseWeb3Contr
     if (!networkId || !address) return undefined;
     if (!Web3.utils.isAddress(address)) return undefined;
 
-    const id = contractId({ address, networkId });
+    const id = getId({ address, networkId });
     return selectByIdSingle(state, id);
 }
 
@@ -51,9 +51,7 @@ export function selectByAddressMany<T extends BaseWeb3Contract = BaseWeb3Contrac
     if (!networkId || !address) return EMPTY_CONTRACTS;
 
     //empty string will return null in selectMany()
-    const id: string[] = address.map((address) =>
-        Web3.utils.isAddress(address) ? contractId({ address, networkId }) : '',
-    );
+    const id: string[] = address.map((address) => (Web3.utils.isAddress(address) ? getId({ address, networkId }) : ''));
     return selectByIdMany(state, id);
 }
 
@@ -128,7 +126,7 @@ export function selectContractCallByAddress<
     if (!networkId || !address || !methodName) return undefined;
     if (!Web3.utils.isAddress(address)) return undefined;
 
-    const id = contractId({ address, networkId });
+    const id = getId({ address, networkId });
     return selectContractCallById<T, K>(state, id, methodName, callArgs);
 }
 export const selectContractCall = selectContractCallByAddress;
@@ -203,7 +201,7 @@ export function selectContractEventsByAddressFiltered<
     if (!networkId || !address || !eventName) return undefined;
     if (!Web3.utils.isAddress(address)) return undefined;
 
-    const id = contractId({ address, networkId });
+    const id = getId({ address, networkId });
     return selectContractEventsByIdFiltered(state, id, eventName, returnValuesFilter);
 }
 

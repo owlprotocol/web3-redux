@@ -7,7 +7,7 @@ import { create as createTransaction } from '../../transaction/actions';
 import { SEND, SendAction } from '../actions';
 import contractExists from './contractExists';
 import networkExists from '../../network/sagas/networkExists';
-import { Contract, contractId } from '../model';
+import { Contract, getId } from '../model';
 
 const CONTRACT_SEND_HASH = `${SEND}/HASH`;
 const CONTRACT_SEND_RECEIPT = `${SEND}/RECEIPT`;
@@ -60,7 +60,7 @@ function* contractSend(action: SendAction) {
         const contract: Contract = yield call(contractExists, networkId, address);
 
         const web3Contract = contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`${contractId({ address, networkId })} has no web3SenderContract`);
+        if (!web3Contract) throw new Error(`${getId({ address, networkId })} has no web3SenderContract`);
 
         const gasPrice = payload.gasPrice ?? 0;
         const value = payload.value ?? 0;

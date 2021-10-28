@@ -1,5 +1,5 @@
 import { ReducerAction, isCreateAction, isRemoveAction } from './actions';
-import { validatedContract, contractId } from './model';
+import { validate, getId } from './model';
 import { Network } from '../network/model';
 
 export function reducer(sess: any, action: ReducerAction) {
@@ -12,7 +12,7 @@ export function reducer(sess: any, action: ReducerAction) {
                 `Could not find Network with id ${action.payload.networkId}. Make sure to dispatch a Network/CREATE action.`,
             );
 
-        const validated = validatedContract(action.payload);
+        const validated = validate(action.payload);
         validated.web3Contract =
             validated.web3Contract ??
             (network.web3 ? new network.web3.eth.Contract(validated.abi, validated.address) : undefined);
@@ -24,7 +24,7 @@ export function reducer(sess: any, action: ReducerAction) {
         if (typeof action.payload === 'string') {
             Contract.withId(action.payload).delete();
         } else {
-            Contract.withId(contractId(action.payload)).delete();
+            Contract.withId(getId(action.payload)).delete();
         }
     }
 

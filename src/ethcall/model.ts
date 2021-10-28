@@ -1,7 +1,7 @@
 import { Model as ORMModel } from 'redux-orm';
-import Web3 from 'web3';
+import { toChecksumAddress } from 'web3-utils';
+import { getId } from '../contract/model';
 import { NetworkId } from '../network/model';
-import { ZERO_ADDRESS } from '../utils';
 
 /**
  * EthCall object. Used to index web3.eth.call().
@@ -10,21 +10,12 @@ import { ZERO_ADDRESS } from '../utils';
  * @param id - Call id. Computed as `${networkId}-${from}-${to}-${data}-${gas}`.
  */
 export interface EthCall extends NetworkId {
-    id: string;
-    from: string; //defaults to ZERO_ADDRESS
+    id?: string;
     to: string;
-    defaultBlock: string;
     data: string;
-    gas?: string;
-    returnValue?: any; //returned value from smart contract
-}
-
-export interface PartialEthCall extends NetworkId {
+    defaultBlock?: number | 'latest';
     from?: string;
-    to: string;
-    defaultBlock?: string | number;
-    data: string;
-    gas?: string | number;
+    gas?: number;
     returnValue?: any; //returned value from smart contract
 }
 
@@ -40,21 +31,29 @@ class Model extends ORMModel {
     static fields = {};
 }
 
-export function validatedEthCall(ethCall: PartialEthCall): EthCall {
+export function validatedEthCall(ethCall: EthCall): EthCall {
     const { networkId, from, to, defaultBlock, data, gas } = ethCall;
-    const block = defaultBlock ? `${defaultBlock}` : 'latest';
-    const fromCheckSum = Web3.utils.toChecksumAddress(from ?? ZERO_ADDRESS);
-    const toCheckSum = Web3.utils.toChecksumAddress(to);
-    const gasHex = gas ? Web3.utils.toHex(gas) : undefined;
-    const id = `${networkId}-${fromCheckSum}-${toCheckSum}-${block}-${data}-${gasHex}`;
+    const fromCheckSum = from ? toChecksumAddress(from) : undefined;
+    const toCheckSum = toChecksumAddress(to);
+
+    let id = '';
+    const contractHash = getId({ networkId, address: toCheckSum });
+    id = `${contractHash}`;
+    id = `${id}.(${data})`;
+
+    const options: any = {};
+    if (fromCheckSum) options.from = fromCheckSum;
+    if (defaultBlock && defaultBlock != 'latest') options.block = defaultBlock;
+    if (gas) options.gas = gas;
+
+    const optionsId = JSON.stringify(options);
+    if (optionsId != '{}') id = `${id}-${optionsId}`;
 
     return {
         ...ethCall,
         id,
         from: fromCheckSum,
         to: toCheckSum,
-        defaultBlock: block,
-        gas: gasHex,
     };
 }
 

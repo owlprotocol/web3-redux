@@ -1,7 +1,9 @@
 import { attr, fk, Model as ORMModel } from 'redux-orm';
-import Web3 from 'web3';
+import { toChecksumAddress } from 'web3-utils';
+import { getId } from '../contract';
 import { NetworkId } from '../network/model';
 import { transactionId } from '../transaction/model';
+import { ZERO_ADDRESS } from '../utils';
 
 export enum ContractSendStatus {
     PENDING_SIGNATURE = 'PENDING_SIGNATURE', //Pending wallet signature
@@ -73,14 +75,27 @@ export function contractSendId({
     from: string;
     value?: any;
 }) {
-    return `${networkId}-${address}-${methodName}(${!args || args.length == 0 ? '' : args}).send(${from},${
-        value ?? 0
-    })`;
+    const fromCheckSum = toChecksumAddress(from);
+    const cId = getId({ networkId, address });
+
+    let argsId: string;
+    if (!args || args.length === 0) argsId = '()';
+    else argsId = `(${args.join(',')})`;
+
+    const options: any = {};
+    if (fromCheckSum && fromCheckSum != ZERO_ADDRESS) options.from = fromCheckSum;
+    if (value) options.value = value;
+    const optionsId = JSON.stringify(options);
+
+    let id = `${cId}-${methodName}(${argsId})`;
+    if (optionsId != '{}') id = `${id}-${optionsId}`;
+
+    return id;
 }
 
 export function validatedContractSend(contractSend: ContractSend): ContractSend {
     const { networkId, from, transactionHash } = contractSend;
-    const fromCheckSum = from && Web3.utils.isAddress(from) ? Web3.utils.toChecksumAddress(from) : from;
+    const fromCheckSum = toChecksumAddress(from);
     const id = contractSendId({ ...contractSend, from: fromCheckSum });
     const contractSendTransactionId = transactionHash ? transactionId({ networkId, hash: transactionHash }) : undefined;
 

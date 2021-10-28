@@ -10,7 +10,7 @@ import Multicall from '../../abis/Multicall.json';
 import { createStore } from '../../store';
 import { Block, Contract, Network, Transaction, Sync } from '../../index';
 import { TransactionReceipt } from 'web3-core';
-import { contractId } from '../model';
+import { getId } from '../model';
 import { mineBlock, sleep, ganacheLogger } from '../../test/utils';
 import { validatedContractEvent } from '../../contractevent';
 
@@ -58,7 +58,7 @@ describe('contract.sagas', () => {
         const gas = await tx.estimateGas();
         web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '10000' });
         address = web3Contract.options.address;
-        id = contractId({ networkId, address });
+        id = getId({ networkId, address });
 
         store.dispatch(
             Contract.create({

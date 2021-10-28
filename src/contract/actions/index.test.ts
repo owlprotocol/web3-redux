@@ -46,7 +46,7 @@ describe('contract.actions', () => {
 
             store.dispatch(Contract.create({ ...contract }));
 
-            const contractId = Contract.contractId(contract);
+            const contractId = Contract.getId(contract);
             //@ts-expect-error
             const selected2 = Contract.selectContractCallById<BlockNumber, 'xyz'>(store.getState(), contractId, 'xyz');
             assert.equal(selected2, undefined, 'method undefined');
@@ -65,7 +65,7 @@ describe('contract.actions', () => {
 
             store.dispatch(Contract.create({ ...contract }));
 
-            const contractId = Contract.contractId(contract);
+            const contractId = Contract.getId(contract);
             const selected2 = Contract.selectContractEventsByIdFiltered(store.getState(), contractId, 'XYZEvent');
             assert.deepEqual(selected2, [], 'no events');
         });
@@ -84,8 +84,8 @@ describe('contract.actions', () => {
                 address: contract1Address,
                 abi: BlockNumberAbi.abi as any[],
             };
-            contract1Validated = Contract.validatedContract(contract1);
-            contract1Id = Contract.contractId(contract1);
+            contract1Validated = Contract.validate(contract1);
+            contract1Id = Contract.getId(contract1);
             store.dispatch(Contract.create(contract1));
         });
 
@@ -227,7 +227,7 @@ describe('contract.actions', () => {
             });
 
             it('(state, id) => [event]', async () => {
-                const contractId = Contract.contractId(contract);
+                const contractId = Contract.getId(contract);
                 const selected1 = Contract.selectContractEventsByIdFiltered<BlockNumber, 'NewValue', NewValue>(
                     store.getState(),
                     contractId,

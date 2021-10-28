@@ -9,8 +9,8 @@ export interface CallBatchedActionInput {
         method: string;
         args?: any[];
         from?: string;
-        defaultBlock?: number | string;
-        gas?: string;
+        defaultBlock?: number | 'latest';
+        gas?: number;
     }[];
 }
 /**

@@ -1,6 +1,5 @@
 import { AbiItem, toChecksumAddress } from 'web3-utils';
 import { Contract as Web3Contract } from 'web3-eth-contract';
-import { NetworkId } from '../../network/model';
 import { Sync } from '../../sync/model';
 
 export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' | '_jsonInterface'>;
@@ -16,8 +15,9 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
  * @param web3Contract - Web3 Contract instance
  * @param web3SenderContract - Web3 Contract instance used for send transactions.
  */
-export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends NetworkId {
+export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> {
     id: string;
+    networkId: string;
     address: string;
     abi: AbiItem[];
     methods: {
@@ -29,7 +29,8 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
     web3SenderContract?: T;
 }
 
-export interface ContractPartial<T extends BaseWeb3Contract = BaseWeb3Contract> extends NetworkId {
+export interface ContractPartial<T extends BaseWeb3Contract = BaseWeb3Contract> {
+    networkId: string;
     address: string;
     abi: AbiItem[];
     methods?: {
@@ -47,7 +48,8 @@ export interface ContractPartial<T extends BaseWeb3Contract = BaseWeb3Contract> 
  * @param networkId - A network id.
  * @param address - Contract address.
  */
-export interface ContractIdDeconstructed extends NetworkId {
+export interface ContractIdDeconstructed {
+    networkId: string;
     address: string;
 }
 

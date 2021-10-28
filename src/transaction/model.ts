@@ -1,4 +1,3 @@
-import { attr, fk, Model as ORMModel } from 'redux-orm';
 import Web3 from 'web3';
 import { TransactionReceipt } from 'web3-eth';
 import { blockId } from '../block/model';
@@ -67,20 +66,6 @@ export interface TransactionBlockId {
     blockNumber?: string | number | null;
 }
 
-class Model extends ORMModel {
-    static options = {
-        idAttribute: 'id',
-    };
-
-    static modelName = 'Transaction';
-
-    static fields = {
-        hash: attr(),
-        networkId: fk({ to: 'Network', as: 'network', relatedName: 'transactions' }),
-        blockId: fk({ to: 'Block', as: 'block', relatedName: 'transactions' }),
-    };
-}
-
 export function transactionId({ hash, networkId }: TransactionId) {
     return `${networkId}-${hash}`;
 }
@@ -104,5 +89,3 @@ export function validatedTransaction(transaction: Transaction): Transaction {
         gasPrice: gasPriceHex,
     };
 }
-
-export { Model };

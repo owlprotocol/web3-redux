@@ -1,14 +1,14 @@
 import { ORM } from 'redux-orm';
-import { Model as NetworkModel } from './network/model';
-import { Model as BlockModel } from './block/model';
-import { Model as TransactionModel } from './transaction/model';
-import { Model as ContractModel } from './contract/model';
-import { Model as ContractEventModel } from './contractevent/model';
-import { Model as ContractSendModel } from './contractsend/model';
-import { Model as EthCallModel } from './ethcall/model';
-import { Model as ConfigModel } from './config/model';
-import { Model as AccountModel } from './account/model';
-import { Model as SyncModel } from './sync/model';
+import NetworkModel from './network/orm';
+import BlockModel from './block/orm';
+import TransactionModel from './transaction/orm';
+import ContractModel from './contract/model/orm';
+import ContractEventModel from './contractevent/orm';
+import ContractSendModel from './contractsend/orm';
+import EthCallModel from './ethcall/orm';
+import ConfigModel from './config/orm';
+import AccountModel from './account/orm';
+import SyncModel from './sync/model/orm';
 import { blockTransactionsSync } from './sync/model/BlockSync';
 
 const orm = new ORM({

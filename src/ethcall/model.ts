@@ -1,4 +1,3 @@
-import { Model as ORMModel } from 'redux-orm';
 import { toChecksumAddress } from 'web3-utils';
 import { getId } from '../contract/model';
 
@@ -20,16 +19,6 @@ export interface EthCall {
 }
 
 export type EthCallId = string | EthCall;
-
-class Model extends ORMModel {
-    static options = {
-        idAttribute: 'id',
-    };
-
-    static modelName = 'EthCall';
-
-    static fields = {};
-}
 
 export function validatedEthCall(ethCall: EthCall): EthCall {
     const { networkId, from, to, defaultBlock, data, gas } = ethCall;
@@ -56,5 +45,3 @@ export function validatedEthCall(ethCall: EthCall): EthCall {
         to: toCheckSum,
     };
 }
-
-export { Model };

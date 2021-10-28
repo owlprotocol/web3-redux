@@ -1,4 +1,3 @@
-import { attr, fk, Model as ORMModel } from 'redux-orm';
 import { toChecksumAddress } from 'web3-utils';
 import { getId } from '../contract';
 import { transactionId } from '../transaction/model';
@@ -37,27 +36,6 @@ export interface ContractSend {
     receipt?: any;
     blockNumber?: number;
     blockHash?: string;
-}
-
-class Model extends ORMModel {
-    static options = {
-        idAttribute: 'id',
-    };
-
-    static modelName = 'ContractSend';
-
-    static fields = {
-        id: attr(),
-        address: attr(),
-        methodName: attr(),
-        args: attr(),
-        from: attr(),
-        value: attr(),
-        transactionHash: attr(),
-        transactionId: fk({ to: 'Transaction', as: 'transaction' }),
-        status: attr(),
-        error: attr(),
-    };
 }
 
 export function contractSendId({
@@ -105,5 +83,3 @@ export function validatedContractSend(contractSend: ContractSend): ContractSend 
         transactionId: contractSendTransactionId,
     };
 }
-
-export { Model };

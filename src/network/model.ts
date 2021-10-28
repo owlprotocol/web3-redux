@@ -1,4 +1,3 @@
-import { attr, Model as ORMModel } from 'redux-orm';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 
@@ -27,22 +26,3 @@ export interface Network {
     multicallContract?: Web3Contract;
     gasLimit?: number;
 }
-
-class Model extends ORMModel {
-    static options = {
-        idAttribute: 'networkId',
-    };
-
-    static modelName = 'Network';
-
-    static fields = {
-        networkId: attr(),
-        web3: attr(),
-        web3Sender: attr(),
-        multicallAddress: attr(),
-        multicallContract: attr(),
-        gasLimit: attr(),
-    };
-}
-
-export { Model };

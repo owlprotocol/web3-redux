@@ -18,6 +18,7 @@ const networkId = '1337';
 
 describe('contract.sagas', () => {
     let web3: Web3; //Web3 loaded from store
+    let web3Sender: Web3;
     let accounts: string[];
     let store: ReturnType<typeof createStore>;
     let web3Contract: Web3Contract;
@@ -40,6 +41,8 @@ describe('contract.sagas', () => {
         });
         //@ts-ignore
         web3 = new Web3(provider);
+        //@ts-ignore
+        web3Sender = new Web3(provider);
         accounts = await web3.eth.getAccounts();
 
         const ethCallIncr = () => (ethCall += 1);
@@ -50,7 +53,7 @@ describe('contract.sagas', () => {
 
     beforeEach(async () => {
         store = createStore();
-        store.dispatch(Network.create({ networkId, web3 }));
+        store.dispatch(Network.create({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(BlockNumber.abi as AbiItem[]).deploy({
             data: BlockNumber.bytecode,

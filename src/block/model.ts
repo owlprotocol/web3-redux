@@ -1,4 +1,3 @@
-import { attr, fk, Model as ORMModel } from 'redux-orm';
 import { Transaction, validatedTransaction } from '../transaction/model';
 import { isStrings } from '../utils';
 
@@ -100,19 +99,6 @@ export function isBlockTransactionString(block: Block): block is BlockTransactio
 }
 export function isBlockTransactionObject(block: Block): block is BlockTransactionObject {
     return isBlockTransaction(block) && !isStrings(block.transactions);
-}
-
-export class Model extends ORMModel {
-    static options = {
-        idAttribute: 'id',
-    };
-
-    static modelName = 'Block';
-
-    static fields = {
-        number: attr(),
-        networkId: fk({ to: 'Network', as: 'network', relatedName: 'blocks' }),
-    };
 }
 
 export function blockId({ number, networkId }: BlockId) {

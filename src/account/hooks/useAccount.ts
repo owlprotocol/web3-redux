@@ -9,8 +9,8 @@ import { remove as removeSync } from '../../sync/actions';
 import { selectByIdExists as selectSyncExists } from '../../sync/selector';
 
 export default function useAccount(
-    networkId?: string,
-    address?: string,
+    networkId: string | undefined,
+    address: string | undefined,
     sync?: {
         balance?: FetchBalanceSyncedActionInput['sync'];
         nonce?: FetchNonceSyncedActionInput['sync'];

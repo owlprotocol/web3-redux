@@ -1,22 +1,20 @@
-import { put, select, call, takeEvery } from 'redux-saga/effects';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selector';
+import { put, call, takeEvery } from 'redux-saga/effects';
 import { Transaction } from '../model';
 import { create as createTransaction, isFetchAction, FetchAction } from '../actions';
+import networkExists from '../../network/sagas/networkExists';
+import { Network } from '../../network/model';
 
 function* fetch(action: FetchAction) {
     const { payload } = action;
-    const network: ReturnType<typeof selectNetworkByIdSingle> = yield select(
-        selectNetworkByIdSingle,
-        payload.networkId,
-    );
-    if (!network)
-        throw new Error(
-            `Could not find Network with id ${payload.networkId}. Make sure to dispatch a Network/CREATE action.`,
-        );
-    yield put(createTransaction({ networkId: payload.networkId, hash: payload.hash }));
+    const { networkId, hash } = payload;
+
+    const network: Network = yield call(networkExists, networkId);
+    if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
+
+    yield put(createTransaction({ networkId, hash }));
     const web3 = network.web3;
-    const transaction: Transaction = yield call(web3.eth.getTransaction, payload.hash);
-    const newTransaction = { ...transaction, networkId: payload.networkId };
+    const transaction: Transaction = yield call(web3.eth.getTransaction, hash);
+    const newTransaction = { ...transaction, networkId };
     yield put(createTransaction(newTransaction));
 }
 

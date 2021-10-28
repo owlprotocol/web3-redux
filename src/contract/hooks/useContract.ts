@@ -7,9 +7,9 @@ import { create } from '../actions';
 import { selectByAddressSingle as selectContractByAddressSingle } from '../selector';
 
 export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
-    networkId?: string,
-    address?: string,
-    abi?: any,
+    networkId: string | undefined,
+    address: string | undefined,
+    abi: any | undefined,
 ) {
     const dispatch = useDispatch();
 
@@ -28,7 +28,7 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 }
 
 export function contractHookFactory<T extends BaseWeb3Contract = BaseWeb3Contract>(abi: AbiItem[]) {
-    return (networkId?: string, address?: string) => {
+    return (networkId: string | undefined, address: string | undefined) => {
         return useContract<T>(networkId, address, abi);
     };
 }

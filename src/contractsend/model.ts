@@ -1,7 +1,7 @@
-import { attr, fk, Model as ORMModel } from 'redux-orm';
-import Web3 from 'web3';
-import { NetworkId } from '../network/model';
+import { toChecksumAddress } from 'web3-utils';
+import { getId } from '../contract';
 import { transactionId } from '../transaction/model';
+import { ZERO_ADDRESS } from '../utils';
 
 export enum ContractSendStatus {
     PENDING_SIGNATURE = 'PENDING_SIGNATURE', //Pending wallet signature
@@ -20,8 +20,9 @@ export enum ContractSendStatus {
  * @param transactionHash - Transaction hash once confirmed.
  * @param transactionId -Transaction id once confirmed.
  */
-export interface ContractSend extends NetworkId {
+export interface ContractSend {
     id?: string;
+    networkId: string;
     address: string;
     methodName: string;
     args?: any[];
@@ -31,27 +32,10 @@ export interface ContractSend extends NetworkId {
     transactionId?: string;
     status: ContractSendStatus;
     error?: any;
-}
-
-class Model extends ORMModel {
-    static options = {
-        idAttribute: 'id',
-    };
-
-    static modelName = 'ContractSend';
-
-    static fields = {
-        id: attr(),
-        address: attr(),
-        methodName: attr(),
-        args: attr(),
-        from: attr(),
-        value: attr(),
-        transactionHash: attr(),
-        transactionId: fk({ to: 'Transaction', as: 'transaction' }),
-        status: attr(),
-        error: attr(),
-    };
+    confirmations?: number;
+    receipt?: any;
+    blockNumber?: number;
+    blockHash?: string;
 }
 
 export function contractSendId({
@@ -69,14 +53,27 @@ export function contractSendId({
     from: string;
     value?: any;
 }) {
-    return `${networkId}-${address}-${methodName}(${!args || args.length == 0 ? '' : args}).send(${from},${
-        value ?? 0
-    })`;
+    const fromCheckSum = toChecksumAddress(from);
+    const cId = getId({ networkId, address });
+
+    let argsId: string;
+    if (!args || args.length === 0) argsId = '()';
+    else argsId = `(${args.join(',')})`;
+
+    const options: any = {};
+    if (fromCheckSum && fromCheckSum != ZERO_ADDRESS) options.from = fromCheckSum;
+    if (value) options.value = value;
+    const optionsId = JSON.stringify(options);
+
+    let id = `${cId}-${methodName}(${argsId})`;
+    if (optionsId != '{}') id = `${id}-${optionsId}`;
+
+    return id;
 }
 
 export function validatedContractSend(contractSend: ContractSend): ContractSend {
     const { networkId, from, transactionHash } = contractSend;
-    const fromCheckSum = from && Web3.utils.isAddress(from) ? Web3.utils.toChecksumAddress(from) : from;
+    const fromCheckSum = toChecksumAddress(from);
     const id = contractSendId({ ...contractSend, from: fromCheckSum });
     const contractSendTransactionId = transactionHash ? transactionId({ networkId, hash: transactionHash }) : undefined;
 
@@ -86,5 +83,3 @@ export function validatedContractSend(contractSend: ContractSend): ContractSend 
         transactionId: contractSendTransactionId,
     };
 }
-
-export { Model };

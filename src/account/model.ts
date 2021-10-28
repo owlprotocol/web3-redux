@@ -1,6 +1,4 @@
-import { attr, Model as ORMModel } from 'redux-orm';
 import { toChecksumAddress } from 'web3-utils';
-import { NetworkId } from '../network/model';
 
 /**
  * Ethereum Account. Store balance, nonce.
@@ -10,26 +8,12 @@ import { NetworkId } from '../network/model';
  * @param balance - Account balance.
  * @param nonce - Account nonce.
  */
-export interface Account extends NetworkId {
+export interface Account {
     id?: string;
+    networkId: string;
     address: string;
     balance?: string;
     nonce?: number;
-}
-
-class Model extends ORMModel {
-    static options = {
-        idAttribute: 'id',
-    };
-
-    static modelName = 'Account';
-
-    static fields = {
-        id: attr(),
-        address: attr(),
-        balance: attr(),
-        nonce: attr(),
-    };
 }
 
 export function accountId({ networkId, address }: { networkId: string; address: string }) {
@@ -47,5 +31,3 @@ export function validatedAccount(account: Account): Account {
         address: addressCheckSum,
     };
 }
-
-export { Model };

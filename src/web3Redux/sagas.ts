@@ -2,11 +2,11 @@ import { put, all, takeEvery } from 'redux-saga/effects';
 import Web3 from 'web3';
 import * as NetworkActions from '../network/actions';
 import * as BlockActions from '../block/actions';
-import { NetworkPartial } from '../network/model';
+import { Network } from '../network/model';
 import { InitializeAction, INITIALIZE, NetworkWithSubscribe } from './actions';
 
 function* initialize(action: InitializeAction) {
-    const networks: NetworkPartial[] = action.payload.networks ?? [];
+    const networks: Network[] = action.payload.networks ?? [];
 
     if (!action.payload.networks) {
         const localRpc = process.env.LOCAL_RPC ?? process.env.REACT_APP_LOCAL_RPC ?? process.env.NEXT_PUBLIC_LOCAL_RPC;

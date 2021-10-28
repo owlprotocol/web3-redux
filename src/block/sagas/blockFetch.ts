@@ -2,12 +2,13 @@ import { put, call, takeEvery } from 'redux-saga/effects';
 import { BlockTransaction } from '../model';
 import { create, update, FetchAction, isFetchAction } from '../actions';
 import networkExists from '../../network/sagas/networkExists';
+import { Network } from '../../network/model';
 
 export function* fetch(action: FetchAction, updateBlock = false) {
     const { payload } = action;
     const { networkId } = payload;
-    //@ts-ignore
     const network: Network = yield call(networkExists, networkId);
+    if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
 
     const web3 = network.web3;
     const block: BlockTransaction = yield call(

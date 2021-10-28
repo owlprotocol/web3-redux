@@ -2,11 +2,12 @@ import { END, eventChannel, EventChannel, TakeableChannel } from 'redux-saga';
 import { put, call, take } from 'redux-saga/effects';
 import { PromiEvent, TransactionReceipt } from 'web3-core';
 import { ContractSendStatus } from '../../contractsend/model';
-import { create as createContractSend } from '../../contractsend/actions';
+import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions';
 import { create as createTransaction } from '../../transaction/actions';
 import { SEND, SendAction } from '../actions';
 import contractExists from './contractExists';
 import networkExists from '../../network/sagas/networkExists';
+import { Contract, getId } from '../model';
 
 const CONTRACT_SEND_HASH = `${SEND}/HASH`;
 const CONTRACT_SEND_RECEIPT = `${SEND}/RECEIPT`;
@@ -56,10 +57,10 @@ function* contractSend(action: SendAction) {
 
         //@ts-ignore
         yield call(networkExists, networkId);
-        //@ts-ignore
         const contract: Contract = yield call(contractExists, networkId, address);
 
-        const web3Contract = contract.web3SenderContract!;
+        const web3Contract = contract.web3SenderContract;
+        if (!web3Contract) throw new Error(`${getId({ address, networkId })} has no web3SenderContract`);
 
         const gasPrice = payload.gasPrice ?? 0;
         const value = payload.value ?? 0;
@@ -92,17 +93,14 @@ function* contractSend(action: SendAction) {
         const txPromiEvent: PromiEvent<TransactionReceipt> = tx.send({ from, gas, gasPrice, value });
 
         const channel: TakeableChannel<ContractSendChannelMessage> = yield call(contractSendChannel, txPromiEvent);
-        let savedHash: string | undefined;
         let initialConfirm = false;
         while (true) {
             const message: ContractSendChannelMessage = yield take(channel);
             const { type, hash, receipt, confirmations } = message;
-            if (hash) savedHash = hash;
-
             if (type === CONTRACT_SEND_HASH) {
                 yield put(createTransaction({ networkId, hash: hash! }));
                 yield put(
-                    createContractSend({
+                    updateContractSend({
                         ...baseContractSend,
                         transactionHash: hash!,
                         status: ContractSendStatus.PENDING_CONFIRMATION,
@@ -110,29 +108,21 @@ function* contractSend(action: SendAction) {
                 );
             } else if (type === CONTRACT_SEND_RECEIPT) {
                 yield put(
-                    createTransaction({
-                        networkId,
-                        hash: savedHash!,
+                    updateContractSend({
+                        ...baseContractSend,
                         receipt: receipt,
                         blockNumber: receipt?.blockNumber,
                         blockHash: receipt?.blockHash,
-                        from: receipt!.from,
-                        to: receipt!.to,
+                        status: ContractSendStatus.PENDING_CONFIRMATION,
                     }),
                 );
             } else if (type === CONTRACT_SEND_CONFIRMATION) {
-                yield put(
-                    createTransaction({
-                        networkId,
-                        hash: savedHash!,
-                        confirmations: confirmations,
-                    }),
-                );
                 if (!initialConfirm && confirmations && confirmations > 0) {
                     initialConfirm = true;
                     yield put(
-                        createContractSend({
+                        updateContractSend({
                             ...baseContractSend,
+                            confirmations: confirmations,
                             status: ContractSendStatus.CONFIRMED,
                         }),
                     );
@@ -141,7 +131,7 @@ function* contractSend(action: SendAction) {
                 const { error } = message;
                 //handle metamask reject or other errors
                 yield put(
-                    createContractSend({
+                    updateContractSend({
                         ...baseContractSend,
                         error,
                         status: ContractSendStatus.ERROR,

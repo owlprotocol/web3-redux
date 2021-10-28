@@ -10,7 +10,7 @@ import Multicall from '../../abis/Multicall.json';
 import { createStore } from '../../store';
 import { Block, Contract, Network, Transaction, Sync } from '../../index';
 import { TransactionReceipt } from 'web3-core';
-import { contractId } from '../model';
+import { getId } from '../model';
 import { mineBlock, sleep, ganacheLogger } from '../../test/utils';
 import { validatedContractEvent } from '../../contractevent';
 
@@ -18,6 +18,7 @@ const networkId = '1337';
 
 describe('contract.sagas', () => {
     let web3: Web3; //Web3 loaded from store
+    let web3Sender: Web3;
     let accounts: string[];
     let store: ReturnType<typeof createStore>;
     let web3Contract: Web3Contract;
@@ -40,6 +41,8 @@ describe('contract.sagas', () => {
         });
         //@ts-ignore
         web3 = new Web3(provider);
+        //@ts-ignore
+        web3Sender = new Web3(provider);
         accounts = await web3.eth.getAccounts();
 
         const ethCallIncr = () => (ethCall += 1);
@@ -50,7 +53,7 @@ describe('contract.sagas', () => {
 
     beforeEach(async () => {
         store = createStore();
-        store.dispatch(Network.create({ networkId, web3 }));
+        store.dispatch(Network.create({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(BlockNumber.abi as AbiItem[]).deploy({
             data: BlockNumber.bytecode,
@@ -58,7 +61,7 @@ describe('contract.sagas', () => {
         const gas = await tx.estimateGas();
         web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '10000' });
         address = web3Contract.options.address;
-        id = contractId({ networkId, address });
+        id = getId({ networkId, address });
 
         store.dispatch(
             Contract.create({
@@ -182,28 +185,6 @@ describe('contract.sagas', () => {
     });
 
     describe('callSynced', () => {
-        it('({sync:false})', async () => {
-            const tx2 = await web3Contract.methods.setValue(42);
-            const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
-
-            store.dispatch(
-                Contract.callSynced({
-                    networkId,
-                    address,
-                    method: 'getValue',
-                    sync: false,
-                }),
-            );
-            await sleep(150);
-
-            //Selector
-            const value = Contract.selectContractCallById(store.getState(), id, 'getValue');
-
-            assert.equal(value, 42, 'getValue');
-            assert.strictEqual(value, '42', 'getValue');
-        });
-
         it('({sync:Block})', async () => {
             //Block subscription used for updates
             store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: false }));
@@ -215,7 +196,7 @@ describe('contract.sagas', () => {
             });
             store.dispatch(callSyncedAction);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync!;
+            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
@@ -242,7 +223,7 @@ describe('contract.sagas', () => {
             });
             store.dispatch(callSyncedAction);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync!;
+            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
@@ -282,7 +263,7 @@ describe('contract.sagas', () => {
             });
             store.dispatch(callSyncedAction);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync!;
+            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 

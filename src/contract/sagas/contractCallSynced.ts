@@ -10,12 +10,14 @@ function* contractCallSynced(action: CallSyncedAction) {
         const { sync, callAction } = payload;
 
         //Create Sync
-        if (sync) {
+        if (sync && sync != 'once') {
             yield put(createSync(sync));
         }
 
-        //Initial Action
-        yield put(callAction);
+        if (sync) {
+            //Initial Action if sync or set to trigger once
+            yield put(callAction);
+        }
     } catch (error) {
         console.error(error);
         yield put({

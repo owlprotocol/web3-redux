@@ -1,8 +1,6 @@
-import { attr, fk, Model as ORMModel } from 'redux-orm';
 import Web3 from 'web3';
 import { TransactionReceipt } from 'web3-eth';
 import { blockId } from '../block/model';
-import { NetworkId } from '../network/model';
 
 /**
  * Transaction object.
@@ -25,8 +23,9 @@ import { NetworkId } from '../network/model';
  * @param gas - Number: Gas provided by the sender.
  * @param input - String: The data sent along with the transaction.
  */
-export interface Transaction extends NetworkId {
+export interface Transaction {
     id?: string;
+    networkId: string;
     //Web3
     hash: string;
     nonce?: number;
@@ -51,32 +50,20 @@ export interface Transaction extends NetworkId {
  * @param networkId - A network id.
  * @param hash - 32 Bytes - String: Hash of the transaction.
  */
-export interface TransactionId extends NetworkId {
+export interface TransactionId {
+    networkId: string;
     hash: string;
 }
 
 /**
  * Transaction Block Id object.
- * @see {@link NetworkId} for additional params.
  *
+ * @param networkId
  * @param blockNumber - Number: Block number where this transaction was in. null if pending.
  */
-export interface TransactionBlockId extends NetworkId {
+export interface TransactionBlockId {
+    networkId: string;
     blockNumber?: string | number | null;
-}
-
-class Model extends ORMModel {
-    static options = {
-        idAttribute: 'id',
-    };
-
-    static modelName = 'Transaction';
-
-    static fields = {
-        hash: attr(),
-        networkId: fk({ to: 'Network', as: 'network', relatedName: 'transactions' }),
-        blockId: fk({ to: 'Block', as: 'block', relatedName: 'transactions' }),
-    };
 }
 
 export function transactionId({ hash, networkId }: TransactionId) {
@@ -102,5 +89,3 @@ export function validatedTransaction(transaction: Transaction): Transaction {
         gasPrice: gasPriceHex,
     };
 }
-
-export { Model };

@@ -1,10 +1,10 @@
 import { select } from 'redux-saga/effects';
 import { selectByAddressSingle } from '../selector';
-import { contractId } from '../model';
+import { getId } from '../model';
 
 function* contractExists(networkId: string, address: string) {
     const contract: ReturnType<typeof selectByAddressSingle> = yield select(selectByAddressSingle, networkId, address);
-    if (!contract) throw new Error(`Contract ${contractId({ address, networkId })} undefined`);
+    if (!contract) throw new Error(`Contract ${getId({ address, networkId })} undefined`);
 
     return contract;
 }

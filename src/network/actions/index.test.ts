@@ -1,10 +1,10 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import BlockNumber from '../abis/BlockNumber.json';
+import BlockNumber from '../../abis/BlockNumber.json';
 
-import { createStore } from '../store';
-import { Network, Block, Transaction, Contract } from '../index';
-import { addressList, assertDeepEqual } from '../test/utils';
+import { createStore } from '../../store';
+import { Network, Block, Transaction, Contract } from '../../index';
+import { addressList, assertDeepEqual } from '../../test/utils';
 
 const networkId = '1337';
 const web3 = new Web3('http://locahost:8545');
@@ -168,7 +168,7 @@ describe('network.actions', () => {
                 address: addressList[0],
                 abi: BlockNumber.abi as any,
             };
-            const contractValidated1 = Contract.validatedContract(contract1);
+            const contractValidated1 = Contract.validate(contract1);
             contractValidated1.web3Contract = undefined;
             contractValidated1.web3SenderContract = undefined;
             store.dispatch(Network.create(network));

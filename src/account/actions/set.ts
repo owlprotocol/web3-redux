@@ -1,18 +1,21 @@
-import { createAction } from '@reduxjs/toolkit';
-import { name } from './common';
-import { accountId } from '../model';
+import { name } from '../common';
+import Interface, { getId, IdArgs } from '../model/interface';
 
-export const SET = `${name}/SET`;
+export const SET = (key: keyof Interface) => `${name}/SET/${key.toUpperCase()}`;
 export interface SetActionInput {
-    networkId: string;
-    address: string;
-    key: string;
+    id: IdArgs;
+    key: keyof Interface;
     value: any;
 }
-export const set = createAction(SET, (payload: SetActionInput) => {
-    const id = accountId(payload);
-    return { payload: { ...payload, id } };
-});
+export const set = (payload: SetActionInput) => {
+    const id = getId(payload.id);
+    const key = payload.key;
+    const value = payload.value;
+    return { type: SET(key), payload: { id, key, value } };
+};
 
 export type SetAction = ReturnType<typeof set>;
-export const isSetAction = set.match;
+export const isSetAction = (action: { type: string; payload?: { key?: keyof Interface } }) =>
+    !!action.payload?.key && action.type === SET(action.payload.key);
+
+export default set;

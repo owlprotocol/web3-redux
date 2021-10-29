@@ -1,26 +1,30 @@
 import { assert } from 'chai';
-import Web3 from 'web3';
-import ganache from 'ganache-core';
-
-import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
+import { Provider } from 'react-redux';
+import ganache from 'ganache-core';
+import Web3 from 'web3';
 
+import sleep from '../../utils/sleep';
+import { fetch as fetchTransaction } from '../../transaction/actions';
+import { name } from '../common';
 import { createStore, StoreType } from '../../store';
-import { Network, Transaction } from '../../index';
-import { sleep } from '../../test/utils';
-import { useAccount } from './index';
+import { create } from '../actions';
+import { useByIdSingle, useByIdMany, useAccount } from './index';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
-const networkId = '1337';
-
-describe('account.hooks', () => {
+describe(`${name}.hooks`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
+    const john = { networkId: 'John', address: 'Doe', age: 42 };
+    const johnId = 'John-Doe';
+    const johnWithId = { id: johnId, ...john };
+
     let wrapper: any;
 
+    const networkId = '1337';
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
 
@@ -37,16 +41,33 @@ describe('account.hooks', () => {
         address = accounts[0];
     });
 
-    beforeEach(async () => {
+    beforeEach(() => {
         store = createStore();
-        store.dispatch(Network.create({ networkId, web3 }));
-
+        store.dispatch(create(john));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
+    });
+
+    it('useByIdSingle', async () => {
+        const { result } = renderHook(() => useByIdSingle(johnId), {
+            wrapper,
+        });
+
+        assert.deepEqual(result.current, johnWithId);
+        assert.equal(result.all.length, 1);
+    });
+
+    it('useByIdMany', async () => {
+        const { result } = renderHook(() => useByIdMany([johnId]), {
+            wrapper,
+        });
+
+        assert.deepEqual(result.current, [johnWithId]);
+        assert.equal(result.all.length, 1);
     });
 
     describe('useAccount', () => {
         it('(networkId, address, sync: true)', async () => {
-            const { result } = renderHook(() => useAccount(networkId, address, { balance: true }), {
+            const { result } = renderHook(() => useAccount({ networkId, address }, { balance: true }), {
                 wrapper,
             });
 
@@ -62,7 +83,7 @@ describe('account.hooks', () => {
             const receipt = await web3.eth.sendTransaction({ from: address, to: accounts[1], value: '1' });
             //Fetch transaction, triggering a refresh
             store.dispatch(
-                Transaction.fetch({
+                fetchTransaction({
                     networkId,
                     hash: receipt.transactionHash,
                 }),

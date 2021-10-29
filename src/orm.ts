@@ -7,7 +7,7 @@ import ContractEventModel from './contractevent/orm';
 import ContractSendModel from './contractsend/orm';
 import EthCallModel from './ethcall/orm';
 import ConfigModel from './config/orm';
-import AccountModel from './account/orm';
+import AccountModel from './account/model/orm';
 import SyncModel from './sync/model/orm';
 import { blockTransactionsSync } from './sync/model/BlockSync';
 

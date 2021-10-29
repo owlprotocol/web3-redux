@@ -5,7 +5,7 @@ import ganache from 'ganache-core';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
 
-import { createStore } from '../../store';
+import { createStore, StoreType } from '../../store';
 import { Network, Transaction } from '../../index';
 import { sleep } from '../../test/utils';
 import { useAccount } from './index';
@@ -18,7 +18,7 @@ const networkId = '1337';
 describe('account.hooks', () => {
     jsdom({ url: 'http://localhost' });
 
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
     let wrapper: any;
 
     let web3: Web3; //Web3 loaded from store

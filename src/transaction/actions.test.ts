@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 
-import { createStore } from '../store';
+import { createStore, StoreType } from '../store';
 import { Network, Transaction } from '../index';
 import { addressList } from '../test/utils';
 
@@ -13,7 +13,7 @@ const network = {
 };
 
 describe('transaction.actions', () => {
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
 
     beforeEach(() => {
         store = createStore();

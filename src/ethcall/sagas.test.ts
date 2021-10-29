@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import ganache from 'ganache-core';
 import BlockNumber from '../abis/BlockNumber.json';
 
-import { createStore } from '../store';
+import { createStore, StoreType } from '../store';
 import { Network, EthCall } from '../index';
 import { sleep } from '../test/utils';
 
@@ -12,7 +12,7 @@ const networkId = '1337';
 describe('ethcall.sagas', () => {
     let web3: Web3;
     let accounts: string[];
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
 
     before(async () => {
         const networkIdInt = parseInt(networkId);

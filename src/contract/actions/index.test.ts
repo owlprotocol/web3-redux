@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { assert } from 'chai';
-import { createStore } from '../../store';
+import { createStore, StoreType } from '../../store';
 import { Network, Contract, ContractEvent, EthCall } from '../../index';
 import { addressList, assertDeepEqual } from '../../test/utils';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
@@ -20,7 +20,7 @@ const contract = {
 };
 
 describe('contract.actions', () => {
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
 
     beforeEach(() => {
         store = createStore();

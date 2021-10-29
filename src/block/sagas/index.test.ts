@@ -4,7 +4,7 @@ import ganache from 'ganache-core';
 
 import { ganacheLogger, mineBlock } from '../../test/utils';
 import { create as createNetwork } from '../../network/actions';
-import { createStore } from '../../store';
+import { createStore, StoreType } from '../../store';
 import { BlockHeader, BlockTransaction, BlockTransactionObject, validatedBlock } from '../model';
 import { fetch, subscribe, unsubscribe } from '../actions';
 import { selectByIdMany, selectManyBlockTransaction } from '../selector';
@@ -14,7 +14,7 @@ const networkId = '1337';
 describe('block.sagas', () => {
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
     let rpcLogger: ReturnType<typeof ganacheLogger>;
     let ethGetBlockByNumber = 0;
     let ethSubscribe = 0;

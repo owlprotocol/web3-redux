@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { createStore } from '../../store';
+import { createStore, StoreType } from '../../store';
 import { Network, EthCall } from '../../index';
 import { addressList } from '../../test/utils';
 
@@ -8,7 +8,7 @@ const networkId = '1337';
 const web3 = new Web3('http://locahost:8545');
 
 describe('ethcall.actions', () => {
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
 
     beforeEach(() => {
         store = createStore();

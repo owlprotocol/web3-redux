@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import ganache from 'ganache-core';
 
 import { create as createNetwork } from '../../network/actions';
-import { createStore } from '../../store';
+import { createStore, StoreType } from '../../store';
 import { selectByAddressSingle } from '../selector';
 import { fetchBalance, fetchNonce, fetchBalanceSynced, create } from '../actions';
 import { Block, Transaction } from '../../index';
@@ -15,7 +15,7 @@ describe('account.sagas', () => {
     let web3: Web3; //Web3 loaded from store
     let address: string;
     let to: string;
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
 
     before(async () => {
         const networkIdInt = parseInt(networkId);

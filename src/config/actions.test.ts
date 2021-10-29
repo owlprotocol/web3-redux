@@ -1,10 +1,10 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { createStore } from '../store';
+import { createStore, StoreType } from '../store';
 import { Config, Network } from '../index';
 
 describe('config.actions', () => {
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
 
     beforeEach(() => {
         store = createStore();

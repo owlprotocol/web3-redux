@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import BlockNumber from '../../abis/BlockNumber.json';
 
-import { createStore } from '../../store';
+import { createStore, StoreType } from '../../store';
 import { Network, Block, Transaction, Contract } from '../../index';
 import { addressList, assertDeepEqual } from '../../test/utils';
 
@@ -20,7 +20,7 @@ function removeWeb3Contract(contract: Contract.Contract): Contract.Contract {
 }
 
 describe('network.actions', () => {
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
 
     beforeEach(() => {
         store = createStore();

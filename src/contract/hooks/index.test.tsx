@@ -11,7 +11,7 @@ import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { BlockNumber } from '../../types/web3/BlockNumber';
 
 import { useContractCall, contractCallHookFactory, useEvents, contractEventsHookFactory } from '../../contract/hooks';
-import { createStore } from '../../store';
+import { createStore, StoreType } from '../../store';
 import { Contract, Network } from '../../index';
 import { sleep } from '../../test/utils';
 import { getId } from '../model';
@@ -25,7 +25,7 @@ const networkId = '1337';
 describe('contract.hooks', () => {
     jsdom({ url: 'http://localhost' });
 
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
     let wrapper: any;
 
     let web3: Web3; //Web3 loaded from store

@@ -7,7 +7,7 @@ import ganache from 'ganache-core';
 import BlockNumber from '../../abis/BlockNumber.json';
 import Multicall from '../../abis/Multicall.json';
 
-import { createStore } from '../../store';
+import { createStore, StoreType } from '../../store';
 import { Block, Contract, Network, Transaction, Sync } from '../../index';
 import { TransactionReceipt } from 'web3-core';
 import { getId } from '../model';
@@ -20,7 +20,7 @@ describe('contract.sagas', () => {
     let web3: Web3; //Web3 loaded from store
     let web3Sender: Web3;
     let accounts: string[];
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
     let web3Contract: Web3Contract;
 
     let address: string;

@@ -17,6 +17,6 @@ jobs:
         with:
           node-version: "14.17"
       - name: Create Issue Branch
-        uses: robvanderleek/create-issue-branch@staging
+        uses: robvanderleek/create-issue-branch@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

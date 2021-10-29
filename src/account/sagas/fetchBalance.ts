@@ -11,7 +11,6 @@ export function* fetchBalance(action: FetchBalanceAction) {
 
     const { networkId, address } = getIdDeconstructed(payload);
     const network: Network = yield* call(networkExists, networkId);
-    console.debug(network);
     const web3 = network.web3;
     if (!web3) throw new Error(`Network ${networkId} missing web3`);
 

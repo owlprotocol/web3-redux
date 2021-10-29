@@ -36,7 +36,7 @@ export interface Transaction {
     to?: string | null;
     value?: string;
     gasPrice?: string;
-    gas?: string;
+    gas?: number;
     input?: string;
     //Other
     blockId?: string | null;
@@ -71,10 +71,9 @@ export function transactionId({ hash, networkId }: TransactionId) {
 }
 
 export function validatedTransaction(transaction: Transaction): Transaction {
-    const { networkId, hash, from, to, gas, gasPrice, blockNumber } = transaction;
+    const { networkId, hash, from, to, gasPrice, blockNumber } = transaction;
     const fromCheckSum = from ? Web3.utils.toChecksumAddress(from) : undefined;
     const toCheckSum = to ? Web3.utils.toChecksumAddress(to) : undefined;
-    const gasHex = gas ? Web3.utils.toHex(gas) : undefined;
     const gasPriceHex = gasPrice ? Web3.utils.toHex(gasPrice) : undefined;
     const id = transactionId({ networkId, hash });
     const transactionBlockId = blockNumber ? blockId({ networkId, number: blockNumber }) : undefined;
@@ -85,7 +84,6 @@ export function validatedTransaction(transaction: Transaction): Transaction {
         blockId: transactionBlockId,
         from: fromCheckSum,
         to: toCheckSum,
-        gas: gasHex,
         gasPrice: gasPriceHex,
     };
 }

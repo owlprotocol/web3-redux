@@ -1,4 +1,4 @@
-import { put, call } from 'redux-saga/effects';
+import { put, call } from 'typed-redux-saga/macro';
 import { validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions';
 import { create, CallAction, CALL } from '../actions';
@@ -13,9 +13,9 @@ function* contractCall(action: CallAction) {
         const { networkId, address, from, defaultBlock, argsHash } = payload;
 
         //@ts-ignore
-        yield call(networkExists, networkId);
+        yield* call(networkExists, networkId);
         //@ts-ignore
-        const contract: Contract = yield call(contractExists, networkId, address);
+        const contract: Contract = yield* call(contractExists, networkId, address);
 
         const web3Contract = contract.web3Contract!;
         let tx: any;
@@ -36,24 +36,24 @@ function* contractCall(action: CallAction) {
         });
 
         //Create base call
-        yield put(createEthCall(ethCall));
+        yield* put(createEthCall(ethCall));
 
         const contractCallSync = contract.methods[payload.method][argsHash];
         if (!contractCallSync) {
             contract.methods[payload.method][argsHash] = { ethCallId: ethCall.id };
-            yield put(create(contract));
+            yield* put(create(contract));
         } else if (contractCallSync.ethCallId != ethCall.id) {
             contract.methods[payload.method][argsHash].ethCallId = ethCall.id;
-            yield put(create(contract));
+            yield* put(create(contract));
         }
 
-        const gas = ethCall.gas ?? (yield call(tx.estimateGas, { ...ethCall })); //default gas
+        const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
         //@ts-ignore
-        const returnValue = yield call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
-        yield put(updateEthCall({ ...ethCall, returnValue }));
+        const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
+        yield* put(updateEthCall({ ...ethCall, returnValue }));
     } catch (error) {
         console.error(error);
-        yield put({
+        yield* put({
             type: CALL_ERROR,
             error,
             action,

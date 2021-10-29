@@ -1,4 +1,5 @@
-import { put, call, cancel, take, fork } from 'redux-saga/effects';
+import { Action } from 'redux';
+import { put, call, cancel, take, fork } from 'typed-redux-saga/macro';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';
@@ -50,20 +51,20 @@ function* eventSubscribe(action: EventSubscribeAction) {
         const { networkId, address, eventName } = payload;
 
         //@ts-ignore
-        yield call(networkExists, networkId);
+        yield* call(networkExists, networkId);
         //@ts-ignore
-        const contract: Contract = yield call(contractExists, networkId, address);
+        const contract: Contract = yield* call(contractExists, networkId, address);
 
         const web3Contract = contract.web3Contract!;
         const filter = payload.filter ?? {};
         const subscription = web3Contract.events[eventName]({ filter });
-        const channel: TakeableChannel<EventSubscribeChannelMessage> = yield call(eventSubscribeChannel, subscription);
+        const channel: TakeableChannel<EventSubscribeChannelMessage> = yield* call(eventSubscribeChannel, subscription);
 
         while (true) {
-            const message: EventSubscribeChannelMessage = yield take(channel);
+            const message: EventSubscribeChannelMessage = yield* take(channel);
             const { type, event, error } = message;
             if (type === SUBSCRIBE_DATA && event) {
-                yield put(
+                yield* put(
                     createEvent({
                         ...event,
                         networkId,
@@ -72,9 +73,9 @@ function* eventSubscribe(action: EventSubscribeAction) {
                     }),
                 );
             } else if (type === SUBSCRIBE_ERROR) {
-                yield put({ type: SUBSCRIBE_ERROR, error });
+                yield* put({ type: SUBSCRIBE_ERROR, error });
             } else if (type === SUBSCRIBE_CHANGED && event) {
-                yield put(
+                yield* put(
                     createEvent({
                         ...event,
                         networkId,
@@ -86,9 +87,9 @@ function* eventSubscribe(action: EventSubscribeAction) {
         }
     } catch (error) {
         console.error(error);
-        yield put({ type: SUBSCRIBE_ERROR, error });
+        yield* put({ type: SUBSCRIBE_ERROR, error });
     } finally {
-        yield put({ type: SUBSCRIBE_DONE });
+        yield* put({ type: SUBSCRIBE_DONE });
     }
 }
 
@@ -100,7 +101,7 @@ function* eventSubscribeLoop() {
     };
 
     while (true) {
-        const action: EventSubscribeAction | EventUnsubscribeAction = yield take(pattern);
+        const action: Action<EventSubscribeAction['type'] | EventUnsubscribeAction['type']> = yield* take(pattern);
         if (isEventSubscribeAction(action)) {
             const { payload } = action;
             //Only one active subscription per event per filter
@@ -108,14 +109,14 @@ function* eventSubscribeLoop() {
             if (!subscribed[eventId]) {
                 subscribed[eventId] = true;
                 //@ts-ignore
-                tasks[eventId] = yield fork(eventSubscribe, action);
+                tasks[eventId] = yield* fork(eventSubscribe, action);
             }
         } else if (isEventUnsubscribeAction(action)) {
             const { payload } = action;
             const eventId = eventSubscriptionHash(payload);
             if (subscribed[eventId]) {
                 subscribed[eventId] = false;
-                yield cancel(tasks[eventId]);
+                yield* cancel(tasks[eventId]);
             }
         }
     }

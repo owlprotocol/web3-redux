@@ -1,5 +1,5 @@
 import { END, eventChannel, EventChannel, TakeableChannel } from 'redux-saga';
-import { put, call, take } from 'redux-saga/effects';
+import { put, call, take } from 'typed-redux-saga/macro';
 import { PromiEvent, TransactionReceipt } from 'web3-core';
 import { ContractSendStatus } from '../../contractsend/model';
 import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions';
@@ -56,8 +56,8 @@ function* contractSend(action: SendAction) {
         const { networkId, address, method, args, from } = payload;
 
         //@ts-ignore
-        yield call(networkExists, networkId);
-        const contract: Contract = yield call(contractExists, networkId, address);
+        yield* call(networkExists, networkId);
+        const contract: Contract = yield* call(contractExists, networkId, address);
 
         const web3Contract = contract.web3SenderContract;
         if (!web3Contract) throw new Error(`${getId({ address, networkId })} has no web3SenderContract`);
@@ -82,24 +82,24 @@ function* contractSend(action: SendAction) {
             value,
         };
 
-        yield put(
+        yield* put(
             createContractSend({
                 ...baseContractSend,
                 status: ContractSendStatus.PENDING_SIGNATURE,
             }),
         );
 
-        const gas = payload.gas ?? (yield call(tx.estimateGas, { from, value }));
+        const gas = payload.gas ?? (yield* call(tx.estimateGas, { from, value }));
         const txPromiEvent: PromiEvent<TransactionReceipt> = tx.send({ from, gas, gasPrice, value });
 
-        const channel: TakeableChannel<ContractSendChannelMessage> = yield call(contractSendChannel, txPromiEvent);
+        const channel: TakeableChannel<ContractSendChannelMessage> = yield* call(contractSendChannel, txPromiEvent);
         let initialConfirm = false;
         while (true) {
-            const message: ContractSendChannelMessage = yield take(channel);
+            const message: ContractSendChannelMessage = yield* take(channel);
             const { type, hash, receipt, confirmations } = message;
             if (type === CONTRACT_SEND_HASH) {
-                yield put(createTransaction({ networkId, hash: hash! }));
-                yield put(
+                yield* put(createTransaction({ networkId, hash: hash! }));
+                yield* put(
                     updateContractSend({
                         ...baseContractSend,
                         transactionHash: hash!,
@@ -107,7 +107,7 @@ function* contractSend(action: SendAction) {
                     }),
                 );
             } else if (type === CONTRACT_SEND_RECEIPT) {
-                yield put(
+                yield* put(
                     updateContractSend({
                         ...baseContractSend,
                         receipt: receipt,
@@ -119,7 +119,7 @@ function* contractSend(action: SendAction) {
             } else if (type === CONTRACT_SEND_CONFIRMATION) {
                 if (!initialConfirm && confirmations && confirmations > 0) {
                     initialConfirm = true;
-                    yield put(
+                    yield* put(
                         updateContractSend({
                             ...baseContractSend,
                             confirmations: confirmations,
@@ -130,7 +130,7 @@ function* contractSend(action: SendAction) {
             } else if (type === CONTRACT_SEND_ERROR) {
                 const { error } = message;
                 //handle metamask reject or other errors
-                yield put(
+                yield* put(
                     updateContractSend({
                         ...baseContractSend,
                         error,
@@ -139,14 +139,14 @@ function* contractSend(action: SendAction) {
                 );
 
                 console.error(error);
-                yield put({ type: CONTRACT_SEND_ERROR, error, action });
+                yield* put({ type: CONTRACT_SEND_ERROR, error, action });
             }
         }
     } catch (error) {
         console.error(error);
-        yield put({ type: CONTRACT_SEND_ERROR, error, action });
+        yield* put({ type: CONTRACT_SEND_ERROR, error, action });
     } finally {
-        yield put({ type: CONTRACT_SEND_DONE, action });
+        yield* put({ type: CONTRACT_SEND_DONE, action });
     }
 }
 

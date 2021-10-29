@@ -7,7 +7,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
         'plugin:prettier/recommended',
     ],
-    plugins: ['@typescript-eslint', 'prettier', 'react-hooks'],
+    plugins: ['@typescript-eslint', 'prettier', 'react-hooks', '@jambit/typed-redux-saga'],
     parserOptions: {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
@@ -28,6 +28,8 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
+        '@jambit/typed-redux-saga/use-typed-effects': ['error', 'macro'],
+        '@jambit/typed-redux-saga/delegate-effects': 'error',
     },
     settings: {
         'import/resolver': {

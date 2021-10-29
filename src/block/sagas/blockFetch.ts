@@ -1,25 +1,23 @@
-import { put, call, takeEvery } from 'redux-saga/effects';
-import { BlockTransaction } from '../model';
+import { put, call, takeEvery } from 'typed-redux-saga/macro';
 import { create, update, FetchAction, isFetchAction } from '../actions';
 import networkExists from '../../network/sagas/networkExists';
-import { Network } from '../../network/model';
 
 export function* fetch(action: FetchAction, updateBlock = false) {
     const { payload } = action;
     const { networkId } = payload;
-    const network: Network = yield call(networkExists, networkId);
+    const network = yield* call(networkExists, networkId);
     if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
 
     const web3 = network.web3;
-    const block: BlockTransaction = yield call(
+    const block = yield* call(
         web3.eth.getBlock,
         payload.blockHashOrBlockNumber,
         payload.returnTransactionObjects ?? true,
     );
     if (!updateBlock) {
-        yield put(create({ ...block, networkId }));
+        yield* put(create({ ...block, networkId }));
     } else {
-        yield put(update({ ...block, networkId }));
+        yield* put(update({ ...block, networkId }));
     }
 }
 
@@ -38,7 +36,7 @@ function* fetchLoop() {
         return true;
     };
 
-    yield takeEvery(actionPattern, fetch);
+    yield* takeEvery(actionPattern, fetch);
 }
 
 export default fetchLoop;

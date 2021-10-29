@@ -1,7 +1,7 @@
-import { all, spawn } from 'redux-saga/effects';
+import { all, spawn } from 'typed-redux-saga/macro';
 import blockFetchLoop from './blockFetch';
 import blockSubscribeLoop from './blockSubscribe';
 
 export function* saga() {
-    yield all([spawn(blockFetchLoop), spawn(blockSubscribeLoop)]);
+    yield* all([spawn(blockFetchLoop), spawn(blockSubscribeLoop)]);
 }

@@ -37,37 +37,40 @@ export function isAction(action: { type: string }): action is Action {
     return isReducerAction(action) || isSagaAction(action);
 }
 
+export type {
+    CreateAction,
+    RemoveAction,
+    UpdateAction,
+    SetAction,
+    FetchBalanceAction,
+    FetchNonceAction,
+    FetchBalanceSyncedAction,
+    FetchNonceSyncedAction,
+};
+
 export {
     CREATE,
     create,
-    CreateAction,
     isCreateAction,
     REMOVE,
     remove,
-    RemoveAction,
     isRemoveAction,
     UPDATE,
     update,
-    UpdateAction,
     isUpdateAction,
     SET,
     set,
-    SetAction,
     isSetAction,
     FETCH_BALANCE,
     fetchBalance,
-    FetchBalanceAction,
     isFetchBalanceAction,
     FETCH_NONCE,
     fetchNonce,
-    FetchNonceAction,
     isFetchNonceAction,
     FETCH_BALANCE_SYNCED,
     fetchBalanceSynced,
-    FetchBalanceSyncedAction,
     isFetchBalanceSyncedAction,
     FETCH_NONCE_SYNCED,
     fetchNonceSynced,
-    FetchNonceSyncedAction,
     isFetchNonceSyncedAction,
 };

@@ -1,4 +1,4 @@
-import { put } from 'redux-saga/effects';
+import { put } from 'typed-redux-saga/macro';
 import { create as createSync } from '../../sync/actions';
 import { FetchNonceSyncedAction, FETCH_NONCE_SYNCED } from '../actions/fetchNonceSynced';
 
@@ -11,14 +11,14 @@ function* fetchNonceSynced(action: FetchNonceSyncedAction) {
 
         //Create Sync
         if (sync) {
-            yield put(createSync(sync));
+            yield* put(createSync(sync));
         }
 
         //Initial Action
-        yield put(fetchNonceAction);
+        yield* put(fetchNonceAction);
     } catch (error) {
         console.error(error);
-        yield put({
+        yield* put({
             type: FETCH_NONCE_SYNCED_ERROR,
             error,
             action,

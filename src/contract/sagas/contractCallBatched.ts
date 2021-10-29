@@ -1,4 +1,4 @@
-import { put, all, select, call } from 'redux-saga/effects';
+import { put, all, select, call } from 'typed-redux-saga/macro';
 import { validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
 import { Contract, callArgsHash, getId } from '../model';
@@ -14,14 +14,14 @@ function* contractCallBatched(action: CallBatchedAction) {
     try {
         const { payload } = action;
         const { requests, networkId } = payload;
-        const network: Network = yield call(networkExists, networkId);
+        const network: Network = yield* call(networkExists, networkId);
         if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
 
         const web3 = network.web3;
         const multicallContract = network.multicallContract;
 
         const contractIds = Array.from(new Set(requests.map((f) => getId({ address: f.address, networkId }))));
-        const selectResult: ReturnType<typeof selectByIdMany> = yield select(selectByIdMany, contractIds);
+        const selectResult: ReturnType<typeof selectByIdMany> = yield* select(selectByIdMany, contractIds);
         const contracts = selectResult.filter((c) => !!c) as Contract[];
         const contractsByAddress: { [key: string]: Contract } = {};
         contracts.filter((c) => c != null).forEach((c) => (contractsByAddress[c.address] = c));
@@ -69,9 +69,9 @@ function* contractCallBatched(action: CallBatchedAction) {
         });
 
         //All update eth call
-        yield all(preCallTasks.map((x) => x.putEthCallTask));
+        yield* all(preCallTasks.map((x) => x.putEthCallTask));
         //All update contract
-        yield all(contracts.map((c) => put(create(c))));
+        yield* all(contracts.map((c) => put(create(c))));
 
         //If not Multicall, or from/defaultBlock specified
         const regularCallTasks = preCallTasks.filter((t) => {
@@ -166,7 +166,7 @@ function* contractCallBatched(action: CallBatchedAction) {
         yield updateEthCallTasks;
     } catch (error) {
         console.error(error);
-        yield put({
+        yield* put({
             type: CALL_BATCHED_ERROR,
             error,
             action,

@@ -19,7 +19,7 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
         fromBlock = payload.fromBlock;
     }
 
-    let toBlock: number | string;
+    let toBlock: number | 'latest';
     if (!payload.toBlock || payload.toBlock === 'latest') {
         toBlock = 'latest';
     } else {

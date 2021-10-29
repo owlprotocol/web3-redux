@@ -1,4 +1,4 @@
-import { put, all, takeEvery } from 'redux-saga/effects';
+import { put, all, takeEvery } from 'typed-redux-saga/macro';
 import Web3 from 'web3';
 import * as NetworkActions from '../network/actions';
 import * as BlockActions from '../block/actions';
@@ -44,9 +44,9 @@ function* initialize(action: InitializeAction) {
             return null;
         })
         .filter((t) => !!t);
-    yield all([...putActions, ...subscribeActions]);
+    yield* all([...putActions, ...subscribeActions]);
 }
 
 export function* saga() {
-    yield all([takeEvery(INITIALIZE, initialize)]);
+    yield* all([takeEvery(INITIALIZE, initialize)]);
 }

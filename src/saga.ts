@@ -1,4 +1,4 @@
-import { all, spawn } from 'redux-saga/effects';
+import { all, spawn } from 'typed-redux-saga/macro';
 
 import { saga as blockSaga } from './block/sagas';
 import { saga as transactionSaga } from './transaction/sagas';
@@ -10,7 +10,7 @@ import { saga as syncSaga } from './sync/sagas';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga.html
 export function* rootSaga() {
-    yield all([
+    yield* all([
         spawn(blockSaga),
         spawn(transactionSaga),
         spawn(contractSaga),

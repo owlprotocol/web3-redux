@@ -1,4 +1,4 @@
-import { put, call, cancel, fork, take } from 'redux-saga/effects';
+import { put, call, cancel, fork, take } from 'typed-redux-saga/macro';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import Web3 from 'web3';
 
@@ -10,7 +10,6 @@ import {
     isUnsubscribeAction,
     SUBSCRIBE,
     SubscribeAction,
-    UnsubscribeAction,
 } from '../actions';
 import { fetch as blockFetch } from './blockFetch';
 import networkExists from '../../network/sagas/networkExists';
@@ -55,22 +54,22 @@ function* subscribe(action: SubscribeAction) {
     const { payload } = action;
     const { networkId } = payload;
 
-    const network: Network = yield call(networkExists, networkId);
+    const network: Network = yield* call(networkExists, networkId);
     if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
     const web3 = network.web3;
 
     while (true) {
-        const channel: TakeableChannel<ChannelMessage> = yield call(subscribeChannel, web3);
+        const channel: TakeableChannel<ChannelMessage> = yield* call(subscribeChannel, web3);
 
         try {
             while (true) {
-                const message: ChannelMessage = yield take(channel);
+                const message: ChannelMessage = yield* take(channel);
                 const { type, block, error } = message;
                 if (type === SUBSCRIBE_DATA) {
                     const newBlock = { ...block!, networkId };
-                    yield put(create(newBlock));
+                    yield* put(create(newBlock));
                     if (payload.returnTransactionObjects ?? true) {
-                        yield fork(
+                        yield* fork(
                             blockFetch,
                             fetchAction({
                                 networkId,
@@ -82,9 +81,9 @@ function* subscribe(action: SubscribeAction) {
                     }
                 } else if (type === SUBSCRIBE_CHANGED) {
                     const newBlock = { ...block!, networkId };
-                    yield put(create(newBlock));
+                    yield* put(create(newBlock));
                     if (payload.returnTransactionObjects) {
-                        yield fork(
+                        yield* fork(
                             blockFetch,
                             fetchAction({
                                 networkId,
@@ -96,13 +95,13 @@ function* subscribe(action: SubscribeAction) {
                     }
                 } else if (type === SUBSCRIBE_ERROR) {
                     console.error(error);
-                    yield put({ type: SUBSCRIBE_ERROR, error });
+                    yield* put({ type: SUBSCRIBE_ERROR, error });
                 }
             }
         } catch (error) {
-            yield put({ type: SUBSCRIBE_ERROR, error });
+            yield* put({ type: SUBSCRIBE_ERROR, error });
         } finally {
-            yield put({ type: SUBSCRIBE_DONE });
+            yield* put({ type: SUBSCRIBE_DONE });
         }
     }
 }
@@ -116,7 +115,7 @@ function* subscribeLoop() {
     };
 
     while (true) {
-        const action: SubscribeAction | UnsubscribeAction = yield take(pattern);
+        const action = yield* take(pattern); // as SubscribeAction | UnsubscribeAction>;
 
         if (isSubscribeAction(action)) {
             const { payload } = action;
@@ -127,7 +126,7 @@ function* subscribeLoop() {
                 //TODO: Allow editing of subscription params (auto-cancel)
                 subscribed[networkId] = true;
                 //@ts-ignore
-                tasks[networkId] = yield fork(subscribe, action);
+                tasks[networkId] = yield* fork(subscribe, action);
             }
         } else if (isUnsubscribeAction(action)) {
             const { payload } = action;
@@ -135,7 +134,7 @@ function* subscribeLoop() {
 
             if (subscribed[networkId]) {
                 subscribed[networkId] = false;
-                yield cancel(tasks[networkId]);
+                yield* cancel(tasks[networkId]);
             }
         }
     }

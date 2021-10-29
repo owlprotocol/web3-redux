@@ -1,4 +1,4 @@
-import { put } from 'redux-saga/effects';
+import { put } from 'typed-redux-saga/macro';
 import { create as createSync } from '../../sync/actions';
 import { FetchBalanceSyncedAction, FETCH_BALANCE_SYNCED } from '../actions/fetchBalanceSynced';
 
@@ -11,14 +11,14 @@ function* fetchBalanceSynced(action: FetchBalanceSyncedAction) {
 
         //Create Sync
         if (sync) {
-            yield put(createSync(sync));
+            yield* put(createSync(sync));
         }
 
         //Initial Action
-        yield put(fetchBalanceAction);
+        yield* put(fetchBalanceAction);
     } catch (error) {
         console.error(error);
-        yield put({
+        yield* put({
             type: FETCH_BALANCE_SYNCED_ERROR,
             error,
             action,

@@ -1,6 +1,6 @@
-import { all, spawn } from 'redux-saga/effects';
+import { all, spawn } from 'typed-redux-saga/macro';
 import fetchLoop from './transactionFetch';
 
 export function* saga() {
-    yield all([spawn(fetchLoop)]);
+    yield* all([spawn(fetchLoop)]);
 }

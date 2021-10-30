@@ -1,8 +1,6 @@
 import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import Ganache from 'ganache-core';
-import Web3 from 'web3';
 
 import { name } from '../common';
 import { createStore, StoreType } from '../../store';
@@ -17,8 +15,6 @@ describe(`${name}.hooks`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
-    let web3: Web3;
-
     const networkId = '1337';
 
     let item: InterfacePartial;
@@ -27,13 +23,6 @@ describe(`${name}.hooks`, () => {
 
     let wrapper: any;
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
-        //@ts-ignore
-        web3 = new Web3(provider);
-        console.debug(web3.currentProvider);
-
         item = { networkId, number: 0 };
         id = getId(item);
         itemWithId = { id, ...item };

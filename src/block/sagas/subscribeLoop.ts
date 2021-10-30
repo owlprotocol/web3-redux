@@ -1,5 +1,8 @@
-import { take, cancel } from 'typed-redux-saga/macro';
+import { take, cancel, fork } from 'typed-redux-saga/macro';
 import { isSubscribeAction, isUnsubscribeAction } from '../actions';
+import { SubscribeAction } from '../actions/subscribe';
+import { UnsubscribeAction } from '../actions/unsubscribe';
+import subscribe from './subscribe';
 
 function* subscribeLoop() {
     const subscribed: { [key: string]: boolean } = {};
@@ -10,7 +13,7 @@ function* subscribeLoop() {
     };
 
     while (true) {
-        const action = yield* take(pattern); // as SubscribeAction | UnsubscribeAction>;
+        const action = (yield* take(pattern)) as SubscribeAction | UnsubscribeAction;
 
         if (isSubscribeAction(action)) {
             const { payload } = action;
@@ -20,7 +23,6 @@ function* subscribeLoop() {
                 //Only one active subscription per network
                 //TODO: Allow editing of subscription params (auto-cancel)
                 subscribed[networkId] = true;
-                //@ts-ignore
                 tasks[networkId] = yield* fork(subscribe, action);
             }
         } else if (isUnsubscribeAction(action)) {

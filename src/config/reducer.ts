@@ -1,16 +1,26 @@
-import { ReducerAction, isSetNetworkIdAction, isSetAccountAction } from './actions';
+import { name } from './common';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
 
-export function reducer(sess: any, action: ReducerAction) {
-    const { Config } = sess;
-
-    if (isSetNetworkIdAction(action)) {
-        const networkId = action.payload;
-        //Config is singleton
-        Config.upsert({ id: 0, networkId });
-    } else if (isSetAccountAction(action)) {
-        //@ts-ignore Weird bug type never
-        const account = action.payload;
-        Config.upsert({ id: 0, account });
+export default function reducer(sess: any, action: ReducerAction) {
+    const Model = sess[name];
+    if (isCreateAction(action)) {
+        const { payload } = action;
+        //transactions created in saga middleware
+        const insertData = { ...payload, transactions: undefined };
+        //@ts-ignore
+        delete insertData.transactions;
+        Model.upsert(insertData);
+    } else if (isRemoveAction(action)) {
+        Model.withId(action.payload)?.delete();
+    } else if (isUpdateAction(action)) {
+        const { payload } = action;
+        //transactions created in saga middleware
+        const insertData = { ...payload, transactions: undefined };
+        //@ts-ignore
+        delete insertData.transactions;
+        Model.update(action.payload);
+    } else if (isSetAction(action)) {
+        Model.withId(action.payload.id)?.set(action.payload.key, action.payload.value);
     }
 
     return sess;

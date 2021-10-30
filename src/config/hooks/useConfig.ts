@@ -1,6 +1,6 @@
 import { useDebugValue } from 'react';
 import { useSelector } from 'react-redux';
-import { selectNetworkId, selectNetwork, selectAccount } from './selector';
+import { selectNetworkId, selectNetwork, selectAccount } from '../selectors';
 
 export function useNetworkId() {
     const value = useSelector(selectNetworkId);

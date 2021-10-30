@@ -5,7 +5,6 @@ const name = 'ContractEvent';
 
 export const CREATE = `${name}/CREATE`;
 export const REMOVE = `${name}/DELETE`;
-export const FETCH = `${name}/FETCH`;
 
 export const create = createAction(CREATE, (ContractEvent: PartialContractEvent) => {
     return { payload: validatedContractEvent(ContractEvent) };

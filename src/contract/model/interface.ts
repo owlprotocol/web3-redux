@@ -16,30 +16,30 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
  * @param web3SenderContract - Web3 Contract instance used for send transactions.
  */
 export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> {
-    id: string;
-    networkId: string;
-    address: string;
-    abi: AbiItem[];
-    methods: {
+    readonly id: string;
+    readonly networkId: string;
+    readonly address: string;
+    readonly abi: AbiItem[];
+    readonly methods: {
         [callerFunctionName: string]: {
             [argsHash: string]: { ethCallId?: string; sync?: Sync['type'] | false };
         };
     };
-    web3Contract?: T;
-    web3SenderContract?: T;
+    readonly web3Contract?: T;
+    readonly web3SenderContract?: T;
 }
 
 export interface ContractPartial<T extends BaseWeb3Contract = BaseWeb3Contract> {
-    networkId: string;
-    address: string;
-    abi: AbiItem[];
-    methods?: {
+    readonly networkId: string;
+    readonly address: string;
+    readonly abi: AbiItem[];
+    readonly methods?: {
         [callerFunctionName: string]: {
             [argsHash: string]: { ethCallId?: string; sync?: Sync['type'] | false };
         };
     };
-    web3Contract?: T;
-    web3SenderContract?: T;
+    readonly web3Contract?: T;
+    readonly web3SenderContract?: T;
 }
 
 /**
@@ -54,9 +54,26 @@ export interface ContractIdDeconstructed {
 }
 
 export type ContractId = ContractIdDeconstructed | string;
-export function getId({ address, networkId }: ContractIdDeconstructed): string {
+
+export type Interface<T extends BaseWeb3Contract = BaseWeb3Contract> = Contract<T>;
+export type InterfacePartial = ContractPartial;
+export type Id = string;
+export type IdDeconstructed = ContractIdDeconstructed;
+export type IdArgs = Id | IdDeconstructed;
+
+const SEPARATOR = '-';
+export function getId(id: ContractId): string {
+    if (typeof id == 'string') return id;
+    const { networkId, address } = id;
     const addressChecksum = toChecksumAddress(address);
-    return [networkId, addressChecksum].join('-');
+    return [networkId, addressChecksum].join(SEPARATOR);
+}
+export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
+    if (typeof id !== 'string') return id;
+
+    const [networkId, address] = id.split(SEPARATOR); //Assumes separator not messed up
+    const addressChecksum = toChecksumAddress(address);
+    return { networkId, address: addressChecksum };
 }
 
 export function validate(contract: ContractPartial): Contract {
@@ -78,3 +95,5 @@ export function validate(contract: ContractPartial): Contract {
         methods,
     };
 }
+
+export default Interface;

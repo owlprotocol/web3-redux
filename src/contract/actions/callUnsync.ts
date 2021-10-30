@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { Sync } from '../../sync/model';
 import { callHash } from '../model';
 import { CallActionInput } from './call';
-import { name } from './common';
+import { name } from '../common';
 
 export const CALL_UNSYNC = `${name}/CALL_UNSYNC`;
 export interface CallUnsyncActionInput extends CallActionInput {
@@ -22,3 +22,5 @@ export const callUnsync = createAction(CALL_UNSYNC, (payload: string | CallUnsyn
 
 export type CallUnsyncAction = ReturnType<typeof callUnsync>;
 export const isCallUnsyncAction = callUnsync.match;
+
+export default callUnsync;

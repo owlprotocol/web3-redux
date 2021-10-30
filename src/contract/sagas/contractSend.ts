@@ -5,7 +5,7 @@ import { ContractSendStatus } from '../../contractsend/model';
 import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions';
 import { create as createTransaction } from '../../transaction/actions';
 import { SEND, SendAction } from '../actions';
-import contractExists from './contractExists';
+import exists from './exists';
 import networkExists from '../../network/sagas/networkExists';
 import { Contract, getId } from '../model';
 
@@ -54,10 +54,11 @@ function* contractSend(action: SendAction) {
     try {
         const { payload } = action;
         const { networkId, address, method, args, from } = payload;
+        const id = getId({ networkId, address });
 
         //@ts-ignore
         yield* call(networkExists, networkId);
-        const contract: Contract = yield* call(contractExists, networkId, address);
+        const contract: Contract = yield* call(exists, id);
 
         const web3Contract = contract.web3SenderContract;
         if (!web3Contract) throw new Error(`${getId({ address, networkId })} has no web3SenderContract`);

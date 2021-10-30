@@ -4,7 +4,7 @@ import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';
 import { create as createEvent } from '../../contractevent/actions';
-import { eventSubscriptionHash } from '../model';
+import { eventSubscriptionHash, getId } from '../model';
 import {
     EventSubscribeAction,
     EventUnsubscribeAction,
@@ -13,7 +13,7 @@ import {
     isEventUnsubscribeAction,
 } from '../actions';
 import networkExists from '../../network/sagas/networkExists';
-import contractExists from './contractExists';
+import exists from './exists';
 
 const SUBSCRIBE_DATA = `${EVENT_SUBSCRIBE}/DATA`;
 const SUBSCRIBE_ERROR = `${EVENT_SUBSCRIBE}/ERROR`;
@@ -49,11 +49,12 @@ function* eventSubscribe(action: EventSubscribeAction) {
     try {
         const { payload } = action;
         const { networkId, address, eventName } = payload;
+        const id = getId({ networkId, address });
 
         //@ts-ignore
         yield* call(networkExists, networkId);
         //@ts-ignore
-        const contract: Contract = yield* call(contractExists, networkId, address);
+        const contract: Contract = yield* call(exists, id);
 
         const web3Contract = contract.web3Contract!;
         const filter = payload.filter ?? {};

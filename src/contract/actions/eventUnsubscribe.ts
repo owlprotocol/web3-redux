@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from './common';
+import { name } from '../common';
 
 export const EVENT_UNSUBSCRIBE = `${name}/EVENT_UNSUBSCRIBE`;
 export interface EventUnsubscribeActionInput {
@@ -12,3 +12,5 @@ export const eventUnsubscribe = createAction<EventUnsubscribeActionInput>(EVENT_
 
 export type EventUnsubscribeAction = ReturnType<typeof eventUnsubscribe>;
 export const isEventUnsubscribeAction = eventUnsubscribe.match;
+
+export default eventUnsubscribe;

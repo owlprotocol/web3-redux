@@ -3,20 +3,23 @@ import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import ganache from 'ganache-core';
+import { name } from './common';
 
-import BlockNumber from '../../abis/BlockNumber.json';
-import Multicall from '../../abis/Multicall.json';
+import BlockNumber from '../abis/BlockNumber.json';
+import Multicall from '../abis/Multicall.json';
 
-import { createStore, StoreType } from '../../store';
-import { Block, Contract, Network, Transaction, Sync } from '../../index';
+import { createStore, StoreType } from '../store';
+import { Block, Contract, Network, Transaction, Sync } from '../index';
 import { TransactionReceipt } from 'web3-core';
-import { getId } from '../model';
-import { mineBlock, sleep, ganacheLogger } from '../../test/utils';
-import { validatedContractEvent } from '../../contractevent';
+import { getId } from './model';
+import { mineBlock, sleep, ganacheLogger } from '../test/utils';
+import { validatedContractEvent } from '../contractevent';
+
+import { selectContractCall, selectContractEvents } from './selectors';
 
 const networkId = '1337';
 
-describe('contract.sagas', () => {
+describe(`${name}.integration`, () => {
     let web3: Web3; //Web3 loaded from store
     let web3Sender: Web3;
     let accounts: string[];
@@ -98,7 +101,7 @@ describe('contract.sagas', () => {
             await sleep(150);
 
             //Selector
-            const value = Contract.selectContractCallById(store.getState(), id, 'getValue');
+            const value = selectContractCall(store.getState(), id, 'getValue');
 
             assert.equal(value, 42, 'getValue');
             assert.strictEqual(value, '42', 'getValue');
@@ -129,9 +132,9 @@ describe('contract.sagas', () => {
             await sleep(150);
 
             //Selector
-            const getValue = Contract.selectContractCallById(store.getState(), id, 'getValue');
+            const getValue = selectContractCall(store.getState(), id, 'getValue');
 
-            const blockNumber = Contract.selectContractCallById(store.getState(), id, 'blockNumber');
+            const blockNumber = selectContractCall(store.getState(), id, 'blockNumber');
 
             assert.equal(getValue, 42, 'getValue');
             assert.equal(blockNumber, expectedBlockNumber, 'blockNumber');
@@ -171,9 +174,9 @@ describe('contract.sagas', () => {
             await sleep(300);
 
             //Selector
-            const getValue = Contract.selectContractCallById(store.getState(), id, 'getValue');
+            const getValue = selectContractCall(store.getState(), id, 'getValue');
 
-            const blockNumber = Contract.selectContractCallById(store.getState(), id, 'blockNumber');
+            const blockNumber = selectContractCall(store.getState(), id, 'blockNumber');
 
             assert.equal(getValue, 42, 'getValue');
             assert.equal(blockNumber, expectedBlockNumber, 'blockNumber');
@@ -200,12 +203,12 @@ describe('contract.sagas', () => {
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
-            const blockNumber1 = Contract.selectContractCallById(store.getState(), id, 'blockNumber');
+            const blockNumber1 = selectContractCall(store.getState(), id, 'blockNumber');
 
             //Increment block
             await mineBlock(web3);
 
-            const blockNumber2 = Contract.selectContractCallById(store.getState(), id, 'blockNumber');
+            const blockNumber2 = selectContractCall(store.getState(), id, 'blockNumber');
 
             assert.equal(parseInt(blockNumber2), parseInt(blockNumber1) + 1);
         });
@@ -227,7 +230,7 @@ describe('contract.sagas', () => {
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
-            const value1 = Contract.selectContractCallById(store.getState(), id, 'getValue');
+            const value1 = selectContractCall(store.getState(), id, 'getValue');
             assert.equal(value1, 42);
 
             //Send transaction to contract, triggering a refresh
@@ -244,7 +247,7 @@ describe('contract.sagas', () => {
 
             //Updated from transaction sync
             await sleep(150);
-            const value2 = Contract.selectContractCallById(store.getState(), id, 'getValue');
+            const value2 = selectContractCall(store.getState(), id, 'getValue');
             assert.equal(value2, 666);
         });
 
@@ -267,7 +270,7 @@ describe('contract.sagas', () => {
             const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
-            const value1 = Contract.selectContractCallById(store.getState(), id, 'getValue');
+            const value1 = selectContractCall(store.getState(), id, 'getValue');
             assert.equal(value1, 42);
 
             //Send transaction to contract, triggering a refresh
@@ -277,7 +280,7 @@ describe('contract.sagas', () => {
 
             //Updated from transaction sync
             await sleep(150);
-            const value2 = Contract.selectContractCallById(store.getState(), id, 'getValue');
+            const value2 = selectContractCall(store.getState(), id, 'getValue');
             assert.equal(value2, 666);
         });
     });
@@ -324,7 +327,7 @@ describe('contract.sagas', () => {
 
             await sleep(150);
 
-            const events1 = Contract.selectContractEventsByIdFiltered(store.getState(), id, 'NewValue');
+            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.deepEqual(events1, expectedEvents);
         });
     });
@@ -347,7 +350,7 @@ describe('contract.sagas', () => {
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
-            const events1 = Contract.selectContractEventsByIdFiltered(store.getState(), id, 'NewValue');
+            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.deepEqual(events1, expectedEvents);
         });
 
@@ -369,7 +372,7 @@ describe('contract.sagas', () => {
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
-            const events1 = Contract.selectContractEventsByIdFiltered(store.getState(), id, 'NewValue');
+            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.deepEqual(events1, expectedEvents);
         });
 
@@ -389,7 +392,7 @@ describe('contract.sagas', () => {
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
             //Expect no event to be captured
-            const events1 = Contract.selectContractEventsByIdFiltered(store.getState(), id, 'NewValue');
+            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.deepEqual(events1, expectedEvents);
         });
 
@@ -424,14 +427,14 @@ describe('contract.sagas', () => {
             const gas3 = await tx3.estimateGas();
             await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '10000' });
 
-            const events1 = Contract.selectContractEventsByIdFiltered(store.getState(), id, 'NewValue');
+            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.equal(events1?.length, expectedEvents.length, 'expectedEvents.length');
             assert.deepEqual(events1, expectedEvents, 'events value=any');
-            const events2 = Contract.selectContractEventsByIdFiltered(store.getState(), id, 'NewValue', {
+            const events2 = selectContractEvents(store.getState(), id, 'NewValue', {
                 value: '42',
             });
             assert.deepEqual(events2, [expectedEvents[0]], 'events value=42');
-            const events3 = Contract.selectContractEventsByIdFiltered(store.getState(), id, 'NewValue', {
+            const events3 = selectContractEvents(store.getState(), id, 'NewValue', {
                 value: '43',
             });
             assert.deepEqual(events3, [expectedEvents[1]], 'events value=43');

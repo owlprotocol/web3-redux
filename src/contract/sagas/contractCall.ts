@@ -1,9 +1,12 @@
 import { put, call } from 'typed-redux-saga/macro';
+
+import networkExists from '../../network/sagas/networkExists';
 import { validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions';
+
+import { getId } from '../model';
 import { create, CallAction, CALL } from '../actions';
-import contractExists from './contractExists';
-import networkExists from '../../network/sagas/networkExists';
+import exists from './exists';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 
@@ -11,11 +14,10 @@ function* contractCall(action: CallAction) {
     try {
         const { payload } = action;
         const { networkId, address, from, defaultBlock, argsHash } = payload;
+        const id = getId({ networkId, address });
 
-        //@ts-ignore
         yield* call(networkExists, networkId);
-        //@ts-ignore
-        const contract: Contract = yield* call(contractExists, networkId, address);
+        const contract = yield* call(exists, id);
 
         const web3Contract = contract.web3Contract!;
         let tx: any;

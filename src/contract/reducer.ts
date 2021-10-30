@@ -13,9 +13,11 @@ export function reducer(sess: any, action: ReducerAction) {
             );
 
         const validated = validate(action.payload);
+        //@ts-expect-error ignore readonly
         validated.web3Contract =
             validated.web3Contract ??
             (network.web3 ? new network.web3.eth.Contract(validated.abi, validated.address) : undefined);
+        //@ts-expect-error ignore readonly
         validated.web3SenderContract =
             validated.web3SenderContract ??
             (network.web3Sender ? new network.web3Sender.eth.Contract(validated.abi, validated.address) : undefined);

@@ -169,7 +169,9 @@ describe('network.actions', () => {
                 abi: BlockNumber.abi as any,
             };
             const contractValidated1 = Contract.validate(contract1);
+            //@ts-expect-error
             contractValidated1.web3Contract = undefined;
+            //@ts-expect-error
             contractValidated1.web3SenderContract = undefined;
             store.dispatch(Network.create(network));
             store.dispatch(Contract.create(contract1));

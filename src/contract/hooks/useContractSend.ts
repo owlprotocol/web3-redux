@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BaseWeb3Contract } from '../model';
 import { send } from '../actions';
-import { selectByAddressSingle as selectContractByAddressSingle } from '../selector';
+import selectSingle from '../selectors/selectByIdSingle';
 
 //Contract Send
 export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
@@ -10,7 +10,8 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
     address: string | undefined,
     method: K | undefined,
 ) {
-    const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
+    const id = networkId && address ? { networkId, address } : undefined;
+    const contract = useSelector((state) => selectSingle<T>(state, id));
     const contractExists = !!contract;
 
     const dispatch = useDispatch();

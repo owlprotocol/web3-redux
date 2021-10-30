@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from './common';
+import { name } from '../common';
 
 export const EVENT_GET_PAST = `${name}/EVENT_GET_PAST`;
 export interface EventGetPastActionInput {
@@ -33,3 +33,5 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
 
 export type EventGetPastAction = ReturnType<typeof eventGetPast>;
 export const isEventGetPastAction = eventGetPast.match;
+
+export default eventGetPast;

@@ -1,10 +1,11 @@
 import { put, all, call, fork } from 'typed-redux-saga/macro';
 import { EventData } from 'web3-eth-contract';
 import { create as createEvent } from '../../contractevent/actions';
-import { Contract } from '../model';
 import { EventGetPastAction, EVENT_GET_PAST } from '../actions';
-import contractExists from './contractExists';
 import networkExists from '../../network/sagas/networkExists';
+
+import { getId } from '../model';
+import exists from './exists';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
 
@@ -29,10 +30,11 @@ function* eventGetPast(action: EventGetPastAction) {
     try {
         const { payload } = action;
         const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch } = payload;
+        const id = getId({ networkId, address });
 
         const network = yield* call(networkExists, networkId);
         if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
-        const contract: Contract = yield* call(contractExists, networkId, address);
+        const contract = yield* call(exists, id);
 
         //Ranged queries
         let rangeLastBlock;

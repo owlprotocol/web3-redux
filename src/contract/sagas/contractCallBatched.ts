@@ -3,7 +3,7 @@ import { validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
 import { Contract, callArgsHash, getId } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
-import { selectByIdMany } from '../selector';
+import selectByIdMany from '../selectors/selectByIdMany';
 import networkExists from '../../network/sagas/networkExists';
 import { Network } from '../../network/model';
 import { ZERO_ADDRESS } from '../../utils';

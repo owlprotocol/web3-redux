@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from './common';
+import { name } from '../common';
 import { Sync } from '../../sync/model';
 import { callHash } from '../model';
 import { defaultTransactionSync } from '../../sync/model/TransactionSync';
@@ -42,3 +42,5 @@ export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionIn
 
 export type CallSyncedAction = ReturnType<typeof callSynced>;
 export const isCallSyncedAction = callSynced.match;
+
+export default callSynced;

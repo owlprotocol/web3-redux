@@ -9,13 +9,12 @@ function* fetchNonceSynced(action: FetchNonceSyncedAction) {
         const { payload } = action;
         const { sync, fetchNonceAction } = payload;
 
+        //Initial Action
+        yield* put(fetchNonceAction);
         //Create Sync
         if (sync) {
             yield* put(createSync(sync));
         }
-
-        //Initial Action
-        yield* put(fetchNonceAction);
     } catch (error) {
         console.error(error);
         yield* put({

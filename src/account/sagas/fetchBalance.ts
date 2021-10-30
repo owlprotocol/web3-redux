@@ -1,5 +1,4 @@
 import { put, call } from 'typed-redux-saga/macro';
-import { Network } from '../../network/model';
 import networkExists from '../../network/sagas/networkExists';
 import { getIdDeconstructed } from '../model/interface';
 import { set, FetchBalanceAction } from '../actions';
@@ -10,7 +9,7 @@ export function* fetchBalance(action: FetchBalanceAction) {
     yield* call(exists, payload);
 
     const { networkId, address } = getIdDeconstructed(payload);
-    const network: Network = yield* call(networkExists, networkId);
+    const network = yield* call(networkExists, networkId);
     const web3 = network.web3;
     if (!web3) throw new Error(`Network ${networkId} missing web3`);
 

@@ -1,45 +1,53 @@
 import { assert } from 'chai';
-import { CREATE, UPDATE, REMOVE, SET, create, update, remove, set } from './index';
 
 import { name } from '../common';
-import Interface, { InterfacePartial } from '../model/interface';
+import Interface, { getId, InterfacePartial } from '../model/interface';
 import { ZERO_ADDRESS } from '../../utils';
+
+import { create, CREATE, CreateAction, isCreateAction } from './create';
+import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
+import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
+import { set, SET, SetAction, isSetAction } from './set';
 
 describe(`${name}.actions`, () => {
     const networkId = '1337';
-    const account: InterfacePartial = { networkId, address: ZERO_ADDRESS };
-    const accountId = `${networkId}-${ZERO_ADDRESS}`;
+    const item: InterfacePartial = { networkId, address: ZERO_ADDRESS };
+    const id = getId(item);
 
     it('create', () => {
-        const expected = {
+        const expected: CreateAction = {
             type: CREATE,
-            payload: { id: accountId, ...account },
+            payload: { id: id, ...item },
         };
-        assert.deepEqual(create(account), expected);
+        assert.isTrue(isCreateAction(expected));
+        assert.deepEqual(create(item), expected);
     });
 
     it('update', () => {
-        const expected = {
+        const expected: UpdateAction = {
             type: UPDATE,
-            payload: { id: accountId, ...account },
+            payload: { id: id, ...item },
         };
-        assert.deepEqual(update(account), expected);
+        assert.isTrue(isUpdateAction(expected));
+        assert.deepEqual(update(item), expected);
     });
 
     it('remove', () => {
-        const expected = {
+        const expected: RemoveAction = {
             type: REMOVE,
-            payload: accountId,
+            payload: id,
         };
-        assert.deepEqual(remove(accountId), expected);
-        assert.deepEqual(remove(account), expected);
+        assert.isTrue(isRemoveAction(expected));
+        assert.deepEqual(remove(id), expected);
+        assert.deepEqual(remove(item), expected);
     });
 
     it('set', () => {
-        const expected = {
+        const expected: SetAction = {
             type: SET('networkId'),
-            payload: { id: accountId, key: 'networkId' as keyof Interface, value: account.networkId },
+            payload: { id: id, key: 'networkId' as keyof Interface, value: item.networkId },
         };
-        assert.deepEqual(set({ id: accountId, key: 'networkId', value: account.networkId }), expected);
+        assert.isTrue(isSetAction(expected));
+        assert.deepEqual(set({ id: id, key: 'networkId', value: item.networkId }), expected);
     });
 });

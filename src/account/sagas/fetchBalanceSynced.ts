@@ -9,13 +9,12 @@ function* fetchBalanceSynced(action: FetchBalanceSyncedAction) {
         const { payload } = action;
         const { sync, fetchBalanceAction } = payload;
 
+        //Initial Action
+        yield* put(fetchBalanceAction);
         //Create Sync
         if (sync) {
             yield* put(createSync(sync));
         }
-
-        //Initial Action
-        yield* put(fetchBalanceAction);
     } catch (error) {
         console.error(error);
         yield* put({

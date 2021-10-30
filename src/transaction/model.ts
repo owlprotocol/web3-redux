@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { TransactionReceipt } from 'web3-eth';
-import { blockId } from '../block/model';
+import { getId as getBlockId } from '../block/model';
 
 /**
  * Transaction object.
@@ -76,7 +76,7 @@ export function validatedTransaction(transaction: Transaction): Transaction {
     const toCheckSum = to ? Web3.utils.toChecksumAddress(to) : undefined;
     const gasPriceHex = gasPrice ? Web3.utils.toHex(gasPrice) : undefined;
     const id = transactionId({ networkId, hash });
-    const transactionBlockId = blockNumber ? blockId({ networkId, number: blockNumber }) : undefined;
+    const transactionBlockId = blockNumber ? getBlockId({ networkId, number: blockNumber }) : undefined;
 
     return {
         ...transaction,

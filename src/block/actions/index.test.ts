@@ -1,184 +1,82 @@
 import { assert } from 'chai';
-import Web3 from 'web3';
-import { createStore, StoreType } from '../../store';
-import { Network, Block, Transaction } from '../../index';
-import { validatedBlock } from '../model';
 
-const networkId = '1337';
-const web3 = new Web3('http://locahost:8545');
-const network = {
-    networkId,
-    web3,
-};
+import { name } from '../common';
+import Interface, { getId, InterfacePartial } from '../model/interface';
 
-describe('block.actions', () => {
-    let store: StoreType;
+import { create, CREATE, CreateAction, isCreateAction } from './create';
+import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
+import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
+import { set, SET, SetAction, isSetAction } from './set';
+import { FETCH, fetch, FetchAction, isFetchAction } from './fetch';
+import { SUBSCRIBE, subscribe, SubscribeAction, isSubscribeAction } from './subscribe';
+import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from './unsubscribe';
 
-    beforeEach(() => {
-        store = createStore();
-        store.dispatch(Network.create(network));
+describe(`${name}.actions`, () => {
+    const networkId = '1337';
+    const item: InterfacePartial = { networkId, number: 0 };
+    const id = getId(item);
+
+    it('create', () => {
+        const expected: CreateAction = {
+            type: CREATE,
+            payload: { id: id, ...item },
+        };
+        assert.isTrue(isCreateAction(expected));
+        assert.deepEqual(create(item), expected);
     });
 
-    describe('selectors:empty', () => {
-        it('selectSingle(state, id) => undefined', async () => {
-            const selected = Block.selectByIdSingle(store.getState(), '');
-            assert.equal(selected, undefined);
-        });
-
-        it('selectByIdMany(state, [id]) => []', async () => {
-            const selected = Block.selectByIdMany(store.getState(), ['']);
-            assert.deepEqual(selected, [null]);
-        });
-
-        it('selectSingleTransactions(state, blockId) => null', async () => {
-            const selected = Block.selectSingleTransactions(store.getState(), '');
-            assert.equal(selected, null);
-        });
-
-        it('selectManyTransactions(state, [blockNo]) => [null]', async () => {
-            const selected = Block.selectManyTransactions(store.getState(), ['']);
-            assert.deepEqual(selected, [null]);
-        });
-
-        it('selectSingleBlockTransaction(state, blockId) => null', async () => {
-            const selected = Block.selectSingleBlockTransaction(store.getState(), '');
-            assert.equal(selected, null);
-        });
-
-        it('selectManyBlockTransaction(state, [blockNo]) => [null]', async () => {
-            const selected = Block.selectManyBlockTransaction(store.getState(), ['']);
-            assert.deepEqual(selected, [null]);
-        });
+    it('update', () => {
+        const expected: UpdateAction = {
+            type: UPDATE,
+            payload: { id: id, ...item },
+        };
+        assert.isTrue(isUpdateAction(expected));
+        assert.deepEqual(update(item), expected);
     });
 
-    describe('selectors:memoization', () => {
-        it('selectSingle(state, id)', async () => {
-            //Test payload != selected reference
-            const block1 = { networkId, number: 1 };
-            const block1Id = Block.blockId(block1);
-            const block1WithId = validatedBlock(block1);
-            store.dispatch(Block.create(block1)); //[redux antipattern] mutates block1 with id
-            const selected1 = Block.selectByIdSingle(store.getState(), block1Id);
-
-            assert.notEqual(selected1, block1WithId, 'unequal reference');
-            assert.deepEqual(selected1, block1WithId, 'equal deep values');
-
-            //Test selected unchanged after new block insert
-            const block2 = { networkId, number: 2 };
-            store.dispatch(Block.create(block2));
-
-            const selected2 = Block.selectByIdSingle(store.getState(), block1Id);
-            assert.equal(selected2, selected1, 'memoized selector');
-
-            //Test selected unchanged after transaction insert
-            const transaction1 = { networkId, hash: '0x1', blockNumber: 1 };
-            store.dispatch(Transaction.create(transaction1));
-
-            const selected3 = Block.selectByIdSingle(store.getState(), block1Id);
-            assert.equal(selected3, selected1, 'memoized selector');
-
-            //Test selected changed after block update
-            store.dispatch(Block.create({ ...block1, gasUsed: 1 }));
-
-            const selected4 = Block.selectByIdSingle(store.getState(), block1Id);
-            assert.notEqual(selected4, selected1, 'memoization should be invalidated');
-        });
-
-        it('selectSingleBlockTransaction(state, id)', async () => {
-            //Create block with transaction
-            const block1 = { networkId, number: 1 };
-            const block1Id = Block.blockId(block1);
-            store.dispatch(Block.create(block1)); //[redux antipattern] mutates block1 with id
-            const transaction1 = { networkId, hash: '0x1', blockNumber: 1 };
-            store.dispatch(Transaction.create(transaction1));
-
-            const selected1 = Block.selectSingleBlockTransaction(store.getState(), block1Id);
-
-            //Test selected unchanged after new block insert
-            const block2 = { networkId, number: 2 };
-            store.dispatch(Block.create(block2));
-
-            const selected2 = Block.selectSingleBlockTransaction(store.getState(), block1Id);
-            assert.equal(selected2, selected1, 'memoized selector');
-
-            //Test selected unchanged after unrelated transaction insert
-            const transaction2 = { networkId, hash: '0x2', blockNumber: 2 };
-            store.dispatch(Transaction.create(transaction2));
-
-            const selected3 = Block.selectSingleBlockTransaction(store.getState(), block1Id);
-            assert.equal(selected3, selected1, 'memoized selector');
-
-            //Test selected changed after related transaction insert
-            const transaction3 = { networkId, hash: '0x3', blockNumber: 1 };
-            store.dispatch(Transaction.create(transaction3));
-
-            const selected4 = Block.selectSingleBlockTransaction(store.getState(), block1Id);
-            assert.notEqual(selected4, selected1, 'memoization should be invalidated');
-        });
+    it('remove', () => {
+        const expected: RemoveAction = {
+            type: REMOVE,
+            payload: id,
+        };
+        assert.isTrue(isRemoveAction(expected));
+        assert.deepEqual(remove(id), expected);
+        assert.deepEqual(remove(item), expected);
     });
 
-    describe('selectors:many', () => {
-        it('selectMany(state)', async () => {
-            const block1 = { networkId, number: 1 };
-            const validated1 = Block.validatedBlock(block1);
-            store.dispatch(Block.create(block1));
+    it('set', () => {
+        const expected: SetAction = {
+            type: SET('networkId'),
+            payload: { id: id, key: 'networkId' as keyof Interface, value: item.networkId },
+        };
+        assert.isTrue(isSetAction(expected));
+        assert.deepEqual(set({ id: id, key: 'networkId', value: item.networkId }), expected);
+    });
 
-            //State
-            assert.deepEqual(
-                store.getState().web3Redux['Block'].itemsById[validated1.id!],
-                validated1,
-                'state.web3Redux.Block.itemsById',
-            );
+    it('fetch', () => {
+        const expected: FetchAction = {
+            type: FETCH,
+            payload: { networkId, blockHashOrBlockNumber: 0 },
+        };
+        assert.isTrue(isFetchAction(expected));
+        assert.deepEqual(fetch({ networkId, blockHashOrBlockNumber: 0 }), expected);
+    });
 
-            //Block.selectMany
-            assert.deepEqual(
-                Block.selectByIdMany(store.getState(), [validated1.id!]),
-                [validated1],
-                'selectMany([id])',
-            );
-            assert.deepEqual(Block.selectByIdMany(store.getState()), [validated1], 'Block.selectMany()');
-        });
+    it('subscribe', () => {
+        const expected: SubscribeAction = {
+            type: SUBSCRIBE,
+            payload: { networkId },
+        };
+        assert.isTrue(isSubscribeAction(expected));
+        assert.deepEqual(subscribe({ networkId }), expected);
+    });
 
-        it('selectManyTransactions', async () => {
-            const block1 = { networkId, number: 1 };
-            const transaction1 = { networkId, hash: '0x1', blockNumber: 1 };
-            store.dispatch(Block.create(block1));
-            store.dispatch(Transaction.create(transaction1));
-
-            const expectedBlock = Block.validatedBlock(block1);
-            const expectedTransaction = Transaction.validatedTransaction(transaction1);
-
-            assert.deepEqual(
-                Block.selectManyTransactions(store.getState(), [expectedBlock.id!]),
-                [[expectedTransaction]],
-                'selectTransactions([id])',
-            );
-            assert.deepEqual(
-                Block.selectManyTransactions(store.getState()),
-                [[expectedTransaction]],
-                'selectTransactions()',
-            );
-        });
-
-        it('selectManyBlockTransaction', async () => {
-            const block1 = { networkId, number: 1 };
-            const transaction1 = { networkId, hash: '0x1', blockNumber: 1 };
-            store.dispatch(Block.create(block1));
-            store.dispatch(Transaction.create(transaction1));
-
-            const expectedBlock = Block.validatedBlock(block1);
-            const expectedTransaction = Transaction.validatedTransaction(transaction1);
-
-            assert.deepEqual(
-                Block.selectManyBlockTransaction(store.getState(), [expectedBlock.id!]),
-                [{ ...expectedBlock, transactions: [expectedTransaction] }],
-                'selectBlockTransaction([id])',
-            );
-            assert.deepEqual(
-                Block.selectManyBlockTransaction(store.getState()),
-                [{ ...expectedBlock, transactions: [expectedTransaction] }],
-                'selectBlockTransaction()',
-            );
-        });
+    it('unsubscribe', () => {
+        const expected: UnsubscribeAction = {
+            type: UNSUBSCRIBE,
+            payload: networkId,
+        };
+        assert.isTrue(isUnsubscribeAction(expected));
+        assert.deepEqual(unsubscribe(networkId), expected);
     });
 });

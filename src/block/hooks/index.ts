@@ -1,3 +1,4 @@
-import useBlockSync from './useBlockSync';
+import useByIdSingle from './useByIdSingle';
+import useByIdMany from './useByIdMany';
 
-export { useBlockSync };
+export { useByIdSingle, useByIdMany };

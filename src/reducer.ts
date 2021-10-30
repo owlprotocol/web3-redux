@@ -1,5 +1,5 @@
 import * as NetworkActions from './network/actions';
-import * as BlockActions from './block/actions';
+import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import * as TransactionActions from './transaction/actions';
 import * as ContractActions from './contract/actions';
 import * as ContractEventActions from './contractevent/actions';
@@ -10,7 +10,7 @@ import * as Web3ReduxActions from './web3Redux/actions';
 import { Action as AccountAction, isReducerAction as isAccountAction } from './account/actions';
 import * as SyncActions from './sync/actions';
 import { reducer as networkReducer } from './network/reducer';
-import { reducer as blockReducer } from './block/reducer';
+import blockReducer from './block/reducer';
 import { reducer as transactionReducer } from './transaction/reducer';
 import { reducer as contractReducer } from './contract/reducer';
 import { reducer as contractEventReducer } from './contractevent/reducer';
@@ -24,7 +24,7 @@ import { orm, initializeState } from './orm';
 
 export type Action =
     | NetworkActions.Action
-    | BlockActions.Action
+    | BlockAction
     | TransactionActions.Action
     | ContractActions.Action
     | ContractEventActions.Action
@@ -38,7 +38,7 @@ export type Action =
 export function rootReducer(state: any, action: Action) {
     const sess = orm.session(state || initializeState(orm));
     if (NetworkActions.isReducerAction(action)) networkReducer(sess, action);
-    else if (BlockActions.isReducerAction(action)) blockReducer(sess, action);
+    else if (isBlockAction(action)) blockReducer(sess, action);
     else if (TransactionActions.isReducerAction(action)) transactionReducer(sess, action);
     else if (ContractActions.isReducerAction(action)) contractReducer(sess, action);
     else if (ContractEventActions.isReducerAction(action)) contractEventReducer(sess, action);

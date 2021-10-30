@@ -1,11 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Block, validatedBlock } from '../model';
-import { name } from './common';
+import { name } from '../common';
+import { InterfacePartial, validate } from '../model/interface';
 
 export const UPDATE = `${name}/UPDATE`;
-export const update = createAction(UPDATE, (payload: Block) => {
-    return { payload: validatedBlock(payload) };
+export const update = createAction(UPDATE, (payload: InterfacePartial) => {
+    return { payload: validate(payload) };
 });
 
 export type UpdateAction = ReturnType<typeof update>;
 export const isUpdateAction = update.match;
+
+export default update;

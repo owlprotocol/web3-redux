@@ -72,7 +72,7 @@ describe('network.actions', () => {
     describe('selectors:latestBlock', () => {
         it('selectLatestBlock(state, id)', async () => {
             const block1 = { networkId, number: 1 };
-            const blockValidated1 = Block.validatedBlock(block1);
+            const blockValidated1 = Block.validate(block1);
             store.dispatch(Network.create(network));
             store.dispatch(Block.create(block1));
 
@@ -124,7 +124,7 @@ describe('network.actions', () => {
 
         it('selectManyBlocks(state)', async () => {
             const block1 = { networkId, number: 1 };
-            const blockValidated1 = Block.validatedBlock(block1);
+            const blockValidated1 = Block.validate(block1);
             store.dispatch(Network.create(network));
             store.dispatch(Block.create(block1));
 

@@ -1,19 +1,13 @@
-import { put, call, cancel, fork, take } from 'typed-redux-saga/macro';
+import { put, call, fork, take } from 'typed-redux-saga/macro';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import Web3 from 'web3';
 
-import { BlockHeader } from '../model';
-import {
-    create,
-    fetch as fetchAction,
-    isSubscribeAction,
-    isUnsubscribeAction,
-    SUBSCRIBE,
-    SubscribeAction,
-} from '../actions';
-import { fetch as blockFetch } from './blockFetch';
+import BlockHeader from '../model/BlockHeader';
+import { create, fetch as fetchAction, SUBSCRIBE } from '../actions';
+import { fetch as blockFetch } from './fetch';
 import networkExists from '../../network/sagas/networkExists';
 import { Network } from '../../network/model';
+import { SubscribeAction } from '../actions/subscribe';
 
 const SUBSCRIBE_CONNECTED = `${SUBSCRIBE}/CONNECTED`;
 const SUBSCRIBE_DATA = `${SUBSCRIBE}/DATA`;
@@ -106,38 +100,4 @@ function* subscribe(action: SubscribeAction) {
     }
 }
 
-function* subscribeLoop() {
-    const subscribed: { [key: string]: boolean } = {};
-    const tasks: { [key: string]: any } = {};
-
-    const pattern = (action: { type: string }) => {
-        return isSubscribeAction(action) || isUnsubscribeAction(action);
-    };
-
-    while (true) {
-        const action = yield* take(pattern); // as SubscribeAction | UnsubscribeAction>;
-
-        if (isSubscribeAction(action)) {
-            const { payload } = action;
-            const { networkId } = payload;
-
-            if (!subscribed[networkId]) {
-                //Only one active subscription per network
-                //TODO: Allow editing of subscription params (auto-cancel)
-                subscribed[networkId] = true;
-                //@ts-ignore
-                tasks[networkId] = yield* fork(subscribe, action);
-            }
-        } else if (isUnsubscribeAction(action)) {
-            const { payload } = action;
-            const networkId = payload;
-
-            if (subscribed[networkId]) {
-                subscribed[networkId] = false;
-                yield* cancel(tasks[networkId]);
-            }
-        }
-    }
-}
-
-export default subscribeLoop;
+export default subscribe;

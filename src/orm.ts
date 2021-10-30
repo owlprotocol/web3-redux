@@ -1,6 +1,6 @@
 import { ORM } from 'redux-orm';
 import NetworkModel from './network/orm';
-import BlockModel from './block/orm';
+import BlockModel from './block/model/orm';
 import TransactionModel from './transaction/orm';
 import ContractModel from './contract/model/orm';
 import ContractEventModel from './contractevent/orm';

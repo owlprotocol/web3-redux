@@ -24,8 +24,8 @@ export interface InterfacePartialWithId extends Partial<Interface> {
 }
 
 export interface InterfacePartialWithIdDeconstructed extends Partial<Interface> {
-    networkId: IdDeconstructed['networkId'];
-    address: IdDeconstructed['address'];
+    readonly networkId: IdDeconstructed['networkId'];
+    readonly address: IdDeconstructed['address'];
 }
 export type InterfacePartial = InterfacePartialWithId | InterfacePartialWithIdDeconstructed;
 export function isPartialWithId(x: InterfacePartial): x is InterfacePartialWithId {

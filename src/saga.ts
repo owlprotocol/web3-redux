@@ -1,7 +1,7 @@
 import { all, spawn } from 'typed-redux-saga/macro';
 
 import blockSaga from './block/sagas';
-import { saga as transactionSaga } from './transaction/sagas';
+import transactionSaga from './transaction/sagas';
 import { saga as contractSaga } from './contract/sagas';
 import ethCallSaga from './ethcall/sagas';
 import { saga as web3ReduxSaga } from './web3Redux/sagas';

@@ -1,6 +1,6 @@
 import { toChecksumAddress } from 'web3-utils';
 import { getId as getContractId } from '../../contract/model/interface';
-import { transactionId as getTransactionId } from '../../transaction/model';
+import { getTransactionId } from '../../transaction/model';
 import { ZERO_ADDRESS } from '../../utils';
 
 export interface IdDeconstructed {

@@ -36,7 +36,7 @@ describe('transaction.actions', () => {
         it('selectSingle(state, id)', async () => {
             //Test payload != selected reference
             const transaction1 = { networkId, hash: '0x1', from: addressList[0], to: addressList[1] };
-            const validated1 = Transaction.validatedTransaction(transaction1);
+            const validated1 = Transaction.validateTransaction(transaction1);
             store.dispatch(Transaction.create(transaction1));
             const selected1 = Transaction.selectByIdSingle(store.getState(), validated1.id!);
 
@@ -44,7 +44,7 @@ describe('transaction.actions', () => {
             assert.deepEqual(selected1, validated1, 'equal deep values');
 
             //Test selected unchanged after new insert
-            const transaction2 = Transaction.validatedTransaction({
+            const transaction2 = Transaction.validateTransaction({
                 networkId,
                 hash: '0x2',
                 from: addressList[0],
@@ -60,7 +60,7 @@ describe('transaction.actions', () => {
     describe('selectors:many', () => {
         it('selectMany(state)', async () => {
             const transaction1 = { networkId, hash: '0x1', from: addressList[0], to: addressList[1] };
-            const validated1 = Transaction.validatedTransaction(transaction1);
+            const validated1 = Transaction.validateTransaction(transaction1);
             store.dispatch(Transaction.create(transaction1));
 
             //State

@@ -1,6 +1,6 @@
 import { Block, BlockTransaction } from '../../block/model';
 import { create as createTransaction } from '../../transaction/actions';
-import { Transaction, transactionId } from '../../transaction/model';
+import { Transaction, getTransactionId } from '../../transaction/model';
 import { isStrings } from '../../utils';
 import BaseSync from './BaseSync';
 
@@ -50,7 +50,7 @@ export function createBlockTransactionsActions(block: Block) {
                 networkId: block.networkId,
                 blockNumber: block.number,
                 blockId: block.id!,
-                id: transactionId({ hash, networkId: block.networkId }),
+                id: getTransactionId({ hash, networkId: block.networkId }),
             });
         });
     } else {
@@ -59,7 +59,7 @@ export function createBlockTransactionsActions(block: Block) {
                 ...tx,
                 networkId: block.networkId,
                 blockId: block.id!,
-                id: transactionId({ hash: tx.hash, networkId: block.networkId }),
+                id: getTransactionId({ hash: tx.hash, networkId: block.networkId }),
             });
         });
     }

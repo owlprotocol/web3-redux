@@ -11,7 +11,7 @@ import { Action as AccountAction, isReducerAction as isAccountAction } from './a
 import * as SyncActions from './sync/actions';
 import networkReducer from './network/reducer';
 import blockReducer from './block/reducer';
-import { reducer as transactionReducer } from './transaction/reducer';
+import transactionReducer from './transaction/reducer';
 import { reducer as contractReducer } from './contract/reducer';
 import contractEventReducer from './contractevent/reducer';
 import contractSendReducer from './contractsend/reducer';

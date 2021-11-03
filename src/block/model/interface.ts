@@ -1,4 +1,4 @@
-import { validatedTransaction } from '../../transaction';
+import { validateTransaction } from '../../transaction';
 import { isStrings } from '../../utils';
 import Block from './Block';
 import BlockTransaction from './BlockTransaction';
@@ -50,7 +50,7 @@ export function validate(item: InterfacePartial): Interface {
     let transactions = item.transactions;
     if (transactions) {
         if (!isStrings(transactions))
-            transactions = transactions.map((t) => validatedTransaction({ ...t, networkId, blockNumber: number }));
+            transactions = transactions.map((t) => validateTransaction({ ...t, networkId, blockNumber: number }));
     }
 
     const result = {

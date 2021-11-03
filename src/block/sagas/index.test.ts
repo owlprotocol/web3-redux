@@ -3,7 +3,7 @@ import { testSaga } from 'redux-saga-test-plan';
 import Web3 from 'web3';
 import ganache from 'ganache-core';
 
-import { Network } from '../../network/model';
+import { Interface as Network } from '../../network/model/interface';
 
 import { name } from '../common';
 import { selectByIdSingle } from '../selectors';

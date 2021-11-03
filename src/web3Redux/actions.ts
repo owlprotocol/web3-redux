@@ -1,5 +1,5 @@
 import { SubscribeActionInput } from '../block/actions/subscribe';
-import { Network } from '../network/model';
+import { Interface as Network } from '../network/model/interface';
 
 const name = 'WEB3_REDUX';
 export const INITIALIZE = `${name}/INITIALIZE`;

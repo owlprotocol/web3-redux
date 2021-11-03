@@ -1,6 +1,6 @@
 import { useDebugValue } from 'react';
 import { useSelector } from 'react-redux';
-import { selectLatestBlockNumber } from '../selector';
+import selectLatestBlockNumber from '../selectors/selectLatestBlockNumber';
 
 export default function useLatestBlockNumber(networkId: string | undefined) {
     const value = useSelector((state: any) => selectLatestBlockNumber(state, networkId));

@@ -6,7 +6,7 @@ import { create as createContractSend, update as updateContractSend } from '../.
 import { create as createTransaction } from '../../transaction/actions';
 import { SEND, SendAction } from '../actions';
 import exists from './exists';
-import networkExists from '../../network/sagas/networkExists';
+import networkExists from '../../network/sagas/exists';
 import { Contract, getId } from '../model';
 
 const CONTRACT_SEND_HASH = `${SEND}/HASH`;

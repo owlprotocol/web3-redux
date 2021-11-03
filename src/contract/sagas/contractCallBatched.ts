@@ -4,8 +4,8 @@ import { create as createEthCall } from '../../ethcall/actions';
 import { Contract, callArgsHash, getId } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
 import selectByIdMany from '../selectors/selectByIdMany';
-import networkExists from '../../network/sagas/networkExists';
-import { Network } from '../../network/model';
+import networkExists from '../../network/sagas/exists';
+import { Interface as Network } from '../../network/model/interface';
 import { ZERO_ADDRESS } from '../../utils';
 
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;

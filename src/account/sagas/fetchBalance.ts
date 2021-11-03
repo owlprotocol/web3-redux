@@ -1,5 +1,5 @@
 import { put, call } from 'typed-redux-saga/macro';
-import networkExists from '../../network/sagas/networkExists';
+import networkExists from '../../network/sagas/exists';
 import { getIdDeconstructed } from '../model/interface';
 import { set, FetchBalanceAction } from '../actions';
 import exists from './exists';

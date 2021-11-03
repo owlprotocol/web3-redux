@@ -2,7 +2,7 @@ import { put, all, call, fork } from 'typed-redux-saga/macro';
 import { EventData } from 'web3-eth-contract';
 import { create as createEvent } from '../../contractevent/actions';
 import { EventGetPastAction, EVENT_GET_PAST } from '../actions';
-import networkExists from '../../network/sagas/networkExists';
+import networkExists from '../../network/sagas/exists';
 
 import { getId } from '../model';
 import exists from './exists';

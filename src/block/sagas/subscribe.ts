@@ -5,8 +5,8 @@ import Web3 from 'web3';
 import BlockHeader from '../model/BlockHeader';
 import { create, fetch as fetchAction, SUBSCRIBE } from '../actions';
 import { fetch as blockFetch } from './fetch';
-import networkExists from '../../network/sagas/networkExists';
-import { Network } from '../../network/model';
+import networkExists from '../../network/sagas/exists';
+import { Interface as Network } from '../../network/model/interface';
 import { SubscribeAction } from '../actions/subscribe';
 
 const SUBSCRIBE_CONNECTED = `${SUBSCRIBE}/CONNECTED`;

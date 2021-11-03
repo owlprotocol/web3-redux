@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AbiItem } from 'web3-utils';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selector';
+import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { BaseWeb3Contract } from '../model';
 import { create } from '../actions';
 import selectSingle from '../selectors/selectByIdSingle';

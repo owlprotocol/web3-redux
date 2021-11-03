@@ -1,6 +1,6 @@
 import { put, call } from 'typed-redux-saga/macro';
 import { create, update, FetchAction } from '../actions';
-import networkExists from '../../network/sagas/networkExists';
+import networkExists from '../../network/sagas/exists';
 
 export function* fetch(action: FetchAction, updateBlock = false) {
     const { payload } = action;

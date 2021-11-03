@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import * as BlockActions from '../actions';
-import * as NetworkSelector from '../../network/selector';
+import { selectById as selectNetwork, selectBlocks } from '../../network/selectors';
 import { useEffect, useCallback } from 'react';
 
 export const useBlockSync = (networkId: string | undefined, returnTransactionObjects = false) => {
     const dispatch = useDispatch();
 
-    const network = useSelector((state) => NetworkSelector.selectByIdSingle(state, networkId));
-    const blocks = useSelector((state) => NetworkSelector.selectSingleBlocks(state, networkId));
+    const network = useSelector((state) => selectNetwork(state, networkId));
+    const blocks = useSelector((state) => selectBlocks(state, networkId));
     const networkExists = !!network;
 
     //Recompute subscribe function if network is created, otherwise function is void

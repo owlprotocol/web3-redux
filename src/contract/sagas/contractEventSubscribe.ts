@@ -12,7 +12,7 @@ import {
     isEventSubscribeAction,
     isEventUnsubscribeAction,
 } from '../actions';
-import networkExists from '../../network/sagas/networkExists';
+import networkExists from '../../network/sagas/exists';
 import exists from './exists';
 
 const SUBSCRIBE_DATA = `${EVENT_SUBSCRIBE}/DATA`;

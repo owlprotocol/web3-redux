@@ -3,9 +3,9 @@ import { testSaga } from 'redux-saga-test-plan';
 import Web3 from 'web3';
 import ganache from 'ganache-core';
 
-import networkExists from '../../network/sagas/networkExists';
+import networkExists from '../../network/sagas/exists';
 import { ZERO_ADDRESS } from '../../utils';
-import { Network } from '../../network/model';
+import { Interface as Network } from '../../network/model/interface';
 import createSync from '../../sync/actions/create';
 
 import { name } from '../common';

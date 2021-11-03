@@ -1,9 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Network } from '../model';
-import { name } from './common';
+import { name } from '../common';
+import { Interface } from '../model/interface';
 
 export const CREATE = `${name}/CREATE`;
-export const create = createAction<Network>(CREATE);
+export const create = createAction(CREATE, (payload: Interface) => {
+    return { payload };
+});
 
 export type CreateAction = ReturnType<typeof create>;
 export const isCreateAction = create.match;
+
+export default create;

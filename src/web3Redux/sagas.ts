@@ -2,7 +2,7 @@ import { put, all, takeEvery } from 'typed-redux-saga/macro';
 import Web3 from 'web3';
 import * as NetworkActions from '../network/actions';
 import * as BlockActions from '../block/actions';
-import { Interface as Network } from '../network/model/interface';
+import { Network } from '../network/model';
 import { InitializeAction, INITIALIZE, NetworkWithSubscribe } from './actions';
 
 function* initialize(action: InitializeAction) {

@@ -1,5 +1,10 @@
-import { Interface, Id, IdDeconstructed, ContractSendStatus, validate, getId } from './interface';
+import { Interface, IdDeconstructed, getId, validate, ContractSendStatus } from './interface';
 import Model from './orm';
 
-export type { Interface, Id, IdDeconstructed, Model };
-export { validate, getId, ContractSendStatus };
+export type { Interface, IdDeconstructed };
+//alias
+export type { Interface as ContractSend, IdDeconstructed as ContractSendId };
+
+export { getId, validate, Model };
+export { getId as getContractSendId, validate as validateContractSend };
+export { ContractSendStatus };

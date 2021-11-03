@@ -1,9 +1,9 @@
-import { Interface, Id, IdDeconstructed, validate, getId } from './interface';
+import { Interface, IdDeconstructed, getId, validate } from './interface';
 import Model from './orm';
 
-export type { Interface, Id, IdDeconstructed, Model };
-//aliases
-export type { Interface as Transaction };
+export type { Interface, IdDeconstructed };
+//alias
+export type { Interface as Transaction, IdDeconstructed as TransactionId };
 
-export { validate, getId };
-export { validate as validateTransaction, getId as getTransactionId };
+export { getId, validate, Model };
+export { getId as getTransactionId, validate as validateTransaction };

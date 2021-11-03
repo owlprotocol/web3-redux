@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-orm';
 import { BaseWeb3Contract, CallArgsHash, callArgsHash, Contract, getId } from '../model';
 import { orm } from '../../orm';
-import { Interface as EthCall } from '../../ethcall/model';
+import { EthCall } from '../../ethcall/model';
 import { Await } from '../../types/promise';
 import { IdArgs } from '../model/interface';
 

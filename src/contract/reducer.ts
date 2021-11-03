@@ -1,6 +1,6 @@
 import { ReducerAction, isCreateAction, isRemoveAction } from './actions';
 import { validate, getId } from './model';
-import { Interface as Network } from '../network/model/interface';
+import { Network } from '../network/model';
 
 export function reducer(sess: any, action: ReducerAction) {
     const { Contract, Network } = sess;

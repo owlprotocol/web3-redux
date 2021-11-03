@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-orm';
 import { orm } from '../../orm';
-import { Interface as ContractEvent, ReturnValues } from '../../contractevent/model';
+import { ContractEvent, ReturnValues } from '../../contractevent/model';
 import { memoizedLodashFilter } from '../../memo';
 import { BaseWeb3Contract, IdArgs, getId } from '../model/interface';
 

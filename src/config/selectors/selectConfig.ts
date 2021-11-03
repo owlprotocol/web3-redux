@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-orm';
 import { orm } from '../../orm';
-import { Interface as Network } from '../../network/model/interface';
+import { Network } from '../../network/model';
 import selectByIdSingle from './selectByIdSingle';
 
 export const selectConfig = (state: any) => {

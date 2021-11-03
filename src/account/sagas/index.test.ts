@@ -5,7 +5,7 @@ import ganache from 'ganache-core';
 
 import networkExists from '../../network/sagas/exists';
 import { ZERO_ADDRESS } from '../../utils';
-import { Interface as Network } from '../../network/model/interface';
+import { Network } from '../../network/model';
 import createSync from '../../sync/actions/create';
 
 import { name } from '../common';

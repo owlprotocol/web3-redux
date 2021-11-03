@@ -1,7 +1,7 @@
-import { Interface as Event } from '../../contractevent/model';
+import { ContractEvent } from '../../contractevent/model';
 import BaseSync from './BaseSync';
 
-export default interface EventSync<T extends any = { [key: string]: string }> extends BaseSync<Event, T> {
+export default interface EventSync<T extends any = { [key: string]: string }> extends BaseSync<ContractEvent, T> {
     type: 'Event';
 }
 

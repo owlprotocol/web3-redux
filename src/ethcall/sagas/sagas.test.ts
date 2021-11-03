@@ -1,11 +1,11 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import ganache from 'ganache-core';
-import BlockNumber from '../abis/BlockNumber.json';
+import BlockNumber from '../../abis/BlockNumber.json';
 
-import { createStore, StoreType } from '../store';
-import { Network, EthCall } from '../index';
-import { sleep } from '../test/utils';
+import { createStore, StoreType } from '../../store';
+import { Network, EthCall } from '../../index';
+import { sleep } from '../../test/utils';
 
 const networkId = '1337';
 
@@ -39,7 +39,7 @@ describe('ethcall.sagas', () => {
         const tx2 = await contract.methods.setValue(42);
         await tx2.send({ from: accounts[0], gas: await tx2.estimateGas() });
 
-        const ethCall1 = EthCall.validatedEthCall({
+        const ethCall1 = EthCall.validate({
             networkId,
             from: accounts[0],
             to: contract.options.address,

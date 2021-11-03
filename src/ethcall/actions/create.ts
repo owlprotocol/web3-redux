@@ -1,11 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
-import { EthCall, validatedEthCall } from '../model';
-import { name } from './common';
+import { name } from '../common';
+import { Interface, validate } from '../model/interface';
 
 export const CREATE = `${name}/CREATE`;
-export const create = createAction(CREATE, (payload: EthCall) => {
-    return { payload: validatedEthCall(payload) };
+export const create = createAction(CREATE, (payload: Interface) => {
+    return { payload: validate(payload) };
 });
 
 export type CreateAction = ReturnType<typeof create>;
 export const isCreateAction = create.match;
+
+export default create;

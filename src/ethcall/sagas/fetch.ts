@@ -1,12 +1,12 @@
-import { put, call, takeEvery, all } from 'typed-redux-saga/macro';
-import { create, FetchAction, FETCH, update } from './actions';
-import { ZERO_ADDRESS } from '../utils';
-import networkExists from '../network/sagas/networkExists';
-import { Network } from '../network/model';
+import { put, call } from 'typed-redux-saga/macro';
+import { create, FetchAction, FETCH, update } from '../actions';
+import { ZERO_ADDRESS } from '../../utils';
+import networkExists from '../../network/sagas/networkExists';
+import { Network } from '../../network/model';
 
 const FETCH_ERROR = `${FETCH}/ERROR`;
 
-function* fetchSaga(action: FetchAction) {
+export default function* fetch(action: FetchAction) {
     try {
         const { payload } = action;
         const { networkId, defaultBlock } = payload;
@@ -35,8 +35,4 @@ function* fetchSaga(action: FetchAction) {
             action,
         });
     }
-}
-
-export function* saga() {
-    yield* all([takeEvery(FETCH, fetchSaga)]);
 }

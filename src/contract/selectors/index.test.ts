@@ -15,7 +15,7 @@ import {
     selectContractCall,
     selectContractEvents,
 } from './index';
-import { validatedEthCall } from '../../ethcall/model';
+import { validate as validatedEthCall } from '../../ethcall/model';
 import { ZERO_ADDRESS } from '../../utils';
 import { callArgsHash } from '../model/callArgs';
 import { validate as validatedContractEvent } from '../../contractevent/model';

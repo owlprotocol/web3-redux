@@ -4,7 +4,7 @@ import * as TransactionActions from './transaction/actions';
 import * as ContractActions from './contract/actions';
 import { Action as ContractEventAction, isReducerAction as isContractEventAction } from './contractevent/actions';
 import { Action as ContractSendAction, isReducerAction as isContractSendAction } from './contractsend/actions';
-import * as EthCallActions from './ethcall/actions';
+import { Action as EthCallAction, isReducerAction as isEthCallAction } from './ethcall/actions';
 import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
 import * as Web3ReduxActions from './web3Redux/actions';
 import { Action as AccountAction, isReducerAction as isAccountAction } from './account/actions';
@@ -15,7 +15,7 @@ import { reducer as transactionReducer } from './transaction/reducer';
 import { reducer as contractReducer } from './contract/reducer';
 import contractEventReducer from './contractevent/reducer';
 import contractSendReducer from './contractsend/reducer';
-import { reducer as ethCallReducer } from './ethcall/reducer';
+import ethCallReducer from './ethcall/reducer';
 import configReducer from './config/reducer';
 import accountReducer from './account/reducer';
 import { reducer as syncReducer } from './sync/reducer';
@@ -29,7 +29,7 @@ export type Action =
     | ContractActions.Action
     | ContractEventAction
     | ContractSendAction
-    | EthCallActions.Action
+    | EthCallAction
     | ConfigAction
     | Web3ReduxActions.Action
     | AccountAction
@@ -43,7 +43,7 @@ export function rootReducer(state: any, action: Action) {
     else if (ContractActions.isReducerAction(action)) contractReducer(sess, action);
     else if (isContractEventAction(action)) contractEventReducer(sess, action);
     else if (isContractSendAction(action)) contractSendReducer(sess, action);
-    else if (EthCallActions.isReducerAction(action)) ethCallReducer(sess, action);
+    else if (isEthCallAction(action)) ethCallReducer(sess, action);
     else if (isConfigAction(action)) configReducer(sess, action);
     else if (isAccountAction(action)) accountReducer(sess, action);
     else if (SyncActions.isReducerAction(action)) syncReducer(sess, action);

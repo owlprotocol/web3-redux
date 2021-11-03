@@ -1,5 +1,5 @@
 import { put, all, select, call } from 'typed-redux-saga/macro';
-import { validatedEthCall } from '../../ethcall/model';
+import { validate as validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
 import { Contract, callArgsHash, getId } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';

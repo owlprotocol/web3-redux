@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { createStore, StoreType } from '../../store';
-import { Network, EthCall } from '../../index';
-import { addressList } from '../../test/utils';
+import { createStore, StoreType } from '../store';
+import { Network, EthCall } from '../index';
+import { addressList } from '../test/utils';
 
 const networkId = '1337';
 const web3 = new Web3('http://locahost:8545');
@@ -30,7 +30,7 @@ describe('ethcall.actions', () => {
     describe('selectors:memoization', () => {
         it('selectSingle(state, id)', async () => {
             //Test payload != selected reference
-            const ethCall1 = EthCall.validatedEthCall({
+            const ethCall1 = EthCall.validate({
                 networkId,
                 from: addressList[0],
                 to: addressList[1],
@@ -43,7 +43,7 @@ describe('ethcall.actions', () => {
             assert.deepEqual(selected1, ethCall1, 'equal deep values');
 
             //Test selected unchanged after new insert
-            const ethCall2 = EthCall.validatedEthCall({
+            const ethCall2 = EthCall.validate({
                 networkId,
                 from: addressList[0],
                 to: addressList[1],

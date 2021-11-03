@@ -1,7 +1,7 @@
 import { put, call } from 'typed-redux-saga/macro';
 
 import networkExists from '../../network/sagas/networkExists';
-import { validatedEthCall } from '../../ethcall/model';
+import { validate as validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions';
 
 import { getId } from '../model';

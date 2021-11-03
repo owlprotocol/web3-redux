@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import coder from 'web3-eth-abi';
+import { AbiCoder } from 'web3-eth-abi';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../../common';
 import { orm } from '../../orm';
@@ -20,7 +20,8 @@ import { ZERO_ADDRESS } from '../../utils';
 import { callArgsHash } from '../model/callArgs';
 import { PartialContractEvent, validatedContractEvent } from '../../contractevent';
 
-//const coder: AbiCoder = require('web3-eth-abi');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const coder: AbiCoder = require('web3-eth-abi');
 
 describe(`${name}.selectors`, () => {
     const networkId = '1337';

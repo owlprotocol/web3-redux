@@ -2,7 +2,7 @@ import * as NetworkActions from './network/actions';
 import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import * as TransactionActions from './transaction/actions';
 import * as ContractActions from './contract/actions';
-import * as ContractEventActions from './contractevent/actions';
+import { Action as ContractEventAction, isReducerAction as isContractEventAction } from './contractevent/actions';
 import * as ContractSendActions from './contractsend/actions';
 import * as EthCallActions from './ethcall/actions';
 import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
@@ -13,7 +13,7 @@ import { reducer as networkReducer } from './network/reducer';
 import blockReducer from './block/reducer';
 import { reducer as transactionReducer } from './transaction/reducer';
 import { reducer as contractReducer } from './contract/reducer';
-import { reducer as contractEventReducer } from './contractevent/reducer';
+import contractEventReducer from './contractevent/reducer';
 import { reducer as contractSendReducer } from './contractsend/reducer';
 import { reducer as ethCallReducer } from './ethcall/reducer';
 import configReducer from './config/reducer';
@@ -27,7 +27,7 @@ export type Action =
     | BlockAction
     | TransactionActions.Action
     | ContractActions.Action
-    | ContractEventActions.Action
+    | ContractEventAction
     | ContractSendActions.Action
     | EthCallActions.Action
     | ConfigAction
@@ -41,7 +41,7 @@ export function rootReducer(state: any, action: Action) {
     else if (isBlockAction(action)) blockReducer(sess, action);
     else if (TransactionActions.isReducerAction(action)) transactionReducer(sess, action);
     else if (ContractActions.isReducerAction(action)) contractReducer(sess, action);
-    else if (ContractEventActions.isReducerAction(action)) contractEventReducer(sess, action);
+    else if (isContractEventAction(action)) contractEventReducer(sess, action);
     else if (ContractSendActions.isReducerAction(action)) contractSendReducer(sess, action);
     else if (EthCallActions.isReducerAction(action)) ethCallReducer(sess, action);
     else if (isConfigAction(action)) configReducer(sess, action);

@@ -5,7 +5,7 @@ import { Block } from '../block/model';
 import { Transaction } from '../transaction/model';
 import { Contract } from '../contract/model';
 import { orm } from '../orm';
-import { ContractEvent } from '../contractevent';
+import { Interface as ContractEvent } from '../contractevent';
 
 type selectByIdSingle = (state: any, id?: string) => Network | undefined;
 type selectByIdMany = (state: any, ids?: string[]) => (Network | null)[];

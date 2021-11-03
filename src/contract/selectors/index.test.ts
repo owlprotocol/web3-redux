@@ -18,7 +18,7 @@ import {
 import { validatedEthCall } from '../../ethcall/model';
 import { ZERO_ADDRESS } from '../../utils';
 import { callArgsHash } from '../model/callArgs';
-import { PartialContractEvent, validatedContractEvent } from '../../contractevent';
+import { validate as validatedContractEvent } from '../../contractevent/model';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');
@@ -50,7 +50,7 @@ describe(`${name}.selectors`, () => {
         blockHash: '0x0',
         logIndex: 0,
         returnValues: { val: 42 },
-    } as unknown as PartialContractEvent);
+    });
 
     const event2 = validatedContractEvent({
         networkId,
@@ -59,7 +59,7 @@ describe(`${name}.selectors`, () => {
         blockHash: '0x0',
         logIndex: 0,
         returnValues: { val: 43 },
-    } as unknown as PartialContractEvent);
+    });
 
     const state = {
         [REDUX_ROOT]: orm.getEmptyState(),
@@ -75,9 +75,9 @@ describe(`${name}.selectors`, () => {
 
         //Set Event
         state[REDUX_ROOT]['ContractEvent'].items.push(event1.id);
-        state[REDUX_ROOT]['ContractEvent'].itemsById[event1.id] = event1;
+        state[REDUX_ROOT]['ContractEvent'].itemsById[event1.id!] = event1;
         state[REDUX_ROOT]['ContractEvent'].items.push(event2.id);
-        state[REDUX_ROOT]['ContractEvent'].itemsById[event2.id] = event2;
+        state[REDUX_ROOT]['ContractEvent'].itemsById[event2.id!] = event2;
 
         const argsHash = callArgsHash(); //empty args
         itemWithId.methods['getValue'][argsHash] = { ethCallId: ethCall.id };

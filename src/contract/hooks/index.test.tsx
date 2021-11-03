@@ -15,7 +15,7 @@ import { createStore, StoreType } from '../../store';
 import { Contract, Network } from '../../index';
 import { sleep } from '../../test/utils';
 import { getId } from '../model';
-import { validatedContractEvent } from '../../contractevent/model';
+import { validate as validatedContractEvent } from '../../contractevent/model/interface';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

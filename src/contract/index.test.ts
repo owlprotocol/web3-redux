@@ -13,7 +13,7 @@ import { Block, Contract, Network, Transaction, Sync } from '../index';
 import { TransactionReceipt } from 'web3-core';
 import { getId } from './model';
 import { mineBlock, sleep, ganacheLogger } from '../test/utils';
-import { validatedContractEvent } from '../contractevent';
+import { validate as validatedContractEvent } from '../contractevent/model';
 
 import { selectContractCall, selectContractEvents } from './selectors';
 

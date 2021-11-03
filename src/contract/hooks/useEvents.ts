@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useMemo, useDebugValue } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReturnValues } from '../../contractevent/model';
+import { ReturnValues } from '../../contractevent/model/interface';
 import { BaseWeb3Contract } from '../model';
 import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions';
 import { EventGetPastActionInput } from '../actions/eventGetPast';

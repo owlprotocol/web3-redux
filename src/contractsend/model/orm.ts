@@ -1,11 +1,12 @@
-import { attr, fk, Model as ORMModel } from 'redux-orm';
+import { fk, attr, Model as ORMModel } from 'redux-orm';
+import { name } from '../common';
 
 export default class Model extends ORMModel {
     static options = {
         idAttribute: 'id',
     };
 
-    static modelName = 'ContractSend';
+    static modelName = name;
 
     static fields = {
         id: attr(),

@@ -1,4 +1,4 @@
 export * from './model';
 export * from './actions';
-export * from './selector';
+export * from './selectors';
 export * from './reducer';

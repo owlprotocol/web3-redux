@@ -3,7 +3,7 @@ import { Action as BlockAction, isReducerAction as isBlockAction } from './block
 import * as TransactionActions from './transaction/actions';
 import * as ContractActions from './contract/actions';
 import { Action as ContractEventAction, isReducerAction as isContractEventAction } from './contractevent/actions';
-import * as ContractSendActions from './contractsend/actions';
+import { Action as ContractSendAction, isReducerAction as isContractSendAction } from './contractsend/actions';
 import * as EthCallActions from './ethcall/actions';
 import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
 import * as Web3ReduxActions from './web3Redux/actions';
@@ -14,7 +14,7 @@ import blockReducer from './block/reducer';
 import { reducer as transactionReducer } from './transaction/reducer';
 import { reducer as contractReducer } from './contract/reducer';
 import contractEventReducer from './contractevent/reducer';
-import { reducer as contractSendReducer } from './contractsend/reducer';
+import contractSendReducer from './contractsend/reducer';
 import { reducer as ethCallReducer } from './ethcall/reducer';
 import configReducer from './config/reducer';
 import accountReducer from './account/reducer';
@@ -28,7 +28,7 @@ export type Action =
     | TransactionActions.Action
     | ContractActions.Action
     | ContractEventAction
-    | ContractSendActions.Action
+    | ContractSendAction
     | EthCallActions.Action
     | ConfigAction
     | Web3ReduxActions.Action
@@ -42,7 +42,7 @@ export function rootReducer(state: any, action: Action) {
     else if (TransactionActions.isReducerAction(action)) transactionReducer(sess, action);
     else if (ContractActions.isReducerAction(action)) contractReducer(sess, action);
     else if (isContractEventAction(action)) contractEventReducer(sess, action);
-    else if (ContractSendActions.isReducerAction(action)) contractSendReducer(sess, action);
+    else if (isContractSendAction(action)) contractSendReducer(sess, action);
     else if (EthCallActions.isReducerAction(action)) ethCallReducer(sess, action);
     else if (isConfigAction(action)) configReducer(sess, action);
     else if (isAccountAction(action)) accountReducer(sess, action);

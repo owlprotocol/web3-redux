@@ -4,7 +4,7 @@ import BlockModel from './block/model/orm';
 import TransactionModel from './transaction/orm';
 import ContractModel from './contract/model/orm';
 import ContractEventModel from './contractevent/model/orm';
-import ContractSendModel from './contractsend/orm';
+import ContractSendModel from './contractsend/model/orm';
 import EthCallModel from './ethcall/orm';
 import ConfigModel from './config/model/orm';
 import AccountModel from './account/model/orm';

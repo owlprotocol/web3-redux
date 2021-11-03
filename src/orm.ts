@@ -25,7 +25,7 @@ orm.register(ConfigModel);
 orm.register(AccountModel);
 orm.register(SyncModel);
 
-export const initializeState = (orm: any) => {
+const initializeState = (orm: any) => {
     const state = orm.getEmptyState();
 
     // By default, add blockTransactionsSync which dispatches
@@ -36,4 +36,5 @@ export const initializeState = (orm: any) => {
     return state;
 };
 
-export { orm };
+//https://stackoverflow.com/questions/58402334/globally-imported-variables-are-undefined
+export default { orm, initializeState };

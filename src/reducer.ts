@@ -12,15 +12,15 @@ import * as SyncActions from './sync/actions';
 import networkReducer from './network/reducer';
 import blockReducer from './block/reducer';
 import transactionReducer from './transaction/reducer';
-import { reducer as contractReducer } from './contract/reducer';
+import contractReducer from './contract/reducer';
 import contractEventReducer from './contractevent/reducer';
 import contractSendReducer from './contractsend/reducer';
 import ethCallReducer from './ethcall/reducer';
 import configReducer from './config/reducer';
 import accountReducer from './account/reducer';
-import { reducer as syncReducer } from './sync/reducer';
+import syncReducer from './sync/reducer';
 
-import { orm, initializeState } from './orm';
+import ORM from './orm';
 
 export type Action =
     | NetworkAction
@@ -36,7 +36,7 @@ export type Action =
     | SyncActions.Action;
 
 export function rootReducer(state: any, action: Action) {
-    const sess = orm.session(state || initializeState(orm));
+    const sess = ORM.orm.session(state || ORM.initializeState(ORM.orm));
     if (isNetworkAction(action)) networkReducer(sess, action);
     else if (isBlockAction(action)) blockReducer(sess, action);
     else if (TransactionActions.isReducerAction(action)) transactionReducer(sess, action);

@@ -8,7 +8,6 @@ function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(
     if (!id) return undefined;
 
     const idStr = getId(id);
-
     return select(state, idStr);
 }
 

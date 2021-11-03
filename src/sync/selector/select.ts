@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-orm';
-import { orm } from '../../orm';
+import ORM from '../../orm';
 
-const select = createSelector(orm.Sync);
+const select = createSelector(ORM.orm.Sync);
 
 export default select;

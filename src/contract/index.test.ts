@@ -2,20 +2,33 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
+import { TransactionReceipt } from 'web3-core';
 import ganache from 'ganache-core';
 import { name } from './common';
 
 import BlockNumber from '../abis/BlockNumber.json';
 import Multicall from '../abis/Multicall.json';
+import { mineBlock, sleep, ganacheLogger } from '../test/utils';
 
 import { createStore, StoreType } from '../store';
-import { Block, Contract, Network, Transaction, Sync } from '../index';
-import { TransactionReceipt } from 'web3-core';
-import { getId } from './model';
-import { mineBlock, sleep, ganacheLogger } from '../test/utils';
+import { subscribe as blockSubscribe } from '../block';
+import { create as createNetwork } from '../network';
 import { validate as validatedContractEvent } from '../contractevent/model';
+import { Sync } from '../sync/model';
+import selectSync from '../sync/selector/selectByIdSingle';
+import { fetch as fetchTransaction } from '../transaction/actions';
 
+import { getId } from './model';
 import { selectContractCall, selectContractEvents } from './selectors';
+import {
+    create as createAction,
+    call as callAction,
+    callBatched as callBatchedAction,
+    callSynced as callSyncedAction,
+    eventGetPast as eventGetPastAction,
+    send as sendAction,
+    eventSubscribe as eventSubscribeAction,
+} from './actions';
 
 const networkId = '1337';
 
@@ -56,7 +69,7 @@ describe(`${name}.integration`, () => {
 
     beforeEach(async () => {
         store = createStore();
-        store.dispatch(Network.create({ networkId, web3, web3Sender }));
+        store.dispatch(createNetwork({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(BlockNumber.abi as AbiItem[]).deploy({
             data: BlockNumber.bytecode,
@@ -67,7 +80,7 @@ describe(`${name}.integration`, () => {
         id = getId({ networkId, address });
 
         store.dispatch(
-            Contract.create({
+            createAction({
                 networkId,
                 address,
                 abi: BlockNumber.abi as AbiItem[],
@@ -85,14 +98,14 @@ describe(`${name}.integration`, () => {
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
             store.dispatch(
-                Contract.create({
+                createAction({
                     networkId,
                     address,
                     abi: BlockNumber.abi as AbiItem[],
                 }),
             );
             store.dispatch(
-                Contract.call({
+                callAction({
                     networkId,
                     address,
                     method: 'getValue',
@@ -128,7 +141,7 @@ describe(`${name}.integration`, () => {
                 method: 'blockNumber',
             };
 
-            store.dispatch(Contract.callBatched({ networkId, requests: [ethCall1, ethCall2] }));
+            store.dispatch(callBatchedAction({ networkId, requests: [ethCall1, ethCall2] }));
             await sleep(150);
 
             //Selector
@@ -157,7 +170,7 @@ describe(`${name}.integration`, () => {
             });
             const gas3 = await tx3.estimateGas();
             const multiCallContract = await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '10000' });
-            store.dispatch(Network.create({ networkId, web3, multicallAddress: multiCallContract.options.address }));
+            store.dispatch(createNetwork({ networkId, web3, multicallAddress: multiCallContract.options.address }));
             await sleep(150);
 
             const expectedBlockNumber = await web3.eth.getBlockNumber();
@@ -170,7 +183,7 @@ describe(`${name}.integration`, () => {
                 address,
                 method: 'blockNumber',
             };
-            store.dispatch(Contract.callBatched({ networkId, requests: [ethCall1, ethCall2] }));
+            store.dispatch(callBatchedAction({ networkId, requests: [ethCall1, ethCall2] }));
             await sleep(300);
 
             //Selector
@@ -190,17 +203,17 @@ describe(`${name}.integration`, () => {
     describe('callSynced', () => {
         it('({sync:Block})', async () => {
             //Block subscription used for updates
-            store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: false }));
-            const callSyncedAction = Contract.callSynced({
+            store.dispatch(blockSubscribe({ networkId, returnTransactionObjects: false }));
+            const action = callSyncedAction({
                 networkId,
                 address,
                 method: 'blockNumber',
                 sync: 'Block',
             });
-            store.dispatch(callSyncedAction);
+            store.dispatch(action);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
-            const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
+            const actionSync = action.payload.sync as Sync;
+            const selectedSync = selectSync(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
             const blockNumber1 = selectContractCall(store.getState(), id, 'blockNumber');
@@ -218,16 +231,16 @@ describe(`${name}.integration`, () => {
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
-            const callSyncedAction = Contract.callSynced({
+            const action = callSyncedAction({
                 networkId,
                 address,
                 method: 'getValue',
                 sync: 'Transaction',
             });
-            store.dispatch(callSyncedAction);
+            store.dispatch(action);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
-            const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
+            const actionSync = action.payload.sync as Sync;
+            const selectedSync = selectSync(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
             const value1 = selectContractCall(store.getState(), id, 'getValue');
@@ -239,7 +252,7 @@ describe(`${name}.integration`, () => {
             const receipt: TransactionReceipt = await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '10000' });
             //Fetch transaction, triggering a refresh
             store.dispatch(
-                Transaction.fetch({
+                fetchTransaction({
                     networkId,
                     hash: receipt.transactionHash,
                 }),
@@ -253,21 +266,21 @@ describe(`${name}.integration`, () => {
 
         it('({sync:Transaction}) - Block.subscribe', async () => {
             //Block subscription used for updates, must fetch transactions
-            store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: true }));
+            store.dispatch(blockSubscribe({ networkId, returnTransactionObjects: true }));
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
-            const callSyncedAction = Contract.callSynced({
+            const action = callSyncedAction({
                 networkId,
                 address,
                 method: 'getValue',
                 sync: 'Transaction',
             });
-            store.dispatch(callSyncedAction);
+            store.dispatch(action);
             await sleep(150);
-            const actionSync = callSyncedAction.payload.sync as Sync.Sync;
-            const selectedSync = Sync.selectByIdSingle(store.getState(), actionSync.id!);
+            const actionSync = action.payload.sync as Sync;
+            const selectedSync = selectSync(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
 
             const value1 = selectContractCall(store.getState(), id, 'getValue');
@@ -288,7 +301,7 @@ describe(`${name}.integration`, () => {
     describe('send', () => {
         it('store.dispatch(ContractSagas.send())', async () => {
             store.dispatch(
-                Contract.send({
+                sendAction({
                     networkId,
                     from: accounts[0],
                     address,
@@ -318,7 +331,7 @@ describe(`${name}.integration`, () => {
             await sleep(2000);
 
             store.dispatch(
-                Contract.eventGetPast({
+                eventGetPastAction({
                     networkId,
                     address,
                     eventName: 'NewValue',
@@ -339,7 +352,7 @@ describe(`${name}.integration`, () => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
             });
             store.dispatch(
-                Contract.eventSubscribe({
+                eventSubscribeAction({
                     networkId,
                     address,
                     eventName: 'NewValue',
@@ -360,7 +373,7 @@ describe(`${name}.integration`, () => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
             });
             store.dispatch(
-                Contract.eventSubscribe({
+                eventSubscribeAction({
                     networkId,
                     address,
                     eventName: 'NewValue',
@@ -379,7 +392,7 @@ describe(`${name}.integration`, () => {
         it('(...,filter): []', async (): Promise<void> => {
             const expectedEvents: any[] = [];
             store.dispatch(
-                Contract.eventSubscribe({
+                eventSubscribeAction({
                     networkId,
                     address,
                     eventName: 'NewValue',
@@ -402,7 +415,7 @@ describe(`${name}.integration`, () => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
             });
             store.dispatch(
-                Contract.eventSubscribe({
+                eventSubscribeAction({
                     networkId,
                     address,
                     eventName: 'NewValue',
@@ -411,7 +424,7 @@ describe(`${name}.integration`, () => {
             );
             //Second event listener
             store.dispatch(
-                Contract.eventSubscribe({
+                eventSubscribeAction({
                     networkId,
                     address,
                     eventName: 'NewValue',

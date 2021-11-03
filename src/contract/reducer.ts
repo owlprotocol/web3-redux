@@ -2,7 +2,7 @@ import { ReducerAction, isCreateAction, isRemoveAction } from './actions';
 import { validate, getId } from './model';
 import { Network } from '../network/model';
 
-export function reducer(sess: any, action: ReducerAction) {
+function reducer(sess: any, action: ReducerAction) {
     const { Contract, Network } = sess;
 
     if (isCreateAction(action)) {
@@ -32,3 +32,5 @@ export function reducer(sess: any, action: ReducerAction) {
 
     return sess;
 }
+
+export default reducer;

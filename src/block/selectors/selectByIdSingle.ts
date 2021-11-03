@@ -5,8 +5,6 @@ function selectByIdSingle(state: any, id: IdArgs | undefined): Interface | undef
     if (!id) return undefined;
 
     const idStr = getId(id);
-
-    //@ts-ignore
     return select(state, idStr) as Interface | undefined;
 }
 

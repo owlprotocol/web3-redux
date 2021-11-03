@@ -2,13 +2,13 @@ import { createSelector } from 'redux-orm';
 
 import { Transaction } from '../../transaction/model';
 import { BlockTransaction } from '../model';
-import { orm } from '../../orm';
+import ORM from '../../orm';
 
 type selectBlockTransactionSingle = (state: any, id: string) => BlockTransaction | null;
 type selectBlockTransactionMany = (state: any, ids?: string[]) => (BlockTransaction | null)[];
 export const selectBlockTransaction: selectBlockTransactionSingle | selectBlockTransactionMany = createSelector(
-    orm.Block,
-    orm.Block.transactions,
+    ORM.orm.Block,
+    ORM.orm.Block.transactions,
     (blocks: BlockTransaction | BlockTransaction[], transactions: Transaction[] | Transaction[][]) => {
         if (!blocks) return null;
 

@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { AbiCoder } from 'web3-eth-abi';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../../common';
-import { orm } from '../../orm';
+import ORM from '../../orm';
 
 import { getId, getIdDeconstructed, Interface, validate } from '../model/interface';
 import { name } from '../common';
@@ -62,7 +62,7 @@ describe(`${name}.selectors`, () => {
     });
 
     const state = {
-        [REDUX_ROOT]: orm.getEmptyState(),
+        [REDUX_ROOT]: ORM.orm.getEmptyState(),
     };
 
     before(() => {

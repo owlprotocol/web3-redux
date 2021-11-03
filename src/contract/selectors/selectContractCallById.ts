@@ -1,13 +1,13 @@
 import { createSelector } from 'redux-orm';
 import { BaseWeb3Contract, CallArgsHash, callArgsHash, Contract, getId } from '../model';
-import { orm } from '../../orm';
+import ORM from '../../orm';
 import { EthCall } from '../../ethcall/model';
 import { Await } from '../../types/promise';
 import { IdArgs } from '../model/interface';
 
 //Contract Call
 const contractCallSelect = createSelector(
-    orm,
+    ORM.orm,
     (_1: string, id: string) => id,
     (_1: string, _2: string, methodName: string) => methodName,
     (_1: string, _2: string, _3: string, callArgs?: CallArgsHash) => callArgs,

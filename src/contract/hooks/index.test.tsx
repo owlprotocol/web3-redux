@@ -10,19 +10,22 @@ import { renderHook } from '@testing-library/react-hooks';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { BlockNumber } from '../../types/web3/BlockNumber';
 
-import { useContractCall, contractCallHookFactory, useEvents, contractEventsHookFactory } from '../../contract/hooks';
+import { name } from '../common';
 import { createStore, StoreType } from '../../store';
-import { Contract, Network } from '../../index';
 import { sleep } from '../../test/utils';
-import { getId } from '../model';
 import { validate as validatedContractEvent } from '../../contractevent/model/interface';
+import { create as createNetwork } from '../../network/actions';
+
+import { getId } from '../model';
+import { create } from '../actions';
+import { useContractCall, contractCallHookFactory, useEvents, contractEventsHookFactory } from '../../contract/hooks';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
 const networkId = '1337';
 
-describe('contract.hooks', () => {
+describe(`${name}.hooks`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
@@ -47,7 +50,7 @@ describe('contract.hooks', () => {
 
     beforeEach(async () => {
         store = createStore();
-        store.dispatch(Network.create({ networkId, web3 }));
+        store.dispatch(createNetwork({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
 
         const tx = new web3.eth.Contract(BlockNumberAbi.abi as AbiItem[]).deploy({
@@ -60,7 +63,7 @@ describe('contract.hooks', () => {
         id = getId({ networkId, address });
 
         store.dispatch(
-            Contract.create({
+            create({
                 networkId,
                 address,
                 abi: BlockNumberAbi.abi as AbiItem[],

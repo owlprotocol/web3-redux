@@ -4,12 +4,14 @@ import Web3 from 'web3';
 import ganache from 'ganache-core';
 
 import { Network } from '../../network/model';
+import networkExists from '../../network/sagas/exists';
 
 import { name } from '../common';
 import { selectByIdSingle } from '../selectors';
 
 //Actions
 import fetchAction from '../actions/fetch';
+import createAction from '../actions/create';
 
 //Sagas
 import exists from './exists';
@@ -46,10 +48,14 @@ describe(`${name}.sagas`, () => {
     });
 
     describe('fetch', () => {
-        it('success', () => {
+        it('create', () => {
+            const block = { number: item.number, hash: 'XYZ' };
             testSaga(fetch, fetchAction({ networkId: item.networkId, blockHashOrBlockNumber: item.number }))
                 .next()
-                .call(network.web3!.eth.getBlock, item.number);
+                .call(networkExists, item.networkId)
+                .next(network)
+                .next(block) //fetched block
+                .put(createAction({ ...block, networkId: item.networkId }));
         });
     });
 });

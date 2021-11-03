@@ -1,17 +1,12 @@
 import { assert } from 'chai';
 import { createStore, StoreType } from '../store';
 import { getId, validate, create, selectByIdSingle } from './index';
-import { addressList } from '../test/utils';
 import { name } from './common';
+import { addressList } from '../test/utils';
 
 describe(`${name}.integration`, () => {
     const networkId = '1337';
-    const item = {
-        networkId,
-        from: addressList[0],
-        to: addressList[1],
-        data: '0x1',
-    };
+    const item = { networkId, hash: '0x1', from: addressList[0], to: addressList[1] };
     const id = getId(item);
     const itemWithId = validate(item);
 
@@ -24,8 +19,8 @@ describe(`${name}.integration`, () => {
     describe('selectors', () => {
         it('selectByIdSingle', () => {
             store.dispatch(create(item));
-            const selected = selectByIdSingle(store.getState(), id);
-            assert.deepEqual(selected, itemWithId);
+            const selected1 = selectByIdSingle(store.getState(), id);
+            assert.deepEqual(selected1, itemWithId);
         });
     });
 });

@@ -2,9 +2,9 @@ import { createSelector } from 'redux-orm';
 import { Block } from '../../block';
 
 import { name } from '../common';
-import { orm } from '../../orm';
+import ORM from '../../orm';
 
-const select = createSelector(orm[name].blocks);
+const select = createSelector(ORM.orm[name].blocks);
 function selectBlocks(state: any, id: string | undefined) {
     if (!id) return undefined;
 

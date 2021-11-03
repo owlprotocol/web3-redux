@@ -1,15 +1,15 @@
 import { createSelector } from 'redux-orm';
-import { orm } from '../../orm';
+import ORM from '../../orm';
 import { ContractEvent, ReturnValues } from '../../contractevent/model';
 import { memoizedLodashFilter } from '../../memo';
 import { BaseWeb3Contract, IdArgs, getId } from '../model/interface';
 
 //Events
 type selectContractEventsById = (state: any, id: string | undefined) => ContractEvent[] | null;
-export const selectContractEventsById: selectContractEventsById = createSelector(orm.Contract.events);
+export const selectContractEventsById: selectContractEventsById = createSelector(ORM.orm.Contract.events);
 
 const contractEventSelect = createSelector(
-    orm,
+    ORM.orm,
     selectContractEventsById,
     (_1: any, _2: string, eventName: string) => eventName,
     (_1: any, _2: string, _3: string, returnValuesFilter?: { [key: string]: any }) => returnValuesFilter,

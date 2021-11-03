@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { REDUX_ROOT } from '../../common';
-import { orm } from '../../orm';
+import ORM from '../../orm';
 
 import { getId, getIdDeconstructed, Interface } from '../model/interface';
 import { name } from '../common';
@@ -15,7 +15,7 @@ describe(`${name}.selectors`, () => {
     const idDeconstructed = getIdDeconstructed(item);
 
     const state = {
-        [REDUX_ROOT]: orm.getEmptyState(),
+        [REDUX_ROOT]: ORM.orm.getEmptyState(),
     };
 
     before(() => {

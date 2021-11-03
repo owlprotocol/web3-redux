@@ -1,6 +1,5 @@
 import { validateTransaction } from '../../transaction';
 import { isStrings } from '../../utils';
-import Block from './Block';
 import BlockTransaction from './BlockTransaction';
 
 export interface IdDeconstructed {
@@ -9,23 +8,7 @@ export interface IdDeconstructed {
 }
 export type Id = string;
 
-export type Interface = Block;
-export interface InterfacePartialWithId extends Partial<BlockTransaction> {
-    readonly id: Id;
-}
-export interface InterfacePartialWithIdDeconstructed extends Partial<BlockTransaction> {
-    readonly networkId: IdDeconstructed['networkId'];
-    readonly number: IdDeconstructed['number'];
-}
-
-export type InterfacePartial = InterfacePartialWithId | InterfacePartialWithIdDeconstructed;
-export function isPartialWithId(x: InterfacePartial): x is InterfacePartialWithId {
-    return !!x.id;
-}
-export function isPartialWithIdDeconstructed(x: InterfacePartial): x is InterfacePartialWithIdDeconstructed {
-    return !x.id;
-}
-
+export type Interface = BlockTransaction;
 export type IdArgs = IdDeconstructed | Id;
 const SEPARATOR = '-';
 export function getId(id: IdArgs): Id {
@@ -41,23 +24,19 @@ export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
     return { networkId, number: parseInt(number) };
 }
 
-export function validate(item: InterfacePartial): Interface {
-    const id = isPartialWithIdDeconstructed(item) ? getId(item) : item.id;
-    const { networkId, number } = isPartialWithId(item)
-        ? getIdDeconstructed(item.id)
-        : { networkId: item.networkId, number: item.number };
-
+export function validate(item: Interface): Interface {
+    const id = getId(item);
     let transactions = item.transactions;
     if (transactions) {
         if (!isStrings(transactions))
-            transactions = transactions.map((t) => validateTransaction({ ...t, networkId, blockNumber: number }));
+            transactions = transactions.map((t) =>
+                validateTransaction({ ...t, networkId: item.networkId, blockNumber: item.number }),
+            );
     }
 
     const result = {
         ...item,
         id,
-        networkId,
-        number,
     };
     if (transactions) result.transactions = transactions;
 

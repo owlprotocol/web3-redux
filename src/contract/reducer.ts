@@ -16,11 +16,11 @@ export function reducer(sess: any, action: ReducerAction) {
         //@ts-expect-error ignore readonly
         validated.web3Contract =
             validated.web3Contract ??
-            (network.web3 ? new network.web3.eth.Contract(validated.abi, validated.address) : undefined);
+            (network.web3 ? new network.web3.eth.Contract(validated.abi!, validated.address) : undefined);
         //@ts-expect-error ignore readonly
         validated.web3SenderContract =
             validated.web3SenderContract ??
-            (network.web3Sender ? new network.web3Sender.eth.Contract(validated.abi, validated.address) : undefined);
+            (network.web3Sender ? new network.web3Sender.eth.Contract(validated.abi!, validated.address) : undefined);
         Contract.upsert(validated);
     } else if (isRemoveAction(action)) {
         if (typeof action.payload === 'string') {

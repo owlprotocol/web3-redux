@@ -40,12 +40,12 @@ function* contractCall(action: CallAction) {
         //Create base call
         yield* put(createEthCall(ethCall));
 
-        const contractCallSync = contract.methods[payload.method][argsHash];
+        const contractCallSync = contract.methods![payload.method][argsHash];
         if (!contractCallSync) {
-            contract.methods[payload.method][argsHash] = { ethCallId: ethCall.id };
+            contract.methods![payload.method][argsHash] = { ethCallId: ethCall.id };
             yield* put(create(contract));
         } else if (contractCallSync.ethCallId != ethCall.id) {
-            contract.methods[payload.method][argsHash].ethCallId = ethCall.id;
+            contract.methods![payload.method][argsHash].ethCallId = ethCall.id;
             yield* put(create(contract));
         }
 

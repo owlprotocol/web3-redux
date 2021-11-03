@@ -6,7 +6,7 @@ import { name } from '../common';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useByIdSingle, useByIdMany } from './index';
-import Interface, { InterfacePartial, getId, Id } from '../model/interface';
+import { Interface, getId, Id } from '../model/interface';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -17,7 +17,7 @@ describe(`${name}.hooks`, () => {
     let store: StoreType;
     const networkId = '1337';
 
-    let item: InterfacePartial;
+    let item: Interface;
     let id: Id;
     let itemWithId: Interface;
 

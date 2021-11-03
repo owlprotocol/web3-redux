@@ -4,7 +4,7 @@ import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../../common';
 import { orm } from '../../orm';
 
-import { getId, getIdDeconstructed, InterfacePartial, validate } from '../model/interface';
+import { getId, getIdDeconstructed, Interface, validate } from '../model/interface';
 import { name } from '../common';
 
 import {
@@ -25,7 +25,7 @@ const coder: AbiCoder = require('web3-eth-abi');
 
 describe(`${name}.selectors`, () => {
     const networkId = '1337';
-    const item: InterfacePartial = {
+    const item: Interface = {
         networkId,
         address: '0x0000000000000000000000000000000000000001',
         abi: BlockNumberAbi.abi as any,
@@ -37,7 +37,7 @@ describe(`${name}.selectors`, () => {
 
     //EthCall
     const method = 'getValue';
-    const methodAbi = itemWithId.abi.filter((f) => f.name === method)[0];
+    const methodAbi = itemWithId.abi!.filter((f) => f.name === method)[0];
     const data = coder.encodeFunctionCall(methodAbi, []);
     const ethCall = validatedEthCall({ networkId, from: ZERO_ADDRESS, to: itemWithId.address, data });
 
@@ -80,7 +80,7 @@ describe(`${name}.selectors`, () => {
         state[REDUX_ROOT]['ContractEvent'].itemsById[event2.id!] = event2;
 
         const argsHash = callArgsHash(); //empty args
-        itemWithId.methods['getValue'][argsHash] = { ethCallId: ethCall.id };
+        itemWithId.methods!['getValue'][argsHash] = { ethCallId: ethCall.id };
     });
 
     it('selectByIdExists', () => {

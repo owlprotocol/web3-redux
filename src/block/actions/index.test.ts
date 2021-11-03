@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
-import Interface, { getId, InterfacePartial } from '../model/interface';
+import { getId, Interface } from '../model/interface';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
@@ -13,7 +13,7 @@ import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from
 
 describe(`${name}.actions`, () => {
     const networkId = '1337';
-    const item: InterfacePartial = { networkId, number: 0 };
+    const item: Interface = { networkId, number: 0 };
     const id = getId(item);
 
     it('create', () => {

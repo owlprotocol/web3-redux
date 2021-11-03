@@ -1,4 +1,4 @@
-import Interface, { IdArgs, getId, BaseWeb3Contract } from '../model/interface';
+import { Interface, IdArgs, getId, BaseWeb3Contract } from '../model/interface';
 import select from './select';
 
 function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(

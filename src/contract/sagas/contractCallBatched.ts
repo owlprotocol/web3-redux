@@ -54,15 +54,15 @@ function* contractCallBatched(action: CallBatchedAction) {
 
             //Update contract call key if not stored
             const key = callArgsHash({ from: ethCall.from, defaultBlock: ethCall.defaultBlock, args: f.args });
-            const contractCallSync = contract.methods[f.method][key];
+            const contractCallSync = contract.methods![f.method][key];
             if (!contractCallSync) {
-                contract.methods[f.method][key] = { ethCallId: ethCall.id };
+                contract.methods![f.method][key] = { ethCallId: ethCall.id };
             } else if (contractCallSync.ethCallId != ethCall.id) {
-                contract.methods[f.method][key].ethCallId = ethCall.id;
+                contract.methods![f.method][key].ethCallId = ethCall.id;
             }
 
             //Output decoder for multicall
-            const methodAbi = contract.abi.find((m) => m.name === f.method)!;
+            const methodAbi = contract.abi!.find((m) => m.name === f.method)!;
             const methodAbiOutput = methodAbi.outputs;
 
             return { tx, ethCall, putEthCallTask, methodAbiOutput };

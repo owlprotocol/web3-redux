@@ -6,7 +6,7 @@ import { name } from '../common';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useByIdSingle, useByIdMany } from './index';
-import Interface, { Id } from '../model/interface';
+import { Interface, Id } from '../model/interface';
 import { ZERO_ADDRESS } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -2,14 +2,14 @@ import { assert } from 'chai';
 import { REDUX_ROOT } from '../../common';
 import { orm } from '../../orm';
 
-import { getId, getIdDeconstructed, InterfacePartial } from '../model/interface';
+import { getId, getIdDeconstructed, Interface } from '../model/interface';
 import { name } from '../common';
 
 import { selectByIdExists, selectByIdSingle, selectByIdMany, selectByFilter } from '../selectors';
 import { ZERO_ADDRESS } from '../../utils';
 
 describe(`${name}.selectors`, () => {
-    const item: InterfacePartial = { networkId: '1337', address: ZERO_ADDRESS };
+    const item: Interface = { networkId: '1337', address: ZERO_ADDRESS };
     const id = getId(item);
     const itemWithId = { id: id, ...item };
     const idDeconstructed = getIdDeconstructed(item);

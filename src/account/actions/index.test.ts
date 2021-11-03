@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
-import Interface, { getId, InterfacePartial } from '../model/interface';
+import { getId, Interface } from '../model/interface';
 import { ZERO_ADDRESS } from '../../utils';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
@@ -11,7 +11,7 @@ import { set, SET, SetAction, isSetAction } from './set';
 
 describe(`${name}.actions`, () => {
     const networkId = '1337';
-    const item: InterfacePartial = { networkId, address: ZERO_ADDRESS };
+    const item: Interface = { networkId, address: ZERO_ADDRESS };
     const id = getId(item);
 
     it('create', () => {

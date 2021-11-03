@@ -1,5 +1,5 @@
 import select from './select';
-import Interface, { IdArgs, getId, BaseWeb3Contract } from '../model/interface';
+import { Interface, IdArgs, getId, BaseWeb3Contract } from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
 function selectByIdMany<T extends BaseWeb3Contract = BaseWeb3Contract>(

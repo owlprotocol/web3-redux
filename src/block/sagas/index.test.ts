@@ -14,12 +14,12 @@ import fetchAction from '../actions/fetch';
 //Sagas
 import exists from './exists';
 import fetch from './fetch';
-import { getId, InterfacePartial } from '../model/interface';
+import { getId, Interface } from '../model/interface';
 
 describe(`${name}.sagas`, () => {
     const networkId = '1337';
 
-    const item: InterfacePartial = { networkId, number: 0 };
+    const item: Interface = { networkId, number: 0 };
     const id = getId(item);
     const itemWithId = { id, ...item };
 

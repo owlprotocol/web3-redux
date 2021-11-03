@@ -13,26 +13,10 @@ export type Id = string;
  * @param nonce - Account nonce.
  */
 //Id args cannot be optional
-export default interface Interface extends IdDeconstructed {
-    readonly id: Id;
+export interface Interface extends IdDeconstructed {
+    readonly id?: Id;
     readonly balance?: string;
     readonly nonce?: number;
-}
-
-export interface InterfacePartialWithId extends Partial<Interface> {
-    id: Id;
-}
-
-export interface InterfacePartialWithIdDeconstructed extends Partial<Interface> {
-    readonly networkId: IdDeconstructed['networkId'];
-    readonly address: IdDeconstructed['address'];
-}
-export type InterfacePartial = InterfacePartialWithId | InterfacePartialWithIdDeconstructed;
-export function isPartialWithId(x: InterfacePartial): x is InterfacePartialWithId {
-    return !!x.id;
-}
-export function isPartialWithIdDeconstructed(x: InterfacePartial): x is InterfacePartialWithIdDeconstructed {
-    return !x.id;
 }
 
 export type IdArgs = IdDeconstructed | Id;
@@ -50,19 +34,12 @@ export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
     return { networkId, address };
 }
 
-export function validate(item: InterfacePartial): Interface {
-    if (isPartialWithIdDeconstructed(item)) {
-        const id = getId({ ...(item as InterfacePartialWithIdDeconstructed) });
-        return {
-            ...item,
-            id,
-        };
-    } else {
-        const { networkId, address } = getIdDeconstructed(item.id);
-        return {
-            ...item,
-            networkId,
-            address,
-        };
-    }
+export function validate(item: Interface): Interface {
+    const id = getId(item);
+    return {
+        ...item,
+        id,
+    };
 }
+
+export default Interface;

@@ -1,4 +1,4 @@
-import Interface, { IdArgs, getId } from '../model/interface';
+import { Interface, IdArgs, getId } from '../model/interface';
 import select from './select';
 
 function selectByIdSingle(state: any, id: IdArgs | undefined): Interface | undefined {

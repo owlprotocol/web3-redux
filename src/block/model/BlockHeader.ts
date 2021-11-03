@@ -23,7 +23,7 @@ import { IdDeconstructed, Id } from './interface';
  */
 //Id args cannot be optional
 export interface BlockHeader extends IdDeconstructed {
-    readonly id: Id;
+    readonly id?: Id;
     readonly hash?: string;
     readonly parentHash?: string;
     readonly nonce?: string;

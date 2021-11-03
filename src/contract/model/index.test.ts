@@ -2,18 +2,11 @@ import { assert } from 'chai';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 
 import { name } from '../common';
-import Interface, {
-    InterfacePartial,
-    Id,
-    getId,
-    getIdDeconstructed,
-    validate,
-    IdDeconstructed,
-} from '../model/interface';
+import { Interface, Id, getId, getIdDeconstructed, validate, IdDeconstructed } from '../model/interface';
 
 describe(`${name}.model`, () => {
     const networkId = '1337';
-    const item: InterfacePartial = {
+    const item: Interface = {
         networkId,
         address: '0x0000000000000000000000000000000000000001',
         abi: BlockNumberAbi.abi as any,

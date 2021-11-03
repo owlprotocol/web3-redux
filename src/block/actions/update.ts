@@ -1,9 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { InterfacePartial, validate } from '../model/interface';
+import { Interface, validate } from '../model/interface';
 
 export const UPDATE = `${name}/UPDATE`;
-export const update = createAction(UPDATE, (payload: InterfacePartial) => {
+export const update = createAction(UPDATE, (payload: Interface) => {
     return { payload: validate(payload) };
 });
 

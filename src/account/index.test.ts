@@ -11,7 +11,7 @@ import { create as createNetwork } from '../network/actions';
 import { name } from './common';
 import { selectByIdSingle } from './selectors';
 
-import { getId, Id, InterfacePartial } from './model/interface';
+import { getId, Id, Interface } from './model/interface';
 
 import createAction from './actions/create';
 import fetchBalanceAction from './actions/fetchBalance';
@@ -25,7 +25,7 @@ describe(`${name}.integration`, () => {
 
     const networkId = '1337';
 
-    let item: InterfacePartial;
+    let item: Interface;
     let id: Id;
 
     const to = ZERO_ADDRESS;

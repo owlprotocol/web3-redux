@@ -1,10 +1,13 @@
 import { useEffect, useCallback, useMemo, useDebugValue } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BaseWeb3Contract } from '../model';
-import { callSynced, callUnsync } from '../actions';
-import { selectContractCallByAddress, selectByAddressSingle as selectContractByAddressSingle } from '../selector';
+
 import { Await } from '../../types/promise';
 import { Sync } from '../../sync/model';
+
+import { BaseWeb3Contract } from '../model';
+import { callSynced, callUnsync } from '../actions';
+import selectSingle from '../selectors/selectByIdSingle';
+import selectContractCall from '../selectors/selectContractCallById';
 
 //Contract Call
 export interface UseContractCallOptions {
@@ -27,13 +30,12 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const sync = options?.sync;
     const from = options?.from;
 
-    const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
+    const id = networkId && address ? { networkId, address } : undefined;
+    const contract = useSelector((state) => selectSingle<T>(state, id));
     const contractExists = !!contract;
 
     const dispatch = useDispatch();
-    const contractCall = useSelector((state) =>
-        selectContractCallByAddress<T, K>(state, networkId, address, method, { args, from }),
-    );
+    const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
 
     const argsHash = JSON.stringify(args);
     const syncHash = JSON.stringify(sync);

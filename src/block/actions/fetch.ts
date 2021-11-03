@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from './common';
+import { name } from '../common';
 
 export const FETCH = `${name}/FETCH`;
 /** Block fetch action.  Uses web3.eth.getBlock(). */
@@ -17,3 +17,5 @@ export const fetch = createAction<FetchActionInput>(FETCH);
 
 export type FetchAction = ReturnType<typeof fetch>;
 export const isFetchAction = fetch.match;
+
+export default fetch;

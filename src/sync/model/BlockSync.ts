@@ -1,6 +1,7 @@
-import { Block, isBlockTransactionObject, isBlockTransactionString } from '../../block/model';
+import { Block, BlockTransaction } from '../../block/model';
 import { create as createTransaction } from '../../transaction/actions';
-import { transactionId } from '../../transaction/model';
+import { Transaction, getTransactionId } from '../../transaction/model';
+import { isStrings } from '../../utils';
 import BaseSync from './BaseSync';
 
 export default interface BlockSync<T extends any = { [key: string]: string }> extends BaseSync<Block, T> {
@@ -39,28 +40,27 @@ export const blockTransactionsSync: BlockSync = {
 };
 
 export function createBlockTransactionsActions(block: Block) {
-    if (isBlockTransactionString(block)) {
-        const transactions = block.transactions;
+    const transactions = (block as BlockTransaction).transactions;
+    if (!transactions) {
+        return [];
+    } else if (isStrings(transactions)) {
         return transactions.map((hash: string) => {
             return createTransaction({
                 hash,
                 networkId: block.networkId,
                 blockNumber: block.number,
                 blockId: block.id!,
-                id: transactionId({ hash, networkId: block.networkId }),
+                id: getTransactionId({ hash, networkId: block.networkId }),
             });
         });
-    } else if (isBlockTransactionObject(block)) {
-        const transactions = block.transactions;
-        return transactions.map((tx) => {
+    } else {
+        return transactions.map((tx: Transaction) => {
             return createTransaction({
                 ...tx,
                 networkId: block.networkId,
                 blockId: block.id!,
-                id: transactionId({ hash: tx.hash, networkId: block.networkId }),
+                id: getTransactionId({ hash: tx.hash, networkId: block.networkId }),
             });
         });
-    } else {
-        return [];
     }
 }

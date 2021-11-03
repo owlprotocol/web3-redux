@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { callArgsHash } from '../model';
-import { name } from './common';
+import { name } from '../common';
 
 export const CALL = `${name}/CALL`;
 export interface CallActionInput {
@@ -20,3 +20,5 @@ export const call = createAction(CALL, (payload: CallActionInput) => {
 
 export type CallAction = ReturnType<typeof call>;
 export const isCallAction = call.match;
+
+export default call;

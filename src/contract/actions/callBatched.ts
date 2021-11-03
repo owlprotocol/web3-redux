@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from './common';
+import { name } from '../common';
 
 export const CALL_BATCHED = `${name}/CALL_BATCHED`;
 export interface CallBatchedActionInput {
@@ -28,3 +28,5 @@ export const callBatched = createAction<CallBatchedActionInput>(CALL_BATCHED);
 
 export type CallBatchedAction = ReturnType<typeof callBatched>;
 export const isCallBatchedAction = callBatched.match;
+
+export default callBatched;

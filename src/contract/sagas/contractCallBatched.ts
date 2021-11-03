@@ -1,10 +1,10 @@
-import { put, all, select, call } from 'redux-saga/effects';
-import { validatedEthCall } from '../../ethcall/model';
+import { put, all, select, call } from 'typed-redux-saga/macro';
+import { validate as validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
 import { Contract, callArgsHash, getId } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
-import { selectByIdMany } from '../selector';
-import networkExists from '../../network/sagas/networkExists';
+import selectByIdMany from '../selectors/selectByIdMany';
+import networkExists from '../../network/sagas/exists';
 import { Network } from '../../network/model';
 import { ZERO_ADDRESS } from '../../utils';
 
@@ -14,14 +14,14 @@ function* contractCallBatched(action: CallBatchedAction) {
     try {
         const { payload } = action;
         const { requests, networkId } = payload;
-        const network: Network = yield call(networkExists, networkId);
+        const network: Network = yield* call(networkExists, networkId);
         if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
 
         const web3 = network.web3;
         const multicallContract = network.multicallContract;
 
         const contractIds = Array.from(new Set(requests.map((f) => getId({ address: f.address, networkId }))));
-        const selectResult: ReturnType<typeof selectByIdMany> = yield select(selectByIdMany, contractIds);
+        const selectResult: ReturnType<typeof selectByIdMany> = yield* select(selectByIdMany, contractIds);
         const contracts = selectResult.filter((c) => !!c) as Contract[];
         const contractsByAddress: { [key: string]: Contract } = {};
         contracts.filter((c) => c != null).forEach((c) => (contractsByAddress[c.address] = c));
@@ -54,24 +54,24 @@ function* contractCallBatched(action: CallBatchedAction) {
 
             //Update contract call key if not stored
             const key = callArgsHash({ from: ethCall.from, defaultBlock: ethCall.defaultBlock, args: f.args });
-            const contractCallSync = contract.methods[f.method][key];
+            const contractCallSync = contract.methods![f.method][key];
             if (!contractCallSync) {
-                contract.methods[f.method][key] = { ethCallId: ethCall.id };
+                contract.methods![f.method][key] = { ethCallId: ethCall.id };
             } else if (contractCallSync.ethCallId != ethCall.id) {
-                contract.methods[f.method][key].ethCallId = ethCall.id;
+                contract.methods![f.method][key].ethCallId = ethCall.id;
             }
 
             //Output decoder for multicall
-            const methodAbi = contract.abi.find((m) => m.name === f.method)!;
+            const methodAbi = contract.abi!.find((m) => m.name === f.method)!;
             const methodAbiOutput = methodAbi.outputs;
 
             return { tx, ethCall, putEthCallTask, methodAbiOutput };
         });
 
         //All update eth call
-        yield all(preCallTasks.map((x) => x.putEthCallTask));
+        yield* all(preCallTasks.map((x) => x.putEthCallTask));
         //All update contract
-        yield all(contracts.map((c) => put(create(c))));
+        yield* all(contracts.map((c) => put(create(c))));
 
         //If not Multicall, or from/defaultBlock specified
         const regularCallTasks = preCallTasks.filter((t) => {
@@ -166,7 +166,7 @@ function* contractCallBatched(action: CallBatchedAction) {
         yield updateEthCallTasks;
     } catch (error) {
         console.error(error);
-        yield put({
+        yield* put({
             type: CALL_BATCHED_ERROR,
             error,
             action,

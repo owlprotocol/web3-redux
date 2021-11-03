@@ -1,138 +1,110 @@
-import { assert } from 'chai';
+import { expect } from 'chai';
+import { testSaga } from 'redux-saga-test-plan';
 import Web3 from 'web3';
 import ganache from 'ganache-core';
 
-import { create as createNetwork } from '../../network/actions';
-import { createStore } from '../../store';
-import { selectByAddressSingle } from '../selector';
-import { fetchBalance, fetchNonce, fetchBalanceSynced, create } from '../actions';
-import { Block, Transaction } from '../../index';
-import { sleep } from '../../test/utils';
+import networkExists from '../../network/sagas/exists';
+import { ZERO_ADDRESS } from '../../utils';
+import { Network } from '../../network/model';
+import createSync from '../../sync/actions/create';
 
-const networkId = '1337';
+import { name } from '../common';
+import { selectByIdSingle } from '../selectors';
 
-describe('account.sagas', () => {
-    let web3: Web3; //Web3 loaded from store
-    let address: string;
-    let to: string;
-    let store: ReturnType<typeof createStore>;
+//Actions
+import fetchBalanceAction from '../actions/fetchBalance';
+import fetchNonceAction from '../actions/fetchNonce';
+import fetchBalanceSyncedAction from '../actions/fetchBalanceSynced';
+import fetchNonceSyncedAction from '../actions/fetchNonceSynced';
 
-    before(async () => {
-        const networkIdInt = parseInt(networkId);
+import setAction from '../actions/set';
+
+//Sagas
+import exists from './exists';
+import fetchBalance from './fetchBalance';
+import fetchNonce from './fetchNonce';
+import fetchBalanceSynced from './fetchBalanceSynced';
+import fetchNonceSynced from './fetchNonceSynced';
+import { getId } from '../model/interface';
+
+describe(`${name}.sagas`, () => {
+    const networkId = '1337';
+
+    const item = { networkId, address: ZERO_ADDRESS };
+    const id = getId(item);
+    const itemWithId = { id, ...item };
+
+    let network: Network;
+
+    before(() => {
         const provider = ganache.provider({
-            networkId: networkIdInt,
+            networkId: parseInt(networkId),
         });
         //@ts-ignore
-        web3 = new Web3(provider);
-        //Disable ENS to avoid extra account calls
-        //@ts-ignore
-        web3.eth.ens._lastSyncCheck = Number.MAX_SAFE_INTEGER;
-        //@ts-ignore
-        web3.eth.ens.registryAddress = '0x0000000000000000000000000000000000000000';
-
-        const accounts = await web3.eth.getAccounts();
-        address = accounts[0]!;
-        to = accounts[1]!;
+        const web3 = new Web3(provider);
+        network = { networkId, web3 };
     });
 
-    beforeEach(async () => {
-        store = createStore();
-        store.dispatch(createNetwork({ networkId, web3 }));
-        store.dispatch(create({ networkId, address }));
-    });
-
-    it('fetchBalance()', async () => {
-        store.dispatch(fetchBalance({ networkId, address }));
-
-        const expected = await web3.eth.getBalance(address);
-        const account = selectByAddressSingle(store.getState(), networkId, address);
-        assert.equal(account!.balance, expected, 'initial balance');
-    });
-
-    it('fetchNonce()', async () => {
-        store.dispatch(fetchNonce({ networkId, address }));
-
-        const expected = await web3.eth.getTransactionCount(address);
-        const account = selectByAddressSingle(store.getState(), networkId, address);
-        assert.equal(account!.nonce, expected, 'initial nonce');
-    });
-
-    describe('fethBalanceSynced', () => {
-        it('({sync:false})', async () => {
-            store.dispatch(fetchBalanceSynced({ networkId, address, sync: false }));
-            const expected1 = await web3.eth.getBalance(address);
-            const account1 = selectByAddressSingle(store.getState(), networkId, address);
-            assert.equal(account1!.balance, expected1, 'initial balance');
-
-            await web3.eth.sendTransaction({ from: address, to, value: '1' });
-            const expected2 = await web3.eth.getBalance(address);
-            assert.notEqual(expected1, expected2, 'balance not changed');
-
-            const account2 = selectByAddressSingle(store.getState(), networkId, address);
-            //No sync, balance stays unchanged
-            assert.equal(account2!.balance, expected1, 'previous balance');
-            assert.notEqual(account2!.balance, expected2, 'updated balance');
+    describe('exists()', () => {
+        it(`error: ${name} undefined`, () => {
+            expect(testSaga(exists, id).next().select(selectByIdSingle, id).next).to.throw(`${name} ${id} undefined`);
         });
-
-        it('({sync:Block})', async () => {
-            //Block subscription used for updates
-            store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: false }));
-            store.dispatch(fetchBalanceSynced({ networkId, address, sync: 'Block' }));
-            const expected1 = await web3.eth.getBalance(address);
-            const account1 = selectByAddressSingle(store.getState(), networkId, address);
-            assert.equal(account1!.balance, expected1, 'initial balance');
-
-            await web3.eth.sendTransaction({ from: address, to, value: '1' });
-            const expected2 = await web3.eth.getBalance(address);
-            assert.notEqual(expected1, expected2, 'balance not changed');
-
-            const account2 = selectByAddressSingle(store.getState(), networkId, address);
-            //sync, balance updated
-            assert.notEqual(account2!.balance, expected1, 'previous balance');
-            assert.equal(account2!.balance, expected2, 'updated balance');
+        it('exists', () => {
+            const gen = testSaga(exists, id).next().select(selectByIdSingle, id).next(itemWithId);
+            gen.returns(itemWithId);
+            gen.isDone();
         });
+    });
 
-        it('({sync:Transaction}) - Transaction.fetch', async () => {
-            store.dispatch(fetchBalanceSynced({ networkId, address, sync: 'Transaction' }));
-            const expected1 = await web3.eth.getBalance(address);
-            const account1 = selectByAddressSingle(store.getState(), networkId, address);
-            assert.equal(account1!.balance, expected1, 'initial balance');
-
-            const receipt = await web3.eth.sendTransaction({ from: address, to, value: '1' });
-            //Fetch transaction, triggering a refresh
-            store.dispatch(
-                Transaction.fetch({
-                    networkId,
-                    hash: receipt.transactionHash,
-                }),
-            );
-            await sleep(150);
-
-            const expected2 = await web3.eth.getBalance(address);
-            assert.notEqual(expected1, expected2, 'balance not changed');
-
-            const account2 = selectByAddressSingle(store.getState(), networkId, address);
-            //sync, balance updated
-            assert.notEqual(account2!.balance, expected1, 'previous balance');
-            assert.equal(account2!.balance, expected2, 'updated balance');
+    describe('fetchBalance', () => {
+        //TODO: Add error handling for web3 api
+        it('success', () => {
+            testSaga(fetchBalance, fetchBalanceAction(id))
+                .next()
+                .call(exists, id)
+                .next(itemWithId)
+                .call(networkExists, networkId)
+                .next(network)
+                .call(network.web3!.eth.getBalance, item.address)
+                .next('0')
+                .put(setAction({ id, key: 'balance', value: '0' }));
         });
+    });
 
-        it('({sync:Transaction}) - Block.subscribe', async () => {
-            //Block subscription used for updates, must fetch transactions
-            store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: true }));
-            store.dispatch(fetchBalanceSynced({ networkId, address, sync: 'Transaction' }));
-            const expected1 = await web3.eth.getBalance(address);
-            const account1 = selectByAddressSingle(store.getState(), networkId, address);
-            assert.equal(account1!.balance, expected1, 'initial balance');
+    describe('fetchNonce', () => {
+        //TODO: Add error handling for web3 api
+        it('success', () => {
+            testSaga(fetchNonce, fetchNonceAction(id))
+                .next()
+                .call(exists, id)
+                .next(itemWithId)
+                .call(networkExists, networkId)
+                .next(network)
+                .call(network.web3!.eth.getTransactionCount, item.address)
+                .next('0')
+                .put(setAction({ id, key: 'nonce', value: '0' }));
+        });
+    });
 
-            await web3.eth.sendTransaction({ from: address, to, value: '1' });
-            const expected2 = await web3.eth.getBalance(address);
-            assert.notEqual(expected1, expected2, 'balance not changed');
+    describe('fetchBalanceSynced', () => {
+        it('success', () => {
+            const action = fetchBalanceSyncedAction({ id, sync: true });
+            testSaga(fetchBalanceSynced, action)
+                .next()
+                .put(action.payload.fetchBalanceAction)
+                .next()
+                .put(createSync(action.payload.sync!));
+        });
+    });
 
-            const account2 = selectByAddressSingle(store.getState(), networkId, address);
-            //sync, balance updated
-            assert.notEqual(account2!.balance, expected1, 'previous balance');
-            assert.equal(account2!.balance, expected2, 'updated balance');
+    describe('fetchNonceSynced', () => {
+        it('success', () => {
+            const action = fetchNonceSyncedAction({ id, sync: true });
+            testSaga(fetchNonceSynced, action)
+                .next()
+                .put(action.payload.fetchNonceAction)
+                .next()
+                .put(createSync(action.payload.sync!));
         });
     });
 });

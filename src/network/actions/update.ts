@@ -1,9 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Network } from '../model';
-import { name } from './common';
+import { name } from '../common';
+import { Interface } from '../model/interface';
 
 export const UPDATE = `${name}/UPDATE`;
-export const update = createAction<Network>(UPDATE);
+export const update = createAction(UPDATE, (payload: Interface) => {
+    return { payload };
+});
 
 export type UpdateAction = ReturnType<typeof update>;
 export const isUpdateAction = update.match;
+
+export default update;

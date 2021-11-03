@@ -1,13 +1,11 @@
 import { useEffect, useCallback, useMemo, useDebugValue } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReturnValues } from '../../contractevent/model';
+import { ReturnValues } from '../../contractevent/model/interface';
 import { BaseWeb3Contract } from '../model';
 import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions';
 import { EventGetPastActionInput } from '../actions/eventGetPast';
-import {
-    selectByAddressSingle as selectContractByAddressSingle,
-    selectContractEventsByAddressFiltered,
-} from '../selector';
+import selectSingle from '../selectors/selectByIdSingle';
+import selectEvents from '../selectors/selectContractEventsById';
 
 //Contract Events
 export interface UseEventsOptions {
@@ -30,14 +28,13 @@ export function useEvents<
 ) {
     const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
 
-    const contract = useSelector((state) => selectContractByAddressSingle(state, networkId, address));
+    const id = networkId && address ? { networkId, address } : undefined;
+    const contract = useSelector((state) => selectSingle(state, id));
     const contractExists = !!contract;
 
     const dispatch = useDispatch();
 
-    const events = useSelector((state) =>
-        selectContractEventsByAddressFiltered<T, K, U>(state, networkId, address, eventName, filter),
-    );
+    const events = useSelector((state) => selectEvents<T, K, U>(state, id, eventName, filter));
     const filterHash = filter ? JSON.stringify(filter) : '';
 
     const getPastAction = useMemo(() => {

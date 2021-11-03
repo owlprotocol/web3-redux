@@ -1,24 +1,28 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selector';
-import { selectByAddressSingle } from '../selector';
-import { create, fetchBalanceSynced, fetchNonceSynced } from '../actions';
-import { FetchBalanceSyncedActionInput } from '../actions/fetchBalanceSynced';
-import { FetchNonceSyncedActionInput } from '../actions/fetchNonceSynced';
+import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { remove as removeSync } from '../../sync/actions';
 import { selectByIdExists as selectSyncExists } from '../../sync/selector';
 
+import { getId, getIdDeconstructed, IdArgs } from '../model/interface';
+import { create, fetchBalanceSynced, fetchNonceSynced } from '../actions';
+import { FetchBalanceSyncedActionInput } from '../actions/fetchBalanceSynced';
+import { FetchNonceSyncedActionInput } from '../actions/fetchNonceSynced';
+import { selectByIdSingle } from '../selectors';
+
 export default function useAccount(
-    networkId: string | undefined,
-    address: string | undefined,
+    idArgs: IdArgs | undefined,
     sync?: {
         balance?: FetchBalanceSyncedActionInput['sync'];
         nonce?: FetchNonceSyncedActionInput['sync'];
     },
 ) {
     const dispatch = useDispatch();
+    //Coerce t
+    const { networkId, address } = idArgs ? getIdDeconstructed(idArgs) : { networkId: undefined, address: undefined };
+    const id = idArgs ? getId(idArgs) : undefined;
 
-    const account = useSelector((state) => selectByAddressSingle(state, networkId, address));
+    const account = useSelector((state) => selectByIdSingle(state, id));
     const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
     const networkExists = !!network;
     const accountExists = !!account;
@@ -31,20 +35,20 @@ export default function useAccount(
     }, [networkId, address, accountExists]);
 
     const fetchBalanceAction = useMemo(() => {
-        if (networkId && address && networkExists && accountExists && sync?.balance) {
-            return fetchBalanceSynced({ networkId, address, sync: sync.balance });
+        if (id && networkExists && accountExists && sync?.balance) {
+            return fetchBalanceSynced({ id, sync: sync.balance });
         }
         return undefined;
-    }, [networkId, address, accountExists, networkExists, sync?.balance]);
+    }, [id, accountExists, networkExists, sync?.balance]);
     const fetchBalanceId = fetchBalanceAction?.payload.sync?.id;
     const fetchBalanceExists = useSelector((state) => selectSyncExists(state, fetchBalanceId));
 
     const fetchNonceAction = useMemo(() => {
-        if (networkId && address && networkExists && accountExists && sync?.nonce) {
-            return fetchNonceSynced({ networkId, address, sync: sync.nonce });
+        if (id && networkExists && accountExists && sync?.nonce) {
+            return fetchNonceSynced({ id, sync: sync.nonce });
         }
         return undefined;
-    }, [networkId, address, accountExists, networkExists, sync?.nonce]);
+    }, [id, accountExists, networkExists, sync?.nonce]);
     const fetchNonceId = fetchNonceAction?.payload.sync?.id;
     const fetchNonceExists = useSelector((state) => selectSyncExists(state, fetchNonceId));
 

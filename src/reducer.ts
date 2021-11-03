@@ -1,51 +1,52 @@
-import * as NetworkActions from './network/actions';
-import * as BlockActions from './block/actions';
+import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
+import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import * as TransactionActions from './transaction/actions';
 import * as ContractActions from './contract/actions';
-import * as ContractEventActions from './contractevent/actions';
-import * as ContractSendActions from './contractsend/actions';
-import * as EthCallActions from './ethcall/actions';
-import * as ConfigActions from './config/actions';
+import { Action as ContractEventAction, isReducerAction as isContractEventAction } from './contractevent/actions';
+import { Action as ContractSendAction, isReducerAction as isContractSendAction } from './contractsend/actions';
+import { Action as EthCallAction, isReducerAction as isEthCallAction } from './ethcall/actions';
+import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
 import * as Web3ReduxActions from './web3Redux/actions';
-import * as AccountActions from './account/actions';
+import { Action as AccountAction, isReducerAction as isAccountAction } from './account/actions';
 import * as SyncActions from './sync/actions';
-import { reducer as networkReducer } from './network/reducer';
-import { reducer as blockReducer } from './block/reducer';
-import { reducer as transactionReducer } from './transaction/reducer';
-import { reducer as contractReducer } from './contract/reducer';
-import { reducer as contractEventReducer } from './contractevent/reducer';
-import { reducer as contractSendReducer } from './contractsend/reducer';
-import { reducer as ethCallReducer } from './ethcall/reducer';
-import { reducer as configReducer } from './config/reducer';
-import { reducer as accountReducer } from './account/reducer';
-import { reducer as syncReducer } from './sync/reducer';
+import networkReducer from './network/reducer';
+import blockReducer from './block/reducer';
+import transactionReducer from './transaction/reducer';
+import contractReducer from './contract/reducer';
+import contractEventReducer from './contractevent/reducer';
+import contractSendReducer from './contractsend/reducer';
+import ethCallReducer from './ethcall/reducer';
+import configReducer from './config/reducer';
+import accountReducer from './account/reducer';
+import syncReducer from './sync/reducer';
 
-import { orm, initializeState } from './orm';
+import { getOrm, initializeState } from './orm';
 
 export type Action =
-    | NetworkActions.Action
-    | BlockActions.Action
+    | NetworkAction
+    | BlockAction
     | TransactionActions.Action
     | ContractActions.Action
-    | ContractEventActions.Action
-    | ContractSendActions.Action
-    | EthCallActions.Action
-    | ConfigActions.Action
+    | ContractEventAction
+    | ContractSendAction
+    | EthCallAction
+    | ConfigAction
     | Web3ReduxActions.Action
-    | AccountActions.Action
+    | AccountAction
     | SyncActions.Action;
 
 export function rootReducer(state: any, action: Action) {
+    const orm = getOrm();
     const sess = orm.session(state || initializeState(orm));
-    if (NetworkActions.isReducerAction(action)) networkReducer(sess, action);
-    else if (BlockActions.isReducerAction(action)) blockReducer(sess, action);
+    if (isNetworkAction(action)) networkReducer(sess, action);
+    else if (isBlockAction(action)) blockReducer(sess, action);
     else if (TransactionActions.isReducerAction(action)) transactionReducer(sess, action);
     else if (ContractActions.isReducerAction(action)) contractReducer(sess, action);
-    else if (ContractEventActions.isReducerAction(action)) contractEventReducer(sess, action);
-    else if (ContractSendActions.isReducerAction(action)) contractSendReducer(sess, action);
-    else if (EthCallActions.isReducerAction(action)) ethCallReducer(sess, action);
-    else if (ConfigActions.isReducerAction(action)) configReducer(sess, action);
-    else if (AccountActions.isReducerAction(action)) accountReducer(sess, action);
+    else if (isContractEventAction(action)) contractEventReducer(sess, action);
+    else if (isContractSendAction(action)) contractSendReducer(sess, action);
+    else if (isEthCallAction(action)) ethCallReducer(sess, action);
+    else if (isConfigAction(action)) configReducer(sess, action);
+    else if (isAccountAction(action)) accountReducer(sess, action);
     else if (SyncActions.isReducerAction(action)) syncReducer(sess, action);
 
     return sess.state;

@@ -1,4 +1,4 @@
-import { put } from 'redux-saga/effects';
+import { put } from 'typed-redux-saga/macro';
 import { create as createSync } from '../../sync/actions';
 import { CallSyncedAction, CALL_SYNCED } from '../actions';
 
@@ -11,16 +11,16 @@ function* contractCallSynced(action: CallSyncedAction) {
 
         //Create Sync
         if (sync && sync != 'once') {
-            yield put(createSync(sync));
+            yield* put(createSync(sync));
         }
 
         if (sync) {
             //Initial Action if sync or set to trigger once
-            yield put(callAction);
+            yield* put(callAction);
         }
     } catch (error) {
         console.error(error);
-        yield put({
+        yield* put({
             type: CALL_SYNCED_ERROR,
             error,
             action,

@@ -1,56 +1,81 @@
 import { assert } from 'chai';
-import Web3 from 'web3';
-import ganache from 'ganache-core';
-
-import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
+import { Provider } from 'react-redux';
+import Ganache from 'ganache-core';
+import Web3 from 'web3';
 
-import { createStore } from '../../store';
-import { Network, Transaction } from '../../index';
-import { sleep } from '../../test/utils';
-import { useAccount } from './index';
+import { fetch as fetchTransaction } from '../../transaction/actions';
+import { create as createNetwork } from '../../network/actions';
+
+import { name } from '../common';
+import { createStore, StoreType } from '../../store';
+import { create } from '../actions';
+import { useByIdSingle, useByIdMany, useAccount } from '../hooks';
+import { Interface, getId, Id } from '../model/interface';
+import { sleep, ZERO_ADDRESS } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
-const networkId = '1337';
-
-describe('account.hooks', () => {
+describe(`${name}.hooks`, () => {
     jsdom({ url: 'http://localhost' });
 
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
+    let web3: Web3;
+
+    const networkId = '1337';
+
+    let item: Interface;
+    let id: Id;
+    let itemWithId: Interface;
+
     let wrapper: any;
-
-    let web3: Web3; //Web3 loaded from store
-    let accounts: string[];
-
-    let address: string;
-
     before(async () => {
-        const networkIdInt = parseInt(networkId);
-        const provider = ganache.provider({
-            networkId: networkIdInt,
+        const provider = Ganache.provider({
+            networkId: parseInt(networkId),
         });
         //@ts-ignore
         web3 = new Web3(provider);
-        accounts = await web3.eth.getAccounts();
-        address = accounts[0];
+
+        const accounts = await web3.eth.getAccounts();
+        item = { networkId, address: accounts[0] };
+        id = getId(item);
+        itemWithId = { id, ...item };
     });
 
-    beforeEach(async () => {
+    beforeEach(() => {
         store = createStore();
-        store.dispatch(Network.create({ networkId, web3 }));
-
+        store.dispatch(create(item));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
-    describe('useAccount', () => {
+    it('useByIdSingle', async () => {
+        const { result } = renderHook(() => useByIdSingle(id), {
+            wrapper,
+        });
+
+        assert.deepEqual(result.current, itemWithId);
+        assert.equal(result.all.length, 1);
+    });
+
+    it('useByIdMany', async () => {
+        const { result } = renderHook(() => useByIdMany([id]), {
+            wrapper,
+        });
+
+        assert.deepEqual(result.current, [itemWithId]);
+        assert.equal(result.all.length, 1);
+    });
+
+    it('useAccount', () => {
         it('(networkId, address, sync: true)', async () => {
-            const { result } = renderHook(() => useAccount(networkId, address, { balance: true }), {
+            store.dispatch(createNetwork({ networkId, web3 }));
+
+            const { result } = renderHook(() => useAccount(id, { balance: true }), {
                 wrapper,
             });
 
-            const expected1 = await web3.eth.getBalance(address);
+            const expected1 = await web3.eth.getBalance(item.address!);
 
             await sleep(1000);
 
@@ -59,16 +84,16 @@ describe('account.hooks', () => {
             assert.equal(currentBalance1, expected1, 'result.current.balance');
             assert.equal(currentNonce1, undefined, 'result.current.nonce');
 
-            const receipt = await web3.eth.sendTransaction({ from: address, to: accounts[1], value: '1' });
+            const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
             //Fetch transaction, triggering a refresh
             store.dispatch(
-                Transaction.fetch({
+                fetchTransaction({
                     networkId,
                     hash: receipt.transactionHash,
                 }),
             );
 
-            const expected2 = await web3.eth.getBalance(address);
+            const expected2 = await web3.eth.getBalance(item.address!);
             assert.notEqual(expected1, expected2, 'balance not changed');
 
             await sleep(1000);

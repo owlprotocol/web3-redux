@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from './common';
+import { name } from '../common';
 
 export const SUBSCRIBE = `${name}/SUBSCRIBE`;
 
@@ -15,3 +15,5 @@ export interface SubscribeActionInput {
 export const subscribe = createAction<SubscribeActionInput>(SUBSCRIBE);
 export type SubscribeAction = ReturnType<typeof subscribe>;
 export const isSubscribeAction = subscribe.match;
+
+export default subscribe;

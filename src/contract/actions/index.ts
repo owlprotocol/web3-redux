@@ -1,5 +1,6 @@
 import { CREATE, create, CreateAction, isCreateAction } from './create';
 import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove';
+import { UPDATE, update, UpdateAction, isUpdateAction } from './update';
 import { CALL, call, CallAction, isCallAction } from './call';
 import { CALL_BATCHED, callBatched, CallBatchedAction, isCallBatchedAction } from './callBatched';
 import { CALL_SYNCED, callSynced, CallSyncedAction, isCallSyncedAction } from './callSynced';
@@ -14,9 +15,9 @@ import {
     isEventUnsubscribeAction,
 } from './eventUnsubscribe';
 
-export type ReducerAction = CreateAction | RemoveAction;
+export type ReducerAction = CreateAction | RemoveAction | UpdateAction;
 export function isReducerAction(action: { type: string }): action is ReducerAction {
-    return isCreateAction(action) || isRemoveAction(action);
+    return isCreateAction(action) || isRemoveAction(action) || isUpdateAction(action);
 }
 
 export type SagaAction =
@@ -46,45 +47,52 @@ export function isAction(action: { type: string }): action is Action {
     return isReducerAction(action) || isSagaAction(action);
 }
 
+export type {
+    CreateAction,
+    RemoveAction,
+    UpdateAction,
+    CallAction,
+    CallSyncedAction,
+    CallUnsyncAction,
+    CallBatchedAction,
+    SendAction,
+    EventGetPastAction,
+    EventSubscribeAction,
+    EventUnsubscribeAction,
+};
+
 export {
     CREATE,
     create,
-    CreateAction,
     isCreateAction,
     REMOVE,
     remove,
-    RemoveAction,
     isRemoveAction,
+    UPDATE,
+    update,
+    isUpdateAction,
     CALL,
     call,
-    CallAction,
     isCallAction,
     CALL_SYNCED,
     callSynced,
-    CallSyncedAction,
     isCallSyncedAction,
     CALL_UNSYNC,
     callUnsync,
-    CallUnsyncAction,
     isCallUnsyncAction,
     CALL_BATCHED,
     callBatched,
-    CallBatchedAction,
     isCallBatchedAction,
     SEND,
     send,
-    SendAction,
     isSendAction,
     EVENT_GET_PAST,
     eventGetPast,
-    EventGetPastAction,
     isEventGetPastAction,
     EVENT_SUBSCRIBE,
     eventSubscribe,
-    EventSubscribeAction,
     isEventSubscribeAction,
     EVENT_UNSUBSCRIBE,
     eventUnsubscribe,
-    EventUnsubscribeAction,
     isEventUnsubscribeAction,
 };

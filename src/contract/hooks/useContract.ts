@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AbiItem } from 'web3-utils';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selector';
+import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { BaseWeb3Contract } from '../model';
 import { create } from '../actions';
-import { selectByAddressSingle as selectContractByAddressSingle } from '../selector';
+import selectSingle from '../selectors/selectByIdSingle';
 
 export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     networkId: string | undefined,
@@ -14,7 +14,9 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     const dispatch = useDispatch();
 
     const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
-    const contract = useSelector((state) => selectContractByAddressSingle<T>(state, networkId, address));
+    const contract = useSelector((state) =>
+        selectSingle<T>(state, networkId && address ? { networkId, address } : undefined),
+    );
     const networkExists = !!network;
     const contractExists = !!contract;
 

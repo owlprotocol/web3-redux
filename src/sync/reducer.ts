@@ -1,6 +1,6 @@
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction } from './actions';
 
-export function reducer(sess: any, action: ReducerAction) {
+function reducer(sess: any, action: ReducerAction) {
     const Model = sess.Sync;
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
@@ -13,3 +13,5 @@ export function reducer(sess: any, action: ReducerAction) {
 
     return sess;
 }
+
+export default reducer;

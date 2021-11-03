@@ -7,3 +7,5 @@ export const create = createAction<Sync>(CREATE);
 
 export type CreateAction = ReturnType<typeof create>;
 export const isCreateAction = create.match;
+
+export default create;

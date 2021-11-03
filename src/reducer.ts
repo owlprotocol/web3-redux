@@ -20,7 +20,7 @@ import configReducer from './config/reducer';
 import accountReducer from './account/reducer';
 import syncReducer from './sync/reducer';
 
-import ORM from './orm';
+import { getOrm, initializeState } from './orm';
 
 export type Action =
     | NetworkAction
@@ -36,7 +36,8 @@ export type Action =
     | SyncActions.Action;
 
 export function rootReducer(state: any, action: Action) {
-    const sess = ORM.orm.session(state || ORM.initializeState(ORM.orm));
+    const orm = getOrm();
+    const sess = orm.session(state || initializeState(orm));
     if (isNetworkAction(action)) networkReducer(sess, action);
     else if (isBlockAction(action)) blockReducer(sess, action);
     else if (TransactionActions.isReducerAction(action)) transactionReducer(sess, action);

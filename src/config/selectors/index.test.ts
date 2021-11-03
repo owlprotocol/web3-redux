@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { REDUX_ROOT } from '../../common';
-import ORM from '../../orm';
+import { getOrm } from '../../orm';
 import { ZERO_ADDRESS } from '../../utils';
 
 import { name } from '../common';
@@ -12,7 +12,7 @@ describe(`${name}.selectors`, () => {
     const item: Interface = { id: '0', networkId: '1337', account: ZERO_ADDRESS };
     const id = item.id;
     const state = {
-        [REDUX_ROOT]: ORM.orm.getEmptyState(),
+        [REDUX_ROOT]: getOrm().getEmptyState(),
     };
 
     before(() => {

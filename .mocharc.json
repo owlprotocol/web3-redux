@@ -1,5 +1,5 @@
 {
-    "parallel": false,
+    "parallel": true,
     "jobs": 8,
     "timeout": 20000,
     "colors": true,

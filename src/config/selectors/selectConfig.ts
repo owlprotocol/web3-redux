@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-orm';
-import ORM from '../../orm';
+import { getOrm } from '../../orm';
 import { Network } from '../../network/model';
 import selectByIdSingle from './selectByIdSingle';
 
@@ -13,7 +13,7 @@ export const selectNetworkId: selectNetworkId = (state: any) => {
 };
 
 type selectNetwork = (state: any) => Network | undefined;
-export const selectNetwork: selectNetwork = createSelector(ORM.orm, (session: any) => {
+export const selectNetwork: selectNetwork = createSelector(getOrm(), (session: any) => {
     const { Config } = session;
     return Config.withId(0)?.network;
 });

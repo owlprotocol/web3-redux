@@ -1,7 +1,8 @@
 import { createSelector } from 'redux-orm';
 import { name } from '../common';
-import ORM from '../../orm';
+import { getOrm } from '../../orm';
 
-const select = createSelector(ORM.orm[name]);
+const orm = getOrm();
+const select = createSelector(orm[name]);
 
 export default select;

@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { AbiCoder } from 'web3-eth-abi';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../../common';
-import ORM from '../../orm';
+import { getOrm } from '../../orm';
 
 import { getId, getIdDeconstructed, Interface, validate } from '../model/interface';
 import { name } from '../common';
@@ -15,54 +15,61 @@ import {
     selectContractCall,
     selectContractEvents,
 } from './index';
-import { validate as validatedEthCall } from '../../ethcall/model';
+import { validateEthCall } from '../../ethcall/model';
 import { ZERO_ADDRESS } from '../../utils';
 import { callArgsHash } from '../model/callArgs';
-import { validate as validatedContractEvent } from '../../contractevent/model';
+import { validateContractEvent } from '../../contractevent/model';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');
 
 describe(`${name}.selectors`, () => {
     const networkId = '1337';
-    const item: Interface = {
-        networkId,
-        address: '0x0000000000000000000000000000000000000001',
-        abi: BlockNumberAbi.abi as any,
-    };
-
-    const id = getId(item);
-    const itemWithId = validate(item);
-    const idDeconstructed = getIdDeconstructed(item);
-
+    const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
     //EthCall
     const method = 'getValue';
-    const methodAbi = itemWithId.abi!.filter((f) => f.name === method)[0];
+    const methodAbi = (BlockNumberAbi.abi as any).filter((f: any) => f.name === method)[0];
     const data = coder.encodeFunctionCall(methodAbi, []);
-    const ethCall = validatedEthCall({ networkId, from: ZERO_ADDRESS, to: itemWithId.address, data });
+    const ethCall = validateEthCall({ networkId, from: ZERO_ADDRESS, to: ADDRESS_1, data, returnValue: 66 });
 
     //Events
     const eventName = 'NewValue';
-    const event1 = validatedContractEvent({
+    const event1 = validateContractEvent({
         networkId,
-        address: itemWithId.address,
+        address: ADDRESS_1,
         name: 'NewValue',
         blockHash: '0x0',
         logIndex: 0,
         returnValues: { val: 42 },
     });
 
-    const event2 = validatedContractEvent({
+    const event2 = validateContractEvent({
         networkId,
-        address: itemWithId.address,
+        address: ADDRESS_1,
         name: 'NewValue',
         blockHash: '0x0',
-        logIndex: 0,
+        logIndex: 1,
         returnValues: { val: 43 },
     });
 
+    //Contract
+    const item: Interface = {
+        networkId,
+        address: ADDRESS_1,
+        abi: BlockNumberAbi.abi as any,
+        methods: {
+            getValue: {
+                [callArgsHash()]: { ethCallId: ethCall.id! },
+            },
+        },
+    };
+
+    const id = getId(item);
+    const itemWithId = validate(item);
+    const idDeconstructed = getIdDeconstructed(item);
+
     const state = {
-        [REDUX_ROOT]: ORM.orm.getEmptyState(),
+        [REDUX_ROOT]: getOrm().getEmptyState(),
     };
 
     before(() => {
@@ -78,9 +85,6 @@ describe(`${name}.selectors`, () => {
         state[REDUX_ROOT]['ContractEvent'].itemsById[event1.id!] = event1;
         state[REDUX_ROOT]['ContractEvent'].items.push(event2.id);
         state[REDUX_ROOT]['ContractEvent'].itemsById[event2.id!] = event2;
-
-        const argsHash = callArgsHash(); //empty args
-        itemWithId.methods!['getValue'][argsHash] = { ethCallId: ethCall.id };
     });
 
     it('selectByIdExists', () => {
@@ -138,7 +142,7 @@ describe(`${name}.selectors`, () => {
     });
     describe('selectContractCall', () => {
         it(method, () => {
-            assert.deepEqual(selectContractCall(state, id, method), ethCall);
+            assert.deepEqual(selectContractCall(state, id, method), ethCall.returnValue);
         });
     });
     describe('selectContractEvents', () => {

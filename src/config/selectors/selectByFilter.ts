@@ -1,12 +1,12 @@
 import { createSelector } from 'redux-orm';
 import { name } from '../common';
-import ORM from '../../orm';
+import { getOrm } from '../../orm';
 import Interface from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
 type selectByFilterType = (state: any, filter: Partial<Interface> | undefined) => Interface[];
 const selectByFilter: selectByFilterType = createSelector(
-    ORM.orm,
+    getOrm(),
     (_1: any, filter: Partial<Interface> | undefined) => filter,
     (session: any, filter: Partial<Interface> | undefined) => {
         const model = session[name];

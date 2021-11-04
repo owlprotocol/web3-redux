@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
-import { getId, Interface } from '../model/interface';
+import { getId, Interface } from '../model';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';

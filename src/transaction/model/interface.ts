@@ -1,6 +1,6 @@
 import { TransactionReceipt } from 'web3-eth';
 import { toChecksumAddress, toHex } from 'web3-utils';
-import { getId as getBlockId } from '../../block/model';
+import { getId as getBlockId } from '../../block/model/id';
 
 export interface IdDeconstructed {
     readonly networkId: string;

@@ -1,7 +1,7 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
 
-export default function reducer(sess: any, action: ReducerAction) {
+export function reducer(sess: any, action: ReducerAction) {
     const Model = sess[name];
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
@@ -15,3 +15,5 @@ export default function reducer(sess: any, action: ReducerAction) {
 
     return sess;
 }
+
+export default reducer;

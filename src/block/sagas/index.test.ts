@@ -16,7 +16,7 @@ import createAction from '../actions/create';
 //Sagas
 import exists from './exists';
 import fetch from './fetch';
-import { getId, Interface } from '../model/interface';
+import { getId, Interface } from '../model';
 
 describe(`${name}.sagas`, () => {
     const networkId = '1337';

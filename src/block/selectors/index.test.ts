@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
 
-import { getId, getIdDeconstructed, Interface } from '../model/interface';
+import { getId, getIdDeconstructed, Interface } from '../model';
 import { name } from '../common';
 
 import { selectByIdExists, selectByIdSingle, selectByIdMany, selectByFilter } from './index';

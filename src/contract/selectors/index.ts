@@ -4,8 +4,8 @@ import selectByIdMany from './selectByIdMany';
 import selectByIdSingle from './selectByIdSingle';
 import selectByIdExists from './selectByIdExists';
 import selectByFilter from './selectByFilter';
-import selectContractCall from './selectContractCallById';
-import selectContractEvents from './selectContractEventsById';
+import selectContractCall, { selectContractCallFactory } from './selectContractCallById';
+import selectContractEvents, { selectEventsFactory } from './selectContractEventsById';
 
 export {
     select,
@@ -16,4 +16,6 @@ export {
     selectByFilter,
     selectContractCall,
     selectContractEvents,
+    selectContractCallFactory,
+    selectEventsFactory,
 };

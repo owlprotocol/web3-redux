@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-orm';
-import { Block } from '../../block';
+import { Block } from '../../block/model';
 
 import { name } from '../common';
 import { getOrm } from '../../orm';

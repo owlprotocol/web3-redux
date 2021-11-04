@@ -1,6 +1,6 @@
 import { AbiItem, toChecksumAddress } from 'web3-utils';
 import { Contract as Web3Contract } from 'web3-eth-contract';
-import { Sync } from '../../sync/model';
+import { SyncType } from '../../sync/model/SyncType';
 
 /**
  * Contract Id object.
@@ -34,7 +34,7 @@ export interface Interface<T extends BaseWeb3Contract = BaseWeb3Contract> {
     readonly abi?: AbiItem[];
     readonly methods?: {
         [callerFunctionName: string]: {
-            [argsHash: string]: { ethCallId?: string; sync?: Sync['type'] | false };
+            [argsHash: string]: { ethCallId?: string; sync?: SyncType | false };
         };
     };
     readonly web3Contract?: T;

@@ -1,4 +1,4 @@
-import { IdDeconstructed, Id } from './interface';
+import { IdDeconstructed, Id } from './id';
 
 /**
  * Block header object. Typically returned by Web3 websocket subscriptions.

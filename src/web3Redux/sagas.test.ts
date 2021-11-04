@@ -4,6 +4,7 @@ import { createStore, StoreType } from '../store';
 import { Network, Web3Redux, Block, Transaction } from '../index';
 import { sleepForPort } from '../test/utils';
 import Web3 from 'web3';
+import { sleep } from '../utils';
 
 describe('web3Redux.sagas', () => {
     let server1: ganache.Server;
@@ -26,7 +27,7 @@ describe('web3Redux.sagas', () => {
         server2 = ganache.server({
             port: 0,
             networkId: 1337,
-            blockTime: 1,
+            //blockTime: 1,
         });
         const port2 = await sleepForPort(server2, 1000);
         const rpc2 = `ws://localhost:${port2}`;
@@ -66,8 +67,10 @@ describe('web3Redux.sagas', () => {
         await web3Network1.eth.sendTransaction({ from: accounts1[0], to: accounts1[1], value: '1' });
         await web3Network2.eth.sendTransaction({ from: accounts2[0], to: accounts2[1], value: '1' });
 
+        await sleep(300);
+
         //Block.select
-        assert.isAtLeast(Block.selectByIdMany(store.getState()).length, 2, 'synced block headers');
+        assert.equal(Block.selectByIdMany(store.getState()).length, 2, 'synced block headers');
 
         //Transaction.select
         assert.equal(Transaction.selectByIdMany(store.getState()).length, 2, 'synced block transactions');

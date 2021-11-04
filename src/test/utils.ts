@@ -66,7 +66,6 @@ export async function mineBlock(web3: Web3) {
         //@ts-ignore
         web3?.currentProvider.send({ method: 'evm_mine', params: [] }, resolve);
     });
-    await sleep(150);
 }
 
 interface LogEmitter extends EventEmitter {

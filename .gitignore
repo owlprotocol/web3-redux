@@ -6,7 +6,7 @@ src/types/web3
 # dependencies
 /node_modules
 package-lock.json
-pnpm-lock.yaml
+#pnpm-lock.yaml
 yarn.lock
 
 # testing

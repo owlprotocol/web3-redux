@@ -10,22 +10,25 @@ import { renderHook } from '@testing-library/react-hooks';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { BlockNumber } from '../../types/web3/BlockNumber';
 
-import { useContractCall, contractCallHookFactory, useEvents, contractEventsHookFactory } from '../../contract/hooks';
-import { createStore } from '../../store';
-import { Contract, Network } from '../../index';
+import { name } from '../common';
+import { createStore, StoreType } from '../../store';
 import { sleep } from '../../test/utils';
-import { contractId } from '../model';
-import { validatedContractEvent } from '../../contractevent/model';
+import { validate as validatedContractEvent } from '../../contractevent/model/interface';
+import { create as createNetwork } from '../../network/actions';
+
+import { getId } from '../model';
+import { create } from '../actions';
+import { useContractCall, contractCallHookFactory, useEvents, contractEventsHookFactory } from '../../contract/hooks';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
 const networkId = '1337';
 
-describe('contract.hooks', () => {
+describe(`${name}.hooks`, () => {
     jsdom({ url: 'http://localhost' });
 
-    let store: ReturnType<typeof createStore>;
+    let store: StoreType;
     let wrapper: any;
 
     let web3: Web3; //Web3 loaded from store
@@ -47,7 +50,7 @@ describe('contract.hooks', () => {
 
     beforeEach(async () => {
         store = createStore();
-        store.dispatch(Network.create({ networkId, web3 }));
+        store.dispatch(createNetwork({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
 
         const tx = new web3.eth.Contract(BlockNumberAbi.abi as AbiItem[]).deploy({
@@ -57,10 +60,10 @@ describe('contract.hooks', () => {
         web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '10000' });
         address = web3Contract.options.address;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        id = contractId({ networkId, address });
+        id = getId({ networkId, address });
 
         store.dispatch(
-            Contract.create({
+            create({
                 networkId,
                 address,
                 abi: BlockNumberAbi.abi as AbiItem[],
@@ -68,15 +71,18 @@ describe('contract.hooks', () => {
         );
     });
 
-    describe('useEvents', () => {
+    describe('useContractCall', () => {
         it('(networkId, address, method)', async () => {
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
 
-            const { result } = renderHook(() => useContractCall(networkId, web3Contract.options.address, 'getValue'), {
-                wrapper,
-            });
+            const { result } = renderHook(
+                () => useContractCall(networkId, web3Contract.options.address, 'getValue', [], { sync: 'once' }),
+                {
+                    wrapper,
+                },
+            );
 
             await sleep(1000);
 
@@ -95,9 +101,12 @@ describe('contract.hooks', () => {
 
             const useGetValue = contractCallHookFactory<BlockNumber, 'getValue'>('getValue');
 
-            const { result } = renderHook(() => useGetValue(networkId, web3Contract.options.address), {
-                wrapper,
-            });
+            const { result } = renderHook(
+                () => useGetValue(networkId, web3Contract.options.address, [], { sync: 'once' }),
+                {
+                    wrapper,
+                },
+            );
 
             await sleep(1000);
 
@@ -115,9 +124,12 @@ describe('contract.hooks', () => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
             });
 
-            const { result } = renderHook(() => useEvents(networkId, web3Contract.options.address, 'NewValue'), {
-                wrapper,
-            });
+            const { result } = renderHook(
+                () => useEvents(networkId, web3Contract.options.address, 'NewValue', undefined, { sync: true }),
+                {
+                    wrapper,
+                },
+            );
 
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
@@ -138,7 +150,7 @@ describe('contract.hooks', () => {
             });
 
             const { result } = renderHook(
-                () => useEvents(networkId, web3Contract.options.address, 'NewValue', { value: '42' }),
+                () => useEvents(networkId, web3Contract.options.address, 'NewValue', { value: '42' }, { sync: true }),
                 {
                     wrapper,
                 },
@@ -169,9 +181,12 @@ describe('contract.hooks', () => {
             });
 
             const useNewValue = contractEventsHookFactory<BlockNumber, 'NewValue'>('NewValue');
-            const { result } = renderHook(() => useNewValue(networkId, web3Contract.options.address), {
-                wrapper,
-            });
+            const { result } = renderHook(
+                () => useNewValue(networkId, web3Contract.options.address, undefined, { sync: true }),
+                {
+                    wrapper,
+                },
+            );
 
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
@@ -192,9 +207,12 @@ describe('contract.hooks', () => {
             });
 
             const useNewValue = contractEventsHookFactory<BlockNumber, 'NewValue'>('NewValue');
-            const { result } = renderHook(() => useNewValue(networkId, web3Contract.options.address, { value: '42' }), {
-                wrapper,
-            });
+            const { result } = renderHook(
+                () => useNewValue(networkId, web3Contract.options.address, { value: '42' }, { sync: true }),
+                {
+                    wrapper,
+                },
+            );
 
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();

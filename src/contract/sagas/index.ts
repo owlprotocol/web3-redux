@@ -1,4 +1,4 @@
-import { takeEvery, all, spawn } from 'redux-saga/effects';
+import { takeEvery, all, spawn } from 'typed-redux-saga/macro';
 import { CALL, CALL_BATCHED, CALL_SYNCED, SEND, EVENT_GET_PAST } from '../actions';
 import contractCall from './contractCall';
 import contractCallBatched from './contractCallBatched';
@@ -9,7 +9,7 @@ import contractSend from './contractSend';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga
 export function* saga() {
-    yield all([
+    yield* all([
         takeEvery(CALL, contractCall),
         takeEvery(CALL_BATCHED, contractCallBatched),
         takeEvery(CALL_SYNCED, contractCallSynced),

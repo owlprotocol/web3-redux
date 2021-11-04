@@ -1,27 +1,23 @@
-import { put, call } from 'redux-saga/effects';
-import { ZERO_ADDRESS } from '../../utils';
-import { validatedEthCall } from '../../ethcall/model';
-import { create as createEthCall } from '../../ethcall/actions';
-import { callArgsHash } from '../model';
+import { put, call } from 'typed-redux-saga/macro';
+
+import networkExists from '../../network/sagas/exists';
+import { validate as validatedEthCall } from '../../ethcall/model';
+import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions';
+
+import { getId } from '../model';
 import { create, CallAction, CALL } from '../actions';
-import contractExists from './contractExists';
-import networkExists from '../../network/sagas/networkExists';
+import exists from './exists';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 
 function* contractCall(action: CallAction) {
     try {
         const { payload } = action;
-        const { networkId, address } = payload;
+        const { networkId, address, from, defaultBlock, argsHash } = payload;
+        const id = getId({ networkId, address });
 
-        //@ts-ignore
-        yield call(networkExists, networkId);
-        //@ts-ignore
-        const contract: Contract = yield call(contractExists, networkId, address);
-
-        //Defaults
-        const from: string = payload.from ?? ZERO_ADDRESS;
-        const defaultBlock = payload.defaultBlock ?? 'latest';
+        yield* call(networkExists, networkId);
+        const contract = yield* call(exists, id);
 
         const web3Contract = contract.web3Contract!;
         let tx: any;
@@ -42,26 +38,24 @@ function* contractCall(action: CallAction) {
         });
 
         //Create base call
-        yield put(createEthCall(ethCall));
+        yield* put(createEthCall(ethCall));
 
-        //Update contract call key if not stored
-        const key = callArgsHash({ from, defaultBlock, args: payload.args });
-        const contractCallSync = contract.methods[payload.method][key];
+        const contractCallSync = contract.methods![payload.method][argsHash];
         if (!contractCallSync) {
-            contract.methods[payload.method][key] = { ethCallId: ethCall.id };
-            yield put(create(contract));
+            contract.methods![payload.method][argsHash] = { ethCallId: ethCall.id };
+            yield* put(create(contract));
         } else if (contractCallSync.ethCallId != ethCall.id) {
-            contract.methods[payload.method][key].ethCallId = ethCall.id;
-            yield put(create(contract));
+            contract.methods![payload.method][argsHash].ethCallId = ethCall.id;
+            yield* put(create(contract));
         }
 
-        const gas = ethCall.gas ?? (yield call(tx.estimateGas, { ...ethCall })); //default gas
+        const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
         //@ts-ignore
-        const returnValue = yield call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
-        yield put(createEthCall({ ...ethCall, returnValue }));
+        const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
+        yield* put(updateEthCall({ ...ethCall, returnValue }));
     } catch (error) {
         console.error(error);
-        yield put({
+        yield* put({
             type: CALL_ERROR,
             error,
             action,

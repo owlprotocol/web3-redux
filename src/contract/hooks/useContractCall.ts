@@ -1,17 +1,19 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo, useDebugValue } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BaseWeb3Contract, callArgsHash, CALL_BLOCK_SYNC, CALL_TRANSACTION_SYNC, ContractCallSync } from '../model';
-import { callSynced, callUnsync } from '../actions';
-import { useNetworkId } from '../../config/hooks';
-import { selectContractCallByAddress, selectByAddressSingle as selectContractByAddressSingle } from '../selector';
+
 import { Await } from '../../types/promise';
+import { Sync } from '../../sync/model';
+
+import { BaseWeb3Contract } from '../model';
+import { callSynced, callUnsync } from '../actions';
+import selectSingle from '../selectors/selectByIdSingle';
+import selectContractCall from '../selectors/selectContractCallById';
 
 //Contract Call
 export interface UseContractCallOptions {
     from?: string;
-    defaultBlock?: number | string;
     gas?: string;
-    sync?: ContractCallSync | boolean | typeof CALL_BLOCK_SYNC | typeof CALL_TRANSACTION_SYNC;
+    sync?: Sync | Sync['type'] | true | 'once';
 }
 
 export interface HookHandlers {
@@ -19,55 +21,54 @@ export interface HookHandlers {
     unsubscribe: () => void;
 }
 export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
-    networkId?: string,
-    address?: string,
-    method?: K,
+    networkId: string | undefined,
+    address: string | undefined,
+    method: K | undefined,
     args?: Parameters<T['methods'][K]>,
     options?: UseContractCallOptions,
 ): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, HookHandlers] {
-    const { from, defaultBlock, sync } = options ?? {};
-    const defaultNetworkId = useNetworkId();
-    networkId = networkId ?? defaultNetworkId;
+    const sync = options?.sync;
+    const from = options?.from;
 
-    const contract = useSelector((state) => selectContractByAddressSingle<T>(state, address, networkId));
+    const id = networkId && address ? { networkId, address } : undefined;
+    const contract = useSelector((state) => selectSingle<T>(state, id));
+    const contractExists = !!contract;
 
-    const argsHash = callArgsHash({ args, from, defaultBlock });
     const dispatch = useDispatch();
-    const contractCall = useSelector((state) =>
-        selectContractCallByAddress<T, K>(state, address, method, { args, from, defaultBlock }, networkId),
-    );
+    const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
+
+    const argsHash = JSON.stringify(args);
+    const syncHash = JSON.stringify(sync);
+    const callSyncedAction = useMemo(() => {
+        if (networkId && address && method && contractExists && sync) {
+            return callSynced({
+                networkId,
+                address,
+                method: method as string,
+                args,
+                from,
+                sync,
+            });
+        }
+
+        return undefined;
+    }, [networkId, address, method, argsHash, contractExists, syncHash]);
+    const syncId = callSyncedAction?.payload.sync != 'once' ? callSyncedAction?.payload.sync?.id : undefined;
+    const callUnsyncAction = useMemo(() => {
+        if (syncId) return callUnsync(syncId);
+        return undefined;
+    }, [syncId]);
+
+    useDebugValue({ contractCall, contractExists, sync, callSyncedAction, callUnsyncAction });
 
     //Recompute subscribe function if network/contract is created, otherwise function is void
     const subscribe = useCallback(() => {
-        if (networkId && address && method && contract) {
-            dispatch(
-                callSynced({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args,
-                    from,
-                    defaultBlock,
-                    sync,
-                }),
-            );
-        }
-    }, [networkId, address, method, argsHash, sync, dispatch, contract]);
+        if (callSyncedAction) dispatch(callSyncedAction);
+    }, [dispatch, callSyncedAction]);
 
     const unsubscribe = useCallback(() => {
-        if (networkId && address && method && contract) {
-            dispatch(
-                callUnsync({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args,
-                    from,
-                    defaultBlock,
-                }),
-            );
-        }
-    }, [networkId, address, method, argsHash, dispatch, contract]);
+        if (callUnsyncAction) dispatch(callUnsyncAction);
+    }, [dispatch, callUnsyncAction]);
 
     useEffect(() => {
         subscribe();
@@ -75,7 +76,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         return () => {
             unsubscribe();
         };
-    }, [networkId, address, method, argsHash, sync, dispatch, contract]);
+    }, [subscribe, unsubscribe]);
 
     return [contractCall, { subscribe, unsubscribe }];
 }
@@ -85,8 +86,8 @@ export function contractCallHookFactory<
     K extends keyof T['methods'] = string,
 >(method: K) {
     return (
-        networkId?: string,
-        address?: string,
+        networkId: string | undefined,
+        address: string | undefined,
         args?: Parameters<T['methods'][K]>,
         options?: UseContractCallOptions,
     ) => {

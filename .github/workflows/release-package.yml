@@ -27,10 +27,10 @@ jobs:
       # Install
       - run: pnpm i
       # Publish NPMJS
-      - run: pnpm publish --access public
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPMJS_TOKEN}}
       # Publish Github
-      - run: pnpm publish
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

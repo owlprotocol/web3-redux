@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { IdArgs, getId } from '../model/interface';
+import { IdArgs, getId } from '../model';
 
 export const REMOVE = `${name}/DELETE`;
 export const remove = createAction(REMOVE, (payload: IdArgs) => {

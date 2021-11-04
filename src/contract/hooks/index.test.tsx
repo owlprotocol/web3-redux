@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
 
 import BlockNumberAbi from '../../abis/BlockNumber.json';
+// eslint-disable-next-line import/no-unresolved
 import { BlockNumber } from '../../types/web3/BlockNumber';
 
 import { name } from '../common';

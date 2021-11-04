@@ -71,7 +71,7 @@ describe(`${name}.hooks`, () => {
         it('(networkId, address, sync: true)', async () => {
             store.dispatch(createNetwork({ networkId, web3 }));
 
-            const { result } = renderHook(() => useAccount(id, { balance: true }), {
+            const { result } = renderHook(() => useAccount(networkId, item.address, { balance: true }), {
                 wrapper,
             });
 

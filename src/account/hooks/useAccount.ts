@@ -4,14 +4,15 @@ import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selec
 import { remove as removeSync } from '../../sync/actions';
 import { selectByIdExists as selectSyncExists } from '../../sync/selector';
 
-import { getId, getIdDeconstructed, IdArgs } from '../model/interface';
+import { getId } from '../model/interface';
 import { create, fetchBalanceSynced, fetchNonceSynced } from '../actions';
 import { FetchBalanceSyncedActionInput } from '../actions/fetchBalanceSynced';
 import { FetchNonceSyncedActionInput } from '../actions/fetchNonceSynced';
 import { selectByIdSingle } from '../selectors';
 
 export default function useAccount(
-    idArgs: IdArgs | undefined,
+    networkId: string | undefined,
+    address: string | undefined,
     sync?: {
         balance?: FetchBalanceSyncedActionInput['sync'];
         nonce?: FetchNonceSyncedActionInput['sync'];
@@ -19,8 +20,7 @@ export default function useAccount(
 ) {
     const dispatch = useDispatch();
     //Coerce t
-    const { networkId, address } = idArgs ? getIdDeconstructed(idArgs) : { networkId: undefined, address: undefined };
-    const id = idArgs ? getId(idArgs) : undefined;
+    const id = networkId && address ? getId({ networkId, address }) : undefined;
 
     const account = useSelector((state) => selectByIdSingle(state, id));
     const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));

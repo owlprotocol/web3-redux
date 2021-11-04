@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
-import { Interface, Id, getId, getIdDeconstructed, validate, IdDeconstructed } from './interface';
+import { Interface, Id, getId, getIdDeconstructed, validate, IdDeconstructed } from './index';
 
 describe(`${name}.model`, () => {
     const item: Interface = { networkId: '1337', number: 0 };

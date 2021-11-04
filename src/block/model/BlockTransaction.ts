@@ -1,4 +1,4 @@
-import { Transaction } from '../../transaction/model';
+import Transaction from '../../transaction/model/interface';
 import BlockHeader from './BlockHeader';
 
 /**

@@ -3,6 +3,8 @@ import { FETCH } from '../actions';
 import fetch from './fetch';
 import subscribeLoop from './subscribeLoop';
 
-export default function* saga() {
+export function* saga() {
     yield* all([takeEvery(FETCH, fetch), spawn(subscribeLoop)]);
 }
+
+export default saga;

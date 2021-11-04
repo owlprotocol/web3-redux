@@ -1,5 +1,5 @@
 import { name } from '../common';
-import { Interface, IdArgs, getId } from '../model/interface';
+import { Interface, IdArgs, getId } from '../model';
 
 export const SET = (key: keyof Interface) => `${name}/SET/${key.toUpperCase()}`;
 export interface SetActionInput {

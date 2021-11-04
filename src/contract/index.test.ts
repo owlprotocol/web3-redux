@@ -111,7 +111,7 @@ describe(`${name}.integration`, () => {
                     method: 'getValue',
                 }),
             );
-            await sleep(150);
+            await sleep(300);
 
             //Selector
             const value = selectContractCall(store.getState(), id, 'getValue');
@@ -128,7 +128,7 @@ describe(`${name}.integration`, () => {
 
             const tx2 = await web3Contract.methods.setValue(42);
             await tx2.send({ from: accounts[0], gas: await tx2.estimateGas() });
-            await sleep(150);
+            await sleep(300);
 
             const expectedBlockNumber = await web3.eth.getBlockNumber();
 
@@ -142,7 +142,7 @@ describe(`${name}.integration`, () => {
             };
 
             store.dispatch(callBatchedAction({ networkId, requests: [ethCall1, ethCall2] }));
-            await sleep(150);
+            await sleep(300);
 
             //Selector
             const getValue = selectContractCall(store.getState(), id, 'getValue');
@@ -163,7 +163,7 @@ describe(`${name}.integration`, () => {
 
             const tx2 = await web3Contract.methods.setValue(42);
             await tx2.send({ from: accounts[0], gas: await tx2.estimateGas() });
-            await sleep(150);
+            await sleep(300);
 
             const tx3 = new web3.eth.Contract(Multicall.abi as AbiItem[]).deploy({
                 data: Multicall.bytecode,
@@ -171,7 +171,7 @@ describe(`${name}.integration`, () => {
             const gas3 = await tx3.estimateGas();
             const multiCallContract = await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '10000' });
             store.dispatch(createNetwork({ networkId, web3, multicallAddress: multiCallContract.options.address }));
-            await sleep(150);
+            await sleep(300);
 
             const expectedBlockNumber = await web3.eth.getBlockNumber();
 
@@ -211,7 +211,7 @@ describe(`${name}.integration`, () => {
                 sync: 'Block',
             });
             store.dispatch(action);
-            await sleep(150);
+            await sleep(300);
             const actionSync = action.payload.sync as Sync;
             const selectedSync = selectSync(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
@@ -220,7 +220,7 @@ describe(`${name}.integration`, () => {
 
             //Increment block
             await mineBlock(web3);
-            await sleep(150);
+            await sleep(300);
 
             const blockNumber2 = selectContractCall(store.getState(), id, 'blockNumber');
 
@@ -239,7 +239,7 @@ describe(`${name}.integration`, () => {
                 sync: 'Transaction',
             });
             store.dispatch(action);
-            await sleep(150);
+            await sleep(300);
             const actionSync = action.payload.sync as Sync;
             const selectedSync = selectSync(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
@@ -260,7 +260,7 @@ describe(`${name}.integration`, () => {
             );
 
             //Updated from transaction sync
-            await sleep(150);
+            await sleep(300);
             const value2 = selectContractCall(store.getState(), id, 'getValue');
             assert.equal(value2, 666);
         });
@@ -279,7 +279,7 @@ describe(`${name}.integration`, () => {
                 sync: 'Transaction',
             });
             store.dispatch(action);
-            await sleep(150);
+            await sleep(300);
             const actionSync = action.payload.sync as Sync;
             const selectedSync = selectSync(store.getState(), actionSync.id!);
             assert.deepEqual(selectedSync, actionSync, 'Sync not created!');
@@ -293,7 +293,7 @@ describe(`${name}.integration`, () => {
             await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '10000' });
 
             //Updated from transaction sync
-            await sleep(150);
+            await sleep(300);
             const value2 = selectContractCall(store.getState(), id, 'getValue');
             assert.equal(value2, 666);
         });
@@ -339,7 +339,7 @@ describe(`${name}.integration`, () => {
                 }),
             );
 
-            await sleep(150);
+            await sleep(300);
 
             const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.deepEqual(events1, expectedEvents);

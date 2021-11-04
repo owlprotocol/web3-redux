@@ -42,8 +42,8 @@ describe('web3Redux.sagas', () => {
     });
 
     after(() => {
-        server1.close();
-        server2.close();
+        //server1.close();
+        //server2.close();
     });
 
     beforeEach(() => {

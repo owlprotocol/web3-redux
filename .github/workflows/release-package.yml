@@ -28,11 +28,11 @@ jobs:
       - run: pnpm i
       # Publish NPMJS
       - run: npm config set registry=https://registry.npmjs.org/
-      - run: npm publish --access public
+      - run: pnpm publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPMJS_TOKEN}}
       # Publish Github
       - run: npm config set registry=https://npm.pkg.github.com/
-      - run: npm publish
+      - run: pnpm publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

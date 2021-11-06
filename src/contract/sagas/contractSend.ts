@@ -61,7 +61,7 @@ function* contractSend(action: SendAction) {
         const contract: Contract = yield* call(exists, id);
 
         const web3Contract = contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`${getId({ address, networkId })} has no web3SenderContract`);
+        if (!web3Contract) throw new Error(`Contract ${id} has no web3SenderContract`);
 
         const gasPrice = payload.gasPrice ?? 0;
         const value = payload.value ?? 0;

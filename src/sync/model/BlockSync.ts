@@ -9,7 +9,7 @@ export default interface BlockSync<T extends any = { [key: string]: string }> ex
 }
 
 //Triggers once per block
-export function defaultBlockSync(networkId: string, actions?: BlockSync['actions']) {
+export function defaultBlockSync(networkId: string, actions: BlockSync['actions']) {
     return {
         type: 'Block',
         filter: (block, cache) => (!cache || !cache[block.id!]) && block.networkId === networkId,
@@ -20,7 +20,7 @@ export function defaultBlockSync(networkId: string, actions?: BlockSync['actions
     } as BlockSync;
 }
 
-export function moduloBlockSync(networkId: string, period: number, actions?: BlockSync['actions']) {
+export function moduloBlockSync(networkId: string, period: number, actions: BlockSync['actions'] = []) {
     return {
         type: 'Block',
         filter: (block, cache) =>

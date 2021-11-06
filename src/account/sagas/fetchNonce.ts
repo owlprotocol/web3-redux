@@ -11,10 +11,11 @@ export function* fetchNonce(action: FetchNonceAction) {
     const { networkId, address } = getIdDeconstructed(payload);
     const network = yield* call(networkExists, networkId);
     const web3 = network.web3;
-    if (!web3) throw new Error(`Network ${networkId} missing web3`);
+    const web3Sender = network.web3Sender;
+    if (!web3 && !web3Sender) throw new Error(`Network ${networkId} missing web3`);
 
     //@ts-expect-error
-    const nonce: string = yield* call(web3.eth.getTransactionCount, address);
+    const nonce: string = yield* call((web3 ?? web3Sender).eth.getTransactionCount, address);
     yield* put(set({ id: payload, key: 'nonce', value: nonce }));
 }
 

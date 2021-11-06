@@ -19,7 +19,8 @@ function* contractCall(action: CallAction) {
         yield* call(networkExists, networkId);
         const contract = yield* call(exists, id);
 
-        const web3Contract = contract.web3Contract!;
+        const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
+        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
         let tx: any;
         if (!payload.args || payload.args.length == 0) {
             tx = web3Contract.methods[payload.method]();

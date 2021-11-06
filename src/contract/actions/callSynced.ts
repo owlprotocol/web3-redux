@@ -28,10 +28,11 @@ export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionIn
         sync = defaultBlockSync(networkId, [callAction]);
     } else if (payload.sync === 'Event') {
         sync = defaultEventSync([callAction]);
-    } else if (sync === 'once') {
+    } else if (payload.sync === 'once') {
         sync = 'once';
     } else {
         sync = payload.sync;
+        sync.actions = [callAction]; //Override sync action
     }
 
     //Sync object

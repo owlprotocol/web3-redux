@@ -51,12 +51,12 @@ function* eventSubscribe(action: EventSubscribeAction) {
         const { networkId, address, eventName } = payload;
         const id = getId({ networkId, address });
 
-        //@ts-ignore
         yield* call(networkExists, networkId);
-        //@ts-ignore
-        const contract: Contract = yield* call(exists, id);
+        const contract = yield* call(exists, id);
 
-        const web3Contract = contract.web3Contract!;
+        const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
+        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+
         const filter = payload.filter ?? {};
         const subscription = web3Contract.events[eventName]({ filter });
         const channel: TakeableChannel<EventSubscribeChannelMessage> = yield* call(eventSubscribeChannel, subscription);

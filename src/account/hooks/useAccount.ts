@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useDebugValue } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { remove as removeSync } from '../../sync/actions';
@@ -19,7 +19,6 @@ export default function useAccount(
     },
 ) {
     const dispatch = useDispatch();
-    //Coerce t
     const id = networkId && address ? getId({ networkId, address }) : undefined;
 
     const account = useSelector((state) => selectByIdSingle(state, id));
@@ -42,6 +41,8 @@ export default function useAccount(
     }, [id, accountExists, networkExists, sync?.balance]);
     const fetchBalanceId = fetchBalanceAction?.payload.sync?.id;
     const fetchBalanceExists = useSelector((state) => selectSyncExists(state, fetchBalanceId));
+
+    useDebugValue({ networkId, address, networkExists, accountExists, account });
 
     const fetchNonceAction = useMemo(() => {
         if (id && networkExists && accountExists && sync?.nonce) {

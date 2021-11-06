@@ -38,7 +38,6 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
 
     const argsHash = JSON.stringify(args);
-    const syncHash = JSON.stringify(sync);
     const callSyncedAction = useMemo(() => {
         if (networkId && address && method && contractExists && sync) {
             return callSynced({
@@ -52,7 +51,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         }
 
         return undefined;
-    }, [networkId, address, method, argsHash, contractExists, syncHash]);
+    }, [networkId, address, method, argsHash, contractExists, sync]);
     const syncId = callSyncedAction?.payload.sync != 'once' ? callSyncedAction?.payload.sync?.id : undefined;
     const callUnsyncAction = useMemo(() => {
         if (syncId) return callUnsync(syncId);

@@ -38,8 +38,9 @@ export const initializeState = (orm: any) => {
 
     // By default, add blockTransactionsSync which dispatches
     // createTransaction actions when block is created
-    const { Sync } = orm.mutableSession(state);
+    const { Sync, Config } = orm.mutableSession(state);
     Sync.create(blockTransactionsSync);
+    Config.create({ id: 0, account: null, networkId: null });
 
     return state;
 };

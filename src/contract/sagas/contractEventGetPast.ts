@@ -57,7 +57,9 @@ function* eventGetPast(action: EventGetPastAction) {
         //Override fromBlock to get correct range for last range
         ranges[ranges.length - 1].fromBlock = fromBlock;
 
-        const web3Contract = contract.web3Contract!;
+        const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
+        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+
         const eventsPromises = ranges.map((r) => {
             const options: any = { ...r };
             if (filter) options.filter = filter;

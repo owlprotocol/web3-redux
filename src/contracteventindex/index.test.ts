@@ -20,6 +20,15 @@ describe(`${name}.integration`, () => {
         returnValues: { val: 42 },
     });
 
+    const event2 = validateContractEvent({
+        networkId,
+        address: ADDRESS_1,
+        name: 'NewValue',
+        blockHash: '0x0',
+        logIndex: 1,
+        returnValues: { val: 42, val2: 69 },
+    });
+
     //Indexes
     let store: StoreType;
 
@@ -28,13 +37,33 @@ describe(`${name}.integration`, () => {
     });
 
     describe('selectors', () => {
-        it('selectEvents', () => {
+        it('selectEvents - test all', () => {
             store.dispatch(createEvent(event1));
             assert.isAbove(event1.indexIds!.length, 0);
             event1.indexIds?.forEach((index) => {
                 const selected1 = selectEvents(store.getState(), index);
                 assert.deepEqual(selected1, [event1]);
             });
+        });
+
+        it('selectEvents - test filter by returnValues', () => {
+            store.dispatch(createEvent(event1));
+            store.dispatch(createEvent(event2));
+            const selected1 = selectEvents(
+                store.getState(),
+                JSON.stringify({ networkId, address: ADDRESS_1, name: 'NewValue', returnValues: { val: 42 } }),
+            );
+            assert.deepEqual(selected1, [event1, event2], 'select [event1,event2]');
+            const selected2 = selectEvents(
+                store.getState(),
+                JSON.stringify({
+                    networkId,
+                    address: ADDRESS_1,
+                    name: 'NewValue',
+                    returnValues: { val: 42, val2: 69 },
+                }),
+            );
+            assert.deepEqual(selected2, [event2], 'select [event2]');
         });
     });
 });

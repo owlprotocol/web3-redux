@@ -4,6 +4,7 @@ import BlockModel from './block/model/orm';
 import TransactionModel from './transaction/model/orm';
 import ContractModel from './contract/model/orm';
 import ContractEventModel from './contractevent/model/orm';
+import ContractEventIndexModel from './contracteventindex/model/orm';
 import ContractSendModel from './contractsend/model/orm';
 import EthCallModel from './ethcall/model/orm';
 import ConfigModel from './config/model/orm';
@@ -24,6 +25,7 @@ export function getOrm(): any {
     orm.register(TransactionModel);
     orm.register(ContractModel);
     orm.register(ContractEventModel);
+    orm.register(ContractEventIndexModel);
     orm.register(ContractSendModel);
     orm.register(EthCallModel);
     orm.register(ConfigModel);

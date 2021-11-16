@@ -6,7 +6,10 @@ import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 const selector = createSelector(getOrm().ContractEventIndex.events);
 
 function selectEvents(state: any, id: string | undefined): ContractEvent[] | undefined {
-    return memoizeArrayByRef(selector(state, id));
+    const result = selector(state, id);
+    if (result) return memoizeArrayByRef(result);
+
+    return undefined;
 }
 
 export default selectEvents;

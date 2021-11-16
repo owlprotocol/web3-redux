@@ -1,4 +1,4 @@
-import { fk, attr, Model as ORMModel } from 'redux-orm';
+import { fk, many, attr, Model as ORMModel } from 'redux-orm';
 import { name } from '../common';
 
 export default class Model extends ORMModel {
@@ -16,5 +16,10 @@ export default class Model extends ORMModel {
         contractId: fk({ to: 'Contract', as: 'contract', relatedName: 'events' }),
         address: attr(),
         name: attr(),
+        indexIds: many({
+            to: 'ContractEventIndex',
+            as: 'indexes',
+            relatedName: 'events',
+        }),
     };
 }

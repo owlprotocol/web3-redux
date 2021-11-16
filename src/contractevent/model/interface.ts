@@ -17,6 +17,7 @@ export interface Interface<T extends ReturnValues = ReturnValues> extends IdDeco
     readonly address: string;
     readonly contractId?: string;
     readonly returnValues: T['returnValues'];
+    readonly indexIds?: string[];
 }
 
 export type IdArgs = IdDeconstructed | Id;
@@ -36,13 +37,27 @@ export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
 
 export function validate(item: Interface): Interface {
     const id = getId(item);
+    const networkId = item.networkId;
+    const address = item.address;
     const addressChecksum = toChecksumAddress(item.address);
     const contractId = getContractId(item);
+
+    const networkIndex = { networkId };
+    const contractIndex = { networkId, address };
+    const baseIndex = { ...contractIndex, name: item.name };
+    //TODO: Add permutations for multi-key indexing
+    const returnValueIndexes = Object.entries(item.returnValues).map(([k, v]) => {
+        return { ...baseIndex, returnValues: { [k]: v } };
+    });
+    const indexIds: string[] = [networkIndex, contractIndex, baseIndex, ...returnValueIndexes].map((v) =>
+        JSON.stringify(v),
+    );
     return {
         ...item,
         id,
         address: addressChecksum,
         contractId,
+        indexIds,
     };
 }
 

@@ -146,7 +146,7 @@ describe(`${name}.selectors`, () => {
         });
     });
     describe('selectContractEvents', () => {
-        it(eventName, () => {
+        it.skip(eventName, () => {
             assert.deepEqual(selectContractEvents(state, id, eventName), [event1, event2]);
             assert.deepEqual(selectContractEvents(state, id, eventName, { val: 42 }), [event1]);
         });

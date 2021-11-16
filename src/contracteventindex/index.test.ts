@@ -37,7 +37,7 @@ describe(`${name}.integration`, () => {
     });
 
     describe('selectors', () => {
-        it('selectEvents - test all', () => {
+        it('selectEvents - all', () => {
             store.dispatch(createEvent(event1));
             assert.isAbove(event1.indexIds!.length, 0);
             event1.indexIds?.forEach((index) => {
@@ -46,7 +46,7 @@ describe(`${name}.integration`, () => {
             });
         });
 
-        it('selectEvents - test filter by returnValues', () => {
+        it('selectEvents - filter by returnValues', () => {
             store.dispatch(createEvent(event1));
             store.dispatch(createEvent(event2));
             const selected1 = selectEvents(
@@ -64,6 +64,32 @@ describe(`${name}.integration`, () => {
                 }),
             );
             assert.deepEqual(selected2, [event2], 'select [event2]');
+        });
+
+        it('selectEvents - memoization', () => {
+            store.dispatch(createEvent(event2));
+            const selected1 = selectEvents(
+                store.getState(),
+                JSON.stringify({
+                    networkId,
+                    address: ADDRESS_1,
+                    name: 'NewValue',
+                    returnValues: { val2: 69 },
+                }),
+            );
+
+            store.dispatch(createEvent(event1)); //Created event does not modify index
+            const selected2 = selectEvents(
+                store.getState(),
+                JSON.stringify({
+                    networkId,
+                    address: ADDRESS_1,
+                    name: 'NewValue',
+                    returnValues: { val2: 69 },
+                }),
+            );
+
+            assert.equal(selected1, selected2);
         });
     });
 });

@@ -1,3 +1,4 @@
+import { batchActions } from 'redux-batched-actions';
 import { Block, BlockTransaction } from '../../block/model';
 import { create as createTransaction } from '../../transaction/actions';
 import { Transaction, getTransactionId } from '../../transaction/model';
@@ -44,7 +45,7 @@ export function createBlockTransactionsActions(block: Block) {
     if (!transactions) {
         return [];
     } else if (isStrings(transactions)) {
-        return transactions.map((hash: string) => {
+        const actions = transactions.map((hash: string) => {
             return createTransaction({
                 hash,
                 networkId: block.networkId,
@@ -53,8 +54,11 @@ export function createBlockTransactionsActions(block: Block) {
                 id: getTransactionId({ hash, networkId: block.networkId }),
             });
         });
+
+        const batch = batchActions(actions, `${createTransaction.type}/${actions.length}`);
+        return [batch];
     } else {
-        return transactions.map((tx: Transaction) => {
+        const actions = transactions.map((tx: Transaction) => {
             return createTransaction({
                 ...tx,
                 networkId: block.networkId,
@@ -62,5 +66,7 @@ export function createBlockTransactionsActions(block: Block) {
                 id: getTransactionId({ hash: tx.hash, networkId: block.networkId }),
             });
         });
+        const batch = batchActions(actions, `${createTransaction.type}/${actions.length}`);
+        return [batch];
     }
 }

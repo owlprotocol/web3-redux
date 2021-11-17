@@ -12,18 +12,21 @@ const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
 
 function* eventGetPastInRange(networkId: string, address: string, name: string, task: EventData[]) {
     //@ts-ignore
-    const events = yield task;
-    const actions = events.map((event: any) => {
-        return createEvent({
-            ...event,
-            networkId,
-            address,
-            name,
-        });
-    });
-    const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
+    const events: any[] = yield task;
 
-    yield* put(batch);
+    if (events.length > 0) {
+        const actions = events.map((event: any) => {
+            return createEvent({
+                ...event,
+                networkId,
+                address,
+                name,
+            });
+        });
+        const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
+
+        yield* put(batch);
+    }
 }
 
 function* eventGetPast(action: EventGetPastAction) {

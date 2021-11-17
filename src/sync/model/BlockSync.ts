@@ -55,6 +55,8 @@ export function createBlockTransactionsActions(block: Block) {
             });
         });
 
+        if (actions.length == 0) return [];
+
         const batch = batchActions(actions, `${createTransaction.type}/${actions.length}`);
         return [batch];
     } else {
@@ -66,6 +68,9 @@ export function createBlockTransactionsActions(block: Block) {
                 id: getTransactionId({ hash: tx.hash, networkId: block.networkId }),
             });
         });
+
+        if (actions.length == 0) return [];
+
         const batch = batchActions(actions, `${createTransaction.type}/${actions.length}`);
         return [batch];
     }

@@ -48,6 +48,7 @@ specifiers:
   react-dom: ^17.0.2
   react-redux: ^7.2.4
   redux: ^4.1.1
+  redux-batched-actions: ^0.5.0
   redux-orm: ^0.16.2
   redux-saga: ^1.1.3
   redux-saga-test-plan: ^4.0.3
@@ -74,6 +75,7 @@ dependencies:
   object-hash: 2.2.0
   re-reselect: 4.0.0_reselect@4.1.3
   redux: 4.1.2
+  redux-batched-actions: 0.5.0_redux@4.1.2
   redux-orm: 0.16.2
   redux-saga: 1.1.3
   reselect: 4.1.3
@@ -7456,6 +7458,14 @@ packages:
     dependencies:
       resolve: 1.20.0
     dev: true
+
+  /redux-batched-actions/0.5.0_redux@4.1.2:
+    resolution: {integrity: sha512-6orZWyCnIQXMGY4DUGM0oj0L7oYnwTACsfsru/J7r94RM3P9eS7SORGpr3LCeRCMoIMQcpfKZ7X4NdyFHBS8Eg==}
+    peerDependencies:
+      redux: '>=1.0.0'
+    dependencies:
+      redux: 4.1.2
+    dev: false
 
   /redux-orm/0.16.2:
     resolution: {integrity: sha512-bUFBZSaswbZxNi5c4o4rs5JNEllb8IiY5UDrdOutLI4u3Mc3EwfQQGMD7lQZcSrfeqy/msSAWGbjYHfXKa71pQ==}

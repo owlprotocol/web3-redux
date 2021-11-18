@@ -10,7 +10,7 @@ import exists from './exists';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 
-function* contractCall(action: CallAction) {
+function* callSaga(action: CallAction) {
     try {
         const { payload } = action;
         const { networkId, address, from, defaultBlock, argsHash } = payload;
@@ -64,4 +64,4 @@ function* contractCall(action: CallAction) {
     }
 }
 
-export default contractCall;
+export default callSaga;

@@ -1,6 +1,5 @@
 import { AbiItem, toChecksumAddress } from 'web3-utils';
 import { Contract as Web3Contract } from 'web3-eth-contract';
-import { SyncType } from '../../sync/model/SyncType';
 
 /**
  * Contract Id object.
@@ -23,7 +22,6 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
  * @param networkId - A network id.
  * @param address - Contract address.
  * @param abi - Contract ABI.
- * @param methods - Contract call store. Call data is stored at [methodName][`(${...args}).call(${defaultBlock},${from})`]
  * @param web3Contract - Web3 Contract instance
  * @param web3SenderContract - Web3 Contract instance used for send transactions.
  */
@@ -32,11 +30,6 @@ export interface Interface<T extends BaseWeb3Contract = BaseWeb3Contract> {
     readonly networkId: string;
     readonly address: string;
     readonly abi?: AbiItem[];
-    readonly methods?: {
-        [callerFunctionName: string]: {
-            [argsHash: string]: { ethCallId?: string; sync?: SyncType | false };
-        };
-    };
     readonly web3Contract?: T;
     readonly web3SenderContract?: T;
 }
@@ -60,20 +53,11 @@ export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
 export function validate(contract: Interface): Interface {
     const { networkId, address } = contract;
     const addressCheckSum = toChecksumAddress(address);
-    const methods =
-        contract.methods ??
-        (contract.abi ?? [])
-            .filter((item: { type: string }) => item.type == 'function')
-            .map((item: any) => item.name!)
-            .reduce((acc: any, m: any) => {
-                return { ...acc, [m]: {} };
-            }, {});
     const id = getId({ networkId, address });
     return {
         ...contract,
         id,
         address: addressCheckSum,
-        methods,
     };
 }
 

@@ -1,7 +1,7 @@
 import { put, all, select, call } from 'typed-redux-saga/macro';
 import { validate as validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
-import { Contract, callArgsHash, getId } from '../model';
+import { Contract, getId } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
 import selectByIdMany from '../selectors/selectByIdMany';
 import networkExists from '../../network/sagas/exists';
@@ -51,16 +51,6 @@ function* callBatched(action: CallBatchedAction) {
 
             //Create base call
             const putEthCallTask = put(createEthCall(ethCall));
-
-            //Update contract call key if not stored
-            const key = callArgsHash({ from: ethCall.from, defaultBlock: ethCall.defaultBlock, args: f.args });
-            const contractCallSync = contract.methods![f.method][key];
-            if (!contractCallSync) {
-                contract.methods![f.method][key] = { ethCallId: ethCall.id };
-            } else if (contractCallSync.ethCallId != ethCall.id) {
-                contract.methods![f.method][key].ethCallId = ethCall.id;
-            }
-
             //Output decoder for multicall
             const methodAbi = contract.abi!.find((m) => m.name === f.method)!;
             const methodAbiOutput = methodAbi.outputs;

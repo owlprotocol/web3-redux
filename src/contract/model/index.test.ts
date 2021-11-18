@@ -16,11 +16,6 @@ describe(`${name}.model`, () => {
     const itemWithId: Interface = {
         ...item,
         id,
-        methods: {
-            blockNumber: {},
-            getValue: {},
-            setValue: {},
-        },
     };
     const idDeconstructed: IdDeconstructed = { networkId: item.networkId, address: item.address };
 

@@ -1,6 +1,6 @@
-import { Interface, IdDeconstructed, getId, getIdDeconstructed, validate, ReturnValues } from './interface';
+import { Interface, IdDeconstructed, IdArgs, getId, getIdDeconstructed, validate, ReturnValues } from './interface';
 
-export type { Interface, IdDeconstructed };
+export type { Interface, IdDeconstructed, IdArgs };
 //alias
 export type { Interface as ContractEvent, IdDeconstructed as ContractEventId };
 export type { ReturnValues };

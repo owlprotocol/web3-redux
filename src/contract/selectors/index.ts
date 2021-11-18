@@ -6,6 +6,7 @@ import selectByIdExists from './selectByIdExists';
 import selectByFilter from './selectByFilter';
 import selectContractCall, { selectContractCallFactory } from './selectContractCallById';
 import selectContractEvents, { selectEventsFactory } from './selectContractEventsById';
+import selectEthCallId from './selectEthCallId';
 
 export {
     select,
@@ -18,4 +19,5 @@ export {
     selectContractEvents,
     selectContractCallFactory,
     selectEventsFactory,
+    selectEthCallId,
 };

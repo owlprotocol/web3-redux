@@ -7,14 +7,7 @@ import { getOrm } from '../../orm';
 import { getId, getIdDeconstructed, Interface, validate } from '../model/interface';
 import { name } from '../common';
 
-import {
-    selectByIdExists,
-    selectByIdSingle,
-    selectByIdMany,
-    selectByFilter,
-    selectContractCall,
-    selectContractEvents,
-} from './index';
+import { selectByIdExists, selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
 import { validateEthCall } from '../../ethcall/model';
 import { ZERO_ADDRESS } from '../../utils';
 import { callArgsHash } from '../model/callArgs';
@@ -33,7 +26,6 @@ describe(`${name}.selectors`, () => {
     const ethCall = validateEthCall({ networkId, from: ZERO_ADDRESS, to: ADDRESS_1, data, returnValue: 66 });
 
     //Events
-    const eventName = 'NewValue';
     const event1 = validateContractEvent({
         networkId,
         address: ADDRESS_1,
@@ -143,12 +135,6 @@ describe(`${name}.selectors`, () => {
     describe('selectContractCall', () => {
         it(method, () => {
             assert.deepEqual(selectContractCall(state, id, method), ethCall.returnValue);
-        });
-    });
-    describe('selectContractEvents', () => {
-        it.skip(eventName, () => {
-            assert.deepEqual(selectContractEvents(state, id, eventName), [event1, event2]);
-            assert.deepEqual(selectContractEvents(state, id, eventName, { val: 42 }), [event1]);
         });
     });
 });

@@ -1,8 +1,9 @@
 import { createSelector } from 'redux-orm';
 import { getOrm } from '../../orm';
 import { ContractEvent, ReturnValues } from '../../contractevent/model';
-import { selectEvents } from '../../contracteventindex/selectors';
+import { selectEvents, selectByIdExists as selectEventIndexExists } from '../../contracteventindex/selectors';
 import { BaseWeb3Contract, IdArgs, getIdDeconstructed } from '../model/interface';
+import { memoizedLodashFilter } from '../../memo';
 
 //Events
 type selectContractEventsById = (state: any, id: string | undefined) => ContractEvent[] | null;
@@ -22,11 +23,26 @@ export function selectContractEventsByIdFiltered<
     if (!idArgs) return undefined;
 
     const { networkId, address } = getIdDeconstructed(idArgs);
-    const index: any = { networkId, address, name: eventName };
-    if (returnValuesFilter) index.returnValues = returnValuesFilter;
-    const indexId = JSON.stringify(index);
+    const baseIndex: any = { networkId, address, name: eventName };
+    const baseIndexId = JSON.stringify(baseIndex);
 
-    return (selectEvents(state, indexId) as ContractEvent<U>[] | undefined) ?? EMPTY_EVENTS;
+    if (!returnValuesFilter) {
+        //Base index is always created
+        return (selectEvents(state, baseIndexId) as ContractEvent<U>[] | undefined) ?? EMPTY_EVENTS;
+    } else {
+        const index: any = { ...baseIndex, returnValues: returnValuesFilter };
+        const indexId = JSON.stringify(index);
+        if (selectEventIndexExists(state, indexId)) {
+            return (selectEvents(state, indexId) as ContractEvent<U>[] | undefined) ?? EMPTY_EVENTS;
+        } else {
+            //No index, used lodash filter
+            const events = selectEvents(state, baseIndexId) as ContractEvent<U>[] | undefined;
+            if (!events) return EMPTY_EVENTS;
+            const eventsFiltered = memoizedLodashFilter(events, { returnValues: returnValuesFilter });
+
+            return eventsFiltered;
+        }
+    }
 }
 
 export function selectEventsFactory<

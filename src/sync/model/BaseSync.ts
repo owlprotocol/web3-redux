@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { AnyAction } from 'redux';
 
 /**
  * Ethereum Sync. Represents middleware that will trigger actions on certain events.
@@ -13,6 +13,6 @@ export default interface BaseSync<R extends any = any, T extends any = { [key: s
     type: string;
     filter: (x: R, cache?: T | undefined) => boolean;
     updateCache?: (x: R, cache: T | undefined) => T;
-    actions?: Action[] | ((x: R) => Action[]);
+    actions?: AnyAction[] | ((x: R) => AnyAction[]);
     cache?: T;
 }

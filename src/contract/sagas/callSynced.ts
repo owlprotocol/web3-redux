@@ -4,7 +4,7 @@ import { CallSyncedAction, CALL_SYNCED } from '../actions';
 
 const CALL_SYNCED_ERROR = `${CALL_SYNCED}/ERROR`;
 
-function* contractCallSynced(action: CallSyncedAction) {
+function* callSynced(action: CallSyncedAction) {
     try {
         const { payload } = action;
         const { sync, callAction } = payload;
@@ -25,4 +25,4 @@ function* contractCallSynced(action: CallSyncedAction) {
     }
 }
 
-export default contractCallSynced;
+export default callSynced;

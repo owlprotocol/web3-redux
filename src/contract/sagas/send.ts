@@ -26,7 +26,7 @@ interface ContractSendChannelMessage {
     confirmations?: number;
 }
 
-function contractSendChannel(tx: PromiEvent<TransactionReceipt>): EventChannel<ContractSendChannelMessage> {
+function sendChannel(tx: PromiEvent<TransactionReceipt>): EventChannel<ContractSendChannelMessage> {
     return eventChannel((emitter) => {
         tx.on('transactionHash', (hash: string) => {
             emitter({ type: CONTRACT_SEND_HASH, hash });
@@ -50,7 +50,7 @@ function contractSendChannel(tx: PromiEvent<TransactionReceipt>): EventChannel<C
     });
 }
 
-function* contractSend(action: SendAction) {
+function* send(action: SendAction) {
     try {
         const { payload } = action;
         const { networkId, address, method, args, from } = payload;
@@ -93,7 +93,7 @@ function* contractSend(action: SendAction) {
         const gas = payload.gas ?? (yield* call(tx.estimateGas, { from, value }));
         const txPromiEvent: PromiEvent<TransactionReceipt> = tx.send({ from, gas, gasPrice, value });
 
-        const channel: TakeableChannel<ContractSendChannelMessage> = yield* call(contractSendChannel, txPromiEvent);
+        const channel: TakeableChannel<ContractSendChannelMessage> = yield* call(sendChannel, txPromiEvent);
         let initialConfirm = false;
         while (true) {
             const message: ContractSendChannelMessage = yield* take(channel);
@@ -151,4 +151,4 @@ function* contractSend(action: SendAction) {
     }
 }
 
-export default contractSend;
+export default send;

@@ -1,3 +1,4 @@
+import { enableBatching } from 'redux-batched-actions';
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
 import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import * as TransactionActions from './transaction/actions';
@@ -35,7 +36,7 @@ export type Action =
     | AccountAction
     | SyncActions.Action;
 
-export function rootReducer(state: any, action: Action) {
+const reducer = (state: any, action: Action) => {
     const orm = getOrm();
     const sess = orm.session(state || initializeState(orm));
     if (isNetworkAction(action)) networkReducer(sess, action);
@@ -50,4 +51,8 @@ export function rootReducer(state: any, action: Action) {
     else if (SyncActions.isReducerAction(action)) syncReducer(sess, action);
 
     return sess.state;
-}
+};
+
+export const rootReducer = enableBatching(reducer as (state: any, action: any) => any);
+
+export default rootReducer;

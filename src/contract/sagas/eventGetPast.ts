@@ -1,4 +1,5 @@
-import { put, all, call, fork } from 'typed-redux-saga/macro';
+import { put, call, fork } from 'typed-redux-saga/macro';
+import { batchActions } from 'redux-batched-actions';
 import { EventData } from 'web3-eth-contract';
 import { create as createEvent } from '../../contractevent/actions';
 import { EventGetPastAction, EVENT_GET_PAST } from '../actions';
@@ -11,19 +12,21 @@ const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
 
 function* eventGetPastInRange(networkId: string, address: string, name: string, task: EventData[]) {
     //@ts-ignore
-    const events = yield task;
-    const putActions = events.map((event: any) => {
-        return put(
-            createEvent({
+    const events: any[] = yield task;
+
+    if (events.length > 0) {
+        const actions = events.map((event: any) => {
+            return createEvent({
                 ...event,
                 networkId,
                 address,
                 name,
-            }),
-        );
-    });
+            });
+        });
+        const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
 
-    yield* all(putActions);
+        yield* put(batch);
+    }
 }
 
 function* eventGetPast(action: EventGetPastAction) {

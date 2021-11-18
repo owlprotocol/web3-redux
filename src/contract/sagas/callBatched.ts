@@ -10,7 +10,7 @@ import { ZERO_ADDRESS } from '../../utils';
 
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
 
-function* contractCallBatched(action: CallBatchedAction) {
+function* callBatched(action: CallBatchedAction) {
     try {
         const { payload } = action;
         const { requests, networkId } = payload;
@@ -174,4 +174,4 @@ function* contractCallBatched(action: CallBatchedAction) {
     }
 }
 
-export default contractCallBatched;
+export default callBatched;

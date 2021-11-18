@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import { AbiCoder } from 'web3-eth-abi';
+import Web3 from 'web3';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
@@ -10,13 +11,13 @@ import { name } from '../common';
 import { selectByIdExists, selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
 import { validateEthCall } from '../../ethcall/model';
 import { ZERO_ADDRESS } from '../../utils';
-import { callArgsHash } from '../model/callArgs';
 import { validateContractEvent } from '../../contractevent/model';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');
 
 describe(`${name}.selectors`, () => {
+    const web3 = new Web3('https://localhost:8545');
     const networkId = '1337';
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
     //EthCall
@@ -49,11 +50,7 @@ describe(`${name}.selectors`, () => {
         networkId,
         address: ADDRESS_1,
         abi: BlockNumberAbi.abi as any,
-        methods: {
-            getValue: {
-                [callArgsHash()]: { ethCallId: ethCall.id! },
-            },
-        },
+        web3Contract: new web3.eth.Contract(BlockNumberAbi.abi as any, ADDRESS_1),
     };
 
     const id = getId(item);

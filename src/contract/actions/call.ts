@@ -1,5 +1,4 @@
 import { createAction } from '@reduxjs/toolkit';
-import { callArgsHash } from '../model';
 import { name } from '../common';
 
 export const CALL = `${name}/CALL`;
@@ -13,9 +12,7 @@ export interface CallActionInput {
     gas?: number;
 }
 export const call = createAction(CALL, (payload: CallActionInput) => {
-    //Update contract call key if not stored
-    const argsHash = callArgsHash({ args: payload.args });
-    return { payload: { ...payload, argsHash } };
+    return { payload: { ...payload } };
 });
 
 export type CallAction = ReturnType<typeof call>;

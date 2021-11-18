@@ -18,6 +18,7 @@ export interface Interface<T extends ReturnValues = ReturnValues> extends IdDeco
     readonly address: string;
     readonly contractId?: string;
     readonly returnValues: T['returnValues'];
+    readonly returnValuesIndexKeys?: string[] | boolean;
     readonly indexIds?: string[];
 }
 
@@ -53,26 +54,33 @@ export function validate(item: Interface): Interface {
     const addressChecksum = toChecksumAddress(item.address);
     const contractId = getContractId(item);
 
-    const networkIndex = { networkId };
+    //Default we only index named keys, but user can also pass (0,1,2) as argument
+    const returnValuesKeys = Object.keys(item.returnValues).filter((k: string) => isNaN(parseInt(k)));
+    let returnValuesIndexKeys: string[];
+    if (!item.returnValuesIndexKeys) returnValuesIndexKeys = [];
+    else if (item.returnValuesIndexKeys === true) returnValuesIndexKeys = returnValuesKeys;
+    else returnValuesIndexKeys = item.returnValuesIndexKeys;
+
     const contractIndex = { networkId, address };
     const baseIndex = { ...contractIndex, name: item.name };
-    const keyCombinations = returnValueKeyCombinations(Object.keys(item.returnValues));
-    const returnValueIndexes = keyCombinations.map((keys) => {
+    const keyCombinations = returnValueKeyCombinations(returnValuesIndexKeys);
+
+    const returnValuesIndexes = keyCombinations.map((keys) => {
         const returnValues: any = {};
         keys.forEach((k) => {
             returnValues[k] = item.returnValues[k];
         });
-        return { ...baseIndex, returnValues };
+        return { ...baseIndex, returnValues }; //TODO: Non-contract indexed events?
     });
 
-    const indexIds: string[] = [networkIndex, contractIndex, baseIndex, ...returnValueIndexes].map((v) =>
-        JSON.stringify(v),
-    );
+    //TODO: Index by networkId, contractId?
+    const indexIds: string[] = [baseIndex, ...returnValuesIndexes].map((v) => JSON.stringify(v));
     return {
         ...item,
         id,
         address: addressChecksum,
         contractId,
+        returnValuesIndexKeys,
         indexIds,
     };
 }

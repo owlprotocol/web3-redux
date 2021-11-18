@@ -37,23 +37,26 @@ describe(`${name}.integration`, () => {
     });
 
     describe('selectors', () => {
-        it('selectEvents - all', () => {
+        it('selectEvents({networkId,address,name})', () => {
             store.dispatch(createEvent(event1));
-            assert.isAbove(event1.indexIds!.length, 0);
-            event1.indexIds?.forEach((index) => {
-                const selected1 = selectEvents(store.getState(), index);
-                assert.deepEqual(selected1, [event1]);
-            });
+            const selected1 = selectEvents(
+                store.getState(),
+                JSON.stringify({ networkId, address: ADDRESS_1, name: 'NewValue' }),
+            );
+            assert.deepEqual(selected1, [event1], 'select [event1]');
         });
 
-        it('selectEvents - filter by returnValues', () => {
-            store.dispatch(createEvent(event1));
-            store.dispatch(createEvent(event2));
+        it('selectEvents({networkId,address,name,returnValues}', () => {
+            const event1Indexed = validateContractEvent({ ...event1, returnValuesIndexKeys: ['val'] });
+            const event2Indexed = validateContractEvent({ ...event2, returnValuesIndexKeys: ['val', 'val2'] });
+
+            store.dispatch(createEvent(event1Indexed));
+            store.dispatch(createEvent(event2Indexed));
             const selected1 = selectEvents(
                 store.getState(),
                 JSON.stringify({ networkId, address: ADDRESS_1, name: 'NewValue', returnValues: { val: 42 } }),
             );
-            assert.deepEqual(selected1, [event1, event2], 'select [event1,event2]');
+            assert.deepEqual(selected1, [event1Indexed, event2Indexed], 'select [event1,event2]');
             const selected2 = selectEvents(
                 store.getState(),
                 JSON.stringify({
@@ -63,7 +66,7 @@ describe(`${name}.integration`, () => {
                     returnValues: { val: 42, val2: 69 },
                 }),
             );
-            assert.deepEqual(selected2, [event2], 'select [event2]');
+            assert.deepEqual(selected2, [event2Indexed], 'select [event2]');
         });
 
         it('selectEvents - memoization', () => {

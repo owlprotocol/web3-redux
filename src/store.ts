@@ -1,6 +1,6 @@
 import { combineReducers, createStore as createReduxStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import crashReporter from './middleware/crashReporter';
+import { crashReporter, onNetworkUpdate } from './middleware';
 import { rootReducer } from './reducer';
 import { rootSaga } from './saga';
 import { REDUX_ROOT } from './common';
@@ -11,7 +11,7 @@ const reducers = combineReducers({
 
 export const createStore = () => {
     const sagaMiddleware = createSagaMiddleware();
-    const store = createReduxStore(reducers, applyMiddleware(crashReporter, sagaMiddleware));
+    const store = createReduxStore(reducers, applyMiddleware(crashReporter, onNetworkUpdate as any, sagaMiddleware));
     sagaMiddleware.run(rootSaga);
     return store;
 };

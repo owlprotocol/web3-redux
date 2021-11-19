@@ -10,3 +10,14 @@ export type { BaseWeb3Contract, CallArgsHash, EventSubscription };
 export { getId, validate };
 export { getId as getContractId, validate as validateContract };
 export { callArgsHash, callHash, eventSubscriptionHash, eventId };
+
+export default {
+    getId,
+    getContractId: getId,
+    validate,
+    validateContract: validate,
+    callArgsHash,
+    callHash,
+    eventSubscriptionHash,
+    eventId,
+};

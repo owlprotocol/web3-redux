@@ -1,6 +1,7 @@
 import { CREATE, create, CreateAction, isCreateAction } from './create';
 import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove';
 import { UPDATE, update, UpdateAction, isUpdateAction } from './update';
+import { SET, set, SetAction, isSetAction } from './set';
 import { CALL, call, CallAction, isCallAction } from './call';
 import { CALL_BATCHED, callBatched, CallBatchedAction, isCallBatchedAction } from './callBatched';
 import { CALL_SYNCED, callSynced, CallSyncedAction, isCallSyncedAction } from './callSynced';
@@ -15,9 +16,9 @@ import {
     isEventUnsubscribeAction,
 } from './eventUnsubscribe';
 
-export type ReducerAction = CreateAction | RemoveAction | UpdateAction;
+export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
 export function isReducerAction(action: { type: string }): action is ReducerAction {
-    return isCreateAction(action) || isRemoveAction(action) || isUpdateAction(action);
+    return isCreateAction(action) || isRemoveAction(action) || isUpdateAction(action) || isSetAction(action);
 }
 
 export type SagaAction =
@@ -51,6 +52,7 @@ export type {
     CreateAction,
     RemoveAction,
     UpdateAction,
+    SetAction,
     CallAction,
     CallSyncedAction,
     CallUnsyncAction,
@@ -71,6 +73,48 @@ export {
     UPDATE,
     update,
     isUpdateAction,
+    SET,
+    set,
+    isSetAction,
+    CALL,
+    call,
+    isCallAction,
+    CALL_SYNCED,
+    callSynced,
+    isCallSyncedAction,
+    CALL_UNSYNC,
+    callUnsync,
+    isCallUnsyncAction,
+    CALL_BATCHED,
+    callBatched,
+    isCallBatchedAction,
+    SEND,
+    send,
+    isSendAction,
+    EVENT_GET_PAST,
+    eventGetPast,
+    isEventGetPastAction,
+    EVENT_SUBSCRIBE,
+    eventSubscribe,
+    isEventSubscribeAction,
+    EVENT_UNSUBSCRIBE,
+    eventUnsubscribe,
+    isEventUnsubscribeAction,
+};
+
+export default {
+    CREATE,
+    create,
+    isCreateAction,
+    REMOVE,
+    remove,
+    isRemoveAction,
+    UPDATE,
+    update,
+    isUpdateAction,
+    SET,
+    set,
+    isSetAction,
     CALL,
     call,
     isCallAction,

@@ -2,7 +2,7 @@ import { put, call } from 'typed-redux-saga/macro';
 
 import networkExists from '../../network/sagas/exists';
 import { validate as validatedEthCall } from '../../ethcall/model';
-import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions';
+import { create as createEthCall, set as setEthCall } from '../../ethcall/actions';
 
 import { getId } from '../model';
 import { CallAction, CALL } from '../actions';
@@ -21,12 +21,12 @@ function* callSaga(action: CallAction) {
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
         if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+        const method = web3Contract.methods[payload.method];
+        if (!method) throw new Error(`Contract ${id} no such method ${payload.method}`);
+
         let tx: any;
-        if (!payload.args || payload.args.length == 0) {
-            tx = web3Contract.methods[payload.method]();
-        } else {
-            tx = web3Contract.methods[payload.method](...payload.args);
-        }
+        if (!payload.args || payload.args.length == 0) tx = method();
+        else tx = method(...payload.args);
         const data = tx.encodeABI();
 
         const ethCall = validatedEthCall({
@@ -43,12 +43,13 @@ function* callSaga(action: CallAction) {
         const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
         //@ts-ignore
         const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
-        yield* put(updateEthCall({ ...ethCall, returnValue }));
+        yield* put(setEthCall({ id: ethCall.id!, key: 'returnValue', value: returnValue }));
     } catch (error) {
         console.error(error);
         yield* put({
             type: CALL_ERROR,
             error,
+            errorMessage: (error as Error).message,
             action,
         });
     }

@@ -21,3 +21,17 @@ export {
     selectEventsFactory,
     selectEthCallId,
 };
+
+export default {
+    select,
+    selectById,
+    selectByIdMany,
+    selectByIdSingle,
+    selectByIdExists,
+    selectByFilter,
+    selectContractCall,
+    selectContractEvents,
+    selectContractCallFactory,
+    selectEventsFactory,
+    selectEthCallId,
+};

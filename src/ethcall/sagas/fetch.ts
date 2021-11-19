@@ -1,5 +1,5 @@
 import { put, call } from 'typed-redux-saga/macro';
-import { create, FetchAction, FETCH, update } from '../actions';
+import { create, FetchAction, FETCH, set } from '../actions';
 import { ZERO_ADDRESS } from '../../utils';
 import networkExists from '../../network/sagas/exists';
 import { Network } from '../../network/model';
@@ -26,7 +26,7 @@ export default function* fetch(action: FetchAction) {
             defaultBlock ?? 'latest',
         );
 
-        yield* put(update({ ...payload, returnValue }));
+        yield* put(set({ id: payload.id!, key: 'returnValue', value: returnValue }));
     } catch (error) {
         console.error(error);
         yield* put({

@@ -29,3 +29,18 @@ export {
     set,
     isSetAction,
 };
+
+export default {
+    CREATE,
+    create,
+    isCreateAction,
+    REMOVE,
+    remove,
+    isRemoveAction,
+    UPDATE,
+    update,
+    isUpdateAction,
+    SET,
+    set,
+    isSetAction,
+};

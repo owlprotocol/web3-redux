@@ -1,33 +1,37 @@
-import { ReducerAction, isCreateAction, isRemoveAction } from './actions';
-import { validate, getId } from './model';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
+import { getId } from './model';
 import { Network } from '../network/model';
 
 export function reducer(sess: any, action: ReducerAction) {
     const { Contract, Network } = sess;
 
     if (isCreateAction(action)) {
-        const network: Network = Network.withId(action.payload.networkId);
-        if (!network)
-            throw new Error(
-                `Could not find Network with id ${action.payload.networkId}. Make sure to dispatch a Network/CREATE action.`,
-            );
+        const { payload } = action;
+        const network: Network = Network.withId(payload.networkId);
+        const { web3, web3Sender } = network ?? { web3: undefined, web3Sender: undefined };
 
-        const validated = validate(action.payload);
+        const web3Contract =
+            payload.web3Contract ??
+            (web3 && payload.abi ? new web3.eth.Contract(payload.abi, payload.address) : undefined);
+        const web3SenderContract =
+            payload.web3SenderContract ??
+            (web3Sender && payload.abi ? new web3Sender.eth.Contract(payload.abi, payload.address) : undefined);
+
         //@ts-expect-error ignore readonly
-        validated.web3Contract =
-            validated.web3Contract ??
-            (network.web3 ? new network.web3.eth.Contract(validated.abi!, validated.address) : undefined);
+        payload.web3Contract = web3Contract;
         //@ts-expect-error ignore readonly
-        validated.web3SenderContract =
-            validated.web3SenderContract ??
-            (network.web3Sender ? new network.web3Sender.eth.Contract(validated.abi!, validated.address) : undefined);
-        Contract.upsert(validated);
+        payload.web3SenderContract = web3SenderContract;
+        Contract.upsert(payload);
     } else if (isRemoveAction(action)) {
         if (typeof action.payload === 'string') {
             Contract.withId(action.payload).delete();
         } else {
             Contract.withId(getId(action.payload)).delete();
         }
+    } else if (isUpdateAction(action)) {
+        Contract.update(action.payload);
+    } else if (isSetAction(action)) {
+        Contract.withId(action.payload.id)?.set(action.payload.key, action.payload.value);
     }
 
     return sess;

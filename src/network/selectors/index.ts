@@ -23,3 +23,17 @@ export {
     selectTransactions,
     selectContracts,
 };
+
+export default {
+    select,
+    selectById,
+    selectByIdMany,
+    selectByIdSingle,
+    selectByIdExists,
+    selectByFilter,
+    selectBlocks,
+    selectLatestBlock,
+    selectLatestBlockNumber,
+    selectTransactions,
+    selectContracts,
+};

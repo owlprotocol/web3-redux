@@ -1,35 +1,9 @@
 # Web3 Redux
 
+[![NPM Package Version][npm-image-version]][npm-url]
+[![NPM Package Downloads][npm-image-downloads]][npm-url]
+
 Web3 Redux Library.
-
-## Roadmap
-
-### To Do
-
--   Default NetworkId
-    -   ✅ Block (missing for reducer actions)
-    -   ✅ Contract (missing for reducer actions)
-    -   EthCall
-    -   Transaction
--   Gas Price Fetch
--   ✅ ContractEvent: Test filtering
--   Accounts: balance, nonce
--   Track latestBlock number in store
--   ✅ ContractEvent: Separate entity in store to avoid Contract mutations
--   Network add without id, fetch chainId with request
--   Loading component/helper for initialization
--   Error handling and test error handling
--   Smoother Metamask Integration, Add Network RPC request
--   Contract.send() rpc optimization (currently each send incurs a heavy penalty for 21 blocks making duplicate/unecessary getBlockByNumber and fetchReceipt calls). See https://web3js.readthedocs.io/en/v1.3.4/web3-eth.html?highlight=21%20blocks#transactionconfirmationblocks
--   Mempool monitoring
--   `ImmutableJS`
-
-### Completed
-
--   ✅ `@reduxjs/toolkit` Actions
--   ✅ ContractCall: Use regular web3 contract call as opposed to encoding/decoding (allows more flexibility)
--   ✅ Usage with Metamask example: Use metamask as wallet provider + custom rpc
--   ✅ Batched Multicall.js https://github.com/makerdao/multicall
 
 ## Table of Contents
 
@@ -37,8 +11,6 @@ Web3 Redux Library.
 -   [Getting Started](#getting-started)
     -   [Initialize the Redux Store](#initialize-the-redux-store)
     -   [Initialize Networks](#initialize-networks)
-        -   [Automatic](#automatic)
-        -   [Manual](#manual)
 -   [Displaying React Components](#displaying-react-components)
 -   [Syncing](#syncing)
     -   [Block Header Sync](#block-header-sync)
@@ -55,17 +27,29 @@ Web3 Redux Library.
 
 ## Installing
 
+Use your favorite node package manager to install web3-redux and the required peer dependencies. We recommend using [pnpm](https://github.com/pnpm/pnpm) as a disk space efficient drop-in replacement of npm.
+
 ```
-npm install @leovigna/web3-redux
+pnpm install redux redux-saga react-redux web3 @leovigna/web3-redux
 ```
 
 ## Getting Started
 
+Before you begin, you might want to get familiar with some of the libraries this "meta-library" is built with:
+
+-   [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+-   [redux](https://redux.js.org/)
+-   [reselect](https://github.com/reduxjs/reselect)
+-   [redux-orm](https://redux-orm.github.io/redux-orm/)
+-   [web3.js](https://web3js.readthedocs.io/en/v1.3.0/)
+-   [redux-saga](https://redux-saga.js.org/)
+
 ### Initialize the Redux Store
 
-web3-redux can be added to your existing Redux store. The web3Reducer MUST be stored at the `web3Redux` key in your store.
+In most situations, you will want to add web3-redux to your existing redux store. The web3Reducer MUST be stored at the `web3Redux` key in your store.
 
 ```typescript
+//store.ts
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { web3Reducer, web3Saga } from '@leovigna/web3-redux';
@@ -81,142 +65,159 @@ sagaMiddleware.run(web3Saga);
 export default store;
 ```
 
-### Initialize Networks
-
-To start web3-redux, you can either use the helper `WEB3_REDUX/INITIALIZE` action or manually add networks and block subscriptions.
-While a block subscription is optional, it is in most cases necessary to enable syncing the latest on-chain data for your smart contracts.
-
-#### Usage with metamask
-
-See [Manual Network Initialization](#manual) for more detail.
-Metamask can cause issues as the injected Web3 instance is mutable and changes as users change networks. To mitigate this, Networks can be initialized with 2 web3 instances, one for read-only calls (eg. Infura) and one for wallet signed send transactions (Metamask). This way, subcriptions and call syncs can continue to work even if a user changes networks.
-
-Override the optional `web3Sender` parameter when initializing the Network and set it to the injected Web3 instance. The regular read-only web3 instance should
+Then follow the standard `react-redux` configuration [guide](https://redux.js.org/usage/configuring-your-store) to add a `Provider` component to wrap your entire React app in the redux context.
 
 ```typescript
-const web3Sender = window.web3; //Metamask wallet, used for send transactions
-const web3ReadOnly = new Web3('ws://localhost:8545'); //Used for calls/subscriptions
-store.dispatch(Network.create({ networkId: '1', web3: web3ReadOnly, web3Sender }));
+//index.tsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import App from './App';
+import store from './store';
+
+ReactDOM.render(
+    <React.StrictMode>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </React.StrictMode>,
+);
 ```
 
-#### Automatic
+### Add a network
 
-You can dispatch a `WEB3_REDUX/INITIALIZE` action to initialize multiple networks.
+All entities in the `web3-redux` store are indexed by networkId. `web3-redux` let's you sync multiple networks concurrently (eg. sync Mainnet & Ropsten blocks). To enable this however, you must first configure a network by adding it to the store and passing it a web3 instance.
 
-```typescript
-store.dispatch(Web3Redux.initialize());
-```
-
-A set of default ethereum networks will be initialized if an environment variable with the rpc endpoint value is set. We strongly recommend using a websocket rpc as otherwise subscriptions will not be possible.
-The following default networks are supported:
-
--   Local: `LOCAL_RPC` (eg. `ws://localhost:8545`)
--   Mainnet: `MAINNET_RPC` (eg. `wss://mainnet.infura.io/ws/v3/<API_KEY>`)
--   Ropsten: `ROPSTEN_RPC`
--   Kovan: `KOVAN_RPC`
--   Rinkeby: `RINKEBY_RPC`
--   Goerli: `GOERLI_RPC`
-
-The environment variables are also supported with the prefixes `REACT_APP_*` and `NEXT_PUBLIC_*`.
-
-Alternatively, you can pass your own set of networks with web3 instances to the initialize action:
+A good place to do this in your React app is on app mount with a `useEffect` hook. Note that the component must be have access to the Redux context (see earlier section). Below a simple example for adding a network to the store on app mount. Here we assume the ethereum RPC is simply defined as an environment variable. For more dynamic configuration such as integration with Metamask, check out [TBD](#).
 
 ```typescript
-store.dispatch(Web3Redux.initialize({ networks: [{ networkId: '1', web3 }] }));
-```
+//App.tsx
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import Web3 from 'web3';
+import { Network } from '@leovigna/web3-redux';
 
-<b>Block Sync</b>
-By default, the initialize action will also start a block sync for each network.
-You can disable this with:
-
-```typescript
-store.dispatch(Web3Redux.initialize({ blockSubscribe: false }));
-```
-
-Or customize it with:
-
-```typescript
-store.dispatch(Web3Redux.initialize({ blockSubscribe: [{ networkId: '1' }] }));
-```
-
-#### Manual
-
-<b>Add a network</b>
-All entities in the web3-redux stored are indexed by networkId. web3-redux let's you sync multiple networks concurrently (eg. sync Mainnet & Ropsten blocks). To enable this however, you must first configure a network by adding it to the store and passing it a web3 instance.
-
-```typescript
-store.dispatch(Network.create({ networkId: '1', web3 }));
-```
-
-<b>Start a block subscription</b>
-To sync with on-chain events, it's a good idea to start a block subscription as it can be used as a reference point to keep data fresh. This is recommended but not required as some apps might use a different refresh mechanism.
-
-```typescript
-store.dispatch(Block.subscribe({ networkId: '1' }));
+const App = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const networkId = '1';
+        const web3 = new Web3(process.env.REACT_APP_RPC);
+        dispatch(Network.create({ networkId, web3 })); //create network
+    }, []); //Runs once on app mount
+    //...
+};
 ```
 
 ### Add a contract
 
-One you've add a network and started the block sync, add a contract and make a call.
+One you've added a network, add a contract by dispatching a `Contract.create` action.
+Bloew we've extended the previous example to add a contract.
 
 ```typescript
-store.dispatch(Contract.create({ networkId: '1', address: '0x000...', abi: ERC20ABI }));
+//App.tsx
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import Web3 from 'web3';
+import { Network } from '@leovigna/web3-redux';
+
+const App = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const networkId = '1';
+        const web3 = new Web3(process.env.REACT_APP_RPC);
+        dispatch(Network.create({ networkId, web3 })); //create network
+        const address = process.env.REACT_APP_ABI;
+        const abi = dispatch(Contract.create({ networkId, address, abi })); //Some smart contract abi //create contract
+    }, []); //Runs once on app mount
+    //...
+};
+```
+
+Alternatively, if not using hooks or React in general, you can manually dispatch a eth call action and use the selector as follows:
+
+```typescript
+//Create contract
+store.dispatch(Contract.create({ networkId, address, abi }));
+```
+
+### Contract call
+
+The easiest way make a contract [method call](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html#methods-mymethod-call) is using the `useContractCall` hook. This combines dispatching a redux action and using a selector to return the updating result.
+
+Here we use `once` as the sync parameter to instruct the hook to dispatch a single eth call. For more info on complex sync strategies, see the sync documentation [TBD](#)
+
+```typescript
+import { Contract } from '@leovigna/web3-redux';
+const ERC20Component = ({ networkId, address, account }) => {
+    //Make contract call
+    const [balanceOf] = Contract.useContractCall(networkId, address, 'balanceOf', [account], { sync: 'once' });
+    //...
+};
+```
+
+Alternative in plain Typescript:
+
+```typescript
+//Make contract call
 store.dispatch(Contract.call({
-    networkId: '1',
-    address: '0x000...',
+    networkId,
+    address,
     method: 'balanceOf',
-    args: ['0x111...'],
+    args: [account],
 }));
-
-const balance = Contract.selectContractCall(state, '1-0x000...', 'balanceOf', { args: ['0x0111...', from: web3.eth.defaultAccount ]})
-
-//Alternatively, fetch things manually
-const contract = Contract.selectSingle(state, '1-0x000...')
-const balanceOf = contract.methods.balanceOf
-const argsHash = Contract.callArgsHash({ args: ['0x111...'] }) //([0x111...]).call(latest,web3.eth.defaultAccount)
-const value = balanceOf['([0x111...]).call(latest,0x222...)'].value
+const balance = Contract.selectContractCall(state, {networkId, address }, 'balanceOf', { args: [account] } ]})
 ```
 
-## Displaying React Components
+### Contract Event subscription
 
-To display web3-redux data in your React components, you can either parse the raw state or use web3-redux's state selectors (recommended). See [Selectors](#selectors) section for a description of all web3-redux selectors.
-
-Below a short example component using the BlockSelector to display all blocks.
+Another way to sync data from your smart contract is to use [event subscriptions](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html#contract-events). The `useEvents` hook is helpful for this.
+Here we enable `sync` and `past` to both get new updates (using websocket subscription) and past events (using [getPastEvents](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html#getpastevents)). Note that getting past events can be an expensive operation, and we recommend disabling or limiting (with block range parameters) the fetching of old events when possible.
+The `web-redux` event subscription hook is configured to automatically start/stop the correct subscription if any relevant params of the hook change. Alternatively, you can use the `subscribe()/unsubscribe()` handlers for more granular control such as handling user interactions.
 
 ```typescript
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Block } from '@leovigna/web3-redux';
-
-export default function Blocks() {
-    const blocks: Block.Block[] = useSelector(BlockSelector.selectMany);
-    return (
-        <div>
-            <h1>Blocks</h1>
-            <div>{JSON.stringify(blocks)}</div>
-        </div>
-    );
-}
+import { Contract } from '@leovigna/web3-redux';
+const ERC20Component = ({ networkId, address, account }) => {
+    // Sync events
+    const [transfers, { subscribe, unsubsribe }] = Contract.useEvents(networkId, address, 'Transfer', [account], {
+        sync: true,
+        past: true,
+        fromBlock: 'earliest',
+        toBlock: 'latest',
+    });
+    //...
+};
 ```
 
-For a more complete example React app checkout [web3-redux-react-example](https://github.com/leovigna/web3-redux-react-example).
+### Block subscription
+
+To sync with on-chain events, it's a good idea to start a block subscription as it can be used as a reference point to keep data fresh. This is recommended but not required as some apps might use a different refresh mechanism.
+The `web3-redux` block subscription hook is configured to automatically start/stop the correct subscription if the `networkId` parameter changes. Alternatively, you can use the `subscribe()/unsubscribe()` handlers for more granular control such as handling user interactions.
+
+```typescript
+//Blocks.tsx
+import { Block } from '@leovigna/web3-redux';
+const BlocksComponent = ({ networkId }) => {
+    const [blocks, { subscribe, unsubsribe }] = Block.useBlockSync(networkId);
+};
+```
+
+Alternatively, if not using hooks or React in general, you can manually dispatch a block sync action and use the selector as follows:
+
+```typescript
+import { Block, Network } from '@leovigna/web3-redux';
+store.dispatch(Block.subscribe({ networkId: '1' }));
+const blocks = Network.selectBlocks(store.getState());
+```
 
 ## Syncing
 
-web3-redux comes with a built-in sync features.
+## Complex Syncing
+
+`web3-redux` comes with a built-in `Sync` data model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs, `BlockSync`, `EventSync`, and `TransactionSync` which each can trigger actions upon receiving updates to a new block, new event, or new transaction. All three inherit from `BaseSync` which defines a set of `actions` to dispatch if the `filter` predicate matches the update.
 
 ### Block Header Sync
 
 This uses [web3.eth.subscribe("newBlockHeaders")](https://web3js.readthedocs.io/en/v1.3.0/web3-eth-subscribe.html#subscribe-newblockheaders). Your web3 provider MUST support websocket subscriptions.
-
-Dispatch a `Block/SUBSCRIBE` action to start a block sync. Only one active block sync per networkId is allowed, and duplicate actions will be ignored. Unsubscribe with a `Block/UNSUBSCRIBE` action.
-
-```typescript
-//Subscribe blocks
-store.dispatch(Block.subscribe({ networkId }));
-//Unsubscribe blocks
-store.dispatch(Block.unsubscribe({ networkId }));
-```
 
 ### Event Sync
 
@@ -247,70 +248,6 @@ There are 3 types of contract call syncing:
 Note: Both block sync and transaction sync require an existing block subscription to be first created.
 
 By default we use Transaction syncing. See [Advanced/Optimising Contract Call Sync](#custom-contract-call-syncing) for more info.
-
-## Selectors
-
-web3-redux exports a set of [reselect](https://github.com/reduxjs/reselect) selectors to let you easily read data from the store.
-
-```typescript
-import { Block, Transaction, Contract } from '@leovigna/web3-redux';
-import store from './store.ts';
-
-const state = store.getState();
-
-//Default Redux-ORM selectors
-//Select full collections
-const blocks: Block.BlockHeader[] = Block.selectMany(state);
-const transactions: Transaction.Transaction[] = Transaction.selectMany(state);
-const contracts: Contract.Contract[] = Contract.selectMany(state);
-
-//Select single instance by id
-const networkId = 1;
-const block42: Block.BlockHeader = Block.selectSingle(state, [`${networkId}-42`]); //block 42 on networkId 1
-
-//Select multiple instances by id
-const networkId = 1;
-const [block43, block44]: [Block.BlockHeader, Block.BlockHeader] = Block.selectMany(state, [
-    `${networkId}-43`,
-    `${networkId}-44`,
-]);
-
-//Custom selectors
-//Select blocks with transactions (also works with id/[id] filtering)
-const blocksWithTransactions: Block.BlockTransactionObject[] = Block.selectManyBlockTransaction(state);
-```
-
-## Redux State
-
-```typescript
-export interface Web3ReduxStore {
-    Network: {
-        itemsById: {
-            [id: string]: Network; //`${networkId}`
-        };
-    };
-    Block: {
-        itemsById: {
-            [id: string]: BlockHeader; //`${networkId}-${number}`
-        };
-    };
-    Transaction: {
-        itemsById: {
-            [id: string]: Transaction; //`${networkId}-${hash}`
-        };
-    };
-    Contract: {
-        itemsById: {
-            [id: string]: Contract; //`${networkId}-${address}`
-        };
-    };
-    EthCall: {
-        itemsById: {
-            [id: string]: EthCall; //`${networkId}-${from}-${to}-${data}-${gas}-${gasPrice}`.
-        };
-    };
-}
-```
 
 ## Advanced
 
@@ -353,13 +290,29 @@ Example sync strategies:
 
 Additional documentation is available at [leovigna.github.io/web3-redux](https://leovigna.github.io/web3-redux)
 
-## Built with
+#### Usage with metamask
 
--   [reselect](https://github.com/reduxjs/reselect)
--   [redux-orm](https://github.com/redux-orm/redux-orm)
--   [web3.js](https://web3js.readthedocs.io/en/v1.3.0/)
+See [Manual Network Initialization](#manual) for more detail.
+Metamask can cause issues as the injected Web3 instance is mutable and changes as users change networks. To mitigate this, Networks can be initialized with 2 web3 instances, one for read-only calls (eg. Infura) and one for wallet signed send transactions (Metamask). This way, subcriptions and call syncs can continue to work even if a user changes networks.
+
+Override the optional `web3Sender` parameter when initializing the Network and set it to the injected Web3 instance. The regular read-only web3 instance should
+
+```typescript
+const web3Sender = window.web3; //Metamask wallet, used for send transactions
+const web3ReadOnly = new Web3('ws://localhost:8545'); //Used for calls/subscriptions
+store.dispatch(Network.create({ networkId: '1', web3: web3ReadOnly, web3Sender }));
+```
+
+## Semantic versioning
+
+This project follows [semver](https://semver.org/) as closely as possible
 
 ## License
 
 2021 Leo Vigna
 MIT License.
+
+[repo]: https://github.com/leovigna/web3-redux
+[npm-image-version]: https://img.shields.io/npm/v/web3.svg
+[npm-image-downloads]: https://img.shields.io/npm/dm/web3.svg
+[npm-url]: https://npmjs.org/package/web3

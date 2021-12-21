@@ -9,15 +9,8 @@ Web3 Redux Library.
 
 -   [Installing](#installing)
 -   [Getting Started](#getting-started)
-    -   [Initialize the Redux Store](#initialize-the-redux-store)
-    -   [Initialize Networks](#initialize-networks)
--   [Displaying React Components](#displaying-react-components)
--   [Syncing](#syncing)
-    -   [Block Header Sync](#block-header-sync)
-    -   [Event Sync](#event-sync)
-    -   [Contract Call Sync](#contract-call-sync)
+-   [Sync Middleware](#sync-middleware)
 -   [Selectors](#selectors)
--   [Redux State](#redux-state)
 -   [Advanced](#advanced)
     -   [Optimizing Contract Call Sync](#optimizing-contract-call-sync)
     -   [Custom Contract Call Sync](#custom-contract-call-sync)
@@ -209,30 +202,29 @@ store.dispatch(Block.subscribe({ networkId: '1' }));
 const blocks = Network.selectBlocks(store.getState());
 ```
 
-## Syncing
+## Sync
+### Sync Middleware
+`web3-redux` comes with a built-in `Sync` data model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs, `BlockSync`, `EventSync`, and `TransactionSync` which each can trigger actions upon receiving updates to a new block, new event, or new transaction. All three inherit from `BaseSync` which defines a set of `actions` to dispatch if the `filter` predicate matches the update. Sync middleware can be useful when looking to dispatch your own custom Redux action as a result of some blockchain update.
 
-## Complex Syncing
+<b>Block Sync</b>
 
-`web3-redux` comes with a built-in `Sync` data model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs, `BlockSync`, `EventSync`, and `TransactionSync` which each can trigger actions upon receiving updates to a new block, new event, or new transaction. All three inherit from `BaseSync` which defines a set of `actions` to dispatch if the `filter` predicate matches the update.
-
-### Block Header Sync
-
-This uses [web3.eth.subscribe("newBlockHeaders")](https://web3js.readthedocs.io/en/v1.3.0/web3-eth-subscribe.html#subscribe-newblockheaders). Your web3 provider MUST support websocket subscriptions.
-
-### Event Sync
-
-This uses [web3.eth.Contract.events.MyEvent()](https://web3js.readthedocs.io/en/v1.3.0/web3-eth-contract.html#contract-events). Your web3 provider MUST support websocket subscriptions.
-
-Before intiating an event sync you must first create a contract with a `Contract/CREATE` action:
-
+This middleware listens for `Block/CREATE` actions, and if a block matches its `filter` predicate, will dispatch its `actions`. The following example triggers every 5 blocks:
 ```typescript
-store.dispatch(Contract.create({ networkId, address, abi});
+store.dispatch(Sync.create({ id: '1', type: 'Block', filter: (block) => block.number % 5 == 0, actions }));
 ```
 
-Dispatch a `Contract/EVENT_SUBSCRIBE` action to start an event sync. Event syncs are unique by contract address and event name. Duplicate actions will be ignored. Unsubscribe with a `Contract/EVENT_UNSUBSCRIBE` action.
+<b>Event Sync</b>
 
+This middleware listens for `ContractEvent/CREATE` actions, and if an event matches its `filter` predicate, will dispatch its `actions`. The following example filters for events named `Transfer`:
 ```typescript
-store.dispatch(Contract.eventSubscribe({ networkId, address, eventName }));
+store.dispatch(Sync.create({ id: '1', type: 'Event', filter: (event) => event.name == 'Transfer', actions }));
+```
+
+<b>Transaction Sync</b>
+
+This middleware listens for `Transaction/CREATE` actions, and if an event matches its `filter` predicate, will dispatch its `actions`. The following example filters for tranaction from a particular sender:
+```typescript
+store.dispatch(Sync.create({ id: '1', type: 'Transaction', filter: (tx) => tx.from == address, actions }));
 ```
 
 ### Contract Call Sync

@@ -1,7 +1,9 @@
+/** @hidden */
 export interface IdDeconstructed {
     readonly networkId: string;
     readonly address: string;
 }
+/** @hidden */
 export type Id = string;
 
 /**

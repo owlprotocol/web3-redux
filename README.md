@@ -9,12 +9,6 @@ Web3 Redux Library.
 
 -   [Installing](#installing)
 -   [Getting Started](#getting-started)
--   [Sync Middleware](#sync-middleware)
--   [Selectors](#selectors)
--   [Advanced](#advanced)
-    -   [Optimizing Contract Call Sync](#optimizing-contract-call-sync)
-    -   [Custom Contract Call Sync](#custom-contract-call-sync)
--   [Additional Documentation](#additional-documentation)
 -   [Built with](#built-with)
 -   [License](#license)
 
@@ -202,13 +196,31 @@ store.dispatch(Block.subscribe({ networkId: '1' }));
 const blocks = Network.selectBlocks(store.getState());
 ```
 
-## Sync
-### Sync Middleware
-`web3-redux` comes with a built-in `Sync` data model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs, `BlockSync`, `EventSync`, and `TransactionSync` which each can trigger actions upon receiving updates to a new block, new event, or new transaction. All three inherit from `BaseSync` which defines a set of `actions` to dispatch if the `filter` predicate matches the update. Sync middleware can be useful when looking to dispatch your own custom Redux action as a result of some blockchain update.
+## Contract Call Sync
+
+`web3-redux` offers enhanced customizability of contract call syncing to avoid unecessary rpc calls. Contract call syncing is achieved by refreshing contract calls based on a set of parameters. To initiate contract call syncing, one must first dispatch a ContractCallAction.
+
+There are 4 types of contract call syncing:
+
+-   `once`: Call contract method once
+-   `Block`: Call contract and refresh every block.
+    `Evnet`: (TDB)
+-   `Transaction`: Call contract and refresh every time a block includes a transaction to the contract.
+
+Note: Both block sync and transaction sync require an existing block subscription to be first created.
+
+By default we use Transaction syncing. See [Advanced/Optimising Contract Call Sync](#custom-contract-call-syncing) for more info.
+
+## Sync Middleware
+
+`web3-redux` comes with a built-in `Sync` data model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs, `BlockSync`, `EventSync`, and `TransactionSync` which each can trigger actions upon receiving updates to a new block, new event, or new transaction.
+
+All three inherit from `BaseSync` which defines a set of `actions` to dispatch if the `filter` predicate matches the update. Sync middleware can be useful when looking to dispatch your own custom Redux action as a result of some blockchain update. They are also used as the building blocks for the Contract Call sync.
 
 <b>Block Sync</b>
 
 This middleware listens for `Block/CREATE` actions, and if a block matches its `filter` predicate, will dispatch its `actions`. The following example triggers every 5 blocks:
+
 ```typescript
 store.dispatch(Sync.create({ id: '1', type: 'Block', filter: (block) => block.number % 5 == 0, actions }));
 ```
@@ -216,6 +228,7 @@ store.dispatch(Sync.create({ id: '1', type: 'Block', filter: (block) => block.nu
 <b>Event Sync</b>
 
 This middleware listens for `ContractEvent/CREATE` actions, and if an event matches its `filter` predicate, will dispatch its `actions`. The following example filters for events named `Transfer`:
+
 ```typescript
 store.dispatch(Sync.create({ id: '1', type: 'Event', filter: (event) => event.name == 'Transfer', actions }));
 ```
@@ -223,66 +236,12 @@ store.dispatch(Sync.create({ id: '1', type: 'Event', filter: (event) => event.na
 <b>Transaction Sync</b>
 
 This middleware listens for `Transaction/CREATE` actions, and if an event matches its `filter` predicate, will dispatch its `actions`. The following example filters for tranaction from a particular sender:
+
 ```typescript
 store.dispatch(Sync.create({ id: '1', type: 'Transaction', filter: (tx) => tx.from == address, actions }));
 ```
 
-### Contract Call Sync
-
-web3-redux offers enhanced customizability of contract call syncing to avoid unecessary rpc calls. Contract call syncing is achieved by refreshing contract calls based on a set of parameters. To initiate contract call syncing, one must first dispatch a ContractCallAction.
-
-There are 3 types of contract call syncing:
-
--   No sync: Call contract method once
--   Block sync (`Contract/CALL_BLOCK_SYNC`): Call contract and refresh every block.
--   Transaction sync (`Contract/CALL_TRANSACTION_SYNC`): Call contract and refresh every time a block includes a transaction to the contract.
-
-Note: Both block sync and transaction sync require an existing block subscription to be first created.
-
-By default we use Transaction syncing. See [Advanced/Optimising Contract Call Sync](#custom-contract-call-syncing) for more info.
-
-## Advanced
-
-### Optimizing Contract Call Sync
-
-By default, contracts use Transaction syncing but this can be customized for each specific contract call. This is can be a sub-optimal or even incorrect sync strategy.
-
-Transaction syncing can be sub-optimal if a call's return value never changes. For example, an ERC20 token's name or symbol. In this case simply disable syncing with `sync: false`.
-
-Transaction syncing assumes that the contract call values are only dependent on your contract's state and that this state is only changed by direct transactions to your contract. The basic logic for Transaction syncing is as follows: For each transaction in a new block, update contract call if `tx.to == contract.address`.
-Examples of cases where this assumption might be incorrect include:
-
--   Contract call return value depends on block number
--   Contract state can be changed by a call to some proxy contract
-
-In these cases we recommend switching to Block syncing, which will poll the contract call at every block. For even better optimization, it might be interesting in some cases to use a custom block or transaction sync.
-
-### Custom Contract Call Sync
-
-The interface of ContractCallBlockSync and ContractCallTransactionSync use a filter function returning whether a contract call should update. Customizing the filter function can help you create more optimized syncing depending on your use case.
-
-```typescript
-export interface ContractCallBlockSync {
-    type: typeof CALL_BLOCK_SYNC;
-    filter: (block: BlockHeader) => boolean;
-}
-
-export interface ContractCallTransactionSync {
-    type: typeof CALL_TRANSACTION_SYNC;
-    filter: (transaction: Transaction) => boolean;
-}
-```
-
-Example sync strategies:
-
--   Sync every 5 blocks: `(block) => block.number % 5 == 0`
--   Sync for transactions to contract or proxy: `(tx) => tx.to === contract.address || tx.to === proxy.address`
-
-## Additional Documentation
-
-Additional documentation is available at [leovigna.github.io/web3-redux](https://leovigna.github.io/web3-redux)
-
-#### Usage with metamask
+## Usage with metamask
 
 See [Manual Network Initialization](#manual) for more detail.
 Metamask can cause issues as the injected Web3 instance is mutable and changes as users change networks. To mitigate this, Networks can be initialized with 2 web3 instances, one for read-only calls (eg. Infura) and one for wallet signed send transactions (Metamask). This way, subcriptions and call syncs can continue to work even if a user changes networks.
@@ -305,6 +264,6 @@ This project follows [semver](https://semver.org/) as closely as possible
 MIT License.
 
 [repo]: https://github.com/leovigna/web3-redux
-[npm-image-version]: https://img.shields.io/npm/v/web3.svg
-[npm-image-downloads]: https://img.shields.io/npm/dm/web3.svg
-[npm-url]: https://npmjs.org/package/web3
+[npm-image-version]: https://img.shields.io/npm/v/@leovigna/web3-redux.svg
+[npm-image-downloads]: https://img.shields.io/npm/dm/@leovigna/web3-redux.svg
+[npm-url]: https://npmjs.org/package/@leovigna/web3-redux

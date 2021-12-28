@@ -1,5 +1,4 @@
 import select from './select';
-import selectById from './selectById';
 import selectByIdMany from './selectByIdMany';
 import selectByIdSingle from './selectByIdSingle';
 import selectByIdExists from './selectByIdExists';
@@ -10,7 +9,6 @@ import selectEthCallId from './selectEthCallId';
 
 export {
     select,
-    selectById,
     selectByIdMany,
     selectByIdSingle,
     selectByIdExists,
@@ -24,7 +22,6 @@ export {
 
 export default {
     select,
-    selectById,
     selectByIdMany,
     selectByIdSingle,
     selectByIdExists,

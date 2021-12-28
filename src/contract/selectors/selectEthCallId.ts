@@ -37,6 +37,8 @@ const selectEthCallIdSelector = createSelector(
         return ethCallId;
     },
 );
+
+/** @category Selectors */
 export function selectEthCallId<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
     state: any,
     idArgs: IdArgs | undefined,

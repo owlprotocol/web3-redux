@@ -7,9 +7,11 @@ import { memoizedLodashFilter } from '../../memo';
 
 //Events
 type selectContractEventsById = (state: any, id: string | undefined) => ContractEvent[] | null;
+/** @internal */
 export const selectContractEventsById: selectContractEventsById = createSelector(getOrm().Contract.events);
 
 const EMPTY_EVENTS: any[] = [];
+/** @category Selectors */
 export function selectContractEventsByIdFiltered<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
@@ -45,6 +47,7 @@ export function selectContractEventsByIdFiltered<
     }
 }
 
+/** @category Selectors */
 export function selectEventsFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,

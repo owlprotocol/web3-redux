@@ -8,6 +8,7 @@ import eventSubscribe from './eventSubscribe';
 import send from './send';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga
+/** @internal */
 export function* saga() {
     yield* all([
         takeEvery(CALL, call),

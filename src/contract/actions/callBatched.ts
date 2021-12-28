@@ -1,7 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
 
+/** @internal */
 export const CALL_BATCHED = `${name}/CALL_BATCHED`;
+/** @internal */
 export interface CallBatchedActionInput {
     networkId: string;
     requests: {
@@ -23,10 +25,13 @@ export interface CallBatchedActionInput {
  *  - from == undefined
  *  - defaultBlock == 'latest' || defaultBlock == undefined
  * @see {@link https://github.com/makerdao/multicall}
+ * @category Actions
  */
 export const callBatched = createAction<CallBatchedActionInput>(CALL_BATCHED);
 
+/** @internal */
 export type CallBatchedAction = ReturnType<typeof callBatched>;
+/** @internal */
 export const isCallBatchedAction = callBatched.match;
 
 export default callBatched;

@@ -8,6 +8,7 @@ import selectSingle from '../selectors/selectByIdSingle';
 import selectEvents from '../selectors/selectContractEventsById';
 
 //Contract Events
+/** @internal */
 export interface UseEventsOptions {
     fromBlock?: EventGetPastActionInput['fromBlock'];
     toBlock?: EventGetPastActionInput['toBlock'];
@@ -15,6 +16,7 @@ export interface UseEventsOptions {
     sync?: boolean; //Send event subscribe action
     blockBatch?: number;
 }
+/** @category Hooks */
 export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
@@ -105,6 +107,7 @@ export function useEvents<
     return [events, { getPast, subscribe, unsubscribe }];
 }
 
+/** @category Hooks */
 export function contractEventsHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,

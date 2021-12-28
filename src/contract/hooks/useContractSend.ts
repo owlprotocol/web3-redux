@@ -5,6 +5,7 @@ import { send } from '../actions';
 import selectSingle from '../selectors/selectByIdSingle';
 
 //Contract Send
+/** @category Hooks */
 export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
     networkId: string | undefined,
     address: string | undefined,
@@ -37,6 +38,7 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
     return sendCallback;
 }
 
+/** @category Hooks */
 export function contractSendHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,

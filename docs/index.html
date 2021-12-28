@@ -113,7 +113,7 @@ The <code>web3-redux</code> block subscription hook is configured to automatical
 <a href="#sync-middleware" id="sync-middleware" style="color: inherit; text-decoration: none;">
   <h2>Sync Middleware</h2>
 </a>
-<p><code>web3-redux</code> comes with a built-in <code>Sync</code> data model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs, <code>BlockSync</code>, <code>EventSync</code>, and <code>TransactionSync</code> which each can trigger actions upon receiving updates to a new block, new event, or new transaction. </p>
+<p><code>web3-redux</code> comes with a built-in <code>Sync</code> data model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs, <code>BlockSync</code>, <code>EventSync</code>, and <code>TransactionSync</code> which each can trigger actions upon receiving updates to a new block, new event, or new transaction.</p>
 <p>All three inherit from <code>BaseSync</code> which defines a set of <code>actions</code> to dispatch if the <code>filter</code> predicate matches the update. Sync middleware can be useful when looking to dispatch your own custom Redux action as a result of some blockchain update. They are also used as the building blocks for the Contract Call sync.</p>
 <p><b>Block Sync</b></p>
 <p>This middleware listens for <code>Block/CREATE</code> actions, and if a block matches its <code>filter</code> predicate, will dispatch its <code>actions</code>. The following example triggers every 5 blocks:</p>

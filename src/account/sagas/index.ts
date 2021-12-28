@@ -5,6 +5,7 @@ import fetchNonce from './fetchNonce';
 import fetchBalanceSynced from './fetchBalanceSynced';
 import fetchNonceSynced from './fetchNonceSynced';
 
+/** @internal */
 export function* saga() {
     yield* all([
         takeEvery(FETCH_BALANCE, fetchBalance),

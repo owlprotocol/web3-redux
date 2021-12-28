@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { IdArgs, getId, getIdDeconstructed } from '../model/interface';
+import { AccountId, getId } from '../model/interface';
 
 import { Sync } from '../../sync/model';
 import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
@@ -9,15 +9,16 @@ import { defaultTransactionSync } from '../../sync/model/TransactionSync';
 
 import { fetchBalance } from './fetchBalance';
 
+/** @internal */
 export const FETCH_BALANCE_SYNCED = `${name}/FETCH_BALANCE_SYNCED`;
-export interface FetchBalanceSyncedActionInput {
-    id: IdArgs;
+/** @internal */
+export interface FetchBalanceSyncedActionInput extends AccountId {
     sync?: Sync | Sync['type'] | boolean | number;
 }
+/** @category Actions */
 export const fetchBalanceSynced = createAction(FETCH_BALANCE_SYNCED, (payload: FetchBalanceSyncedActionInput) => {
-    const id = getId(payload.id);
-    const { networkId, address } = getIdDeconstructed(payload.id);
-    const fetchBalanceAction = fetchBalance(payload.id);
+    const { networkId, address } = payload;
+    const fetchBalanceAction = fetchBalance({ networkId, address });
     //Default sync
     let sync: Sync | undefined;
 
@@ -39,12 +40,13 @@ export const fetchBalanceSynced = createAction(FETCH_BALANCE_SYNCED, (payload: F
         sync.actions = [fetchBalanceAction];
     }
 
-    if (sync) sync.id = `${sync.type}-${id}-fetchBalance`;
+    if (sync) sync.id = `${sync.type}-${getId({ networkId, address })}-fetchBalance`;
 
-    return { payload: { id, sync, fetchBalanceAction } };
+    return { payload: { networkId, address, sync, fetchBalanceAction } };
 });
-
+/** @internal */
 export type FetchBalanceSyncedAction = ReturnType<typeof fetchBalanceSynced>;
+/** @internal */
 export const isFetchBalanceSyncedAction = fetchBalanceSynced.match;
 
 export default fetchBalanceSynced;

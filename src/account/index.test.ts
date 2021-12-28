@@ -11,7 +11,7 @@ import { create as createNetwork } from '../network/actions';
 import { name } from './common';
 import { selectByIdSingle } from './selectors';
 
-import { getId, Id, Interface } from './model/interface';
+import { Account } from './model/interface';
 
 import createAction from './actions/create';
 import fetchBalanceAction from './actions/fetchBalance';
@@ -25,8 +25,7 @@ describe(`${name}.integration`, () => {
 
     const networkId = '1337';
 
-    let item: Interface;
-    let id: Id;
+    let item: Account;
 
     const to = ZERO_ADDRESS;
 
@@ -39,7 +38,6 @@ describe(`${name}.integration`, () => {
 
         const accounts = await web3.eth.getAccounts();
         item = { networkId, address: accounts[0] };
-        id = getId(item);
     });
 
     beforeEach(() => {
@@ -49,31 +47,31 @@ describe(`${name}.integration`, () => {
     });
 
     it('fetchBalance()', async () => {
-        store.dispatch(fetchBalanceAction(id));
+        store.dispatch(fetchBalanceAction(item));
         const expected = await web3.eth.getBalance(item.address!);
-        const account = selectByIdSingle(store.getState(), id);
+        const account = selectByIdSingle(store.getState(), item);
         assert.equal(account!.balance, expected, 'initial balance');
     });
 
     it('fetchNonce()', async () => {
-        store.dispatch(fetchNonceAction(id));
+        store.dispatch(fetchNonceAction(item));
         const expected = await web3.eth.getTransactionCount(item.address!);
-        const account = selectByIdSingle(store.getState(), id);
+        const account = selectByIdSingle(store.getState(), item);
         assert.equal(account!.nonce, expected, 'initial nonce');
     });
 
     describe('fetchBalanceSynced', () => {
         it('({sync:false})', async () => {
-            store.dispatch(fetchBalanceSyncedAction({ id, sync: false }));
+            store.dispatch(fetchBalanceSyncedAction({ ...item, sync: false }));
             const expected1 = await web3.eth.getBalance(item.address!);
-            const account1 = selectByIdSingle(store.getState(), id);
+            const account1 = selectByIdSingle(store.getState(), item);
             assert.equal(account1!.balance, expected1, 'initial balance');
 
             await web3.eth.sendTransaction({ from: item.address, to, value: '1' });
             const expected2 = await web3.eth.getBalance(item.address!);
             assert.notEqual(expected1, expected2, 'balance not changed');
 
-            const account2 = selectByIdSingle(store.getState(), id);
+            const account2 = selectByIdSingle(store.getState(), item);
             //No sync, balance stays unchanged
             assert.equal(account2!.balance, expected1, 'previous balance');
             assert.notEqual(account2!.balance, expected2, 'updated balance');
@@ -82,25 +80,25 @@ describe(`${name}.integration`, () => {
         it('({sync:Block})', async () => {
             //Block subscription used for updates
             store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: false }));
-            store.dispatch(fetchBalanceSyncedAction({ id, sync: 'Block' }));
+            store.dispatch(fetchBalanceSyncedAction({ ...item, sync: 'Block' }));
             const expected1 = await web3.eth.getBalance(item.address!);
-            const account1 = selectByIdSingle(store.getState(), id);
+            const account1 = selectByIdSingle(store.getState(), item);
             assert.equal(account1!.balance, expected1, 'initial balance');
 
             await web3.eth.sendTransaction({ from: item.address, to, value: '1' });
             const expected2 = await web3.eth.getBalance(item.address!);
             assert.notEqual(expected1, expected2, 'balance not changed');
 
-            const account2 = selectByIdSingle(store.getState(), id);
+            const account2 = selectByIdSingle(store.getState(), item);
             //sync, balance updated
             assert.notEqual(account2!.balance, expected1, 'previous balance');
             assert.equal(account2!.balance, expected2, 'updated balance');
         });
 
         it('({sync:Transaction}) - Transaction.fetch', async () => {
-            store.dispatch(fetchBalanceSyncedAction({ id, sync: 'Transaction' }));
+            store.dispatch(fetchBalanceSyncedAction({ ...item, sync: 'Transaction' }));
             const expected1 = await web3.eth.getBalance(item.address!);
-            const account1 = selectByIdSingle(store.getState(), id);
+            const account1 = selectByIdSingle(store.getState(), item);
             assert.equal(account1!.balance, expected1, 'initial balance');
 
             const receipt = await web3.eth.sendTransaction({ from: item.address, to, value: '1' });
@@ -116,7 +114,7 @@ describe(`${name}.integration`, () => {
             const expected2 = await web3.eth.getBalance(item.address!);
             assert.notEqual(expected1, expected2, 'balance not changed');
 
-            const account2 = selectByIdSingle(store.getState(), id);
+            const account2 = selectByIdSingle(store.getState(), item);
             //sync, balance updated
             assert.notEqual(account2!.balance, expected1, 'previous balance');
             assert.equal(account2!.balance, expected2, 'updated balance');
@@ -125,16 +123,16 @@ describe(`${name}.integration`, () => {
         it('({sync:Transaction}) - Block.subscribe', async () => {
             //Block subscription used for updates, must fetch transactions
             store.dispatch(Block.subscribe({ networkId, returnTransactionObjects: true }));
-            store.dispatch(fetchBalanceSyncedAction({ id, sync: 'Transaction' }));
+            store.dispatch(fetchBalanceSyncedAction({ ...item, sync: 'Transaction' }));
             const expected1 = await web3.eth.getBalance(item.address!);
-            const account1 = selectByIdSingle(store.getState(), id);
+            const account1 = selectByIdSingle(store.getState(), item);
             assert.equal(account1!.balance, expected1, 'initial balance');
 
             await web3.eth.sendTransaction({ from: item.address, to, value: '1' });
             const expected2 = await web3.eth.getBalance(item.address!);
             assert.notEqual(expected1, expected2, 'balance not changed');
 
-            const account2 = selectByIdSingle(store.getState(), id);
+            const account2 = selectByIdSingle(store.getState(), item);
             //sync, balance updated
             assert.notEqual(account2!.balance, expected1, 'previous balance');
             assert.equal(account2!.balance, expected2, 'updated balance');

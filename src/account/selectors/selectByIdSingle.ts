@@ -1,11 +1,12 @@
-import { Interface, IdArgs, getId } from '../model/interface';
+import { Account, AccountId, getId } from '../model/interface';
 import select from './select';
 
-function selectByIdSingle(state: any, id: IdArgs | undefined): Interface | undefined {
+/** @category Selectors */
+function selectByIdSingle(state: any, id: AccountId | undefined): Account | undefined {
     if (!id) return undefined;
 
     const idStr = getId(id);
-    return select(state, idStr) as Interface | undefined;
+    return select(state, idStr) as Account | undefined;
 }
 
 export default selectByIdSingle;

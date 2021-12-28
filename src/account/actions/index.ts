@@ -17,12 +17,16 @@ import {
     isFetchNonceSyncedAction,
 } from './fetchNonceSynced';
 
+/** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
+/** @internal */
 export function isReducerAction(action: { type: string }): action is ReducerAction {
     return isCreateAction(action) || isRemoveAction(action) || isUpdateAction(action) || isSetAction(action);
 }
 
+/** @internal */
 export type SagaAction = FetchBalanceAction | FetchNonceAction | FetchBalanceSyncedAction | FetchNonceSyncedAction;
+/** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
     return (
         isFetchBalanceAction(action) ||
@@ -32,7 +36,9 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
     );
 }
 
+/** @internal */
 export type Action = ReducerAction | SagaAction;
+/** @internal */
 export function isAction(action: { type: string }): action is Action {
     return isReducerAction(action) || isSagaAction(action);
 }

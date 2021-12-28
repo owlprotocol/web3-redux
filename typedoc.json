@@ -1,5 +1,6 @@
 {
     "entryPoints": ["src"],
     "out": "docs",
-    "includeVersion": true
+    "includeVersion": true,
+    "excludeInternal": true
 }

@@ -31,8 +31,8 @@ describe(`${name}.sagas`, () => {
     const networkId = '1337';
 
     const item = { networkId, address: ZERO_ADDRESS };
-    const id = getId(item);
-    const itemWithId = { id, ...item };
+    const id = { ...item };
+    const itemWithId = { id: getId(id), ...item };
 
     let network: Network;
 
@@ -88,7 +88,7 @@ describe(`${name}.sagas`, () => {
 
     describe('fetchBalanceSynced', () => {
         it('success', () => {
-            const action = fetchBalanceSyncedAction({ id, sync: true });
+            const action = fetchBalanceSyncedAction({ ...id, sync: true });
             testSaga(fetchBalanceSynced, action)
                 .next()
                 .put(action.payload.fetchBalanceAction)
@@ -99,7 +99,7 @@ describe(`${name}.sagas`, () => {
 
     describe('fetchNonceSynced', () => {
         it('success', () => {
-            const action = fetchNonceSyncedAction({ id, sync: true });
+            const action = fetchNonceSyncedAction({ ...id, sync: true });
             testSaga(fetchNonceSynced, action)
                 .next()
                 .put(action.payload.fetchNonceAction)

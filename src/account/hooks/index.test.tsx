@@ -10,8 +10,8 @@ import { create as createNetwork } from '../../network/actions';
 import { name } from '../common';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-import { useByIdSingle, useByIdMany, useAccount } from '../hooks';
-import { Interface, getId, Id } from '../model/interface';
+import { useAccount } from '../hooks';
+import { Account } from '../model/interface';
 import { sleep, ZERO_ADDRESS } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -25,9 +25,7 @@ describe(`${name}.hooks`, () => {
 
     const networkId = '1337';
 
-    let item: Interface;
-    let id: Id;
-    let itemWithId: Interface;
+    let item: Account;
 
     let wrapper: any;
     before(async () => {
@@ -39,32 +37,12 @@ describe(`${name}.hooks`, () => {
 
         const accounts = await web3.eth.getAccounts();
         item = { networkId, address: accounts[0] };
-        id = getId(item);
-        itemWithId = { id, ...item };
     });
 
     beforeEach(() => {
         store = createStore();
         store.dispatch(create(item));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
-    });
-
-    it('useByIdSingle', async () => {
-        const { result } = renderHook(() => useByIdSingle(id), {
-            wrapper,
-        });
-
-        assert.deepEqual(result.current, itemWithId);
-        assert.equal(result.all.length, 1);
-    });
-
-    it('useByIdMany', async () => {
-        const { result } = renderHook(() => useByIdMany([id]), {
-            wrapper,
-        });
-
-        assert.deepEqual(result.current, [itemWithId]);
-        assert.equal(result.all.length, 1);
     });
 
     it('useAccount', () => {

@@ -1,6 +1,7 @@
 import { Id } from '../model/interface';
 import selectByIdSingle from './selectByIdSingle';
 
+/** @category Selectors */
 function selectByIdExists(state: any, id: Id | undefined): boolean {
     if (!id) return false;
 

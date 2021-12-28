@@ -1,12 +1,15 @@
 import { name } from '../common';
 import { Interface, Id } from '../model/interface';
 
+/** @internal */
 export const SET = (key: keyof Interface) => `${name}/SET/${key.toUpperCase()}`;
+/** @internal */
 export interface SetActionInput {
     id: Id;
     key: keyof Interface;
     value: any;
 }
+/** @category Actions */
 export const set = (payload: SetActionInput) => {
     const id = payload.id;
     const key = payload.key;
@@ -14,7 +17,9 @@ export const set = (payload: SetActionInput) => {
     return { type: SET(key), payload: { id, key, value } };
 };
 
+/** @internal */
 export type SetAction = ReturnType<typeof set>;
+/** @internal */
 export function isSetAction(action: { type: string; payload?: { key?: keyof Interface } }): action is SetAction {
     return !!action.payload?.key && action.type === SET(action.payload.key);
 }

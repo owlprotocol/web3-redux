@@ -1,4 +1,3 @@
-import select from './select';
 import selectByIdMany from './selectByIdMany';
 import selectByIdSingle from './selectByIdSingle';
 import selectByIdExists from './selectByIdExists';
@@ -11,7 +10,6 @@ import {
 } from './selectBlockTransactions';
 
 export {
-    select,
     selectByIdMany,
     selectByIdSingle,
     selectByIdExists,

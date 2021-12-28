@@ -1,9 +1,11 @@
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 
+/** @internal */
 export interface IdDeconstructed {
     readonly networkId: string;
 }
+/** @internal */
 export type Id = string;
 
 /**

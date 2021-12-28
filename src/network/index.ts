@@ -1,3 +1,8 @@
+/**
+ * Comments on Network module
+ * @module Network
+ */
+
 export * from './model';
 export * from './actions';
 export * from './selectors';

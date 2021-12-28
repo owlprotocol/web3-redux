@@ -14,6 +14,7 @@ import { blockTransactionsSync } from './sync/model/BlockSync';
 
 //Fix undefined import issue
 let orm = getOrm();
+/** @internal */
 export function getOrm(): any {
     if (orm) return orm;
 
@@ -35,6 +36,7 @@ export function getOrm(): any {
     return orm;
 }
 
+/** @internal */
 export const initializeState = (orm: any) => {
     const state = orm.getEmptyState();
 

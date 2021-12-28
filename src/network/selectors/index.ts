@@ -1,5 +1,3 @@
-import select from './select';
-import selectById from './selectById';
 import selectByIdMany from './selectByIdMany';
 import selectByIdSingle from './selectByIdSingle';
 import selectByIdExists from './selectByIdExists';
@@ -11,8 +9,6 @@ import selectTransactions from './selectTransactions';
 import selectContracts from './selectContracts';
 
 export {
-    select,
-    selectById,
     selectByIdMany,
     selectByIdSingle,
     selectByIdExists,
@@ -25,8 +21,6 @@ export {
 };
 
 export default {
-    select,
-    selectById,
     selectByIdMany,
     selectByIdSingle,
     selectByIdExists,

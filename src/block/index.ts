@@ -1,3 +1,8 @@
+/**
+ * Comments on Block module
+ * @module Block
+ */
+
 export * from './model';
 export * from './actions';
 export * from './selectors';

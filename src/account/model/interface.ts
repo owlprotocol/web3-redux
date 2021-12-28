@@ -1,4 +1,4 @@
-/** @hidden */
+/** @internal */
 export interface AccountId {
     readonly networkId: string;
     readonly address: string;

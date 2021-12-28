@@ -3,6 +3,7 @@ import { getId as getContractId } from '../../contract/model/interface';
 import { getTransactionId } from '../../transaction/model';
 import { ZERO_ADDRESS } from '../../utils';
 
+/** @internal */
 export interface IdDeconstructed {
     readonly networkId: string;
     readonly address: string;
@@ -11,6 +12,7 @@ export interface IdDeconstructed {
     readonly from: string;
     readonly value?: any;
 }
+/** @internal */
 export type Id = string;
 
 export enum ContractSendStatus {
@@ -32,6 +34,7 @@ export interface Interface extends IdDeconstructed {
     readonly blockHash?: string;
 }
 
+/** @internal */
 export function getArgsId(args?: any[]) {
     if (!args || args.length == 0) return '()';
 
@@ -39,6 +42,7 @@ export function getArgsId(args?: any[]) {
     return `(${argsStr})`;
 }
 
+/** @internal */
 export function getOptionsId(from: string | undefined, value: string | undefined) {
     if ((!from || from == ZERO_ADDRESS) && (!value || value == '0')) return undefined;
 
@@ -49,8 +53,10 @@ export function getOptionsId(from: string | undefined, value: string | undefined
     return JSON.stringify(value);
 }
 
+/** @internal */
 export type IdArgs = IdDeconstructed | Id;
 const SEPARATOR = '-';
+/** @internal */
 export function getId(id: IdArgs): Id {
     if (typeof id === 'string') return id;
 
@@ -64,6 +70,7 @@ export function getId(id: IdArgs): Id {
     return idStr;
 }
 
+/** @internal */
 export function validate(item: Interface): Interface {
     const id = getId(item);
     const addressChecksum = toChecksumAddress(item.address);

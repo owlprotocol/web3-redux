@@ -1,3 +1,8 @@
+/**
+ * Comments on EthCall module
+ * @module EthCall
+ */
+
 export * from './model';
 export * from './actions';
 export * from './selectors';

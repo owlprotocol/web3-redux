@@ -1,3 +1,4 @@
+/** @internal */
 export type Id = string;
 export interface Interface {
     readonly id: string;

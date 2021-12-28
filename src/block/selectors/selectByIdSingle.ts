@@ -1,6 +1,7 @@
 import { Interface, IdArgs, getId } from '../model';
 import select from './select';
 
+/** @category Selectors */
 function selectByIdSingle(state: any, id: IdArgs | undefined): Interface | undefined {
     if (!id) return undefined;
 

@@ -3,6 +3,7 @@ import { name } from '../common';
 import { selectByIdSingle } from '../selectors';
 import { Id } from '../model';
 
+/** @category Sagas */
 function* exists(id: Id) {
     const result: ReturnType<typeof selectByIdSingle> = yield* select(selectByIdSingle, id);
     if (!result) throw new Error(`${name} ${id} ${result}`);

@@ -3,8 +3,10 @@ import { isStrings } from '../../utils';
 import { getId } from './id';
 import BlockTransaction from './BlockTransaction';
 
+/** @internal */
 export type Interface = BlockTransaction;
 
+/** @internal */
 export function validate(item: Interface): Interface {
     const id = getId(item);
     let transactions = item.transactions;

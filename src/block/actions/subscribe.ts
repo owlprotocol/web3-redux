@@ -1,9 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
 
+/** @internal */
 export const SUBSCRIBE = `${name}/SUBSCRIBE`;
 
 /** Subscribe to new block headers. Uses web3.eth.subscribe(). */
+/** @internal */
 export interface SubscribeActionInput {
     networkId: string;
     /**
@@ -12,8 +14,11 @@ export interface SubscribeActionInput {
      */
     returnTransactionObjects?: boolean;
 }
+/** @category Actions */
 export const subscribe = createAction<SubscribeActionInput>(SUBSCRIBE);
+/** @internal */
 export type SubscribeAction = ReturnType<typeof subscribe>;
+/** @internal */
 export const isSubscribeAction = subscribe.match;
 
 export default subscribe;

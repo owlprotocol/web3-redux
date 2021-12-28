@@ -6,6 +6,7 @@ import selectEthCallById from '../../ethcall/selectors/selectByIdSingle';
 import selectEthCallId from './selectEthCallId';
 
 //Contract Call
+/** @category Selectors */
 export function selectContractCallById<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
@@ -23,6 +24,7 @@ export function selectContractCallById<
     return ethCall?.returnValue;
 }
 
+/** @category Selectors */
 export function selectContractCallFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,

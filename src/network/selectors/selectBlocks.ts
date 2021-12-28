@@ -5,6 +5,7 @@ import { name } from '../common';
 import { getOrm } from '../../orm';
 
 const select = createSelector(getOrm()[name].blocks);
+/** @category Selectors */
 function selectBlocks(state: any, id: string | undefined) {
     if (!id) return undefined;
 

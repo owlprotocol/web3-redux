@@ -1,14 +1,15 @@
 import { put, call } from 'typed-redux-saga/macro';
 import networkExists from '../../network/sagas/exists';
-import { getIdDeconstructed } from '../model/interface';
 import { set, FetchBalanceAction } from '../actions';
+import { getId } from '../model/interface';
 import exists from './exists';
 
+/** @category Sagas */
 export function* fetchBalance(action: FetchBalanceAction) {
     const { payload } = action;
-    yield* call(exists, payload);
+    const { networkId, address } = payload;
 
-    const { networkId, address } = getIdDeconstructed(payload);
+    yield* call(exists, payload);
     const network = yield* call(networkExists, networkId);
     const web3 = network.web3;
     const web3Sender = network.web3Sender;
@@ -16,7 +17,7 @@ export function* fetchBalance(action: FetchBalanceAction) {
 
     //@ts-expect-error
     const balance: string = yield* call((web3 ?? web3Sender).eth.getBalance, address);
-    yield* put(set({ id: payload, key: 'balance', value: balance }));
+    yield* put(set({ id: getId(payload), key: 'balance', value: balance }));
 }
 
 export default fetchBalance;

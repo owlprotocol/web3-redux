@@ -4,11 +4,14 @@ import { callHash } from '../model';
 import { CallActionInput } from './call';
 import { name } from '../common';
 
+/** @internal */
 export const CALL_UNSYNC = `${name}/CALL_UNSYNC`;
+/** @internal */
 export interface CallUnsyncActionInput extends CallActionInput {
     defaultBlock?: 'latest';
     sync?: Sync['type'];
 }
+/** @category Actions */
 export const callUnsync = createAction(CALL_UNSYNC, (payload: string | CallUnsyncActionInput) => {
     if (typeof payload === 'string') return { payload };
 
@@ -19,8 +22,9 @@ export const callUnsync = createAction(CALL_UNSYNC, (payload: string | CallUnsyn
 
     return { payload: id };
 });
-
+/** @internal */
 export type CallUnsyncAction = ReturnType<typeof callUnsync>;
+/** @internal */
 export const isCallUnsyncAction = callUnsync.match;
 
 export default callUnsync;

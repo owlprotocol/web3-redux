@@ -1,6 +1,7 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
 
+/** @category Selectors */
 export function reducer(sess: any, action: ReducerAction) {
     const Model = sess[name];
     if (isCreateAction(action)) {

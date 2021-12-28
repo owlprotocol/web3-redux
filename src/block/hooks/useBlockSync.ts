@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import * as BlockActions from '../actions';
-import { selectById as selectNetwork, selectBlocks } from '../../network/selectors';
+import { selectByIdSingle as selectNetwork, selectBlocks } from '../../network/selectors';
 import { useEffect, useCallback } from 'react';
 
+/** @category Hooks */
 export const useBlockSync = (networkId: string | undefined, returnTransactionObjects = false) => {
     const dispatch = useDispatch();
 

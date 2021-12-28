@@ -1,6 +1,7 @@
 import { Sync } from '../model';
 import select from './select';
 
+/** @category Selectors */
 function selectByIdSingle(state: any, id: string | undefined): Sync | undefined {
     if (!id) return undefined;
     //@ts-ignore

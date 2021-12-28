@@ -1,9 +1,10 @@
 import { select } from 'typed-redux-saga/macro';
+import { AccountId } from '../model/interface';
 import { name } from '../common';
 import { selectByIdSingle } from '../selectors';
-import { Id } from '../model/interface';
 
-function* exists(id: Id) {
+/** @category Sagas */
+function* exists(id: AccountId) {
     const result: ReturnType<typeof selectByIdSingle> = yield* select(selectByIdSingle, id);
     if (!result) throw new Error(`${name} ${id} ${result}`);
     return result;

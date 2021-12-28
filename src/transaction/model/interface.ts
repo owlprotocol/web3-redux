@@ -2,10 +2,12 @@ import { TransactionReceipt } from 'web3-eth';
 import { toChecksumAddress, toHex } from 'web3-utils';
 import { getId as getBlockId } from '../../block/model/id';
 
+/** @internal */
 export interface IdDeconstructed {
     readonly networkId: string;
     readonly hash: string;
 }
+/** @internal */
 export type Id = string;
 
 /**
@@ -48,14 +50,17 @@ export interface Interface extends IdDeconstructed {
     readonly confirmations?: number;
 }
 
+/** @internal */
 export type IdArgs = IdDeconstructed | Id;
 const SEPARATOR = '-';
+/** @internal */
 export function getId(id: IdArgs): Id {
     if (typeof id === 'string') return id;
 
     return [id.networkId, id.hash].join(SEPARATOR);
 }
 
+/** @internal */
 export function validate(item: Interface): Interface {
     const id = getId(item);
     const toChecksum = item.to ? toChecksumAddress(item.to) : undefined;

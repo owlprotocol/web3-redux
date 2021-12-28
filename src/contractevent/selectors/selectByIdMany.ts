@@ -2,6 +2,7 @@ import select from './select';
 import { Interface, IdArgs, getId } from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
+/** @category Selectors */
 function selectByIdMany(state: any, ids?: IdArgs[]): (Interface | null)[] {
     if (!ids) return select(state); //Return all
 

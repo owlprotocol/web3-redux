@@ -2,8 +2,10 @@ import { put } from 'typed-redux-saga/macro';
 import { create as createSync } from '../../sync/actions';
 import { FetchNonceSyncedAction, FETCH_NONCE_SYNCED } from '../actions/fetchNonceSynced';
 
+/** @internal */
 const FETCH_NONCE_SYNCED_ERROR = `${FETCH_NONCE_SYNCED}/ERROR`;
 
+/** @category Sagas */
 function* fetchNonceSynced(action: FetchNonceSyncedAction) {
     try {
         const { payload } = action;

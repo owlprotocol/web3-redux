@@ -16,11 +16,14 @@ import {
     isEventUnsubscribeAction,
 } from './eventUnsubscribe';
 
+/** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
+/** @internal */
 export function isReducerAction(action: { type: string }): action is ReducerAction {
     return isCreateAction(action) || isRemoveAction(action) || isUpdateAction(action) || isSetAction(action);
 }
 
+/** @internal */
 export type SagaAction =
     | CallAction
     | CallBatchedAction
@@ -30,6 +33,7 @@ export type SagaAction =
     | EventGetPastAction
     | EventSubscribeAction
     | EventUnsubscribeAction;
+/** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
     return (
         isCallAction(action) ||
@@ -43,7 +47,9 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
     );
 }
 
+/** @internal */
 export type Action = ReducerAction | SagaAction;
+/** @internal */
 export function isAction(action: { type: string }): action is Action {
     return isReducerAction(action) || isSagaAction(action);
 }

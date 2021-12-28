@@ -4,7 +4,7 @@ import Web3 from 'web3';
 
 import BlockHeader from '../model/BlockHeader';
 import { create, fetch as fetchAction, SUBSCRIBE } from '../actions';
-import { fetch as blockFetch } from './fetch';
+import blockFetch from './fetch';
 import networkExists from '../../network/sagas/exists';
 import { Network } from '../../network/model';
 import { SubscribeAction } from '../actions/subscribe';

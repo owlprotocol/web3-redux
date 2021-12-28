@@ -1,21 +1,22 @@
 import { name } from '../common';
-import { Interface, getId, IdArgs } from '../model/interface';
+import { Account } from '../model/interface';
 
-export const SET = (key: keyof Interface) => `${name}/SET/${key.toUpperCase()}`;
+/** @internal */
+export const SET = (key: keyof Account) => `${name}/SET/${key.toUpperCase()}`;
+/** @internal */
 export interface SetActionInput {
-    id: IdArgs;
-    key: keyof Interface;
+    id: string;
+    key: keyof Account;
     value: any;
 }
+/** @category Actions */
 export const set = (payload: SetActionInput) => {
-    const id = getId(payload.id);
-    const key = payload.key;
-    const value = payload.value;
-    return { type: SET(key), payload: { id, key, value } };
+    return { type: SET(payload.key), payload };
 };
-
+/** @internal */
 export type SetAction = ReturnType<typeof set>;
-export const isSetAction = (action: { type: string; payload?: { key?: keyof Interface } }) =>
+/** @internal */
+export const isSetAction = (action: { type: string; payload?: { key?: keyof Account } }) =>
     !!action.payload?.key && action.type === SET(action.payload.key);
 
 export default set;

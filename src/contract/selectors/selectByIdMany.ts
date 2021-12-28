@@ -2,6 +2,7 @@ import select from './select';
 import { Interface, IdArgs, getId, BaseWeb3Contract } from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
+/** @category Selectors */
 function selectByIdMany<T extends BaseWeb3Contract = BaseWeb3Contract>(
     state: any,
     ids?: IdArgs[],

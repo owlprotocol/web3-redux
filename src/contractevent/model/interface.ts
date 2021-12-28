@@ -2,16 +2,20 @@ import { toChecksumAddress } from 'web3-utils';
 import { getId as getContractId } from '../../contract/model/interface';
 import { combinationAll } from '../../utils/combination';
 
+/** @internal */
 export interface IdDeconstructed {
     readonly networkId: string;
     readonly blockHash: string;
     readonly logIndex: number;
 }
+/** @internal */
 export type Id = string;
 
+/** @internal */
 export interface ReturnValues {
     returnValues: any;
 }
+
 export interface Interface<T extends ReturnValues = ReturnValues> extends IdDeconstructed {
     readonly id?: Id;
     readonly name: string;
@@ -22,14 +26,17 @@ export interface Interface<T extends ReturnValues = ReturnValues> extends IdDeco
     readonly indexIds?: string[];
 }
 
+/** @internal */
 export type IdArgs = IdDeconstructed | Id;
 const SEPARATOR = '-';
+/** @internal */
 export function getId(id: IdArgs): Id {
     if (typeof id === 'string') return id;
     const { networkId, blockHash, logIndex } = id;
 
     return [networkId, blockHash, logIndex].join(SEPARATOR);
 }
+/** @internal */
 export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
     if (typeof id !== 'string') return id;
 
@@ -47,6 +54,7 @@ function returnValueKeyCombinations(keys: string[]) {
     return [...integerKeysCombinations, ...namedKeysCombinations].filter((c) => c.length > 0); ///Remove empty set from combination
 }
 
+/** @internal */
 export function validate(item: Interface): Interface {
     const id = getId(item);
     const networkId = item.networkId;

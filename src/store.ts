@@ -9,6 +9,7 @@ const reducers = combineReducers({
     [REDUX_ROOT]: rootReducer,
 });
 
+/** @internal */
 export const createStore = () => {
     const sagaMiddleware = createSagaMiddleware();
     const store = createReduxStore(reducers, applyMiddleware(crashReporter, onNetworkUpdate as any, sagaMiddleware));

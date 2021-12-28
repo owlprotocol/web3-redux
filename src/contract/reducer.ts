@@ -2,6 +2,7 @@ import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAct
 import { getId } from './model';
 import { Network } from '../network/model';
 
+/** @internal */
 export function reducer(sess: any, action: ReducerAction) {
     const { Contract, Network } = sess;
 

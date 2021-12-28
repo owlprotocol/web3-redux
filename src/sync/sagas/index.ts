@@ -10,6 +10,7 @@ import transactionSync from './transactionSync';
 
 //TODO: Rate-limit or cache block? This can avoid issues if a frontend component is dispatching
 // too many actions. However, it is sensible that a block be overwritten or transaction updated.
+/** @internal */
 export function* saga() {
     yield* all([
         takeEveryBatched(({ type }: { type: string }) => type.startsWith(CREATE_BLOCK), blockSync),

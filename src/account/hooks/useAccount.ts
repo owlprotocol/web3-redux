@@ -4,12 +4,12 @@ import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selec
 import { remove as removeSync } from '../../sync/actions';
 import { selectByIdExists as selectSyncExists } from '../../sync/selector';
 
-import { getId } from '../model/interface';
 import { create, fetchBalanceSynced, fetchNonceSynced } from '../actions';
 import { FetchBalanceSyncedActionInput } from '../actions/fetchBalanceSynced';
 import { FetchNonceSyncedActionInput } from '../actions/fetchNonceSynced';
 import { selectByIdSingle } from '../selectors';
 
+/** @category Hooks */
 export default function useAccount(
     networkId: string | undefined,
     address: string | undefined,
@@ -19,7 +19,7 @@ export default function useAccount(
     },
 ) {
     const dispatch = useDispatch();
-    const id = networkId && address ? getId({ networkId, address }) : undefined;
+    const id = networkId && address ? { networkId, address } : undefined;
 
     const account = useSelector((state) => selectByIdSingle(state, id));
     const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
@@ -35,7 +35,7 @@ export default function useAccount(
 
     const fetchBalanceAction = useMemo(() => {
         if (id && networkExists && accountExists && sync?.balance) {
-            return fetchBalanceSynced({ id, sync: sync.balance });
+            return fetchBalanceSynced({ ...id, sync: sync.balance });
         }
         return undefined;
     }, [id, accountExists, networkExists, sync?.balance]);
@@ -46,7 +46,7 @@ export default function useAccount(
 
     const fetchNonceAction = useMemo(() => {
         if (id && networkExists && accountExists && sync?.nonce) {
-            return fetchNonceSynced({ id, sync: sync.nonce });
+            return fetchNonceSynced({ ...id, sync: sync.nonce });
         }
         return undefined;
     }, [id, accountExists, networkExists, sync?.nonce]);

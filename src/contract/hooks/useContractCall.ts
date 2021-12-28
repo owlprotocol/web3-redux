@@ -10,16 +10,19 @@ import selectSingle from '../selectors/selectByIdSingle';
 import selectContractCall from '../selectors/selectContractCallById';
 
 //Contract Call
+/** @internal */
 export interface UseContractCallOptions {
     from?: string;
     gas?: string;
     sync?: Sync | Sync['type'] | true | 'once';
 }
 
+/** @internal */
 export interface HookHandlers {
     subscribe: () => void;
     unsubscribe: () => void;
 }
+/** @category Hooks */
 export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
     networkId: string | undefined,
     address: string | undefined,
@@ -80,6 +83,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     return [contractCall, { subscribe, unsubscribe }];
 }
 
+/** @category Hooks */
 export function contractCallHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,

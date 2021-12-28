@@ -2,13 +2,13 @@ import { assert } from 'chai';
 import { ZERO_ADDRESS } from '../../utils';
 
 import { name } from '../common';
-import { Interface, Id, getId, getIdDeconstructed, validate, IdDeconstructed } from '../model/interface';
+import { Account, getId, getIdDeconstructed, validate, AccountId } from '../model/interface';
 
 describe(`${name}.model`, () => {
-    const item: Interface = { networkId: '1337', address: ZERO_ADDRESS };
-    const id: Id = `${item.networkId}-${item.address}`;
-    const itemWithId: Interface = { id, ...item };
-    const idDeconstructed: IdDeconstructed = { networkId: item.networkId, address: item.address };
+    const item: Account = { networkId: '1337', address: ZERO_ADDRESS };
+    const id = `${item.networkId}-${item.address}`;
+    const itemWithId: Account = { id, ...item };
+    const idDeconstructed: AccountId = { networkId: item.networkId, address: item.address };
 
     it('getId', () => {
         assert.equal(getId(item), id);

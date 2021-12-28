@@ -1,3 +1,8 @@
+/**
+ * Comments on Contract module
+ * @module Contract
+ */
+
 export * from './model';
 export * from './actions';
 export * from './sagas';

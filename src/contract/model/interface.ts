@@ -6,13 +6,16 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
  *
  * @param networkId - A network id.
  * @param address - Contract address.
+ * @internal
  */
 export interface IdDeconstructed {
     networkId: string;
     address: string;
 }
+/** @internal */
 export type Id = string;
 
+/** @internal */
 export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' | '_jsonInterface'>;
 
 /**
@@ -34,14 +37,17 @@ export interface Interface<T extends BaseWeb3Contract = BaseWeb3Contract> {
     readonly web3SenderContract?: T;
 }
 
+/** @internal */
 export type IdArgs = Id | IdDeconstructed;
 const SEPARATOR = '-';
+/** @internal */
 export function getId(id: IdArgs): string {
     if (typeof id == 'string') return id;
     const { networkId, address } = id;
     const addressChecksum = toChecksumAddress(address);
     return [networkId, addressChecksum].join(SEPARATOR);
 }
+/** @internal */
 export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
     if (typeof id !== 'string') return id;
 
@@ -50,6 +56,7 @@ export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
     return { networkId, address: addressChecksum };
 }
 
+/** @internal */
 export function validate(contract: Interface): Interface {
     const { networkId, address } = contract;
     const addressCheckSum = toChecksumAddress(address);

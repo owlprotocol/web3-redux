@@ -2,6 +2,7 @@ import { toChecksumAddress } from 'web3-utils';
 import { getId as getContractId } from '../../contract/model/interface';
 import { ZERO_ADDRESS } from '../../utils';
 
+/** @internal */
 export interface IdDeconstructed {
     readonly networkId: string;
     readonly to: string;
@@ -11,6 +12,7 @@ export interface IdDeconstructed {
     readonly from?: string;
     readonly gas?: number;
 }
+/** @internal */
 export type Id = string;
 
 export interface Interface extends IdDeconstructed {
@@ -18,6 +20,7 @@ export interface Interface extends IdDeconstructed {
     readonly returnValue?: any;
 }
 
+/** @internal */
 export function getOptionsId(
     from: IdDeconstructed['from'],
     block: IdDeconstructed['defaultBlock'],
@@ -34,8 +37,10 @@ export function getOptionsId(
     return JSON.stringify(block);
 }
 
+/** @internal */
 export type IdArgs = IdDeconstructed | Id;
 const SEPARATOR = '-';
+/** @internal */
 export function getId(id: IdArgs): Id {
     if (typeof id === 'string') return id;
 
@@ -48,6 +53,7 @@ export function getId(id: IdArgs): Id {
     return idStr;
 }
 
+/** @internal */
 export function validate(item: Interface): Interface {
     const id = getId(item);
     const toChecksum = toChecksumAddress(item.to);

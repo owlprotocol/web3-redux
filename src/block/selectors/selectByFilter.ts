@@ -4,7 +4,9 @@ import { getOrm } from '../../orm';
 import Interface from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
+/** @internal */
 type selectByFilterType = (state: any, filter: Partial<Interface> | undefined) => Interface[];
+/** @category Selectors */
 const selectByFilter: selectByFilterType = createSelector(
     getOrm(),
     (_1: any, filter: Partial<Interface> | undefined) => filter,

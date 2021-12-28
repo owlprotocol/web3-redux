@@ -1,3 +1,8 @@
+/**
+ * Comments on Config module
+ * @module Config
+ */
+
 export * from './model';
 export * from './actions';
 export * from './selectors';

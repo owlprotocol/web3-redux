@@ -5,9 +5,7 @@ import { AccountId } from '../model/interface';
 /** @internal */
 export const FETCH_NONCE = `${name}/FETCH_NONCE`;
 /** @category Actions */
-export const fetchNonce = createAction(FETCH_NONCE, (payload: AccountId) => {
-    return { payload };
-});
+export const fetchNonce = createAction<AccountId>(FETCH_NONCE);
 /** @internal */
 export type FetchNonceAction = ReturnType<typeof fetchNonce>;
 /** @internal */

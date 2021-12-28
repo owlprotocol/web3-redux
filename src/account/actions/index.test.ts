@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
-import { Account } from '../model/interface';
+import { Account, getId } from '../model/interface';
 import { ZERO_ADDRESS } from '../../utils';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
@@ -12,11 +12,12 @@ import { set, SET, SetAction, isSetAction } from './set';
 describe(`${name}.actions`, () => {
     const networkId = '1337';
     const item: Account = { networkId, address: ZERO_ADDRESS };
+    const itemWithId = { id: getId(item), ...item };
 
     it('create', () => {
         const expected: CreateAction = {
             type: CREATE,
-            payload: item,
+            payload: itemWithId,
         };
         assert.isTrue(isCreateAction(expected));
         assert.deepEqual(create(item), expected);
@@ -25,7 +26,7 @@ describe(`${name}.actions`, () => {
     it('update', () => {
         const expected: UpdateAction = {
             type: UPDATE,
-            payload: item,
+            payload: itemWithId,
         };
         assert.isTrue(isUpdateAction(expected));
         assert.deepEqual(update(item), expected);
@@ -43,9 +44,9 @@ describe(`${name}.actions`, () => {
     it('set', () => {
         const expected: SetAction = {
             type: SET('networkId'),
-            payload: { id: item, key: 'networkId' as keyof Account, value: item.networkId },
+            payload: { id: getId(item), key: 'networkId' as keyof Account, value: item.networkId },
         };
         assert.isTrue(isSetAction(expected));
-        assert.deepEqual(set({ id: item, key: 'networkId', value: item.networkId }), expected);
+        assert.deepEqual(set({ id: getId(item), key: 'networkId', value: item.networkId }), expected);
     });
 });

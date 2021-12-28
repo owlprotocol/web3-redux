@@ -5,9 +5,7 @@ import { AccountId } from '../model/interface';
 /** @internal */
 export const FETCH_BALANCE = `${name}/FETCH_BALANCE`;
 /** @category Actions */
-export const fetchBalance = createAction(FETCH_BALANCE, (payload: AccountId) => {
-    return { payload };
-});
+export const fetchBalance = createAction<AccountId>(FETCH_BALANCE);
 /** @internal */
 export type FetchBalanceAction = ReturnType<typeof fetchBalance>;
 /** @internal */

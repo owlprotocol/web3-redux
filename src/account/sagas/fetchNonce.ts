@@ -1,6 +1,7 @@
 import { put, call } from 'typed-redux-saga/macro';
 import networkExists from '../../network/sagas/exists';
 import { set, FetchNonceAction } from '../actions';
+import { getId } from '../model/interface';
 import exists from './exists';
 
 /** @category Sagas */
@@ -16,7 +17,7 @@ export function* fetchNonce(action: FetchNonceAction) {
 
     //@ts-expect-error
     const nonce: string = yield* call((web3 ?? web3Sender).eth.getTransactionCount, address);
-    yield* put(set({ id: payload, key: 'nonce', value: nonce }));
+    yield* put(set({ id: getId(payload), key: 'nonce', value: nonce }));
 }
 
 export default fetchNonce;

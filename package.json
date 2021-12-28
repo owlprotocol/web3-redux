@@ -21,6 +21,7 @@
         "test": "mocha 'lib/**/*.test.js'",
         "start": "node lib/index.js",
         "build": "npm-run-all generate-types tsc copy babel",
+        "build:watch": "npm-run-all -p tsc:watch babel:watch",
         "tsc": "tsc",
         "tsc:watch": "tsc -w",
         "babel": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps true --copy-files",

@@ -2,5 +2,6 @@
     "entryPoints": ["src"],
     "out": "docs",
     "includeVersion": true,
-    "excludeInternal": true
+    "excludeInternal": true,
+    "categoryOrder": ["Actions", "Selectors", "Hooks", "*"]
 }

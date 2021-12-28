@@ -31,26 +31,27 @@ describe(`${name}.sagas`, () => {
     const networkId = '1337';
 
     const item = { networkId, address: ZERO_ADDRESS };
-    const id = { ...item };
-    const itemWithId = { id: getId(id), ...item };
+    const itemWithId = { item: getId(item), ...item };
 
     let network: Network;
 
     before(() => {
-        const provider = ganache.provider({
+        const provitemer = ganache.provider({
             networkId: parseInt(networkId),
         });
         //@ts-ignore
-        const web3 = new Web3(provider);
+        const web3 = new Web3(provitemer);
         network = { networkId, web3 };
     });
 
     describe('exists()', () => {
         it(`error: ${name} undefined`, () => {
-            expect(testSaga(exists, id).next().select(selectByIdSingle, id).next).to.throw(`${name} ${id} undefined`);
+            expect(testSaga(exists, item).next().select(selectByIdSingle, item).next).to.throw(
+                `${name} ${item} undefined`,
+            );
         });
         it('exists', () => {
-            const gen = testSaga(exists, id).next().select(selectByIdSingle, id).next(itemWithId);
+            const gen = testSaga(exists, item).next().select(selectByIdSingle, item).next(itemWithId);
             gen.returns(itemWithId);
             gen.isDone();
         });
@@ -59,36 +60,36 @@ describe(`${name}.sagas`, () => {
     describe('fetchBalance', () => {
         //TODO: Add error handling for web3 api
         it('success', () => {
-            testSaga(fetchBalance, fetchBalanceAction(id))
+            testSaga(fetchBalance, fetchBalanceAction(item))
                 .next()
-                .call(exists, id)
+                .call(exists, item)
                 .next(itemWithId)
                 .call(networkExists, networkId)
                 .next(network)
                 .call(network.web3!.eth.getBalance, item.address)
                 .next('0')
-                .put(setAction({ id, key: 'balance', value: '0' }));
+                .put(setAction({ id: getId(item), key: 'balance', value: '0' }));
         });
     });
 
     describe('fetchNonce', () => {
         //TODO: Add error handling for web3 api
         it('success', () => {
-            testSaga(fetchNonce, fetchNonceAction(id))
+            testSaga(fetchNonce, fetchNonceAction(item))
                 .next()
-                .call(exists, id)
+                .call(exists, item)
                 .next(itemWithId)
                 .call(networkExists, networkId)
                 .next(network)
                 .call(network.web3!.eth.getTransactionCount, item.address)
                 .next('0')
-                .put(setAction({ id, key: 'nonce', value: '0' }));
+                .put(setAction({ id: getId(item), key: 'nonce', value: '0' }));
         });
     });
 
     describe('fetchBalanceSynced', () => {
         it('success', () => {
-            const action = fetchBalanceSyncedAction({ ...id, sync: true });
+            const action = fetchBalanceSyncedAction({ ...item, sync: true });
             testSaga(fetchBalanceSynced, action)
                 .next()
                 .put(action.payload.fetchBalanceAction)
@@ -99,7 +100,7 @@ describe(`${name}.sagas`, () => {
 
     describe('fetchNonceSynced', () => {
         it('success', () => {
-            const action = fetchNonceSyncedAction({ ...id, sync: true });
+            const action = fetchNonceSyncedAction({ ...item, sync: true });
             testSaga(fetchNonceSynced, action)
                 .next()
                 .put(action.payload.fetchNonceAction)

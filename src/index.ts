@@ -15,6 +15,8 @@ import { REDUX_ROOT } from './common';
 
 export { rootReducer } from './reducer';
 export { rootSaga } from './saga';
+export type { State } from './state';
+
 export {
     getOrm,
     createStore,

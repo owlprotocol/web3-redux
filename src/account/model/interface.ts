@@ -1,21 +1,21 @@
-/** @internal */
+/** Ethereum Account id components. */
 export interface AccountId {
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
+    /** Ethereum checksum address */
     readonly address: string;
 }
 
 /**
  * Ethereum Account. Store balance, nonce.
- *
- * @param id - Used to index in redux-orm. Computed as `${networkId}-${address}`.
- * @param address - Account address.
- * @param balance - Account balance in wei.
- * @param nonce - Account nonce.
  */
-//Id args cannot be optional
 export interface Account extends AccountId {
+    /** Used to index in redux-orm. Computed as `${networkId}-${address}` */
     readonly id?: string;
+    /** Account balance in wei */
     readonly balance?: string;
+    /** Account nonce aka number of transactions sent. */
     readonly nonce?: number;
 }
 

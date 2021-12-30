@@ -1,11 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { Interface } from '../model/interface';
+import { Network } from '../model/interface';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;
 /** @category Actions */
-export const update = createAction(UPDATE, (payload: Interface) => {
+export const update = createAction(UPDATE, (payload: Network) => {
     return { payload };
 });
 

@@ -1,12 +1,12 @@
-import { Interface, IdArgs, getId } from '../model/interface';
+import { EthCall, IdArgs, getId } from '../model/interface';
 import select from './select';
 
 /** @category Selectors */
-function selectByIdSingle(state: any, id: IdArgs | undefined): Interface | undefined {
+function selectByIdSingle(state: any, id: IdArgs | undefined): EthCall | undefined {
     if (!id) return undefined;
 
     const idStr = getId(id);
-    return select(state, idStr) as Interface | undefined;
+    return select(state, idStr) as EthCall | undefined;
 }
 
 export default selectByIdSingle;

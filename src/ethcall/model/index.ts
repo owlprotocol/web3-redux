@@ -1,8 +1,8 @@
-import { Interface, IdDeconstructed, getId, validate } from './interface';
+import { EthCall, IdDeconstructed, getId, validate } from './interface';
 
-export type { Interface, IdDeconstructed };
+export type { IdDeconstructed };
 //alias
-export type { Interface as EthCall, IdDeconstructed as EthCallId };
+export type { EthCall, IdDeconstructed as EthCallId };
 
 export { getId, validate };
 export { getId as getEthCallId, validate as validateEthCall };

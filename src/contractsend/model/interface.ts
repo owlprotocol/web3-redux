@@ -38,7 +38,7 @@ export enum ContractSendStatus {
 export interface ContractSend extends IdDeconstructed {
     /** Used to index send data in redux-orm. Computed as `${networkId}-${address}-{methodName}-{[args]}-{options}` */
     readonly id?: Id;
-    /** redux-orm id of contract `${networkId}-{address}` */
+    /** redux-orm id of contract send `${networkId}-{address}` */
     readonly contractId?: string;
     /** Transaction hash. Generated once data is signed.` */
     readonly transactionHash?: string;

@@ -4,19 +4,27 @@ import { ZERO_ADDRESS } from '../../utils';
 
 /** @internal */
 export interface IdDeconstructed {
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
+    /** `to` field of call */
     readonly to: string;
+    /** `data` field for call */
     readonly data: string;
-    //Optional id args
+    /** Historical block height to execute call. Defaults to `latest` */
     readonly defaultBlock?: number | 'latest';
+    /** `from` field of call. Some providers may default this to `null` or `ZERO_ADDRESS`. */
     readonly from?: string;
+    /** Maximum `gas` field for call. */
     readonly gas?: number;
 }
 /** @internal */
 export type Id = string;
 
-export interface Interface extends IdDeconstructed {
+export interface EthCall extends IdDeconstructed {
+    /** redux-orm id of call `${networkId}-{address}(data)-{options}` */
     readonly id?: Id;
+    /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
     readonly returnValue?: any;
 }
 
@@ -54,7 +62,7 @@ export function getId(id: IdArgs): Id {
 }
 
 /** @internal */
-export function validate(item: Interface): Interface {
+export function validate(item: EthCall): EthCall {
     const id = getId(item);
     const toChecksum = toChecksumAddress(item.to);
     const fromCheckSum = item.from ? toChecksumAddress(item.from) : undefined;
@@ -67,4 +75,4 @@ export function validate(item: Interface): Interface {
     };
 }
 
-export default Interface;
+export default EthCall;

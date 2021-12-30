@@ -36,7 +36,7 @@ Here is a list of all the interfaces used by web3-redux:
 -   [Account](./interfaces/Account)
 -   [BlockHeader](./interfaces/Block.BlockHeader), [BlockTransaction](./interfaces/Block.BlockTransaction)
 -   [Transaction](./interfaces/Transaction)
--   [Contract](./interfaces/Contract)
+-   [Contract](./interfaces/Contract.Contract-1)
 -   [ContractEvent](./interfaces/ContractEvent)
 -   [ContractSend](./interfaces/ContractSend)
 -   [EthCall](./interfaces/EthCall)

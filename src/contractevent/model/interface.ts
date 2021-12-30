@@ -16,13 +16,20 @@ export interface ReturnValues {
     returnValues: any;
 }
 
-export interface Interface<T extends ReturnValues = ReturnValues> extends IdDeconstructed {
+export interface ContractEvent<T extends ReturnValues = ReturnValues> extends IdDeconstructed {
+    /** Used to index contract events in redux-orm. Computed as `${networkId}-${blockHash}-{logIndex}` */
     readonly id?: Id;
+    /** Event name */
     readonly name: string;
+    /** Address of contract that emitted event */
     readonly address: string;
+    /** redux-orm id of contract `${networkId}-{address}` */
     readonly contractId?: string;
+    /** Return values of event */
     readonly returnValues: T['returnValues'];
+    /** Keys of `returnValues` to index event on */
     readonly returnValuesIndexKeys?: string[] | boolean;
+    /** ContractEventIndex redux-orm ids. Used for efficient filtering. */
     readonly indexIds?: string[];
 }
 
@@ -55,7 +62,7 @@ function returnValueKeyCombinations(keys: string[]) {
 }
 
 /** @internal */
-export function validate(item: Interface): Interface {
+export function validate(item: ContractEvent): ContractEvent {
     const id = getId(item);
     const networkId = item.networkId;
     const address = item.address;
@@ -93,4 +100,4 @@ export function validate(item: Interface): Interface {
     };
 }
 
-export default Interface;
+export default ContractEvent;

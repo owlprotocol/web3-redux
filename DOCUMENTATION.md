@@ -33,15 +33,15 @@ Overview of the overall architecture of the library.
 
 Here is a list of all the interfaces used by web3-redux:
 
--   [Account](./interfaces/Account)
+-   [Account](./interfaces/Account.Account-1)
 -   [BlockHeader](./interfaces/Block.BlockHeader), [BlockTransaction](./interfaces/Block.BlockTransaction)
--   [Transaction](./interfaces/Transaction)
+-   [Transaction](./interfaces/Transaction.Transaction-1)
 -   [Contract](./interfaces/Contract.Contract-1)
--   [ContractEvent](./interfaces/ContractEvent)
--   [ContractSend](./interfaces/ContractSend)
--   [EthCall](./interfaces/EthCall)
--   [Network](./interfaces/Network)
--   [Sync](./interfaces/Sync)
+-   [ContractEvent](./interfaces/ContractEvent.ContractEvent-1)
+-   [ContractSend](./interfaces/ContractSend.ContractSend-1)
+-   [EthCall](./interfaces/EthCall.EthCall-1)
+-   [Network](./interfaces/Network.Network-1)
+-   [BlockSync](./interfaces/Sync.BlockSync), [TransactionSync](./interfaces/Sync.TransactionSync), [EventSync](./interfaces/Sync.EventSync)
 
 ## Getting Started
 

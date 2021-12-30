@@ -1,6 +1,9 @@
 import { Transaction } from '../../transaction/model';
 import BaseSync from './BaseSync';
 
+/**
+ * Sync middleware to handle [Transaction](./Transaction.Transaction-1) CREATE/UPDATE actions.
+ */
 export default interface TransactionSync<T extends any = { [key: string]: string }> extends BaseSync<Transaction, T> {
     type: 'Transaction';
 }

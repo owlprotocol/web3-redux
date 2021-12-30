@@ -21,7 +21,8 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
 
 /**
  * Contract object.
- *
+ * @typeParam T
+ * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Web3.js contract interface.
  */
 export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> {
     /** Used to index contracts in redux-orm. Computed as `${networkId}-${address}` */
@@ -33,9 +34,9 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> {
     readonly address: string;
     /** Contract ABI */
     readonly abi?: AbiItem[];
-    /** Web3 Contract instance */
+    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance */
     readonly web3Contract?: T;
-    /** Web3 Contract instance used for send transactions */
+    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance used for send transactions */
     readonly web3SenderContract?: T;
 }
 

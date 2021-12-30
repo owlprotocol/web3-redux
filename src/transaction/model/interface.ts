@@ -4,7 +4,10 @@ import { getId as getBlockId } from '../../block/model/id';
 
 /** @internal */
 export interface IdDeconstructed {
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
+    /** Transaction hash. */
     readonly hash: string;
 }
 /** @internal */
@@ -14,39 +17,35 @@ export type Id = string;
  * Transaction object.
  * Extends the web3 interface.
  *
- * @param id - Tx id. Used to index transactions in redux-orm. Computed as `${networkId}-${hash}`.
- * @param networkId - A network id.
- * @param blockId - Tx id. Used to index the block this transaction is in. Computed as `${networkId}-${blockNumber}`.
- * @param receipt - Tx receipt. Applicable when this is a pending sent transaction.
- * @param confirmations - Tx confirmations. Applicable when this is a pending sent transaction.
- * @param hash - 32 Bytes - String: Hash of the transaction.
- * @param nonce - Number: The number of transactions made by the sender prior to this one.
- * @param blockHash - 32 Bytes - String: Hash of the block where this transaction was in. null if pending.
- * @param blockNumber - Number: Block number where this transaction was in. null if pending.
- * @param transactionIndex - Number: Integer of the transactions index position in the block. null if pending.
- * @param from - String: Address of the sender.
- * @param to - String: Address of the receiver. null if it’s a contract creation transaction.
- * @param value - String: Value transferred in wei.
- * @param gasPrice  - String: Gas price provided by the sender in wei.
- * @param gas - Number: Gas provided by the sender.
- * @param input - String: The data sent along with the transaction.
  */
-export interface Interface extends IdDeconstructed {
+export interface Transaction extends IdDeconstructed {
+    /** Used to index transactions in redux-orm. Computed as `${networkId}-${hash}`. */
     readonly id?: Id;
-    //Web3
+    /** The number of transactions made by the sender prior to this one. */
     readonly nonce?: number;
+    /** 32 bytes. Hash of the block where this transaction was in. `null` if pending */
     readonly blockHash?: string | null;
+    /** Block number where this transaction was in. `null` if pending */
     readonly blockNumber?: number | null;
+    /** Integer of the transactions index position in the block. `null` if pending */
     readonly transactionIndex?: number | null;
+    /** Address of the sender */
     readonly from?: string;
+    /** Address of the receiver. `null` if it’s a contract creation transaction */
     readonly to?: string | null;
+    /** Value transferred in wei */
     readonly value?: string;
+    /**  Gas price provided by the sender in wei */
     readonly gasPrice?: string;
+    /** Gas provided by the sender */
     readonly gas?: number;
+    /** The data sent along with the transaction */
     readonly input?: string;
-    //Other
+    /** Used to index the block this transaction is in. Computed as `${networkId}-${blockNumber}` */
     readonly blockId?: string | null;
+    /** Transaction receipt. */
     readonly receipt?: TransactionReceipt;
+    /** Confirmed blocks */
     readonly confirmations?: number;
 }
 
@@ -61,7 +60,7 @@ export function getId(id: IdArgs): Id {
 }
 
 /** @internal */
-export function validate(item: Interface): Interface {
+export function validate(item: Transaction): Transaction {
     const id = getId(item);
     const toChecksum = item.to ? toChecksumAddress(item.to) : undefined;
     const fromCheckSum = item.from ? toChecksumAddress(item.from) : undefined;
@@ -78,4 +77,4 @@ export function validate(item: Interface): Interface {
     };
 }
 
-export default Interface;
+export default Transaction;

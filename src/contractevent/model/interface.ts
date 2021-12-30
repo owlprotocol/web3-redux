@@ -20,6 +20,11 @@ export interface ReturnValues {
     returnValues: any;
 }
 
+/**
+ * Contract event log.
+ * @see [web3.eth.Contract.events](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html#events)
+ * @typeParam T optional type for return values. Defaults to `any` object.
+ */
 export interface ContractEvent<T extends ReturnValues = ReturnValues> extends IdDeconstructed {
     /** Used to index contract events in redux-orm. Computed as `${networkId}-${blockHash}-{logIndex}` */
     readonly id?: Id;

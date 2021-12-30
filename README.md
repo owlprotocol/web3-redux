@@ -20,6 +20,11 @@ Use your favorite node package manager to install web3-redux and the required pe
 pnpm install redux redux-saga react-redux web3 @leovigna/web3-redux
 ```
 
+## Architecture
+
+Overview of the overall architecture of the library.
+![Flowchart.svg](./Flowchart.svg)
+
 ## Getting Started
 
 Before you begin, you might want to get familiar with some of the libraries this "meta-library" is built with:

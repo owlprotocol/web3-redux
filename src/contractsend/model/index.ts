@@ -1,8 +1,8 @@
-import { Interface, IdDeconstructed, getId, validate, ContractSendStatus } from './interface';
+import { ContractSend, IdDeconstructed, getId, validate, ContractSendStatus } from './interface';
 
-export type { Interface, IdDeconstructed };
+export type { IdDeconstructed };
 //alias
-export type { Interface as ContractSend, IdDeconstructed as ContractSendId };
+export type { ContractSend, IdDeconstructed as ContractSendId };
 
 export { getId, validate };
 export { getId as getContractSendId, validate as validateContractSend };

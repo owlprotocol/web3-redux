@@ -4,8 +4,12 @@ import { combinationAll } from '../../utils/combination';
 
 /** @internal */
 export interface IdDeconstructed {
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
+    /** Block hash when event was emitted */
     readonly blockHash: string;
+    /** Unique index within block of event */
     readonly logIndex: number;
 }
 /** @internal */

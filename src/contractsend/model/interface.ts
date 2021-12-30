@@ -5,32 +5,56 @@ import { ZERO_ADDRESS } from '../../utils';
 
 /** @internal */
 export interface IdDeconstructed {
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
+    /** Contract ethereum address */
     readonly address: string;
+    /** Contract method name */
     readonly methodName: string;
+    /** Contract method parameters */
     readonly args?: any[];
+    /** Send address */
     readonly from: string;
+    /** Value sent in wei */
     readonly value?: any;
 }
 /** @internal */
 export type Id = string;
 
+/**
+ * @enum
+ */
 export enum ContractSendStatus {
-    PENDING_SIGNATURE = 'PENDING_SIGNATURE', //Pending wallet signature
+    /** Pending wallet signature. No transaction hash. */
+    PENDING_SIGNATURE = 'PENDING_SIGNATURE',
+    /** Errored. Wallet rejection or network error. */
     ERROR = 'ERROR',
-    PENDING_CONFIRMATION = 'PENDING_CONFIRMATION', //Pending blockchain confirmation
+    /** Pending blockchain confirmation. Hash created but 0 confirmations. */
+    PENDING_CONFIRMATION = 'PENDING_CONFIRMATION',
+    /** Transaction confirmations > 0. */
     CONFIRMED = 'CONFIRMED',
 }
-export interface Interface extends IdDeconstructed {
+export interface ContractSend extends IdDeconstructed {
+    /** Used to index send data in redux-orm. Computed as `${networkId}-${address}-{methodName}-{[args]}-{options}` */
     readonly id?: Id;
+    /** redux-orm id of contract `${networkId}-{address}` */
     readonly contractId?: string;
+    /** Transaction hash. Generated once data is signed.` */
     readonly transactionHash?: string;
+    /** redux-orm id of transaction `${networkId}-{transactionHash}` */
     readonly transactionId?: string;
+    /** Track status of send transaction */
     readonly status: ContractSendStatus;
+    /** Error */
     readonly error?: any;
+    /** Receipt generated once data sent to node */
     readonly receipt?: any;
+    /** Confirmation blocks */
     readonly confirmations?: number;
+    /** First confirmed block number */
     readonly blockNumber?: number;
+    /** First confirmed block hash */
     readonly blockHash?: string;
 }
 
@@ -71,7 +95,7 @@ export function getId(id: IdArgs): Id {
 }
 
 /** @internal */
-export function validate(item: Interface): Interface {
+export function validate(item: ContractSend): ContractSend {
     const id = getId(item);
     const addressChecksum = toChecksumAddress(item.address);
     const fromCheckSum = toChecksumAddress(item.from);
@@ -89,4 +113,4 @@ export function validate(item: Interface): Interface {
     };
 }
 
-export default Interface;
+export default ContractSend;

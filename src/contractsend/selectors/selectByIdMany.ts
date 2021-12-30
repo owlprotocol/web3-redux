@@ -1,9 +1,9 @@
 import select from './select';
-import { Interface, IdArgs, getId } from '../model/interface';
+import { ContractSend, IdArgs, getId } from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
 /** @category Selectors */
-function selectByIdMany(state: any, ids?: IdArgs[]): (Interface | null)[] {
+function selectByIdMany(state: any, ids?: IdArgs[]): (ContractSend | null)[] {
     if (!ids) return select(state); //Return all
 
     const idsStr = ids.map((id) => getId(id));

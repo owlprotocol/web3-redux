@@ -4,13 +4,14 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 /**
  * Contract Id object.
  *
- * @param networkId - A network id.
- * @param address - Contract address.
  * @internal
  */
 export interface IdDeconstructed {
-    networkId: string;
-    address: string;
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
+    readonly networkId: string;
+    /** Contract ethereum address */
+    readonly address: string;
 }
 /** @internal */
 export type Id = string;
@@ -21,19 +22,20 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
 /**
  * Contract object.
  *
- * @param id - Contract id. Used to index contracts in redux-orm. Computed as `${networkId}-${address}`.
- * @param networkId - A network id.
- * @param address - Contract address.
- * @param abi - Contract ABI.
- * @param web3Contract - Web3 Contract instance
- * @param web3SenderContract - Web3 Contract instance used for send transactions.
  */
-export interface Interface<T extends BaseWeb3Contract = BaseWeb3Contract> {
+export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> {
+    /** Used to index contracts in redux-orm. Computed as `${networkId}-${address}` */
     readonly id?: string;
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
+    /** Contract ethereum address */
     readonly address: string;
+    /** Contract ABI */
     readonly abi?: AbiItem[];
+    /** Web3 Contract instance */
     readonly web3Contract?: T;
+    /** Web3 Contract instance used for send transactions */
     readonly web3SenderContract?: T;
 }
 
@@ -57,7 +59,7 @@ export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
 }
 
 /** @internal */
-export function validate(contract: Interface): Interface {
+export function validate(contract: Contract): Contract {
     const { networkId, address } = contract;
     const addressCheckSum = toChecksumAddress(address);
     const id = getId({ networkId, address });
@@ -68,4 +70,4 @@ export function validate(contract: Interface): Interface {
     };
 }
 
-export default Interface;
+export default Contract;

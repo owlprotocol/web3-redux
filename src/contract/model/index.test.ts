@@ -2,18 +2,18 @@ import { assert } from 'chai';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 
 import { name } from '../common';
-import { Interface, Id, getId, getIdDeconstructed, validate, IdDeconstructed } from '../model/interface';
+import { Contract, Id, getId, getIdDeconstructed, validate, IdDeconstructed } from '../model/interface';
 
 describe(`${name}.model`, () => {
     const networkId = '1337';
-    const item: Interface = {
+    const item: Contract = {
         networkId,
         address: '0x0000000000000000000000000000000000000001',
         abi: BlockNumberAbi.abi as any,
     };
 
     const id: Id = `${item.networkId}-${item.address}`;
-    const itemWithId: Interface = {
+    const itemWithId: Contract = {
         ...item,
         id,
     };

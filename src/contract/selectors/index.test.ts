@@ -5,7 +5,7 @@ import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
 
-import { getId, getIdDeconstructed, Interface, validate } from '../model/interface';
+import { getId, getIdDeconstructed, Contract, validate } from '../model/interface';
 import { name } from '../common';
 
 import { selectByIdExists, selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
@@ -46,7 +46,7 @@ describe(`${name}.selectors`, () => {
     });
 
     //Contract
-    const item: Interface = {
+    const item: Contract = {
         networkId,
         address: ADDRESS_1,
         abi: BlockNumberAbi.abi as any,

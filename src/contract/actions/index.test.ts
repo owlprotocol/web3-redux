@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 
 import { name } from '../common';
-import { Interface, getId, validate, getIdDeconstructed } from '../model/interface';
+import { Contract, getId, validate, getIdDeconstructed } from '../model/interface';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
@@ -10,7 +10,7 @@ import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 
 describe(`${name}.actions`, () => {
     const networkId = '1337';
-    const item: Interface = {
+    const item: Contract = {
         networkId,
         address: '0x0000000000000000000000000000000000000001',
         abi: BlockNumberAbi.abi as any,

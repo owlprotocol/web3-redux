@@ -1,10 +1,9 @@
-import { Interface, IdDeconstructed, BaseWeb3Contract, getId, validate } from './interface';
+import { Contract, IdDeconstructed, BaseWeb3Contract, getId, validate } from './interface';
 import { CallArgsHash, callArgsHash, callHash } from './callArgs';
 import { EventSubscription, eventSubscriptionHash, eventId } from './eventSubscription';
 
-export type { Interface, IdDeconstructed };
-//alias
-export type { Interface as Contract, IdDeconstructed as ContractId };
+export type { Contract, IdDeconstructed };
+export type { IdDeconstructed as ContractId };
 export type { BaseWeb3Contract, CallArgsHash, EventSubscription };
 
 export { getId, validate };

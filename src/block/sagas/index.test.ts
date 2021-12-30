@@ -16,13 +16,13 @@ import createAction from '../actions/create';
 //Sagas
 import exists from './exists';
 import fetch from './fetch';
-import { getId, Interface } from '../model';
+import { BlockId, BlockHeader } from '../model';
 
 describe(`${name}.sagas`, () => {
     const networkId = '1337';
 
-    const item: Interface = { networkId, number: 0 };
-    const id = getId(item);
+    const item: BlockHeader = { networkId, number: 0 };
+    const id: BlockId = { ...item };
     const itemWithId = { id, ...item };
 
     let network: Network;

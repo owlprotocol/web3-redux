@@ -1,5 +1,5 @@
 import { batchActions } from 'redux-batched-actions';
-import { Block, BlockTransaction } from '../../block/model';
+import { BlockHeader, BlockTransaction } from '../../block/model';
 import { create as createTransaction } from '../../transaction/actions';
 import { Transaction, getTransactionId } from '../../transaction/model';
 import { isStrings } from '../../utils';
@@ -8,7 +8,7 @@ import BaseSync from './BaseSync';
 /**
  * Sync middleware to handle {@link BlockHeader} CREATE/UPDATE actions.
  */
-export default interface BlockSync<T extends any = { [key: string]: string }> extends BaseSync<Block, T> {
+export default interface BlockSync<T extends any = { [key: string]: string }> extends BaseSync<BlockHeader, T> {
     type: 'Block';
 }
 
@@ -54,7 +54,7 @@ export const blockTransactionsSync: BlockSync = {
     actions: createBlockTransactionsActions,
 };
 
-export function createBlockTransactionsActions(block: Block) {
+export function createBlockTransactionsActions(block: BlockHeader) {
     const transactions = (block as BlockTransaction).transactions;
     if (!transactions) {
         return [];

@@ -20,7 +20,6 @@ function* fetch(action: FetchAction, updateBlock = false) {
         //@ts-expect-error block has transactions
         yield* put(create({ ...block, networkId }));
     } else {
-        //@ts-expect-error
         yield* put(update({ ...block, networkId }));
     }
 }

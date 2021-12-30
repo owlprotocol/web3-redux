@@ -5,9 +5,7 @@ import { AccountId } from '../model/interface';
 /** @internal */
 export const REMOVE = `${name}/DELETE`;
 /** @category Actions */
-export const remove = createAction(REMOVE, (payload: AccountId) => {
-    return { payload };
-});
+export const remove = createAction<AccountId>(REMOVE);
 /** @internal */
 export type RemoveAction = ReturnType<typeof remove>;
 /** @internal */

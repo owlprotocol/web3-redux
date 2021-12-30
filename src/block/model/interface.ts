@@ -4,10 +4,7 @@ import { getId } from './id';
 import BlockTransaction from './BlockTransaction';
 
 /** @internal */
-export type Interface = BlockTransaction;
-
-/** @internal */
-export function validate(item: Interface): Interface {
+export function validate(item: BlockTransaction): BlockTransaction {
     const id = getId(item);
     let transactions = item.transactions;
     if (transactions) {
@@ -26,4 +23,4 @@ export function validate(item: Interface): Interface {
     return result;
 }
 
-export default Interface;
+export default BlockTransaction;

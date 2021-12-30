@@ -2,16 +2,15 @@ import { assert } from 'chai';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
 
-import { getId, getIdDeconstructed, Interface } from '../model';
+import { getId, BlockHeader } from '../model';
 import { name } from '../common';
 
 import { selectByIdExists, selectByIdSingle, selectByIdMany, selectByFilter } from './index';
 
 describe(`${name}.selectors`, () => {
-    const item: Interface = { networkId: '1337', number: 0 };
-    const id = getId(item);
-    const itemWithId = { id: id, ...item };
-    const idDeconstructed = getIdDeconstructed(item);
+    const item: BlockHeader = { networkId: '1337', number: 0 };
+    const id = { ...item };
+    const itemWithId: BlockHeader = { id: getId(id), ...item };
 
     const state = {
         [REDUX_ROOT]: getOrm().getEmptyState(),
@@ -19,25 +18,20 @@ describe(`${name}.selectors`, () => {
 
     before(() => {
         state[REDUX_ROOT][name].items.push(id);
-        state[REDUX_ROOT][name].itemsById[id] = itemWithId;
+        state[REDUX_ROOT][name].itemsById[getId(id)] = itemWithId;
     });
 
     it('selectByIdExists', () => {
         assert.isTrue(selectByIdExists(state, id));
-        assert.isTrue(selectByIdExists(state, idDeconstructed));
     });
     describe('selectByIdSingle', () => {
         it('(id)', () => {
             const selected = selectByIdSingle(state, id);
             assert.deepEqual(selected, itemWithId);
         });
-        it('(idDeconstructed', () => {
-            const selected = selectByIdSingle(state, idDeconstructed);
-            assert.deepEqual(selected, itemWithId);
-        });
         it('memoization', () => {
             const select1 = selectByIdSingle(state, id);
-            const select2 = selectByIdSingle(state, idDeconstructed);
+            const select2 = selectByIdSingle(state, id);
             assert.deepEqual(select1, select2);
             assert.equal(select1, select2);
         });
@@ -50,12 +44,9 @@ describe(`${name}.selectors`, () => {
         it('([id])', () => {
             assert.deepEqual(selectByIdMany(state), [itemWithId]);
         });
-        it('([idDeconstructed])', () => {
-            assert.deepEqual(selectByIdMany(state, [id]), [itemWithId]);
-        });
         it('memoization', () => {
             const select1 = selectByIdMany(state, [id]);
-            const select2 = selectByIdMany(state, [idDeconstructed]);
+            const select2 = selectByIdMany(state, [id]);
             assert.deepEqual(select1, select2);
             assert.equal(select1, select2);
         });

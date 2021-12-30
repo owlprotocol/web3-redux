@@ -1,13 +1,15 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
+import Account, { getId } from './model/interface';
+import ModelInterface from '../types/model';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const Model = sess[name];
+    const Model: ModelInterface<Account> = sess[name];
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
     } else if (isRemoveAction(action)) {
-        Model.withId(action.payload)?.delete();
+        Model.withId(getId(action.payload))?.delete();
     } else if (isUpdateAction(action)) {
         Model.update(action.payload);
     } else if (isSetAction(action)) {

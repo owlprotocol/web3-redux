@@ -1,4 +1,4 @@
-import { IdDeconstructed, Id } from './id';
+import { BlockId } from './id';
 
 /**
  * Block header object. Typically returned by Web3 websocket subscriptions.
@@ -6,9 +6,9 @@ import { IdDeconstructed, Id } from './id';
  * See [web3.eth.getBlock](https://web3js.readthedocs.io/en/v1.5.2/web3-eth.html#getblock)
  *
  */
-export interface BlockHeader extends IdDeconstructed {
+export interface BlockHeader extends BlockId {
     /** Used to index in redux-orm. Computed as `${networkId}-${number}` */
-    readonly id?: Id;
+    readonly id?: string;
     /** 32 bytes. Hash of the block. null if a pending block */
     readonly hash?: string;
     /** 32 bytes. Hash of the parent block */

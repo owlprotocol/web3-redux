@@ -37,7 +37,7 @@ function* eventGetPast(action: EventGetPastAction) {
 
         const network = yield* call(networkExists, networkId);
         if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
-        const contract = yield* call(exists, id);
+        const contract = yield* call(exists, { networkId, address });
 
         //Ranged queries
         let rangeLastBlock;

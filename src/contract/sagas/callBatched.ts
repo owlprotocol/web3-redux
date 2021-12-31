@@ -1,7 +1,7 @@
 import { put, all, select, call } from 'typed-redux-saga/macro';
 import { validate as validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
-import { Contract, getId } from '../model';
+import { Contract } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
 import selectByIdMany from '../selectors/selectByIdMany';
 import networkExists from '../../network/sagas/exists';
@@ -20,7 +20,9 @@ function* callBatched(action: CallBatchedAction) {
         const web3 = network.web3;
         const multicallContract = network.multicallContract;
 
-        const contractIds = Array.from(new Set(requests.map((f) => getId({ address: f.address, networkId }))));
+        const contractIds = Array.from(new Set(requests.map((f) => f.address))).map((address) => {
+            return { networkId, address };
+        });
         const selectResult: ReturnType<typeof selectByIdMany> = yield* select(selectByIdMany, contractIds);
         const contracts = selectResult.filter((c) => !!c) as Contract[];
         const contractsByAddress: { [key: string]: Contract } = {};

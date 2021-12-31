@@ -1,6 +1,7 @@
 import { toChecksumAddress } from 'web3-utils';
 import { getId as getContractId } from '../../contract/model/interface';
 import { combinationAll } from '../../utils/combination';
+import { ModelWithId } from '../../types/model';
 
 /** @internal */
 export interface IdDeconstructed {
@@ -71,7 +72,7 @@ function returnValueKeyCombinations(keys: string[]) {
 }
 
 /** @internal */
-export function validate(item: ContractEvent): ContractEvent {
+export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     const id = getId(item);
     const networkId = item.networkId;
     const address = item.address;

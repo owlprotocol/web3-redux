@@ -5,13 +5,14 @@ import BlockNumberAbi from '../../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
 
-import { getId, getIdDeconstructed, Contract, validate } from '../model/interface';
+import { getId, Contract, validate } from '../model/interface';
 import { name } from '../common';
 
 import { selectByIdExists, selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
 import { validateEthCall } from '../../ethcall/model';
 import { ZERO_ADDRESS } from '../../utils';
 import { validateContractEvent } from '../../contractevent/model';
+import { StateRoot } from '../../state';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');
@@ -53,17 +54,16 @@ describe(`${name}.selectors`, () => {
         web3Contract: new web3.eth.Contract(BlockNumberAbi.abi as any, ADDRESS_1),
     };
 
-    const id = getId(item);
+    const id = { networkId, address: ADDRESS_1 };
     const itemWithId = validate(item);
-    const idDeconstructed = getIdDeconstructed(item);
 
-    const state = {
+    const state: StateRoot = {
         [REDUX_ROOT]: getOrm().getEmptyState(),
     };
 
     before(() => {
-        state[REDUX_ROOT][name].items.push(id);
-        state[REDUX_ROOT][name].itemsById[id] = itemWithId;
+        state[REDUX_ROOT][name].items.push(getId(id));
+        state[REDUX_ROOT][name].itemsById[getId(id)] = itemWithId;
 
         //Set Eth Call
         state[REDUX_ROOT]['EthCall'].items.push(ethCall.id);
@@ -78,20 +78,15 @@ describe(`${name}.selectors`, () => {
 
     it('selectByIdExists', () => {
         assert.isTrue(selectByIdExists(state, id));
-        assert.isTrue(selectByIdExists(state, idDeconstructed));
     });
     describe('selectByIdSingle', () => {
         it('(id)', () => {
             const selected = selectByIdSingle(state, id);
             assert.deepEqual(selected, itemWithId);
         });
-        it('(idDeconstructed', () => {
-            const selected = selectByIdSingle(state, idDeconstructed);
-            assert.deepEqual(selected, itemWithId);
-        });
         it('memoization', () => {
             const select1 = selectByIdSingle(state, id);
-            const select2 = selectByIdSingle(state, idDeconstructed);
+            const select2 = selectByIdSingle(state, id);
             assert.deepEqual(select1, select2);
             assert.equal(select1, select2);
         });
@@ -104,12 +99,9 @@ describe(`${name}.selectors`, () => {
         it('([id])', () => {
             assert.deepEqual(selectByIdMany(state), [itemWithId]);
         });
-        it('([idDeconstructed])', () => {
-            assert.deepEqual(selectByIdMany(state, [id]), [itemWithId]);
-        });
         it('memoization', () => {
             const select1 = selectByIdMany(state, [id]);
-            const select2 = selectByIdMany(state, [idDeconstructed]);
+            const select2 = selectByIdMany(state, [id]);
             assert.deepEqual(select1, select2);
             assert.equal(select1, select2);
         });

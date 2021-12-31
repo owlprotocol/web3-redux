@@ -14,15 +14,14 @@ function* callSaga(action: CallAction) {
     try {
         const { payload } = action;
         const { networkId, address, from, defaultBlock } = payload;
-        const id = getId({ networkId, address });
 
         yield* call(networkExists, networkId);
-        const contract = yield* call(exists, id);
+        const contract = yield* call(exists, { networkId, address });
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+        if (!web3Contract) throw new Error(`Contract ${getId(payload)} has no web3 contract`);
         const method = web3Contract.methods[payload.method];
-        if (!method) throw new Error(`Contract ${id} no such method ${payload.method}`);
+        if (!method) throw new Error(`Contract ${getId(payload)} no such method ${payload.method}`);
 
         let tx: any;
         if (!payload.args || payload.args.length == 0) tx = method();

@@ -1,10 +1,10 @@
-import { Contract, IdArgs, getId, BaseWeb3Contract } from '../model/interface';
+import { Contract, ContractId, getId, BaseWeb3Contract } from '../model/interface';
 import select from './select';
 
 /** @category Selectors */
 function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(
     state: any,
-    id: IdArgs | undefined,
+    id: ContractId | undefined,
 ): Contract<T> | undefined {
     if (!id) return undefined;
 

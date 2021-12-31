@@ -1,13 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { Contract, validate } from '../model/interface';
+import { Contract } from '../model/interface';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;
 /** @category Actions */
-export const update = createAction(UPDATE, (payload: Contract) => {
-    return { payload: validate(payload) };
-});
+export const update = createAction<Contract>(UPDATE);
 /** @internal */
 export type UpdateAction = ReturnType<typeof update>;
 /** @internal */

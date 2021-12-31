@@ -1,6 +1,3 @@
-/** @internal */
-export type Id = string;
-
 /** A global singleton config object.
  * Can be extended to store any key-value pairs.
  */

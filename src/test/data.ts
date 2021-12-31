@@ -17,6 +17,8 @@ export const contract1 = validateContract({
     abi: BlockNumber.abi as any,
 });
 
+export const contract1Id = { networkId, address: ADDRESS_1 };
+
 //ContractEvent
 export const event1 = validateContractEvent({
     networkId,

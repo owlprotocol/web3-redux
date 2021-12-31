@@ -1,20 +1,19 @@
 import { AbiItem, toChecksumAddress } from 'web3-utils';
 import { Contract as Web3Contract } from 'web3-eth-contract';
+import { ModelWithId } from '../../types/model';
 
 /**
  * Contract Id object.
  *
  * @internal
  */
-export interface IdDeconstructed {
+export interface ContractId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
     /** Contract ethereum address */
     readonly address: string;
 }
-/** @internal */
-export type Id = string;
 
 /** @internal */
 export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' | '_jsonInterface'>;
@@ -40,18 +39,16 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> {
     readonly web3SenderContract?: T;
 }
 
-/** @internal */
-export type IdArgs = Id | IdDeconstructed;
 const SEPARATOR = '-';
 /** @internal */
-export function getId(id: IdArgs): string {
+export function getId(id: ContractId): string {
     if (typeof id == 'string') return id;
     const { networkId, address } = id;
     const addressChecksum = toChecksumAddress(address);
     return [networkId, addressChecksum].join(SEPARATOR);
 }
 /** @internal */
-export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
+export function getIdDeconstructed(id: string): ContractId {
     if (typeof id !== 'string') return id;
 
     const [networkId, address] = id.split(SEPARATOR); //Assumes separator not messed up
@@ -60,7 +57,7 @@ export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
 }
 
 /** @internal */
-export function validate(contract: Contract): Contract {
+export function validate(contract: Contract): ModelWithId<Contract> {
     const { networkId, address } = contract;
     const addressCheckSum = toChecksumAddress(address);
     const id = getId({ networkId, address });

@@ -55,7 +55,7 @@ export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => a
                     .map((c) => {
                         if (c.abi) {
                             return Contract.set({
-                                id: c.id!,
+                                id: { networkId: c.networkId, address: c.address },
                                 key: 'web3Contract',
                                 value: new newWeb3!.eth.Contract(c.abi, c.address),
                             });
@@ -69,7 +69,7 @@ export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => a
                     .map((c) => {
                         if (c.abi) {
                             return Contract.set({
-                                id: c.id!,
+                                id: { networkId: c.networkId, address: c.address },
                                 key: 'web3SenderContract',
                                 value: new newWeb3Sender!.eth.Contract(c.abi, c.address),
                             });

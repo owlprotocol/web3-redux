@@ -1,6 +1,7 @@
 import { toChecksumAddress } from 'web3-utils';
 import { getId as getContractId } from '../../contract/model/interface';
 import { ZERO_ADDRESS } from '../../utils';
+import { ModelWithId } from '../../types/model';
 
 /** @internal */
 export interface IdDeconstructed {
@@ -62,7 +63,7 @@ export function getId(id: IdArgs): Id {
 }
 
 /** @internal */
-export function validate(item: EthCall): EthCall {
+export function validate(item: EthCall): ModelWithId<EthCall> {
     const id = getId(item);
     const toChecksum = toChecksumAddress(item.to);
     const fromCheckSum = item.from ? toChecksumAddress(item.from) : undefined;

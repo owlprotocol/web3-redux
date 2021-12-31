@@ -1,17 +1,20 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
+import ModelInterface from '../types/model';
+import ContractEvent, { getId } from './model/interface';
+import ContractEventIndex from '../contracteventindex/model/interface';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const Model = sess[name];
-    const Index = sess['ContractEventIndex'];
+    const Model: ModelInterface<ContractEvent> = sess[name];
+    const Index: ModelInterface<ContractEventIndex> = sess['ContractEventIndex'];
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
         action.payload.indexIds?.forEach((id) => {
             if (!Index.withId(id)) Index.create({ id });
         });
     } else if (isRemoveAction(action)) {
-        Model.withId(action.payload)?.delete();
+        Model.withId(getId(action.payload))?.delete();
     } else if (isUpdateAction(action)) {
         Model.update(action.payload);
         action.payload.indexIds?.forEach((id) => {

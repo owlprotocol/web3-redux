@@ -4,7 +4,7 @@ import { combinationAll } from '../../utils/combination';
 import { ModelWithId } from '../../types/model';
 
 /** @internal */
-export interface IdDeconstructed {
+export interface ContractEventId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
@@ -13,8 +13,6 @@ export interface IdDeconstructed {
     /** Unique index within block of event */
     readonly logIndex: number;
 }
-/** @internal */
-export type Id = string;
 
 /** @internal */
 export interface ReturnValues {
@@ -26,9 +24,9 @@ export interface ReturnValues {
  * @see [web3.eth.Contract.events](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html#events)
  * @typeParam T optional type for return values. Defaults to `any` object.
  */
-export interface ContractEvent<T extends ReturnValues = ReturnValues> extends IdDeconstructed {
+export interface ContractEvent<T extends ReturnValues = ReturnValues> extends ContractEventId {
     /** Used to index contract events in redux-orm. Computed as `${networkId}-${blockHash}-{logIndex}` */
-    readonly id?: Id;
+    readonly id?: string;
     /** Event name */
     readonly name: string;
     /** Address of contract that emitted event */
@@ -43,18 +41,16 @@ export interface ContractEvent<T extends ReturnValues = ReturnValues> extends Id
     readonly indexIds?: string[];
 }
 
-/** @internal */
-export type IdArgs = IdDeconstructed | Id;
 const SEPARATOR = '-';
 /** @internal */
-export function getId(id: IdArgs): Id {
+export function getId(id: ContractEventId): string {
     if (typeof id === 'string') return id;
     const { networkId, blockHash, logIndex } = id;
 
     return [networkId, blockHash, logIndex].join(SEPARATOR);
 }
 /** @internal */
-export function getIdDeconstructed(id: IdArgs): IdDeconstructed {
+export function getIdDeconstructed(id: string): ContractEventId {
     if (typeof id !== 'string') return id;
 
     const [networkId, blockHash, logIndex] = id.split(SEPARATOR); //Assumes separator not messed up

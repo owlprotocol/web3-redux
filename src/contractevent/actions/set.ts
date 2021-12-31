@@ -1,11 +1,11 @@
 import { name } from '../common';
-import { ContractEvent, getId, IdArgs } from '../model/interface';
+import { ContractEvent, getId, ContractEventId } from '../model/interface';
 
 /** @internal */
 export const SET = (key: keyof ContractEvent) => `${name}/SET/${key.toUpperCase()}`;
 /** @internal */
 export interface SetActionInput {
-    id: IdArgs;
+    id: ContractEventId;
     key: keyof ContractEvent;
     value: any;
 }

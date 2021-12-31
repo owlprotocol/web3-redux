@@ -1,7 +1,6 @@
-import { Transaction, IdDeconstructed, getId, validate } from './interface';
+import { Transaction, TransactionId, getId, validate } from './interface';
 
-export type { IdDeconstructed };
-export type { Transaction, IdDeconstructed as TransactionId };
+export type { Transaction, TransactionId };
 
 export { getId, validate };
 export { getId as getTransactionId, validate as validateTransaction };

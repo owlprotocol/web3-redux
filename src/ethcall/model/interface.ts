@@ -3,7 +3,7 @@ import { getId as getContractId } from '../../contract/model/interface';
 import { ZERO_ADDRESS } from '../../utils';
 import { ModelWithId } from '../../types/model';
 
-/** @internal */
+/** EthCall id components */
 export interface EthCallId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */

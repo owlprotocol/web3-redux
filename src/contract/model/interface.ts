@@ -5,7 +5,6 @@ import { ModelWithId } from '../../types/model';
 /**
  * Contract Id object.
  *
- * @internal
  */
 export interface ContractId {
     /** Blockchain network id.
@@ -23,14 +22,9 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
  * @typeParam T
  * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Web3.js contract interface.
  */
-export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> {
+export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends ContractId {
     /** Used to index contracts in redux-orm. Computed as `${networkId}-${address}` */
     readonly id?: string;
-    /** Blockchain network id.
-     * See [chainlist](https://chainlist.org/) for a list of networks. */
-    readonly networkId: string;
-    /** Contract ethereum address */
-    readonly address: string;
     /** Contract ABI */
     readonly abi?: AbiItem[];
     /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance */

@@ -1,26 +1,25 @@
 import { TransactionReceipt } from 'web3-eth';
 import { toChecksumAddress, toHex } from 'web3-utils';
 import { getId as getBlockId } from '../../block/model/id';
+import { ModelWithId } from '../../types/model';
 
 /** @internal */
-export interface IdDeconstructed {
+export interface TransactionId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
     /** Transaction hash. */
     readonly hash: string;
 }
-/** @internal */
-export type Id = string;
 
 /**
  * Transaction object.
  * Extends the web3 interface.
  *
  */
-export interface Transaction extends IdDeconstructed {
+export interface Transaction extends TransactionId {
     /** Used to index transactions in redux-orm. Computed as `${networkId}-${hash}`. */
-    readonly id?: Id;
+    readonly id?: string;
     /** The number of transactions made by the sender prior to this one. */
     readonly nonce?: number;
     /** 32 bytes. Hash of the block where this transaction was in. `null` if pending */
@@ -49,18 +48,14 @@ export interface Transaction extends IdDeconstructed {
     readonly confirmations?: number;
 }
 
-/** @internal */
-export type IdArgs = IdDeconstructed | Id;
 const SEPARATOR = '-';
 /** @internal */
-export function getId(id: IdArgs): Id {
-    if (typeof id === 'string') return id;
-
+export function getId(id: TransactionId): string {
     return [id.networkId, id.hash].join(SEPARATOR);
 }
 
 /** @internal */
-export function validate(item: Transaction): Transaction {
+export function validate(item: Transaction): ModelWithId<Transaction> {
     const id = getId(item);
     const toChecksum = item.to ? toChecksumAddress(item.to) : undefined;
     const fromCheckSum = item.from ? toChecksumAddress(item.from) : undefined;

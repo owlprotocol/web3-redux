@@ -3,7 +3,6 @@ import { getId as getContractId } from '../../contract/model/interface';
 import { combinationAll } from '../../utils/combination';
 import { ModelWithId } from '../../types/model';
 
-/** @internal */
 export interface ContractEventId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */

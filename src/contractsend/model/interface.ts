@@ -4,7 +4,7 @@ import { getTransactionId } from '../../transaction/model';
 import { ZERO_ADDRESS } from '../../utils';
 import { ModelWithId } from '../../types/model';
 
-/** @internal */
+/** ContractSend id components */
 export interface ContractSendId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */

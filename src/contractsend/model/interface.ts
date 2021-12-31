@@ -2,9 +2,10 @@ import { toChecksumAddress } from 'web3-utils';
 import { getId as getContractId } from '../../contract/model/interface';
 import { getTransactionId } from '../../transaction/model';
 import { ZERO_ADDRESS } from '../../utils';
+import { ModelWithId } from '../../types/model';
 
 /** @internal */
-export interface IdDeconstructed {
+export interface ContractSendId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
@@ -19,8 +20,6 @@ export interface IdDeconstructed {
     /** Value sent in wei */
     readonly value?: any;
 }
-/** @internal */
-export type Id = string;
 
 /**
  * @enum
@@ -35,9 +34,9 @@ export enum ContractSendStatus {
     /** Transaction confirmations > 0. */
     CONFIRMED = 'CONFIRMED',
 }
-export interface ContractSend extends IdDeconstructed {
+export interface ContractSend extends ContractSendId {
     /** Used to index send data in redux-orm. Computed as `${networkId}-${address}-{methodName}-{[args]}-{options}` */
-    readonly id?: Id;
+    readonly id?: string;
     /** redux-orm id of contract send `${networkId}-{address}` */
     readonly contractId?: string;
     /** Transaction hash. Generated once data is signed.` */
@@ -78,10 +77,9 @@ export function getOptionsId(from: string | undefined, value: string | undefined
 }
 
 /** @internal */
-export type IdArgs = IdDeconstructed | Id;
 const SEPARATOR = '-';
 /** @internal */
-export function getId(id: IdArgs): Id {
+export function getId(id: ContractSendId): string {
     if (typeof id === 'string') return id;
 
     const contractId = getContractId({ networkId: id.networkId, address: id.address });
@@ -95,7 +93,7 @@ export function getId(id: IdArgs): Id {
 }
 
 /** @internal */
-export function validate(item: ContractSend): ContractSend {
+export function validate(item: ContractSend): ModelWithId<ContractSend> {
     const id = getId(item);
     const addressChecksum = toChecksumAddress(item.address);
     const fromCheckSum = toChecksumAddress(item.from);

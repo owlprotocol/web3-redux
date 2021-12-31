@@ -1,8 +1,8 @@
-import { ContractSend, IdArgs, getId } from '../model/interface';
+import { ContractSend, ContractSendId, getId } from '../model/interface';
 import select from './select';
 
 /** @category Selectors */
-function selectByIdSingle(state: any, id: IdArgs | undefined): ContractSend | undefined {
+function selectByIdSingle(state: any, id: ContractSendId | undefined): ContractSend | undefined {
     if (!id) return undefined;
 
     const idStr = getId(id);

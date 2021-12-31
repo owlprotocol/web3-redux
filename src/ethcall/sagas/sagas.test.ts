@@ -6,7 +6,7 @@ import BlockNumber from '../../abis/BlockNumber.json';
 import { createStore, StoreType } from '../../store';
 import { Network, EthCall } from '../../index';
 import { sleep } from '../../test/utils';
-
+import { getIdArgs } from '../model/interface';
 const networkId = '1337';
 
 describe('ethcall.sagas', () => {
@@ -56,7 +56,7 @@ describe('ethcall.sagas', () => {
 
         assert.equal(EthCall.selectByIdMany(store.getState()).length, 1, 'EthCallSelector.selectMany');
         assert.equal(
-            Web3.utils.hexToNumber(EthCall.selectByIdSingle(store.getState(), ethCall1.id)!.returnValue!),
+            Web3.utils.hexToNumber(EthCall.selectByIdSingle(store.getState(), getIdArgs(ethCall1))!.returnValue!),
             expected,
             'EthCall.selectSingle',
         );

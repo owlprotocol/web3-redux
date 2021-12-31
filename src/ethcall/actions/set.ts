@@ -1,11 +1,11 @@
 import { name } from '../common';
-import { EthCall, getId, IdArgs } from '../model/interface';
+import { EthCall, getId, EthCallId } from '../model/interface';
 
 /** @internal */
 export const SET = (key: keyof EthCall) => `${name}/SET/${key.toUpperCase()}`;
 /** @internal */
 export interface SetActionInput {
-    id: IdArgs;
+    id: EthCallId;
     key: keyof EthCall;
     value: any;
 }

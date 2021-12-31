@@ -4,7 +4,7 @@ import { ZERO_ADDRESS } from '../../utils';
 import { ModelWithId } from '../../types/model';
 
 /** @internal */
-export interface IdDeconstructed {
+export interface EthCallId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
@@ -19,22 +19,15 @@ export interface IdDeconstructed {
     /** Maximum `gas` field for call. */
     readonly gas?: number;
 }
-/** @internal */
-export type Id = string;
-
-export interface EthCall extends IdDeconstructed {
+export interface EthCall extends EthCallId {
     /** redux-orm id of call `${networkId}-{address}(data)-{options}` */
-    readonly id?: Id;
+    readonly id?: string;
     /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
     readonly returnValue?: any;
 }
 
 /** @internal */
-export function getOptionsId(
-    from: IdDeconstructed['from'],
-    block: IdDeconstructed['defaultBlock'],
-    gas: IdDeconstructed['gas'],
-) {
+export function getOptionsId(from: EthCallId['from'], block: EthCallId['defaultBlock'], gas: EthCallId['gas']) {
     if ((!from || from == ZERO_ADDRESS) && (block == undefined || block == 'latest') && gas == undefined)
         return undefined;
 
@@ -47,10 +40,23 @@ export function getOptionsId(
 }
 
 /** @internal */
-export type IdArgs = IdDeconstructed | Id;
+export function getIdArgs(id: EthCallId): EthCallId {
+    const { networkId, to, data, defaultBlock, from, gas } = id;
+    const val: any = {
+        networkId,
+        to,
+        data,
+    };
+    if (defaultBlock) val.defaultBlock = defaultBlock;
+    if (from) val.from = from;
+    if (gas) val.gas = gas;
+
+    return val;
+}
+
 const SEPARATOR = '-';
 /** @internal */
-export function getId(id: IdArgs): Id {
+export function getId(id: EthCallId): string {
     if (typeof id === 'string') return id;
 
     const contractId = getContractId({ networkId: id.networkId, address: id.to });

@@ -1,9 +1,9 @@
 import select from './select';
-import { EthCall, IdArgs, getId } from '../model/interface';
+import { EthCall, EthCallId, getId } from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
 /** @category Selectors */
-function selectByIdMany(state: any, ids?: IdArgs[]): (EthCall | null)[] {
+function selectByIdMany(state: any, ids?: EthCallId[]): (EthCall | null)[] {
     if (!ids) return select(state); //Return all
 
     const idsStr = ids.map((id) => getId(id));

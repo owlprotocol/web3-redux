@@ -1,7 +1,7 @@
 import { put, call } from 'typed-redux-saga/macro';
 
 import networkExists from '../../network/sagas/exists';
-import { validate as validatedEthCall } from '../../ethcall/model';
+import { validateEthCall, getEthCallIdArgs } from '../../ethcall/model';
 import { create as createEthCall, set as setEthCall } from '../../ethcall/actions';
 
 import { getId } from '../model';
@@ -28,7 +28,7 @@ function* callSaga(action: CallAction) {
         else tx = method(...payload.args);
         const data = tx.encodeABI();
 
-        const ethCall = validatedEthCall({
+        const ethCall = validateEthCall({
             networkId,
             from,
             to: contract.address,
@@ -42,7 +42,7 @@ function* callSaga(action: CallAction) {
         const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
         //@ts-ignore
         const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
-        yield* put(setEthCall({ id: ethCall.id!, key: 'returnValue', value: returnValue }));
+        yield* put(setEthCall({ id: getEthCallIdArgs(ethCall), key: 'returnValue', value: returnValue }));
     } catch (error) {
         console.error(error);
         yield* put({

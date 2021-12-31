@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { createStore, StoreType } from '../store';
-import { getId, validate, create, selectByIdSingle } from './index';
+import { getIdArgs, validate, create, selectByIdSingle } from './index';
 import { addressList } from '../test/utils';
 import { name } from './common';
 
@@ -12,7 +12,7 @@ describe(`${name}.integration`, () => {
         to: addressList[1],
         data: '0x1',
     };
-    const id = getId(item);
+    const id = getIdArgs(item);
     const itemWithId = validate(item);
 
     let store: StoreType;

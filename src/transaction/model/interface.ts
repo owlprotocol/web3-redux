@@ -3,12 +3,15 @@ import { toChecksumAddress, toHex } from 'web3-utils';
 import { getId as getBlockId } from '../../block/model/id';
 import { ModelWithId } from '../../types/model';
 
-/** @internal */
+/** Transaction id components */
 export interface TransactionId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
-    /** Transaction hash. */
+    /** Transaction hash.
+     *
+     * Should be unique to blockchain if using proper replay protection but we still use `networkId` just in case.
+     * This is also consistent with how other data in the store is indexed by network.  */
     readonly hash: string;
 }
 

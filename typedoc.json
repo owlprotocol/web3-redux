@@ -4,5 +4,5 @@
     "includeVersion": true,
     "excludeInternal": true,
     "categoryOrder": ["Actions", "Selectors", "Hooks", "*"],
-    "readme": "./DOCUMENTATION.md"
+    "readme": "./docs-static/DOCUMENTATION.md"
 }

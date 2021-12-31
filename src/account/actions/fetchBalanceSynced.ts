@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
 import { AccountId, getId } from '../model/interface';
 
@@ -17,7 +18,8 @@ export interface FetchBalanceSyncedActionInput extends AccountId {
 }
 /** @category Actions */
 export const fetchBalanceSynced = createAction(FETCH_BALANCE_SYNCED, (payload: FetchBalanceSyncedActionInput) => {
-    const { networkId, address } = payload;
+    const { networkId } = payload;
+    const address = toChecksumAddress(payload.address);
     const fetchBalanceAction = fetchBalance({ networkId, address });
     //Default sync
     let sync: Sync | undefined;

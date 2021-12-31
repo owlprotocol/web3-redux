@@ -1,6 +1,6 @@
 import { name } from '../common';
 import BlockHeader from '../model/BlockHeader';
-import { getId, BlockId } from '../model/id';
+import { BlockId } from '../model/id';
 
 /** @internal */
 export const SET = (key: keyof BlockHeader) => `${name}/SET/${key.toUpperCase()}`;
@@ -12,7 +12,7 @@ export interface SetActionInput {
 }
 /** @category Actions */
 export const set = (payload: SetActionInput) => {
-    const id = getId(payload.id);
+    const id = payload.id;
     const key = payload.key;
     const value = payload.value;
     return { type: SET(key), payload: { id, key, value } };

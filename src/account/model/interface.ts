@@ -1,3 +1,4 @@
+import { toChecksumAddress } from 'web3-utils';
 import { ModelWithId } from '../../types/model';
 
 /** Ethereum Account id components. */
@@ -25,12 +26,12 @@ const SEPARATOR = '-';
 /** @internal */
 export function getId(id: AccountId): string {
     const { networkId, address } = id;
-    return [networkId, address].join(SEPARATOR);
+    return [networkId, toChecksumAddress(address)].join(SEPARATOR);
 }
 /** @internal */
 export function getIdDeconstructed(id: string): AccountId {
     const [networkId, address] = id.split(SEPARATOR); //Assumes separator not messed up
-    return { networkId, address };
+    return { networkId, address: toChecksumAddress(address) };
 }
 
 /** @internal */
@@ -39,6 +40,7 @@ export function validate(item: Account): ModelWithId<Account> {
     return {
         ...item,
         id,
+        address: toChecksumAddress(item.address),
     };
 }
 

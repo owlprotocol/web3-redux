@@ -2,6 +2,7 @@ import { validate as validateTransaction } from '../../transaction/model/interfa
 import { isStrings } from '../../utils';
 import { getId } from './id';
 import BlockTransaction from './BlockTransaction';
+import BlockHeader from './BlockHeader';
 import { ModelWithId } from '../../types/model';
 
 /** @internal */
@@ -24,4 +25,4 @@ export function validate(item: BlockTransaction): ModelWithId<BlockTransaction> 
     return result;
 }
 
-export default BlockTransaction;
+export default BlockHeader;

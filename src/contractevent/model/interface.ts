@@ -44,15 +44,12 @@ export interface ContractEvent<T extends ReturnValues = ReturnValues> extends Co
 const SEPARATOR = '-';
 /** @internal */
 export function getId(id: ContractEventId): string {
-    if (typeof id === 'string') return id;
     const { networkId, blockHash, logIndex } = id;
 
     return [networkId, blockHash, logIndex].join(SEPARATOR);
 }
 /** @internal */
 export function getIdDeconstructed(id: string): ContractEventId {
-    if (typeof id !== 'string') return id;
-
     const [networkId, blockHash, logIndex] = id.split(SEPARATOR); //Assumes separator not messed up
     return { networkId, blockHash, logIndex: parseInt(logIndex) };
 }
@@ -71,8 +68,7 @@ function returnValueKeyCombinations(keys: string[]) {
 export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     const id = getId(item);
     const networkId = item.networkId;
-    const address = item.address;
-    const addressChecksum = toChecksumAddress(item.address);
+    const address = toChecksumAddress(item.address);
     const contractId = getContractId(item);
 
     //Default we only index named keys, but user can also pass (0,1,2) as argument
@@ -99,7 +95,7 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     return {
         ...item,
         id,
-        address: addressChecksum,
+        address,
         contractId,
         returnValuesIndexKeys,
         indexIds,

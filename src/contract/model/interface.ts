@@ -42,29 +42,23 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> {
 const SEPARATOR = '-';
 /** @internal */
 export function getId(id: ContractId): string {
-    if (typeof id == 'string') return id;
     const { networkId, address } = id;
-    const addressChecksum = toChecksumAddress(address);
-    return [networkId, addressChecksum].join(SEPARATOR);
+    return [networkId, toChecksumAddress(address)].join(SEPARATOR);
 }
 /** @internal */
 export function getIdDeconstructed(id: string): ContractId {
-    if (typeof id !== 'string') return id;
-
     const [networkId, address] = id.split(SEPARATOR); //Assumes separator not messed up
-    const addressChecksum = toChecksumAddress(address);
-    return { networkId, address: addressChecksum };
+    return { networkId, address: toChecksumAddress(address) };
 }
 
 /** @internal */
 export function validate(contract: Contract): ModelWithId<Contract> {
     const { networkId, address } = contract;
-    const addressCheckSum = toChecksumAddress(address);
     const id = getId({ networkId, address });
     return {
         ...contract,
         id,
-        address: addressCheckSum,
+        address: toChecksumAddress(address),
     };
 }
 

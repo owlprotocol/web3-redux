@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 
 import { name } from '../common';
-import { Contract, ContractId } from '../model/interface';
+import { Contract, ContractId, getId } from '../model/interface';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
@@ -21,7 +21,7 @@ describe(`${name}.actions`, () => {
     it('create', () => {
         const expected: CreateAction = {
             type: CREATE,
-            payload: item,
+            payload: { ...item, id: getId(item) },
         };
         assert.isTrue(isCreateAction(expected));
         assert.deepEqual(create(item), expected);
@@ -30,7 +30,7 @@ describe(`${name}.actions`, () => {
     it('update', () => {
         const expected: UpdateAction = {
             type: UPDATE,
-            payload: item,
+            payload: { ...item, id: getId(item) },
         };
         assert.isTrue(isUpdateAction(expected));
         assert.deepEqual(update(item), expected);

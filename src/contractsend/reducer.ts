@@ -1,17 +1,17 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
 import ModelInterface from '../types/model';
-import ContractSend, { validate, getId } from './model/interface';
+import ContractSend, { getId } from './model/interface';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
     const Model: ModelInterface<ContractSend> = sess[name];
     if (isCreateAction(action)) {
-        Model.upsert(validate(action.payload));
+        Model.upsert(action.payload);
     } else if (isRemoveAction(action)) {
         Model.withId(getId(action.payload))?.delete();
     } else if (isUpdateAction(action)) {
-        Model.update(validate(action.payload));
+        Model.update(action.payload);
     } else if (isSetAction(action)) {
         Model.withId(action.payload.id)?.set(action.payload.key, action.payload.value);
     }

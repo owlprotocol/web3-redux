@@ -57,8 +57,6 @@ export function getIdArgs(id: EthCallId): EthCallId {
 const SEPARATOR = '-';
 /** @internal */
 export function getId(id: EthCallId): string {
-    if (typeof id === 'string') return id;
-
     const contractId = getContractId({ networkId: id.networkId, address: id.to });
     const optionsId = getOptionsId(id.from, id.defaultBlock, id.gas);
 

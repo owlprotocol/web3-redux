@@ -19,7 +19,7 @@ describe(`${name}.actions`, () => {
     it('create', () => {
         const expected: CreateAction = {
             type: CREATE,
-            payload: { ...item },
+            payload: { id: getId(item), ...item },
         };
         assert.isTrue(isCreateAction(expected));
         assert.deepEqual(create(item), expected);
@@ -28,7 +28,7 @@ describe(`${name}.actions`, () => {
     it('update', () => {
         const expected: UpdateAction = {
             type: UPDATE,
-            payload: { ...item },
+            payload: { id: getId(item), ...item },
         };
         assert.isTrue(isUpdateAction(expected));
         assert.deepEqual(update(item), expected);
@@ -46,7 +46,7 @@ describe(`${name}.actions`, () => {
     it('set', () => {
         const expected: SetAction = {
             type: SET('networkId'),
-            payload: { id: getId(item), key: 'networkId' as keyof BlockHeader, value: item.networkId },
+            payload: { id: { ...item }, key: 'networkId' as keyof BlockHeader, value: item.networkId },
         };
         assert.isTrue(isSetAction(expected));
         assert.deepEqual(set({ id: item, key: 'networkId', value: item.networkId }), expected);

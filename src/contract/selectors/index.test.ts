@@ -123,6 +123,7 @@ describe(`${name}.selectors`, () => {
     });
     describe('selectContractCall', () => {
         it(method, () => {
+            console.debug(state[REDUX_ROOT]['EthCall']);
             assert.deepEqual(selectContractCall(state, id, method), ethCall.returnValue);
         });
     });

@@ -1,11 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import BlockHeader from '../model/BlockHeader';
+import BlockHeader, { validate } from '../model/interface';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;
 /** @category Actions */
-export const create = createAction<BlockHeader>(CREATE);
+export const create = createAction(CREATE, (payload: BlockHeader) => {
+    return { payload: validate(payload) };
+});
 /** @internal */
 export type CreateAction = ReturnType<typeof create>;
 /** @internal */

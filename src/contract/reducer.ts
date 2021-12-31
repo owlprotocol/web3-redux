@@ -1,5 +1,5 @@
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import { getId, validate, Contract } from './model';
+import { getId, Contract } from './model';
 import { Network } from '../network/model';
 import ModelInterface from '../types/model';
 
@@ -22,7 +22,7 @@ export function reducer(sess: any, action: ReducerAction) {
         payload.web3Contract = web3Contract;
         //@ts-expect-error ignore readonly
         payload.web3SenderContract = web3SenderContract;
-        Contract.upsert(validate(payload));
+        Contract.upsert(payload);
     } else if (isRemoveAction(action)) {
         if (typeof action.payload === 'string') {
             Contract.withId(action.payload).delete();

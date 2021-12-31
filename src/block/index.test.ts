@@ -149,7 +149,7 @@ describe(`${name}.integration`, () => {
             );
         });
 
-        it('({returnTransactionObjects:true})', async () => {
+        it.skip('({returnTransactionObjects:true})', async () => {
             store.dispatch(subscribeAction({ networkId, returnTransactionObjects: true }));
             const expectedBlocksPromise: Promise<BlockTransaction>[] = [];
             const subscription = web3.eth.subscribe('newBlockHeaders').on('data', (block: any) => {

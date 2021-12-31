@@ -1,3 +1,5 @@
+import { ModelWithId } from '../../types/model';
+
 /** Ethereum Account id components. */
 export interface AccountId {
     /** Blockchain network id.
@@ -32,7 +34,7 @@ export function getIdDeconstructed(id: string): AccountId {
 }
 
 /** @internal */
-export function validate(item: Account): Account {
+export function validate(item: Account): ModelWithId<Account> {
     const id = getId(item);
     return {
         ...item,

@@ -1,6 +1,6 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import Block from './model/interface';
+import Block, { validate } from './model/interface';
 import { getId } from './model/id';
 import ModelInterface from '../types/model';
 
@@ -13,7 +13,7 @@ export function reducer(sess: any, action: ReducerAction) {
         const insertData = { ...payload, transactions: undefined };
         //@ts-ignore
         delete insertData.transactions;
-        Model.upsert(insertData);
+        Model.upsert(validate(insertData));
     } else if (isRemoveAction(action)) {
         Model.withId(getId(action.payload))?.delete();
     } else if (isUpdateAction(action)) {

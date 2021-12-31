@@ -2,9 +2,10 @@ import { validate as validateTransaction } from '../../transaction/model/interfa
 import { isStrings } from '../../utils';
 import { getId } from './id';
 import BlockTransaction from './BlockTransaction';
+import { ModelWithId } from '../../types/model';
 
 /** @internal */
-export function validate(item: BlockTransaction): BlockTransaction {
+export function validate(item: BlockTransaction): ModelWithId<BlockTransaction> {
     const id = getId(item);
     let transactions = item.transactions;
     if (transactions) {

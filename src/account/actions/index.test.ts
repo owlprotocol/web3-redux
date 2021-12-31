@@ -12,12 +12,11 @@ import { set, SET, SetAction, isSetAction } from './set';
 describe(`${name}.actions`, () => {
     const networkId = '1337';
     const item: Account = { networkId, address: ZERO_ADDRESS };
-    const itemWithId = { id: getId(item), ...item };
 
     it('create', () => {
         const expected: CreateAction = {
             type: CREATE,
-            payload: itemWithId,
+            payload: item,
         };
         assert.isTrue(isCreateAction(expected));
         assert.deepEqual(create(item), expected);
@@ -26,7 +25,7 @@ describe(`${name}.actions`, () => {
     it('update', () => {
         const expected: UpdateAction = {
             type: UPDATE,
-            payload: itemWithId,
+            payload: item,
         };
         assert.isTrue(isUpdateAction(expected));
         assert.deepEqual(update(item), expected);

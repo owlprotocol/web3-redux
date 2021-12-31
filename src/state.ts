@@ -8,6 +8,11 @@ import ContractSend from './contractsend/model/interface';
 import EthCall from './ethcall/model/interface';
 import Config from './config/model/interface';
 import Account from './account/model/interface';
+import { ModelWithId } from './types/model';
+
+export interface StateRoot {
+    web3Redux: State;
+}
 
 /**
  * Redux State Interface for the `web3Redux` slice.
@@ -16,12 +21,12 @@ export interface State {
     /** Networks indexed by id */
     Network: {
         items: string[];
-        itemsById: { [id: string]: Network };
+        itemsById: { [id: string]: ModelWithId<Network> };
     };
     /** Blocks indexed by id */
     Block: {
         items: string[];
-        itemsById: { [id: string]: Block };
+        itemsById: { [id: string]: ModelWithId<Block> };
         indexes: {
             networkId: {
                 [networkId: string]: string[];
@@ -31,7 +36,7 @@ export interface State {
     /** Transactions indexed by id */
     Transaction: {
         items: string[];
-        itemsById: { [id: string]: Transaction };
+        itemsById: { [id: string]: ModelWithId<Transaction> };
         indexes: {
             networkId: {
                 [networkId: string]: string[];
@@ -44,7 +49,7 @@ export interface State {
     /** Contracts indexed by id */
     Contract: {
         items: string[];
-        itemsById: { [id: string]: Contract };
+        itemsById: { [id: string]: ModelWithId<Contract> };
         indexes: {
             networkId: {
                 [networkId: string]: string[];
@@ -54,7 +59,7 @@ export interface State {
     /** Contract Events indexed by id */
     ContractEvent: {
         items: string[];
-        itemsById: { [id: string]: ContractEvent };
+        itemsById: { [id: string]: ModelWithId<ContractEvent> };
         indexes: {
             networkId: {
                 [networkId: string]: string[];
@@ -67,12 +72,12 @@ export interface State {
     /** Custom index to efficiently filter events */
     ContractEventIndex: {
         items: string[];
-        itemsById: { [id: string]: ContractEventIndex };
+        itemsById: { [id: string]: ModelWithId<ContractEventIndex> };
     };
     /** ContractSend  indexed by id */
     ContractSend: {
         items: string[];
-        itemsById: { [id: string]: ContractSend };
+        itemsById: { [id: string]: ModelWithId<ContractSend> };
         indexes: {
             transactionId: {
                 [transactionId: string]: string[];
@@ -82,17 +87,17 @@ export interface State {
     /** EthCalls indexed by id */
     EthCall: {
         items: string[];
-        itemsById: { [id: string]: EthCall };
+        itemsById: { [id: string]: ModelWithId<EthCall> };
     };
     /** Singleton global config */
     Config: {
         items: [0];
-        itemsById: { [0]: Config };
+        itemsById: { [0]: ModelWithId<Config> };
     };
     /** Accounts indexed by id */
     Account: {
         items: string[];
-        itemsById: { [id: string]: Account };
+        itemsById: { [id: string]: ModelWithId<Account> };
     };
     /** Join table for events and indices */
     ContractEventIndexIds: {

@@ -15,7 +15,6 @@ import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from
 describe(`${name}.actions`, () => {
     const networkId = '1337';
     const item: BlockHeader = { networkId, number: 0 };
-    const id = { ...item };
 
     it('create', () => {
         const expected: CreateAction = {
@@ -38,20 +37,19 @@ describe(`${name}.actions`, () => {
     it('remove', () => {
         const expected: RemoveAction = {
             type: REMOVE,
-            payload: id,
+            payload: { ...item },
         };
         assert.isTrue(isRemoveAction(expected));
-        assert.deepEqual(remove(id), expected);
         assert.deepEqual(remove(item), expected);
     });
 
     it('set', () => {
         const expected: SetAction = {
             type: SET('networkId'),
-            payload: { id: getId(id), key: 'networkId' as keyof BlockHeader, value: item.networkId },
+            payload: { id: getId(item), key: 'networkId' as keyof BlockHeader, value: item.networkId },
         };
         assert.isTrue(isSetAction(expected));
-        assert.deepEqual(set({ id: id, key: 'networkId', value: item.networkId }), expected);
+        assert.deepEqual(set({ id: item, key: 'networkId', value: item.networkId }), expected);
     });
 
     it('fetch', () => {

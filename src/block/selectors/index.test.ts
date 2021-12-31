@@ -6,32 +6,33 @@ import { getId, BlockHeader } from '../model';
 import { name } from '../common';
 
 import { selectByIdExists, selectByIdSingle, selectByIdMany, selectByFilter } from './index';
+import { StateRoot } from '../../state';
+import { ModelWithId } from '../../types/model';
 
 describe(`${name}.selectors`, () => {
     const item: BlockHeader = { networkId: '1337', number: 0 };
-    const id = { ...item };
-    const itemWithId: BlockHeader = { id: getId(id), ...item };
+    const itemWithId: ModelWithId<BlockHeader> = { id: getId(item), ...item };
 
-    const state = {
+    const state: StateRoot = {
         [REDUX_ROOT]: getOrm().getEmptyState(),
     };
 
     before(() => {
-        state[REDUX_ROOT][name].items.push(id);
-        state[REDUX_ROOT][name].itemsById[getId(id)] = itemWithId;
+        state[REDUX_ROOT][name].items.push(getId(item));
+        state[REDUX_ROOT][name].itemsById[getId(item)] = itemWithId;
     });
 
     it('selectByIdExists', () => {
-        assert.isTrue(selectByIdExists(state, id));
+        assert.isTrue(selectByIdExists(state, item));
     });
     describe('selectByIdSingle', () => {
-        it('(id)', () => {
-            const selected = selectByIdSingle(state, id);
+        it('(item)', () => {
+            const selected = selectByIdSingle(state, item);
             assert.deepEqual(selected, itemWithId);
         });
         it('memoization', () => {
-            const select1 = selectByIdSingle(state, id);
-            const select2 = selectByIdSingle(state, id);
+            const select1 = selectByIdSingle(state, item);
+            const select2 = selectByIdSingle(state, item);
             assert.deepEqual(select1, select2);
             assert.equal(select1, select2);
         });
@@ -41,12 +42,12 @@ describe(`${name}.selectors`, () => {
         it('()', () => {
             assert.deepEqual(selectByIdMany(state), [itemWithId]);
         });
-        it('([id])', () => {
+        it('([item])', () => {
             assert.deepEqual(selectByIdMany(state), [itemWithId]);
         });
         it('memoization', () => {
-            const select1 = selectByIdMany(state, [id]);
-            const select2 = selectByIdMany(state, [id]);
+            const select1 = selectByIdMany(state, [item]);
+            const select2 = selectByIdMany(state, [item]);
             assert.deepEqual(select1, select2);
             assert.equal(select1, select2);
         });
@@ -70,7 +71,7 @@ describe(`${name}.selectors`, () => {
     //TODO
     /*
     describe('selectSingleTransactions', () => {
-        it('(id)', () => {
+        it('(item)', () => {
             const selected = selectSingleTransactions(state, '');
             assert.equal(selected, null);
         });

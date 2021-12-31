@@ -1,4 +1,3 @@
-import { Interface } from './interface';
+import { ContractEventIndex } from './interface';
 
-export type { Interface };
-export type { Interface as ContractEventIndex };
+export type { ContractEventIndex };

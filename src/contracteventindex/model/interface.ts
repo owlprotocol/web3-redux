@@ -1,11 +1,8 @@
 import ContractEvent from '../../contractevent/model/interface';
 
-/** @internal */
-export type Id = string;
-
-export interface Interface {
-    readonly id?: Id;
+export interface ContractEventIndex {
+    readonly id?: string;
     readonly events?: ContractEvent[];
 }
 
-export default Interface;
+export default ContractEventIndex;

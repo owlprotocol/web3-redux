@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
 
-import { Interface } from '../model';
+import { ContractEventIndex } from '../model';
 import { name } from '../common';
 
 import { selectEvents } from './index';
@@ -23,7 +23,7 @@ describe(`${name}.selectors`, () => {
     });
 
     //Indexes
-    const index1: Interface = { id: JSON.stringify({ networkId }) };
+    const index1: ContractEventIndex = { id: JSON.stringify({ networkId }) };
     //const index2: Interface = { id: JSON.stringify({ networkId, address: event1.address }) };
     //const index3: Interface = { id: JSON.stringify({ networkId, address: event1.address, name: event1.name }) };
 

@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
-import Interface from '../model/interface';
+import Config from '../model/interface';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
@@ -11,7 +11,7 @@ import { ZERO_ADDRESS } from '../../utils';
 
 describe(`${name}.actions`, () => {
     const networkId = '1337';
-    const item: Interface = { id: '0', networkId, account: ZERO_ADDRESS };
+    const item: Config = { id: '0', networkId, account: ZERO_ADDRESS };
     const id = item.id;
 
     it('create', () => {
@@ -44,7 +44,7 @@ describe(`${name}.actions`, () => {
     it('set', () => {
         const expected: SetAction = {
             type: SET('networkId'),
-            payload: { id, key: 'networkId' as keyof Interface, value: item.networkId },
+            payload: { id, key: 'networkId' as keyof Config, value: item.networkId },
         };
         assert.isTrue(isSetAction(expected));
         assert.deepEqual(set({ id: id, key: 'networkId', value: item.networkId }), expected);

@@ -8,6 +8,7 @@ import { defaultEventSync } from '../../sync/model/EventSync';
 import { defaultTransactionSync } from '../../sync/model/TransactionSync';
 
 import { fetchNonce } from './fetchNonce';
+import { toChecksumAddress } from 'web3-utils';
 
 /** @internal */
 export const FETCH_NONCE_SYNCED = `${name}/FETCH_NONCE_SYNCED`;
@@ -17,7 +18,8 @@ export interface FetchNonceSyncedActionInput extends AccountId {
 }
 /** @category Actions */
 export const fetchNonceSynced = createAction(FETCH_NONCE_SYNCED, (payload: FetchNonceSyncedActionInput) => {
-    const { networkId, address } = payload;
+    const { networkId } = payload;
+    const address = toChecksumAddress(payload.address);
     const fetchNonceAction = fetchNonce(payload);
     //Default sync
     let sync: Sync | undefined;

@@ -1,7 +1,6 @@
 import { put, call } from 'typed-redux-saga/macro';
 import networkExists from '../../network/sagas/exists';
 import { set, FetchBalanceAction } from '../actions';
-import { getId } from '../model/interface';
 import exists from './exists';
 
 /** @category Sagas */
@@ -17,7 +16,7 @@ export function* fetchBalance(action: FetchBalanceAction) {
 
     //@ts-expect-error
     const balance: string = yield* call((web3 ?? web3Sender).eth.getBalance, address);
-    yield* put(set({ id: getId(payload), key: 'balance', value: balance }));
+    yield* put(set({ id: { networkId, address }, key: 'balance', value: balance }));
 }
 
 export default fetchBalance;

@@ -1,8 +1,8 @@
-import { IdArgs } from '../model';
+import { ContractEventId } from '../model';
 import selectByIdSingle from './selectByIdSingle';
 
 /** @category Selectors */
-function selectByIdExists(state: any, id: IdArgs | undefined): boolean {
+function selectByIdExists(state: any, id: ContractEventId | undefined): boolean {
     if (!id) return false;
 
     return !!selectByIdSingle(state, id);

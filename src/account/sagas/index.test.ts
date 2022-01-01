@@ -68,7 +68,7 @@ describe(`${name}.sagas`, () => {
                 .next(network)
                 .call(network.web3!.eth.getBalance, item.address)
                 .next('0')
-                .put(setAction({ id: getId(item), key: 'balance', value: '0' }));
+                .put(setAction({ id: item, key: 'balance', value: '0' }));
         });
     });
 
@@ -83,7 +83,7 @@ describe(`${name}.sagas`, () => {
                 .next(network)
                 .call(network.web3!.eth.getTransactionCount, item.address)
                 .next('0')
-                .put(setAction({ id: getId(item), key: 'nonce', value: '0' }));
+                .put(setAction({ id: item, key: 'nonce', value: '0' }));
         });
     });
 

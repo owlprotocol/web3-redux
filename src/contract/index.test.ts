@@ -18,7 +18,7 @@ import { Sync } from '../sync/model';
 import selectSync from '../sync/selector/selectByIdSingle';
 import { fetch as fetchTransaction } from '../transaction/actions';
 
-import { getId } from './model';
+import { ContractId } from './model';
 import { selectContractCall, selectContractEvents } from './selectors';
 import {
     create as createAction,
@@ -40,7 +40,7 @@ describe(`${name}.integration`, () => {
     let web3Contract: Web3Contract;
 
     let address: string;
-    let id: string;
+    let id: ContractId;
 
     let rpcLogger: ReturnType<typeof ganacheLogger>;
     let ethCall = 0;
@@ -77,7 +77,7 @@ describe(`${name}.integration`, () => {
         const gas = await tx.estimateGas();
         web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '10000' });
         address = web3Contract.options.address;
-        id = getId({ networkId, address });
+        id = { networkId, address };
 
         store.dispatch(
             createAction({

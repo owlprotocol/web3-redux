@@ -6,7 +6,8 @@ import { name } from '../common';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useByIdSingle, useByIdMany } from './index';
-import { Interface, getId, Id } from '../model';
+import { getId, BlockId } from '../model/id';
+import BlockHeader from '../model/BlockHeader';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -17,15 +18,15 @@ describe(`${name}.hooks`, () => {
     let store: StoreType;
     const networkId = '1337';
 
-    let item: Interface;
-    let id: Id;
-    let itemWithId: Interface;
+    let item: BlockHeader;
+    let id: BlockId;
+    let itemWithId: BlockHeader;
 
     let wrapper: any;
     before(async () => {
         item = { networkId, number: 0 };
-        id = getId(item);
-        itemWithId = { id, ...item };
+        id = { ...item };
+        itemWithId = { id: getId(item), ...item };
     });
 
     beforeEach(() => {

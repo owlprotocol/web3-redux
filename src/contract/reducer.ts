@@ -1,22 +1,22 @@
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import { getId } from './model';
+import { getId, Contract } from './model';
 import { Network } from '../network/model';
+import ModelInterface from '../types/model';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const { Contract, Network } = sess;
+    const Network: ModelInterface<Network> = sess.Network;
+    const Contract: ModelInterface<Contract> = sess.Contract;
 
     if (isCreateAction(action)) {
         const { payload } = action;
+        const { abi, address } = payload;
         const network: Network = Network.withId(payload.networkId);
         const { web3, web3Sender } = network ?? { web3: undefined, web3Sender: undefined };
 
-        const web3Contract =
-            payload.web3Contract ??
-            (web3 && payload.abi ? new web3.eth.Contract(payload.abi, payload.address) : undefined);
+        const web3Contract = payload.web3Contract ?? (web3 && abi ? new web3.eth.Contract(abi, address) : undefined);
         const web3SenderContract =
-            payload.web3SenderContract ??
-            (web3Sender && payload.abi ? new web3Sender.eth.Contract(payload.abi, payload.address) : undefined);
+            payload.web3SenderContract ?? (web3Sender && abi ? new web3Sender.eth.Contract(abi, address) : undefined);
 
         //@ts-expect-error ignore readonly
         payload.web3Contract = web3Contract;

@@ -1,7 +1,8 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
-import { getId, Interface } from '../model';
+import { getId } from '../model/id';
+import BlockHeader from '../model/BlockHeader';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
@@ -13,13 +14,12 @@ import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from
 
 describe(`${name}.actions`, () => {
     const networkId = '1337';
-    const item: Interface = { networkId, number: 0 };
-    const id = getId(item);
+    const item: BlockHeader = { networkId, number: 0 };
 
     it('create', () => {
         const expected: CreateAction = {
             type: CREATE,
-            payload: { id: id, ...item },
+            payload: { id: getId(item), ...item },
         };
         assert.isTrue(isCreateAction(expected));
         assert.deepEqual(create(item), expected);
@@ -28,7 +28,7 @@ describe(`${name}.actions`, () => {
     it('update', () => {
         const expected: UpdateAction = {
             type: UPDATE,
-            payload: { id: id, ...item },
+            payload: { id: getId(item), ...item },
         };
         assert.isTrue(isUpdateAction(expected));
         assert.deepEqual(update(item), expected);
@@ -37,20 +37,19 @@ describe(`${name}.actions`, () => {
     it('remove', () => {
         const expected: RemoveAction = {
             type: REMOVE,
-            payload: id,
+            payload: { ...item },
         };
         assert.isTrue(isRemoveAction(expected));
-        assert.deepEqual(remove(id), expected);
         assert.deepEqual(remove(item), expected);
     });
 
     it('set', () => {
         const expected: SetAction = {
             type: SET('networkId'),
-            payload: { id: id, key: 'networkId' as keyof Interface, value: item.networkId },
+            payload: { id: { ...item }, key: 'networkId' as keyof BlockHeader, value: item.networkId },
         };
         assert.isTrue(isSetAction(expected));
-        assert.deepEqual(set({ id: id, key: 'networkId', value: item.networkId }), expected);
+        assert.deepEqual(set({ id: item, key: 'networkId', value: item.networkId }), expected);
     });
 
     it('fetch', () => {

@@ -1,11 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { Interface, validate } from '../model/interface';
+import { Contract, validate } from '../model/interface';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;
 /** @category Actions */
-export const create = createAction(CREATE, (payload: Interface) => {
+export const create = createAction(CREATE, (payload: Contract) => {
     return { payload: validate(payload) };
 });
 /** @internal */

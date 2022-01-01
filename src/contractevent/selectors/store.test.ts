@@ -3,8 +3,6 @@ import { createStore, StoreType } from '../../store';
 
 import { create as createEvent } from '..';
 import { validateContractEvent } from '../model';
-
-import { getId as getContractId } from '../../contract/model/interface';
 import { name } from '../../contract/common';
 
 import { selectContractEvents } from '../../contract/selectors/index';
@@ -14,7 +12,7 @@ describe(`${name}.selectors`, () => {
 
     const networkId = '1337';
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
-    const contractId = getContractId({ networkId, address: ADDRESS_1 });
+    const contractId = { networkId, address: ADDRESS_1 };
 
     //Events
     const eventName = 'NewValue';

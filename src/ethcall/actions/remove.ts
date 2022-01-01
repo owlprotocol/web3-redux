@@ -1,12 +1,19 @@
 import { createAction } from '@reduxjs/toolkit';
+import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
-import { IdArgs, getId } from '../model/interface';
+import { EthCallId } from '../model/interface';
 
 /** @internal */
 export const REMOVE = `${name}/DELETE`;
 /** @category Actions */
-export const remove = createAction(REMOVE, (payload: IdArgs) => {
-    return { payload: getId(payload) };
+export const remove = createAction(REMOVE, (payload: EthCallId) => {
+    return {
+        payload: {
+            ...payload,
+            to: toChecksumAddress(payload.to),
+            from: payload.from ? toChecksumAddress(payload.from) : undefined,
+        },
+    };
 });
 
 /** @internal */

@@ -3,6 +3,8 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 
 /** @internal */
 export interface IdDeconstructed {
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
 }
 /** @internal */
@@ -10,19 +12,20 @@ export type Id = string;
 
 /**
  * EVM Network object.
- * @see {@link https://chainid.network//} for a list of popular EVM Networks.
+ * Other objects are indexed on its networkId, and use it to fetch it to make requests using its web3.js connection.
  *
- * @param networkId - A network id.
- * @param web3 - A web3 object.
- * @param web3Sender - A web3 object used for send transactions.
  */
-export interface Interface extends IdDeconstructed {
-    readonly id?: Id;
+export interface Network extends IdDeconstructed {
+    /** Web3 object. We recommend using a websocket connection. */
     readonly web3?: Web3;
+    /** Web3 object specialized for sending transactions. */
     readonly web3Sender?: Web3;
+    /** @hidden Multicall.sol contract address. Used for optimized batching of calls. */
     readonly multicallAddress?: string;
+    /** @hidden Multicall web3 contract instance */
     readonly multicallContract?: Web3Contract;
+    /** @hidden Gas limit of network. */
     readonly gasLimit?: number;
 }
 
-export default Interface;
+export default Network;

@@ -2,12 +2,11 @@ import { validate as validateTransaction } from '../../transaction/model/interfa
 import { isStrings } from '../../utils';
 import { getId } from './id';
 import BlockTransaction from './BlockTransaction';
+import BlockHeader from './BlockHeader';
+import { ModelWithId } from '../../types/model';
 
 /** @internal */
-export type Interface = BlockTransaction;
-
-/** @internal */
-export function validate(item: Interface): Interface {
+export function validate(item: BlockTransaction): ModelWithId<BlockTransaction> {
     const id = getId(item);
     let transactions = item.transactions;
     if (transactions) {
@@ -26,4 +25,4 @@ export function validate(item: Interface): Interface {
     return result;
 }
 
-export default Interface;
+export default BlockHeader;

@@ -1,4 +1,2 @@
-import { Interface } from './interface';
-export type { Interface };
-//alias
-export type { Interface as Config };
+import { Config } from './interface';
+export type { Config };

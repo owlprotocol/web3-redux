@@ -1,41 +1,39 @@
-import { IdDeconstructed, Id } from './id';
+import { BlockId } from './id';
 
 /**
  * Block header object. Typically returned by Web3 websocket subscriptions.
  * Extends the web3 interface.
+ * See [web3.eth.getBlock](https://web3js.readthedocs.io/en/v1.5.2/web3-eth.html#getblock)
  *
- * @param id - Block id.
- * @param networkId - A network id.
- * @param number - Number: The block number. null if a pending block.
- * @param hash - 32 Bytes - String: Hash of the block. null if a pending block.
- * @param parentHash - 32 Bytes - String: Hash of the parent block.
- * @param nonce - 8 Bytes - String: Hash of the generated proof-of-work. null if a pending block.
- * @param sha3Uncles - 32 Bytes - String: SHA3 of the uncles data in the block.
- * @param logsBloom - 256 Bytes - String: The bloom filter for the logs of the block. null if a pending block.
- * @param transactionRoot - 32 Bytes - String: The root of the transaction trie of the block.
- * @param stateRoot - 32 Bytes - String: The root of the final state trie of the block.
- * @param receiptRoot - 32 Bytes - String: The root of the final receipt trie of the block.
- * @param miner - String: The address of the beneficiary to whom the mining rewards were given.
- * @param extraData- String: The “extra data” field of this block.
- * @param gasLimit - Number: The maximum gas allowed in this block.
- * @param gasUsed- Number: The total used gas by all transactions in this block.
- * @param timestamp - Number: The unix timestamp for when the block was collated.
  */
-//Id args cannot be optional
-export interface BlockHeader extends IdDeconstructed {
-    readonly id?: Id;
+export interface BlockHeader extends BlockId {
+    /** Used to index in redux-orm. Computed as `${networkId}-${number}` */
+    readonly id?: string;
+    /** 32 bytes. Hash of the block. null if a pending block */
     readonly hash?: string;
+    /** 32 bytes. Hash of the parent block */
     readonly parentHash?: string;
+    /** 8 bytes. Hash of the generated proof-of-work. null if a pending block */
     readonly nonce?: string;
+    /** 32 bytes. SHA3 of the uncles data in the block */
     readonly sha3Uncles?: string;
+    /** 256 bytes. The bloom filter for the logs of the block. null if a pending block */
     readonly logsBloom?: string;
+    /** 32 bytes. The root of the transaction trie of the block */
     readonly transactionRoot?: string;
+    /** 32 bytes. The root of the final state trie of the block */
     readonly stateRoot?: string;
+    /** 32 bytes. The root of the final receipt trie of the block */
     readonly receiptRoot?: string;
+    /** The address of the beneficiary to whom the mining rewards were given */
     readonly miner?: string;
+    /** The “extra data” field of this block */
     readonly extraData?: string;
+    /** The maximum gas allowed in this block */
     readonly gasLimit?: number;
+    /** The total used gas by all transactions in this block */
     readonly gasUsed?: number;
+    /** The unix timestamp for when the block was collated */
     readonly timestamp?: number | string;
 }
 

@@ -3,5 +3,6 @@
     "out": "docs",
     "includeVersion": true,
     "excludeInternal": true,
-    "categoryOrder": ["Actions", "Selectors", "Hooks", "*"]
+    "categoryOrder": ["Actions", "Selectors", "Hooks", "*"],
+    "readme": "./docs-static/DOCUMENTATION.md"
 }

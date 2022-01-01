@@ -1,6 +1,6 @@
-import { BaseWeb3Contract, CallArgsHash, getId } from '../model';
+import { BaseWeb3Contract, CallArgsHash } from '../model';
 import { Await } from '../../types/promise';
-import { IdArgs } from '../model/interface';
+import { ContractId } from '../model/interface';
 
 import selectEthCallById from '../../ethcall/selectors/selectByIdSingle';
 import selectEthCallId from './selectEthCallId';
@@ -12,13 +12,12 @@ export function selectContractCallById<
     K extends keyof T['methods'] = string,
 >(
     state: any,
-    idArgs: IdArgs | undefined,
+    idArgs: ContractId | undefined,
     methodName: K | undefined,
     callArgs?: CallArgsHash<Parameters<T['methods'][K]>>,
 ): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
     if (!idArgs) return undefined;
-    const id = getId(idArgs);
-    const ethCallId = selectEthCallId(state, id, methodName, callArgs);
+    const ethCallId = selectEthCallId(state, idArgs, methodName, callArgs);
     const ethCall = selectEthCallById(state, ethCallId);
 
     return ethCall?.returnValue;
@@ -32,7 +31,7 @@ export function selectContractCallFactory<
     type U = Await<ReturnType<ReturnType<T['methods'][K]>['call']>>;
     return (
         state: any,
-        idArgs: IdArgs | undefined,
+        idArgs: ContractId | undefined,
         args?: Parameters<T['methods'][K]>,
         options?: CallArgsHash<Parameters<T['methods'][K]>>,
     ): U | undefined => {

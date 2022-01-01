@@ -1,5 +1,6 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
+import { getId } from './model/interface';
 
 /** @category Selectors */
 export function reducer(sess: any, action: ReducerAction) {
@@ -7,7 +8,7 @@ export function reducer(sess: any, action: ReducerAction) {
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
     } else if (isRemoveAction(action)) {
-        Model.withId(action.payload)?.delete();
+        Model.withId(getId(action.payload))?.delete();
     } else if (isUpdateAction(action)) {
         Model.update(action.payload);
     } else if (isSetAction(action)) {

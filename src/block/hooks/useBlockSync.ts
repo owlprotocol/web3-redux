@@ -3,7 +3,10 @@ import * as BlockActions from '../actions';
 import { selectByIdSingle as selectNetwork, selectBlocks } from '../../network/selectors';
 import { useEffect, useCallback } from 'react';
 
-/** @category Hooks */
+/**
+ * Reads blocks for network and syncs data with a block subscription.
+ * @category Hooks
+ * */
 export const useBlockSync = (networkId: string | undefined, returnTransactionObjects = false) => {
     const dispatch = useDispatch();
 

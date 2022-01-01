@@ -1,9 +1,10 @@
 import select from './select';
-import { Interface, IdArgs, getId } from '../model';
+import { BlockId, getId } from '../model/id';
+import BlockHeader from '../model/BlockHeader';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
 /** @category Selectors */
-function selectByIdMany(state: any, ids?: IdArgs[]): (Interface | null)[] {
+function selectByIdMany(state: any, ids?: BlockId[]): (BlockHeader | null)[] {
     if (!ids) return select(state); //Return all
 
     const idsStr = ids.map((id) => getId(id));

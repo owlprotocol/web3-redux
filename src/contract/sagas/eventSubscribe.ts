@@ -52,7 +52,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
         const id = getId({ networkId, address });
 
         yield* call(networkExists, networkId);
-        const contract = yield* call(exists, id);
+        const contract = yield* call(exists, { networkId, address });
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
         if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);

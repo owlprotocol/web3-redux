@@ -1,12 +1,12 @@
 import { name } from '../common';
-import Interface from '../model/interface';
+import Config from '../model/interface';
 
 /** @internal */
-export const SET = (key: keyof Interface) => `${name}/SET/${key.toUpperCase()}`;
+export const SET = (key: keyof Config) => `${name}/SET/${(key as string).toUpperCase()}`;
 /** @internal */
 export interface SetActionInput {
     id: string;
-    key: keyof Interface;
+    key: keyof Config;
     value: any;
 }
 /** @category Actions */
@@ -19,7 +19,7 @@ export const set = (payload: SetActionInput) => {
 /** @internal */
 export type SetAction = ReturnType<typeof set>;
 /** @internal */
-export const isSetAction = (action: { type: string; payload?: { key?: keyof Interface } }) =>
+export const isSetAction = (action: { type: string; payload?: { key?: keyof Config } }) =>
     !!action.payload?.key && action.type === SET(action.payload.key);
 
 export default set;

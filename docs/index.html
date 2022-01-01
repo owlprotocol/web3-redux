@@ -1,9 +1,7 @@
 <!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@leovigna/web3-redux - v0.1.5-beta.2</title><meta name="description" content="Documentation for @leovigna/web3-redux - v0.1.5-beta.2"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@leovigna/web3-redux - v0.1.5-beta.2</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@leovigna/web3-redux - v0.1.5-beta.2</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
-<a href="#web3-redux" id="web3-redux" style="color: inherit; text-decoration: none;">
-  <h1>Web3 Redux</h1>
+<a href="#web3-redux-docs" id="web3-redux-docs" style="color: inherit; text-decoration: none;">
+  <h1>Web3 Redux Docs</h1>
 </a>
-<p><a href="https://npmjs.org/package/@leovigna/web3-redux"><img src="https://img.shields.io/npm/v/@leovigna/web3-redux.svg" alt="NPM Package Version"></a>
-<a href="https://npmjs.org/package/@leovigna/web3-redux"><img src="https://img.shields.io/npm/dm/@leovigna/web3-redux.svg" alt="NPM Package Downloads"></a></p>
 <p>Web3 Redux Library.</p>
 
 <a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
@@ -11,17 +9,58 @@
 </a>
 <ul>
 <li><a href="#installing">Installing</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#interfaces">Interfaces</a></li>
 <li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#built-with">Built with</a></li>
-<li><a href="#license">License</a></li>
+<li><a href="#metamask">Metamask</a></li>
+<li><a href="#advanced">Advanced</a></li>
 </ul>
 
 <a href="#installing" id="installing" style="color: inherit; text-decoration: none;">
   <h2>Installing</h2>
 </a>
-<p>Use your favorite node package manager to install web3-redux and the required peer dependencies. We recommend using <a href="https://github.com/pnpm/pnpm">pnpm</a> as a disk space efficient drop-in replacement of npm.</p>
+<p>Use your favorite node package manager to install <code>web3-redux</code> and the required peer dependencies. We recommend using <a href="https://github.com/pnpm/pnpm">pnpm</a> as a disk space efficient drop-in replacement of npm.</p>
 <pre><code><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-0">install</span><span class="hl-1"> </span><span class="hl-0">redux</span><span class="hl-1"> </span><span class="hl-0">redux</span><span class="hl-1">-</span><span class="hl-0">saga</span><span class="hl-1"> </span><span class="hl-0">react</span><span class="hl-1">-</span><span class="hl-0">redux</span><span class="hl-1"> </span><span class="hl-0">web3</span><span class="hl-1"> @</span><span class="hl-0">leovigna</span><span class="hl-1">/</span><span class="hl-0">web3</span><span class="hl-1">-</span><span class="hl-0">redux</span>
 </code></pre>
+
+<a href="#architecture" id="architecture" style="color: inherit; text-decoration: none;">
+  <h2>Architecture</h2>
+</a>
+<p>Overview of the overall architecture of the library.</p>
+<p><img src="./Flowchart.svg" alt="Flowchart.svg"></p>
+<ul>
+<li>All web3-redux data is stored under the <code>web3Redux</code> slice of the store as a normalized json store (State). The overall interface of the state can be found under <a href="./interfaces/State">State</a>.</li>
+<li><a href="https://github.com/reduxjs/reselect">Selectors</a> for each <a href="https://github.com/redux-orm/redux-orm">redux-orm</a> model are the preferred way to then read this data.</li>
+<li>Redux ORM models are meant to represent blockchain data such as <a href="./interfaces/Account">Account</a>, <a href="./interfaces/Block">Block</a>, <a href="./interfaces/Transaction">Transaction</a>, <a href="./interfaces/ContractEvent">ContractEvent</a></li>
+<li>State is mutated by the dispatching of Actions. Actions can be synchronous, for simple CRUD operations on the state, or asynchronous, for network fetch operations. Async actions are handled by <a href="https://github.com/redux-saga/redux-saga">redux-saga</a> and will usually dispatched a new CRUD action after fetching data.</li>
+<li>Hooks such as <code>useDispatch</code> and <code>useSelector</code>, enable Redux components to use the React Context API to read/write to the store by combinding selectors and actions.</li>
+</ul>
+
+<a href="#interfaces" id="interfaces" style="color: inherit; text-decoration: none;">
+  <h2>Interfaces</h2>
+</a>
+<p>Here is a list of all the interfaces used by web3-redux:</p>
+<ul>
+<li><a href="./interfaces/Account.Account-1">Account</a></li>
+<li><a href="./interfaces/Block.BlockHeader">BlockHeader</a>, <a href="./interfaces/Block.BlockTransaction">BlockTransaction</a></li>
+<li><a href="./interfaces/Transaction.Transaction-1">Transaction</a></li>
+<li><a href="./interfaces/Contract.Contract-1">Contract</a></li>
+<li><a href="./interfaces/ContractEvent.ContractEvent-1">ContractEvent</a></li>
+<li><a href="./interfaces/ContractSend.ContractSend-1">ContractSend</a></li>
+<li><a href="./interfaces/EthCall.EthCall-1">EthCall</a></li>
+<li><a href="./interfaces/Network.Network-1">Network</a></li>
+<li><a href="./interfaces/Sync.BlockSync">BlockSync</a>, <a href="./interfaces/Sync.TransactionSync">TransactionSync</a>, <a href="./interfaces/Sync.EventSync">EventSync</a></li>
+</ul>
+
+<a href="#hooks" id="hooks" style="color: inherit; text-decoration: none;">
+  <h2>Hooks</h2>
+</a>
+<p>To easily read/sync data, we recommend using the built-in hooks when possible to automatically combine selectors &amp; action dispatchers.</p>
+<ul>
+<li><a href="./modules/Account#useAccount">useAccount</a></li>
+<li><a href="./modules/Block#useBlockSync">useBlockSync</a></li>
+</ul>
+<p><strong>TODO</strong>: Add additional hooks. (transaction, contract)</p>
 
 <a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
   <h2>Getting Started</h2>
@@ -128,8 +167,8 @@ The <code>web3-redux</code> block subscription hook is configured to automatical
 <pre><code class="language-typescript"><span class="hl-0">store</span><span class="hl-1">.</span><span class="hl-7">dispatch</span><span class="hl-1">(</span><span class="hl-0">Sync</span><span class="hl-1">.</span><span class="hl-7">create</span><span class="hl-1">({ </span><span class="hl-0">id:</span><span class="hl-1"> </span><span class="hl-4">&#39;1&#39;</span><span class="hl-1">, </span><span class="hl-0">type:</span><span class="hl-1"> </span><span class="hl-4">&#39;Transaction&#39;</span><span class="hl-1">, </span><span class="hl-7">filter</span><span class="hl-0">:</span><span class="hl-1"> (</span><span class="hl-0">tx</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-0">tx</span><span class="hl-1">.</span><span class="hl-0">from</span><span class="hl-1"> == </span><span class="hl-0">address</span><span class="hl-1">, </span><span class="hl-0">actions</span><span class="hl-1"> }));</span>
 </code></pre>
 
-<a href="#usage-with-metamask" id="usage-with-metamask" style="color: inherit; text-decoration: none;">
-  <h2>Usage with metamask</h2>
+<a href="#metamask" id="metamask" style="color: inherit; text-decoration: none;">
+  <h2>Metamask</h2>
 </a>
 <p>See <a href="#manual">Manual Network Initialization</a> for more detail.
 Metamask can cause issues as the injected Web3 instance is mutable and changes as users change networks. To mitigate this, Networks can be initialized with 2 web3 instances, one for read-only calls (eg. Infura) and one for wallet signed send transactions (Metamask). This way, subcriptions and call syncs can continue to work even if a user changes networks.</p>
@@ -137,14 +176,32 @@ Metamask can cause issues as the injected Web3 instance is mutable and changes a
 <pre><code class="language-typescript"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">web3Sender</span><span class="hl-1"> = </span><span class="hl-0">window</span><span class="hl-1">.</span><span class="hl-0">web3</span><span class="hl-1">; </span><span class="hl-2">//Metamask wallet, used for send transactions</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">web3ReadOnly</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-7">Web3</span><span class="hl-1">(</span><span class="hl-4">&#39;ws://localhost:8545&#39;</span><span class="hl-1">); </span><span class="hl-2">//Used for calls/subscriptions</span><br/><span class="hl-0">store</span><span class="hl-1">.</span><span class="hl-7">dispatch</span><span class="hl-1">(</span><span class="hl-0">Network</span><span class="hl-1">.</span><span class="hl-7">create</span><span class="hl-1">({ </span><span class="hl-0">networkId:</span><span class="hl-1"> </span><span class="hl-4">&#39;1&#39;</span><span class="hl-1">, </span><span class="hl-0">web3:</span><span class="hl-1"> </span><span class="hl-0">web3ReadOnly</span><span class="hl-1">, </span><span class="hl-0">web3Sender</span><span class="hl-1"> }));</span>
 </code></pre>
 
-<a href="#semantic-versioning" id="semantic-versioning" style="color: inherit; text-decoration: none;">
-  <h2>Semantic versioning</h2>
+<a href="#advanced" id="advanced" style="color: inherit; text-decoration: none;">
+  <h2>Advanced</h2>
 </a>
-<p>This project follows <a href="https://semver.org/">semver</a> as closely as possible</p>
 
-<a href="#license" id="license" style="color: inherit; text-decoration: none;">
-  <h2>License</h2>
+<a href="#optimizing-contract-call-sync" id="optimizing-contract-call-sync" style="color: inherit; text-decoration: none;">
+  <h3>Optimizing Contract Call Sync</h3>
 </a>
-<p>2021 Leo Vigna
-MIT License.</p>
-</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li><li class=" tsd-kind-namespace"><a href="modules/Account.html">Account</a></li><li class=" tsd-kind-namespace"><a href="modules/Block.html">Block</a></li><li class=" tsd-kind-namespace"><a href="modules/Config.html">Config</a></li><li class=" tsd-kind-namespace"><a href="modules/Contract.html">Contract</a></li><li class=" tsd-kind-namespace"><a href="modules/ContractEvent.html">Contract<wbr/>Event</a></li><li class=" tsd-kind-namespace"><a href="modules/ContractSend.html">Contract<wbr/>Send</a></li><li class=" tsd-kind-namespace"><a href="modules/EthCall.html">Eth<wbr/>Call</a></li><li class=" tsd-kind-namespace"><a href="modules/Network.html">Network</a></li><li class=" tsd-kind-namespace"><a href="modules/Sync.html">Sync</a></li><li class=" tsd-kind-namespace"><a href="modules/Transaction.html">Transaction</a></li><li class=" tsd-kind-namespace"><a href="modules/Web3Redux.html">Web3<wbr/>Redux</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-variable"><a href="modules.html#REDUX_ROOT" class="tsd-kind-icon">REDUX_<wbr/>ROOT</a></li><li class="tsd-kind-function"><a href="modules.html#rootReducer" class="tsd-kind-icon">root<wbr/>Reducer</a></li><li class="tsd-kind-function"><a href="modules.html#rootSaga" class="tsd-kind-icon">root<wbr/>Saga</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
+<p>By default, contracts use Transaction syncing but this can be customized for each specific contract call. This is can be a sub-optimal or even incorrect sync strategy.</p>
+<p>Transaction syncing can be sub-optimal if a call&#39;s return value never changes. For example, an ERC19 token&#39;s name or symbol. In this case simply disable syncing with <code>sync: false</code>.</p>
+<p>Transaction syncing assumes that the contract call values are only dependent on your contract&#39;s state and that this state is only changed by direct transactions to your contract. The basic logic for Transaction syncing is as follows: For each transaction in a new block, update contract call if <code>tx.to == contract.address</code>.
+Examples of cases where this assumption might be incorrect include:</p>
+<ul>
+<li>Contract call return value depends on block number</li>
+<li>Contract state can be changed by a call to some proxy contract</li>
+</ul>
+<p>In these cases we recommend switching to Block syncing, which will poll the contract call at every block. For even better optimization, it might be interesting in some cases to use a custom block or transaction sync.</p>
+
+<a href="#custom-contract-call-sync" id="custom-contract-call-sync" style="color: inherit; text-decoration: none;">
+  <h3>Custom Contract Call Sync</h3>
+</a>
+<p>The interface of ContractCallBlockSync and ContractCallTransactionSync use a filter function returning whether a contract call should update. Customizing the filter function can help you create more optimized syncing depending on your use case.</p>
+<pre><code class="language-typescript"><span class="hl-3">export</span><span class="hl-1"> </span><span class="hl-5">interface</span><span class="hl-1"> </span><span class="hl-9">ContractCallBlockSync</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">type</span><span class="hl-1">: </span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">CALL_BLOCK_SYNC</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-7">filter</span><span class="hl-1">: (</span><span class="hl-0">block</span><span class="hl-1">: </span><span class="hl-9">BlockHeader</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-9">boolean</span><span class="hl-1">;</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-3">export</span><span class="hl-1"> </span><span class="hl-5">interface</span><span class="hl-1"> </span><span class="hl-9">ContractCallTransactionSync</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">type</span><span class="hl-1">: </span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-6">CALL_TRANSACTION_SYNC</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-7">filter</span><span class="hl-1">: (</span><span class="hl-0">transaction</span><span class="hl-1">: </span><span class="hl-9">Transaction</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-9">boolean</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code></pre>
+<p>Example sync strategies:</p>
+<ul>
+<li>Sync every 4 blocks: <code>(block) =&gt; block.number % 5 == 0</code></li>
+<li>Sync for transactions to contract or proxy: <code>(tx) =&gt; tx.to === contract.address || tx.to === proxy.address</code></li>
+</ul>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li><li class=" tsd-kind-namespace"><a href="modules/Account.html">Account</a></li><li class=" tsd-kind-namespace"><a href="modules/Block.html">Block</a></li><li class=" tsd-kind-namespace"><a href="modules/Config.html">Config</a></li><li class=" tsd-kind-namespace"><a href="modules/Contract.html">Contract</a></li><li class=" tsd-kind-namespace"><a href="modules/ContractEvent.html">Contract<wbr/>Event</a></li><li class=" tsd-kind-namespace"><a href="modules/ContractSend.html">Contract<wbr/>Send</a></li><li class=" tsd-kind-namespace"><a href="modules/EthCall.html">Eth<wbr/>Call</a></li><li class=" tsd-kind-namespace"><a href="modules/Network.html">Network</a></li><li class=" tsd-kind-namespace"><a href="modules/Sync.html">Sync</a></li><li class=" tsd-kind-namespace"><a href="modules/Transaction.html">Transaction</a></li><li class=" tsd-kind-namespace"><a href="modules/Web3Redux.html">Web3<wbr/>Redux</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-interface"><a href="interfaces/State.html" class="tsd-kind-icon">State</a></li><li class="tsd-kind-function"><a href="modules.html#rootReducer" class="tsd-kind-icon">root<wbr/>Reducer</a></li><li class="tsd-kind-function"><a href="modules.html#rootSaga" class="tsd-kind-icon">root<wbr/>Saga</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

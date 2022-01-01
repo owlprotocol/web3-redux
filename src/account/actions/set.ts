@@ -1,17 +1,25 @@
+import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
-import { Account } from '../model/interface';
+import { Account, AccountId } from '../model/interface';
 
 /** @internal */
 export const SET = (key: keyof Account) => `${name}/SET/${key.toUpperCase()}`;
 /** @internal */
 export interface SetActionInput {
-    id: string;
+    id: AccountId;
     key: keyof Account;
     value: any;
 }
 /** @category Actions */
 export const set = (payload: SetActionInput) => {
-    return { type: SET(payload.key), payload };
+    return {
+        type: SET(payload.key),
+        payload: {
+            id: { networkId: payload.id.networkId, address: toChecksumAddress(payload.id.address) },
+            key: payload.key,
+            value: payload.value,
+        },
+    };
 };
 /** @internal */
 export type SetAction = ReturnType<typeof set>;

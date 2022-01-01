@@ -1,7 +1,5 @@
-import { Interface } from './interface';
+import { Network } from './interface';
 
-export type { Interface };
-//alias
-export type { Interface as Network };
+export type { Network };
 
 export default {};

@@ -1,11 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { Interface, validate } from '../model/interface';
+import { EthCall, validate } from '../model/interface';
 
 /** @internal */
 export const FETCH = `${name}/FETCH`;
 /** @category Actions */
-export const fetch = createAction(FETCH, (payload: Interface) => {
+export const fetch = createAction(FETCH, (payload: EthCall) => {
     return { payload: validate(payload) };
 });
 

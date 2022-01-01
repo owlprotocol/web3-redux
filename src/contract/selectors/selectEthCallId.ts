@@ -2,8 +2,7 @@ import { createSelector } from 'redux-orm';
 import { BaseWeb3Contract, CallArgsHash, Contract, getId } from '../model';
 import { getOrm } from '../../orm';
 import { getEthCallId } from '../../ethcall/model';
-import { Await } from '../../types/promise';
-import { IdArgs } from '../model/interface';
+import { ContractId } from '../model/interface';
 
 //Contract Call
 const selectEthCallIdSelector = createSelector(
@@ -41,10 +40,10 @@ const selectEthCallIdSelector = createSelector(
 /** @category Selectors */
 export function selectEthCallId<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
     state: any,
-    idArgs: IdArgs | undefined,
+    idArgs: ContractId | undefined,
     methodName: K | undefined,
     callArgs?: CallArgsHash<Parameters<T['methods'][K]>>,
-): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
+): string | undefined {
     if (!idArgs) return undefined;
     const id = getId(idArgs);
     return selectEthCallIdSelector(state, id, methodName, callArgs);

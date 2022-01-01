@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { createStore, StoreType } from '../store';
-import { network1, contract1 } from '../test/data';
+import { network1, contract1, contract1Id } from '../test/data';
 import { Network, Contract } from '../index';
 
 describe('onNetworkUpdate', () => {
@@ -18,7 +18,7 @@ describe('onNetworkUpdate', () => {
         store.dispatch(Contract.create(contract1));
         store.dispatch(Network.create({ ...network1, web3, web3Sender }));
 
-        const selected1 = Contract.selectByIdSingle(store.getState(), contract1.id)!;
+        const selected1 = Contract.selectByIdSingle(store.getState(), contract1Id)!;
         assert.isDefined(selected1.web3Contract, 'web3Contract');
         assert.isDefined(selected1.web3SenderContract, 'web3SenderContract');
     });
@@ -28,7 +28,7 @@ describe('onNetworkUpdate', () => {
         store.dispatch(Network.create({ ...network1 }));
         store.dispatch(Network.update({ networkId: network1.networkId, web3, web3Sender }));
 
-        const selected1 = Contract.selectByIdSingle(store.getState(), contract1.id)!;
+        const selected1 = Contract.selectByIdSingle(store.getState(), contract1Id)!;
         assert.isDefined(selected1.web3Contract, 'web3Contract');
         assert.isDefined(selected1.web3SenderContract, 'web3SenderContract');
     });
@@ -38,7 +38,7 @@ describe('onNetworkUpdate', () => {
         store.dispatch(Network.create({ ...network1 }));
         store.dispatch(Network.set({ id: network1.networkId, key: 'web3', value: web3 }));
 
-        const selected1 = Contract.selectByIdSingle(store.getState(), contract1.id)!;
+        const selected1 = Contract.selectByIdSingle(store.getState(), contract1Id)!;
         assert.isDefined(selected1.web3Contract, 'web3Contract');
         assert.isUndefined(selected1.web3SenderContract, 'web3SenderContract');
     });
@@ -48,7 +48,7 @@ describe('onNetworkUpdate', () => {
         store.dispatch(Network.create({ ...network1 }));
         store.dispatch(Network.set({ id: network1.networkId, key: 'web3Sender', value: web3Sender }));
 
-        const selected1 = Contract.selectByIdSingle(store.getState(), contract1.id)!;
+        const selected1 = Contract.selectByIdSingle(store.getState(), contract1Id)!;
         assert.isUndefined(selected1.web3Contract, 'web3Contract');
         assert.isDefined(selected1.web3SenderContract, 'web3SenderContract');
     });

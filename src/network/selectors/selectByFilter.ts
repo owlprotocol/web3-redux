@@ -1,15 +1,15 @@
 import { createSelector } from 'redux-orm';
 import { name } from '../common';
 import { getOrm } from '../../orm';
-import Interface from '../model/interface';
+import Network from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
-type selectByFilterType = (state: any, filter: Partial<Interface> | undefined) => Interface[];
+type selectByFilterType = (state: any, filter: Partial<Network> | undefined) => Network[];
 /** @category Selectors */
 const selectByFilter: selectByFilterType = createSelector(
     getOrm(),
-    (_1: any, filter: Partial<Interface> | undefined) => filter,
-    (session: any, filter: Partial<Interface> | undefined) => {
+    (_1: any, filter: Partial<Network> | undefined) => filter,
+    (session: any, filter: Partial<Network> | undefined) => {
         const model = session[name];
         let query = model.all();
         if (!!filter) query = query.filter(filter);

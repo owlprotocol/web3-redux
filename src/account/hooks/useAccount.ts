@@ -9,7 +9,11 @@ import { FetchBalanceSyncedActionInput } from '../actions/fetchBalanceSynced';
 import { FetchNonceSyncedActionInput } from '../actions/fetchNonceSynced';
 import { selectByIdSingle } from '../selectors';
 
-/** @category Hooks */
+/**
+ * Reads ethereum account data and optionally syncs data.
+ * @category Hooks
+ *
+ */
 export default function useAccount(
     networkId: string | undefined,
     address: string | undefined,

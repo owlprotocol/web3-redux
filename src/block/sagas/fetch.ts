@@ -17,10 +17,8 @@ function* fetch(action: FetchAction, updateBlock = false) {
         returnTransactionObjects ?? true, //default to true
     );
     if (!updateBlock) {
-        //@ts-expect-error block has transactions
         yield* put(create({ ...block, networkId }));
     } else {
-        //@ts-expect-error
         yield* put(update({ ...block, networkId }));
     }
 }

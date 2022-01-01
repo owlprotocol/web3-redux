@@ -1,13 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { IdArgs, getId } from '../model';
+import { BlockId } from '../model/id';
 
 /** @internal */
 export const REMOVE = `${name}/DELETE`;
 /** @category Actions */
-export const remove = createAction(REMOVE, (payload: IdArgs) => {
-    return { payload: getId(payload) };
-});
+export const remove = createAction<BlockId>(REMOVE);
 /** @internal */
 export type RemoveAction = ReturnType<typeof remove>;
 /** @internal */

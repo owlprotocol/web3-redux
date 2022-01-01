@@ -58,7 +58,7 @@ function* send(action: SendAction) {
 
         //@ts-ignore
         yield* call(networkExists, networkId);
-        const contract: Contract = yield* call(exists, id);
+        const contract: Contract = yield* call(exists, { networkId, address });
 
         const web3Contract = contract.web3SenderContract;
         if (!web3Contract) throw new Error(`Contract ${id} has no web3SenderContract`);

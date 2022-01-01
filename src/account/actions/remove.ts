@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
 import { AccountId } from '../model/interface';
 
@@ -6,7 +7,7 @@ import { AccountId } from '../model/interface';
 export const REMOVE = `${name}/DELETE`;
 /** @category Actions */
 export const remove = createAction(REMOVE, (payload: AccountId) => {
-    return { payload };
+    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
 });
 /** @internal */
 export type RemoveAction = ReturnType<typeof remove>;

@@ -5,9 +5,11 @@ Web3 Redux Library.
 ## Table of Contents
 
 -   [Installing](#installing)
+-   [Architecture](#architecture)
+-   [Interfaces](#interfaces)
 -   [Getting Started](#getting-started)
--   [Built with](#built-with)
--   [License](#license)
+-   [Metamask](#metamask)
+-   [Advanced](#advanced)
 
 ## Installing
 
@@ -25,7 +27,7 @@ Overview of the overall architecture of the library.
 
 -   All web3-redux data is stored under the `web3Redux` slice of the store as a normalized json store (State). The overall interface of the state can be found under [State](./interfaces/State).
 -   [Selectors](https://github.com/reduxjs/reselect) for each [redux-orm](https://github.com/redux-orm/redux-orm) model are the preferred way to then read this data.
--   Redux ORM models are meant to represent blockchain data such as \*[Account](./interfaces/Account), [Block](./interfaces/Block), [Transaction](./interfaces/Transaction), [ContractEvent](./interfaces/ContractEvent)
+-   Redux ORM models are meant to represent blockchain data such as [Account](./interfaces/Account), [Block](./interfaces/Block), [Transaction](./interfaces/Transaction), [ContractEvent](./interfaces/ContractEvent)
 -   State is mutated by the dispatching of Actions. Actions can be synchronous, for simple CRUD operations on the state, or asynchronous, for network fetch operations. Async actions are handled by [redux-saga](https://github.com/redux-saga/redux-saga) and will usually dispatched a new CRUD action after fetching data.
 -   Hooks such as `useDispatch` and `useSelector`, enable Redux components to use the React Context API to read/write to the store by combinding selectors and actions.
 
@@ -42,6 +44,15 @@ Here is a list of all the interfaces used by web3-redux:
 -   [EthCall](./interfaces/EthCall.EthCall-1)
 -   [Network](./interfaces/Network.Network-1)
 -   [BlockSync](./interfaces/Sync.BlockSync), [TransactionSync](./interfaces/Sync.TransactionSync), [EventSync](./interfaces/Sync.EventSync)
+
+## Hooks
+
+To easily read/sync data, we recommend using the built-in hooks when possible to automatically combine selectors & action dispatchers.
+
+-   [useAccount](./modules/Account#useAccount)
+-   [useBlockSync](./modules/Block#useBlockSync)
+
+**TODO**: Add additional hooks. (transaction, contract)
 
 ## Getting Started
 
@@ -264,7 +275,7 @@ This middleware listens for `Transaction/CREATE` actions, and if an event matche
 store.dispatch(Sync.create({ id: '1', type: 'Transaction', filter: (tx) => tx.from == address, actions }));
 ```
 
-## Usage with metamask
+## Metamask
 
 See [Manual Network Initialization](#manual) for more detail.
 Metamask can cause issues as the injected Web3 instance is mutable and changes as users change networks. To mitigate this, Networks can be initialized with 2 web3 instances, one for read-only calls (eg. Infura) and one for wallet signed send transactions (Metamask). This way, subcriptions and call syncs can continue to work even if a user changes networks.
@@ -276,3 +287,40 @@ const web3Sender = window.web3; //Metamask wallet, used for send transactions
 const web3ReadOnly = new Web3('ws://localhost:8545'); //Used for calls/subscriptions
 store.dispatch(Network.create({ networkId: '1', web3: web3ReadOnly, web3Sender }));
 ```
+
+## Advanced
+
+### Optimizing Contract Call Sync
+
+By default, contracts use Transaction syncing but this can be customized for each specific contract call. This is can be a sub-optimal or even incorrect sync strategy.
+
+Transaction syncing can be sub-optimal if a call's return value never changes. For example, an ERC19 token's name or symbol. In this case simply disable syncing with `sync: false`.
+
+Transaction syncing assumes that the contract call values are only dependent on your contract's state and that this state is only changed by direct transactions to your contract. The basic logic for Transaction syncing is as follows: For each transaction in a new block, update contract call if `tx.to == contract.address`.
+Examples of cases where this assumption might be incorrect include:
+
+-   Contract call return value depends on block number
+-   Contract state can be changed by a call to some proxy contract
+
+In these cases we recommend switching to Block syncing, which will poll the contract call at every block. For even better optimization, it might be interesting in some cases to use a custom block or transaction sync.
+
+### Custom Contract Call Sync
+
+The interface of ContractCallBlockSync and ContractCallTransactionSync use a filter function returning whether a contract call should update. Customizing the filter function can help you create more optimized syncing depending on your use case.
+
+```typescript
+export interface ContractCallBlockSync {
+    type: typeof CALL_BLOCK_SYNC;
+    filter: (block: BlockHeader) => boolean;
+}
+
+export interface ContractCallTransactionSync {
+    type: typeof CALL_TRANSACTION_SYNC;
+    filter: (transaction: Transaction) => boolean;
+}
+```
+
+Example sync strategies:
+
+-   Sync every 4 blocks: `(block) => block.number % 5 == 0`
+-   Sync for transactions to contract or proxy: `(tx) => tx.to === contract.address || tx.to === proxy.address`

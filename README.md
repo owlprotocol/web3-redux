@@ -5,6 +5,10 @@
 
 Web3 Redux Library.
 
+## Docs
+
+See the official documentation at [leovigna.github.io/web3-redux/](gh-page)
+
 ## Semantic versioning
 
 This project follows [semver](https://semver.org/) as closely as possible
@@ -15,6 +19,7 @@ This project follows [semver](https://semver.org/) as closely as possible
 MIT License.
 
 [repo]: https://github.com/leovigna/web3-redux
+[gh-page]: https://leovigna.github.io/web3-redux/
 [npm-image-version]: https://img.shields.io/npm/v/@leovigna/web3-redux.svg
 [npm-image-downloads]: https://img.shields.io/npm/dm/@leovigna/web3-redux.svg
 [npm-url]: https://npmjs.org/package/@leovigna/web3-redux

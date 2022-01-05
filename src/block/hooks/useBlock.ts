@@ -8,7 +8,12 @@ import { fetch as fetchAction } from '../actions';
  * Reads block from store and makes a call to fetch block.
  * @category Hooks
  * */
-export const useBlock = (networkId: string | undefined, number: number | undefined, fetch = true) => {
+export const useBlock = (
+    networkId: string | undefined,
+    number: number | undefined,
+    fetch = true,
+    returnTransactionObjects = false,
+) => {
     const dispatch = useDispatch();
 
     const network = useSelector((state) => selectNetwork(state, networkId));
@@ -18,9 +23,9 @@ export const useBlock = (networkId: string | undefined, number: number | undefin
 
     const fetchCallback = useCallback(() => {
         if (networkId && number && fetch && networkExists) {
-            dispatch(fetchAction({ networkId, blockHashOrBlockNumber: number }));
+            dispatch(fetchAction({ networkId, blockHashOrBlockNumber: number, returnTransactionObjects }));
         }
-    }, [networkId, number, fetch, dispatch, networkExists]);
+    }, [networkId, number, fetch, returnTransactionObjects, dispatch, networkExists]);
 
     useEffect(() => {
         fetchCallback();

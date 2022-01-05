@@ -25,5 +25,8 @@ export default class Model extends ORMModel {
         blockId: fk({ to: 'Block', as: 'block', relatedName: 'transactions' }),
         receipt: attr(),
         confirmations: attr(),
+        r: attr(),
+        s: attr(),
+        v: attr(),
     };
 }

@@ -20,6 +20,8 @@ export interface Account extends AccountId {
     readonly balance?: string;
     /** Account nonce aka number of transactions sent. */
     readonly nonce?: number;
+    /** Code stored at address */
+    readonly code?: string;
 }
 
 const SEPARATOR = '-';

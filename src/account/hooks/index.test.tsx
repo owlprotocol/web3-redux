@@ -5,6 +5,7 @@ import Ganache from 'ganache-core';
 import Web3 from 'web3';
 
 import { fetch as fetchTransaction } from '../../transaction/actions';
+import { fetch as fetchBlock } from '../../block/actions';
 import { create as createNetwork } from '../../network/actions';
 
 import { name } from '../common';
@@ -41,48 +42,118 @@ describe(`${name}.hooks`, () => {
 
     beforeEach(() => {
         store = createStore();
+        store.dispatch(createNetwork({ networkId, web3 }));
         store.dispatch(create(item));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
-    it('useAccount', () => {
-        it('(networkId, address, sync: true)', async () => {
-            store.dispatch(createNetwork({ networkId, web3 }));
-
-            const { result } = renderHook(() => useAccount(networkId, item.address, { balance: true }), {
-                wrapper,
+    describe('useAccount', () => {
+        describe('sync:once', () => {
+            it('(networkId, address, sync: {balance: once})', async () => {
+                const { result } = renderHook(() => useAccount(networkId, item.address, { balance: 'once' }), {
+                    wrapper,
+                });
+                await sleep(100);
+                const expected = await web3.eth.getBalance(item.address);
+                assert.equal(result.current?.balance, expected, 'result.current.balance');
             });
 
-            const expected1 = await web3.eth.getBalance(item.address!);
+            it('(networkId, address, sync: {nonce: once})', async () => {
+                const { result } = renderHook(() => useAccount(networkId, item.address, { nonce: 'once' }), {
+                    wrapper,
+                });
+                await sleep(100);
+                const expected = await web3.eth.getTransactionCount(item.address);
+                assert.equal(result.current?.nonce, expected, 'result.current.nonce');
+            });
 
-            await sleep(1000);
+            it('(networkId, address, sync: {getCode: once})', async () => {
+                const { result } = renderHook(() => useAccount(networkId, item.address, { getCode: 'once' }), {
+                    wrapper,
+                });
+                await sleep(100);
+                assert.equal(result.current?.code, '0x', 'result.current.code');
+            });
+        });
 
-            const currentBalance1 = result.current?.balance;
-            const currentNonce1 = result.current?.nonce;
-            assert.equal(currentBalance1, expected1, 'result.current.balance');
-            assert.equal(currentNonce1, undefined, 'result.current.nonce');
+        describe('sync:Transaction', () => {
+            it('(networkId, address, sync: {balance: Transaction})', async () => {
+                const { result } = renderHook(() => useAccount(networkId, item.address, { balance: 'Transaction' }), {
+                    wrapper,
+                });
 
-            const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
-            //Fetch transaction, triggering a refresh
-            store.dispatch(
-                fetchTransaction({
-                    networkId,
-                    hash: receipt.transactionHash,
-                }),
-            );
+                const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
+                //Fetch transaction, triggering a refresh
+                store.dispatch(
+                    fetchTransaction({
+                        networkId,
+                        hash: receipt.transactionHash,
+                    }),
+                );
 
-            const expected2 = await web3.eth.getBalance(item.address!);
-            assert.notEqual(expected1, expected2, 'balance not changed');
+                const expected = await web3.eth.getBalance(item.address!);
+                await sleep(100);
+                assert.equal(result.current?.balance, expected, 'result.current.balance');
+            });
 
-            await sleep(1000);
+            it('(networkId, address, sync: {nonce: Transaction})', async () => {
+                const { result } = renderHook(() => useAccount(networkId, item.address, { nonce: 'Transaction' }), {
+                    wrapper,
+                });
 
-            const currentBalance2 = result.current?.balance;
-            const currentNonce2 = result.current?.nonce;
-            //console.debug(result.all);
-            //sync, balance updated
-            assert.notEqual(currentBalance2, expected1, 'previous balance');
-            assert.equal(currentBalance2, expected2, 'updated balance');
-            assert.equal(currentNonce2, undefined, 'result2.current.nonce');
+                const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
+                //Fetch transaction, triggering a refresh
+                store.dispatch(
+                    fetchTransaction({
+                        networkId,
+                        hash: receipt.transactionHash,
+                    }),
+                );
+
+                const expected = await web3.eth.getTransactionCount(item.address!);
+                await sleep(100);
+                assert.equal(result.current?.nonce, expected, 'result.current.nonce');
+            });
+        });
+
+        describe('sync:Block', () => {
+            it('(networkId, address, sync: {balance: Block})', async () => {
+                const { result } = renderHook(() => useAccount(networkId, item.address, { balance: 'Block' }), {
+                    wrapper,
+                });
+
+                const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
+                //Fetch block, triggering a refresh
+                store.dispatch(
+                    fetchBlock({
+                        networkId,
+                        blockHashOrBlockNumber: receipt.blockHash,
+                    }),
+                );
+
+                const expected = await web3.eth.getBalance(item.address!);
+                await sleep(100);
+                assert.equal(result.current?.balance, expected, 'result.current.balance');
+            });
+
+            it('(networkId, address, sync: {nonce: Block})', async () => {
+                const { result } = renderHook(() => useAccount(networkId, item.address, { nonce: 'Block' }), {
+                    wrapper,
+                });
+
+                const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
+                //Fetch block, triggering a refresh
+                store.dispatch(
+                    fetchBlock({
+                        networkId,
+                        blockHashOrBlockNumber: receipt.blockHash,
+                    }),
+                );
+
+                const expected = await web3.eth.getTransactionCount(item.address!);
+                await sleep(100);
+                assert.equal(result.current?.nonce, expected, 'result.current.nonce');
+            });
         });
     });
 });

@@ -14,7 +14,7 @@ import { fetchBalance } from './fetchBalance';
 export const FETCH_BALANCE_SYNCED = `${name}/FETCH_BALANCE_SYNCED`;
 /** @internal */
 export interface FetchBalanceSyncedActionInput extends AccountId {
-    sync?: Sync | Sync['type'] | boolean | number;
+    sync?: Sync | Sync['type'] | 'once' | number;
 }
 /** @category Actions */
 export const fetchBalanceSynced = createAction(FETCH_BALANCE_SYNCED, (payload: FetchBalanceSyncedActionInput) => {
@@ -24,11 +24,8 @@ export const fetchBalanceSynced = createAction(FETCH_BALANCE_SYNCED, (payload: F
     //Default sync
     let sync: Sync | undefined;
 
-    if (payload.sync === false) {
+    if (!payload.sync || payload.sync === 'once') {
         sync = undefined;
-    } else if (!payload.sync || payload.sync === true) {
-        //undefined, default as true
-        sync = defaultTransactionSync(networkId, address, [fetchBalanceAction]);
     } else if (payload.sync === 'Transaction') {
         sync = defaultTransactionSync(networkId, address, [fetchBalanceAction]);
     } else if (payload.sync === 'Block') {

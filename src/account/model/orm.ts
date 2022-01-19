@@ -14,5 +14,6 @@ export default class Model extends ORMModel {
         address: attr(),
         balance: attr(),
         nonce: attr(),
+        code: attr(),
     };
 }

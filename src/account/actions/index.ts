@@ -16,6 +16,7 @@ import {
     FetchNonceSyncedAction,
     isFetchNonceSyncedAction,
 } from './fetchNonceSynced';
+import { GET_CODE, getCode, GetCodeAction, isGetCodeAction } from './getCode';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
@@ -25,14 +26,20 @@ export function isReducerAction(action: { type: string }): action is ReducerActi
 }
 
 /** @internal */
-export type SagaAction = FetchBalanceAction | FetchNonceAction | FetchBalanceSyncedAction | FetchNonceSyncedAction;
+export type SagaAction =
+    | FetchBalanceAction
+    | FetchNonceAction
+    | FetchBalanceSyncedAction
+    | FetchNonceSyncedAction
+    | GetCodeAction;
 /** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
     return (
         isFetchBalanceAction(action) ||
         isFetchNonceAction(action) ||
         isFetchBalanceSyncedAction(action) ||
-        isFetchNonceSyncedAction(action)
+        isFetchNonceSyncedAction(action) ||
+        isGetCodeAction(action)
     );
 }
 
@@ -52,6 +59,7 @@ export type {
     FetchNonceAction,
     FetchBalanceSyncedAction,
     FetchNonceSyncedAction,
+    GetCodeAction,
 };
 
 export {
@@ -79,4 +87,7 @@ export {
     FETCH_NONCE_SYNCED,
     fetchNonceSynced,
     isFetchNonceSyncedAction,
+    GET_CODE,
+    getCode,
+    isGetCodeAction,
 };

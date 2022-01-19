@@ -14,7 +14,7 @@ import { toChecksumAddress } from 'web3-utils';
 export const FETCH_NONCE_SYNCED = `${name}/FETCH_NONCE_SYNCED`;
 /** @internal */
 export interface FetchNonceSyncedActionInput extends AccountId {
-    sync?: Sync | Sync['type'] | boolean | number;
+    sync?: Sync | Sync['type'] | 'once' | number;
 }
 /** @category Actions */
 export const fetchNonceSynced = createAction(FETCH_NONCE_SYNCED, (payload: FetchNonceSyncedActionInput) => {
@@ -24,11 +24,8 @@ export const fetchNonceSynced = createAction(FETCH_NONCE_SYNCED, (payload: Fetch
     //Default sync
     let sync: Sync | undefined;
 
-    if (payload.sync === false) {
+    if (!payload.sync || payload.sync === 'once') {
         sync = undefined;
-    } else if (!payload.sync || payload.sync === true) {
-        //undefined, default as true
-        sync = defaultTransactionSync(networkId, address, [fetchNonceAction]);
     } else if (payload.sync === 'Transaction') {
         sync = defaultTransactionSync(networkId, address, [fetchNonceAction]);
     } else if (payload.sync === 'Block') {

@@ -1,8 +1,8 @@
-import { Network, Id } from '../model/interface';
+import { Network } from '../model/interface';
 import select from './select';
 
 /** @category Selectors */
-function selectByIdSingle(state: any, id: Id | undefined): Network | undefined {
+function selectByIdSingle(state: any, id: string | undefined): Network | undefined {
     if (!id) return undefined;
     return select(state, id) as Network | undefined;
 }

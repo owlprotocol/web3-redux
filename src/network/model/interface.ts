@@ -2,20 +2,18 @@ import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 
 /** @internal */
-export interface IdDeconstructed {
+export interface NetworkId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
 }
-/** @internal */
-export type Id = string;
 
 /**
  * EVM Network object.
  * Other objects are indexed on its networkId, and use it to fetch it to make requests using its web3.js connection.
  *
  */
-export interface Network extends IdDeconstructed {
+export interface Network extends NetworkId {
     /** Web3 object. We recommend using a websocket connection. */
     readonly web3?: Web3;
     /** Web3 object specialized for sending transactions. */

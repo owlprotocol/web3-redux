@@ -1,11 +1,11 @@
 import { name } from '../common';
-import { Network, Id } from '../model/interface';
+import { Network } from '../model/interface';
 
 /** @internal */
 export const SET = (key: keyof Network) => `${name}/SET/${key.toUpperCase()}`;
 /** @internal */
 export interface SetActionInput {
-    id: Id;
+    id: string;
     key: keyof Network;
     value: any;
 }

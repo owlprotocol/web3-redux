@@ -1,8 +1,7 @@
-import { Id } from '../model/interface';
 import selectByIdSingle from './selectByIdSingle';
 
 /** @category Selectors */
-function selectByIdExists(state: any, id: Id | undefined): boolean {
+function selectByIdExists(state: any, id: string | undefined): boolean {
     if (!id) return false;
 
     return !!selectByIdSingle(state, id);

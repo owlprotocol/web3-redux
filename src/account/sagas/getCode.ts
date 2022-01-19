@@ -1,14 +1,19 @@
-import { put, call } from 'typed-redux-saga/macro';
+import { select, put, call } from 'typed-redux-saga/macro';
 import networkExists from '../../network/sagas/exists';
-import { set, GetCodeAction } from '../actions';
-import exists from './exists';
+import { set, create, GetCodeAction } from '../actions';
+import { selectByIdSingle } from '../selectors';
 
 /** @category Sagas */
 export function* getCode(action: GetCodeAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
-    yield* call(exists, payload);
+    const account = yield* select(selectByIdSingle, { networkId, address });
+    if (!account) {
+        //Create account
+        yield* put(create({ networkId, address }));
+    }
+
     const network = yield* call(networkExists, networkId);
     const web3 = network.web3;
     const web3Sender = network.web3Sender;

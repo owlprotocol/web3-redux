@@ -1,12 +1,15 @@
-import { maxBy } from 'lodash';
-import selectBlocks from './selectBlocks';
+import { selectByIdSingle } from '../../block/selectors';
+import selectLatestBlockNumber from './selectLatestBlockNumber';
 
 /** @category Selectors */
 function selectLatestBlock(state: any, id: string | undefined) {
-    const blocks = selectBlocks(state, id);
-    if (!blocks || blocks.length == 0) return undefined;
+    if (!id) return undefined;
 
-    return maxBy(blocks, 'number');
+    const latestBlockNumber = selectLatestBlockNumber(state, id);
+    if (!latestBlockNumber) return undefined;
+
+    const block = selectByIdSingle(state, { networkId: id, number: latestBlockNumber });
+    return block;
 }
 
 export default selectLatestBlock;

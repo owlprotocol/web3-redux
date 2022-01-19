@@ -24,6 +24,8 @@ export interface Network extends NetworkId {
     readonly multicallContract?: Web3Contract;
     /** @hidden Gas limit of network. */
     readonly gasLimit?: number;
+    /** Latest block nummber. Updated via getBlockNumber() or middleware tracking block subscription updates. */
+    readonly latestBlockNumber?: number;
 }
 
 export default Network;

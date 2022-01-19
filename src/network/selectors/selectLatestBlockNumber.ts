@@ -1,11 +1,11 @@
-import selectLatestBlock from './selectLatestBlock';
+import selectByIdSingle from './selectByIdSingle';
 
 /** @category Selectors */
 function selectLatestBlockNumber(state: any, id: string | undefined) {
-    const block = selectLatestBlock(state, id);
-    if (!block) return undefined;
+    const network = selectByIdSingle(state, id);
+    if (!network) return undefined;
 
-    return block.number;
+    return network.latestBlockNumber;
 }
 
 export default selectLatestBlockNumber;

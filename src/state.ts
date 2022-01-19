@@ -8,6 +8,7 @@ import ContractSend from './contractsend/model/interface';
 import EthCall from './ethcall/model/interface';
 import Config from './config/model/interface';
 import Account from './account/model/interface';
+import _4Byte from './4byte/model/interface';
 import { ModelWithId } from './types/model';
 
 export interface StateRoot {
@@ -98,6 +99,11 @@ export interface State {
     Account: {
         items: string[];
         itemsById: { [id: string]: ModelWithId<Account> };
+    };
+    /** 4Byte elements indexed by id */
+    _4Byte: {
+        items: string[];
+        itemsById: { [id: string]: ModelWithId<_4Byte> };
     };
     /** Join table for events and indices */
     ContractEventIndexIds: {

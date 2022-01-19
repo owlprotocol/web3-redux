@@ -7,6 +7,7 @@ import ethCallSaga from './ethcall/sagas';
 import { saga as web3ReduxSaga } from './web3Redux/sagas';
 import accountSaga from './account/sagas';
 import { saga as syncSaga } from './sync/sagas';
+import _4ByteSaga from './4byte/sagas';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga.html
 export function* rootSaga() {
@@ -18,5 +19,6 @@ export function* rootSaga() {
         spawn(web3ReduxSaga),
         spawn(accountSaga),
         spawn(syncSaga),
+        spawn(_4ByteSaga),
     ]);
 }

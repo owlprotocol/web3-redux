@@ -10,6 +10,7 @@ import { Action as ConfigAction, isReducerAction as isConfigAction } from './con
 import * as Web3ReduxActions from './web3Redux/actions';
 import { Action as AccountAction, isReducerAction as isAccountAction } from './account/actions';
 import * as SyncActions from './sync/actions';
+import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions';
 import networkReducer from './network/reducer';
 import blockReducer from './block/reducer';
 import transactionReducer from './transaction/reducer';
@@ -20,6 +21,7 @@ import ethCallReducer from './ethcall/reducer';
 import configReducer from './config/reducer';
 import accountReducer from './account/reducer';
 import syncReducer from './sync/reducer';
+import _4ByteReducer from './4byte/reducer';
 
 import { getOrm, initializeState } from './orm';
 
@@ -34,7 +36,8 @@ export type Action =
     | ConfigAction
     | Web3ReduxActions.Action
     | AccountAction
-    | SyncActions.Action;
+    | SyncActions.Action
+    | _4ByteAction;
 
 const reducer = (state: any, action: Action) => {
     const orm = getOrm();
@@ -49,6 +52,7 @@ const reducer = (state: any, action: Action) => {
     else if (isConfigAction(action)) configReducer(sess, action);
     else if (isAccountAction(action)) accountReducer(sess, action);
     else if (SyncActions.isReducerAction(action)) syncReducer(sess, action);
+    else if (is4ByteAction(action)) _4ByteReducer(sess, action);
 
     return sess.state;
 };

@@ -11,6 +11,7 @@ import ConfigModel from './config/model/orm';
 import AccountModel from './account/model/orm';
 import SyncModel from './sync/model/orm';
 import { blockTransactionsSync } from './sync/model/BlockSync';
+import _4ByteModel from './4byte/model/orm';
 
 //Fix undefined import issue
 let orm = getOrm();
@@ -32,6 +33,7 @@ export function getOrm(): any {
     orm.register(ConfigModel);
     orm.register(AccountModel);
     orm.register(SyncModel);
+    orm.register(_4ByteModel);
 
     return orm;
 }

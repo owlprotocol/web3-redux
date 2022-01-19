@@ -89,7 +89,7 @@ describe(`${name}.sagas`, () => {
 
     describe('fetchBalanceSynced', () => {
         it('success', () => {
-            const action = fetchBalanceSyncedAction({ ...item, sync: true });
+            const action = fetchBalanceSyncedAction({ ...item, sync: 'Transaction' });
             testSaga(fetchBalanceSynced, action)
                 .next()
                 .put(action.payload.fetchBalanceAction)
@@ -100,7 +100,7 @@ describe(`${name}.sagas`, () => {
 
     describe('fetchNonceSynced', () => {
         it('success', () => {
-            const action = fetchNonceSyncedAction({ ...item, sync: true });
+            const action = fetchNonceSyncedAction({ ...item, sync: 'Transaction' });
             testSaga(fetchNonceSynced, action)
                 .next()
                 .put(action.payload.fetchNonceAction)

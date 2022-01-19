@@ -67,7 +67,7 @@ describe(`${name}.integration`, () => {
 
     describe('fetchBalanceSynced', () => {
         it('({sync:false})', async () => {
-            store.dispatch(fetchBalanceSyncedAction({ ...item, sync: false }));
+            store.dispatch(fetchBalanceSyncedAction({ ...item, sync: 'once' }));
             const expected1 = await web3.eth.getBalance(item.address!);
             const account1 = selectByIdSingle(store.getState(), item);
             assert.equal(account1!.balance, expected1, 'initial balance');

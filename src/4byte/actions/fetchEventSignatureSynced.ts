@@ -10,7 +10,7 @@ import { defaultTransactionSync } from '../../sync/model/TransactionSync';
 import { fetchEventSignature } from './fetchEventSignature';
 
 /** @internal */
-export const FETCH_EVENT_SIGNATURE_SYNCED = `${name}/FETCH_Event_SIGNATURE_SYNCED`;
+export const FETCH_EVENT_SIGNATURE_SYNCED = `${name}/FETCH_EVENT_SIGNATURE_SYNCED`;
 /** @internal */
 export interface FetchEventSignatureSyncedActionInput extends SignatureId {
     sync?: Sync | Sync['type'] | boolean | number;
@@ -42,7 +42,7 @@ export const fetchEventSignatureSynced = createAction(
             sync.actions = [fetchEventSignatureAction];
         }
 
-        if (sync) sync.id = `${sync.type}-${getId({ networkId, signatureHash })}-fetchBalance`;
+        if (sync) sync.id = `${sync.type}-${getId({ networkId, signatureHash })}-fetchEventSignature`;
 
         return { payload: { networkId, signatureHash, sync, fetchEventSignatureAction } };
     },

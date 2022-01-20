@@ -3,7 +3,7 @@ import { name } from '../common';
 import { SignatureId, validate } from '../model';
 
 /** @internal */
-export const FETCH_EVENT_SIGNATURE = `${name}/FETCH_Event_SIGNATURE`;
+export const FETCH_EVENT_SIGNATURE = `${name}/FETCH_EVENT_SIGNATURE`;
 /** @category Actions */
 export const fetchEventSignature = createAction(FETCH_EVENT_SIGNATURE, (payload: SignatureId) => {
     return {

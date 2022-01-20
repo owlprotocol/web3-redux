@@ -14,6 +14,18 @@ import {
     FetchEventSignatureSyncedAction,
     isFetchEventSignatureSyncedAction,
 } from './fetchEventSignatureSynced';
+import {
+    FETCH_FUNCTION_SIGNATURE,
+    fetchFunctionSignature,
+    FetchFunctionSignatureAction,
+    isFetchFunctionSignatureAction,
+} from './fetchFunctionSignature';
+import {
+    FETCH_FUNCTION_SIGNATURE_SYNCED,
+    fetchFunctionSignatureSynced,
+    FetchFunctionSignatureSyncedAction,
+    isFetchFunctionSignatureSyncedAction,
+} from './fetchFunctionSignatureSynced';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
@@ -23,11 +35,15 @@ export function isReducerAction(action: { type: string }): action is ReducerActi
 }
 
 /** @internal */
-export type SagaAction = FetchEventSignatureAction | FetchEventSignatureSyncedAction;
+export type SagaAction =
+    | FetchEventSignatureAction
+    | FetchEventSignatureSyncedAction
+    | FetchFunctionSignatureAction
+    | FetchFunctionSignatureSyncedAction;
 
 /** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
-    return isFetchEventSignatureAction(action);
+    return isFetchEventSignatureAction(action) || isFetchFunctionSignatureAction(action);
 }
 
 /** @internal */
@@ -44,6 +60,8 @@ export type {
     SetAction,
     FetchEventSignatureAction,
     FetchEventSignatureSyncedAction,
+    FetchFunctionSignatureAction,
+    FetchFunctionSignatureSyncedAction,
 };
 
 export {
@@ -65,4 +83,10 @@ export {
     FETCH_EVENT_SIGNATURE_SYNCED,
     fetchEventSignatureSynced,
     isFetchEventSignatureSyncedAction,
+    FETCH_FUNCTION_SIGNATURE,
+    fetchFunctionSignature,
+    isFetchFunctionSignatureAction,
+    FETCH_FUNCTION_SIGNATURE_SYNCED,
+    fetchFunctionSignatureSynced,
+    isFetchFunctionSignatureSyncedAction,
 };

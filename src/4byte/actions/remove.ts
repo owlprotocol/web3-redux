@@ -1,13 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { validate, SignatureId } from '../model';
+import { SignatureId } from '../model';
 
 /** @internal */
 export const REMOVE = `${name}/DELETE`;
 /** @category Actions */
 export const remove = createAction(REMOVE, (payload: SignatureId) => {
     return {
-        payload: validate(payload),
+        payload: { networkId: payload.networkId, signatureHash: payload.signatureHash },
     };
 });
 /** @internal */

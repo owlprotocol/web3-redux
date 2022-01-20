@@ -1,4 +1,4 @@
-import { validate, _4ByteSignature, SignatureId } from '../model';
+import { _4ByteSignature, SignatureId } from '../model';
 import { name } from '../common';
 
 /** @internal */
@@ -15,7 +15,7 @@ export const set = (payload: SetActionInput) => {
     return {
         type: SET(payload.key),
         payload: {
-            id: validate(payload.id),
+            id: { networkId: payload.id.networkId, signatureHash: payload.id.signatureHash },
             key: payload.key,
             value: payload.value,
         },

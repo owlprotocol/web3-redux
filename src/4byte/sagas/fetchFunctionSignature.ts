@@ -15,20 +15,21 @@ export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
     const { payload } = action;
     const { networkId, signatureHash } = payload;
 
-    const eventSigRes = yield* call(
+    const functionSigRes = yield* call(
         axios.get,
         `https://www.4byte.directory/api/v1/signatures/?hex_signature=${signatureHash}`,
     );
-    const eventSigResArr: _4ByteResponseItem[] | undefined = (eventSigRes as AxiosResponse).data?.results;
+    const functionSigResArr: _4ByteResponseItem[] | undefined = (functionSigRes as AxiosResponse).data?.results;
 
-    if (eventSigResArr === undefined) throw new Error('This event signature is not found in the 4Byte database');
+    if (functionSigResArr === undefined) throw new Error('This function signature was not found in the 4Byte database');
 
-    const eventSig: string | undefined = eventSigResArr?.reduce((prev, curr) =>
+    //get functionSig with lowest id
+    const functionSig: string | undefined = functionSigResArr?.reduce((prev, curr) =>
         prev.id < curr.id ? prev : curr,
     ).text_signature;
 
-    const funcName: string = eventSig?.substring(0, eventSig.indexOf('('));
-    const args: string[] = eventSig?.substring(eventSig.indexOf('(') + 1, eventSig.indexOf(')')).split(',');
+    const funcName: string = functionSig?.substring(0, functionSig.indexOf('('));
+    const args: string[] = functionSig?.substring(functionSig.indexOf('(') + 1, functionSig.indexOf(')')).split(',');
 
     yield* put(set({ id: { networkId, signatureHash }, key: 'name', value: funcName }));
     yield* put(set({ id: { networkId, signatureHash }, key: 'args', value: args }));

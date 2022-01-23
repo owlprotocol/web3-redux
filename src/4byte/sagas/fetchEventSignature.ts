@@ -13,12 +13,12 @@ export function* fetchEventSignature(action: FetchEventSignatureAction) {
     );
     const eventSig: string | undefined = (eventSigRes as AxiosResponse).data?.results[0]?.text_signature;
 
-    if (eventSig === undefined) throw new Error('This event signature is not found in the 4Byte database');
+    if (eventSig === undefined) throw new Error('This event signature was not found in the 4Byte database');
 
-    const funcName: string = eventSig?.substring(0, eventSig.indexOf('('));
+    const eventName: string = eventSig?.substring(0, eventSig.indexOf('('));
     const args: string[] = eventSig?.substring(eventSig.indexOf('(') + 1, eventSig.indexOf(')')).split(',');
 
-    yield* put(set({ id: { networkId, signatureHash }, key: 'name', value: funcName }));
+    yield* put(set({ id: { networkId, signatureHash }, key: 'name', value: eventName }));
     yield* put(set({ id: { networkId, signatureHash }, key: 'args', value: args }));
 }
 

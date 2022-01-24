@@ -7,7 +7,7 @@ export const REMOVE = `${name}/DELETE`;
 /** @category Actions */
 export const remove = createAction(REMOVE, (payload: SignatureId) => {
     return {
-        payload: { networkId: payload.networkId, signatureHash: payload.signatureHash },
+        payload: { signatureHash: payload.signatureHash },
     };
 });
 /** @internal */

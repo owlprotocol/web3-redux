@@ -1,7 +1,6 @@
 import { ModelWithId } from '../../types/model';
 
 export interface SignatureId {
-    readonly networkId: string;
     /** The keccak-256 hash of the event or function signature */
     readonly signatureHash: string;
 }
@@ -19,14 +18,14 @@ const SEPERATOR = '-';
 /** @internal */
 
 export function getId(id: SignatureId): string {
-    const { networkId, signatureHash } = id;
+    const { signatureHash } = id;
 
-    return [networkId, signatureHash].join(SEPERATOR);
+    return [signatureHash].join(SEPERATOR);
 }
 /** @internal */
 export function getIdDeconstructed(id: string): SignatureId {
-    const [networkId, signatureHash] = id.split(SEPERATOR);
-    return { networkId, signatureHash };
+    const [signatureHash] = id.split(SEPERATOR);
+    return { signatureHash };
 }
 
 /** @internal */

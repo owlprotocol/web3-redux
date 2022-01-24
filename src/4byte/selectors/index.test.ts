@@ -9,7 +9,7 @@ import { selectByIdSingle, selectByIdMany } from '../selectors';
 import { ZERO_ADDRESS } from '../../utils';
 
 describe(`${name}.selectors`, () => {
-    const item: _4ByteSignature = { networkId: '1337', signatureHash: ZERO_ADDRESS };
+    const item: _4ByteSignature = { signatureHash: ZERO_ADDRESS };
     const id = getId(item);
     const itemWithId = { id: id, ...item };
 

@@ -13,7 +13,7 @@ interface _4ByteResponseItem {
 /** @category Sagas */
 export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
     const { payload } = action;
-    const { networkId, signatureHash } = payload;
+    const { signatureHash } = payload;
 
     const functionSigRes = yield* call(
         axios.get,
@@ -31,8 +31,8 @@ export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
     const funcName: string = functionSig?.substring(0, functionSig.indexOf('('));
     const args: string[] = functionSig?.substring(functionSig.indexOf('(') + 1, functionSig.indexOf(')')).split(',');
 
-    yield* put(set({ id: { networkId, signatureHash }, key: 'name', value: funcName }));
-    yield* put(set({ id: { networkId, signatureHash }, key: 'args', value: args }));
+    yield* put(set({ id: { signatureHash }, key: 'name', value: funcName }));
+    yield* put(set({ id: { signatureHash }, key: 'args', value: args }));
 }
 
 export default fetchFunctionSignature;

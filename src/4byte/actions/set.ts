@@ -15,7 +15,7 @@ export const set = (payload: SetActionInput) => {
     return {
         type: SET(payload.key),
         payload: {
-            id: { networkId: payload.id.networkId, signatureHash: payload.id.signatureHash },
+            id: { signatureHash: payload.id.signatureHash },
             key: payload.key,
             value: payload.value,
         },

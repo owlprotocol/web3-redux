@@ -5,10 +5,10 @@ import { name } from '../common';
 import { _4ByteSignature, getId, getIdDeconstructed, validate, SignatureId } from '../model/interface';
 
 describe(`${name}.model`, () => {
-    const item: _4ByteSignature = { networkId: '1337', signatureHash: ZERO_ADDRESS };
-    const id = `${item.networkId}-${item.signatureHash}`;
+    const item: _4ByteSignature = { signatureHash: ZERO_ADDRESS };
+    const id = `${item.signatureHash}`;
     const itemWithId: _4ByteSignature = { id, ...item };
-    const idDeconstructed: SignatureId = { networkId: item.networkId, signatureHash: item.signatureHash };
+    const idDeconstructed: SignatureId = { signatureHash: item.signatureHash };
 
     it('getId', () => {
         assert.equal(getId(item), id);

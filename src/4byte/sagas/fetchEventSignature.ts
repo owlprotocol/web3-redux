@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from 'axios';
 /** @category Sagas */
 export function* fetchEventSignature(action: FetchEventSignatureAction) {
     const { payload } = action;
-    const { networkId, signatureHash } = payload;
+    const { signatureHash } = payload;
 
     const eventSigRes = yield* call(
         axios.get,
@@ -18,8 +18,8 @@ export function* fetchEventSignature(action: FetchEventSignatureAction) {
     const eventName: string = eventSig?.substring(0, eventSig.indexOf('('));
     const args: string[] = eventSig?.substring(eventSig.indexOf('(') + 1, eventSig.indexOf(')')).split(',');
 
-    yield* put(set({ id: { networkId, signatureHash }, key: 'name', value: eventName }));
-    yield* put(set({ id: { networkId, signatureHash }, key: 'args', value: args }));
+    yield* put(set({ id: { signatureHash }, key: 'name', value: eventName }));
+    yield* put(set({ id: { signatureHash }, key: 'args', value: args }));
 }
 
 export default fetchEventSignature;

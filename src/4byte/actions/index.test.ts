@@ -10,8 +10,7 @@ import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 import { set, SET, SetAction, isSetAction } from './set';
 
 describe(`${name}.action`, () => {
-    const networkId = '1337';
-    const item: _4ByteSignature = { networkId, signatureHash: ZERO_ADDRESS };
+    const item: _4ByteSignature = { signatureHash: ZERO_ADDRESS };
 
     it('create', () => {
         const expected: CreateAction = {
@@ -42,19 +41,19 @@ describe(`${name}.action`, () => {
 
     it('set', () => {
         const expected: SetAction = {
-            type: SET('networkId'),
+            type: SET('signatureHash'),
             payload: {
-                id: { networkId: item.networkId, signatureHash: item.signatureHash },
-                key: 'networkId' as keyof _4ByteSignature,
-                value: item.networkId,
+                id: { signatureHash: item.signatureHash },
+                key: 'signatureHash' as keyof _4ByteSignature,
+                value: item.signatureHash,
             },
         };
         assert.isTrue(isSetAction(expected));
         assert.deepEqual(
             set({
-                id: { networkId: item.networkId, signatureHash: item.signatureHash },
-                key: 'networkId',
-                value: item.networkId,
+                id: { signatureHash: item.signatureHash },
+                key: 'signatureHash',
+                value: item.signatureHash,
             }),
             expected,
         );

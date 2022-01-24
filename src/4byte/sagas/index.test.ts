@@ -1,23 +1,17 @@
 import { testSaga } from 'redux-saga-test-plan';
 
-import createSync from '../../sync/actions/create';
-
 import { name } from '../common';
 
 import axios, { AxiosResponse } from 'axios';
 //Actions
 import fetchEventSignatureAction from '../actions/fetchEventSignature';
 import fetchFunctionSignatureAction from '../actions/fetchFunctionSignature';
-import fetchEventSignatureSyncedAction from '../actions/fetchEventSignatureSynced';
-import fetchFunctionSignatureSyncedAction from '../actions/fetchFunctionSignatureSynced';
 
 import setAction from '../actions/set';
 
 //Sagas
 import fetchEventSignature from './fetchEventSignature';
-import fetchEventSignatureSynced from './fetchEventSignatureSynced';
 import fetchFunctionSignature from './fetchFunctionSignature';
-import fetchFunctionSignatureSynced from './fetchFunctionSignatureSynced';
 
 interface _4ByteResponseItem {
     id: number;
@@ -80,27 +74,6 @@ describe(`${name}.sagas`, () => {
                 .put(setAction({ id: functionItem, key: 'name', value: funcName }))
                 .next()
                 .put(setAction({ id: functionItem, key: 'args', value: args }));
-        });
-    });
-
-    describe('fetchEventSignatureSynced', async () => {
-        it('success', () => {
-            const action = fetchEventSignatureSyncedAction({ ...eventItem, sync: true });
-            testSaga(fetchEventSignatureSynced, action)
-                .next()
-                .put(action.payload.fetchEventSignatureAction)
-                .next(createSync(action.payload.sync!));
-        });
-    });
-
-    describe('fetchFunctionSignatureSynced', async () => {
-        it('success', () => {
-            const action = fetchFunctionSignatureSyncedAction({ ...functionItem, sync: true });
-            testSaga(fetchFunctionSignatureSynced, action)
-                .next()
-                .put(action.payload.fetchFunctionSignatureAction)
-                .next()
-                .put(createSync(action.payload.sync!));
         });
     });
 });

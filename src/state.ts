@@ -8,6 +8,7 @@ import ContractSend from './contractsend/model/interface';
 import EthCall from './ethcall/model/interface';
 import Config from './config/model/interface';
 import Account from './account/model/interface';
+import Ipfs from './ipfs/model/interface';
 import { ModelWithId } from './types/model';
 
 export interface StateRoot {
@@ -98,6 +99,10 @@ export interface State {
     Account: {
         items: string[];
         itemsById: { [id: string]: ModelWithId<Account> };
+    };
+    Ipfs: {
+        items: string[];
+        itemsById: { [id: string]: ModelWithId<Ipfs> };
     };
     /** Join table for events and indices */
     ContractEventIndexIds: {

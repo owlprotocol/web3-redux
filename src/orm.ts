@@ -9,6 +9,7 @@ import ContractSendModel from './contractsend/model/orm';
 import EthCallModel from './ethcall/model/orm';
 import ConfigModel from './config/model/orm';
 import AccountModel from './account/model/orm';
+import IpfsModel from './ipfs/model/orm';
 import SyncModel from './sync/model/orm';
 import { blockTransactionsSync } from './sync/model/BlockSync';
 
@@ -31,6 +32,7 @@ export function getOrm(): any {
     orm.register(EthCallModel);
     orm.register(ConfigModel);
     orm.register(AccountModel);
+    orm.register(IpfsModel);
     orm.register(SyncModel);
 
     return orm;

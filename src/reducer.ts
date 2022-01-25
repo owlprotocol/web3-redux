@@ -9,6 +9,7 @@ import { Action as EthCallAction, isReducerAction as isEthCallAction } from './e
 import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
 import * as Web3ReduxActions from './web3Redux/actions';
 import { Action as AccountAction, isReducerAction as isAccountAction } from './account/actions';
+import { Action as IpfsAction, isReducerAction as isIpfsAction } from './ipfs/actions';
 import * as SyncActions from './sync/actions';
 import networkReducer from './network/reducer';
 import blockReducer from './block/reducer';
@@ -19,6 +20,7 @@ import contractSendReducer from './contractsend/reducer';
 import ethCallReducer from './ethcall/reducer';
 import configReducer from './config/reducer';
 import accountReducer from './account/reducer';
+import ipfsReducer from './ipfs/reducer';
 import syncReducer from './sync/reducer';
 
 import { getOrm, initializeState } from './orm';
@@ -34,7 +36,8 @@ export type Action =
     | ConfigAction
     | Web3ReduxActions.Action
     | AccountAction
-    | SyncActions.Action;
+    | SyncActions.Action
+    | IpfsAction;
 
 const reducer = (state: any, action: Action) => {
     const orm = getOrm();
@@ -48,6 +51,7 @@ const reducer = (state: any, action: Action) => {
     else if (isEthCallAction(action)) ethCallReducer(sess, action);
     else if (isConfigAction(action)) configReducer(sess, action);
     else if (isAccountAction(action)) accountReducer(sess, action);
+    else if (isIpfsAction(action)) ipfsReducer(sess, action);
     else if (SyncActions.isReducerAction(action)) syncReducer(sess, action);
 
     return sess.state;

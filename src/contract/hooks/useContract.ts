@@ -6,7 +6,11 @@ import { BaseWeb3Contract } from '../model';
 import { create } from '../actions';
 import selectSingle from '../selectors/selectByIdSingle';
 
-/** @category Hooks */
+/**
+ * @category Hooks
+ * Create a contract if it doesn't exists
+ *
+ */
 export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     networkId: string | undefined,
     address: string | undefined,
@@ -36,3 +40,5 @@ export function contractHookFactory<T extends BaseWeb3Contract = BaseWeb3Contrac
         return useContract<T>(networkId, address, abi);
     };
 }
+
+export default useContract;

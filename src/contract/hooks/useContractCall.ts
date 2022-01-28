@@ -22,7 +22,10 @@ export interface HookHandlers {
     subscribe: () => void;
     unsubscribe: () => void;
 }
-/** @category Hooks */
+/**
+ * @category Hooks
+ * Create a contract call and return value.
+ */
 export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
     networkId: string | undefined,
     address: string | undefined,
@@ -97,3 +100,5 @@ export function contractCallHookFactory<
         return useContractCall<T, K>(networkId, address, method, args, options);
     };
 }
+
+export default useContractCall;

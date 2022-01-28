@@ -3,6 +3,7 @@ import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove';
 import { UPDATE, update, UpdateAction, isUpdateAction } from './update';
 import { SET, set, SetAction, isSetAction } from './set';
 import { GET_BLOCK_NUMBER, getBlockNumber, GetBlockNumberAction, isGetBlockNumberAction } from './getBlockNumber';
+import { GET_CHAIN_ID, getChainId, GetChainIdAction, isGetChainIdAction } from './getChainId';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
@@ -18,7 +19,7 @@ export function isAction(action: { type: string }): action is Action {
     return isReducerAction(action) || isGetBlockNumberAction(action);
 }
 
-export type { CreateAction, RemoveAction, UpdateAction, SetAction, GetBlockNumberAction };
+export type { CreateAction, RemoveAction, UpdateAction, SetAction, GetBlockNumberAction, GetChainIdAction };
 
 export {
     CREATE,
@@ -36,6 +37,9 @@ export {
     GET_BLOCK_NUMBER,
     getBlockNumber,
     isGetBlockNumberAction,
+    GET_CHAIN_ID,
+    getChainId,
+    isGetChainIdAction,
 };
 
 export default {
@@ -54,4 +58,7 @@ export default {
     GET_BLOCK_NUMBER,
     getBlockNumber,
     isGetBlockNumberAction,
+    GET_CHAIN_ID,
+    getChainId,
+    isGetChainIdAction,
 };

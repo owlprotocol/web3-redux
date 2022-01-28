@@ -15,5 +15,8 @@ export default class Model extends ORMModel {
         multicallAddress: attr(),
         multicallContract: attr(),
         gasLimit: attr(),
+        explorerUrl: attr(),
+        explorerApiUrl: attr(),
+        explorerApiKey: attr(),
     };
 }

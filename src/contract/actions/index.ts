@@ -15,6 +15,7 @@ import {
     EventUnsubscribeAction,
     isEventUnsubscribeAction,
 } from './eventUnsubscribe';
+import { FETCH_ABI, fetchAbi, FetchAbiAction, isFetchAbiAction } from './fetchAbi';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
@@ -32,7 +33,8 @@ export type SagaAction =
     | SendAction
     | EventGetPastAction
     | EventSubscribeAction
-    | EventUnsubscribeAction;
+    | EventUnsubscribeAction
+    | FetchAbiAction;
 /** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
     return (
@@ -43,7 +45,8 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
         isSendAction(action) ||
         isEventGetPastAction(action) ||
         isEventSubscribeAction(action) ||
-        isEventUnsubscribeAction(action)
+        isEventUnsubscribeAction(action) ||
+        isFetchAbiAction(action)
     );
 }
 
@@ -67,6 +70,7 @@ export type {
     EventGetPastAction,
     EventSubscribeAction,
     EventUnsubscribeAction,
+    FetchAbiAction,
 };
 
 export {
@@ -106,6 +110,9 @@ export {
     EVENT_UNSUBSCRIBE,
     eventUnsubscribe,
     isEventUnsubscribeAction,
+    FETCH_ABI,
+    fetchAbi,
+    isFetchAbiAction,
 };
 
 export default {
@@ -145,4 +152,7 @@ export default {
     EVENT_UNSUBSCRIBE,
     eventUnsubscribe,
     isEventUnsubscribeAction,
+    FETCH_ABI,
+    fetchAbi,
+    isFetchAbiAction,
 };

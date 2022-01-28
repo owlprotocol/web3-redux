@@ -26,6 +26,12 @@ export interface Network extends NetworkId {
     readonly gasLimit?: number;
     /** Latest block nummber. Updated via getBlockNumber() or middleware tracking block subscription updates. */
     readonly latestBlockNumber?: number;
+    /** Block explorer (eg. Etherscan) to use for network. */
+    readonly explorerUrl?: string;
+    /** Block explorer API url (eg. Etherscan) to use for indexed explorer data */
+    readonly explorerApiUrl?: string;
+    /** Block explorer API key */
+    readonly explorerApiKey?: string;
 }
 
 export default Network;

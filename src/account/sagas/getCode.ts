@@ -9,10 +9,7 @@ export function* getCode(action: GetCodeAction) {
     const { networkId, address } = payload;
 
     const account = yield* select(selectByIdSingle, { networkId, address });
-    if (!account) {
-        //Create account
-        yield* put(create({ networkId, address }));
-    }
+    if (!account) yield* put(create({ networkId, address }));
 
     const network = yield* call(networkExists, networkId);
     const web3 = network.web3;

@@ -5,6 +5,12 @@ import { SET, set, SetAction, isSetAction } from './set';
 import { FETCH_BALANCE, fetchBalance, FetchBalanceAction, isFetchBalanceAction } from './fetchBalance';
 import { FETCH_NONCE, fetchNonce, FetchNonceAction, isFetchNonceAction } from './fetchNonce';
 import {
+    FETCH_TRANSACTIONS,
+    fetchTransactions,
+    FetchTransactionsAction,
+    isFetchTransactionsAction,
+} from './fetchTransactions';
+import {
     FETCH_BALANCE_SYNCED,
     fetchBalanceSynced,
     FetchBalanceSyncedAction,
@@ -29,6 +35,7 @@ export function isReducerAction(action: { type: string }): action is ReducerActi
 export type SagaAction =
     | FetchBalanceAction
     | FetchNonceAction
+    | FetchTransactionsAction
     | FetchBalanceSyncedAction
     | FetchNonceSyncedAction
     | GetCodeAction;
@@ -37,6 +44,7 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
     return (
         isFetchBalanceAction(action) ||
         isFetchNonceAction(action) ||
+        isFetchTransactionsAction(action) ||
         isFetchBalanceSyncedAction(action) ||
         isFetchNonceSyncedAction(action) ||
         isGetCodeAction(action)
@@ -57,6 +65,7 @@ export type {
     SetAction,
     FetchBalanceAction,
     FetchNonceAction,
+    FetchTransactionsAction,
     FetchBalanceSyncedAction,
     FetchNonceSyncedAction,
     GetCodeAction,
@@ -81,6 +90,9 @@ export {
     FETCH_NONCE,
     fetchNonce,
     isFetchNonceAction,
+    FETCH_TRANSACTIONS,
+    fetchTransactions,
+    isFetchTransactionsAction,
     FETCH_BALANCE_SYNCED,
     fetchBalanceSynced,
     isFetchBalanceSyncedAction,

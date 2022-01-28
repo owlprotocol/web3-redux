@@ -1,6 +1,7 @@
 import Network from './model/interface';
 import {
     ETHERSCAN_API_KEY,
+    GANACHE_RPC,
     MAINNET_RPC,
     ROPSTEN_RPC,
     RINKEBY_RPC,
@@ -15,6 +16,11 @@ import {
 } from '../environment';
 
 export const defaultNetworks: { [networkId: string]: Network } = {
+    '1337': {
+        networkId: '1337',
+        name: 'Ganache',
+        web3Rpc: GANACHE_RPC,
+    },
     '1': {
         networkId: '1',
         name: 'Mainnet',

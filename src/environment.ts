@@ -14,6 +14,7 @@ function getEnvVar(name: string) {
 export const INFURA_API_KEY = getEnvVar('INFURA_API_KEY');
 export const ETHERSCAN_API_KEY = getEnvVar('ETHERSCAN_API_KEY');
 
+export const GANACHE_RPC = getEnvVar('GANACE_RPC') ?? 'ws://localhost:8546';
 export const MAINNET_RPC = getEnvVar('MAINNET_RPC') ?? `wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}`;
 export const ROPSTEN_RPC = getEnvVar('ROPSTEN_RPC') ?? `wss://ropsten.infura.io/ws/v3/${INFURA_API_KEY}`;
 export const RINKEBY_RPC = getEnvVar('RINKEBY_RPC') ?? `wss://rinkeby.infura.io/ws/v3/${INFURA_API_KEY}`;

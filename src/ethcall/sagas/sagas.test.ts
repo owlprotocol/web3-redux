@@ -5,7 +5,7 @@ import BlockNumber from '../../abis/BlockNumber.json';
 
 import { createStore, StoreType } from '../../store';
 import { Network, EthCall } from '../../index';
-import { sleep } from '../../test/utils';
+import { sleep } from '../../utils';
 import { getIdArgs } from '../model/interface';
 const networkId = '1337';
 

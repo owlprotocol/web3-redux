@@ -4,7 +4,7 @@ import ganache from 'ganache-core';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 
-import { sleep } from '../../test/utils';
+import { sleep } from '../../utils';
 import { create as createNetwork } from '../../network/actions';
 
 import { name } from '../common';

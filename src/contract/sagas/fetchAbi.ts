@@ -1,7 +1,8 @@
 import { select, put, call } from 'typed-redux-saga/macro';
 import axios from 'axios';
+import { AbiItem } from 'web3-utils';
 import networkExists from '../../network/sagas/exists';
-import { create, FetchAbiAction } from '../actions';
+import { create, set as setAction, FetchAbiAction } from '../actions';
 import { selectByIdSingle } from '../selectors';
 
 /** @category Sagas */
@@ -30,10 +31,9 @@ export function* fetchAbi(action: FetchAbiAction) {
 
     //@ts-expect-error
     const response = yield* call(axios, request);
-    const abi: any = response.data?.result;
+    const abi = response.data?.result as AbiItem[];
 
-    //TODO: Create update ABI
-    console.debug(abi);
+    yield* put(setAction({ id: { networkId, address }, key: 'abi', value: abi }));
 }
 
 export default fetchAbi;

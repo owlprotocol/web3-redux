@@ -1,13 +1,13 @@
 import { assert } from 'chai';
 import { createStore, StoreType } from '../store';
 import { name } from './common';
+import { networkId } from '../test/data';
 import { create as createEvent } from '../contractevent/actions';
 import { validateContractEvent } from '../contractevent';
 
 import { selectEvents } from './selectors/index';
 
 describe(`${name}.integration`, () => {
-    const networkId = '1337';
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
 
     //Events

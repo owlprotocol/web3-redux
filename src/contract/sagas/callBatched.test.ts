@@ -4,6 +4,7 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import ganache from 'ganache-core';
 import { name } from '../common';
+import { networkId } from '../../test/data';
 
 import BlockNumber from '../../abis/BlockNumber.json';
 import Multicall from '../../abis/Multicall.json';
@@ -15,8 +16,6 @@ import { create as createNetwork } from '../../network';
 import { ContractId } from '../model';
 import { selectContractCall } from '../selectors';
 import { create as createAction, callBatched as callBatchedAction } from '../actions';
-
-const networkId = '1337';
 
 describe(`${name}.sagas.callBatched`, () => {
     let web3: Web3; //Web3 loaded from store

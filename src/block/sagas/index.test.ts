@@ -7,6 +7,7 @@ import { Network } from '../../network/model';
 import networkExists from '../../network/sagas/exists';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
 import { selectByIdSingle } from '../selectors';
 
 //Actions
@@ -19,8 +20,6 @@ import fetch from './fetch';
 import { BlockId, BlockHeader } from '../model';
 
 describe(`${name}.sagas`, () => {
-    const networkId = '1337';
-
     const item: BlockHeader = { networkId, number: 0 };
     const id: BlockId = { ...item };
     const itemWithId = { id, ...item };

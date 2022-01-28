@@ -3,17 +3,15 @@ import BlockNumber from '../abis/BlockNumber.json';
 import { validateContract } from '../contract';
 import { validateContractEvent } from '../contractevent';
 
-export const networkId = '1337';
-export const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
-export const ADDRESS_2 = '0x0000000000000000000000000000000000000002';
+export const networkId = '1336';
 export const addressList = [
+    '0x0000000000000000000000000000000000000000',
     '0x0000000000000000000000000000000000000001',
     '0x0000000000000000000000000000000000000002',
-    '0x0000000000000000000000000000000000000003',
-    '0x0000000000000000000000000000000000000004',
-    '0x0000000000000000000000000000000000000005',
-    '0x0000000000000000000000000000000000000006',
 ];
+export const ADDRESS_0 = addressList[0];
+export const ADDRESS_1 = addressList[1];
+export const ADDRESS_2 = addressList[2];
 
 //Network
 export const network1 = { networkId };

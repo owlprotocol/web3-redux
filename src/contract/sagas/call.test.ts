@@ -7,6 +7,7 @@ import { name } from '../common';
 
 import BlockNumber from '../../abis/BlockNumber.json';
 import { sleep, ganacheLogger } from '../../utils';
+import { networkId } from '../../test/data';
 
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';
@@ -14,8 +15,6 @@ import { create as createNetwork } from '../../network';
 import { ContractId } from '../model';
 import { selectContractCall } from '../selectors';
 import { create as createAction, call as callAction } from '../actions';
-
-const networkId = '1337';
 
 describe(`${name}.sagas.call`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -32,11 +31,10 @@ describe(`${name}.sagas.call`, () => {
     let rpcBatch = 0;
 
     before(async () => {
-        const networkIdInt = parseInt(networkId);
         rpcLogger = ganacheLogger();
 
         const provider = ganache.provider({
-            networkId: networkIdInt,
+            networkId: parseInt(networkId),
             logger: rpcLogger,
             verbose: true,
         });

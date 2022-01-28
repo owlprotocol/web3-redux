@@ -3,10 +3,11 @@ import Web3 from 'web3';
 import { renderHook, act } from '@testing-library/react-hooks';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
 import { StoreType } from '../../store';
 import { useSupportsInterface } from '.';
 // eslint-disable-next-line import/no-unresolved
-import { networkId, beforeFn, beforeEachFn, deployERC165Contract } from './index.test';
+import { beforeFn, beforeEachFn, deployERC165Contract } from './index.test';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

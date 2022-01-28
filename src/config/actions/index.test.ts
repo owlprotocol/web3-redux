@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
 import Config from '../model/interface';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
@@ -10,7 +11,6 @@ import { set, SET, SetAction, isSetAction } from './set';
 import { ZERO_ADDRESS } from '../../utils';
 
 describe(`${name}.actions`, () => {
-    const networkId = '1337';
     const item: Config = { id: '0', networkId, account: ZERO_ADDRESS };
     const id = item.id;
 

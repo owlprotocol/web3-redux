@@ -2,12 +2,12 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import ganache from 'ganache-core';
 import BlockNumber from '../../abis/BlockNumber.json';
+import { networkId } from '../../test/data';
 
 import { createStore, StoreType } from '../../store';
 import { Network, EthCall } from '../../index';
 import { sleep } from '../../utils';
 import { getIdArgs } from '../model/interface';
-const networkId = '1337';
 
 describe('ethcall.sagas', () => {
     let web3: Web3;

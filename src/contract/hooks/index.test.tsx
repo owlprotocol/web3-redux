@@ -6,12 +6,12 @@ import { Provider } from 'react-redux';
 
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 import ERC165Abi from '../../abis/ERC165.json';
+import { networkId } from '../../test/data';
 
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network/actions';
 import { create } from '../actions';
 
-export const networkId = '1337';
 export const beforeFn = async () => {
     const provider = ganache.provider({
         networkId: parseInt(networkId),

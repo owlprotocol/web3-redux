@@ -4,6 +4,7 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import ganache from 'ganache-core';
 import { name } from '../common';
+import { networkId } from '../../test/data';
 
 import BlockNumber from '../../abis/BlockNumber.json';
 import { sleep } from '../../utils';
@@ -12,8 +13,6 @@ import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';
 
 import { create as createAction, send as sendAction } from '../actions';
-
-const networkId = '1337';
 
 describe(`${name}.sagas.send`, () => {
     let web3: Web3; //Web3 loaded from store

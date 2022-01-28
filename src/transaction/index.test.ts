@@ -2,10 +2,9 @@ import { assert } from 'chai';
 import { createStore, StoreType } from '../store';
 import { validate, create, selectByIdSingle } from './index';
 import { name } from './common';
-import { addressList } from '../test/data';
+import { addressList, networkId } from '../test/data';
 
 describe(`${name}.integration`, () => {
-    const networkId = '1337';
     const item = { networkId, hash: '0x1', from: addressList[0], to: addressList[1] };
     const itemWithId = validate(item);
 

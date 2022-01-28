@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
 
 import { sleep } from '../../utils';
+import { networkId } from '../../test/data';
 import { create as createNetwork } from '../../network/actions';
 
 import { name } from '../common';
@@ -14,8 +15,6 @@ import { useTransaction } from './index';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
-
-const networkId = '1337';
 
 describe(`${name}.hooks`, () => {
     jsdom({ url: 'http://localhost' });
@@ -28,9 +27,8 @@ describe(`${name}.hooks`, () => {
     let expected: Transaction;
 
     before(async () => {
-        const networkIdInt = parseInt(networkId);
         const provider = ganache.provider({
-            networkId: networkIdInt,
+            networkId: parseInt(networkId),
         });
         //@ts-ignore
         web3 = new Web3(provider);

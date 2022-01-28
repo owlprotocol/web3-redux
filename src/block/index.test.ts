@@ -8,14 +8,13 @@ import { createStore, StoreType } from '../store';
 import { BlockHeader, BlockTransaction, validate } from './model';
 
 import { name } from './common';
+import { networkId } from '../test/data';
 import fetchAction from './actions/fetch';
 import subscribeAction from './actions/subscribe';
 import unsubscribeAction from './actions/unsubscribe';
 import { selectByIdSingle, selectByIdMany, selectManyBlockTransaction } from './selectors';
 
 describe(`${name}.integration`, () => {
-    const networkId = '1337';
-
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let store: StoreType;

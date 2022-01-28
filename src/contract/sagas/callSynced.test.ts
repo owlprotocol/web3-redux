@@ -5,6 +5,7 @@ import { AbiItem } from 'web3-utils';
 import { TransactionReceipt } from 'web3-core';
 import ganache from 'ganache-core';
 import { name } from '../common';
+import { networkId } from '../../test/data';
 
 import BlockNumber from '../../abis/BlockNumber.json';
 import { mineBlock, sleep } from '../../utils';
@@ -19,8 +20,6 @@ import { fetch as fetchTransaction } from '../../transaction/actions';
 import { ContractId } from '../model';
 import { selectContractCall } from '../selectors';
 import { create as createAction, callSynced as callSyncedAction } from '../actions';
-
-const networkId = '1337';
 
 describe(`${name}.sagas.callSynced`, () => {
     let web3: Web3; //Web3 loaded from store

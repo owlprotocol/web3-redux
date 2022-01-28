@@ -4,9 +4,9 @@ import { createStore, StoreType } from '../store';
 
 import { create, selectByIdSingle, selectLatestBlock, selectLatestBlockNumber } from './index';
 import { name } from './common';
+import { networkId } from '../test/data';
 
 describe(`${name}.integration`, () => {
-    const networkId = '1337';
     const item = {
         networkId,
     };

@@ -9,6 +9,7 @@ import { fetch as fetchBlock } from '../../block/actions';
 import { create as createNetwork } from '../../network/actions';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useAccount } from '../hooks';
@@ -23,9 +24,6 @@ describe(`${name}.hooks`, () => {
 
     let store: StoreType;
     let web3: Web3;
-
-    const networkId = '1337';
-
     let item: Account;
 
     let wrapper: any;

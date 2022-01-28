@@ -9,6 +9,7 @@ import { Network } from '../../network/model';
 import createSync from '../../sync/actions/create';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
 import { selectByIdSingle } from '../selectors';
 
 //Actions
@@ -28,8 +29,6 @@ import fetchNonceSynced from './fetchNonceSynced';
 import { getId } from '../model/interface';
 
 describe(`${name}.sagas`, () => {
-    const networkId = '1337';
-
     const item = { networkId, address: ZERO_ADDRESS };
     const itemWithId = { item: getId(item), ...item };
 

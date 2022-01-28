@@ -15,7 +15,7 @@ import {
     OPTIMISM_KOVAN_RPC,
 } from '../environment';
 
-export const defaultNetworks: { [networkId: string]: Network } = {
+export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '1337': {
         networkId: '1337',
         name: 'Ganache',

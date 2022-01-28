@@ -16,7 +16,10 @@ export interface UseEventsOptions {
     sync?: boolean; //Send event subscribe action
     blockBatch?: number;
 }
-/** @category Hooks */
+/**
+ * @category Hooks
+ * Fetch and sync contract events. Return list of events with optional filter.
+ */
 export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,

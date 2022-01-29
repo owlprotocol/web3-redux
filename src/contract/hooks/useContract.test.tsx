@@ -15,7 +15,7 @@ import { create } from '../actions';
 import Contract from '../model/interface';
 import { sleep, ZERO_ADDRESS } from '../../utils';
 
-import use from './useAccount';
+import useContract from './useContract';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -49,27 +49,36 @@ describe(`${name}.hooks`, () => {
     describe('use', () => {
         describe('sync:once', () => {
             it('(networkId, address, sync: {balance: once})', async () => {
-                const { result } = renderHook(() => use(networkId, item.address, { balance: 'once' }), {
-                    wrapper,
-                });
+                const { result } = renderHook(
+                    () => useContract(networkId, item.address, undefined, { getBalance: 'once' }),
+                    {
+                        wrapper,
+                    },
+                );
                 await sleep(100);
                 const expected = await web3.eth.getBalance(item.address);
                 assert.equal(result.current?.balance, expected, 'result.current.balance');
             });
 
             it('(networkId, address, sync: {nonce: once})', async () => {
-                const { result } = renderHook(() => use(networkId, item.address, { nonce: 'once' }), {
-                    wrapper,
-                });
+                const { result } = renderHook(
+                    () => useContract(networkId, item.address, undefined, { getNonce: 'once' }),
+                    {
+                        wrapper,
+                    },
+                );
                 await sleep(100);
                 const expected = await web3.eth.getTransactionCount(item.address);
                 assert.equal(result.current?.nonce, expected, 'result.current.nonce');
             });
 
             it('(networkId, address, sync: {getCode: once})', async () => {
-                const { result } = renderHook(() => use(networkId, item.address, { getCode: 'once' }), {
-                    wrapper,
-                });
+                const { result } = renderHook(
+                    () => useContract(networkId, item.address, undefined, { getCode: 'once' }),
+                    {
+                        wrapper,
+                    },
+                );
                 await sleep(100);
                 assert.equal(result.current?.code, '0x', 'result.current.code');
             });
@@ -77,9 +86,12 @@ describe(`${name}.hooks`, () => {
 
         describe('sync:Transaction', () => {
             it('(networkId, address, sync: {balance: Transaction})', async () => {
-                const { result } = renderHook(() => use(networkId, item.address, { balance: 'Transaction' }), {
-                    wrapper,
-                });
+                const { result } = renderHook(
+                    () => useContract(networkId, item.address, undefined, { getBalance: 'Transaction' }),
+                    {
+                        wrapper,
+                    },
+                );
 
                 const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
                 //Fetch transaction, triggering a refresh
@@ -96,9 +108,12 @@ describe(`${name}.hooks`, () => {
             });
 
             it('(networkId, address, sync: {nonce: Transaction})', async () => {
-                const { result } = renderHook(() => use(networkId, item.address, { nonce: 'Transaction' }), {
-                    wrapper,
-                });
+                const { result } = renderHook(
+                    () => useContract(networkId, item.address, undefined, { getNonce: 'Transaction' }),
+                    {
+                        wrapper,
+                    },
+                );
 
                 const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
                 //Fetch transaction, triggering a refresh
@@ -117,9 +132,12 @@ describe(`${name}.hooks`, () => {
 
         describe('sync:Block', () => {
             it('(networkId, address, sync: {balance: Block})', async () => {
-                const { result } = renderHook(() => use(networkId, item.address, { balance: 'Block' }), {
-                    wrapper,
-                });
+                const { result } = renderHook(
+                    () => useContract(networkId, item.address, undefined, { getBalance: 'Block' }),
+                    {
+                        wrapper,
+                    },
+                );
 
                 const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
                 //Fetch block, triggering a refresh
@@ -136,9 +154,12 @@ describe(`${name}.hooks`, () => {
             });
 
             it('(networkId, address, sync: {nonce: Block})', async () => {
-                const { result } = renderHook(() => use(networkId, item.address, { nonce: 'Block' }), {
-                    wrapper,
-                });
+                const { result } = renderHook(
+                    () => useContract(networkId, item.address, undefined, { getNonce: 'Block' }),
+                    {
+                        wrapper,
+                    },
+                );
 
                 const receipt = await web3.eth.sendTransaction({ from: item.address, to: ZERO_ADDRESS, value: '1' });
                 //Fetch block, triggering a refresh

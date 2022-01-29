@@ -31,7 +31,7 @@ describe(`${name}.sagas.fetchAbi`, () => {
                     address,
                 }),
             );
-            await sleep(1000);
+            await sleep(2000);
             //Selector
             const contract = selectContract(store.getState(), { networkId, address });
             assert.deepEqual(contract?.abi, WETH.abi as any, 'contract.abi != WETH.abi');

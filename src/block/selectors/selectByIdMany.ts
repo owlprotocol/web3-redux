@@ -1,14 +1,14 @@
-import select from './select';
 import { BlockId, getId } from '../model/id';
-import BlockHeader from '../model/BlockHeader';
+import BlockTransaction from '../model/BlockTransaction';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
+import { select } from './select';
 
 /** @category Selectors */
-function selectByIdMany(state: any, ids?: BlockId[]): (BlockHeader | null)[] {
-    if (!ids) return select(state); //Return all
+export function selectByIdMany(state: any, ids?: BlockId[]): (BlockTransaction | undefined)[] {
+    if (!ids) return select(state) as (BlockTransaction | undefined)[]; //Return all
 
     const idsStr = ids.map((id) => getId(id));
-    const result = select(state, idsStr);
+    const result = select(state, idsStr as string & string[]) as (BlockTransaction | undefined)[];
     return memoizeArrayByRef(result);
 }
 

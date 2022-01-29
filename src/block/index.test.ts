@@ -12,7 +12,7 @@ import { networkId } from '../test/data';
 import fetchAction from './actions/fetch';
 import subscribeAction from './actions/subscribe';
 import unsubscribeAction from './actions/unsubscribe';
-import { selectByIdSingle, selectByIdMany, selectManyBlockTransaction } from './selectors';
+import { selectByIdSingle, selectByIdMany } from './selectors';
 
 describe(`${name}.integration`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -178,7 +178,7 @@ describe(`${name}.integration`, () => {
             assert.deepEqual(blocks, expectedBlocks as any);
 
             const expectedBlockTransactions = promiseResults.map((b) => validate({ ...b, networkId }));
-            const blockTransactions = selectManyBlockTransaction(store.getState());
+            const blockTransactions = selectByIdMany(store.getState());
             assert.deepEqual(blockTransactions, expectedBlockTransactions, 'Block with transactions');
         });
 

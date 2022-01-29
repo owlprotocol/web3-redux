@@ -42,7 +42,13 @@ export interface State {
                 [networkId: string]: string[];
             };
             blockId: {
-                [blockId: string]: string[];
+                [blockId: string]: string[]; //Map blockId to list of related transactions
+            };
+            toId: {
+                [toId: string]: string[]; //Map contractId to list of related transactions sent to
+            };
+            fromId: {
+                [fromId: string]: string[]; //Map contractId to list of related transactions sent from
             };
         };
     };

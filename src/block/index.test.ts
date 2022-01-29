@@ -12,7 +12,7 @@ import { networkId } from '../test/data';
 import fetchAction from './actions/fetch';
 import subscribeAction from './actions/subscribe';
 import unsubscribeAction from './actions/unsubscribe';
-import { selectByIdSingle, selectByIdMany, selectManyBlockTransaction } from './selectors';
+import { selectByIdSingle, selectByIdMany } from './selectors';
 
 describe(`${name}.integration`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -118,7 +118,7 @@ describe(`${name}.integration`, () => {
             store.dispatch(subscribeAction({ networkId, returnTransactionObjects: false }));
             const expectedBlocks: BlockHeader[] = [];
             const subscription = web3.eth.subscribe('newBlockHeaders').on('data', (block: any) => {
-                expectedBlocks.push(validate({ ...block, networkId }));
+                expectedBlocks.push(validate({ ...block, networkId, transactions: [] }));
             });
 
             await mineBlock(web3);
@@ -178,7 +178,7 @@ describe(`${name}.integration`, () => {
             assert.deepEqual(blocks, expectedBlocks as any);
 
             const expectedBlockTransactions = promiseResults.map((b) => validate({ ...b, networkId }));
-            const blockTransactions = selectManyBlockTransaction(store.getState());
+            const blockTransactions = selectByIdMany(store.getState());
             assert.deepEqual(blockTransactions, expectedBlockTransactions, 'Block with transactions');
         });
 
@@ -218,12 +218,12 @@ describe(`${name}.integration`, () => {
 
             const expectedBlocks1: BlockHeader[] = [];
             const subscription1 = web3.eth.subscribe('newBlockHeaders').on('data', (block: any) => {
-                expectedBlocks1.push(validate({ ...block, networkId: network1 }));
+                expectedBlocks1.push(validate({ ...block, networkId: network1, transactions: [] }));
             });
 
             const expectedBlocks2: BlockHeader[] = [];
             const subscription2 = web3Network2.eth.subscribe('newBlockHeaders').on('data', (block: any) => {
-                expectedBlocks2.push(validate({ ...block, networkId: network2 }));
+                expectedBlocks2.push(validate({ ...block, networkId: network2, transactions: [] }));
             });
 
             await mineBlock(web3);

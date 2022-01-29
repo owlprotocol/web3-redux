@@ -2,6 +2,7 @@ import BlockNumber from '../abis/BlockNumber.json';
 
 import { validateContract } from '../contract';
 import { validateContractEvent } from '../contractevent';
+import { validateTransaction } from '../transaction';
 
 export const networkId = '1336';
 export const addressList = [
@@ -43,3 +44,7 @@ export const event2 = validateContractEvent({
     logIndex: 1,
     returnValues: { val: 42, val2: 69 },
 });
+
+//Transaction
+export const transaction1 = validateTransaction({ networkId, hash: '0x0', from: ADDRESS_1, to: ADDRESS_0 });
+export const transaction2 = validateTransaction({ networkId, hash: '0x1', from: ADDRESS_0, to: ADDRESS_1 });

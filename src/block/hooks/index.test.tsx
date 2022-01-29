@@ -13,9 +13,7 @@ import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useByIdSingle, useByIdMany, useBlock } from './index';
-import { getId, BlockId } from '../model/id';
-import BlockHeader from '../model/BlockHeader';
-import { validate } from '../model/interface';
+import { BlockTransaction, BlockId, getId, validate } from '../model';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -24,13 +22,13 @@ describe(`${name}.hooks`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
-    let item: BlockHeader;
+    let item: BlockTransaction;
     let id: BlockId;
-    let itemWithId: BlockHeader;
+    let itemWithId: BlockTransaction;
 
     let wrapper: any;
     before(async () => {
-        item = { networkId, number: 0 };
+        item = { networkId, number: 0, transactions: [] };
         id = { ...item };
         itemWithId = { id: getId(item), ...item };
     });
@@ -62,7 +60,7 @@ describe(`${name}.hooks`, () => {
     describe('useBlock', () => {
         let web3: Web3; //Web3 loaded from store
         let accounts: string[];
-        let expected: BlockHeader;
+        let expected: BlockTransaction;
 
         before(async () => {
             const networkIdInt = parseInt(networkId);
@@ -80,9 +78,11 @@ describe(`${name}.hooks`, () => {
 
             const txSent = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[1], value: '1' });
             const block = await web3.eth.getBlock(txSent.blockNumber);
-            //@ts-expect-error
-            delete block.transactions;
-            expected = validate({ networkId, ...block });
+            expected = validate({
+                networkId,
+                ...block,
+                transactions: [{ networkId, hash: txSent.transactionHash }],
+            });
         });
 
         it('(networkId, number)', async () => {

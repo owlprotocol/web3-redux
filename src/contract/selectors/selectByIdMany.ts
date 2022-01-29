@@ -1,16 +1,35 @@
-import select from './select';
+import { createSelector } from 'redux-orm';
+import Transaction from '../../transaction/model/interface';
+import { getOrm } from '../../orm';
 import { Contract, ContractId, getId, BaseWeb3Contract } from '../model/interface';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
+
+/** @internal */
+type selectManyType = (state: any, id?: string[]) => Contract[] | undefined;
+/** @internal */
+const selectMany: selectManyType = createSelector(
+    getOrm().Contract,
+    getOrm().Contract.fromTransactions,
+    getOrm().Contract.toTransactions,
+    (contracts: Contract[], fromTransactions: Transaction[][], toTransactions: Transaction[][]) => {
+        if (!contracts) return undefined;
+
+        return contracts.map((b, idx) => {
+            if (!b) return undefined;
+            return { ...b, fromTransactions: fromTransactions[idx], toTransactions: toTransactions[idx] };
+        }) as (Contract | undefined)[];
+    },
+);
 
 /** @category Selectors */
 function selectByIdMany<T extends BaseWeb3Contract = BaseWeb3Contract>(
     state: any,
     ids?: ContractId[],
-): (Contract<T> | null)[] {
-    if (!ids) return select(state); //Return all
+): (Contract<T> | undefined)[] {
+    if (!ids) return selectMany(state) as (Contract<T> | undefined)[]; //Return all
 
     const idsStr = ids.map((id) => getId(id));
-    const result = select(state, idsStr);
+    const result = selectMany(state, idsStr) as (Contract<T> | undefined)[];
     return memoizeArrayByRef(result);
 }
 

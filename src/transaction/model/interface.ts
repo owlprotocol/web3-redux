@@ -43,12 +43,25 @@ export interface Transaction extends TransactionId {
     readonly gas?: number;
     /** The data sent along with the transaction */
     readonly input?: string;
-    /** Used to index the block this transaction is in. Computed as `${networkId}-${blockNumber}` */
-    readonly blockId?: string | null;
     /** Transaction receipt. */
     readonly receipt?: TransactionReceipt;
     /** Confirmed blocks */
     readonly confirmations?: number;
+
+    /** ORM Relational */
+    /** @hidden */
+    //readonly network?: Network;
+    /** @hidden Used to index the block this transaction is in. Computed as `${networkId}-${blockNumber}` */
+    readonly blockId?: string | null;
+    //readonly block?: Block
+    /** @hidden */
+    readonly fromId?: string;
+    /** @hidden */
+    //readonly fromContract?: string;
+    /** @hidden */
+    readonly toId?: string;
+    /** @hidden */
+    //readonly toContract?: string;
 }
 
 const SEPARATOR = '-';

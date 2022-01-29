@@ -1,5 +1,20 @@
+import { createSelector } from 'redux-orm';
+import Transaction from '../../transaction/model/interface';
+import { getOrm } from '../../orm';
 import { Contract, ContractId, getId, BaseWeb3Contract } from '../model/interface';
-import select from './select';
+
+/** @internal */
+type selectSingleType = (state: any, id: string) => Contract | undefined;
+/** @internal */
+const selectSingle: selectSingleType = createSelector(
+    getOrm().Contract,
+    getOrm().Contract.fromTransactions,
+    getOrm().Contract.toTransactions,
+    (contract: Contract, fromTransactions: Transaction[], toTransactions: Transaction[]) => {
+        if (!contract) return undefined;
+        return { ...contract, fromTransactions, toTransactions };
+    },
+);
 
 /** @category Selectors */
 function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(
@@ -9,7 +24,7 @@ function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(
     if (!id) return undefined;
 
     const idStr = getId(id);
-    return select(state, idStr);
+    return selectSingle(state, idStr) as Contract<T> | undefined;
 }
 
 export default selectByIdSingle;

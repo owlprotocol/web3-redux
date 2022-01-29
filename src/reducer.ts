@@ -1,4 +1,6 @@
 import { enableBatching } from 'redux-batched-actions';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
 import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import { Action as TransactionAction, isReducerAction as isTransactionAction } from './transaction/actions';
@@ -22,6 +24,7 @@ import syncReducer from './sync/reducer';
 import _4ByteReducer from './4byte/reducer';
 
 import { getOrm, initializeState } from './orm';
+import { REDUX_ROOT } from './common';
 
 export type Action =
     | NetworkAction
@@ -36,7 +39,7 @@ export type Action =
     | SyncAction
     | _4ByteAction;
 
-const reducer = (state: any, action: Action) => {
+const reducerWithOrm = (state: any, action: Action) => {
     const orm = getOrm();
     const sess = orm.session(state || initializeState(orm));
     if (isNetworkAction(action)) networkReducer(sess, action);
@@ -53,6 +56,13 @@ const reducer = (state: any, action: Action) => {
     return sess.state;
 };
 
-export const rootReducer = enableBatching(reducer as (state: any, action: any) => any);
+export const reducerWithBatching = enableBatching(reducerWithOrm as (state: any, action: any) => any);
 
+const web3ReduxPersistConfig = {
+    key: REDUX_ROOT,
+    storage,
+};
+export const reducerWithPersist = persistReducer(web3ReduxPersistConfig, reducerWithBatching);
+
+export const rootReducer = reducerWithPersist;
 export default rootReducer;

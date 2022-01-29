@@ -26,7 +26,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
         name: 'Mainnet',
         web3Rpc: MAINNET_RPC,
         explorerUrl: 'https://etherscan.io/',
-        explorerApiUrl: 'https://api.etherscan.io/',
+        explorerApiUrl: 'https://api.etherscan.io/api',
         explorerApiKey: ETHERSCAN_API_KEY,
     },
     '3': {
@@ -34,7 +34,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
         name: 'Ropsten',
         web3Rpc: ROPSTEN_RPC,
         explorerUrl: 'https://ropsten.etherscan.io/',
-        explorerApiUrl: 'https://api-ropsten.etherscan.io/',
+        explorerApiUrl: 'https://api-ropsten.etherscan.io/api',
         explorerApiKey: ETHERSCAN_API_KEY,
     },
     '4': {
@@ -42,7 +42,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
         name: 'Rinkeby',
         web3Rpc: RINKEBY_RPC,
         explorerUrl: 'https://rinkeby.etherscan.io/',
-        explorerApiUrl: 'https://api-rinkeby.etherscan.io/',
+        explorerApiUrl: 'https://api-rinkeby.etherscan.io/api',
         explorerApiKey: ETHERSCAN_API_KEY,
     },
     '5': {
@@ -50,7 +50,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
         name: 'Goerli',
         web3Rpc: GOERLI_RPC,
         explorerUrl: 'https://goerli.etherscan.io/',
-        explorerApiUrl: 'https://api-goerli.etherscan.io/',
+        explorerApiUrl: 'https://api-goerli.etherscan.io/api',
         explorerApiKey: ETHERSCAN_API_KEY,
     },
     '42': {
@@ -58,7 +58,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
         name: 'Kovan',
         web3Rpc: KOVAN_RPC,
         explorerUrl: 'https://kovan.etherscan.io/',
-        explorerApiUrl: 'https://api-kovan.etherscan.io/',
+        explorerApiUrl: 'https://api-kovan.etherscan.io/api',
         explorerApiKey: ETHERSCAN_API_KEY,
     },
     '137': {
@@ -66,7 +66,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
         name: 'Polygon',
         web3Rpc: POLYGON_RPC,
         explorerUrl: 'https://polygonscan.io/',
-        explorerApiUrl: 'https://api.polygonscan.io/',
+        explorerApiUrl: 'https://api.polygonscan.io/api',
         explorerApiKey: ETHERSCAN_API_KEY,
     },
     '80001': {
@@ -74,7 +74,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
         name: 'Polygon Mumbai Testnet',
         web3Rpc: POLYGON_MUMBAI_RPC,
         explorerUrl: 'https://testnet.polygonscan.io/',
-        explorerApiUrl: 'https://api-testnet.polygonscan.io/',
+        explorerApiUrl: 'https://api-testnet.polygonscan.io/api',
         explorerApiKey: ETHERSCAN_API_KEY,
     },
     '42161': {
@@ -82,7 +82,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
         name: 'Arbitrum One',
         web3Rpc: ARBITRUM_RPC,
         explorerUrl: 'https://arbiscan.io/',
-        explorerApiUrl: 'https://api.arbiscan.io/',
+        explorerApiUrl: 'https://api.arbiscan.io/api',
         explorerApiKey: ETHERSCAN_API_KEY,
     },
     '421611': {

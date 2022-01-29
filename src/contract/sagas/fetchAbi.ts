@@ -19,7 +19,7 @@ export function* fetchAbi(action: FetchAbiAction) {
     if (!apiUrl) throw new Error(`Network ${networkId} missing apiUrl`);
 
     const request = {
-        method: 'url',
+        method: 'get',
         url: apiUrl,
         params: {
             module: 'contract',
@@ -31,7 +31,7 @@ export function* fetchAbi(action: FetchAbiAction) {
 
     //@ts-expect-error
     const response = yield* call(axios, request);
-    const abi = response.data?.result as AbiItem[];
+    const abi = JSON.parse(response.data?.result) as AbiItem[];
 
     yield* put(setAction({ id: { networkId, address }, key: 'abi', value: abi }));
 }

@@ -1,12 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
-import { AccountId } from '../model/interface';
+import { ContractId } from '../model/interface';
 
 /** @internal */
 export const FETCH_BALANCE = `${name}/FETCH_BALANCE`;
 /** @category Actions */
-export const fetchBalance = createAction(FETCH_BALANCE, (payload: AccountId) => {
+export const fetchBalance = createAction(FETCH_BALANCE, (payload: ContractId) => {
     return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
 });
 /** @internal */

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { AccountId, getId } from '../model/interface';
+import { ContractId, getId } from '../model/interface';
 
 import { Sync } from '../../sync/model';
 import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
@@ -13,7 +13,7 @@ import { toChecksumAddress } from 'web3-utils';
 /** @internal */
 export const FETCH_NONCE_SYNCED = `${name}/FETCH_NONCE_SYNCED`;
 /** @internal */
-export interface FetchNonceSyncedActionInput extends AccountId {
+export interface FetchNonceSyncedActionInput extends ContractId {
     sync?: Sync | Sync['type'] | 'once' | number;
 }
 /** @category Actions */

@@ -8,7 +8,6 @@ import ContractEventIndexModel from './contracteventindex/model/orm';
 import ContractSendModel from './contractsend/model/orm';
 import EthCallModel from './ethcall/model/orm';
 import ConfigModel from './config/model/orm';
-import AccountModel from './account/model/orm';
 import SyncModel from './sync/model/orm';
 import _4ByteModel from './4byte/model/orm';
 import { blockTransactionsSync } from './sync/model/BlockSync';
@@ -31,7 +30,6 @@ export function getOrm(): any {
     orm.register(ContractSendModel);
     orm.register(EthCallModel);
     orm.register(ConfigModel);
-    orm.register(AccountModel);
     orm.register(SyncModel);
     orm.register(_4ByteModel);
 

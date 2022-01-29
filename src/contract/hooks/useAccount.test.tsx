@@ -12,9 +12,10 @@ import { name } from '../common';
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-import { useAccount } from '../hooks';
-import { Account } from '../model/interface';
+import Contract from '../model/interface';
 import { sleep, ZERO_ADDRESS } from '../../utils';
+
+import use from './useAccount';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -24,7 +25,7 @@ describe(`${name}.hooks`, () => {
 
     let store: StoreType;
     let web3: Web3;
-    let item: Account;
+    let item: Contract;
 
     let wrapper: any;
     before(async () => {
@@ -45,10 +46,10 @@ describe(`${name}.hooks`, () => {
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
-    describe('useAccount', () => {
+    describe('use', () => {
         describe('sync:once', () => {
             it('(networkId, address, sync: {balance: once})', async () => {
-                const { result } = renderHook(() => useAccount(networkId, item.address, { balance: 'once' }), {
+                const { result } = renderHook(() => use(networkId, item.address, { balance: 'once' }), {
                     wrapper,
                 });
                 await sleep(100);
@@ -57,7 +58,7 @@ describe(`${name}.hooks`, () => {
             });
 
             it('(networkId, address, sync: {nonce: once})', async () => {
-                const { result } = renderHook(() => useAccount(networkId, item.address, { nonce: 'once' }), {
+                const { result } = renderHook(() => use(networkId, item.address, { nonce: 'once' }), {
                     wrapper,
                 });
                 await sleep(100);
@@ -66,7 +67,7 @@ describe(`${name}.hooks`, () => {
             });
 
             it('(networkId, address, sync: {getCode: once})', async () => {
-                const { result } = renderHook(() => useAccount(networkId, item.address, { getCode: 'once' }), {
+                const { result } = renderHook(() => use(networkId, item.address, { getCode: 'once' }), {
                     wrapper,
                 });
                 await sleep(100);
@@ -76,7 +77,7 @@ describe(`${name}.hooks`, () => {
 
         describe('sync:Transaction', () => {
             it('(networkId, address, sync: {balance: Transaction})', async () => {
-                const { result } = renderHook(() => useAccount(networkId, item.address, { balance: 'Transaction' }), {
+                const { result } = renderHook(() => use(networkId, item.address, { balance: 'Transaction' }), {
                     wrapper,
                 });
 
@@ -95,7 +96,7 @@ describe(`${name}.hooks`, () => {
             });
 
             it('(networkId, address, sync: {nonce: Transaction})', async () => {
-                const { result } = renderHook(() => useAccount(networkId, item.address, { nonce: 'Transaction' }), {
+                const { result } = renderHook(() => use(networkId, item.address, { nonce: 'Transaction' }), {
                     wrapper,
                 });
 
@@ -116,7 +117,7 @@ describe(`${name}.hooks`, () => {
 
         describe('sync:Block', () => {
             it('(networkId, address, sync: {balance: Block})', async () => {
-                const { result } = renderHook(() => useAccount(networkId, item.address, { balance: 'Block' }), {
+                const { result } = renderHook(() => use(networkId, item.address, { balance: 'Block' }), {
                     wrapper,
                 });
 
@@ -135,7 +136,7 @@ describe(`${name}.hooks`, () => {
             });
 
             it('(networkId, address, sync: {nonce: Block})', async () => {
-                const { result } = renderHook(() => useAccount(networkId, item.address, { nonce: 'Block' }), {
+                const { result } = renderHook(() => use(networkId, item.address, { nonce: 'Block' }), {
                     wrapper,
                 });
 

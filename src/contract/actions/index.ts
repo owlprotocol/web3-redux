@@ -16,6 +16,32 @@ import {
     isEventUnsubscribeAction,
 } from './eventUnsubscribe';
 import { FETCH_ABI, fetchAbi, FetchAbiAction, isFetchAbiAction } from './fetchAbi';
+import {
+    FETCH_BALANCE,
+    fetchBalance,
+    FetchBalanceAction,
+    isFetchBalanceAction,
+} from '../../contract/actions/fetchBalance';
+import { FETCH_NONCE, fetchNonce, FetchNonceAction, isFetchNonceAction } from './fetchNonce';
+import {
+    FETCH_TRANSACTIONS,
+    fetchTransactions,
+    FetchTransactionsAction,
+    isFetchTransactionsAction,
+} from './fetchTransactions';
+import {
+    FETCH_BALANCE_SYNCED,
+    fetchBalanceSynced,
+    FetchBalanceSyncedAction,
+    isFetchBalanceSyncedAction,
+} from './fetchBalanceSynced';
+import {
+    FETCH_NONCE_SYNCED,
+    fetchNonceSynced,
+    FetchNonceSyncedAction,
+    isFetchNonceSyncedAction,
+} from './fetchNonceSynced';
+import { GET_CODE, getCode, GetCodeAction, isGetCodeAction } from './getCode';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
@@ -34,7 +60,13 @@ export type SagaAction =
     | EventGetPastAction
     | EventSubscribeAction
     | EventUnsubscribeAction
-    | FetchAbiAction;
+    | FetchAbiAction
+    | FetchBalanceAction
+    | FetchNonceAction
+    | FetchTransactionsAction
+    | FetchBalanceSyncedAction
+    | FetchNonceSyncedAction
+    | GetCodeAction;
 /** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
     return (
@@ -46,7 +78,13 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
         isEventGetPastAction(action) ||
         isEventSubscribeAction(action) ||
         isEventUnsubscribeAction(action) ||
-        isFetchAbiAction(action)
+        isFetchAbiAction(action) ||
+        isFetchBalanceAction(action) ||
+        isFetchNonceAction(action) ||
+        isFetchTransactionsAction(action) ||
+        isFetchBalanceSyncedAction(action) ||
+        isFetchNonceSyncedAction(action) ||
+        isGetCodeAction(action)
     );
 }
 
@@ -71,6 +109,12 @@ export type {
     EventSubscribeAction,
     EventUnsubscribeAction,
     FetchAbiAction,
+    FetchBalanceAction,
+    FetchNonceAction,
+    FetchTransactionsAction,
+    FetchBalanceSyncedAction,
+    FetchNonceSyncedAction,
+    GetCodeAction,
 };
 
 export {
@@ -113,6 +157,24 @@ export {
     FETCH_ABI,
     fetchAbi,
     isFetchAbiAction,
+    FETCH_BALANCE,
+    fetchBalance,
+    isFetchBalanceAction,
+    FETCH_NONCE,
+    fetchNonce,
+    isFetchNonceAction,
+    FETCH_TRANSACTIONS,
+    fetchTransactions,
+    isFetchTransactionsAction,
+    FETCH_BALANCE_SYNCED,
+    fetchBalanceSynced,
+    isFetchBalanceSyncedAction,
+    FETCH_NONCE_SYNCED,
+    fetchNonceSynced,
+    isFetchNonceSyncedAction,
+    GET_CODE,
+    getCode,
+    isGetCodeAction,
 };
 
 export default {
@@ -155,4 +217,22 @@ export default {
     FETCH_ABI,
     fetchAbi,
     isFetchAbiAction,
+    FETCH_BALANCE,
+    fetchBalance,
+    isFetchBalanceAction,
+    FETCH_NONCE,
+    fetchNonce,
+    isFetchNonceAction,
+    FETCH_TRANSACTIONS,
+    fetchTransactions,
+    isFetchTransactionsAction,
+    FETCH_BALANCE_SYNCED,
+    fetchBalanceSynced,
+    isFetchBalanceSyncedAction,
+    FETCH_NONCE_SYNCED,
+    fetchNonceSynced,
+    isFetchNonceSyncedAction,
+    GET_CODE,
+    getCode,
+    isGetCodeAction,
 };

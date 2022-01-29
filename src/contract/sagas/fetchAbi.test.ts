@@ -8,6 +8,7 @@ import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';
 import { selectByIdSingle as selectContract } from '../selectors';
 import { fetchAbi as fetchAbiAction } from '../actions';
+import { ETHERSCAN_API_KEY } from '../../environment';
 
 describe(`${name}.sagas.fetchAbi`, () => {
     let store: StoreType;
@@ -19,6 +20,7 @@ describe(`${name}.sagas.fetchAbi`, () => {
             createNetwork({
                 networkId,
                 explorerApiUrl: 'https://api.etherscan.io/api',
+                explorerApiKey: ETHERSCAN_API_KEY,
             }),
         );
     });

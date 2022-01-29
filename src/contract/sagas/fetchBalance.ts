@@ -1,14 +1,16 @@
-import { put, call } from 'typed-redux-saga/macro';
+import { select, put, call } from 'typed-redux-saga/macro';
 import networkExists from '../../network/sagas/exists';
-import { set, FetchBalanceAction } from '../actions';
-import exists from './exists';
+import { set, create, FetchBalanceAction } from '../actions';
+import { selectByIdSingle } from '../selectors';
 
 /** @category Sagas */
 export function* fetchBalance(action: FetchBalanceAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
-    yield* call(exists, payload);
+    const account = yield* select(selectByIdSingle, { networkId, address });
+    if (!account) yield* put(create({ networkId, address }));
+
     const network = yield* call(networkExists, networkId);
     const web3 = network.web3;
     const web3Sender = network.web3Sender;

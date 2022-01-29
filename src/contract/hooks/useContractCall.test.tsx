@@ -9,7 +9,7 @@ import { BlockNumber } from '../../types/web3/BlockNumber';
 import { name } from '../common';
 import { networkId } from '../../test/data';
 import { StoreType } from '../../store';
-import { useContractCall, contractCallHookFactory } from '../../contract/hooks';
+import { useContractCall, contractCallHookFactory } from '../hooks/useContractCall';
 // eslint-disable-next-line import/no-unresolved
 import { beforeFn, beforeEachFn, deployBlockNoContract } from './index.test';
 

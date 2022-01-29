@@ -59,24 +59,26 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     //@ts-expect-error
     const response = yield* call(axios, request);
     const transactions = response.data?.result as EtherscanTx[];
-    const transactionsCreate = transactions.map((t) =>
-        createTransaction({
-            ...t,
-            networkId,
-            blockNumber: parseInt(t.blockNumber),
-            nonce: parseInt(t.nonce),
-            transactionIndex: parseInt(t.transactionIndex),
-            gas: parseInt(t.gas),
-            confirmations: parseInt(t.confirmations),
-        }),
-    );
+    if (transactions) {
+        const transactionsCreate = transactions.map((t) =>
+            createTransaction({
+                ...t,
+                networkId,
+                blockNumber: parseInt(t.blockNumber),
+                nonce: parseInt(t.nonce),
+                transactionIndex: parseInt(t.transactionIndex),
+                gas: parseInt(t.gas),
+                confirmations: parseInt(t.confirmations),
+            }),
+        );
 
-    const transactionsCreateBatch = batchActions(
-        transactionsCreate,
-        `${createTransaction.type}/${transactions.length}`,
-    );
+        const transactionsCreateBatch = batchActions(
+            transactionsCreate,
+            `${createTransaction.type}/${transactions.length}`,
+        );
 
-    yield* put(transactionsCreateBatch);
+        yield* put(transactionsCreateBatch);
+    }
 }
 
 export default fetchTransactions;

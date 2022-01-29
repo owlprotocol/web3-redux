@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
-import { AccountId, getId } from '../model/interface';
+import { ContractId, getId } from '../model/interface';
 
 import { Sync } from '../../sync/model';
 import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
@@ -13,7 +13,7 @@ import { fetchBalance } from './fetchBalance';
 /** @internal */
 export const FETCH_BALANCE_SYNCED = `${name}/FETCH_BALANCE_SYNCED`;
 /** @internal */
-export interface FetchBalanceSyncedActionInput extends AccountId {
+export interface FetchBalanceSyncedActionInput extends ContractId {
     sync?: Sync | Sync['type'] | 'once' | number;
 }
 /** @category Actions */

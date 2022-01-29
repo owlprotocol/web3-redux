@@ -13,7 +13,7 @@ import { selectByIdSingle } from '../selectors';
  *
  */
 //TODO: 'once' always refreshses, 'ifnull' should refresh only if empty
-export default function useAccount(
+export function useAccount(
     networkId: string | undefined,
     address: string | undefined,
     sync?: {
@@ -89,3 +89,5 @@ export default function useAccount(
 
     return account;
 }
+
+export default useAccount;

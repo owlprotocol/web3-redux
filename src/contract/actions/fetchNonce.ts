@@ -1,12 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
-import { AccountId } from '../model/interface';
+import { ContractId } from '../model/interface';
 
 /** @internal */
 export const FETCH_NONCE = `${name}/FETCH_NONCE`;
 /** @category Actions */
-export const fetchNonce = createAction(FETCH_NONCE, (payload: AccountId) => {
+export const fetchNonce = createAction(FETCH_NONCE, (payload: ContractId) => {
     return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
 });
 /** @internal */

@@ -4,14 +4,14 @@ import { name } from '../common';
 import { ContractId } from '../model/interface';
 
 /** @internal */
-export const FETCH_NONCE = `${name}/FETCH_NONCE`;
+export const GET_BALANCE = `${name}/GET_BALANCE`;
 /** @category Actions */
-export const fetchNonce = createAction(FETCH_NONCE, (payload: ContractId) => {
+export const getBalance = createAction(GET_BALANCE, (payload: ContractId) => {
     return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
 });
 /** @internal */
-export type FetchNonceAction = ReturnType<typeof fetchNonce>;
+export type GetBalanceAction = ReturnType<typeof getBalance>;
 /** @internal */
-export const isFetchNonceAction = fetchNonce.match;
+export const isGetBalanceAction = getBalance.match;
 
-export default fetchNonce;
+export default getBalance;

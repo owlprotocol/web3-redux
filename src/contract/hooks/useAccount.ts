@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { remove as removeSync } from '../../sync/actions';
 import { create, fetchBalanceSynced, fetchNonceSynced, getCode } from '../actions';
-import { FetchBalanceSyncedActionInput } from '../actions/fetchBalanceSynced';
-import { FetchNonceSyncedActionInput } from '../actions/fetchNonceSynced';
+import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced';
+import { GetNonceSyncedActionInput } from '../actions/getNonceSynced';
 import { selectByIdSingle } from '../selectors';
 
 /**
@@ -17,8 +17,8 @@ export function useAccount(
     networkId: string | undefined,
     address: string | undefined,
     sync?: {
-        balance?: FetchBalanceSyncedActionInput['sync'];
-        nonce?: FetchNonceSyncedActionInput['sync'];
+        balance?: GetBalanceSyncedActionInput['sync'];
+        nonce?: GetNonceSyncedActionInput['sync'];
         getCode?: false | 'once';
     },
 ) {

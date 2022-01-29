@@ -10,6 +10,7 @@ import { Contract } from '../model/interface';
 import { name } from '../common';
 import { selectByIdSingle } from '../selectors';
 import { create as createAction, getCode as getCodeAction } from '../actions';
+import { sleep } from '../../utils';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;

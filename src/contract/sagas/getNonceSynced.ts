@@ -1,12 +1,12 @@
 import { put } from 'typed-redux-saga/macro';
 import { create as createSync } from '../../sync/actions';
-import { FetchNonceSyncedAction, FETCH_NONCE_SYNCED } from '../actions/fetchNonceSynced';
+import { GetNonceSyncedAction, GET_NONCE_SYNCED } from '../actions/getNonceSynced';
 
 /** @internal */
-const FETCH_NONCE_SYNCED_ERROR = `${FETCH_NONCE_SYNCED}/ERROR`;
+const GET_NONCE_SYNCED_ERROR = `${GET_NONCE_SYNCED}/ERROR`;
 
 /** @category Sagas */
-function* fetchNonceSynced(action: FetchNonceSyncedAction) {
+function* getNonceSynced(action: GetNonceSyncedAction) {
     try {
         const { payload } = action;
         const { sync, fetchNonceAction } = payload;
@@ -20,11 +20,11 @@ function* fetchNonceSynced(action: FetchNonceSyncedAction) {
     } catch (error) {
         console.error(error);
         yield* put({
-            type: FETCH_NONCE_SYNCED_ERROR,
+            type: GET_NONCE_SYNCED_ERROR,
             error,
             action,
         });
     }
 }
 
-export default fetchNonceSynced;
+export default getNonceSynced;

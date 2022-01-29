@@ -20,11 +20,11 @@ import eventGetPast from './eventGetPast';
 import eventSubscribe from './eventSubscribe';
 import send from './send';
 import fetchAbi from './fetchAbi';
-import fetchBalance from './fetchBalance';
-import fetchNonce from './fetchNonce';
+import getBalance from './getBalance';
+import getNonce from './getNonce';
 import fetchTransactions from './fetchTransactions';
-import fetchBalanceSynced from './fetchBalanceSynced';
-import fetchNonceSynced from './fetchNonceSynced';
+import getBalanceSynced from './getBalanceSynced';
+import getNonceSynced from './getNonceSynced';
 import getCode from './getCode';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga
@@ -38,10 +38,10 @@ export function* saga() {
         takeEvery(EVENT_GET_PAST, eventGetPast),
         spawn(eventSubscribe),
         takeEvery(FETCH_ABI, fetchAbi),
-        takeEvery(FETCH_BALANCE, fetchBalance),
-        takeEvery(FETCH_NONCE, fetchNonce),
-        takeEvery(FETCH_BALANCE_SYNCED, fetchBalanceSynced),
-        takeEvery(FETCH_NONCE_SYNCED, fetchNonceSynced),
+        takeEvery(FETCH_BALANCE, getBalance),
+        takeEvery(FETCH_NONCE, getNonce),
+        takeEvery(FETCH_BALANCE_SYNCED, getBalanceSynced),
+        takeEvery(FETCH_NONCE_SYNCED, getNonceSynced),
         takeEvery(GET_CODE, getCode),
         takeEvery(FETCH_TRANSACTIONS, fetchTransactions),
     ]);

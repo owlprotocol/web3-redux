@@ -1,10 +1,10 @@
 import { select, put, call } from 'typed-redux-saga/macro';
 import networkExists from '../../network/sagas/exists';
-import { set, create, FetchBalanceAction } from '../actions';
+import { set, create, GetNonceAction } from '../actions';
 import { selectByIdSingle } from '../selectors';
 
 /** @category Sagas */
-export function* fetchBalance(action: FetchBalanceAction) {
+export function* getNonce(action: GetNonceAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
@@ -14,11 +14,11 @@ export function* fetchBalance(action: FetchBalanceAction) {
     const network = yield* call(networkExists, networkId);
     const web3 = network.web3;
     const web3Sender = network.web3Sender;
-    if (!web3 && !web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+    if (!web3 && !web3Sender) throw new Error(`Network ${networkId} missing web3`);
 
     //@ts-expect-error
-    const balance: string = yield* call((web3 ?? web3Sender).eth.getBalance, address);
-    yield* put(set({ id: { networkId, address }, key: 'balance', value: balance }));
+    const nonce: string = yield* call((web3 ?? web3Sender).eth.getTransactionCount, address);
+    yield* put(set({ id: { networkId, address }, key: 'nonce', value: nonce }));
 }
 
-export default fetchBalance;
+export default getNonce;

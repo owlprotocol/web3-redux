@@ -7,20 +7,20 @@ import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
 import { defaultEventSync } from '../../sync/model/EventSync';
 import { defaultTransactionSync } from '../../sync/model/TransactionSync';
 
-import { fetchNonce } from './fetchNonce';
+import { getNonce } from './getNonce';
 import { toChecksumAddress } from 'web3-utils';
 
 /** @internal */
-export const FETCH_NONCE_SYNCED = `${name}/FETCH_NONCE_SYNCED`;
+export const GET_NONCE_SYNCED = `${name}/GET_NONCE_SYNCED`;
 /** @internal */
-export interface FetchNonceSyncedActionInput extends ContractId {
+export interface GetNonceSyncedActionInput extends ContractId {
     sync?: Sync | Sync['type'] | 'once' | number;
 }
 /** @category Actions */
-export const fetchNonceSynced = createAction(FETCH_NONCE_SYNCED, (payload: FetchNonceSyncedActionInput) => {
+export const getNonceSynced = createAction(GET_NONCE_SYNCED, (payload: GetNonceSyncedActionInput) => {
     const { networkId } = payload;
     const address = toChecksumAddress(payload.address);
-    const fetchNonceAction = fetchNonce(payload);
+    const fetchNonceAction = getNonce(payload);
     //Default sync
     let sync: Sync | undefined;
 
@@ -44,8 +44,8 @@ export const fetchNonceSynced = createAction(FETCH_NONCE_SYNCED, (payload: Fetch
     return { payload: { networkId, address, sync, fetchNonceAction } };
 });
 /** @internal */
-export type FetchNonceSyncedAction = ReturnType<typeof fetchNonceSynced>;
+export type GetNonceSyncedAction = ReturnType<typeof getNonceSynced>;
 /** @internal */
-export const isFetchNonceSyncedAction = fetchNonceSynced.match;
+export const isGetNonceSyncedAction = getNonceSynced.match;
 
-export default fetchNonceSynced;
+export default getNonceSynced;

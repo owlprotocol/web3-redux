@@ -6,6 +6,7 @@ import { selectByIdMany } from '../../transaction/selectors';
 import { name } from '../common';
 import { fetchTransactions } from '../actions';
 import { sleep } from '../../utils';
+import { ETHERSCAN_API_KEY } from '../../environment';
 
 describe(`${name}.sagas.fetchTransactions`, () => {
     let store: StoreType;
@@ -17,6 +18,7 @@ describe(`${name}.sagas.fetchTransactions`, () => {
             createNetwork({
                 networkId,
                 explorerApiUrl: 'https://api.etherscan.io/api',
+                explorerApiKey: ETHERSCAN_API_KEY,
             }),
         );
     });

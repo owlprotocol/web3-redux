@@ -1,17 +1,17 @@
 import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
-import { AccountId } from '../model/interface';
+import { ContractId } from '../model/interface';
 
 /** @internal */
-export const REMOVE = `${name}/DELETE`;
+export const GET_NONCE = `${name}/GET_NONCE`;
 /** @category Actions */
-export const remove = createAction(REMOVE, (payload: AccountId) => {
+export const getNonce = createAction(GET_NONCE, (payload: ContractId) => {
     return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
 });
 /** @internal */
-export type RemoveAction = ReturnType<typeof remove>;
+export type GetNonceAction = ReturnType<typeof getNonce>;
 /** @internal */
-export const isRemoveAction = remove.match;
+export const isGetNonceAction = getNonce.match;
 
-export default remove;
+export default getNonce;

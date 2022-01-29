@@ -8,7 +8,6 @@ import { Action as ContractSendAction, isReducerAction as isContractSendAction }
 import { Action as EthCallAction, isReducerAction as isEthCallAction } from './ethcall/actions';
 import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
 import { Action as Web3ReduxAction } from './web3Redux/actions';
-import { Action as AccountAction, isReducerAction as isAccountAction } from './account/actions';
 import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions';
 import { Action as SyncAction, isReducerAction as isSyncAction } from './sync/actions';
 import networkReducer from './network/reducer';
@@ -19,7 +18,6 @@ import contractEventReducer from './contractevent/reducer';
 import contractSendReducer from './contractsend/reducer';
 import ethCallReducer from './ethcall/reducer';
 import configReducer from './config/reducer';
-import accountReducer from './account/reducer';
 import syncReducer from './sync/reducer';
 import _4ByteReducer from './4byte/reducer';
 
@@ -35,7 +33,6 @@ export type Action =
     | EthCallAction
     | ConfigAction
     | Web3ReduxAction
-    | AccountAction
     | SyncAction
     | _4ByteAction;
 
@@ -50,7 +47,6 @@ const reducer = (state: any, action: Action) => {
     else if (isContractSendAction(action)) contractSendReducer(sess, action);
     else if (isEthCallAction(action)) ethCallReducer(sess, action);
     else if (isConfigAction(action)) configReducer(sess, action);
-    else if (isAccountAction(action)) accountReducer(sess, action);
     else if (isSyncAction(action)) syncReducer(sess, action);
     else if (is4ByteAction(action)) _4ByteReducer(sess, action);
 

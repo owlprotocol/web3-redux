@@ -1,12 +1,12 @@
 import { put } from 'typed-redux-saga/macro';
 import { create as createSync } from '../../sync/actions';
-import { FetchBalanceSyncedAction, FETCH_BALANCE_SYNCED } from '../actions/fetchBalanceSynced';
+import { GetBalanceSyncedAction, GET_BALANCE_SYNCED } from '../actions/getBalanceSynced';
 
 /** @internal */
-const FETCH_BALANCE_SYNCED_ERROR = `${FETCH_BALANCE_SYNCED}/ERROR`;
+const GET_BALANCE_SYNCED_ERROR = `${GET_BALANCE_SYNCED}/ERROR`;
 
 /** @category Sagas */
-function* fetchBalanceSynced(action: FetchBalanceSyncedAction) {
+function* getBalanceSynced(action: GetBalanceSyncedAction) {
     try {
         const { payload } = action;
         const { sync, fetchBalanceAction } = payload;
@@ -20,11 +20,11 @@ function* fetchBalanceSynced(action: FetchBalanceSyncedAction) {
     } catch (error) {
         console.error(error);
         yield* put({
-            type: FETCH_BALANCE_SYNCED_ERROR,
+            type: GET_BALANCE_SYNCED_ERROR,
             error,
             action,
         });
     }
 }
 
-export default fetchBalanceSynced;
+export default getBalanceSynced;

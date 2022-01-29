@@ -7,7 +7,6 @@ import ContractEventIndex from './contracteventindex/model/interface';
 import ContractSend from './contractsend/model/interface';
 import EthCall from './ethcall/model/interface';
 import Config from './config/model/interface';
-import Account from './account/model/interface';
 import _4Byte from './4byte/model/interface';
 import { ModelWithId } from './types/model';
 
@@ -94,11 +93,6 @@ export interface State {
     Config: {
         items: [0];
         itemsById: { [0]: ModelWithId<Config> };
-    };
-    /** Accounts indexed by id */
-    Account: {
-        items: string[];
-        itemsById: { [id: string]: ModelWithId<Account> };
     };
     /** 4Byte elements indexed by id */
     _4Byte: {

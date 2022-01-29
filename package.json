@@ -1,17 +1,17 @@
 {
-    "name": "@leovigna/web3-redux",
-    "version": "0.1.6",
+    "name": "@owlprotocol/web3-redux",
+    "version": "0.1.7",
     "private": false,
     "repository": {
         "type": "git",
-        "url": "https://github.com/leovigna/web3-redux.git"
+        "url": "https://github.com/owlprotocol/web3-redux.git"
     },
-    "homepage": "https://leovigna.github.io/web3-redux",
+    "homepage": "https://owlprotocol.github.io/web3-redux",
     "copyright": "Copyright 2021 Leo Vigna",
     "author": {
         "name": "Leo Vigna",
         "email": "leo.vigna@gmail.com",
-        "url": "https://github.com/leovigna/"
+        "url": "https://github.com/owlprotocol/"
     },
     "license": "MIT",
     "scripts": {

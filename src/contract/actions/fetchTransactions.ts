@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
 
-interface FetchTransactionsPayload {
+export interface FetchTransactionsPayload {
     networkId: string;
     address: string;
     startblock?: number;

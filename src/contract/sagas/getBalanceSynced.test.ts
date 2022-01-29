@@ -1,34 +1,21 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { AbiItem } from 'web3-utils';
 import Ganache from 'ganache-core';
-import BlockNumber from '../abis/BlockNumber.json';
-import { networkId } from '../test/data';
-
-import { Block, Transaction } from '../index';
-import { createStore, StoreType } from '../store';
-
-import { create as createNetwork } from '../network/actions';
-
-import { name } from './common';
-import { selectByIdSingle } from './selectors';
-
-import { Account } from './model/interface';
-
-import {
-    create as createAction,
-    fetchBalance as fetchBalanceAction,
-    fetchBalanceSynced as fetchBalanceSyncedAction,
-    fetchNonce as fetchNonceAction,
-    getCode as getCodeAction,
-} from './actions';
-import { ZERO_ADDRESS, sleep } from '../utils';
+import { Block, Transaction } from '../../index';
+import { networkId } from '../../test/data';
+import { createStore, StoreType } from '../../store';
+import { create as createNetwork } from '../../network/actions';
+import { Contract } from '../model/interface';
+import { name } from '../common';
+import { selectByIdSingle } from '../selectors';
+import { create as createAction, fetchBalanceSynced as fetchBalanceSyncedAction } from '../actions';
+import { ZERO_ADDRESS, sleep } from '../../utils';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;
     let web3: Web3;
 
-    let item: Account;
+    let item: Contract;
 
     const to = ZERO_ADDRESS;
 
@@ -38,7 +25,6 @@ describe(`${name}.integration`, () => {
         });
         //@ts-ignore
         web3 = new Web3(provider);
-
         const accounts = await web3.eth.getAccounts();
         item = { networkId, address: accounts[0] };
     });
@@ -47,20 +33,6 @@ describe(`${name}.integration`, () => {
         store = createStore();
         store.dispatch(createNetwork({ networkId, web3 }));
         store.dispatch(createAction(item));
-    });
-
-    it('fetchBalance()', async () => {
-        store.dispatch(fetchBalanceAction(item));
-        const expected = await web3.eth.getBalance(item.address!);
-        const account = selectByIdSingle(store.getState(), item);
-        assert.equal(account!.balance, expected, 'initial balance');
-    });
-
-    it('fetchNonce()', async () => {
-        store.dispatch(fetchNonceAction(item));
-        const expected = await web3.eth.getTransactionCount(item.address!);
-        const account = selectByIdSingle(store.getState(), item);
-        assert.equal(account!.nonce, expected, 'initial nonce');
     });
 
     describe('fetchBalanceSynced', () => {
@@ -139,33 +111,6 @@ describe(`${name}.integration`, () => {
             //sync, balance updated
             assert.notEqual(account2!.balance, expected1, 'previous balance');
             assert.equal(account2!.balance, expected2, 'updated balance');
-        });
-    });
-
-    describe('getCode', () => {
-        it('EOA - No-code', async () => {
-            store.dispatch(getCodeAction(item));
-            await sleep(100);
-
-            const account = selectByIdSingle(store.getState(), item);
-            assert.equal(account?.code, '0x', 'code should be empty 0x');
-        });
-
-        it('Smart Contract - Code', async () => {
-            //Deploy contract
-            const tx = new web3.eth.Contract(BlockNumber.abi as AbiItem[]).deploy({
-                data: BlockNumber.bytecode,
-            });
-            const gas = await tx.estimateGas();
-            const web3Contract = await tx.send({ from: item.address, gas, gasPrice: '10000' });
-            const address = web3Contract.options.address;
-
-            await sleep(100);
-            store.dispatch(getCodeAction({ networkId, address }));
-            await sleep(100);
-
-            const account = selectByIdSingle(store.getState(), { networkId, address });
-            assert.equal(account?.code, '0x' + BlockNumber.deployedBytecode, 'smart contract code');
         });
     });
 });

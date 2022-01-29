@@ -6,7 +6,6 @@ import transactionSaga from './transaction/sagas';
 import { saga as contractSaga } from './contract/sagas';
 import ethCallSaga from './ethcall/sagas';
 import { saga as web3ReduxSaga } from './web3Redux/sagas';
-import accountSaga from './account/sagas';
 import { saga as syncSaga } from './sync/sagas';
 import _4ByteSaga from './4byte/sagas';
 
@@ -19,7 +18,6 @@ export function* rootSaga() {
         spawn(contractSaga),
         spawn(ethCallSaga),
         spawn(web3ReduxSaga),
-        spawn(accountSaga),
         spawn(syncSaga),
         spawn(_4ByteSaga),
     ]);

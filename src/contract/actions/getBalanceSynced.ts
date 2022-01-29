@@ -1,26 +1,26 @@
 import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
-import { AccountId, getId } from '../model/interface';
+import { ContractId, getId } from '../model/interface';
 
 import { Sync } from '../../sync/model';
 import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
 import { defaultEventSync } from '../../sync/model/EventSync';
 import { defaultTransactionSync } from '../../sync/model/TransactionSync';
 
-import { fetchBalance } from './fetchBalance';
+import { getBalance } from './getBalance';
 
 /** @internal */
-export const FETCH_BALANCE_SYNCED = `${name}/FETCH_BALANCE_SYNCED`;
+export const GET_BALANCE_SYNCED = `${name}/GET_BALANCE_SYNCED`;
 /** @internal */
-export interface FetchBalanceSyncedActionInput extends AccountId {
+export interface GetBalanceSyncedActionInput extends ContractId {
     sync?: Sync | Sync['type'] | 'once' | number;
 }
 /** @category Actions */
-export const fetchBalanceSynced = createAction(FETCH_BALANCE_SYNCED, (payload: FetchBalanceSyncedActionInput) => {
+export const getBalanceSynced = createAction(GET_BALANCE_SYNCED, (payload: GetBalanceSyncedActionInput) => {
     const { networkId } = payload;
     const address = toChecksumAddress(payload.address);
-    const fetchBalanceAction = fetchBalance({ networkId, address });
+    const fetchBalanceAction = getBalance({ networkId, address });
     //Default sync
     let sync: Sync | undefined;
 
@@ -44,8 +44,8 @@ export const fetchBalanceSynced = createAction(FETCH_BALANCE_SYNCED, (payload: F
     return { payload: { networkId, address, sync, fetchBalanceAction } };
 });
 /** @internal */
-export type FetchBalanceSyncedAction = ReturnType<typeof fetchBalanceSynced>;
+export type GetBalanceSyncedAction = ReturnType<typeof getBalanceSynced>;
 /** @internal */
-export const isFetchBalanceSyncedAction = fetchBalanceSynced.match;
+export const isGetBalanceSyncedAction = getBalanceSynced.match;
 
-export default fetchBalanceSynced;
+export default getBalanceSynced;

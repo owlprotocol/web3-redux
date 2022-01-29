@@ -49,7 +49,6 @@ describe(`${name}.selectors`, () => {
     };
 
     before(() => {
-        console.debug(state.web3Redux.Transaction.indexes);
         state[REDUX_ROOT]['Contract'].items.push(contract.id);
         state[REDUX_ROOT]['Contract'].itemsById[contract.id] = contract;
 
@@ -129,7 +128,6 @@ describe(`${name}.selectors`, () => {
         });
 
         it(method, () => {
-            console.debug(state[REDUX_ROOT]['EthCall']);
             assert.deepEqual(selectContractCall(state, id, method), ethCall.returnValue);
         });
     });

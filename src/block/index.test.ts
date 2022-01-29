@@ -118,7 +118,7 @@ describe(`${name}.integration`, () => {
             store.dispatch(subscribeAction({ networkId, returnTransactionObjects: false }));
             const expectedBlocks: BlockHeader[] = [];
             const subscription = web3.eth.subscribe('newBlockHeaders').on('data', (block: any) => {
-                expectedBlocks.push(validate({ ...block, networkId }));
+                expectedBlocks.push(validate({ ...block, networkId, transactions: [] }));
             });
 
             await mineBlock(web3);
@@ -218,12 +218,12 @@ describe(`${name}.integration`, () => {
 
             const expectedBlocks1: BlockHeader[] = [];
             const subscription1 = web3.eth.subscribe('newBlockHeaders').on('data', (block: any) => {
-                expectedBlocks1.push(validate({ ...block, networkId: network1 }));
+                expectedBlocks1.push(validate({ ...block, networkId: network1, transactions: [] }));
             });
 
             const expectedBlocks2: BlockHeader[] = [];
             const subscription2 = web3Network2.eth.subscribe('newBlockHeaders').on('data', (block: any) => {
-                expectedBlocks2.push(validate({ ...block, networkId: network2 }));
+                expectedBlocks2.push(validate({ ...block, networkId: network2, transactions: [] }));
             });
 
             await mineBlock(web3);

@@ -54,9 +54,6 @@ describe(`${name}.selectors`, () => {
     describe('selectEvents', () => {
         it.skip('({networkId})', () => {
             //TODO: Test fails. Redux ORM bug?
-            console.debug(state[REDUX_ROOT]['ContractEvent']);
-            console.debug(state[REDUX_ROOT]['ContractEventIndex']);
-            console.debug(state[REDUX_ROOT]['ContractEventIndexIds']);
             const selected = selectEvents(state, index1.id!);
             assert.deepEqual(selected, [event1]);
         });

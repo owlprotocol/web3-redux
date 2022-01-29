@@ -1,12 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
 import { Network } from '../model/interface';
+import validate from '../model/validate';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;
 /** @category Actions */
 export const create = createAction(CREATE, (payload: Network) => {
-    return { payload };
+    return { payload: validate(payload) };
 });
 
 /** @internal */

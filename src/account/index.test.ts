@@ -3,11 +3,11 @@ import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import Ganache from 'ganache-core';
 import BlockNumber from '../abis/BlockNumber.json';
+import { networkId } from '../test/data';
 
 import { Block, Transaction } from '../index';
 import { createStore, StoreType } from '../store';
 
-import { sleep } from '../test/utils';
 import { create as createNetwork } from '../network/actions';
 
 import { name } from './common';
@@ -22,13 +22,11 @@ import {
     fetchNonce as fetchNonceAction,
     getCode as getCodeAction,
 } from './actions';
-import { ZERO_ADDRESS } from '../utils';
+import { ZERO_ADDRESS, sleep } from '../utils';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;
     let web3: Web3;
-
-    const networkId = '1337';
 
     let item: Account;
 

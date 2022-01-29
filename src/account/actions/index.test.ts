@@ -3,6 +3,7 @@ import { assert } from 'chai';
 import { name } from '../common';
 import { Account, getId } from '../model/interface';
 import { ZERO_ADDRESS } from '../../utils';
+import { networkId } from '../../test/data';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
@@ -10,7 +11,6 @@ import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 import { set, SET, SetAction, isSetAction } from './set';
 
 describe(`${name}.actions`, () => {
-    const networkId = '1337';
     const item: Account = { networkId, address: ZERO_ADDRESS };
 
     it('create', () => {

@@ -1,11 +1,12 @@
 import { takeEvery, all, spawn } from 'typed-redux-saga/macro';
-import { CALL, CALL_BATCHED, CALL_SYNCED, SEND, EVENT_GET_PAST } from '../actions';
+import { CALL, CALL_BATCHED, CALL_SYNCED, SEND, EVENT_GET_PAST, FETCH_ABI } from '../actions';
 import call from './call';
 import callBatched from './callBatched';
 import callSynced from './callSynced';
 import eventGetPast from './eventGetPast';
 import eventSubscribe from './eventSubscribe';
 import send from './send';
+import fetchAbi from './fetchAbi';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga
 /** @internal */
@@ -17,6 +18,7 @@ export function* saga() {
         takeEvery(SEND, send),
         takeEvery(EVENT_GET_PAST, eventGetPast),
         spawn(eventSubscribe),
+        takeEvery(FETCH_ABI, fetchAbi),
     ]);
 }
 

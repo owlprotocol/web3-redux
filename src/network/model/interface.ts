@@ -14,6 +14,10 @@ export interface NetworkId {
  *
  */
 export interface Network extends NetworkId {
+    /** Human readable name for the network */
+    readonly name?: string;
+    /** Web3 RPC URL (websocket recommended). Used to generate Web3 instance. */
+    readonly web3Rpc?: string;
     /** Web3 object. We recommend using a websocket connection. */
     readonly web3?: Web3;
     /** Web3 object specialized for sending transactions. */
@@ -26,6 +30,12 @@ export interface Network extends NetworkId {
     readonly gasLimit?: number;
     /** Latest block nummber. Updated via getBlockNumber() or middleware tracking block subscription updates. */
     readonly latestBlockNumber?: number;
+    /** Block explorer (eg. Etherscan) to use for network. */
+    readonly explorerUrl?: string;
+    /** Block explorer API url (eg. Etherscan) to use for indexed explorer data */
+    readonly explorerApiUrl?: string;
+    /** Block explorer API key */
+    readonly explorerApiKey?: string;
 }
 
 export default Network;

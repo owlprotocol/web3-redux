@@ -2,9 +2,8 @@ import { assert } from 'chai';
 import ganache from 'ganache-core';
 import { createStore, StoreType } from '../store';
 import { Network, Web3Redux, Block, Transaction } from '../index';
-import { sleepForPort } from '../test/utils';
+import { sleepForPort, sleep } from '../utils';
 import Web3 from 'web3';
-import { sleep } from '../utils';
 
 describe('web3Redux.sagas', () => {
     let server1: ganache.Server;

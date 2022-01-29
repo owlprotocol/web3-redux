@@ -2,6 +2,8 @@ import { assert } from 'chai';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
+
 import { Contract, ContractId, getId } from '../model/interface';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
@@ -9,7 +11,6 @@ import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 
 describe(`${name}.actions`, () => {
-    const networkId = '1337';
     const address = '0x0000000000000000000000000000000000000001';
     const item: Contract = {
         networkId,

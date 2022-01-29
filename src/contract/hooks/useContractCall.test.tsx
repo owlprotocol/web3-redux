@@ -7,10 +7,11 @@ import { renderHook } from '@testing-library/react-hooks';
 import { BlockNumber } from '../../types/web3/BlockNumber';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
 import { StoreType } from '../../store';
 import { useContractCall, contractCallHookFactory } from '../../contract/hooks';
 // eslint-disable-next-line import/no-unresolved
-import { networkId, beforeFn, beforeEachFn, deployBlockNoContract } from './index.test';
+import { beforeFn, beforeEachFn, deployBlockNoContract } from './index.test';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

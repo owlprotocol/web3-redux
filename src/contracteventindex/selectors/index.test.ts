@@ -4,12 +4,12 @@ import { getOrm } from '../../orm';
 
 import { ContractEventIndex } from '../model';
 import { name } from '../common';
+import { networkId } from '../../test/data';
 
 import { selectEvents } from './index';
 import { validateContractEvent } from '../../contractevent/model';
 
 describe(`${name}.selectors`, () => {
-    const networkId = '1337';
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
 
     //Events

@@ -6,6 +6,7 @@ import axios, { AxiosResponse } from 'axios';
 //Actions
 import fetchEventSignatureAction from '../actions/fetchEventSignature';
 import fetchFunctionSignatureAction from '../actions/fetchFunctionSignature';
+import { networkId } from '../../test/data';
 
 import setAction from '../actions/set';
 
@@ -22,8 +23,6 @@ interface _4ByteResponseItem {
 }
 
 describe(`${name}.sagas`, () => {
-    const networkId = '1337';
-
     const TRANFER_EVENT_KECCAK = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
     const eventItem = { networkId, signatureHash: TRANFER_EVENT_KECCAK };
 

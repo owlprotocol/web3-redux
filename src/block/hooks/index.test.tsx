@@ -4,10 +4,12 @@ import ganache from 'ganache-core';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 
-import { sleep } from '../../test/utils';
+import { sleep } from '../../utils';
 import { create as createNetwork } from '../../network/actions';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
+
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useByIdSingle, useByIdMany, useBlock } from './index';
@@ -22,8 +24,6 @@ describe(`${name}.hooks`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
-    const networkId = '1337';
-
     let item: BlockHeader;
     let id: BlockId;
     let itemWithId: BlockHeader;

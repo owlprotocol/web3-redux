@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { createStore, StoreType } from '../store';
-import { network1, contract1, contract1Id } from '../test/data';
-import { Network, Contract } from '../index';
+import { createStore, StoreType } from '../../store';
+import { network1, contract1, contract1Id } from '../../test/data';
+import { Network, Contract } from '../../index';
 
 describe('onNetworkUpdate', () => {
     //Indexes

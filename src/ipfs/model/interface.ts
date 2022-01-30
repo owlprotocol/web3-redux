@@ -10,6 +10,8 @@ export interface Ipfs extends IpfsId {
     readonly id?: string;
     /** ipfs url */
     readonly ipfsUrl?: string;
+    /** data blob */
+    readonly data?: Uint8Array;
 }
 
 const SEPERATOR = '-';

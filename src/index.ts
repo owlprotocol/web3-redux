@@ -8,6 +8,7 @@ import * as EthCall from './ethcall';
 import * as Config from './config';
 import * as Web3Redux from './web3Redux';
 import * as Account from './account';
+import * as Ipfs from './ipfs';
 import * as Sync from './sync';
 import { getOrm } from './orm';
 import { createStore } from './store';
@@ -31,5 +32,6 @@ export {
     Config,
     Web3Redux,
     Account,
+    Ipfs,
     Sync,
 };

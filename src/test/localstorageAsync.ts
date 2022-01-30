@@ -1,7 +1,8 @@
+import { WebStorage } from 'redux-persist/lib/types';
 //https://dev.to/shinshin86/a-mock-of-localstorage-written-in-typescript-2680
 type Store = any;
 
-export class LocalStorageAsyncMock {
+export class LocalStorageAsyncMock implements WebStorage {
     store: Store;
     length: number;
 
@@ -29,12 +30,12 @@ export class LocalStorageAsyncMock {
     }
 
     getItem(key: string): Promise<Store | null> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (!Object.keys(this.store).includes(key)) {
                 resolve(null);
             }
 
-            reject(this.store[key]);
+            resolve(this.store[key]);
         });
     }
 

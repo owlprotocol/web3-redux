@@ -34,7 +34,7 @@ describe(`${name}.hooks`, () => {
     });
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(create(item));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });

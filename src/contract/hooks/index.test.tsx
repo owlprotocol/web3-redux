@@ -21,7 +21,7 @@ export const beforeFn = async () => {
     return { web3, accounts };
 };
 export const beforeEachFn = ({ web3 }: { web3: Web3 }) => {
-    const store = createStore();
+    const { store } = createStore();
     store.dispatch(createNetwork({ networkId, web3 }));
     const wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     return { store, wrapper };

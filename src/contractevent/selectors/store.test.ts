@@ -35,7 +35,7 @@ describe(`${name}.selectors`, () => {
     });
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
     });
 
     describe('selectContractEvents', () => {

@@ -13,7 +13,7 @@ describe(`${name}.sagas.fetchTransactions`, () => {
     const address = '0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a'; //Etherscan example
 
     beforeEach(async () => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(
             createNetwork({
                 networkId,

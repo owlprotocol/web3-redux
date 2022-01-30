@@ -44,7 +44,7 @@ describe(`${name}.integration`, () => {
     });
 
     beforeEach(async () => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
     });
 

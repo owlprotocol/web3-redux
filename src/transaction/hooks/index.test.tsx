@@ -36,7 +36,7 @@ describe(`${name}.hooks`, () => {
     });
 
     beforeEach(async () => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
 

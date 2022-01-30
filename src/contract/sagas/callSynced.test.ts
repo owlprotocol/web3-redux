@@ -43,7 +43,7 @@ describe(`${name}.sagas.callSynced`, () => {
     });
 
     beforeEach(async () => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(BlockNumber.abi as AbiItem[]).deploy({

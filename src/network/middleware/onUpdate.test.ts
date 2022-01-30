@@ -11,7 +11,7 @@ describe('onNetworkUpdate', () => {
     const web3Sender = new Web3('http://localhost:8545');
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
     });
 
     it('createNetwork', () => {

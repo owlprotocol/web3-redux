@@ -1,4 +1,5 @@
 import { combineReducers, createStore as createReduxStore, applyMiddleware } from 'redux';
+import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import { crashReporter } from './middleware';
 import { onBlockUpdate } from './block/middleware';
@@ -27,12 +28,15 @@ export const createStore = (options?: CreateStoreOptions) => {
     const sagaMiddleware = createSagaMiddleware();
     const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
     const store = createReduxStore(reducers, rootMiddleware);
+    const persistor = persistStore(store);
+
     sagaMiddleware.run(rootSaga ?? defaultRootSaga);
 
-    return store;
+    return { store, persistor };
 };
 
-export type StoreType = ReturnType<typeof createStore>;
+export type StoreType = ReturnType<typeof createStore>['store'];
 export type DispatchType = StoreType['dispatch'];
 
-export default createStore();
+const { store } = createStore();
+export default store;

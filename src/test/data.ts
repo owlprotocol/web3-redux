@@ -7,6 +7,7 @@ import { validateContractEvent } from '../contractevent';
 import { validateEthCall } from '../ethcall';
 import { getOrm } from '../orm';
 import { StateRoot } from '../state';
+import { validateBlock } from '../block';
 import { validateTransaction } from '../transaction';
 
 export const networkId = '1336';
@@ -50,9 +51,24 @@ export const event2 = validateContractEvent({
     returnValues: { val: 42, val2: 69 },
 });
 
+//Block
+export const block1 = validateBlock({ networkId, number: 1 });
+export const block2 = validateBlock({ networkId, number: 2 });
 //Transaction
-export const transaction1 = validateTransaction({ networkId, hash: '0x0', from: ADDRESS_1, to: ADDRESS_0 });
-export const transaction2 = validateTransaction({ networkId, hash: '0x1', from: ADDRESS_0, to: ADDRESS_1 });
+export const transaction1 = validateTransaction({
+    networkId,
+    hash: '0x0',
+    blockNumber: 1,
+    from: ADDRESS_1,
+    to: ADDRESS_0,
+});
+export const transaction2 = validateTransaction({
+    networkId,
+    hash: '0x1',
+    blockNumber: 2,
+    from: ADDRESS_0,
+    to: ADDRESS_1,
+});
 
 //Ethcall
 // eslint-disable-next-line @typescript-eslint/no-var-requires

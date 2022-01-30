@@ -38,6 +38,7 @@ export function getOrm(): any {
 
 /** @internal */
 export const initializeState = (orm: any) => {
+    //TODO: redux-persist state reconciler might break this
     const state = orm.getEmptyState();
 
     // By default, add blockTransactionsSync which dispatches

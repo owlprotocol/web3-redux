@@ -30,6 +30,7 @@ export class LocalStorageAsyncMock implements WebStorage {
     }
 
     getItem(key: string): Promise<Store | null> {
+        //console.debug(`(${key})`)
         return new Promise((resolve) => {
             if (!Object.keys(this.store).includes(key)) {
                 resolve(null);
@@ -40,6 +41,7 @@ export class LocalStorageAsyncMock implements WebStorage {
     }
 
     setItem(key: string, value: any): Promise<undefined> {
+        //console.debug(`setItem(${key},${value})`)
         return new Promise((resolve, reject) => {
             if (typeof key === 'undefined' && typeof value === 'undefined') {
                 reject(

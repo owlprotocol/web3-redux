@@ -78,14 +78,17 @@ export function validate(item: Transaction): ModelWithId<Transaction> {
     const gasPriceHex = item.gasPrice ? toHex(item.gasPrice) : undefined;
     const blockId = item.blockNumber ? getBlockId({ networkId: item.networkId, number: item.blockNumber }) : undefined;
 
-    return {
+    const result = {
         ...item,
         id,
         to: toChecksum,
         from: fromCheckSum,
-        gasPrice: gasPriceHex,
-        blockId,
     };
+
+    if (gasPriceHex) result.gasPrice = gasPriceHex;
+    if (blockId) result.blockId = blockId;
+
+    return result;
 }
 
 export default Transaction;

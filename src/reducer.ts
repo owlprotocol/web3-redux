@@ -1,7 +1,7 @@
 import { enableBatching } from 'redux-batched-actions';
 import { persistReducer } from 'redux-persist';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
-import Web3ReduxTransform from './transform';
+import { NetworkTransform, ContractTransform } from './transform';
 import isClient from './utils/isClient';
 let storage;
 if (isClient()) {
@@ -75,9 +75,10 @@ export const createReducerWithPersist = (storage: any) => {
     const persistConfig = {
         key: REDUX_ROOT,
         storage,
-        transforms: [Web3ReduxTransform],
+        transforms: [NetworkTransform, ContractTransform],
         stateReconciler: hardSet,
         debug: true,
+        blacklist: ['Sync', '@@_______REDUX_ORM_STATE_FLAG'],
     };
     return persistReducer(persistConfig, reducerWithBatching);
 };

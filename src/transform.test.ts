@@ -47,15 +47,32 @@ describe('redux-persist', () => {
             //Async persistor
             await sleep(100);
 
-            const stateString = await localStorage.getItem('persist:web3Redux');
-            const stateParsed = JSON.parse(stateString);
-            let state = mapValues(stateParsed, (x) => JSON.parse(x));
-            state = mapValues(state, (x) => omit(x, ['meta']));
+            const persistedString = await localStorage.getItem('persist:web3Redux');
+            const persistedParsed = mapValues(JSON.parse(persistedString), (x) => JSON.parse(x));
+            const persistedModels = omit(persistedParsed, ['@@_______REDUX_ORM_STATE_FLAG', '_persist']);
+            const persistedModelsNoMeta = mapValues(persistedModels, (x) => omit(x, ['meta']));
+            const persisted = {
+                ...persistedModelsNoMeta,
+                ['@@_______REDUX_ORM_STATE_FLAG']: persistedParsed['@@_______REDUX_ORM_STATE_FLAG'],
+                ['_persist']: persistedParsed['_persist'],
+            }; //Add back non ORM fields
 
-            let expectedState = omit(store.getState().web3Redux, ['Sync', '@@_______REDUX_ORM_STATE_FLAG']) as any;
-            expectedState = mapValues(expectedState, (x) => omit(x, ['meta']));
+            const stateParsed = store.getState().web3Redux;
+            //Ignore Sync model
+            stateParsed.Sync = {
+                indexes: {},
+                items: [],
+                itemsById: {},
+            };
+            const stateModels = omit(stateParsed, ['@@_______REDUX_ORM_STATE_FLAG', '_persist']);
+            const stateModelsNoMeta = mapValues(stateModels, (x) => omit(x, ['meta'])) as any;
+            const state = {
+                ...stateModelsNoMeta,
+                ['@@_______REDUX_ORM_STATE_FLAG']: stateParsed['@@_______REDUX_ORM_STATE_FLAG'],
+                ['_persist']: stateParsed['_persist'],
+            }; //Add back non ORM fields
 
-            assert.deepEqual(state, expectedState);
+            assert.deepEqual(persisted, state);
         });
     });
 });

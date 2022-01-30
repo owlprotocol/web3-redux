@@ -1,15 +1,17 @@
+import { combineReducers } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
 import { persistReducer } from 'redux-persist';
+import { WebStorage } from 'redux-persist/lib/types';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
-import { NetworkTransform, ContractTransform } from './transform';
+import { NetworkTransform, ContractTransform, SyncTransform } from './transform';
 import isClient from './utils/isClient';
-let storage;
+let defaultStorage: WebStorage;
 if (isClient()) {
-    storage = require('redux-persist/lib/storage');
+    defaultStorage = require('redux-persist/lib/storage');
 } else {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const localStorageMock = require('./test/localstorageAsync');
-    storage = localStorageMock.getLocalStorageAsyncMock();
+    defaultStorage = localStorageMock.getLocalStorageAsyncMock();
 }
 
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
@@ -52,7 +54,7 @@ export type Action =
     | _4ByteAction;
 export type Reducer = (state: any, action: any) => any;
 
-const reducerWithOrm = (state: any, action: Action) => {
+export const reducerWeb3ReduxWithOrm = (state: any, action: Action) => {
     const orm = getOrm();
     const sess = orm.session(state || initializeState(orm));
     if (isNetworkAction(action)) networkReducer(sess, action);
@@ -69,20 +71,27 @@ const reducerWithOrm = (state: any, action: Action) => {
     return sess.state;
 };
 
-export const reducerWithBatching = enableBatching(reducerWithOrm as Reducer);
+export const reducerWeb3ReduxWithBatching = enableBatching(reducerWeb3ReduxWithOrm as Reducer);
 
-export const createReducerWithPersist = (storage: any) => {
+export const createReducerWeb3ReduxWithPersist = (storage: WebStorage) => {
     const persistConfig = {
         key: REDUX_ROOT,
         storage,
-        transforms: [NetworkTransform, ContractTransform],
+        transforms: [NetworkTransform, ContractTransform, SyncTransform],
         stateReconciler: hardSet,
         debug: true,
-        blacklist: ['Sync', '@@_______REDUX_ORM_STATE_FLAG'],
     };
-    return persistReducer(persistConfig, reducerWithBatching);
+    return persistReducer(persistConfig, reducerWeb3ReduxWithBatching);
 };
-export const reducerWithPersist = createReducerWithPersist(storage);
+export const reducerWeb3ReduxWithPersist = createReducerWeb3ReduxWithPersist(defaultStorage); //
 
-export const rootReducer = reducerWithPersist;
+export const createRootReducer = (reducerWeb3Redux: Reducer) => {
+    return combineReducers({
+        [REDUX_ROOT]: reducerWeb3Redux,
+    });
+};
+
+export const rootReducer = createRootReducer(reducerWeb3ReduxWithBatching); //Default reducer has no persist
+export const rootReducerWithPersist = createRootReducer(reducerWeb3ReduxWithPersist);
+
 export default rootReducer;

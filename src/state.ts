@@ -7,6 +7,7 @@ import ContractEventIndex from './contracteventindex/model/interface';
 import ContractSend from './contractsend/model/interface';
 import EthCall from './ethcall/model/interface';
 import Config from './config/model/interface';
+import Sync from './sync/model';
 import _4Byte from './4byte/model/interface';
 import { ModelWithId } from './types/model';
 
@@ -108,6 +109,11 @@ export interface State {
     _4Byte: {
         items: string[];
         itemsById: { [id: string]: ModelWithId<_4Byte> };
+    };
+    //** Sync dynamic middleware */
+    Sync: {
+        items: string[];
+        itemsById: { [id: string]: ModelWithId<Sync> };
     };
     /** Join table for events and indices */
     ContractEventIndexIds: {

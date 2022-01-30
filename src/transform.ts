@@ -27,3 +27,17 @@ export const ContractTransform = createTransform(
     },
     { whitelist: ['Contract'] },
 );
+
+export const SyncTransform = createTransform(
+    () => {
+        return {
+            indexes: {},
+            items: [],
+            itemsById: {},
+        };
+    },
+    (outboundState: State['Sync']) => {
+        return { ...outboundState };
+    },
+    { whitelist: ['Sync'] },
+);

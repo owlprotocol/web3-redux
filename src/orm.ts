@@ -43,6 +43,7 @@ export const initializeState = (orm: any) => {
 
     // By default, add blockTransactionsSync which dispatches
     // createTransaction actions when block is created
+    //TODO: Merge initial state
     const { Sync, Config } = orm.mutableSession(state);
     Sync.create(blockTransactionsSync);
     Config.create({ id: 0, account: null, networkId: null });

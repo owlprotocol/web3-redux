@@ -4,33 +4,28 @@ import ganache from 'ganache-core';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 
-import { sleep } from '../../utils';
 import { create as createNetwork } from '../../network/actions';
 
 import { name } from '../common';
-import { networkId } from '../../test/data';
+import { networkId, block1 } from '../../test/data';
 
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-import { useByIdSingle, useByIdMany, useBlock } from './index';
-import { BlockTransaction, BlockId, getId, validate } from '../model';
+import { useBlock } from './index';
+import { BlockTransaction, validate } from '../model';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
-describe(`${name}.hooks`, () => {
+describe(`${name}/hooks/useBlock.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
     let item: BlockTransaction;
-    let id: BlockId;
-    let itemWithId: BlockTransaction;
 
     let wrapper: any;
     before(async () => {
         item = { networkId, number: 0, transactions: [] };
-        id = { ...item };
-        itemWithId = { id: getId(item), ...item };
     });
 
     beforeEach(() => {
@@ -39,33 +34,14 @@ describe(`${name}.hooks`, () => {
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
-    it('useByIdSingle', async () => {
-        const { result } = renderHook(() => useByIdSingle(id), {
-            wrapper,
-        });
-
-        assert.deepEqual(result.current, itemWithId);
-        assert.equal(result.all.length, 1);
-    });
-
-    it('useByIdMany', async () => {
-        const { result } = renderHook(() => useByIdMany([id]), {
-            wrapper,
-        });
-
-        assert.deepEqual(result.current, [itemWithId]);
-        assert.equal(result.all.length, 1);
-    });
-
     describe('useBlock', () => {
         let web3: Web3; //Web3 loaded from store
         let accounts: string[];
         let expected: BlockTransaction;
 
         before(async () => {
-            const networkIdInt = parseInt(networkId);
             const provider = ganache.provider({
-                networkId: networkIdInt,
+                networkId: parseInt(networkId),
             });
             //@ts-ignore
             web3 = new Web3(provider);
@@ -85,15 +61,48 @@ describe(`${name}.hooks`, () => {
             });
         });
 
-        it('(networkId, number)', async () => {
-            const { result } = renderHook(() => useBlock(networkId, expected.number), {
+        it('(networkId, number, true)', async () => {
+            const { result, waitForNextUpdate } = renderHook(() => useBlock(networkId, expected.number, true), {
                 wrapper,
             });
 
-            await sleep(1000);
+            await waitForNextUpdate();
 
             const currentCall = result.current[0];
             assert.deepEqual(currentCall, expected, 'result.current');
+        });
+
+        it('(networkId, number, false)', async () => {
+            store.dispatch(create(block1));
+
+            const { result } = renderHook(() => useBlock(networkId, block1.number, true), {
+                wrapper,
+            });
+
+            const currentCall = result.current[0];
+            assert.deepEqual(currentCall, { ...block1, transactions: [] }, 'result.current');
+        });
+
+        it('(networkId, number, ifnull): null', async () => {
+            const { result, waitForNextUpdate } = renderHook(() => useBlock(networkId, expected.number, 'ifnull'), {
+                wrapper,
+            });
+
+            await waitForNextUpdate();
+
+            const currentCall = result.current[0];
+            assert.deepEqual(currentCall, expected, 'result.current');
+        });
+
+        it('(networkId, number, ifnull): defined', async () => {
+            store.dispatch(create(block1));
+
+            const { result } = renderHook(() => useBlock(networkId, block1.number, 'ifnull'), {
+                wrapper,
+            });
+
+            const currentCall = result.current[0];
+            assert.deepEqual(currentCall, { ...block1, transactions: [] }, 'result.current');
         });
     });
 });

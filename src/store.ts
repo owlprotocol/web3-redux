@@ -3,20 +3,32 @@ import createSagaMiddleware from 'redux-saga';
 import { crashReporter } from './middleware';
 import { onBlockUpdate } from './block/middleware';
 import { onNetworkUpdate } from './network/middleware';
-import { rootReducer } from './reducer';
-import { rootSaga } from './saga';
+import { reducerWithPersist, createReducerWithPersist } from './reducer';
+import { rootSaga as defaultRootSaga } from './saga';
 import { REDUX_ROOT } from './common';
 
-const reducers = combineReducers({
-    [REDUX_ROOT]: rootReducer,
-});
+const defaultMiddleware: any[] = [crashReporter, onNetworkUpdate, onBlockUpdate];
 
 /** @internal */
-export const createStore = () => {
+interface CreateStoreOptions {
+    persistStorage?: any;
+    middleware?: any[];
+    rootSaga?: any;
+}
+/** @internal */
+export const createStore = (options?: CreateStoreOptions) => {
+    const { persistStorage, middleware, rootSaga } = options ?? {};
+
+    const web3ReduxReducer = persistStorage ? createReducerWithPersist(persistStorage) : reducerWithPersist;
+    const reducers = combineReducers({
+        [REDUX_ROOT]: web3ReduxReducer,
+    });
+
     const sagaMiddleware = createSagaMiddleware();
-    const rootMiddleware = applyMiddleware(crashReporter, onNetworkUpdate as any, onBlockUpdate as any, sagaMiddleware);
+    const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
     const store = createReduxStore(reducers, rootMiddleware);
-    sagaMiddleware.run(rootSaga);
+    sagaMiddleware.run(rootSaga ?? defaultRootSaga);
+
     return store;
 };
 

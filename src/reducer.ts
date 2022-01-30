@@ -1,6 +1,15 @@
 import { enableBatching } from 'redux-batched-actions';
 import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import isClient from './utils/isClient';
+let storage;
+if (isClient()) {
+    storage = require('redux-persist/lib/storage');
+} else {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const localStorageMock = require('./test/localstorageAsync');
+    storage = localStorageMock.getLocalStorageAsyncMock();
+}
+
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
 import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import { Action as TransactionAction, isReducerAction as isTransactionAction } from './transaction/actions';
@@ -12,6 +21,7 @@ import { Action as ConfigAction, isReducerAction as isConfigAction } from './con
 import { Action as Web3ReduxAction } from './web3Redux/actions';
 import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions';
 import { Action as SyncAction, isReducerAction as isSyncAction } from './sync/actions';
+
 import networkReducer from './network/reducer';
 import blockReducer from './block/reducer';
 import transactionReducer from './transaction/reducer';
@@ -38,6 +48,7 @@ export type Action =
     | Web3ReduxAction
     | SyncAction
     | _4ByteAction;
+export type Reducer = (state: any, action: any) => any;
 
 const reducerWithOrm = (state: any, action: Action) => {
     const orm = getOrm();
@@ -56,13 +67,16 @@ const reducerWithOrm = (state: any, action: Action) => {
     return sess.state;
 };
 
-export const reducerWithBatching = enableBatching(reducerWithOrm as (state: any, action: any) => any);
+export const reducerWithBatching = enableBatching(reducerWithOrm as Reducer);
 
-const web3ReduxPersistConfig = {
-    key: REDUX_ROOT,
-    storage,
+export const createReducerWithPersist = (storage: any) => {
+    const persistConfig = {
+        key: REDUX_ROOT,
+        storage,
+    };
+    return persistReducer(persistConfig, reducerWithBatching);
 };
-export const reducerWithPersist = persistReducer(web3ReduxPersistConfig, reducerWithBatching);
+export const reducerWithPersist = createReducerWithPersist(storage);
 
 export const rootReducer = reducerWithPersist;
 export default rootReducer;

@@ -81,7 +81,7 @@ export const createReducerWeb3ReduxWithPersist = (storage: WebStorage) => {
         stateReconciler: hardSet,
         debug: true,
     };
-    return persistReducer(persistConfig, reducerWeb3ReduxWithBatching);
+    return persistReducer(persistConfig as any, reducerWeb3ReduxWithBatching);
 };
 export const reducerWeb3ReduxWithPersist = createReducerWeb3ReduxWithPersist(defaultStorage); //
 

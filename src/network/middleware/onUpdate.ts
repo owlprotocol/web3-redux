@@ -12,7 +12,7 @@ export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => a
     let postAction: AnyAction | undefined;
     if (Network.isCreateAction(action) || Network.isUpdateAction(action)) {
         networkId = action.payload.networkId;
-        newWeb3 = action.payload.web3 ?? (action.payload.web3Rpc ? new Web3(action.payload.web3Rpc) : undefined); //Use RPC string
+        newWeb3 = action.payload.web3;
         newWeb3Sender = action.payload.web3Sender;
     } else if (Network.isSetAction(action) && action.payload.key === 'web3') {
         networkId = action.payload.id;
@@ -20,9 +20,6 @@ export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => a
     } else if (Network.isSetAction(action) && action.payload.key === 'web3Sender') {
         networkId = action.payload.id;
         newWeb3Sender = action.payload.value;
-    } else if (Network.isSetAction(action) && action.payload.key === 'web3Rpc') {
-        networkId = action.payload.id;
-        newWeb3 = new Web3(action.payload.value);
     }
 
     if (networkId) {

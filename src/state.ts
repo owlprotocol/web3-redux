@@ -26,7 +26,7 @@ export interface State {
     /** Networks indexed by id */
     Network: {
         items: string[];
-        itemsById: { [id: string]: ModelWithId<Network> };
+        itemsById: { [networkId: string]: Network };
     };
     /** Blocks indexed by id */
     Block: {

@@ -76,7 +76,7 @@ const coder: AbiCoder = require('web3-eth-abi');
 const method = 'getValue';
 const methodAbi = (BlockNumber.abi as any).filter((f: any) => f.name === method)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);
-const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
+export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
 //State
 const state: StateRoot = {

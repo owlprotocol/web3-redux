@@ -49,6 +49,7 @@ describe(`${name}/hooks/useGetCode.test.tsx`, () => {
             });
             await waitForNextUpdate();
             assert.equal(result.current, '0x', 'contract.code != 0x');
+            assert.deepEqual(result.all, [undefined, '0x'], 'result.all');
         });
 
         it('(networkId, address, false)', async () => {
@@ -56,6 +57,7 @@ describe(`${name}/hooks/useGetCode.test.tsx`, () => {
                 wrapper,
             });
             assert.isUndefined(result.current);
+            assert.deepEqual(result.all, [undefined], 'result.all');
         });
 
         it('(networkId, address, ifnull)', async () => {
@@ -64,6 +66,7 @@ describe(`${name}/hooks/useGetCode.test.tsx`, () => {
             });
             await waitForNextUpdate();
             assert.equal(result.current, '0x', 'contract.code != 0x');
+            assert.deepEqual(result.all, [undefined, '0x'], 'result.all');
         });
     });
 });

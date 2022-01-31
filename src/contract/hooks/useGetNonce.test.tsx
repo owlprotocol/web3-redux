@@ -53,6 +53,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             await waitForNextUpdate();
             const expected = await web3.eth.getTransactionCount(address);
             assert.equal(result.current, expected, 'contract.nonce != expected');
+            assert.deepEqual(result.all, [undefined, expected], 'result.all');
         });
 
         it('(networkId, address, false)', async () => {
@@ -60,6 +61,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
                 wrapper,
             });
             assert.isUndefined(result.current);
+            assert.deepEqual(result.all, [undefined], 'result.all');
         });
 
         it('(networkId, address, ifnull)', async () => {
@@ -69,12 +71,18 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             await waitForNextUpdate();
             const expected = await web3.eth.getTransactionCount(address);
             assert.equal(result.current, expected, 'contract.nonce != expected');
+            assert.deepEqual(result.all, [undefined, expected], 'result.all');
         });
 
         it('(networkId, address, Transaction)', async () => {
             const { result, waitForNextUpdate } = renderHook(() => useGetNonce(networkId, address, 'Transaction'), {
                 wrapper,
             });
+
+            await waitForNextUpdate();
+            const expected1 = await web3.eth.getTransactionCount(address);
+            const value1 = result.current;
+            assert.equal(value1, expected1, 'contract.nonce != expected');
 
             const receipt = await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
             //Fetch transaction, triggering a refresh
@@ -85,14 +93,21 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
                 }),
             );
             await waitForNextUpdate();
-            const expected = await web3.eth.getTransactionCount(address);
-            assert.equal(result.current, expected, 'contract.nonce != expected');
+            const expected2 = await web3.eth.getTransactionCount(address);
+            const value2 = result.current;
+            assert.equal(value2, expected2, 'contract.nonce != expected');
+            assert.deepEqual(result.all, [undefined, value1, value2], 'result.all');
         });
 
         it('(networkId, address, Block)', async () => {
             const { result, waitForNextUpdate } = renderHook(() => useGetNonce(networkId, address, 'Block'), {
                 wrapper,
             });
+
+            await waitForNextUpdate();
+            const expected1 = await web3.eth.getTransactionCount(address);
+            const value1 = result.current;
+            assert.equal(value1, expected1, 'contract.nonce != expected');
 
             const receipt = await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
             //Fetch block, triggering a refresh
@@ -103,8 +118,11 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
                 }),
             );
             await waitForNextUpdate();
-            const expected = await web3.eth.getTransactionCount(address);
-            assert.equal(result.current, expected, 'contract.nonce != expected');
+            const expected2 = await web3.eth.getTransactionCount(address);
+            const value2 = result.current;
+            assert.equal(value2, expected2, 'contract.nonce != expected');
+            //TODO: Investigate why fails with extra re-render [undefined, value1, value1, value2]
+            //assert.deepEqual(result.all, [undefined, value1, value2], 'result.all');
         });
     });
 });

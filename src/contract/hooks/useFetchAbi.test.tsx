@@ -44,6 +44,7 @@ describe(`${name}/hooks/useFetchAbi.test.tsx`, () => {
             });
             await waitForNextUpdate();
             assert.deepEqual(result.current, WETH.abi as any, 'contract.abi != WETH.abi');
+            assert.deepEqual(result.all, [undefined, WETH.abi as any], 'result.all');
         });
 
         it('(networkId, address, false)', async () => {
@@ -51,6 +52,7 @@ describe(`${name}/hooks/useFetchAbi.test.tsx`, () => {
                 wrapper,
             });
             assert.isUndefined(result.current);
+            assert.deepEqual(result.all, [undefined], 'result.all');
         });
 
         it('(networkId, address, ifnull)', async () => {
@@ -59,6 +61,7 @@ describe(`${name}/hooks/useFetchAbi.test.tsx`, () => {
             });
             await waitForNextUpdate();
             assert.deepEqual(result.current, WETH.abi as any, 'contract.abi != WETH.abi');
+            assert.deepEqual(result.all, [undefined, WETH.abi as any], 'result.all');
         });
     });
 });

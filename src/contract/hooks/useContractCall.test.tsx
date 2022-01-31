@@ -4,7 +4,7 @@ import Ganache from 'ganache-core';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import BlockNumberAbi from '../../abis/BlockNumber.json';
+import BlockNumber from '../../abis/BlockNumber.json';
 
 import { create as createNetwork } from '../../network/actions';
 
@@ -12,9 +12,10 @@ import { name } from '../common';
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-import { useContractCall } from '../hooks/useContractCall';
 import { fetch as fetchTransaction } from '../../transaction/actions';
 import { fetch as fetchBlock } from '../../block/actions';
+
+import useContractCall from '../hooks/useContractCall';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -41,9 +42,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(BlockNumberAbi.abi as any)
+        web3Contract = await new web3.eth.Contract(BlockNumber.abi as any)
             .deploy({
-                data: BlockNumberAbi.bytecode,
+                data: BlockNumber.bytecode,
             })
             .send({ from: accounts[0], gas: 1000000, gasPrice: '10000' });
         address = web3Contract.options.address;
@@ -54,7 +55,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             create({
                 networkId,
                 address,
-                abi: BlockNumberAbi.abi as any,
+                abi: BlockNumber.abi as any,
             }),
         );
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;

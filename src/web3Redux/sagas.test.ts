@@ -4,6 +4,7 @@ import { createStore, StoreType } from '../store';
 import { Network, Web3Redux, Block, Transaction } from '../index';
 import { sleepForPort, sleep } from '../utils';
 import Web3 from 'web3';
+import State from '../state';
 
 describe('web3Redux.sagas', () => {
     let server1: ganache.Server;
@@ -47,7 +48,7 @@ describe('web3Redux.sagas', () => {
     });
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
     });
 
     it('Web3Redux.initialize', async () => {
@@ -55,7 +56,7 @@ describe('web3Redux.sagas', () => {
 
         //State
         assert.equal(
-            Object.values(store.getState().web3Redux['Network'].itemsById).length,
+            Object.values((store.getState().web3Redux as unknown as State)['Network'].itemsById).length,
             2,
             'state.web3Redux.Network.itemsById.length',
         );
@@ -69,9 +70,13 @@ describe('web3Redux.sagas', () => {
         await sleep(300);
 
         //Block.select
-        assert.equal(Block.selectByIdMany(store.getState()).length, 2, 'synced block headers');
+        assert.equal(Block.selectByIdMany(store.getState() as unknown as State).length, 2, 'synced block headers');
 
         //Transaction.select
-        assert.equal(Transaction.selectByIdMany(store.getState()).length, 2, 'synced block transactions');
+        assert.equal(
+            Transaction.selectByIdMany(store.getState() as unknown as State).length,
+            2,
+            'synced block transactions',
+        );
     });
 });

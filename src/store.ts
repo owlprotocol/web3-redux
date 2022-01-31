@@ -1,26 +1,38 @@
-import { combineReducers, createStore as createReduxStore, applyMiddleware } from 'redux';
+import { createStore as createReduxStore, applyMiddleware } from 'redux';
+import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import { crashReporter } from './middleware';
 import { onBlockUpdate } from './block/middleware';
 import { onNetworkUpdate } from './network/middleware';
-import { rootReducer } from './reducer';
-import { rootSaga } from './saga';
-import { REDUX_ROOT } from './common';
+import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist } from './reducer';
+import { rootSaga as defaultRootSaga } from './saga';
 
-const reducers = combineReducers({
-    [REDUX_ROOT]: rootReducer,
-});
+const defaultMiddleware: any[] = [crashReporter, onNetworkUpdate, onBlockUpdate];
 
 /** @internal */
-export const createStore = () => {
+interface CreateStoreOptions {
+    persistStorage?: any;
+    middleware?: any[];
+    rootSaga?: any;
+}
+/** @internal */
+export const createStore = (options?: CreateStoreOptions) => {
+    const { persistStorage, middleware, rootSaga } = options ?? {};
+
+    const reducer = persistStorage ? createRootReducer(createReducerWeb3ReduxWithPersist(persistStorage)) : rootReducer;
+
     const sagaMiddleware = createSagaMiddleware();
-    const rootMiddleware = applyMiddleware(crashReporter, onNetworkUpdate as any, onBlockUpdate as any, sagaMiddleware);
-    const store = createReduxStore(reducers, rootMiddleware);
-    sagaMiddleware.run(rootSaga);
-    return store;
+    const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
+    const store = createReduxStore(reducer, rootMiddleware);
+    const persistor = persistStore(store);
+
+    sagaMiddleware.run(rootSaga ?? defaultRootSaga);
+
+    return { store, persistor };
 };
 
-export type StoreType = ReturnType<typeof createStore>;
+export type StoreType = ReturnType<typeof createStore>['store'];
 export type DispatchType = StoreType['dispatch'];
 
-export default createStore();
+const { store } = createStore();
+export default store;

@@ -1,22 +1,26 @@
 import { assert } from 'chai';
+import { Provider } from 'react-redux';
+import Ganache from 'ganache-core';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import BlockNumber from '../../abis/BlockNumber.json';
 
-// eslint-disable-next-line import/no-unresolved
-import { BlockNumber } from '../../types/web3/BlockNumber';
+import { create as createNetwork } from '../../network/actions';
 
 import { name } from '../common';
 import { networkId } from '../../test/data';
-import { StoreType } from '../../store';
-import { useContractCall, contractCallHookFactory } from '../hooks/useContractCall';
-// eslint-disable-next-line import/no-unresolved
-import { beforeFn, beforeEachFn, deployBlockNoContract } from './index.test';
+import { createStore, StoreType } from '../../store';
+import { create } from '../actions';
+import { fetch as fetchTransaction } from '../../transaction/actions';
+import { fetch as fetchBlock } from '../../block/actions';
+
+import useContractCall from '../hooks/useContractCall';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
-describe(`${name}.hooks.useContractCall`, () => {
+describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
@@ -28,20 +32,37 @@ describe(`${name}.hooks.useContractCall`, () => {
     let address: string;
 
     before(async () => {
-        ({ web3, accounts } = await beforeFn());
+        const provider = Ganache.provider({
+            networkId: parseInt(networkId),
+        });
+        //@ts-ignore
+        web3 = new Web3(provider);
+
+        accounts = await web3.eth.getAccounts();
     });
 
     beforeEach(async () => {
-        ({ store, wrapper } = beforeEachFn({ web3 }));
-        ({ address, web3Contract } = await deployBlockNoContract({ web3, store, from: accounts[0] }));
+        web3Contract = await new web3.eth.Contract(BlockNumber.abi as any)
+            .deploy({
+                data: BlockNumber.bytecode,
+            })
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '10000' });
+        address = web3Contract.options.address;
+
+        ({ store } = createStore());
+        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(
+            create({
+                networkId,
+                address,
+                abi: BlockNumber.abi as any,
+            }),
+        );
+        wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
     describe('useContractCall', () => {
-        it('(networkId, address, method)', async () => {
-            const tx2 = await web3Contract.methods.setValue(42);
-            const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
-
+        it('(networkId, address, method, [], { sync: once })', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, address, 'getValue', [], { sync: 'once' }),
                 {
@@ -52,22 +73,25 @@ describe(`${name}.hooks.useContractCall`, () => {
             await waitForNextUpdate();
 
             const currentCall = result.current[0];
+            assert.equal(currentCall, '0', 'result.current');
             const allCalls = result.all.map((x) => (x as any[])[0]);
-            assert.equal(currentCall, '42', 'result.current');
-            assert.deepEqual(allCalls, [undefined, '42'], 'result.all');
+            assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
         });
-    });
 
-    describe('contractCallHookFactory(method)', () => {
-        it('(networkId, address)', async () => {
-            const tx2 = await web3Contract.methods.setValue(42);
-            const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
+        it('(networkId, address, method, [], { sync: false })', async () => {
+            const { result } = renderHook(() => useContractCall(networkId, address, 'getValue', [], { sync: false }), {
+                wrapper,
+            });
 
-            const useGetValue = contractCallHookFactory<BlockNumber, 'getValue'>('getValue');
+            const currentCall = result.current[0];
+            assert.isUndefined(currentCall, 'result.current');
+            const allCalls = result.all.map((x) => (x as any[])[0]);
+            assert.deepEqual(allCalls, [undefined], 'result.all');
+        });
 
+        it('(networkId, address, method, [], { sync: ifnull })', async () => {
             const { result, waitForNextUpdate } = renderHook(
-                () => useGetValue(networkId, web3Contract.options.address, [], { sync: 'once' }),
+                () => useContractCall(networkId, address, 'getValue', [], { sync: 'ifnull' }),
                 {
                     wrapper,
                 },
@@ -76,9 +100,63 @@ describe(`${name}.hooks.useContractCall`, () => {
             await waitForNextUpdate();
 
             const currentCall = result.current[0];
+            assert.equal(currentCall, '0', 'result.current');
             const allCalls = result.all.map((x) => (x as any[])[0]);
+            assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
+        });
+
+        it('(networkId, address, method, [], { sync: Transaction })', async () => {
+            const { result, waitForNextUpdate } = renderHook(
+                () => useContractCall(networkId, address, 'getValue', [], { sync: 'Transaction' }),
+                {
+                    wrapper,
+                },
+            );
+
+            await waitForNextUpdate();
+            const receipt = await web3Contract.methods
+                .setValue(42)
+                .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            //Fetch transaction, triggering a refresh
+            store.dispatch(
+                fetchTransaction({
+                    networkId,
+                    hash: receipt.transactionHash,
+                }),
+            );
+            await waitForNextUpdate();
+
+            const currentCall = result.current[0];
             assert.equal(currentCall, '42', 'result.current');
-            assert.deepEqual(allCalls, [undefined, '42'], 'result.all');
+            const allCalls = result.all.map((x) => (x as any[])[0]);
+            assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
+        });
+
+        it('(networkId, address, method, [], { sync: Block })', async () => {
+            const { result, waitForNextUpdate } = renderHook(
+                () => useContractCall(networkId, address, 'getValue', [], { sync: 'Block' }),
+                {
+                    wrapper,
+                },
+            );
+
+            await waitForNextUpdate();
+            const receipt = await web3Contract.methods
+                .setValue(42)
+                .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            //Fetch transaction, triggering a refresh
+            store.dispatch(
+                fetchBlock({
+                    networkId,
+                    blockHashOrBlockNumber: receipt.blockHash,
+                }),
+            );
+            await waitForNextUpdate();
+
+            const currentCall = result.current[0];
+            assert.equal(currentCall, '42', 'result.current');
+            const allCalls = result.all.map((x) => (x as any[])[0]);
+            assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
         });
     });
 });

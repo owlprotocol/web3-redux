@@ -26,7 +26,7 @@ describe(`${name}.integration`, () => {
     });
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
         store.dispatch(createAction(item));
     });

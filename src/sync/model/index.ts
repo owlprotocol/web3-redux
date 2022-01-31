@@ -5,3 +5,5 @@ import TransactionSync from './TransactionSync';
 export type Sync = BlockSync | TransactionSync | EventSync;
 
 export type { BlockSync, EventSync, TransactionSync };
+
+export default Sync;

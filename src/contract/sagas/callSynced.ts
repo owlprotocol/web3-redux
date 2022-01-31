@@ -12,7 +12,7 @@ function* callSynced(action: CallSyncedAction) {
         //Initial Action
         yield* put(callAction);
         //Create Sync
-        if (sync && sync != 'once') {
+        if (sync) {
             yield* put(createSync(sync));
         }
     } catch (error) {

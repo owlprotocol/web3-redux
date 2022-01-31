@@ -25,7 +25,7 @@ describe(`${name}/integration`, () => {
     const functionItem: _4ByteSignature = { signatureHash: APPROVE_FUNCTION_ENCODED };
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(createAction(eventItem));
         store.dispatch(createAction(functionItem));
     });

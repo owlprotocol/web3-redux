@@ -38,10 +38,12 @@ export function getOrm(): any {
 
 /** @internal */
 export const initializeState = (orm: any) => {
+    //TODO: redux-persist state reconciler might break this
     const state = orm.getEmptyState();
 
     // By default, add blockTransactionsSync which dispatches
     // createTransaction actions when block is created
+    //TODO: Merge initial state
     const { Sync, Config } = orm.mutableSession(state);
     Sync.create(blockTransactionsSync);
     Config.create({ id: 0, account: null, networkId: null });

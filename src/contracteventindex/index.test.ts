@@ -33,7 +33,7 @@ describe(`${name}.integration`, () => {
     let store: StoreType;
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
     });
 
     describe('selectors', () => {

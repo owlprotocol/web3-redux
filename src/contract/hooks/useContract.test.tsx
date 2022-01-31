@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Ganache from 'ganache-core';
 import Web3 from 'web3';
+import { map } from 'lodash';
 
 import { create as createNetwork } from '../../network/actions';
 
@@ -53,6 +54,7 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
         await waitForNextUpdate();
         const expected = await web3.eth.getBalance(address);
         assert.equal(result.current?.balance, expected, 'result.current.balance');
+        assert.deepEqual(map(result.all, 'balance'), [undefined, expected], 'result.all');
     });
 
     it('getNonce', async () => {
@@ -66,6 +68,7 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
         await waitForNextUpdate();
         const expected = await web3.eth.getTransactionCount(address);
         assert.equal(result.current?.nonce, expected, 'result.current.nonce');
+        assert.deepEqual(map(result.all, 'nonce'), [undefined, expected], 'result.all');
     });
 
     it('getCode', async () => {
@@ -78,5 +81,6 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
 
         await waitForNextUpdate();
         assert.equal(result.current?.code, '0x', 'result.current.nonce');
+        assert.deepEqual(map(result.all, 'code'), [undefined, '0x'], 'result.all');
     });
 });

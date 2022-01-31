@@ -125,3 +125,5 @@ export function contractEventsHookFactory<
         return useEvents<T, K, U>(networkId, address, eventName, filter, options);
     };
 }
+
+export default useEvents;

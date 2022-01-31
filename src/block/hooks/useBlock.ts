@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors';
 import { selectByIdSingle as selectBlock } from '../selectors';
@@ -21,15 +21,15 @@ export const useBlock = (
     const block = useSelector((state) => selectBlock(state, id));
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 
-    const fetchCallback = useCallback(() => {
+    const action = useMemo(() => {
         if (networkId && number && web3Exists && ((fetch === 'ifnull' && !block) || fetch === true)) {
-            dispatch(fetchAction({ networkId, blockHashOrBlockNumber: number, returnTransactionObjects }));
+            return fetchAction({ networkId, blockHashOrBlockNumber: number, returnTransactionObjects });
         }
-    }, [networkId, number, fetch, returnTransactionObjects, dispatch, web3Exists]);
+    }, [networkId, number, fetch, returnTransactionObjects, web3Exists]);
 
     useEffect(() => {
-        fetchCallback();
-    }, [fetchCallback]);
+        if (action) dispatch(action);
+    }, [dispatch, action]);
 
     return [block];
 };

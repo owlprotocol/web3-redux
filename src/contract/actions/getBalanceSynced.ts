@@ -14,7 +14,7 @@ import { getBalance } from './getBalance';
 export const GET_BALANCE_SYNCED = `${name}/GET_BALANCE_SYNCED`;
 /** @internal */
 export interface GetBalanceSyncedActionInput extends ContractId {
-    sync?: Sync | Sync['type'] | 'once' | number;
+    sync: Sync | Sync['type'] | 'once' | number;
 }
 /** @category Actions */
 export const getBalanceSynced = createAction(GET_BALANCE_SYNCED, (payload: GetBalanceSyncedActionInput) => {
@@ -24,7 +24,7 @@ export const getBalanceSynced = createAction(GET_BALANCE_SYNCED, (payload: GetBa
     //Default sync
     let sync: Sync | undefined;
 
-    if (!payload.sync || payload.sync === 'once') {
+    if (payload.sync === 'once') {
         sync = undefined;
     } else if (payload.sync === 'Transaction') {
         sync = defaultTransactionSync(networkId, address, [fetchBalanceAction]);

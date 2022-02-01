@@ -6,62 +6,76 @@ import {
     binaryTo4ByteHex,
     xor,
     getInterfaceIdentifier,
+    get4ByteIdentifier,
 } from './getInterfaceIdentifier';
-import { ERC165Abi, ERC721EnumerableAbi, ERC721MetadataAbi } from './abis';
+import { AbiItem } from 'web3-utils';
+import ERC165 from '../abis/IERC165.json';
+import ERC721Enumerable from '../abis/IERC721Enumerable.json';
+import ERC721Metadata from '../abis/IERC721Metadata.json';
 
 describe('getInterfaceIdentifierForAbi', () => {
     it('ERC165', () => {
-        assert.equal(getInterfaceIdentifierForAbi(ERC165Abi), '01ffc9a7');
+        assert.equal(getInterfaceIdentifierForAbi(ERC165.abi as AbiItem[]), '01ffc9a7');
     });
 
     it('ERC721Enumerable', () => {
-        assert.equal(getInterfaceIdentifierForAbi(ERC721EnumerableAbi), '780e9d63');
+        assert.equal(getInterfaceIdentifierForAbi(ERC721Enumerable.abi as AbiItem[]), '780e9d63');
     });
 
     it('ERC721Metadata', () => {
-        assert.equal(getInterfaceIdentifierForAbi(ERC721MetadataAbi), '5b5e139f');
+        assert.equal(getInterfaceIdentifierForAbi(ERC721Metadata.abi as AbiItem[]), '5b5e139f');
     });
 });
 
 describe('getFunctionIdentifier', () => {
     it('supportsInterface', () => {
-        assert.equal(getFunctionIdentifier(ERC165Abi[0]), 'supportsInterface(bytes4)');
+        assert.equal(getFunctionIdentifier((ERC165.abi as AbiItem[])[0]), '0x01ffc9a7');
     });
 
     it('tokenByIndex', () => {
-        assert.equal(getFunctionIdentifier(ERC721EnumerableAbi[0]), 'tokenByIndex(uint256)');
+        assert.equal(getFunctionIdentifier((ERC721Enumerable.abi as AbiItem[])[0]), '0x4f6ccce7');
     });
 
     it('name', () => {
-        assert.equal(getFunctionIdentifier(ERC721MetadataAbi[0]), 'name()');
+        assert.equal(getFunctionIdentifier((ERC721Metadata.abi as AbiItem[])[0]), '0x06fdde03');
     });
 });
 
 describe('getInterfaceIdentifier', () => {
     it('ERC165', () => {
-        const binFunctionIdentifiers: string[] = ['00000001111111111100100110100111'];
+        const binFunctionIdentifiers: string[] = ['0x01ffc9a7'];
 
-        assert.equal(getInterfaceIdentifier(binFunctionIdentifiers), '00000001111111111100100110100111');
+        assert.equal(getInterfaceIdentifier(binFunctionIdentifiers), '01ffc9a7');
     });
 
     it('ERC721Enumerable', () => {
-        const binFunctionIdentifiers: string[] = [
-            '01001111011011001100110011100111',
-            '00101111011101000101110001011001',
-            '00011000000101100000110111011101',
-        ];
+        const binFunctionIdentifiers: string[] = ['0x4f6ccce7', '0x2f745c59', '0x18160ddd'];
 
-        assert.equal(getInterfaceIdentifier(binFunctionIdentifiers), '01111000000011101001110101100011');
+        assert.equal(getInterfaceIdentifier(binFunctionIdentifiers), '780e9d63');
     });
 
     it('ERC721Metadata', () => {
-        const binFunctionIdentifiers: string[] = [
-            '00000110111111011101111000000011',
-            '10010101110110001001101101000001',
-            '11001000011110110101011011011101',
-        ];
+        const binFunctionIdentifiers: string[] = ['0x06fdde03', '0x95d89b41', '0xc87b56dd'];
 
-        assert.equal(getInterfaceIdentifier(binFunctionIdentifiers), '01011011010111100001001110011111');
+        assert.equal(getInterfaceIdentifier(binFunctionIdentifiers), '5b5e139f');
+    });
+});
+
+describe('get4ByteIdentifier', () => {
+    it('supportsInterface(bytes4)', () => {
+        assert.equal(get4ByteIdentifier('supportsInterface(bytes4)'), '0x01ffc9a7');
+    });
+
+    it('tokenByIndex(uint256)', () => {
+        assert.equal(get4ByteIdentifier('tokenByIndex(uint256)'), '0x4f6ccce7');
+    });
+
+    it('tokenOfOwnerByIndex(address,uint256)', () => {
+        assert.equal(get4ByteIdentifier('tokenOfOwnerByIndex(address,uint256)'), '0x2f745c59');
+    });
+
+    it('totalSupply()', () => {
+        assert.equal(get4ByteIdentifier('totalSupply()'), '0x18160ddd');
     });
 });
 

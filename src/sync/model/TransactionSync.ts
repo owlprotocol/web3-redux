@@ -1,23 +1,25 @@
-import { Transaction } from '../../transaction/model';
 import BaseSync from './BaseSync';
 
 /**
  * Sync middleware to handle [Transaction](./Transaction.Transaction-1) CREATE/UPDATE actions.
  */
-export default interface TransactionSync<T extends any = { [key: string]: string }> extends BaseSync<Transaction, T> {
+//TODO: Implement Set based matching
+export default interface TransactionSync extends BaseSync {
     type: 'Transaction';
+    matchFrom?: string; //| string[];
+    matchTo?: string; // | string[];
 }
 
-export function defaultTransactionSync(networkId: string, address: string, actions: TransactionSync['actions']) {
+export function createTransactionSyncForAddress(
+    networkId: string,
+    actions: TransactionSync['actions'],
+    address?: string, // | string[],
+): TransactionSync {
     return {
         type: 'Transaction',
-        filter: (tx, cache) =>
-            (!cache || !cache[tx.id!]) &&
-            tx.networkId === networkId &&
-            (tx.to?.toLowerCase() === address.toLowerCase() || tx.from?.toLowerCase() === address.toLowerCase()),
-        updateCache: (tx, cache) => {
-            return { ...cache, [tx.id!]: true };
-        },
+        networkId,
         actions,
+        matchFrom: address,
+        matchTo: address,
     } as TransactionSync;
 }

@@ -1,27 +1,27 @@
-import { isMatch } from 'lodash';
-import { ContractEvent } from '../../contractevent/model';
 import BaseSync from './BaseSync';
 
 /**
  * Sync middleware to handle [ContractEvent](./ContractEvent.ContractEvent-1) CREATE/UPDATE actions.
  */
-export default interface EventSync<T extends any = { [key: string]: string }> extends BaseSync<ContractEvent, T> {
+export interface EventSync extends BaseSync {
     type: 'Event';
+    matchName: string;
+    matchReturnValues?: { [k: string]: any } | { [k: string]: any }[];
 }
 
-//TODO: Test filter
 export function createEventSync(
     networkId: string,
-    eventName: string,
-    returnValuesFilter: { [k: string]: any },
-    actions?: EventSync['actions'],
-) {
+    actions: EventSync['actions'],
+    matchName: string,
+    matchReturnValues: EventSync['matchReturnValues'],
+): EventSync {
     return {
         type: 'Event',
-        filter: (event) =>
-            event.networkId === networkId &&
-            event.name === eventName &&
-            isMatch(event.returnValues, returnValuesFilter),
+        networkId,
         actions,
-    } as EventSync;
+        matchName,
+        matchReturnValues,
+    };
 }
+
+export default EventSync;

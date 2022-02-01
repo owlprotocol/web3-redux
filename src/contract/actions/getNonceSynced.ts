@@ -1,11 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
+import { GenericSync, createSyncForActions } from '../../sync/model';
 import { ContractId, getId } from '../model/interface';
-
-import { Sync } from '../../sync/model';
-import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
-import { defaultTransactionSync } from '../../sync/model/TransactionSync';
-
 import { getNonce } from './getNonce';
 import { toChecksumAddress } from 'web3-utils';
 
@@ -13,29 +9,15 @@ import { toChecksumAddress } from 'web3-utils';
 export const GET_NONCE_SYNCED = `${name}/GET_NONCE_SYNCED`;
 /** @internal */
 export interface GetNonceSyncedActionInput extends ContractId {
-    sync?: Sync | 'Block' | 'Transaction' | 'once' | number;
+    sync: GenericSync;
 }
 /** @category Actions */
 export const getNonceSynced = createAction(GET_NONCE_SYNCED, (payload: GetNonceSyncedActionInput) => {
     const { networkId } = payload;
     const address = toChecksumAddress(payload.address);
-    const fetchNonceAction = getNonce(payload);
-    //Default sync
-    let sync: Sync | undefined;
+    const fetchNonceAction = getNonce({ networkId, address });
 
-    if (!payload.sync || payload.sync === 'once') {
-        sync = undefined;
-    } else if (payload.sync === 'Transaction') {
-        sync = defaultTransactionSync(networkId, address, [fetchNonceAction]);
-    } else if (payload.sync === 'Block') {
-        sync = defaultBlockSync(networkId, [fetchNonceAction]);
-    } else if (typeof payload.sync === 'number') {
-        sync = moduloBlockSync(networkId, payload.sync, [fetchNonceAction]);
-    } else {
-        sync = payload.sync;
-        sync.actions = [fetchNonceAction];
-    }
-
+    const sync = createSyncForActions(networkId, [fetchNonceAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${getId(payload)}-fetchNonce`;
 
     return { payload: { networkId, address, sync, fetchNonceAction } };

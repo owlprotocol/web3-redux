@@ -10,7 +10,6 @@ import EthCallModel from './ethcall/model/orm';
 import ConfigModel from './config/model/orm';
 import SyncModel from './sync/model/orm';
 import _4ByteModel from './4byte/model/orm';
-import { blockTransactionsSync } from './sync/model/BlockSync';
 
 //Fix undefined import issue
 let orm = getOrm();
@@ -41,11 +40,8 @@ export const initializeState = (orm: any) => {
     //TODO: redux-persist state reconciler might break this
     const state = orm.getEmptyState();
 
-    // By default, add blockTransactionsSync which dispatches
-    // createTransaction actions when block is created
-    //TODO: Merge initial state
-    const { Sync, Config } = orm.mutableSession(state);
-    Sync.create(blockTransactionsSync);
+    //TODO: Merge initial state redux-persist??
+    const { Config } = orm.mutableSession(state);
     Config.create({ id: 0, account: null, networkId: null });
 
     return state;

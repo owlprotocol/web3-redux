@@ -19,7 +19,7 @@ import useEvents from '../hooks/useEvents';
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
-describe(`${name}.hooks.useEvents`, () => {
+describe(`${name}/hooks/useEvents.tsx`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
@@ -79,8 +79,8 @@ describe(`${name}.hooks.useEvents`, () => {
             tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
             await waitForNextUpdate();
 
-            const currentEvents = result.current[0];
-            const allEvents = result.all.map((x) => (x as any[])[0]);
+            const currentEvents = result.current;
+            const allEvents = result.all;
             assert.deepEqual(currentEvents, expectedEvents, 'result.current');
             assert.deepEqual(allEvents, [[], expectedEvents], 'result.all');
         });
@@ -107,8 +107,8 @@ describe(`${name}.hooks.useEvents`, () => {
             const gas3 = await tx3.estimateGas();
             await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '10000' });
 
-            const currentEvents = result.current[0];
-            const allEvents = result.all.map((x) => (x as any[])[0]);
+            const currentEvents = result.current;
+            const allEvents = result.all;
             assert.deepEqual(currentEvents, expectedEvents, 'result.current');
             assert.deepEqual(allEvents, [[], expectedEvents], 'result.all');
         });

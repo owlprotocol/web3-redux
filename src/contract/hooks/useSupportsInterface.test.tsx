@@ -44,7 +44,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
             .deploy({
                 data: ERC165.bytecode,
             })
-            .send({ from: accounts[0], gas: 1000000, gasPrice: '10000' });
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
         address = web3Contract.options.address;
 
         ({ store } = createStore());

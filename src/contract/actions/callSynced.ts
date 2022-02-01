@@ -4,7 +4,6 @@ import { Sync } from '../../sync/model';
 import { callHash } from '../model';
 import { defaultTransactionSync } from '../../sync/model/TransactionSync';
 import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
-import { defaultEventSync } from '../../sync/model/EventSync';
 import { CallActionInput, call } from './call';
 
 /** @internal */
@@ -12,7 +11,7 @@ export const CALL_SYNCED = `${name}/CALL_SYNCED`;
 /** @internal */
 export interface CallSyncedActionInput extends CallActionInput {
     defaultBlock?: 'latest';
-    sync: Sync | Sync['type'] | 'once' | number;
+    sync: Sync | 'Block' | 'Transaction' | 'once' | number;
 }
 /** @category Actions */
 export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionInput) => {
@@ -30,8 +29,6 @@ export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionIn
         sync = defaultTransactionSync(networkId, address, [callAction]);
     } else if (payload.sync === 'Block') {
         sync = defaultBlockSync(networkId, [callAction]);
-    } else if (payload.sync === 'Event') {
-        sync = defaultEventSync([callAction]);
     } else if (typeof payload.sync === 'number') {
         sync = moduloBlockSync(networkId, payload.sync, [callAction]);
     } else {

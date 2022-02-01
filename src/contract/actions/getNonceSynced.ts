@@ -4,7 +4,6 @@ import { ContractId, getId } from '../model/interface';
 
 import { Sync } from '../../sync/model';
 import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
-import { defaultEventSync } from '../../sync/model/EventSync';
 import { defaultTransactionSync } from '../../sync/model/TransactionSync';
 
 import { getNonce } from './getNonce';
@@ -14,7 +13,7 @@ import { toChecksumAddress } from 'web3-utils';
 export const GET_NONCE_SYNCED = `${name}/GET_NONCE_SYNCED`;
 /** @internal */
 export interface GetNonceSyncedActionInput extends ContractId {
-    sync?: Sync | Sync['type'] | 'once' | number;
+    sync?: Sync | 'Block' | 'Transaction' | 'once' | number;
 }
 /** @category Actions */
 export const getNonceSynced = createAction(GET_NONCE_SYNCED, (payload: GetNonceSyncedActionInput) => {
@@ -30,8 +29,6 @@ export const getNonceSynced = createAction(GET_NONCE_SYNCED, (payload: GetNonceS
         sync = defaultTransactionSync(networkId, address, [fetchNonceAction]);
     } else if (payload.sync === 'Block') {
         sync = defaultBlockSync(networkId, [fetchNonceAction]);
-    } else if (payload.sync === 'Event') {
-        sync = defaultEventSync([fetchNonceAction]);
     } else if (typeof payload.sync === 'number') {
         sync = moduloBlockSync(networkId, payload.sync, [fetchNonceAction]);
     } else {

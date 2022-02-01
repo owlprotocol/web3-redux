@@ -15,7 +15,7 @@ import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 
 import useERC20 from './useERC20';
-import { createEventSync } from '../../sync/model/EventSync';
+//import { createEventSync } from '../../sync/model/EventSync';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -170,11 +170,11 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                 assert.equal(value.balanceOf, 2, 'balanceOf'); //updated balance
             });
             //Sync balance by fetching Transfer event
-            it('onTransfer(to:accounts[0])', async () => {
+            it('onTransfer', async () => {
                 const { result, waitForNextUpdate } = renderHook(
                     () =>
                         useERC20(networkId, address, accounts[0], {
-                            balanceOf: createEventSync(networkId, 'Transfer', { to: accounts[0] }),
+                            balanceOf: 'onTransfer',
                         }),
                     {
                         wrapper,

@@ -6,7 +6,7 @@ import { IpfsId } from '../model/interface';
 export const REMOVE = `${name}/DELETE`;
 /** @category Actions */
 export const remove = createAction(REMOVE, (payload: IpfsId) => {
-    return { payload: { contentId: payload.contentId } };
+    return { payload: { networkId: payload.networkId, contentId: payload.contentId } };
 });
 /** @internal */
 export type RemoveAction = ReturnType<typeof remove>;

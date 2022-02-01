@@ -1,15 +1,15 @@
 import { ModelWithId } from '../../types/model';
 
 export interface IpfsId {
+    /** networkId */
+    readonly networkId: string;
     /** ipfs hash */
     readonly contentId: string;
 }
 
 export interface Ipfs extends IpfsId {
-    /** Used to index in redux-orm. Computed as `${contentId}` */
+    /** Used to index in redux-orm. Computed as `${networkId}-${contentId}` */
     readonly id?: string;
-    /** ipfs url */
-    readonly ipfsUrl?: string;
     /** data blob */
     readonly data?: Uint8Array;
 }
@@ -17,14 +17,14 @@ export interface Ipfs extends IpfsId {
 const SEPERATOR = '-';
 /** @internal */
 export function getId(id: IpfsId): string {
-    const { contentId } = id;
-    return contentId;
+    const { networkId, contentId } = id;
+    return [networkId, contentId].join(SEPERATOR);
 }
 
 /** @internal */
 export function getIdDeconstructed(id: string): IpfsId {
-    const [contentId] = id.split(SEPERATOR);
-    return { contentId };
+    const [networkId, contentId] = id.split(SEPERATOR);
+    return { networkId, contentId };
 }
 
 /** @internal */

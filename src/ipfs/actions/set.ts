@@ -14,7 +14,7 @@ export const set = (payload: SetActionInput) => {
     return {
         type: SET(payload.key),
         payload: {
-            id: { contentId: payload.id.contentId },
+            id: { networkId: payload.id.networkId, contentId: payload.id.contentId },
             key: payload.key,
             value: payload.value,
         },

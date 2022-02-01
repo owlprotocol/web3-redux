@@ -3,18 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Await } from '../../types/promise';
 
+import { GenericSync } from '../../sync/model';
+
 import { BaseWeb3Contract } from '../model';
 import { callSynced, callUnsync } from '../actions';
 import selectSingle from '../selectors/selectByIdSingle';
 import selectContractCall from '../selectors/selectContractCallById';
-import { CallSyncedActionInput } from '../actions/callSynced';
 
 //Contract Call
 /** @internal */
 export interface UseContractCallOptions {
     from?: string;
     gas?: string;
-    sync?: 'ifnull' | CallSyncedActionInput['sync'] | false;
+    sync?: 'ifnull' | GenericSync | false;
 }
 
 /** @internal */

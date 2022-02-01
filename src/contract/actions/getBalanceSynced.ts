@@ -5,7 +5,6 @@ import { ContractId, getId } from '../model/interface';
 
 import { Sync } from '../../sync/model';
 import { defaultBlockSync, moduloBlockSync } from '../../sync/model/BlockSync';
-import { defaultEventSync } from '../../sync/model/EventSync';
 import { defaultTransactionSync } from '../../sync/model/TransactionSync';
 
 import { getBalance } from './getBalance';
@@ -14,7 +13,7 @@ import { getBalance } from './getBalance';
 export const GET_BALANCE_SYNCED = `${name}/GET_BALANCE_SYNCED`;
 /** @internal */
 export interface GetBalanceSyncedActionInput extends ContractId {
-    sync: Sync | Sync['type'] | 'once' | number;
+    sync: Sync | 'Block' | 'Transaction' | 'once' | number;
 }
 /** @category Actions */
 export const getBalanceSynced = createAction(GET_BALANCE_SYNCED, (payload: GetBalanceSyncedActionInput) => {
@@ -30,8 +29,6 @@ export const getBalanceSynced = createAction(GET_BALANCE_SYNCED, (payload: GetBa
         sync = defaultTransactionSync(networkId, address, [fetchBalanceAction]);
     } else if (payload.sync === 'Block') {
         sync = defaultBlockSync(networkId, [fetchBalanceAction]);
-    } else if (payload.sync === 'Event') {
-        sync = defaultEventSync([fetchBalanceAction]);
     } else if (typeof payload.sync === 'number') {
         sync = moduloBlockSync(networkId, payload.sync, [fetchBalanceAction]);
     } else {

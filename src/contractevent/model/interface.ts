@@ -65,6 +65,8 @@ function returnValueKeyCombinations(keys: string[]) {
 
 /** @internal */
 export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
+    //@ts-ignore
+    const name = item.name ?? item.event;
     const id = getId(item);
     const networkId = item.networkId;
     const address = toChecksumAddress(item.address);
@@ -78,7 +80,7 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     else returnValuesIndexKeys = item.returnValuesIndexKeys;
 
     const contractIndex = { networkId, address };
-    const baseIndex = { ...contractIndex, name: item.name };
+    const baseIndex = { ...contractIndex, name };
     const keyCombinations = returnValueKeyCombinations(returnValuesIndexKeys);
 
     const returnValuesIndexes = keyCombinations.map((keys) => {
@@ -93,6 +95,7 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     const indexIds: string[] = [baseIndex, ...returnValuesIndexes].map((v) => JSON.stringify(v));
     return {
         ...item,
+        name,
         id,
         address,
         contractId,

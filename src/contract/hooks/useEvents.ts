@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useDebugValue } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReturnValues } from '../../contractevent/model/interface';
 import { BaseWeb3Contract } from '../model';
@@ -81,33 +81,19 @@ export function useEvents<
         return undefined;
     }, [networkId, address, eventName, filterHash, contractExists, sync]);
 
-    useDebugValue({ events, contractExists, past, sync, getPastAction, subscribeAction, unsubscribeAction });
-
     //Send getPast action
-    const getPast = useCallback(() => {
+    useEffect(() => {
         if (getPastAction) dispatch(getPastAction);
     }, [dispatch, getPastAction]);
 
     useEffect(() => {
-        getPast();
-    }, [getPast]);
-
-    const subscribe = useCallback(() => {
         if (subscribeAction) dispatch(subscribeAction);
-    }, [dispatch, subscribeAction]);
-
-    const unsubscribe = useCallback(() => {
-        if (unsubscribeAction) dispatch(unsubscribeAction);
-    }, [dispatch, unsubscribeAction]);
-
-    useEffect(() => {
-        subscribe();
         return () => {
-            unsubscribe();
+            if (unsubscribeAction) dispatch(unsubscribeAction);
         };
-    }, [subscribe, unsubscribe]);
+    }, [subscribeAction, unsubscribeAction]);
 
-    return [events, { getPast, subscribe, unsubscribe }];
+    return events;
 }
 
 /** @category Hooks */

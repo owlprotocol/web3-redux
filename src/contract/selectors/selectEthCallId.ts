@@ -16,13 +16,16 @@ const selectEthCallIdSelector = createSelector(
         const contract: Contract | undefined = session.Contract.withId(id);
         if (!contract) return undefined;
         const { args, defaultBlock, from } = callArgs ?? {};
-        const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+        const web3Contract = contract.web3Contract ?? contract.web3SenderContract; //Get Web3.eth.Contract object
+        if (!web3Contract) return undefined;
+        const method = web3Contract.methods[methodName]; //Get web3Contract method
+        if (!method) return undefined;
+
         let tx: any;
         if (!args || args.length == 0) {
-            tx = web3Contract.methods[methodName]();
+            tx = method();
         } else {
-            tx = web3Contract.methods[methodName](...args);
+            tx = method(...args);
         }
         const data = tx.encodeABI();
         const ethCallId = getEthCallId({

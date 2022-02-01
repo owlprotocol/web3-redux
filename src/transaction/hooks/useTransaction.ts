@@ -30,7 +30,7 @@ export const useTransaction = (
         if (action) dispatch(action);
     }, [dispatch, action]);
 
-    return [transaction];
+    return transaction;
 };
 
 export default useTransaction;

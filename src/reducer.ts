@@ -1,4 +1,19 @@
+import { combineReducers } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
+import { persistReducer } from 'redux-persist';
+import { WebStorage } from 'redux-persist/lib/types';
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
+import { NetworkTransform, ContractTransform, SyncTransform } from './transform';
+import isClient from './utils/isClient';
+let defaultStorage: WebStorage;
+if (isClient()) {
+    defaultStorage = require('redux-persist/lib/storage');
+} else {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const localStorageMock = require('./test/localstorageAsync');
+    defaultStorage = localStorageMock.getLocalStorageAsyncMock();
+}
+
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
 import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import { Action as TransactionAction, isReducerAction as isTransactionAction } from './transaction/actions';
@@ -10,6 +25,7 @@ import { Action as ConfigAction, isReducerAction as isConfigAction } from './con
 import { Action as Web3ReduxAction } from './web3Redux/actions';
 import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions';
 import { Action as SyncAction, isReducerAction as isSyncAction } from './sync/actions';
+
 import networkReducer from './network/reducer';
 import blockReducer from './block/reducer';
 import transactionReducer from './transaction/reducer';
@@ -22,6 +38,7 @@ import syncReducer from './sync/reducer';
 import _4ByteReducer from './4byte/reducer';
 
 import { getOrm, initializeState } from './orm';
+import { REDUX_ROOT } from './common';
 
 export type Action =
     | NetworkAction
@@ -35,8 +52,9 @@ export type Action =
     | Web3ReduxAction
     | SyncAction
     | _4ByteAction;
+export type Reducer = (state: any, action: any) => any;
 
-const reducer = (state: any, action: Action) => {
+export const reducerWeb3ReduxWithOrm = (state: any, action: Action) => {
     const orm = getOrm();
     const sess = orm.session(state || initializeState(orm));
     if (isNetworkAction(action)) networkReducer(sess, action);
@@ -53,6 +71,27 @@ const reducer = (state: any, action: Action) => {
     return sess.state;
 };
 
-export const rootReducer = enableBatching(reducer as (state: any, action: any) => any);
+export const reducerWeb3ReduxWithBatching = enableBatching(reducerWeb3ReduxWithOrm as Reducer);
+
+export const createReducerWeb3ReduxWithPersist = (storage: WebStorage) => {
+    const persistConfig = {
+        key: REDUX_ROOT,
+        storage,
+        transforms: [NetworkTransform, ContractTransform, SyncTransform],
+        stateReconciler: hardSet,
+        debug: true,
+    };
+    return persistReducer(persistConfig as any, reducerWeb3ReduxWithBatching);
+};
+export const reducerWeb3ReduxWithPersist = createReducerWeb3ReduxWithPersist(defaultStorage); //
+
+export const createRootReducer = (reducerWeb3Redux: Reducer) => {
+    return combineReducers({
+        [REDUX_ROOT]: reducerWeb3Redux,
+    });
+};
+
+export const rootReducer = createRootReducer(reducerWeb3ReduxWithBatching); //Default reducer has no persist
+export const rootReducerWithPersist = createRootReducer(reducerWeb3ReduxWithPersist);
 
 export default rootReducer;

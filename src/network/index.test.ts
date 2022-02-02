@@ -19,7 +19,7 @@ describe(`${name}.integration`, () => {
     const block3 = { networkId, number: 3, transactions: [] };
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
     });
 
     describe('selectors', () => {

@@ -7,5 +7,5 @@ export { mineBlocks, mineBlock } from './mineBlocks';
 export { default as assertDeepEqual } from './assertDeepEqual';
 export { default as ganacheLogger } from './ganacheLogger';
 export { default as getInterfaceIdentifier } from './getInterfaceIdentifier';
-
+export { expectThrowsAsync } from './expectThrowsAsync';
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';

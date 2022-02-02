@@ -1,17 +1,30 @@
-import { ContractEvent } from '../../contractevent/model';
 import BaseSync from './BaseSync';
 
 /**
  * Sync middleware to handle [ContractEvent](./ContractEvent.ContractEvent-1) CREATE/UPDATE actions.
  */
-export default interface EventSync<T extends any = { [key: string]: string }> extends BaseSync<ContractEvent, T> {
+export interface EventSync extends BaseSync {
     type: 'Event';
+    matchAddress: string;
+    matchName: string;
+    matchReturnValues?: { [k: string]: any } | { [k: string]: any }[];
 }
 
-export function defaultEventSync(actions: EventSync['actions']) {
+export function createEventSync(
+    networkId: string,
+    actions: EventSync['actions'],
+    matchAddress: string,
+    matchName: string,
+    matchReturnValues: EventSync['matchReturnValues'],
+): EventSync {
     return {
         type: 'Event',
-        filter: () => false,
+        networkId,
         actions,
-    } as EventSync;
+        matchAddress,
+        matchName,
+        matchReturnValues,
+    };
 }
+
+export default EventSync;

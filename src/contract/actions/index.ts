@@ -5,7 +5,6 @@ import { SET, set, SetAction, isSetAction } from './set';
 import { CALL, call, CallAction, isCallAction } from './call';
 import { CALL_BATCHED, callBatched, CallBatchedAction, isCallBatchedAction } from './callBatched';
 import { CALL_SYNCED, callSynced, CallSyncedAction, isCallSyncedAction } from './callSynced';
-import { CALL_UNSYNC, callUnsync, CallUnsyncAction, isCallUnsyncAction } from './callUnsync';
 import { SEND, send, SendAction, isSendAction } from './send';
 import { EVENT_GET_PAST, eventGetPast, EventGetPastAction, isEventGetPastAction } from './eventGetPast';
 import { EVENT_SUBSCRIBE, eventSubscribe, EventSubscribeAction, isEventSubscribeAction } from './eventSubscribe';
@@ -45,7 +44,6 @@ export type SagaAction =
     | CallAction
     | CallBatchedAction
     | CallSyncedAction
-    | CallUnsyncAction
     | SendAction
     | EventGetPastAction
     | EventSubscribeAction
@@ -63,7 +61,6 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
         isCallAction(action) ||
         isCallBatchedAction(action) ||
         isCallSyncedAction(action) ||
-        isCallUnsyncAction(action) ||
         isSendAction(action) ||
         isEventGetPastAction(action) ||
         isEventSubscribeAction(action) ||
@@ -92,7 +89,6 @@ export type {
     SetAction,
     CallAction,
     CallSyncedAction,
-    CallUnsyncAction,
     CallBatchedAction,
     SendAction,
     EventGetPastAction,
@@ -126,9 +122,6 @@ export {
     CALL_SYNCED,
     callSynced,
     isCallSyncedAction,
-    CALL_UNSYNC,
-    callUnsync,
-    isCallUnsyncAction,
     CALL_BATCHED,
     callBatched,
     isCallBatchedAction,
@@ -186,9 +179,6 @@ export default {
     CALL_SYNCED,
     callSynced,
     isCallSyncedAction,
-    CALL_UNSYNC,
-    callUnsync,
-    isCallUnsyncAction,
     CALL_BATCHED,
     callBatched,
     isCallBatchedAction,

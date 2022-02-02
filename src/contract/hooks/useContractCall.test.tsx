@@ -37,7 +37,6 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
         });
         //@ts-ignore
         web3 = new Web3(provider);
-
         accounts = await web3.eth.getAccounts();
     });
 
@@ -46,7 +45,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             .deploy({
                 data: BlockNumber.bytecode,
             })
-            .send({ from: accounts[0], gas: 1000000, gasPrice: '10000' });
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
         address = web3Contract.options.address;
 
         ({ store } = createStore());
@@ -72,9 +71,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.equal(currentCall, '0', 'result.current');
-            const allCalls = result.all.map((x) => (x as any[])[0]);
+            const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
         });
 
@@ -83,9 +82,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 wrapper,
             });
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.isUndefined(currentCall, 'result.current');
-            const allCalls = result.all.map((x) => (x as any[])[0]);
+            const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined], 'result.all');
         });
 
@@ -99,9 +98,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.equal(currentCall, '0', 'result.current');
-            const allCalls = result.all.map((x) => (x as any[])[0]);
+            const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
         });
 
@@ -126,9 +125,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
             await waitForNextUpdate();
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.equal(currentCall, '42', 'result.current');
-            const allCalls = result.all.map((x) => (x as any[])[0]);
+            const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
         });
 
@@ -153,9 +152,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
             await waitForNextUpdate();
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.equal(currentCall, '42', 'result.current');
-            const allCalls = result.all.map((x) => (x as any[])[0]);
+            const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
         });
     });

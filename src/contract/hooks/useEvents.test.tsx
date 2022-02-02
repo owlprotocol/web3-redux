@@ -36,7 +36,6 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
         });
         //@ts-ignore
         web3 = new Web3(provider);
-
         accounts = await web3.eth.getAccounts();
     });
 
@@ -45,7 +44,7 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
             .deploy({
                 data: BlockNumber.bytecode,
             })
-            .send({ from: accounts[0], gas: 1000000, gasPrice: '10000' });
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
         address = web3Contract.options.address;
 
         ({ store } = createStore());
@@ -68,15 +67,13 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
             });
 
             const { result, waitForNextUpdate } = renderHook(
-                () => useEvents(networkId, web3Contract.options.address, 'NewValue', undefined, { sync: true }),
+                () => useEvents(networkId, address, 'NewValue', undefined, { sync: true }),
                 {
                     wrapper,
                 },
             );
 
-            const tx2 = await web3Contract.methods.setValue(42);
-            const gas2 = await tx2.estimateGas();
-            tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
+            web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
             await waitForNextUpdate();
 
             const currentEvents = result.current;
@@ -92,20 +89,17 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
             });
 
             const { result, waitForNextUpdate } = renderHook(
-                () => useEvents(networkId, web3Contract.options.address, 'NewValue', { value: '42' }, { sync: true }),
+                () => useEvents(networkId, address, 'NewValue', { value: '42' }, { sync: true }),
                 {
                     wrapper,
                 },
             );
 
-            const tx2 = await web3Contract.methods.setValue(42);
-            const gas2 = await tx2.estimateGas();
-            tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
+            web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
             await waitForNextUpdate();
 
-            const tx3 = await web3Contract.methods.setValue(43);
-            const gas3 = await tx3.estimateGas();
-            await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '10000' });
+            //This is ignored by the hook
+            await web3Contract.methods.setValue(43).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
 
             const currentEvents = result.current;
             const allEvents = result.all;

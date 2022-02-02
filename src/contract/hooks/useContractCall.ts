@@ -1,12 +1,13 @@
-import { useEffect, useCallback, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Await } from '../../types/promise';
 
+import { remove as removeSync } from '../../sync/actions';
 import { GenericSync } from '../../sync/model';
 
 import { BaseWeb3Contract } from '../model';
-import { callSynced, callUnsync } from '../actions';
+import { callSynced } from '../actions';
 import selectSingle from '../selectors/selectByIdSingle';
 import selectContractCall from '../selectors/selectContractCallById';
 
@@ -18,11 +19,6 @@ export interface UseContractCallOptions {
     sync?: 'ifnull' | GenericSync | false;
 }
 
-/** @internal */
-export interface HookHandlers {
-    subscribe: () => void;
-    unsubscribe: () => void;
-}
 /**
  * @category Hooks
  * Create a contract call and return value.
@@ -33,7 +29,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     method: K | undefined,
     args?: Parameters<T['methods'][K]>,
     options?: UseContractCallOptions,
-): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, HookHandlers] {
+): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
     const fetch = options?.sync ?? 'ifnull';
     const from = options?.from;
 
@@ -70,31 +66,28 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
             }
         }
     }, [networkId, address, method, argsHash, web3ContractExists, fetch]);
-    const syncId = callSyncedAction?.payload.sync?.id;
+    const callSyncId = callSyncedAction?.payload.sync?.id;
+    const callId = callSyncedAction?.payload.callId;
 
-    const callUnsyncAction = useMemo(() => {
-        if (syncId) return callUnsync(syncId);
-        return undefined;
-    }, [syncId]);
+    //Send new Sync when id changes
+    //We do NOT do an object comparison as shallow compare would lead to infinite loop
 
-    //Recompute subscribe function if network/contract is created, otherwise function is void
-    const subscribe = useCallback(() => {
-        if (callSyncedAction) dispatch(callSyncedAction);
-    }, [dispatch, callSyncedAction]);
-
-    const unsubscribe = useCallback(() => {
-        if (callUnsyncAction) dispatch(callUnsyncAction);
-    }, [dispatch, callUnsyncAction]);
-
+    console.debug({ loc: 'A', method, fetch, callId, callSyncId });
     useEffect(() => {
-        subscribe();
-
+        console.debug({ loc: 'B', method, fetch, callId, callSyncId });
+    });
+    useEffect(() => {
+        console.debug({ loc: 'C', method, fetch, callId, callSyncId });
+    }, []);
+    useEffect(() => {
+        console.debug({ loc: 'D', method, fetch, callId, callSyncId });
+        if (callSyncedAction) dispatch(callSyncedAction);
         return () => {
-            unsubscribe();
+            if (callSyncId) dispatch(removeSync(callSyncId));
         };
-    }, [subscribe, unsubscribe]);
+    }, [dispatch, callId, callSyncId]);
 
-    return [contractCall, { subscribe, unsubscribe }];
+    return contractCall;
 }
 
 /** @category Hooks */

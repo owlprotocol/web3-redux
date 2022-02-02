@@ -44,39 +44,42 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         const contractCallExists = contractCall != undefined;
 
         const argsHash = JSON.stringify(args);
-        const callSyncedAction = useMemo(() => {
-            if (networkId && address && method && web3ContractExists) {
-                if (sync === 'ifnull' && !contractCallExists) {
-                    return callSynced({
-                        networkId,
-                        address,
-                        method: method as string,
-                        args,
-                        from,
-                        sync: 'once',
-                    });
-                } else if (!!sync && sync != 'ifnull') {
-                    return callSynced({
-                        networkId,
-                        address,
-                        method: method as string,
-                        args,
-                        from,
-                        sync,
-                    });
+        const { callAction, syncAction } =
+            useMemo(() => {
+                if (networkId && address && method && web3ContractExists) {
+                    if (sync === 'ifnull' && !contractCallExists) {
+                        return callSynced({
+                            networkId,
+                            address,
+                            method: method as string,
+                            args,
+                            from,
+                            sync: 'once',
+                        });
+                    } else if (!!sync && sync != 'ifnull') {
+                        return callSynced({
+                            networkId,
+                            address,
+                            method: method as string,
+                            args,
+                            from,
+                            sync,
+                        });
+                    }
                 }
-            }
-        }, [networkId, address, method, argsHash, web3ContractExists, JSON.stringify(sync)]);
+            }, [networkId, address, method, argsHash, web3ContractExists, JSON.stringify(sync)]) ?? {};
 
-        //Send new Sync when id changes
-        //We do NOT do an object comparison as shallow compare would lead to infinite loop
         useEffect(() => {
-            const syncId = callSyncedAction?.payload.sync?.id;
-            if (callSyncedAction) dispatch(callSyncedAction);
+            if (callAction) dispatch(callAction);
+        }, [dispatch, callAction]);
+
+        useEffect(() => {
+            const syncId = syncAction?.payload.id;
+            if (syncAction) dispatch(syncAction);
             return () => {
                 if (syncId) dispatch(removeSync(syncId));
             };
-        }, [dispatch, callSyncedAction]);
+        }, [dispatch, syncAction]);
 
         return contractCall;
     } catch (error) {

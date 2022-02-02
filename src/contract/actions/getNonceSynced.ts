@@ -1,30 +1,27 @@
-import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
 import { GenericSync, createSyncForActions } from '../../sync/model';
+import { create as createSyncAction } from '../../sync/actions';
 import { ContractId, getId } from '../model/interface';
 import { getNonce } from './getNonce';
 import { toChecksumAddress } from 'web3-utils';
 
 /** @internal */
-export const GET_NONCE_SYNCED = `${name}/GET_NONCE_SYNCED`;
-/** @internal */
 export interface GetNonceSyncedActionInput extends ContractId {
     sync: GenericSync;
 }
-/** @category Actions */
-export const getNonceSynced = createAction(GET_NONCE_SYNCED, (payload: GetNonceSyncedActionInput) => {
+/**
+ * @category Actions
+ * Creates a GET_NONCE action and an associated SYNC action
+ *
+ */
+export const getNonceSynced = (payload: GetNonceSyncedActionInput) => {
     const { networkId } = payload;
     const address = toChecksumAddress(payload.address);
-    const fetchNonceAction = getNonce({ networkId, address });
+    const getNonceAction = getNonce({ networkId, address });
 
-    const sync = createSyncForActions(networkId, [fetchNonceAction], payload.sync, address);
-    if (sync) sync.id = `${sync.type}-${getId(payload)}-fetchNonce`;
-
-    return { payload: { networkId, address, sync, fetchNonceAction } };
-});
-/** @internal */
-export type GetNonceSyncedAction = ReturnType<typeof getNonceSynced>;
-/** @internal */
-export const isGetNonceSyncedAction = getNonceSynced.match;
+    const sync = createSyncForActions(networkId, [getNonceAction], payload.sync, address);
+    if (sync) sync.id = `${sync.type}-${getId(payload)}-getNonce`;
+    const syncAction = sync ? createSyncAction(sync) : undefined;
+    return { getNonceAction, syncAction };
+};
 
 export default getNonceSynced;

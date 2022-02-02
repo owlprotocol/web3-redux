@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { remove as removeSync } from '../../sync/actions';
 import { GenericSync } from '../../sync/model';
-import { fetchNonceSynced } from '../actions';
+import { getNonceSynced } from '../actions';
 import { selectByIdSingle } from '../selectors';
 
 /**
@@ -27,23 +27,28 @@ export function useGetNonce(
         const nonceExists = contract?.nonce != undefined;
 
         //Get nonce
-        const getNonceAction = useMemo(() => {
-            if (networkId && address && web3Exists && contractExists) {
-                if (sync === 'ifnull' && !nonceExists) {
-                    return fetchNonceSynced({ networkId, address, sync: 'once' });
-                } else if (!!sync && sync != 'ifnull') {
-                    return fetchNonceSynced({ networkId, address, sync });
+        const { getNonceAction, syncAction } =
+            useMemo(() => {
+                if (networkId && address && web3Exists && contractExists) {
+                    if (sync === 'ifnull' && !nonceExists) {
+                        return getNonceSynced({ networkId, address, sync: 'once' });
+                    } else if (!!sync && sync != 'ifnull') {
+                        return getNonceSynced({ networkId, address, sync });
+                    }
                 }
-            }
-        }, [networkId, address, contractExists, web3Exists, JSON.stringify(sync)]);
+            }, [networkId, address, contractExists, web3Exists, JSON.stringify(sync)]) ?? {};
 
         useEffect(() => {
-            const syncId = getNonceAction?.payload.sync?.id;
             if (getNonceAction) dispatch(getNonceAction);
+        }, [dispatch, getNonceAction]);
+
+        useEffect(() => {
+            const syncId = syncAction?.payload.id;
+            if (syncAction) dispatch(syncAction);
             return () => {
                 if (syncId) dispatch(removeSync(syncId));
             };
-        }, [dispatch, getNonceAction]);
+        }, [dispatch, syncAction]);
 
         return contract?.nonce;
     } catch (error) {

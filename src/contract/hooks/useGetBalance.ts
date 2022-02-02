@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { remove as removeSync } from '../../sync/actions';
 import { GenericSync } from '../../sync/model';
-import { fetchBalanceSynced } from '../actions';
+import { getBalanceSynced } from '../actions';
 import { selectByIdSingle } from '../selectors';
 
 /**
@@ -29,23 +29,28 @@ export function useGetBalance(
         //Get balance
         //ifnull => check if current value is defined
         //other => pass as sync param
-        const getBalanceAction = useMemo(() => {
-            if (networkId && address && web3Exists && contractExists) {
-                if (sync === 'ifnull' && !balanceExists) {
-                    return fetchBalanceSynced({ networkId, address, sync: 'once' });
-                } else if (!!sync && sync != 'ifnull') {
-                    return fetchBalanceSynced({ networkId, address, sync });
+        const { getBalanceAction, syncAction } =
+            useMemo(() => {
+                if (networkId && address && web3Exists && contractExists) {
+                    if (sync === 'ifnull' && !balanceExists) {
+                        return getBalanceSynced({ networkId, address, sync: 'once' });
+                    } else if (!!sync && sync != 'ifnull') {
+                        return getBalanceSynced({ networkId, address, sync });
+                    }
                 }
-            }
-        }, [networkId, address, contractExists, web3Exists, JSON.stringify(sync)]);
+            }, [networkId, address, contractExists, web3Exists, JSON.stringify(sync)]) ?? {};
 
         useEffect(() => {
-            const syncId = getBalanceAction?.payload.sync?.id;
             if (getBalanceAction) dispatch(getBalanceAction);
+        }, [dispatch, getBalanceAction]);
+
+        useEffect(() => {
+            const syncId = syncAction?.payload.id;
+            if (syncAction) dispatch(syncAction);
             return () => {
                 if (syncId) dispatch(removeSync(syncId));
             };
-        }, [dispatch, getBalanceAction]);
+        }, [dispatch, syncAction]);
 
         return contract?.balance;
     } catch (error) {

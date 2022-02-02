@@ -1,3 +1,3 @@
-import { useNetwork, useNetworkId, useAccount } from './useConfig';
-
-export { useNetwork, useNetworkId, useAccount };
+export { useAccount } from './useAccount';
+export { useConfig } from './useConfig';
+export { useNetworkId } from './useNetworkId';

@@ -31,7 +31,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     options?: UseContractCallOptions,
 ): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
     try {
-        const fetch = options?.sync ?? 'ifnull';
+        const sync = options?.sync ?? 'ifnull';
         const from = options?.from;
 
         const dispatch = useDispatch();
@@ -46,7 +46,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         const argsHash = JSON.stringify(args);
         const callSyncedAction = useMemo(() => {
             if (networkId && address && method && web3ContractExists) {
-                if (fetch === 'ifnull' && !contractCallExists) {
+                if (sync === 'ifnull' && !contractCallExists) {
                     return callSynced({
                         networkId,
                         address,
@@ -55,29 +55,28 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                         from,
                         sync: 'once',
                     });
-                } else if (!!fetch && fetch != 'ifnull') {
+                } else if (!!sync && sync != 'ifnull') {
                     return callSynced({
                         networkId,
                         address,
                         method: method as string,
                         args,
                         from,
-                        sync: fetch,
+                        sync,
                     });
                 }
             }
-        }, [networkId, address, method, argsHash, web3ContractExists, fetch]);
-        const callSyncId = callSyncedAction?.payload.sync?.id;
-        const callId = callSyncedAction?.payload.callId;
+        }, [networkId, address, method, argsHash, web3ContractExists, JSON.stringify(sync)]);
 
         //Send new Sync when id changes
         //We do NOT do an object comparison as shallow compare would lead to infinite loop
         useEffect(() => {
+            const syncId = callSyncedAction?.payload.sync?.id;
             if (callSyncedAction) dispatch(callSyncedAction);
             return () => {
-                if (callSyncId) dispatch(removeSync(callSyncId));
+                if (syncId) dispatch(removeSync(syncId));
             };
-        }, [dispatch, callId, callSyncId]);
+        }, [dispatch, callSyncedAction]);
 
         return contractCall;
     } catch (error) {

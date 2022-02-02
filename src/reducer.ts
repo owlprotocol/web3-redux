@@ -6,18 +6,12 @@ import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { NetworkTransform, ContractTransform, SyncTransform } from './transform';
 import isClient from './utils/isClient';
 let defaultStorage: WebStorage;
-try {
-    if (isClient()) {
-        console.debug('ENABLING PERSISTENCE');
-        defaultStorage = require('redux-persist/lib/storage');
-    } else {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const localStorageMock = require('./test/localstorageAsync');
-        defaultStorage = localStorageMock.getLocalStorageAsyncMock();
-    }
-} catch (error) {
-    console.debug('isClient() error');
-    throw error;
+if (isClient()) {
+    defaultStorage = require('redux-persist/lib/storage');
+} else {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const localStorageMock = require('./test/localstorageAsync');
+    defaultStorage = localStorageMock.getLocalStorageAsyncMock();
 }
 
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';

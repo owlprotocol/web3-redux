@@ -2,8 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { remove as removeSync } from '../../sync/actions';
+import { GenericSync } from '../../sync/model';
 import { fetchNonceSynced } from '../actions';
-import { GetNonceSyncedActionInput } from '../actions/getNonceSynced';
 import { selectByIdSingle } from '../selectors';
 
 /**
@@ -14,7 +14,7 @@ import { selectByIdSingle } from '../selectors';
 export function useGetNonce(
     networkId: string | undefined,
     address: string | undefined,
-    fetch = 'ifnull' as 'ifnull' | GetNonceSyncedActionInput['sync'] | false,
+    sync = 'ifnull' as 'ifnull' | GenericSync | false,
 ) {
     const dispatch = useDispatch();
     const id = networkId && address ? { networkId, address } : undefined;
@@ -27,25 +27,22 @@ export function useGetNonce(
 
     //Get nonce
     const getNonceAction = useMemo(() => {
-        if (id && web3Exists && contractExists) {
-            if (fetch === 'ifnull' && !nonceExists) {
-                return fetchNonceSynced({ ...id, sync: 'once' });
-            } else if (!!fetch && fetch != 'ifnull') {
-                return fetchNonceSynced({ ...id, sync: fetch });
+        if (networkId && address && web3Exists && contractExists) {
+            if (sync === 'ifnull' && !nonceExists) {
+                return fetchNonceSynced({ networkId, address, sync: 'once' });
+            } else if (!!sync && sync != 'ifnull') {
+                return fetchNonceSynced({ networkId, address, sync });
             }
         }
-    }, [id, contractExists, web3Exists, fetch]);
-    const getNonceSyncId = getNonceAction?.payload.sync?.id;
+    }, [networkId, address, contractExists, web3Exists, JSON.stringify(sync)]);
 
     useEffect(() => {
-        //Exists is not a dependency to avoid infinite loop
-        if (getNonceAction) {
-            dispatch(getNonceAction);
-        }
+        const syncId = getNonceAction?.payload.sync?.id;
+        if (getNonceAction) dispatch(getNonceAction);
         return () => {
-            if (getNonceSyncId) dispatch(removeSync(getNonceSyncId));
+            if (syncId) dispatch(removeSync(syncId));
         };
-    }, [dispatch, getNonceAction, getNonceSyncId]);
+    }, [dispatch, getNonceAction]);
 
     return contract?.nonce;
 }

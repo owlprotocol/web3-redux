@@ -64,7 +64,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     });
 
     describe('useContractCall', () => {
-        it.skip('(networkId, address, method, [], { sync: once })', async () => {
+        it('(networkId, address, method, [], { sync: once })', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, address, 'getValue', [], { sync: 'once' }),
                 {
@@ -82,7 +82,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
-        it.skip('(networkId, address, method, [], { sync: false })', async () => {
+        it('(networkId, address, method, [], { sync: false })', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, address, 'getValue', [], { sync: false }),
                 {
@@ -98,7 +98,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
-        it.skip('(networkId, address, method, [], { sync: ifnull })', async () => {
+        it('(networkId, address, method, [], { sync: ifnull })', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, address, 'getValue', [], { sync: 'ifnull' }),
                 {
@@ -116,7 +116,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
-        it.skip('(networkId, address, method, [], { sync: Transaction })', async () => {
+        it('(networkId, address, method, [], { sync: Transaction })', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, address, 'getValue', [], { sync: 'Transaction' }),
                 {
@@ -145,7 +145,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
-        it.skip('(networkId, address, method, [], { sync: Block })', async () => {
+        it('(networkId, address, method, [], { sync: Block })', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, address, 'getValue', [], { sync: 'Block' }),
                 {

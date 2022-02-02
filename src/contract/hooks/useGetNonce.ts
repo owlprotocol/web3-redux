@@ -42,13 +42,13 @@ export function useGetNonce(
             if (getNonceAction) dispatch(getNonceAction);
         }, [dispatch, getNonceAction]);
 
+        const syncId = syncAction?.payload.id;
         useEffect(() => {
-            const syncId = syncAction?.payload.id;
             if (syncAction) dispatch(syncAction);
             return () => {
                 if (syncId) dispatch(removeSync(syncId));
             };
-        }, [dispatch, syncAction]);
+        }, [dispatch, syncId]);
 
         return contract?.nonce;
     } catch (error) {

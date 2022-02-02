@@ -69,17 +69,18 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                 }
             }, [networkId, address, method, argsHash, web3ContractExists, JSON.stringify(sync)]) ?? {};
 
+        const callId = callAction?.payload.id;
         useEffect(() => {
             if (callAction) dispatch(callAction);
-        }, [dispatch, callAction]);
+        }, [dispatch, callId]);
 
+        const syncId = syncAction?.payload.id;
         useEffect(() => {
-            const syncId = syncAction?.payload.id;
             if (syncAction) dispatch(syncAction);
             return () => {
                 if (syncId) dispatch(removeSync(syncId));
             };
-        }, [dispatch, syncAction]);
+        }, [dispatch, syncId]);
 
         return contractCall;
     } catch (error) {

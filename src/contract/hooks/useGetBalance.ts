@@ -44,13 +44,13 @@ export function useGetBalance(
             if (getBalanceAction) dispatch(getBalanceAction);
         }, [dispatch, getBalanceAction]);
 
+        const syncId = syncAction?.payload.id;
         useEffect(() => {
-            const syncId = syncAction?.payload.id;
             if (syncAction) dispatch(syncAction);
             return () => {
                 if (syncId) dispatch(removeSync(syncId));
             };
-        }, [dispatch, syncAction]);
+        }, [dispatch, syncId]);
 
         return contract?.balance;
     } catch (error) {

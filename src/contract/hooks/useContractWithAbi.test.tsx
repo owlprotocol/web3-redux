@@ -8,6 +8,7 @@ import { networkId, ADDRESS_0 } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 
 import useContractWithAbi from './useContractWithAbi';
+import { expectThrowsAsync } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -25,15 +26,20 @@ describe(`${name}/hooks/useContractWithAbi.test.tsx`, () => {
 
     describe('useContractWithAbi()', async () => {
         it('default', async () => {
-            const { result } = renderHook(() => useContractWithAbi(networkId, ADDRESS_0, IERC20.abi as any), {
-                wrapper,
-            });
+            const { result, waitForNextUpdate } = renderHook(
+                () => useContractWithAbi(networkId, ADDRESS_0, IERC20.abi as any),
+                {
+                    wrapper,
+                },
+            );
 
             //https://react-hooks-testing-library.com/reference/api#act
             //https://reactjs.org/docs/test-utils.html#act
             const value = result.current;
             assert.isDefined(value, 'result.current[0] undefined! Contract not created');
             assert.equal(result.all.length, 2, 'result.length != 2'); //[[undefined,], [contract,]]
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
     });
 });

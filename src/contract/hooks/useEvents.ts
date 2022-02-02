@@ -54,7 +54,6 @@ export function useEvents<
                 blockBatch,
             });
         }
-        return undefined;
     }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blockBatch, contractExists, past]);
 
     const subscribeAction = useMemo(() => {
@@ -66,7 +65,6 @@ export function useEvents<
                 filter,
             });
         }
-        return undefined;
     }, [networkId, address, eventName, filterHash, contractExists, sync]);
 
     const unsubscribeAction = useMemo(() => {
@@ -78,7 +76,6 @@ export function useEvents<
                 filter,
             });
         }
-        return undefined;
     }, [networkId, address, eventName, filterHash, contractExists, sync]);
 
     //Send getPast action

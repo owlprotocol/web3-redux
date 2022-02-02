@@ -14,27 +14,32 @@ export function useFetchAbi(
     address: string | undefined,
     fetch = 'ifnull' as 'ifnull' | true | false,
 ) {
-    const dispatch = useDispatch();
-    const id = networkId && address ? { networkId, address } : undefined;
+    try {
+        const dispatch = useDispatch();
+        const id = networkId && address ? { networkId, address } : undefined;
 
-    const contract = useSelector((state) => selectByIdSingle(state, id));
-    const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
-    const contractExists = !!contract;
-    const explorerApiExists = !!network?.explorerApiUrl;
-    const abiExists = !!contract?.abi;
+        const contract = useSelector((state) => selectByIdSingle(state, id));
+        const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
+        const contractExists = !!contract;
+        const explorerApiExists = !!network?.explorerApiUrl;
+        const abiExists = !!contract?.abi;
 
-    //Fetch abi (Etherscan)
-    const fetchAbiAction = useMemo(() => {
-        if (id && explorerApiExists && contractExists && ((fetch === 'ifnull' && !abiExists) || fetch === true)) {
-            return fetchAbi({ ...id });
-        }
-    }, [id, contractExists, explorerApiExists, fetch]);
+        //Fetch abi (Etherscan)
+        const fetchAbiAction = useMemo(() => {
+            if (id && explorerApiExists && contractExists && ((fetch === 'ifnull' && !abiExists) || fetch === true)) {
+                return fetchAbi({ ...id });
+            }
+        }, [id, contractExists, explorerApiExists, fetch]);
 
-    useEffect(() => {
-        if (fetchAbiAction) dispatch(fetchAbiAction);
-    }, [dispatch, fetchAbiAction]);
+        useEffect(() => {
+            if (fetchAbiAction) dispatch(fetchAbiAction);
+        }, [dispatch, fetchAbiAction]);
 
-    return contract?.abi;
+        return contract?.abi;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 export default useFetchAbi;

@@ -2,8 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
 import { remove as removeSync } from '../../sync/actions';
-import { fetchNonceSynced } from '../actions';
-import { GetNonceSyncedActionInput } from '../actions/getNonceSynced';
+import { GenericSync } from '../../sync/model';
+import { getNonceSynced } from '../actions';
 import { selectByIdSingle } from '../selectors';
 
 /**
@@ -14,40 +14,47 @@ import { selectByIdSingle } from '../selectors';
 export function useGetNonce(
     networkId: string | undefined,
     address: string | undefined,
-    fetch = 'ifnull' as 'ifnull' | GetNonceSyncedActionInput['sync'] | false,
+    sync = 'ifnull' as 'ifnull' | GenericSync | false,
 ) {
-    const dispatch = useDispatch();
-    const id = networkId && address ? { networkId, address } : undefined;
+    try {
+        const dispatch = useDispatch();
+        const id = networkId && address ? { networkId, address } : undefined;
 
-    const contract = useSelector((state) => selectByIdSingle(state, id));
-    const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
-    const web3Exists = !!(network?.web3 ?? network?.web3Sender);
-    const contractExists = !!contract;
-    const nonceExists = contract?.nonce != undefined;
+        const contract = useSelector((state) => selectByIdSingle(state, id));
+        const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
+        const web3Exists = !!(network?.web3 ?? network?.web3Sender);
+        const contractExists = !!contract;
+        const nonceExists = contract?.nonce != undefined;
 
-    //Get nonce
-    const getNonceAction = useMemo(() => {
-        if (id && web3Exists && contractExists) {
-            if (fetch === 'ifnull' && !nonceExists) {
-                return fetchNonceSynced({ ...id, sync: 'once' });
-            } else if (!!fetch && fetch != 'ifnull') {
-                return fetchNonceSynced({ ...id, sync: fetch });
-            }
-        }
-    }, [id, contractExists, web3Exists, fetch]);
-    const getNonceSyncId = getNonceAction?.payload.sync?.id;
+        //Get nonce
+        const { getNonceAction, syncAction } =
+            useMemo(() => {
+                if (networkId && address && web3Exists && contractExists) {
+                    if (sync === 'ifnull' && !nonceExists) {
+                        return getNonceSynced({ networkId, address, sync: 'once' });
+                    } else if (!!sync && sync != 'ifnull') {
+                        return getNonceSynced({ networkId, address, sync });
+                    }
+                }
+            }, [networkId, address, contractExists, web3Exists, JSON.stringify(sync)]) ?? {};
 
-    useEffect(() => {
-        //Exists is not a dependency to avoid infinite loop
-        if (getNonceAction) {
-            dispatch(getNonceAction);
-        }
-        return () => {
-            if (getNonceSyncId) dispatch(removeSync(getNonceSyncId));
-        };
-    }, [dispatch, getNonceAction, getNonceSyncId]);
+        useEffect(() => {
+            if (getNonceAction) dispatch(getNonceAction);
+        }, [dispatch, getNonceAction]);
 
-    return contract?.nonce;
+        const syncId = syncAction?.payload.id;
+        useEffect(() => {
+            if (syncAction) dispatch(syncAction);
+            return () => {
+                if (syncId) dispatch(removeSync(syncId));
+            };
+        }, [dispatch, syncId]);
+
+        return contract?.nonce;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 export default useGetNonce;

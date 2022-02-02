@@ -7,7 +7,7 @@ import { create as createNetwork } from '../../network/actions';
 import { Contract } from '../model/interface';
 import { name } from '../common';
 import { selectByIdSingle } from '../selectors';
-import { create as createAction, fetchBalance as fetchBalanceAction } from '../actions';
+import { create as createAction, getBalance as getBalanceAction } from '../actions';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;
@@ -31,8 +31,8 @@ describe(`${name}.integration`, () => {
         store.dispatch(createAction(item));
     });
 
-    it('fetchBalance()', async () => {
-        store.dispatch(fetchBalanceAction(item));
+    it('getBalance()', async () => {
+        store.dispatch(getBalanceAction(item));
         const expected = await web3.eth.getBalance(item.address!);
         const account = selectByIdSingle(store.getState(), item);
         assert.equal(account!.balance, expected, 'initial balance');

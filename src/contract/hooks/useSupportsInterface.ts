@@ -14,7 +14,12 @@ export function useSupportsInterface(
     address: string | undefined,
     interfaceId: string | undefined,
 ) {
-    return useContractCall(networkId, address, 'supportsInterface', [interfaceId], { sync: 'once' });
+    try {
+        return useContractCall(networkId, address, 'supportsInterface', [interfaceId], { sync: 'once' });
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 export default useSupportsInterface;

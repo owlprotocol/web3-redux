@@ -5,8 +5,8 @@ import Ganache from 'ganache-core';
 import Web3 from 'web3';
 
 import { create as createNetwork } from '../../network/actions';
-import { fetch as fetchTransaction } from '../../transaction/actions';
-import { fetch as fetchBlock } from '../../block/actions';
+import { create as createTransaction } from '../../transaction/actions';
+import { create as createBlock } from '../../block/actions';
 
 import { name } from '../common';
 import { networkId } from '../../test/data';
@@ -14,7 +14,7 @@ import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
 import useGetBalance from './useGetBalance';
-import { ZERO_ADDRESS } from '../../utils';
+import { expectThrowsAsync, ZERO_ADDRESS } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -54,14 +54,18 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             const expected = await web3.eth.getBalance(address);
             assert.equal(result.current, expected, 'contract.balance != expected');
             assert.deepEqual(result.all, [undefined, expected], 'result.all');
+            //No additional re-renders from background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('(networkId, address, false)', async () => {
-            const { result } = renderHook(() => useGetBalance(networkId, address, false), {
+            const { result, waitForNextUpdate } = renderHook(() => useGetBalance(networkId, address, false), {
                 wrapper,
             });
             assert.isUndefined(result.current);
             assert.deepEqual(result.all, [undefined], 'result.all');
+            //No additional re-renders from background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('(networkId, address, ifnull)', async () => {
@@ -72,6 +76,8 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             const expected = await web3.eth.getBalance(address);
             assert.equal(result.current, expected, 'contract.balance != expected');
             assert.deepEqual(result.all, [undefined, expected], 'result.all');
+            //No additional re-renders from background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('(networkId, address, Transaction)', async () => {
@@ -84,19 +90,24 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             const value1 = result.current;
             assert.equal(value1, expected1, 'contract.balance != expected');
 
-            const receipt = await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
-            //Fetch transaction, triggering a refresh
+            await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
+            //Create transaction, triggering a refresh
             store.dispatch(
-                fetchTransaction({
+                createTransaction({
                     networkId,
-                    hash: receipt.transactionHash,
+                    hash: '0x1',
+                    from: address,
+                    to: ZERO_ADDRESS,
                 }),
             );
             await waitForNextUpdate();
+
             const expected2 = await web3.eth.getBalance(address);
             const value2 = result.current;
-            assert.equal(value2, expected2, 'contract.balance != expected');
+            assert.equal(value2, expected2, 'contract.balance');
             assert.deepEqual(result.all, [undefined, value1, value2], 'result.all');
+            //No additional re-renders from background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('(networkId, address, Block)', async () => {
@@ -104,25 +115,30 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
                 wrapper,
             });
 
+            assert.equal(result.all.length, 1, 'result.all.length');
             await waitForNextUpdate();
-            const expected1 = await web3.eth.getBalance(address);
-            const value1 = result.current;
-            assert.equal(value1, expected1, 'contract.balance != expected');
+            assert.equal(result.all.length, 2, 'result.all.length');
 
-            const receipt = await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
-            //Fetch block, triggering a refresh
+            const expected1 = await web3.eth.getBalance(address);
+            assert.equal(result.current, expected1, 'contract.balance != expected');
+
+            await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
+            //Create block, triggering a refresh
             store.dispatch(
-                fetchBlock({
+                createBlock({
                     networkId,
-                    blockHashOrBlockNumber: receipt.blockHash,
+                    number: 1,
                 }),
             );
-            await waitForNextUpdate();
+            //synchronous re-render due to Network/SET/LATESTBLOCKNUMBER
+            assert.equal(result.all.length, 3, 'result.all.length');
+            await waitForNextUpdate(); //re-render due to Contract/SET/BALANCE
+
             const expected2 = await web3.eth.getBalance(address);
-            const value2 = result.current;
-            assert.equal(value2, expected2, 'contract.balance != expected');
-            //TODO: Investigate why fails with extra re-render [undefined, value1, value1, value2]
-            //assert.deepEqual(result.all, [undefined, value1, value2], 'result.all');
+            assert.equal(result.current, expected2, 'contract.balance');
+            assert.equal(result.all.length, 4, 'result.all.length');
+            //No additional re-renders from background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
     });
 });

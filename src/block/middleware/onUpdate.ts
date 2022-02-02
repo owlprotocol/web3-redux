@@ -77,7 +77,6 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
         }
     }
 
-    //console.debug({ action, postActions });
     next(action);
     postActions.forEach((a) => store.dispatch(a)); //Dispatch actions after original action
 };

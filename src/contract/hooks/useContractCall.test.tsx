@@ -7,15 +7,18 @@ import { renderHook } from '@testing-library/react-hooks';
 import BlockNumber from '../../abis/BlockNumber.json';
 
 import { create as createNetwork } from '../../network/actions';
+import { create as createTransaction } from '../../transaction/actions';
+import { create as createBlock } from '../../block/actions';
+import { create as createEvent } from '../../contractevent/actions';
 
 import { name } from '../common';
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-import { fetch as fetchTransaction } from '../../transaction/actions';
-import { fetch as fetchBlock } from '../../block/actions';
 
 import useContractCall from '../hooks/useContractCall';
+import { expectThrowsAsync } from '../../utils';
+import { createEventSync } from '../../sync/model/EventSync';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -75,17 +78,24 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             assert.equal(currentCall, '0', 'result.current');
             const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('(networkId, address, method, [], { sync: false })', async () => {
-            const { result } = renderHook(() => useContractCall(networkId, address, 'getValue', [], { sync: false }), {
-                wrapper,
-            });
+            const { result, waitForNextUpdate } = renderHook(
+                () => useContractCall(networkId, address, 'getValue', [], { sync: false }),
+                {
+                    wrapper,
+                },
+            );
 
             const currentCall = result.current;
             assert.isUndefined(currentCall, 'result.current');
             const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined], 'result.all');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('(networkId, address, method, [], { sync: ifnull })', async () => {
@@ -102,6 +112,8 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             assert.equal(currentCall, '0', 'result.current');
             const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('(networkId, address, method, [], { sync: Transaction })', async () => {
@@ -113,14 +125,14 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
 
             await waitForNextUpdate();
-            const receipt = await web3Contract.methods
-                .setValue(42)
-                .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
-            //Fetch transaction, triggering a refresh
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            //Create transaction, triggering a refresh
             store.dispatch(
-                fetchTransaction({
+                createTransaction({
                     networkId,
-                    hash: receipt.transactionHash,
+                    hash: '0x1',
+                    from: accounts[0],
+                    to: address,
                 }),
             );
             await waitForNextUpdate();
@@ -129,6 +141,8 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             assert.equal(currentCall, '42', 'result.current');
             const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('(networkId, address, method, [], { sync: Block })', async () => {
@@ -140,14 +154,12 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
 
             await waitForNextUpdate();
-            const receipt = await web3Contract.methods
-                .setValue(42)
-                .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
-            //Fetch transaction, triggering a refresh
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            //Create block, triggering a refresh
             store.dispatch(
-                fetchBlock({
+                createBlock({
                     networkId,
-                    blockHashOrBlockNumber: receipt.blockHash,
+                    number: 1,
                 }),
             );
             await waitForNextUpdate();
@@ -156,6 +168,41 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             assert.equal(currentCall, '42', 'result.current');
             const allCalls = result.all;
             assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+        });
+
+        it('(networkId, address, method, [], { sync: Event })', async () => {
+            //Matches all NewValue updates
+            const eventSync = createEventSync(networkId, [], address, 'NewValue', {});
+            const { result, waitForNextUpdate } = renderHook(
+                () => useContractCall(networkId, address, 'getValue', [], { sync: eventSync }),
+                {
+                    wrapper,
+                },
+            );
+
+            await waitForNextUpdate();
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            //Create event, triggering a refresh
+            store.dispatch(
+                createEvent({
+                    networkId,
+                    address,
+                    blockHash: '0x1',
+                    logIndex: 0,
+                    name: 'NewValue',
+                    returnValues: {},
+                }),
+            );
+            await waitForNextUpdate();
+
+            const currentCall = result.current;
+            assert.equal(currentCall, '42', 'result.current');
+            const allCalls = result.all;
+            assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
     });
 });

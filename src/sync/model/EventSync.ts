@@ -5,6 +5,7 @@ import BaseSync from './BaseSync';
  */
 export interface EventSync extends BaseSync {
     type: 'Event';
+    matchAddress: string;
     matchName: string;
     matchReturnValues?: { [k: string]: any } | { [k: string]: any }[];
 }
@@ -12,6 +13,7 @@ export interface EventSync extends BaseSync {
 export function createEventSync(
     networkId: string,
     actions: EventSync['actions'],
+    matchAddress: string,
     matchName: string,
     matchReturnValues: EventSync['matchReturnValues'],
 ): EventSync {
@@ -19,6 +21,7 @@ export function createEventSync(
         type: 'Event',
         networkId,
         actions,
+        matchAddress,
         matchName,
         matchReturnValues,
     };

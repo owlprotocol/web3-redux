@@ -46,7 +46,7 @@ export function useGetBalance(
         return () => {
             if (getBalanceSyncId) dispatch(removeSync(getBalanceSyncId));
         };
-    }, [dispatch, getBalanceAction, getBalanceSyncId]);
+    }, [dispatch, getBalanceAction, getBalanceSyncId]); //TODO: remove object dep
 
     return contract?.balance;
 }

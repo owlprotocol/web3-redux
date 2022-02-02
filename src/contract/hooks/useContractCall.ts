@@ -30,64 +30,60 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     args?: Parameters<T['methods'][K]>,
     options?: UseContractCallOptions,
 ): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
-    const fetch = options?.sync ?? 'ifnull';
-    const from = options?.from;
+    try {
+        const fetch = options?.sync ?? 'ifnull';
+        const from = options?.from;
 
-    const dispatch = useDispatch();
-    const id = networkId && address ? { networkId, address } : undefined;
+        const dispatch = useDispatch();
+        const id = networkId && address ? { networkId, address } : undefined;
 
-    const contract = useSelector((state) => selectSingle<T>(state, id));
-    const web3ContractExists = !!contract?.web3Contract || !!contract?.web3SenderContract;
+        const contract = useSelector((state) => selectSingle<T>(state, id));
+        const web3ContractExists = !!contract?.web3Contract || !!contract?.web3SenderContract;
 
-    const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
-    const contractCallExists = contractCall != undefined;
+        const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
+        const contractCallExists = contractCall != undefined;
 
-    const argsHash = JSON.stringify(args);
-    const callSyncedAction = useMemo(() => {
-        if (networkId && address && method && web3ContractExists) {
-            if (fetch === 'ifnull' && !contractCallExists) {
-                return callSynced({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args,
-                    from,
-                    sync: 'once',
-                });
-            } else if (!!fetch && fetch != 'ifnull') {
-                return callSynced({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args,
-                    from,
-                    sync: fetch,
-                });
+        const argsHash = JSON.stringify(args);
+        const callSyncedAction = useMemo(() => {
+            if (networkId && address && method && web3ContractExists) {
+                if (fetch === 'ifnull' && !contractCallExists) {
+                    return callSynced({
+                        networkId,
+                        address,
+                        method: method as string,
+                        args,
+                        from,
+                        sync: 'once',
+                    });
+                } else if (!!fetch && fetch != 'ifnull') {
+                    return callSynced({
+                        networkId,
+                        address,
+                        method: method as string,
+                        args,
+                        from,
+                        sync: fetch,
+                    });
+                }
             }
-        }
-    }, [networkId, address, method, argsHash, web3ContractExists, fetch]);
-    const callSyncId = callSyncedAction?.payload.sync?.id;
-    const callId = callSyncedAction?.payload.callId;
+        }, [networkId, address, method, argsHash, web3ContractExists, fetch]);
+        const callSyncId = callSyncedAction?.payload.sync?.id;
+        const callId = callSyncedAction?.payload.callId;
 
-    //Send new Sync when id changes
-    //We do NOT do an object comparison as shallow compare would lead to infinite loop
+        //Send new Sync when id changes
+        //We do NOT do an object comparison as shallow compare would lead to infinite loop
+        useEffect(() => {
+            if (callSyncedAction) dispatch(callSyncedAction);
+            return () => {
+                if (callSyncId) dispatch(removeSync(callSyncId));
+            };
+        }, [dispatch, callId, callSyncId]);
 
-    console.debug({ loc: 'A', method, fetch, callId, callSyncId });
-    useEffect(() => {
-        console.debug({ loc: 'B', method, fetch, callId, callSyncId });
-    });
-    useEffect(() => {
-        console.debug({ loc: 'C', method, fetch, callId, callSyncId });
-    }, []);
-    useEffect(() => {
-        console.debug({ loc: 'D', method, fetch, callId, callSyncId });
-        if (callSyncedAction) dispatch(callSyncedAction);
-        return () => {
-            if (callSyncId) dispatch(removeSync(callSyncId));
-        };
-    }, [dispatch, callId, callSyncId]);
-
-    return contractCall;
+        return contractCall;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 /** @category Hooks */

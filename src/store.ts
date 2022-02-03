@@ -1,4 +1,4 @@
-import { createStore as createReduxStore, applyMiddleware } from 'redux';
+import { createStore as createReduxStore, applyMiddleware, compose } from 'redux';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import { crashReporter } from './middleware';
@@ -21,9 +21,11 @@ export const createStore = (options?: CreateStoreOptions) => {
 
     const reducer = persistStorage ? createRootReducer(createReducerWeb3ReduxWithPersist(persistStorage)) : rootReducer;
 
+    //Enable redux-devtools support
+    const composeEnhancers = ((window as any) ?? {}).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?? compose;
     const sagaMiddleware = createSagaMiddleware();
     const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
-    const store = createReduxStore(reducer, rootMiddleware);
+    const store = createReduxStore(reducer, composeEnhancers(rootMiddleware));
     const persistor = persistStore(store);
 
     sagaMiddleware.run(rootSaga ?? defaultRootSaga);

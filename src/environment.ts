@@ -1,11 +1,15 @@
 import path from 'path';
-import dotenv from 'dotenv';
+import isClient from './utils/isClient';
 
 //Pass custom env file arg
 const args = process.argv;
 const envfileName = args.length > 2 ? args[2] : '.env';
 const envfile = path.resolve(process.cwd(), envfileName);
-dotenv.config({ path: envfile });
+//Avoid crashing if in React context
+if (!isClient()) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require('dotenv').config({ path: envfile });
+}
 
 function getEnvVar(name: string) {
     return process.env[name] ?? process.env[`REACT_APP_${name}`] ?? process.env[`NEXT_PUBLIC_${name}`];

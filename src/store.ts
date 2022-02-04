@@ -6,6 +6,7 @@ import { onBlockUpdate } from './block/middleware';
 import { onNetworkUpdate } from './network/middleware';
 import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist } from './reducer';
 import { rootSaga as defaultRootSaga } from './saga';
+import isClient from './utils/isClient';
 
 const defaultMiddleware: any[] = [crashReporter, onNetworkUpdate, onBlockUpdate];
 
@@ -22,7 +23,7 @@ export const createStore = (options?: CreateStoreOptions) => {
     const reducer = persistStorage ? createRootReducer(createReducerWeb3ReduxWithPersist(persistStorage)) : rootReducer;
 
     //Enable redux-devtools support
-    const composeEnhancers = ((window as any) ?? {}).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?? compose;
+    const composeEnhancers = isClient() ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?? compose : compose;
     const sagaMiddleware = createSagaMiddleware();
     const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
     const store = createReduxStore(reducer, composeEnhancers(rootMiddleware));

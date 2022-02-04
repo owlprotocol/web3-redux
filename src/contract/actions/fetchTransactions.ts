@@ -2,14 +2,17 @@ import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
 
-export interface FetchTransactionsPayload {
-    networkId: string;
-    address: string;
+export interface FetchTransactionOptions {
     startblock?: number;
     endblock?: number;
     page?: number;
     offset?: number;
     sort?: 'asc' | 'desc';
+}
+
+export interface FetchTransactionsPayload extends FetchTransactionOptions {
+    networkId: string;
+    address: string;
 }
 
 /** @internal */

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { combineReducers } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
 import { persistReducer } from 'redux-persist';
@@ -5,15 +6,6 @@ import { WebStorage } from 'redux-persist/lib/types';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { NetworkTransform, ContractTransform, SyncTransform } from './transform';
 import isClient from './utils/isClient';
-let defaultStorage: WebStorage;
-if (isClient()) {
-    defaultStorage = require('redux-persist/lib/storage');
-} else {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const localStorageMock = require('./test/localstorageAsync');
-    defaultStorage = localStorageMock.getLocalStorageAsyncMock();
-}
-
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
 import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import { Action as TransactionAction, isReducerAction as isTransactionAction } from './transaction/actions';
@@ -83,7 +75,11 @@ export const createReducerWeb3ReduxWithPersist = (storage: WebStorage) => {
     };
     return persistReducer(persistConfig as any, reducerWeb3ReduxWithBatching);
 };
-export const reducerWeb3ReduxWithPersist = createReducerWeb3ReduxWithPersist(defaultStorage); //
+
+export const defaultLocalStorage = isClient()
+    ? require('redux-persist/lib/storage').default
+    : require('./utils/localstorageAsync').getLocalStorageAsyncMock();
+export const reducerWeb3ReduxWithPersist = createReducerWeb3ReduxWithPersist(defaultLocalStorage); //
 
 export const createRootReducer = (reducerWeb3Redux: Reducer) => {
     return combineReducers({

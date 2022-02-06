@@ -1,6 +1,6 @@
 {
     "name": "@owlprotocol/web3-redux",
-    "version": "0.1.7",
+    "version": "0.1.9-beta.1",
     "private": false,
     "repository": {
         "type": "git",
@@ -120,6 +120,11 @@
         "!./**/*.test.*",
         "!abis",
         "abis/Multicall.json",
+        "abis/IERC20.json",
+        "abis/IERC20Metadata.json",
+        "abis/IERC721.json",
+        "abis/IERC721Metadata.json",
+        "abis/IERC165.json",
         "!types/ethers",
         "!types/truffle",
         "!types/web3"

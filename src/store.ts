@@ -4,12 +4,9 @@ import createSagaMiddleware from 'redux-saga';
 import { crashReporter } from './middleware';
 import { onBlockUpdate } from './block/middleware';
 import { onNetworkUpdate } from './network/middleware';
-import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist } from './reducer';
-import { rootSaga as defaultRootSaga } from './saga';
 import isClient from './utils/isClient';
-
-import { LocalStorageAsyncMock } from './test/localstorageAsync';
-
+import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist, defaultLocalStorage } from './reducer';
+import { rootSaga as defaultRootSaga } from './saga';
 const defaultMiddleware: any[] = [crashReporter, onNetworkUpdate, onBlockUpdate];
 
 /** @internal */
@@ -40,9 +37,7 @@ export type StoreType = ReturnType<typeof createStore>['store'];
 export type DispatchType = StoreType['dispatch'];
 
 const { store } = createStore();
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const localStorage = isClient() ? require('redux-persist/lib/storage').default : new LocalStorageAsyncMock();
-const storeWithPersistor = createStore({ persistStorage: localStorage });
+const storeWithPersistor = createStore({ persistStorage: defaultLocalStorage });
 
 export { store, storeWithPersistor };
 

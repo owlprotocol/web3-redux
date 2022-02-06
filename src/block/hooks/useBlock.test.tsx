@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import ganache from 'ganache-core';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 
@@ -13,6 +12,7 @@ import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useBlock } from './index';
 import { BlockTransaction, validate } from '../model';
+import { getWeb3Provider } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -40,9 +40,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
         let expected: BlockTransaction;
 
         before(async () => {
-            const provider = ganache.provider({
-                networkId: parseInt(networkId),
-            });
+            const provider = getWeb3Provider();
             //@ts-ignore
             web3 = new Web3(provider);
             accounts = await web3.eth.getAccounts();

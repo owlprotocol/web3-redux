@@ -14,7 +14,6 @@ import { Action as ContractEventAction, isReducerAction as isContractEventAction
 import { Action as ContractSendAction, isReducerAction as isContractSendAction } from './contractsend/actions';
 import { Action as EthCallAction, isReducerAction as isEthCallAction } from './ethcall/actions';
 import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
-import { Action as Web3ReduxAction } from './web3Redux/actions';
 import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions';
 import { Action as SyncAction, isReducerAction as isSyncAction } from './sync/actions';
 
@@ -41,7 +40,6 @@ export type Action =
     | ContractSendAction
     | EthCallAction
     | ConfigAction
-    | Web3ReduxAction
     | SyncAction
     | _4ByteAction;
 export type Reducer = (state: any, action: any) => any;

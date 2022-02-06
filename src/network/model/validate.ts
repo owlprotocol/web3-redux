@@ -13,7 +13,7 @@ export function validate(network: Network): Network {
     const explorerApiUrl = network.explorerApiUrl ?? defaultNetworkForId?.explorerApiUrl;
     const explorerApiKey = network.explorerApiKey ?? defaultNetworkForId?.explorerApiKey;
     const web3Rpc = network.web3Rpc ?? defaultNetworkForId?.web3Rpc;
-    const web3 = network.web3 ?? web3Rpc ? new Web3(web3Rpc!) : undefined;
+    const web3 = network.web3 ?? (web3Rpc ? new Web3(web3Rpc) : undefined);
 
     const validatedNetwork = { ...network };
     if (name) validatedNetwork.name = name;

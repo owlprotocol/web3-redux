@@ -13,11 +13,10 @@ import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';
 import { validate as validatedContractEvent } from '../../contractevent/model';
 
-import { ContractId } from '../model';
 import { selectContractEvents } from '../selectors';
 import { create as createAction, eventGetPast as eventGetPastAction } from '../actions';
 
-describe(`${name}.sagas.eventGetPast`, () => {
+describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
     let web3Sender: Web3;
     let accounts: string[];
@@ -25,14 +24,9 @@ describe(`${name}.sagas.eventGetPast`, () => {
     let web3Contract: Web3Contract;
 
     let address: string;
-    let id: ContractId;
 
     before(async () => {
-        const networkIdInt = parseInt(networkId);
-
-        const provider = ganache.provider({
-            networkId: networkIdInt,
-        });
+        const provider = ganache.provider();
         //@ts-ignore
         web3 = new Web3(provider);
         //@ts-ignore
@@ -44,13 +38,12 @@ describe(`${name}.sagas.eventGetPast`, () => {
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3, web3Sender }));
 
-        const tx = new web3.eth.Contract(BlockNumber.abi as AbiItem[]).deploy({
-            data: BlockNumber.bytecode,
-        });
-        const gas = await tx.estimateGas();
-        web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '10000' });
+        web3Contract = await new web3.eth.Contract(BlockNumber.abi as AbiItem[])
+            .deploy({
+                data: BlockNumber.bytecode,
+            })
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
-        id = { networkId, address };
 
         store.dispatch(
             createAction({
@@ -68,11 +61,7 @@ describe(`${name}.sagas.eventGetPast`, () => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
             });
 
-            const tx2 = await web3Contract.methods.setValue(42);
-            const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
-
-            await sleep(2000);
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
 
             store.dispatch(
                 eventGetPastAction({
@@ -82,9 +71,9 @@ describe(`${name}.sagas.eventGetPast`, () => {
                 }),
             );
 
-            await sleep(300);
+            await sleep(1000);
 
-            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
+            const events1 = selectContractEvents(store.getState(), { networkId, address }, 'NewValue');
             assert.deepEqual(events1, expectedEvents);
         });
     });

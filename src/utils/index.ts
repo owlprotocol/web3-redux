@@ -9,3 +9,4 @@ export { default as ganacheLogger } from './ganacheLogger';
 export { default as getInterfaceIdentifier } from './getInterfaceIdentifier';
 export { expectThrowsAsync } from './expectThrowsAsync';
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+export { getWeb3Provider } from './getWeb3Provider';

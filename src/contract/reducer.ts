@@ -12,17 +12,16 @@ export function reducer(sess: any, action: ReducerAction) {
         const { payload } = action;
         const { abi, address } = payload;
         const network: Network = Network.withId(payload.networkId);
-        const { web3, web3Sender } = network ?? { web3: undefined, web3Sender: undefined };
+        const { web3, web3Sender } = network ?? {};
 
         const web3Contract = payload.web3Contract ?? (web3 && abi ? new web3.eth.Contract(abi, address) : undefined);
         const web3SenderContract =
             payload.web3SenderContract ?? (web3Sender && abi ? new web3Sender.eth.Contract(abi, address) : undefined);
 
-        //@ts-expect-error ignore readonly
-        payload.web3Contract = web3Contract;
-        //@ts-expect-error ignore readonly
-        payload.web3SenderContract = web3SenderContract;
-        Contract.upsert(payload);
+        const insertData = { ...payload };
+        if (web3Contract) insertData.web3Contract = web3Contract;
+        if (web3SenderContract) insertData.web3SenderContract = web3SenderContract;
+        Contract.upsert(insertData);
     } else if (isRemoveAction(action)) {
         if (typeof action.payload === 'string') {
             Contract.withId(action.payload).delete();

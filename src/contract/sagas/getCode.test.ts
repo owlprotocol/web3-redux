@@ -1,7 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
-import Ganache from 'ganache-core';
+import { sleep, getWeb3Provider } from '../../utils';
+
 import BlockNumber from '../../abis/BlockNumber.json';
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
@@ -10,7 +11,6 @@ import { Contract } from '../model/interface';
 import { name } from '../common';
 import { selectByIdSingle } from '../selectors';
 import { create as createAction, getCode as getCodeAction } from '../actions';
-import { sleep } from '../../utils';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;
@@ -19,9 +19,7 @@ describe(`${name}.integration`, () => {
     let item: Contract;
 
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
 
@@ -50,7 +48,7 @@ describe(`${name}.integration`, () => {
                 data: BlockNumber.bytecode,
             });
             const gas = await tx.estimateGas();
-            const web3Contract = await tx.send({ from: item.address, gas, gasPrice: '10000' });
+            const web3Contract = await tx.send({ from: item.address, gas, gasPrice: '875000000' });
             const address = web3Contract.options.address;
 
             await sleep(100);

@@ -1,9 +1,10 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
-import Ganache from 'ganache-core';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import { getWeb3Provider, expectThrowsAsync } from '../../utils';
+
 import ERC165 from '../../abis/ERC165.json';
 
 import { create as createNetwork } from '../../network/actions';
@@ -14,7 +15,6 @@ import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
 import useSupportsInterface from '../hooks/useSupportsInterface';
-import { expectThrowsAsync } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -31,9 +31,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
     let address: string;
 
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
 
@@ -45,7 +43,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
             .deploy({
                 data: ERC165.bytecode,
             })
-            .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
 
         ({ store } = createStore());

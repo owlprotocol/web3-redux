@@ -37,8 +37,7 @@ export type StoreType = ReturnType<typeof createStore>['store'];
 export type DispatchType = StoreType['dispatch'];
 
 const { store } = createStore();
-const storeWithPersistor = createStore({ persistStorage: defaultLocalStorage });
-
-export { store, storeWithPersistor };
+export const createStoreWithPersistor = () => createStore({ persistStorage: defaultLocalStorage });
+export { store };
 
 export default store;

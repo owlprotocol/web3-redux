@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import Ganache from 'ganache-core';
 import Web3 from 'web3';
 import { map } from 'lodash';
+import { getWeb3Provider } from '../../utils';
 
 import { create as createNetwork } from '../../network/actions';
 
@@ -26,9 +26,7 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
 
     let wrapper: any;
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
 

@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import ganache from 'ganache-core';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
+import { getWeb3Provider } from '../../utils';
 
 import { networkId, transaction1 } from '../../test/data';
 import { create as createNetwork } from '../../network/actions';
@@ -27,9 +27,7 @@ describe(`${name}/hooks/useTransaction.tsx`, () => {
     let expected: Transaction;
 
     before(async () => {
-        const provider = ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();

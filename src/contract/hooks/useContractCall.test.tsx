@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
-import Ganache from 'ganache-core';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import { getWeb3Provider, expectThrowsAsync } from '../../utils';
 import BlockNumber from '../../abis/BlockNumber.json';
 
 import { create as createNetwork } from '../../network/actions';
@@ -17,7 +17,6 @@ import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
 import useContractCall from '../hooks/useContractCall';
-import { expectThrowsAsync } from '../../utils';
 import { createEventSync } from '../../sync/model/EventSync';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -35,9 +34,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     let address: string;
 
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();
@@ -48,7 +45,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             .deploy({
                 data: BlockNumber.bytecode,
             })
-            .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
 
         ({ store } = createStore());
@@ -125,7 +122,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
 
             await waitForNextUpdate();
-            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             //Create transaction, triggering a refresh
             store.dispatch(
                 createTransaction({
@@ -154,7 +151,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
 
             await waitForNextUpdate();
-            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             //Create block, triggering a refresh
             store.dispatch(
                 createBlock({
@@ -183,7 +180,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
 
             await waitForNextUpdate();
-            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             //Create event, triggering a refresh
             store.dispatch(
                 createEvent({

@@ -40,7 +40,8 @@
         "docs:serve": "serve docs",
         "docs:watch2": "typedoc --watch --preserveWatchOutput",
         "prepare": "husky install && npm run build",
-        "prepublishOnly": "npm run test"
+        "prepublishOnly": "npm run test",
+        "publish": "pnpm publish --no-git-checks --access public"
     },
     "dependencies": {
         "@reduxjs/toolkit": "^1.6.2",

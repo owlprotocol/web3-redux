@@ -83,6 +83,9 @@ const state: StateRoot = {
     [REDUX_ROOT]: getOrm().getEmptyState(),
 };
 
+state[REDUX_ROOT]['Network'].items.push(network1.networkId);
+state[REDUX_ROOT]['Network'].itemsById[network1.networkId] = network1;
+
 state[REDUX_ROOT]['Contract'].items.push(contract1.id);
 state[REDUX_ROOT]['Contract'].itemsById[contract1.id] = contract1;
 

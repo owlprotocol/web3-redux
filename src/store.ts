@@ -1,13 +1,13 @@
 import { createStore as createReduxStore, applyMiddleware, compose } from 'redux';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
-import { crashReporter } from './middleware';
+import { crashReporter, onPersistRehydrate } from './middleware';
 import { onBlockUpdate } from './block/middleware';
 import { onNetworkUpdate } from './network/middleware';
 import isClient from './utils/isClient';
 import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist, defaultLocalStorage } from './reducer';
 import { rootSaga as defaultRootSaga } from './saga';
-const defaultMiddleware: any[] = [crashReporter, onNetworkUpdate, onBlockUpdate];
+const defaultMiddleware: any[] = [crashReporter, onPersistRehydrate, onNetworkUpdate, onBlockUpdate];
 
 /** @internal */
 interface CreateStoreOptions {

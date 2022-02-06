@@ -1,3 +1,4 @@
+import Web3 from 'web3';
 import Network from './interface';
 import { defaultNetworks } from '../defaults';
 /**
@@ -11,12 +12,16 @@ export function validate(network: Network): Network {
     const explorerUrl = network.explorerUrl ?? defaultNetworkForId?.explorerUrl;
     const explorerApiUrl = network.explorerApiUrl ?? defaultNetworkForId?.explorerApiUrl;
     const explorerApiKey = network.explorerApiKey ?? defaultNetworkForId?.explorerApiKey;
+    const web3Rpc = network.web3Rpc ?? defaultNetworkForId?.web3Rpc;
+    const web3 = network.web3 ?? web3Rpc ? new Web3(web3Rpc!) : undefined;
 
     const validatedNetwork = { ...network };
     if (name) validatedNetwork.name = name;
     if (explorerUrl) validatedNetwork.explorerUrl = explorerUrl;
     if (explorerApiUrl) validatedNetwork.explorerApiUrl = explorerApiUrl;
     if (explorerApiKey) validatedNetwork.explorerApiKey = explorerApiKey;
+    if (web3Rpc) validatedNetwork.web3Rpc = web3Rpc;
+    if (web3) validatedNetwork.web3 = web3;
 
     return validatedNetwork;
 }

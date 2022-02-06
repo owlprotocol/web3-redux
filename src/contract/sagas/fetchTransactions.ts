@@ -51,7 +51,7 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
             endblock: endblock ?? 99999999,
             page: page ?? 1,
             offset: offset ?? 10,
-            sort: sort ?? 'asc',
+            sort: sort ?? 'desc', //Default fetches latest tx
             apikey: apiKey,
         },
     };
@@ -68,7 +68,10 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
                 nonce: parseInt(t.nonce),
                 transactionIndex: parseInt(t.transactionIndex),
                 gas: parseInt(t.gas),
+                gasUsed: parseInt(t.gasUsed),
+                cumulativeGasUsed: parseInt(t.cumulativeGasUsed),
                 confirmations: parseInt(t.confirmations),
+                timeStamp: parseInt(t.timeStamp),
             }),
         );
 
@@ -78,6 +81,8 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
         );
 
         yield* put(transactionsCreateBatch);
+    } else {
+        throw new Error('Etherscan fetchTransactions response.data.result undefined');
     }
 }
 

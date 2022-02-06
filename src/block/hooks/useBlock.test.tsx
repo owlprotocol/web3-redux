@@ -67,7 +67,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.deepEqual(currentCall, expected, 'result.current');
         });
 
@@ -78,7 +78,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
                 wrapper,
             });
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.deepEqual(currentCall, { ...block1, transactions: [] }, 'result.current');
         });
 
@@ -89,7 +89,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.deepEqual(currentCall, expected, 'result.current');
         });
 
@@ -100,7 +100,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
                 wrapper,
             });
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.deepEqual(currentCall, { ...block1, transactions: [] }, 'result.current');
         });
     });

@@ -1,5 +1,5 @@
 import { TransactionReceipt } from 'web3-eth';
-import { toChecksumAddress, toHex } from 'web3-utils';
+import { toChecksumAddress, isHexStrict, hexToNumberString } from 'web3-utils';
 import { getId as getBlockId } from '../../block/model/id';
 import { ModelWithId } from '../../types/model';
 
@@ -61,6 +61,8 @@ export interface Transaction extends TransactionId {
     readonly confirmations?: number;
     /** Etherscan contract genesis tx */
     readonly contractAddress?: string;
+    /** Ethersan timestamp */
+    readonly timeStamp?: number;
 
     /** ORM Relational */
     /** @hidden */
@@ -90,18 +92,22 @@ export function validate(item: Transaction): ModelWithId<Transaction> {
     const to = item.to ? toChecksumAddress(item.to) : undefined;
     const from = item.from ? toChecksumAddress(item.from) : undefined;
     const contractAddress = item.contractAddress ? toChecksumAddress(item.contractAddress) : undefined;
-    const gasPriceHex = item.gasPrice ? toHex(item.gasPrice) : undefined;
+    const gasPriceNumber = item.gasPrice
+        ? isHexStrict(item.gasPrice)
+            ? hexToNumberString(item.gasPrice)
+            : item.gasPrice
+        : undefined;
     const blockId = item.blockNumber ? getBlockId({ networkId: item.networkId, number: item.blockNumber }) : undefined;
 
     const result = {
         ...item,
         id,
-        to,
-        from,
-        contractAddress,
     };
 
-    if (gasPriceHex) result.gasPrice = gasPriceHex;
+    if (to) result.to = to;
+    if (from) result.from = from;
+    if (contractAddress) result.contractAddress = contractAddress;
+    if (gasPriceNumber) result.gasPrice = gasPriceNumber;
     if (blockId) result.blockId = blockId;
 
     return result;

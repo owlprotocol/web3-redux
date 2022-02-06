@@ -16,45 +16,39 @@ export function useGetNonce(
     address: string | undefined,
     sync = 'ifnull' as 'ifnull' | GenericSync | false,
 ) {
-    try {
-        const dispatch = useDispatch();
-        const id = networkId && address ? { networkId, address } : undefined;
+    const dispatch = useDispatch();
+    const id = networkId && address ? { networkId, address } : undefined;
 
-        const contract = useSelector((state) => selectByIdSingle(state, id));
-        const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
-        const web3Exists = !!(network?.web3 ?? network?.web3Sender);
-        const contractExists = !!contract;
-        const nonceExists = contract?.nonce != undefined;
+    const contract = useSelector((state) => selectByIdSingle(state, id));
+    const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
+    const web3Exists = !!(network?.web3 ?? network?.web3Sender);
+    const nonceExists = contract?.nonce != undefined;
 
-        //Get nonce
-        const { getNonceAction, syncAction } =
-            useMemo(() => {
-                if (networkId && address && web3Exists && contractExists) {
-                    if (sync === 'ifnull' && !nonceExists) {
-                        return getNonceSynced({ networkId, address, sync: 'once' });
-                    } else if (!!sync && sync != 'ifnull') {
-                        return getNonceSynced({ networkId, address, sync });
-                    }
+    //Get nonce
+    const { getNonceAction, syncAction } =
+        useMemo(() => {
+            if (networkId && address && web3Exists) {
+                if (sync === 'ifnull' && !nonceExists) {
+                    return getNonceSynced({ networkId, address, sync: 'once' });
+                } else if (!!sync && sync != 'ifnull') {
+                    return getNonceSynced({ networkId, address, sync });
                 }
-            }, [networkId, address, contractExists, web3Exists, JSON.stringify(sync)]) ?? {};
+            }
+        }, [networkId, address, nonceExists, web3Exists, JSON.stringify(sync)]) ?? {};
 
-        useEffect(() => {
-            if (getNonceAction) dispatch(getNonceAction);
-        }, [dispatch, getNonceAction]);
+    useEffect(() => {
+        if (getNonceAction) dispatch(getNonceAction);
+    }, [dispatch, getNonceAction]);
 
-        const syncId = syncAction?.payload.id;
-        useEffect(() => {
-            if (syncAction) dispatch(syncAction);
-            return () => {
-                if (syncId) dispatch(removeSync(syncId));
-            };
-        }, [dispatch, syncId]);
+    const syncId = syncAction?.payload.id;
+    useEffect(() => {
+        if (syncAction) dispatch(syncAction);
+        return () => {
+            if (syncId) dispatch(removeSync(syncId));
+        };
+    }, [dispatch, syncId]);
 
-        return contract?.nonce;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+    return contract?.nonce;
 }
 
 export default useGetNonce;

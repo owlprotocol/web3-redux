@@ -4,6 +4,7 @@ export { useContractCall, contractCallHookFactory } from './useContractCall';
 export { useContractSend, contractSendHookFactory } from './useContractSend';
 export { useEvents, contractEventsHookFactory } from './useEvents';
 export { useFetchAbi } from './useFetchAbi';
+export { useFetchTransactions } from './useFetchTransactions';
 export { useGetBalance } from './useGetBalance';
 export { useGetNonce } from './useGetNonce';
 export { useGetCode } from './useGetCode';

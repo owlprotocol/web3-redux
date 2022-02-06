@@ -47,7 +47,7 @@ describe(`${name}.sagas`, () => {
     });
 
     describe('fetch', () => {
-        it('create', () => {
+        it.skip('create', () => {
             const block = { number: item.number, hash: 'XYZ' };
             testSaga(fetch, fetchAction({ networkId: item.networkId, blockHashOrBlockNumber: item.number }))
                 .next()

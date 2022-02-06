@@ -29,64 +29,60 @@ interface EtherscanTx {
 
 /** @category Sagas */
 export function* fetchTransactions(action: FetchTransactionsAction) {
-    try {
-        const { payload } = action;
-        const { networkId, address, startblock, endblock, page, offset, sort } = payload;
+    const { payload } = action;
+    const { networkId, address, startblock, endblock, page, offset, sort } = payload;
 
-        const account = yield* select(selectByIdSingle, { networkId, address });
-        if (!account) yield* put(create({ networkId, address }));
+    const account = yield* select(selectByIdSingle, { networkId, address });
+    if (!account) yield* put(create({ networkId, address }));
 
-        const network = yield* call(networkExists, networkId);
-        const apiUrl = network.explorerApiUrl;
-        const apiKey = network.explorerApiKey;
-        if (!apiUrl) throw new Error(`Network ${networkId} missing apiUrl`);
+    const network = yield* call(networkExists, networkId);
+    const apiUrl = network.explorerApiUrl;
+    const apiKey = network.explorerApiKey;
+    if (!apiUrl) throw new Error(`Network ${networkId} missing apiUrl`);
 
-        const request = {
-            method: 'get',
-            url: apiUrl,
-            params: {
-                module: 'account',
-                action: 'txlist',
-                address,
-                startblock: startblock ?? 0,
-                endblock: endblock ?? 99999999,
-                page: page ?? 1,
-                offset: offset ?? 10,
-                sort: sort ?? 'asc',
-                apikey: apiKey,
-            },
-        };
+    const request = {
+        method: 'get',
+        url: apiUrl,
+        params: {
+            module: 'account',
+            action: 'txlist',
+            address,
+            startblock: startblock ?? 0,
+            endblock: endblock ?? 99999999,
+            page: page ?? 1,
+            offset: offset ?? 10,
+            sort: sort ?? 'desc', //Default fetches latest tx
+            apikey: apiKey,
+        },
+    };
 
-        //@ts-expect-error
-        const response = yield* call(axios, request);
-        const transactions = response.data?.result as EtherscanTx[];
-        if (transactions) {
-            const transactionsCreate = transactions.map((t) =>
-                createTransaction({
-                    ...t,
-                    networkId,
-                    blockNumber: parseInt(t.blockNumber),
-                    nonce: parseInt(t.nonce),
-                    transactionIndex: parseInt(t.transactionIndex),
-                    gas: parseInt(t.gas),
-                    gasUsed: parseInt(t.gasUsed),
-                    cumulativeGasUsed: parseInt(t.cumulativeGasUsed),
-                    confirmations: parseInt(t.confirmations),
-                }),
-            );
+    //@ts-expect-error
+    const response = yield* call(axios, request);
+    const transactions = response.data?.result as EtherscanTx[];
+    if (transactions) {
+        const transactionsCreate = transactions.map((t) =>
+            createTransaction({
+                ...t,
+                networkId,
+                blockNumber: parseInt(t.blockNumber),
+                nonce: parseInt(t.nonce),
+                transactionIndex: parseInt(t.transactionIndex),
+                gas: parseInt(t.gas),
+                gasUsed: parseInt(t.gasUsed),
+                cumulativeGasUsed: parseInt(t.cumulativeGasUsed),
+                confirmations: parseInt(t.confirmations),
+                timeStamp: parseInt(t.timeStamp),
+            }),
+        );
 
-            const transactionsCreateBatch = batchActions(
-                transactionsCreate,
-                `${createTransaction.type}/${transactions.length}`,
-            );
+        const transactionsCreateBatch = batchActions(
+            transactionsCreate,
+            `${createTransaction.type}/${transactions.length}`,
+        );
 
-            yield* put(transactionsCreateBatch);
-        } else {
-            throw new Error('Etherscan fetchTransactions response.data.result undefined');
-        }
-    } catch (error) {
-        console.error(error);
-        throw error;
+        yield* put(transactionsCreateBatch);
+    } else {
+        throw new Error('Etherscan fetchTransactions response.data.result undefined');
     }
 }
 

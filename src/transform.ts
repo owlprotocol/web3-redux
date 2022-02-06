@@ -34,11 +34,12 @@ export const ContractTransform = createTransform(
         };
     },
     (outboundState: State['Contract'], _: string, rawState: State) => {
+        const networks = rawState.Network?.itemsById ?? {};
         return {
             ...outboundState,
             itemsById: mapValues(outboundState.itemsById, (x) => {
                 const copy = { ...x };
-                const networkWeb3 = rawState.Network?.itemsById[x.networkId]?.web3;
+                const networkWeb3 = networks[x.networkId]?.web3;
                 if (networkWeb3 && x.abi) copy.web3Contract = new networkWeb3.eth.Contract(x.abi); //Re-build web3Contract object
                 return copy;
             }),

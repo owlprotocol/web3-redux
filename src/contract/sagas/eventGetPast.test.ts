@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import ganache from 'ganache-core';
+import { getWeb3Provider } from '../../test';
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
@@ -26,7 +26,7 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     let address: string;
 
     before(async () => {
-        const provider = ganache.provider();
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         //@ts-ignore

@@ -1,11 +1,12 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import BlockNumber from '../../abis/BlockNumber.json';
+import { getWeb3Provider } from '../../test';
 import { networkId } from '../../test/data';
 
 import { createStore, StoreType } from '../../store';
 import { Network, EthCall } from '../../index';
-import { sleep, getWeb3Provider } from '../../utils';
+import { sleep } from '../../utils';
 import { getIdArgs } from '../model/interface';
 
 describe('ethcall.sagas', () => {

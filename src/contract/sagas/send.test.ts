@@ -2,11 +2,12 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
+import { getWeb3Provider } from '../../test';
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
 import BlockNumber from '../../abis/BlockNumber.json';
-import { sleep, getWeb3Provider } from '../../utils';
+import { sleep } from '../../utils';
 
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';

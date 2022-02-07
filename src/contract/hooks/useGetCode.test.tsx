@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import { getWeb3Provider } from '../../utils';
+import { getWeb3Provider } from '../../test';
 
 import { create as createNetwork } from '../../network/actions';
 

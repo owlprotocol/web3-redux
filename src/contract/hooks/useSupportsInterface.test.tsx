@@ -3,7 +3,8 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import { getWeb3Provider, expectThrowsAsync } from '../../utils';
+import { getWeb3Provider } from '../../test';
+import { expectThrowsAsync } from '../../utils';
 
 import ERC165 from '../../abis/ERC165.json';
 

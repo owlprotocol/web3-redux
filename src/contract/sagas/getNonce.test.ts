@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { getWeb3Provider } from '../../utils';
+import { getWeb3Provider } from '../../test';
 
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';

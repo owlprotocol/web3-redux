@@ -2,7 +2,8 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import { getWeb3Provider, sleep } from '../../utils';
+import { getWeb3Provider } from '../../test';
+import { sleep } from '../../utils';
 
 import { name } from '../common';
 

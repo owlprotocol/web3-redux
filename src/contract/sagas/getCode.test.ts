@@ -1,7 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
-import { sleep, getWeb3Provider } from '../../utils';
+import { getWeb3Provider } from '../../test';
+import { sleep } from '../../utils';
 
 import BlockNumber from '../../abis/BlockNumber.json';
 import { networkId } from '../../test/data';

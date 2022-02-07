@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import Web3 from 'web3';
-import { getWeb3Provider } from '../../utils';
+import { getWeb3Provider } from '../../test';
 
 import { Network } from '../../network/model';
 import networkExists from '../../network/sagas/exists';

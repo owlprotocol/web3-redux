@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { getWeb3Provider, mineBlock, sleep } from '../../utils';
+import { getWeb3Provider } from '../../test';
+import { mineBlock, sleep } from '../../utils';
 
 import { create as createNetwork } from '../../network/actions';
 import { createStore, StoreType } from '../../store';

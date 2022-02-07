@@ -12,7 +12,7 @@ import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useBlock } from './index';
 import { BlockTransaction, validate } from '../model';
-import { getWeb3Provider } from '../../utils';
+import { getWeb3Provider } from '../../test';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

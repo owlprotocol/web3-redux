@@ -1,8 +1,8 @@
 import { toChecksumAddress } from 'web3-utils';
 import { getId as getContractId } from '../../contract/model/interface';
-import { ZERO_ADDRESS } from '../../utils';
 import { ModelWithId } from '../../types/model';
 
+const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 /** EthCall id components */
 export interface EthCallId {
     /** Blockchain network id.
@@ -14,7 +14,7 @@ export interface EthCallId {
     readonly data: string;
     /** Historical block height to execute call. Defaults to `latest` */
     readonly defaultBlock?: number | 'latest';
-    /** `from` field of call. Some providers may default this to `null` or `ZERO_ADDRESS`. */
+    /** `from` field of call. Some providers may default this to `null` or `ADDRESS_0`. */
     readonly from?: string;
     /** Maximum `gas` field for call. */
     readonly gas?: number;
@@ -28,8 +28,7 @@ export interface EthCall extends EthCallId {
 
 /** @internal */
 export function getOptionsId(from: EthCallId['from'], block: EthCallId['defaultBlock'], gas: EthCallId['gas']) {
-    if ((!from || from == ZERO_ADDRESS) && (block == undefined || block == 'latest') && gas == undefined)
-        return undefined;
+    if ((!from || from == ADDRESS_0) && (block == undefined || block == 'latest') && gas == undefined) return undefined;
 
     const options: any = {};
     if (from) options.from = toChecksumAddress(from);

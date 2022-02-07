@@ -2,15 +2,14 @@ import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import { getWeb3Provider } from '../../test';
-import { expectThrowsAsync, ZERO_ADDRESS } from '../../utils';
+import { getWeb3Provider, expectThrowsAsync } from '../../test';
+import { networkId, ADDRESS_0 } from '../../test/data';
 
 import { create as createNetwork } from '../../network/actions';
 import { create as createTransaction } from '../../transaction/actions';
 import { create as createBlock } from '../../block/actions';
 
 import { name } from '../common';
-import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
@@ -88,14 +87,14 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             const value1 = result.current;
             assert.equal(value1, expected1, 'contract.balance != expected');
 
-            await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
+            await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
             //Create transaction, triggering a refresh
             store.dispatch(
                 createTransaction({
                     networkId,
                     hash: '0x1',
                     from: address,
-                    to: ZERO_ADDRESS,
+                    to: ADDRESS_0,
                 }),
             );
             await waitForNextUpdate();
@@ -120,7 +119,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             const expected1 = await web3.eth.getBalance(address);
             assert.equal(result.current, expected1, 'contract.balance != expected');
 
-            await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
+            await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
             //Create block, triggering a refresh
             store.dispatch(
                 createBlock({

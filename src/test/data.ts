@@ -5,10 +5,11 @@ import { REDUX_ROOT } from '../common';
 import { validateContract } from '../contract';
 import { validateContractEvent } from '../contractevent';
 import { validateEthCall } from '../ethcall';
-import { getOrm } from '../orm';
-import { StateRoot } from '../state';
 import { validateBlock } from '../block';
 import { validateTransaction } from '../transaction';
+
+import { getOrm } from '../orm';
+import { StateRoot } from '../state';
 
 export const networkId = '1336';
 export const addressList = [

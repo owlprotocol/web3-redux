@@ -6,10 +6,10 @@ import { getId, _4ByteSignature } from '../model/interface';
 import { name } from '../common';
 
 import { selectByIdSingle, selectByIdMany } from '../selectors';
-import { ZERO_ADDRESS } from '../../utils';
+import { ADDRESS_0 } from '../../test/data';
 
 describe(`${name}.selectors`, () => {
-    const item: _4ByteSignature = { signatureHash: ZERO_ADDRESS };
+    const item: _4ByteSignature = { signatureHash: ADDRESS_0 };
     const id = getId(item);
     const itemWithId = { id: id, ...item };
 

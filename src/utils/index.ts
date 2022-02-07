@@ -4,8 +4,5 @@ export { sleep } from './sleep';
 export { sleepForPort } from './sleepForPort';
 export { memoizeReturn, memoizeWeak, memoizeArrayByRef } from './memo';
 export { mineBlocks, mineBlock } from './mineBlocks';
-export { assertDeepEqual } from './assertDeepEqual';
 export { ganacheLogger } from './ganacheLogger';
 export { getInterfaceIdentifier } from './getInterfaceIdentifier';
-export { expectThrowsAsync } from './expectThrowsAsync';
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';

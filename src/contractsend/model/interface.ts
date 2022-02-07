@@ -1,8 +1,9 @@
 import { toChecksumAddress } from 'web3-utils';
 import { getId as getContractId } from '../../contract/model/interface';
 import { getTransactionId } from '../../transaction/model';
-import { ZERO_ADDRESS } from '../../utils';
 import { ModelWithId } from '../../types/model';
+
+const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 
 /** ContractSend id components */
 export interface ContractSendId {
@@ -67,7 +68,7 @@ export function getArgsId(args?: any[]) {
 
 /** @internal */
 export function getOptionsId(from: string | undefined, value: string | undefined) {
-    if ((!from || from == ZERO_ADDRESS) && (!value || value == '0')) return undefined;
+    if ((!from || from == ADDRESS_0) && (!value || value == '0')) return undefined;
 
     const options: any = {};
     if (from) options.from = toChecksumAddress(from);

@@ -10,7 +10,7 @@ import { create } from '../actions';
 
 import useFetchTransactions from './useFetchTransactions';
 import { ETHERSCAN_API_KEY } from '../../environment';
-import { expectThrowsAsync } from '../../utils';
+import { expectThrowsAsync } from '../../test';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

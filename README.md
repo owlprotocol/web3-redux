@@ -2,6 +2,7 @@
 
 [![NPM Package Version][npm-image-version]][npm-url]
 [![NPM Package Downloads][npm-image-downloads]][npm-url]
+![web3-redux.svg](./docs-static/web3-redux.svg)
 
 A Redux library designed to efficiently sync and normalize blockchain data synced using [web3.js](https://github.com/ChainSafe/web3.js)
 

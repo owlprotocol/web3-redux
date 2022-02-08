@@ -1,5 +1,7 @@
 # Web3 Redux Docs
 
+![web3-redux.svg](./web3-redux.svg)
+
 Web3 Redux Library.
 
 ## Table of Contents

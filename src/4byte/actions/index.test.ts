@@ -2,7 +2,7 @@ import { assert } from 'chai';
 
 import { name } from '../common';
 import { _4ByteSignature, getId } from '../model/interface';
-import { ZERO_ADDRESS } from '../../utils';
+import { ADDRESS_0 } from '../../test/data';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
@@ -10,7 +10,7 @@ import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 import { set, SET, SetAction, isSetAction } from './set';
 
 describe(`${name}.action`, () => {
-    const item: _4ByteSignature = { signatureHash: ZERO_ADDRESS };
+    const item: _4ByteSignature = { signatureHash: ADDRESS_0 };
 
     it('create', () => {
         const expected: CreateAction = {

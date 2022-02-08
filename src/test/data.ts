@@ -5,10 +5,11 @@ import { REDUX_ROOT } from '../common';
 import { validateContract } from '../contract';
 import { validateContractEvent } from '../contractevent';
 import { validateEthCall } from '../ethcall';
-import { getOrm } from '../orm';
-import { StateRoot } from '../state';
 import { validateBlock } from '../block';
 import { validateTransaction } from '../transaction';
+
+import { getOrm } from '../orm';
+import { StateRoot } from '../state';
 
 export const networkId = '1336';
 export const addressList = [
@@ -82,6 +83,9 @@ export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRES
 const state: StateRoot = {
     [REDUX_ROOT]: getOrm().getEmptyState(),
 };
+
+state[REDUX_ROOT]['Network'].items.push(network1.networkId);
+state[REDUX_ROOT]['Network'].itemsById[network1.networkId] = network1;
 
 state[REDUX_ROOT]['Contract'].items.push(contract1.id);
 state[REDUX_ROOT]['Contract'].itemsById[contract1.id] = contract1;

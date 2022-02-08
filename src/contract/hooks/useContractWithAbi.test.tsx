@@ -8,7 +8,7 @@ import { networkId, ADDRESS_0 } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 
 import useContractWithAbi from './useContractWithAbi';
-import { expectThrowsAsync } from '../../utils';
+import { expectThrowsAsync } from '../../test';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

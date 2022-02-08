@@ -12,8 +12,8 @@ export const NetworkTransform = createTransform(
         };
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (outboundState: State['Network'], _: string, __: State) => {
-        return {
+    (outboundState: State['Network'], _: string, rawState: State) => {
+        const out = {
             ...outboundState,
             itemsById: mapValues(outboundState.itemsById, (x) => {
                 const copy = { ...x };
@@ -21,6 +21,9 @@ export const NetworkTransform = createTransform(
                 return copy;
             }),
         };
+
+        rawState.Network = out; //apply modification
+        return out;
     },
     { whitelist: ['Network'] },
 );
@@ -33,16 +36,10 @@ export const ContractTransform = createTransform(
             itemsById: mapValues(inboundState.itemsById, (x) => omit(x, ['web3Contract', 'web3SenderContract'])),
         };
     },
-    (outboundState: State['Contract'], _: string, rawState: State) => {
-        const networks = rawState.Network?.itemsById ?? {};
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (outboundState: State['Contract'], _: string, __: State) => {
         return {
             ...outboundState,
-            itemsById: mapValues(outboundState.itemsById, (x) => {
-                const copy = { ...x };
-                const networkWeb3 = networks[x.networkId]?.web3;
-                if (networkWeb3 && x.abi) copy.web3Contract = new networkWeb3.eth.Contract(x.abi); //Re-build web3Contract object
-                return copy;
-            }),
         };
     },
     { whitelist: ['Contract'] },

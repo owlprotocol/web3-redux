@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import ganache from 'ganache-core';
+import { getWeb3Provider } from '../../test';
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
@@ -24,11 +24,7 @@ describe(`${name}.sagas.send`, () => {
     let address: string;
 
     before(async () => {
-        const networkIdInt = parseInt(networkId);
-
-        const provider = ganache.provider({
-            networkId: networkIdInt,
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         //@ts-ignore
@@ -44,7 +40,7 @@ describe(`${name}.sagas.send`, () => {
             data: BlockNumber.bytecode,
         });
         const gas = await tx.estimateGas();
-        web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '10000' });
+        web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '875000000' });
         address = web3Contract.options.address;
 
         store.dispatch(

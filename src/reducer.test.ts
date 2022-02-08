@@ -7,7 +7,7 @@ import { selectByIdSingle as selectNetwork } from './network/selectors';
 
 import { createStore, StoreType } from './store';
 import { ContractTransform, NetworkTransform, SyncTransform } from './transform';
-import { LocalStorageAsyncMock } from './test/localstorageAsync';
+import { LocalStorageAsyncMock } from './utils/localstorageAsync';
 import { transaction1 } from './test/data';
 import { State } from './state';
 import { REDUX_ROOT } from './common';

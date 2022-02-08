@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import Ganache from 'ganache-core';
+import { getWeb3Provider } from '../../test';
+
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network/actions';
@@ -16,9 +17,7 @@ describe(`${name}.integration`, () => {
     let item: Contract;
 
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();

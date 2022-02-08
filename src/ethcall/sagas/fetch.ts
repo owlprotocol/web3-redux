@@ -1,10 +1,10 @@
 import { put, call } from 'typed-redux-saga/macro';
 import { create, FetchAction, FETCH, set } from '../actions';
-import { ZERO_ADDRESS } from '../../utils';
 import networkExists from '../../network/sagas/exists';
 import { Network } from '../../network/model';
 import { getIdArgs } from '../model/interface';
 
+const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const FETCH_ERROR = `${FETCH}/ERROR`;
 
 export default function* fetch(action: FetchAction) {
@@ -23,7 +23,7 @@ export default function* fetch(action: FetchAction) {
         const returnValue: any = yield* call(
             //@ts-ignore
             web3.eth.call,
-            { ...payload, gas, from: payload.from ?? ZERO_ADDRESS },
+            { ...payload, gas, from: payload.from ?? ADDRESS_0 },
             defaultBlock ?? 'latest',
         );
 

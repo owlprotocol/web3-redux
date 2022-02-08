@@ -1,20 +1,19 @@
 import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import Ganache from 'ganache-core';
 import Web3 from 'web3';
+import { getWeb3Provider, expectThrowsAsync } from '../../test';
+import { networkId, ADDRESS_0 } from '../../test/data';
 
 import { create as createNetwork } from '../../network/actions';
 import { create as createTransaction } from '../../transaction/actions';
 import { create as createBlock } from '../../block/actions';
 
 import { name } from '../common';
-import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
 import useGetNonce from './useGetNonce';
-import { expectThrowsAsync, ZERO_ADDRESS } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -28,9 +27,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
     let address: string;
 
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
 
@@ -90,14 +87,14 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             const value1 = result.current;
             assert.equal(value1, expected1, 'contract.nonce != expected');
 
-            await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
+            await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
             //Fetch transaction, triggering a refresh
             store.dispatch(
                 createTransaction({
                     networkId,
                     hash: '0x1',
                     from: address,
-                    to: ZERO_ADDRESS,
+                    to: ADDRESS_0,
                 }),
             );
             await waitForNextUpdate();
@@ -119,7 +116,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             const expected1 = await web3.eth.getTransactionCount(address);
             assert.equal(result.current, expected1, 'contract.nonce != expected');
 
-            await web3.eth.sendTransaction({ from: address, to: ZERO_ADDRESS, value: '1' });
+            await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
             //Create block, triggering a refresh
             store.dispatch(
                 createBlock({

@@ -18,7 +18,7 @@ import {
 export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '1337': {
         networkId: '1337',
-        name: 'Ganache',
+        name: 'ganache',
         web3Rpc: GANACHE_RPC,
     },
     '1': {

@@ -6,7 +6,6 @@ import * as ContractEvent from './contractevent';
 import * as ContractSend from './contractsend';
 import * as EthCall from './ethcall';
 import * as Config from './config';
-import * as Web3Redux from './web3Redux';
 import * as Sync from './sync';
 import * as _4Byte from './4byte';
 import { getOrm } from './orm';
@@ -29,7 +28,6 @@ export {
     ContractSend,
     EthCall,
     Config,
-    Web3Redux,
     Sync,
     _4Byte,
 };

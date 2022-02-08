@@ -1,10 +1,11 @@
 import { assert } from 'chai';
 // eslint-disable-next-line prettier/prettier
 import { Provider } from 'react-redux';
-import Ganache from 'ganache-core';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import { getWeb3Provider, expectThrowsAsync } from '../../test';
+
 import ERC20 from '../../abis/ERC20PresetMinterPauser.json';
 
 import { create as createNetwork } from '../../network/actions';
@@ -17,7 +18,6 @@ import { ADDRESS_0, networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 
 import useERC20 from './useERC20';
-import { expectThrowsAsync } from '../../utils';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -34,9 +34,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
     let address: string;
 
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();
@@ -48,10 +46,12 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                 arguments: ['Test Token', 'TEST'],
                 data: ERC20.bytecode,
             })
-            .send({ from: accounts[0], gas: 2000000, gasPrice: '1' });
+            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
 
-        await web3Contract.methods.mint(accounts[0], 1).send({ from: accounts[0], gas: 2000000, gasPrice: '1' });
+        await web3Contract.methods
+            .mint(accounts[0], 1)
+            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
@@ -110,7 +110,9 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                 assert.equal(result.all.length, 7, 'result.all.length');
 
                 //Mint function emits Transfer event with to = <accounts[0]>
-                web3Contract.methods.mint(accounts[0], 1).send({ from: accounts[0], gas: 2000000, gasPrice: '1' });
+                web3Contract.methods
+                    .mint(accounts[0], 1)
+                    .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
                 await waitForNextUpdate(); //update events
 
                 const value = result.current;
@@ -169,7 +171,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
 
                 await web3Contract.methods
                     .mint(accounts[0], 1)
-                    .send({ from: accounts[0], gas: 2000000, gasPrice: '1' });
+                    .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
                 //Create transaction, triggering a refresh
                 store.dispatch(
                     createTransaction({
@@ -208,7 +210,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
 
                 await web3Contract.methods
                     .mint(accounts[0], 1)
-                    .send({ from: accounts[0], gas: 2000000, gasPrice: '1' });
+                    .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
                 //Create block, triggering a refresh
                 store.dispatch(
                     createBlock({
@@ -243,7 +245,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
 
                 await web3Contract.methods
                     .mint(accounts[0], 1)
-                    .send({ from: accounts[0], gas: 2000000, gasPrice: '1' });
+                    .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
                 //Create event, triggering a refresh
                 store.dispatch(
                     createEvent({

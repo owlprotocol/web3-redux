@@ -12,6 +12,7 @@ import {
     FETCH_NONCE_SYNCED,
     FETCH_TRANSACTIONS,
     GET_CODE,
+    GET_ENS,
 } from '../actions';
 import call from './call';
 import callBatched from './callBatched';
@@ -26,6 +27,7 @@ import fetchTransactions from './fetchTransactions';
 import getBalanceSynced from './getBalanceSynced';
 import getNonceSynced from './getNonceSynced';
 import getCode from './getCode';
+import getEns from './getEns';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga
 /** @internal */
@@ -44,6 +46,7 @@ export function* saga() {
         takeEvery(FETCH_NONCE_SYNCED, getNonceSynced),
         takeEvery(GET_CODE, getCode),
         takeEvery(FETCH_TRANSACTIONS, fetchTransactions),
+        takeEvery(GET_ENS, getEns),
     ]);
 }
 

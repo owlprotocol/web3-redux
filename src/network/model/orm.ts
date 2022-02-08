@@ -18,5 +18,6 @@ export default class Model extends ORMModel {
         explorerUrl: attr(),
         explorerApiUrl: attr(),
         explorerApiKey: attr(),
+        ens: attr(),
     };
 }

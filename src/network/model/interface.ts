@@ -36,6 +36,8 @@ export interface Network extends NetworkId {
     readonly explorerApiUrl?: string;
     /** Block explorer API key */
     readonly explorerApiKey?: string;
+    /** Ens domain */
+    readonly ens?: string;
 }
 
 export default Network;

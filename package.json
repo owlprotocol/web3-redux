@@ -7,11 +7,11 @@
         "url": "https://github.com/owlprotocol/web3-redux.git"
     },
     "homepage": "https://owlprotocol.github.io/web3-redux",
-    "copyright": "Copyright 2021 Leo Vigna",
+    "copyright": "Copyright 2021 Owl Protocol",
     "author": {
         "name": "Leo Vigna",
         "email": "leo.vigna@gmail.com",
-        "url": "https://github.com/owlprotocol/"
+        "url": "https://github.com/leovigna/"
     },
     "license": "MIT",
     "scripts": {

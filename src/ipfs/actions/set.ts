@@ -1,11 +1,11 @@
 import { name } from '../common';
-import { Ipfs, IpfsId } from '../model/interface';
+import { Ipfs } from '../model/interface';
 
 /** @internal */
 export const SET = (key: keyof Ipfs) => `${name}/SET/${key.toUpperCase()}`;
 /** @internal */
 export interface SetActionInput {
-    id: IpfsId;
+    contentId: string;
     key: keyof Ipfs;
     value: any;
 }
@@ -14,7 +14,7 @@ export const set = (payload: SetActionInput) => {
     return {
         type: SET(payload.key),
         payload: {
-            id: { networkId: payload.id.networkId, contentId: payload.id.contentId },
+            contentId: payload.contentId,
             key: payload.key,
             value: payload.value,
         },
@@ -26,3 +26,5 @@ export type SetAction = ReturnType<typeof set>;
 /** @internal */
 export const isSetAction = (action: { type: string; payload?: { key: keyof Ipfs } }) =>
     !!action.payload?.key && action.type === SET(action.payload.key);
+
+export default set;

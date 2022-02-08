@@ -2,7 +2,11 @@ export interface IdDefined {
     id: string;
 }
 
-export type ModelWithId<T> = IdDefined & T;
+export interface ContentIdDefined {
+    contentId: string;
+}
+
+export type ModelWithId<T> = (IdDefined | ContentIdDefined) & T;
 export interface Model<T> {
     create: (item: ModelWithId<T>) => any;
     update: (item: ModelWithId<T>) => any;

@@ -1,6 +1,15 @@
 import { name } from './common';
-import { ReducerAction, isCreateAction, isRemoveAction, isSetAction, isUpdateAction } from './actions';
-import Ipfs, { getId } from './model/interface';
+import {
+    ReducerAction,
+    isCreateAction,
+    isRemoveAction,
+    isSetAction,
+    isUpdateAction,
+    RemoveAction,
+    SetAction,
+    UpdateAction,
+} from './actions';
+import Ipfs from './model/interface';
 import ModelInterface from '../types/model';
 
 /** @internal */
@@ -9,11 +18,14 @@ export function reducer(sess: any, action: ReducerAction) {
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
     } else if (isRemoveAction(action)) {
-        Model.withId(getId(action.payload))?.delete();
+        Model.withId((action as RemoveAction).payload.contentId)?.delete();
     } else if (isUpdateAction(action)) {
-        Model.update(action.payload);
+        Model.update((action as UpdateAction).payload);
     } else if (isSetAction(action)) {
-        Model.withId(getId(action.payload.id))?.set(action.payload.key, action.payload.value);
+        Model.withId((action as SetAction).payload.contentId)?.set(
+            (action as SetAction).payload.key,
+            (action as SetAction).payload.value,
+        );
     }
 
     return sess;

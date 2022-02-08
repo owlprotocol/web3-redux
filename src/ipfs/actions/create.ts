@@ -1,12 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { Ipfs, validate } from '../model/interface';
+import { Ipfs } from '../model/interface';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;
 /** @category Actions */
 export const create = createAction(CREATE, (payload: Ipfs) => {
-    return { payload: validate(payload) };
+    return { payload };
 });
 /** @internal */
 export type CreateAction = ReturnType<typeof create>;

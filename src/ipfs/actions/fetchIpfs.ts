@@ -6,7 +6,7 @@ import { IpfsId } from '../model/interface';
 export const FETCH_IPFS = `${name}/FETCH_IPFS`;
 /** @category Actions */
 export const fetchIpfs = createAction(FETCH_IPFS, (payload: IpfsId) => {
-    return { payload: { networkId: payload.networkId, contentId: payload.contentId } };
+    return { payload: { contentId: payload.contentId } };
 });
 /** @internal */
 export type FetchIpfsAction = ReturnType<typeof fetchIpfs>;

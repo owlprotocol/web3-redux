@@ -1,11 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { _4ByteSignature } from '../model';
+import { Ipfs } from '../model/interface';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;
-/** @category Action */
-export const create = createAction(CREATE, (payload: _4ByteSignature) => {
+/** @category Actions */
+export const create = createAction(CREATE, (payload: Ipfs) => {
     return { payload };
 });
 /** @internal */

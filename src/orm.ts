@@ -8,8 +8,10 @@ import ContractEventIndexModel from './contracteventindex/model/orm';
 import ContractSendModel from './contractsend/model/orm';
 import EthCallModel from './ethcall/model/orm';
 import ConfigModel from './config/model/orm';
+import IpfsModel from './ipfs/model/orm';
 import SyncModel from './sync/model/orm';
 import _4ByteModel from './4byte/model/orm';
+import { IPFS_URL } from './environment';
 
 //Fix undefined import issue
 let orm = getOrm();
@@ -29,6 +31,7 @@ export function getOrm(): any {
     orm.register(ContractSendModel);
     orm.register(EthCallModel);
     orm.register(ConfigModel);
+    orm.register(IpfsModel);
     orm.register(SyncModel);
     orm.register(_4ByteModel);
 
@@ -42,7 +45,7 @@ export const initializeState = (orm: any) => {
 
     //TODO: Merge initial state redux-persist??
     const { Config } = orm.mutableSession(state);
-    Config.create({ id: 0, account: null, networkId: null });
+    Config.create({ id: 0, networkId: '1', ipfsUrl: IPFS_URL });
 
     return state;
 };

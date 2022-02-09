@@ -10,6 +10,8 @@ export interface Config {
     readonly networkId?: string | undefined;
     /* Selected account */
     readonly account?: string | undefined;
+    /** Ipfs Url */
+    readonly ipfsUrl?: string | undefined;
     /* Arbitrary config values */
     readonly [key: string]: any;
 }

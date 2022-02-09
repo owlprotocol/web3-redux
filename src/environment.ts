@@ -48,3 +48,11 @@ export const OPTIMISM_KOVAN_RPC =
     getEnvVar('OPTIMISM_KOVAN_RPC') ?? INFURA_API_KEY
         ? `http://optimism-kovan.infura.io/v3/${INFURA_API_KEY}`
         : undefined;
+
+//IPFS
+//Infura uses Basic Auth for IPFS
+//https://infura.io/docs/ipfs#section/Getting-Started/Create-your-Infura-IPFS-project
+//TODO: Add basic auth support
+export const INFURA_IPFS_PROJECT_ID = getEnvVar('INFURA_IPFS_PROJECT_ID');
+export const INFURA_IPFS_PROJECT_SECRET = getEnvVar('INFURA_IPFS_PROJECT_SECRET');
+export const IPFS_URL = getEnvVar('IPFS_URL') ?? 'https://ipfs.infura.io:5001';

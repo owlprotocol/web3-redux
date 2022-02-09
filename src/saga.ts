@@ -6,6 +6,7 @@ import transactionSaga from './transaction/sagas';
 import { saga as contractSaga } from './contract/sagas';
 import ethCallSaga from './ethcall/sagas';
 import { saga as syncSaga } from './sync/sagas';
+import ipfsSaga from './ipfs/sagas';
 import _4ByteSaga from './4byte/sagas';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga.html
@@ -17,6 +18,7 @@ export function* rootSaga() {
         spawn(contractSaga),
         spawn(ethCallSaga),
         spawn(syncSaga),
+        spawn(ipfsSaga),
         spawn(_4ByteSaga),
     ]);
 }

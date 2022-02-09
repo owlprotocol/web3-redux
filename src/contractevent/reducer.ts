@@ -1,13 +1,13 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import ModelInterface from '../types/model';
 import ContractEvent, { getId } from './model/interface';
 import ContractEventIndex from '../contracteventindex/model/interface';
+import { ORMModel, ModelWithId } from '../types/model';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const Model: ModelInterface<ContractEvent> = sess[name];
-    const Index: ModelInterface<ContractEventIndex> = sess['ContractEventIndex'];
+    const Model: ORMModel<ModelWithId<ContractEvent>> = sess[name];
+    const Index: ORMModel<ModelWithId<ContractEventIndex>> = sess['ContractEventIndex'];
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
         action.payload.indexIds?.forEach((id) => {

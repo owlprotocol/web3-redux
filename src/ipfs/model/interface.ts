@@ -5,7 +5,7 @@ export interface IpfsId {
 
 export interface Ipfs extends IpfsId {
     /** data blob */
-    readonly data?: Uint8Array;
+    readonly data?: any;
 }
 
 export default Ipfs;

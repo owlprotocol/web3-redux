@@ -1,13 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { SignatureId, validate } from '../model';
+import { SignatureId } from '../model';
 
 /** @internal */
 export const FETCH_FUNCTION_SIGNATURE = `${name}/FETCH_FUNCTION_SIGNATURE`;
 /** @category Actions */
 export const fetchFunctionSignature = createAction(FETCH_FUNCTION_SIGNATURE, (payload: SignatureId) => {
     return {
-        payload: validate(payload),
+        payload,
     };
 });
 /** @internal */

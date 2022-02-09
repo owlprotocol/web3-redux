@@ -18,7 +18,7 @@ export function useNetworkId() {
         [dispatch],
     );
 
-    return [value, setNetworkIdCallback];
+    return [value, setNetworkIdCallback] as [typeof value, typeof setNetworkIdCallback];
 }
 
 export default useNetworkId;

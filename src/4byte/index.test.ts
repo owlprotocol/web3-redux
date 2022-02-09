@@ -42,7 +42,7 @@ describe(`${name}/integration`, () => {
         const expectArgs: string[] = expectedSignature
             ?.substring(expectedSignature.indexOf('(') + 1, expectedSignature.indexOf(')'))
             .split(',');
-        const item = selectByIdSingle(store.getState(), eventItem);
+        const item = selectByIdSingle(store.getState(), eventItem.signatureHash);
 
         assert.equal(item!.name, expectName, 'event name');
         assert.deepEqual(item!.args, expectArgs, 'event args');
@@ -62,7 +62,7 @@ describe(`${name}/integration`, () => {
         const expectArgs: string[] = expectedSignature
             ?.substring(expectedSignature.indexOf('(') + 1, expectedSignature.indexOf(')'))
             .split(',');
-        const item = selectByIdSingle(store.getState(), functionItem);
+        const item = selectByIdSingle(store.getState(), functionItem.signatureHash);
 
         assert.equal(item!.name, expectName, 'function name');
         assert.deepEqual(item!.args, expectArgs, 'function args');

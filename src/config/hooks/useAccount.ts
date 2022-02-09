@@ -18,7 +18,7 @@ export function useAccount() {
         [dispatch],
     );
 
-    return [value, setAccountCallback];
+    return [value, setAccountCallback] as [typeof value, typeof setAccountCallback];
 }
 
 export default useAccount;

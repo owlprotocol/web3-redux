@@ -52,15 +52,12 @@ describe(`${name}.selectors`, () => {
         state[REDUX_ROOT]['Contract'].itemsById[contract.id] = contract;
 
         //Set Eth Call
-        //@ts-ignore
         state[REDUX_ROOT]['EthCall'].items.push(ethCall.id);
         state[REDUX_ROOT]['EthCall'].itemsById[ethCall.id!] = ethCall;
 
         //Set Event
-        //@ts-ignore
         state[REDUX_ROOT]['ContractEvent'].items.push(event1.id);
         state[REDUX_ROOT]['ContractEvent'].itemsById[event1.id!] = event1;
-        //@ts-ignore
         state[REDUX_ROOT]['ContractEvent'].items.push(event2.id);
         state[REDUX_ROOT]['ContractEvent'].itemsById[event2.id!] = event2;
 

@@ -1,11 +1,11 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
 import _4ByteSignature, { getId } from './model/interface';
-import ModelInterface from '../types/model';
+import { ORMModel } from '../types/model';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const Model: ModelInterface<_4ByteSignature> = sess[name];
+    const Model: ORMModel<_4ByteSignature> = sess[name];
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
     } else if (isRemoveAction(action)) {

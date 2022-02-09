@@ -1,11 +1,11 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import ModelInterface from '../types/model';
 import ContractSend, { getId } from './model/interface';
+import { ORMModel, ModelWithId } from '../types/model';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const Model: ModelInterface<ContractSend> = sess[name];
+    const Model: ORMModel<ModelWithId<ContractSend>> = sess[name];
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
     } else if (isRemoveAction(action)) {

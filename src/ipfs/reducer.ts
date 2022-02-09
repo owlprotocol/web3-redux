@@ -10,11 +10,11 @@ import {
     UpdateAction,
 } from './actions';
 import Ipfs from './model/interface';
-import ModelInterface from '../types/model';
+import { ORMModel } from '../types/model';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const Model: ModelInterface<Ipfs> = sess[name];
+    const Model: ORMModel<Ipfs> = sess[name];
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
     } else if (isRemoveAction(action)) {

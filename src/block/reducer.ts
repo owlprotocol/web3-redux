@@ -3,11 +3,11 @@ import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
 import Block from './model/interface';
 import { getId } from './model/id';
-import ModelInterface from '../types/model';
+import { ORMModel, ModelWithId } from '../types/model';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const Model: ModelInterface<Block> = sess[name];
+    const Model: ORMModel<ModelWithId<Block>> = sess[name];
     if (isCreateAction(action)) {
         const { payload } = action;
         //transactions created in saga middleware

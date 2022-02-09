@@ -1,12 +1,12 @@
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
 import { getId, Contract } from './model';
 import { Network } from '../network/model';
-import ModelInterface from '../types/model';
+import { ORMModel, ModelWithId } from '../types/model';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
-    const Network: ModelInterface<Network> = sess.Network;
-    const Contract: ModelInterface<Contract> = sess.Contract;
+    const Network: ORMModel<Network> = sess.Network;
+    const Contract: ORMModel<ModelWithId<Contract>> = sess.Contract;
 
     if (isCreateAction(action)) {
         const { payload } = action;

@@ -22,7 +22,7 @@ describe(`${name}.integration`, () => {
     });
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(createAction(item));
     });
 

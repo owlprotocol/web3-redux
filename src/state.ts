@@ -118,7 +118,7 @@ export interface State {
     };
     Ipfs: {
         items: string[];
-        itemsById: { [id: string]: ModelWithId<Ipfs> };
+        itemsById: { [id: string]: Ipfs };
     };
     /** Join table for events and indices */
     ContractEventIndexIds: {

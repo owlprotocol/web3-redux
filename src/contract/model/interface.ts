@@ -38,6 +38,8 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
     readonly nonce?: number;
     /** Code stored at address */
     readonly code?: string;
+    /** Ens domain associated with address */
+    readonly ens?: string;
 
     /** ORM Relational */
     readonly fromTransactions?: Transaction[];

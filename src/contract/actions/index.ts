@@ -23,6 +23,7 @@ import {
     isFetchTransactionsAction,
 } from './fetchTransactions';
 import { GET_CODE, getCode, GetCodeAction, isGetCodeAction } from './getCode';
+import { GET_ENS, getEns, GetEnsAction, isGetEnsAction } from './getEns';
 
 /* Synced composite actions */
 export { callSynced } from './callSynced';
@@ -48,7 +49,12 @@ export type SagaAction =
     | GetBalanceAction
     | GetNonceAction
     | FetchTransactionsAction
+    | GetBalanceSyncedAction
+    | GetNonceSyncedAction
+    | GetCodeAction
+    | GetEnsAction
     | GetCodeAction;
+
 /** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
     return (
@@ -62,6 +68,10 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
         isGetBalanceAction(action) ||
         isGetNonceAction(action) ||
         isFetchTransactionsAction(action) ||
+        isGetBalanceSyncedAction(action) ||
+        isGetNonceSyncedAction(action) ||
+        isGetCodeAction(action) ||
+        isGetEnsAction(action) ||
         isGetCodeAction(action)
     );
 }
@@ -89,6 +99,7 @@ export type {
     GetNonceAction,
     FetchTransactionsAction,
     GetCodeAction,
+    GetEnsAction,
 };
 
 export {
@@ -137,6 +148,9 @@ export {
     GET_CODE,
     getCode,
     isGetCodeAction,
+    GET_ENS,
+    getEns,
+    isGetEnsAction,
 };
 
 export default {
@@ -175,14 +189,17 @@ export default {
     isFetchAbiAction,
     GET_BALANCE,
     getBalance,
-    isFetchBalanceAction: isGetBalanceAction,
+    isGetBalanceAction,
     GET_NONCE,
     getNonce,
-    isFetchNonceAction: isGetNonceAction,
+    isGetNonceAction,
     FETCH_TRANSACTIONS,
     fetchTransactions,
     isFetchTransactionsAction,
     GET_CODE,
     getCode,
     isGetCodeAction,
+    GET_ENS,
+    getEns,
+    isGetEnsAction,
 };

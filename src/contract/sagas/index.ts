@@ -7,6 +7,7 @@ import {
     FETCH_ABI,
     FETCH_TRANSACTIONS,
     GET_CODE,
+    GET_ENS,
     GET_BALANCE,
     GET_NONCE,
 } from '../actions';
@@ -20,6 +21,7 @@ import getBalance from './getBalance';
 import getNonce from './getNonce';
 import fetchTransactions from './fetchTransactions';
 import getCode from './getCode';
+import getEns from './getEns';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga
 /** @internal */
@@ -35,6 +37,7 @@ export function* saga() {
         takeEvery(GET_NONCE, getNonce),
         takeEvery(GET_CODE, getCode),
         takeEvery(FETCH_TRANSACTIONS, fetchTransactions),
+        takeEvery(GET_ENS, getEns),
     ]);
 }
 

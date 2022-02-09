@@ -18,6 +18,7 @@ class Model extends ORMModel {
         balance: attr(),
         nonce: attr(),
         code: attr(),
+        ens: attr(),
     };
 }
 

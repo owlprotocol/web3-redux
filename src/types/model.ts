@@ -3,11 +3,10 @@ export interface IdDefined {
 }
 
 export type ModelWithId<T> = IdDefined & T;
-export interface Model<T> {
-    create: (item: ModelWithId<T>) => any;
-    update: (item: ModelWithId<T>) => any;
-    upsert: (item: ModelWithId<T>) => any;
+
+export interface ORMModel<T> {
+    create: (item: T) => any;
+    update: (item: T) => any;
+    upsert: (item: T) => any;
     withId: (id: string) => any;
 }
-
-export default Model;

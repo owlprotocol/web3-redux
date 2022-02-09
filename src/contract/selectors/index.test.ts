@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { AbiCoder } from 'web3-eth-abi';
 import Web3 from 'web3';
 import BlockNumberAbi from '../../abis/BlockNumber.json';
-import { event1, event2, transaction1, transaction2 } from '../../test/data';
+import { event1, event2, transaction1, transaction2, ADDRESS_0 } from '../../test/data';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
 
@@ -11,7 +11,6 @@ import { name } from '../common';
 
 import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
 import { validateEthCall } from '../../ethcall/model';
-import { ZERO_ADDRESS } from '../../utils';
 import { StateRoot } from '../../state';
 import { ModelWithId } from '../../types/model';
 
@@ -26,7 +25,7 @@ describe(`${name}.selectors`, () => {
     const method = 'getValue';
     const methodAbi = (BlockNumberAbi.abi as any).filter((f: any) => f.name === method)[0];
     const data = coder.encodeFunctionCall(methodAbi, []);
-    const ethCall = validateEthCall({ networkId, from: ZERO_ADDRESS, to: ADDRESS_1, data, returnValue: 66 });
+    const ethCall = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
     //Contract
     const address = ADDRESS_1;

@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
-import { _4ByteSignature, getId } from '../model/interface';
-import { ZERO_ADDRESS } from '../../utils';
+import { _4ByteSignature } from '../model/interface';
+import { ADDRESS_0 } from '../../test/data';
 
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
@@ -10,12 +10,12 @@ import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 import { set, SET, SetAction, isSetAction } from './set';
 
 describe(`${name}.action`, () => {
-    const item: _4ByteSignature = { signatureHash: ZERO_ADDRESS };
+    const item: _4ByteSignature = { signatureHash: ADDRESS_0 };
 
     it('create', () => {
         const expected: CreateAction = {
             type: CREATE,
-            payload: { id: getId(item), ...item },
+            payload: { ...item },
         };
         assert.isTrue(isCreateAction(expected));
         assert.deepEqual(create(item), expected);
@@ -24,7 +24,7 @@ describe(`${name}.action`, () => {
     it('update', () => {
         const expected: UpdateAction = {
             type: UPDATE,
-            payload: { id: getId(item), ...item },
+            payload: { ...item },
         };
         assert.isTrue(isUpdateAction(expected));
         assert.deepEqual(update(item), expected);

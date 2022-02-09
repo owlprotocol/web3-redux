@@ -1,3 +1,2 @@
-import crashReporter from './crashReporter';
-
-export { crashReporter };
+export { crashReporter } from './crashReporter';
+export { onPersistRehydrate } from './onPersistRehydrate';

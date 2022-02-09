@@ -1,9 +1,10 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
-import Ganache from 'ganache-core';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
+import { getWeb3Provider, expectThrowsAsync } from '../../test';
+
 import ERC165 from '../../abis/ERC165.json';
 
 import { create as createNetwork } from '../../network/actions';
@@ -30,9 +31,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
     let address: string;
 
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
 
@@ -44,7 +43,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
             .deploy({
                 data: ERC165.bytecode,
             })
-            .send({ from: accounts[0], gas: 1000000, gasPrice: '1' });
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
 
         ({ store } = createStore());
@@ -68,20 +67,14 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
                 },
             );
 
-            act(() => {
-                result.current[1].subscribe();
-            });
-
+            assert.equal(result.all.length, 1, 'result.all.length');
             await waitForNextUpdate();
 
-            const [value] = result.current;
+            const value = result.current;
             assert.isFalse(value, 'result.current');
-            assert.deepEqual(
-                //@ts-expect-error
-                result.all.map((x) => x[0]),
-                [undefined, false],
-                'result.all',
-            );
+            assert.deepEqual(result.all, [undefined, false], 'result.all');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('supportsInterface(): true', async () => {
@@ -92,20 +85,14 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
                 },
             );
 
-            act(() => {
-                result.current[1].subscribe();
-            });
-
+            assert.equal(result.all.length, 1, 'result.all.length');
             await waitForNextUpdate();
 
-            const [value] = result.current;
+            const value = result.current;
             assert.isTrue(value, 'result.current');
-            assert.deepEqual(
-                //@ts-expect-error
-                result.all.map((x) => x[0]),
-                [undefined, true],
-                'result.all',
-            );
+            assert.deepEqual(result.all, [undefined, true], 'result.all');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
     });
 });

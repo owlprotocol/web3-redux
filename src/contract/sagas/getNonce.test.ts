@@ -1,13 +1,14 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import Ganache from 'ganache-core';
+import { getWeb3Provider } from '../../test';
+
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network/actions';
 import { Contract } from '../model/interface';
 import { name } from '../common';
 import { selectByIdSingle } from '../selectors';
-import { create as createAction, fetchNonce as fetchNonceAction } from '../actions';
+import { create as createAction, getNonce as getNonceAction } from '../actions';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;
@@ -16,9 +17,7 @@ describe(`${name}.integration`, () => {
     let item: Contract;
 
     before(async () => {
-        const provider = Ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();
@@ -31,8 +30,8 @@ describe(`${name}.integration`, () => {
         store.dispatch(createAction(item));
     });
 
-    it('fetchNonce()', async () => {
-        store.dispatch(fetchNonceAction(item));
+    it('getNonce()', async () => {
+        store.dispatch(getNonceAction(item));
         const expected = await web3.eth.getTransactionCount(item.address!);
         const account = selectByIdSingle(store.getState(), item);
         assert.equal(account!.nonce, expected, 'initial nonce');

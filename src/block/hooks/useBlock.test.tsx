@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import ganache from 'ganache-core';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 
@@ -13,6 +12,7 @@ import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 import { useBlock } from './index';
 import { BlockTransaction, validate } from '../model';
+import { getWeb3Provider } from '../../test';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
@@ -40,9 +40,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
         let expected: BlockTransaction;
 
         before(async () => {
-            const provider = ganache.provider({
-                networkId: parseInt(networkId),
-            });
+            const provider = getWeb3Provider();
             //@ts-ignore
             web3 = new Web3(provider);
             accounts = await web3.eth.getAccounts();
@@ -50,7 +48,6 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
         beforeEach(async () => {
             store.dispatch(createNetwork({ networkId, web3 }));
-            wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
 
             const txSent = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[1], value: '1' });
             const block = await web3.eth.getBlock(txSent.blockNumber);
@@ -68,7 +65,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.deepEqual(currentCall, expected, 'result.current');
         });
 
@@ -79,7 +76,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
                 wrapper,
             });
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.deepEqual(currentCall, { ...block1, transactions: [] }, 'result.current');
         });
 
@@ -90,7 +87,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.deepEqual(currentCall, expected, 'result.current');
         });
 
@@ -101,7 +98,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
                 wrapper,
             });
 
-            const currentCall = result.current[0];
+            const currentCall = result.current;
             assert.deepEqual(currentCall, { ...block1, transactions: [] }, 'result.current');
         });
     });

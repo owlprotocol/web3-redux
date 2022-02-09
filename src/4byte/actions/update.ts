@@ -1,12 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import { _4ByteSignature, validate } from '../model';
+import { _4ByteSignature } from '../model';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;
 /** @category Actions */
 export const update = createAction(UPDATE, (payload: _4ByteSignature) => {
-    return { payload: validate(payload) };
+    return { payload };
 });
 /** @internal */
 export type UpdateAction = ReturnType<typeof update>;

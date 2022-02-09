@@ -20,15 +20,14 @@ export function useGetCode(
     const contract = useSelector((state) => selectByIdSingle(state, id));
     const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
-    const contractExists = !!contract;
     const codeExists = !!contract?.code;
 
     //Get code
     const getCodeAction = useMemo(() => {
-        if (id && web3Exists && contractExists && ((fetch === 'ifnull' && !codeExists) || fetch === true)) {
-            return getCode({ ...id });
+        if (networkId && address && web3Exists && ((fetch === 'ifnull' && !codeExists) || fetch === true)) {
+            return getCode({ networkId, address });
         }
-    }, [id, contractExists, web3Exists, fetch]);
+    }, [networkId, address, web3Exists, fetch]);
 
     useEffect(() => {
         if (getCodeAction) dispatch(getCodeAction);

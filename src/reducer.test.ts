@@ -7,7 +7,7 @@ import { selectByIdSingle as selectNetwork } from './network/selectors';
 
 import { createStore, StoreType } from './store';
 import { ContractTransform, NetworkTransform, SyncTransform } from './transform';
-import { LocalStorageAsyncMock } from './test/localstorageAsync';
+import { LocalStorageAsyncMock } from './utils/localstorageAsync';
 import { transaction1 } from './test/data';
 import { State } from './state';
 import { REDUX_ROOT } from './common';
@@ -25,7 +25,7 @@ function noMetaState(state: State) {
 describe('redux-persist Integrated Test', () => {
     let localStorage: LocalStorageAsyncMock;
     let store: StoreType;
-    let persistor: Persistor;
+    let persistor: Persistor | undefined;
 
     beforeEach(() => {
         localStorage = new LocalStorageAsyncMock();
@@ -36,7 +36,7 @@ describe('redux-persist Integrated Test', () => {
         it('Transaction', async () => {
             store.dispatch(createTransaction(transaction1));
 
-            await persistor.flush();
+            await persistor!.flush();
 
             const persistedString = await localStorage.getItem('persist:web3Redux');
             const persistedParsed = mapValues(JSON.parse(persistedString), (x) => JSON.parse(x));
@@ -67,7 +67,7 @@ describe('redux-persist Integrated Test', () => {
         it('Network', async () => {
             store.dispatch(createNetwork({ networkId: '1336', web3Rpc: 'ws://localhost:8546' }));
 
-            await persistor.flush();
+            await persistor!.flush();
             const network1 = selectNetwork(store.getState(), '1336');
             assert.isDefined(network1?.web3);
 

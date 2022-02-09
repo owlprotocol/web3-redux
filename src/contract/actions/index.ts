@@ -4,8 +4,6 @@ import { UPDATE, update, UpdateAction, isUpdateAction } from './update';
 import { SET, set, SetAction, isSetAction } from './set';
 import { CALL, call, CallAction, isCallAction } from './call';
 import { CALL_BATCHED, callBatched, CallBatchedAction, isCallBatchedAction } from './callBatched';
-import { CALL_SYNCED, callSynced, CallSyncedAction, isCallSyncedAction } from './callSynced';
-import { CALL_UNSYNC, callUnsync, CallUnsyncAction, isCallUnsyncAction } from './callUnsync';
 import { SEND, send, SendAction, isSendAction } from './send';
 import { EVENT_GET_PAST, eventGetPast, EventGetPastAction, isEventGetPastAction } from './eventGetPast';
 import { EVENT_SUBSCRIBE, eventSubscribe, EventSubscribeAction, isEventSubscribeAction } from './eventSubscribe';
@@ -24,15 +22,13 @@ import {
     FetchTransactionsAction,
     isFetchTransactionsAction,
 } from './fetchTransactions';
-import {
-    GET_BALANCE_SYNCED,
-    getBalanceSynced,
-    GetBalanceSyncedAction,
-    isGetBalanceSyncedAction,
-} from './getBalanceSynced';
-import { GET_NONCE_SYNCED, getNonceSynced, GetNonceSyncedAction, isGetNonceSyncedAction } from './getNonceSynced';
 import { GET_CODE, getCode, GetCodeAction, isGetCodeAction } from './getCode';
 import { GET_ENS, getEns, GetEnsAction, isGetEnsAction } from './getEns';
+
+/* Synced composite actions */
+export { callSynced } from './callSynced';
+export { getBalanceSynced } from './getBalanceSynced';
+export { getNonceSynced } from './getNonceSynced';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
@@ -45,8 +41,6 @@ export function isReducerAction(action: { type: string }): action is ReducerActi
 export type SagaAction =
     | CallAction
     | CallBatchedAction
-    | CallSyncedAction
-    | CallUnsyncAction
     | SendAction
     | EventGetPastAction
     | EventSubscribeAction
@@ -58,15 +52,14 @@ export type SagaAction =
     | GetBalanceSyncedAction
     | GetNonceSyncedAction
     | GetCodeAction
-    | GetEnsAction;
+    | GetEnsAction
+    | GetCodeAction;
 
 /** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
     return (
         isCallAction(action) ||
         isCallBatchedAction(action) ||
-        isCallSyncedAction(action) ||
-        isCallUnsyncAction(action) ||
         isSendAction(action) ||
         isEventGetPastAction(action) ||
         isEventSubscribeAction(action) ||
@@ -78,7 +71,8 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
         isGetBalanceSyncedAction(action) ||
         isGetNonceSyncedAction(action) ||
         isGetCodeAction(action) ||
-        isGetEnsAction(action)
+        isGetEnsAction(action) ||
+        isGetCodeAction(action)
     );
 }
 
@@ -95,8 +89,6 @@ export type {
     UpdateAction,
     SetAction,
     CallAction,
-    CallSyncedAction,
-    CallUnsyncAction,
     CallBatchedAction,
     SendAction,
     EventGetPastAction,
@@ -106,8 +98,6 @@ export type {
     GetBalanceAction,
     GetNonceAction,
     FetchTransactionsAction,
-    GetBalanceSyncedAction,
-    GetNonceSyncedAction,
     GetCodeAction,
     GetEnsAction,
 };
@@ -128,12 +118,6 @@ export {
     CALL,
     call,
     isCallAction,
-    CALL_SYNCED,
-    callSynced,
-    isCallSyncedAction,
-    CALL_UNSYNC,
-    callUnsync,
-    isCallUnsyncAction,
     CALL_BATCHED,
     callBatched,
     isCallBatchedAction,
@@ -152,21 +136,15 @@ export {
     FETCH_ABI,
     fetchAbi,
     isFetchAbiAction,
-    GET_BALANCE as FETCH_BALANCE,
-    getBalance as fetchBalance,
-    isGetBalanceAction as isFetchBalanceAction,
-    GET_NONCE as FETCH_NONCE,
-    getNonce as fetchNonce,
-    isGetNonceAction as isFetchNonceAction,
+    GET_BALANCE,
+    getBalance,
+    isGetBalanceAction,
+    GET_NONCE,
+    getNonce,
+    isGetNonceAction,
     FETCH_TRANSACTIONS,
     fetchTransactions,
     isFetchTransactionsAction,
-    GET_BALANCE_SYNCED as FETCH_BALANCE_SYNCED,
-    getBalanceSynced as fetchBalanceSynced,
-    isGetBalanceSyncedAction as isFetchBalanceSyncedAction,
-    GET_NONCE_SYNCED as FETCH_NONCE_SYNCED,
-    getNonceSynced as fetchNonceSynced,
-    isGetNonceSyncedAction as isFetchNonceSyncedAction,
     GET_CODE,
     getCode,
     isGetCodeAction,
@@ -191,12 +169,6 @@ export default {
     CALL,
     call,
     isCallAction,
-    CALL_SYNCED,
-    callSynced,
-    isCallSyncedAction,
-    CALL_UNSYNC,
-    callUnsync,
-    isCallUnsyncAction,
     CALL_BATCHED,
     callBatched,
     isCallBatchedAction,
@@ -215,21 +187,15 @@ export default {
     FETCH_ABI,
     fetchAbi,
     isFetchAbiAction,
-    FETCH_BALANCE: GET_BALANCE,
-    fetchBalance: getBalance,
-    isFetchBalanceAction: isGetBalanceAction,
-    FETCH_NONCE: GET_NONCE,
-    fetchNonce: getNonce,
-    isFetchNonceAction: isGetNonceAction,
+    GET_BALANCE,
+    getBalance,
+    isGetBalanceAction,
+    GET_NONCE,
+    getNonce,
+    isGetNonceAction,
     FETCH_TRANSACTIONS,
     fetchTransactions,
     isFetchTransactionsAction,
-    FETCH_BALANCE_SYNCED: GET_BALANCE_SYNCED,
-    fetchBalanceSynced: getBalanceSynced,
-    isFetchBalanceSyncedAction: isGetBalanceSyncedAction,
-    FETCH_NONCE_SYNCED: GET_NONCE_SYNCED,
-    fetchNonceSynced: getNonceSynced,
-    isFetchNonceSyncedAction: isGetNonceSyncedAction,
     GET_CODE,
     getCode,
     isGetCodeAction,

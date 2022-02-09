@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { combineReducers } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
 import { persistReducer } from 'redux-persist';
@@ -5,15 +6,6 @@ import { WebStorage } from 'redux-persist/lib/types';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { NetworkTransform, ContractTransform, SyncTransform } from './transform';
 import isClient from './utils/isClient';
-let defaultStorage: WebStorage;
-if (isClient()) {
-    defaultStorage = require('redux-persist/lib/storage');
-} else {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const localStorageMock = require('./test/localstorageAsync');
-    defaultStorage = localStorageMock.getLocalStorageAsyncMock();
-}
-
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
 import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import { Action as TransactionAction, isReducerAction as isTransactionAction } from './transaction/actions';
@@ -22,7 +14,7 @@ import { Action as ContractEventAction, isReducerAction as isContractEventAction
 import { Action as ContractSendAction, isReducerAction as isContractSendAction } from './contractsend/actions';
 import { Action as EthCallAction, isReducerAction as isEthCallAction } from './ethcall/actions';
 import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
-import { Action as Web3ReduxAction } from './web3Redux/actions';
+import { Action as IpfsAction, isReducerAction as isIpfsAction } from './ipfs/actions';
 import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions';
 import { Action as SyncAction, isReducerAction as isSyncAction } from './sync/actions';
 
@@ -34,6 +26,7 @@ import contractEventReducer from './contractevent/reducer';
 import contractSendReducer from './contractsend/reducer';
 import ethCallReducer from './ethcall/reducer';
 import configReducer from './config/reducer';
+import ipfsReducer from './ipfs/reducer';
 import syncReducer from './sync/reducer';
 import _4ByteReducer from './4byte/reducer';
 
@@ -49,7 +42,7 @@ export type Action =
     | ContractSendAction
     | EthCallAction
     | ConfigAction
-    | Web3ReduxAction
+    | IpfsAction
     | SyncAction
     | _4ByteAction;
 export type Reducer = (state: any, action: any) => any;
@@ -65,6 +58,7 @@ export const reducerWeb3ReduxWithOrm = (state: any, action: Action) => {
     else if (isContractSendAction(action)) contractSendReducer(sess, action);
     else if (isEthCallAction(action)) ethCallReducer(sess, action);
     else if (isConfigAction(action)) configReducer(sess, action);
+    else if (isIpfsAction(action)) ipfsReducer(sess, action);
     else if (isSyncAction(action)) syncReducer(sess, action);
     else if (is4ByteAction(action)) _4ByteReducer(sess, action);
 
@@ -83,7 +77,11 @@ export const createReducerWeb3ReduxWithPersist = (storage: WebStorage) => {
     };
     return persistReducer(persistConfig as any, reducerWeb3ReduxWithBatching);
 };
-export const reducerWeb3ReduxWithPersist = createReducerWeb3ReduxWithPersist(defaultStorage); //
+
+export const defaultLocalStorage = isClient()
+    ? require('redux-persist/lib/storage').default
+    : require('./utils/localstorageAsync').getLocalStorageAsyncMock();
+export const reducerWeb3ReduxWithPersist = createReducerWeb3ReduxWithPersist(defaultLocalStorage); //
 
 export const createRootReducer = (reducerWeb3Redux: Reducer) => {
     return combineReducers({

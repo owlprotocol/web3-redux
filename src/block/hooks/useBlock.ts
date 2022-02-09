@@ -31,7 +31,7 @@ export const useBlock = (
         if (action) dispatch(action);
     }, [dispatch, action]);
 
-    return [block];
+    return block;
 };
 
 export default useBlock;

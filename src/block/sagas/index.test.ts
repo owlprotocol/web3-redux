@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import Web3 from 'web3';
-import ganache from 'ganache-core';
+import { getWeb3Provider } from '../../test';
 
 import { Network } from '../../network/model';
 import networkExists from '../../network/sagas/exists';
@@ -27,9 +27,7 @@ describe(`${name}.sagas`, () => {
     let network: Network;
 
     before(() => {
-        const provider = ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         const web3 = new Web3(provider);
         network = { networkId, web3 };
@@ -47,7 +45,7 @@ describe(`${name}.sagas`, () => {
     });
 
     describe('fetch', () => {
-        it('create', () => {
+        it.skip('create', () => {
             const block = { number: item.number, hash: 'XYZ' };
             testSaga(fetch, fetchAction({ networkId: item.networkId, blockHashOrBlockNumber: item.number }))
                 .next()

@@ -2,7 +2,8 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import ganache from 'ganache-core';
+import { getWeb3Provider } from '../../test';
+
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
@@ -27,9 +28,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
     let id: ContractId;
 
     before(async () => {
-        const provider = ganache.provider({
-            networkId: parseInt(networkId),
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         //@ts-ignore
@@ -45,7 +44,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             data: BlockNumber.bytecode,
         });
         const gas = await tx.estimateGas();
-        web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '10000' });
+        web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '875000000' });
         address = web3Contract.options.address;
         id = { networkId, address };
 
@@ -74,7 +73,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
 
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
+            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
             const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.deepEqual(events1, expectedEvents);
@@ -96,7 +95,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
 
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
+            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
             const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.deepEqual(events1, expectedEvents);
@@ -115,7 +114,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
 
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
+            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
             //Expect no event to be captured
             const events1 = selectContractEvents(store.getState(), id, 'NewValue');
@@ -147,11 +146,11 @@ describe(`${name}.sagas.eventSubscribe`, () => {
 
             const tx2 = await web3Contract.methods.setValue(42);
             const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '10000' });
+            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
             const tx3 = await web3Contract.methods.setValue(43);
             const gas3 = await tx3.estimateGas();
-            await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '10000' });
+            await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '875000000' });
 
             const events1 = selectContractEvents(store.getState(), id, 'NewValue');
             assert.equal(events1?.length, expectedEvents.length, 'expectedEvents.length');

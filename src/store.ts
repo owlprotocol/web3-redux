@@ -1,13 +1,13 @@
-import { createStore as createReduxStore, applyMiddleware } from 'redux';
+import { createStore as createReduxStore, applyMiddleware, compose } from 'redux';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
-import { crashReporter } from './middleware';
+import { crashReporter, onPersistRehydrate } from './middleware';
 import { onBlockUpdate } from './block/middleware';
 import { onNetworkUpdate } from './network/middleware';
-import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist } from './reducer';
+import isClient from './utils/isClient';
+import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist, defaultLocalStorage } from './reducer';
 import { rootSaga as defaultRootSaga } from './saga';
-
-const defaultMiddleware: any[] = [crashReporter, onNetworkUpdate, onBlockUpdate];
+const defaultMiddleware: any[] = [crashReporter, onPersistRehydrate, onNetworkUpdate, onBlockUpdate];
 
 /** @internal */
 interface CreateStoreOptions {
@@ -21,10 +21,12 @@ export const createStore = (options?: CreateStoreOptions) => {
 
     const reducer = persistStorage ? createRootReducer(createReducerWeb3ReduxWithPersist(persistStorage)) : rootReducer;
 
+    //Enable redux-devtools support
+    const composeEnhancers = isClient() ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?? compose : compose;
     const sagaMiddleware = createSagaMiddleware();
     const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
-    const store = createReduxStore(reducer, rootMiddleware);
-    const persistor = persistStore(store);
+    const store = createReduxStore(reducer, composeEnhancers(rootMiddleware));
+    const persistor = persistStorage ? persistStore(store) : undefined;
 
     sagaMiddleware.run(rootSaga ?? defaultRootSaga);
 
@@ -35,4 +37,7 @@ export type StoreType = ReturnType<typeof createStore>['store'];
 export type DispatchType = StoreType['dispatch'];
 
 const { store } = createStore();
+export const createStoreWithPersistor = () => createStore({ persistStorage: defaultLocalStorage });
+export { store };
+
 export default store;

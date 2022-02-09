@@ -1,5 +1,12 @@
 export { useContract, contractHookFactory } from './useContract';
+export { useContractWithAbi } from './useContractWithAbi';
 export { useContractCall, contractCallHookFactory } from './useContractCall';
-export { useEvents, contractEventsHookFactory } from './useEvents';
 export { useContractSend, contractSendHookFactory } from './useContractSend';
+export { useEvents, contractEventsHookFactory } from './useEvents';
+export { useFetchAbi } from './useFetchAbi';
+export { useFetchTransactions } from './useFetchTransactions';
+export { useGetBalance } from './useGetBalance';
+export { useGetNonce } from './useGetNonce';
+export { useGetCode } from './useGetCode';
 export { useSupportsInterface } from './useSupportsInterface';
+export { useERC20 } from './useERC20';

@@ -1,7 +1,7 @@
 import { AddressInfo, Server } from 'net';
 import sleep from './sleep';
 
-export default async (httpServer: Server, ms: number): Promise<number> => {
+export async function sleepForPort(httpServer: Server, ms: number): Promise<number> {
     return new Promise<number>((resolve, reject) => {
         httpServer.listen(0, async () => {
             try {
@@ -16,4 +16,6 @@ export default async (httpServer: Server, ms: number): Promise<number> => {
             }
         });
     });
-};
+}
+
+export default sleepForPort;

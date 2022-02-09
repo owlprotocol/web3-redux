@@ -1,33 +1,14 @@
 import { createSelector } from 'redux-orm';
+import { name } from '../common';
 import { getOrm } from '../../orm';
-import { Network } from '../../network/model';
-import selectByIdSingle from './selectByIdSingle';
+import { Config } from '../model/interface';
+
+/** @internal */
+const select = createSelector(getOrm()[name]);
 
 /** @category Selectors */
 export const selectConfig = (state: any) => {
-    return selectByIdSingle(state, '0');
-};
-
-/** @internal */
-type selectNetworkId = (state: any) => string | undefined;
-/** @category Selectors */
-export const selectNetworkId: selectNetworkId = (state: any) => {
-    return selectConfig(state)?.networkId;
-};
-
-/** @internal */
-type selectNetwork = (state: any) => Network | undefined;
-/** @category Selectors */
-export const selectNetwork: selectNetwork = createSelector(getOrm(), (session: any) => {
-    const { Config } = session;
-    return Config.withId(0)?.network;
-});
-
-/** @internal */
-type selectAccount = (state: any) => string | undefined;
-/** @category Selectors */
-export const selectAccount: selectAccount = (state: any) => {
-    return selectConfig(state)?.account;
+    return select(state, 0) as Config;
 };
 
 export default selectConfig;

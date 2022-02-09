@@ -1,21 +1,29 @@
 import { createSelector } from 'redux-orm';
+import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
 import { getOrm } from '../../orm';
 import Transaction from '../model/interface';
-import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
+//import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
-type selectByFilterType = (state: any, filter: Partial<Transaction> | undefined) => Transaction[];
+type selectByFilterType = (state: any, filter?: Partial<Transaction> | undefined) => Transaction[];
 /** @category Selectors */
-const selectByFilter: selectByFilterType = createSelector(
+export const selectByFilter: selectByFilterType = createSelector(
     getOrm(),
     (_1: any, filter: Partial<Transaction> | undefined) => filter,
     (session: any, filter: Partial<Transaction> | undefined) => {
         const model = session[name];
         let query = model.all();
-        if (!!filter) query = query.filter(filter);
+        if (filter) {
+            const newFilter = { ...filter };
+            if (newFilter.from) newFilter.from = toChecksumAddress(newFilter.from);
+            if (newFilter.to) newFilter.to = toChecksumAddress(newFilter.to);
+            if (newFilter.contractAddress) newFilter.contractAddress = toChecksumAddress(newFilter.contractAddress);
+            query = query.filter(newFilter);
+        }
 
         const result = query.toRefArray();
-        return memoizeArrayByRef(result);
+        return result;
+        //return memoizeArrayByRef(result);
     },
 );
 

@@ -1,11 +1,12 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import IERC20 from '../../abis/IERC20Metadata.json';
+
+import { GenericSync } from '../../sync/model';
+import { createEventSync } from '../../sync/model/EventSync';
 
 import useContractWithAbi from './useContractWithAbi';
 import useContractCall from './useContractCall';
 import useEvents, { UseEventsOptions } from './useEvents';
-import { CallSyncedActionInput } from '../actions/callSynced';
-import { useDispatch } from 'react-redux';
 
 /**
  * @category Hooks
@@ -20,49 +21,41 @@ export function useERC20(
     address: string | undefined,
     balanceOfAddress: string | undefined,
     sync?: {
-        totalSupply?: 'ifnull' | CallSyncedActionInput['sync'] | false;
-        balanceOf?: 'ifnull' | CallSyncedActionInput['sync'] | false | 'onTransfer'; //Update call on Transfer event
+        totalSupply?: 'ifnull' | GenericSync | false;
+        balanceOf?: 'ifnull' | GenericSync | false | 'onTransfer'; //Update call on Transfer event
         TransferEventsOptions?: UseEventsOptions;
         ApprovalEventsOptions?: UseEventsOptions;
     },
 ) {
-    const dispatch = useDispatch();
-
-    //Default sync params
-    const totalSupplySync = sync?.totalSupply ?? 'ifnull'; //Some tokens might have dynamic supply
-    const balanceOfSync = sync?.balanceOf ?? 'ifnull'; //Sync user balance
-
-    const TransferEventsOptions = sync?.TransferEventsOptions ?? { sync: false, past: false }; //Sync token Transfer events, default just reads data
-    const ApprovalEventsOptions = sync?.ApprovalEventsOptions ?? { sync: false, past: false }; //Sync token Approval events, default just reads data
-
     //Create abi in store if non-existant
     useContractWithAbi(networkId, address, IERC20.abi as any);
 
+    //Default sync params
+    const totalSupplySync = sync?.totalSupply ?? 'ifnull'; //Some tokens might have dynamic supply
+    //Refresh call action will get set by the callSyncedAction() creator, we pass an empty array as an argument
+    //We also disable sync if networkId/address undefined to avoid unpredictable behaviour
+    const onTransferSync =
+        networkId && address
+            ? createEventSync(networkId, [], address, 'Transfer', [{ from: address }, { to: address }])
+            : false;
+    const balanceOfSync = sync?.balanceOf === 'onTransfer' ? onTransferSync : sync?.balanceOf ?? 'ifnull'; //Sync user balance
+    const TransferEventsOptions = sync?.TransferEventsOptions ?? { sync: false, past: false }; //Sync token Transfer events, default just reads data
+    const ApprovalEventsOptions = sync?.ApprovalEventsOptions ?? { sync: false, past: false }; //Sync token Approval events, default just reads data
+
     //Static values
-    const [name] = useContractCall(networkId, address, 'name', [], { sync: 'ifnull' });
-    const [symbol] = useContractCall(networkId, address, 'symbol', [], {
+    const name = useContractCall(networkId, address, 'name', [], { sync: 'ifnull' });
+    const symbol = useContractCall(networkId, address, 'symbol', [], {
         sync: 'ifnull',
     });
-    const [decimals] = useContractCall(networkId, address, 'decimals', [], {
+    const decimals = useContractCall(networkId, address, 'decimals', [], {
         sync: 'ifnull',
     });
-    const [totalSupply] = useContractCall(networkId, address, 'totalSupply', [], { sync: totalSupplySync });
+    const totalSupply = useContractCall(networkId, address, 'totalSupply', [], { sync: totalSupplySync });
 
     //if balanceOf is 'Transfer' we disable hook sync and dispatch our own custom solution
-    const [balanceOf] = useContractCall(networkId, address, 'balanceOf', [balanceOfAddress], {
-        sync: balanceOfSync === 'onTransfer' ? 'ifnull' : balanceOfSync,
+    const balanceOf = useContractCall(networkId, address, 'balanceOf', [balanceOfAddress], {
+        sync: balanceOfSync,
     });
-    //const onTransferFrom = networkId ? createEventSync(networkId, 'Transfer', { from: balanceOfAddress }) : undefined;
-    //const onTransferTo = networkId ? createEventSync(networkId, 'Transfer', { to: balanceOfAddress }) : undefined;
-
-    //TODO: Dispatch Sync middleware
-    useEffect(() => {
-        if (balanceOfSync === 'onTransfer') {
-        }
-        return () => {
-            //cleanup
-        };
-    }, [dispatch, networkId, address, balanceOfAddress, balanceOfSync]);
 
     //Events
     const TransferFrom = useEvents(networkId, address, 'Transfer', { from: balanceOfAddress }, TransferEventsOptions);

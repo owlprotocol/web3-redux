@@ -13,7 +13,7 @@ function* eventSync({ payload }: CreateAction) {
     const actions: Action[] = []; //triggered actions
 
     syncsFiltered.map((s) => {
-        if (s.networkId === payload.networkId && s.matchName === payload.name) {
+        if (s.networkId === payload.networkId && s.matchAddress === payload.address && s.matchName === payload.name) {
             //Event matches name
             if (!s.matchReturnValues) {
                 //No filter

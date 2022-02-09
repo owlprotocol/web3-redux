@@ -6,8 +6,8 @@ import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
 import selectByIdMany from '../selectors/selectByIdMany';
 import networkExists from '../../network/sagas/exists';
 import { Network } from '../../network/model';
-import { ZERO_ADDRESS } from '../../utils';
 
+const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
 
 function* callBatched(action: CallBatchedAction) {
@@ -69,7 +69,7 @@ function* callBatched(action: CallBatchedAction) {
         const regularCallTasks = preCallTasks.filter((t) => {
             return !(
                 multicallContract &&
-                (!t.ethCall.from || t.ethCall.from == ZERO_ADDRESS) &&
+                (!t.ethCall.from || t.ethCall.from == ADDRESS_0) &&
                 (!t.ethCall.defaultBlock || t.ethCall.defaultBlock === 'latest')
             );
         });
@@ -77,7 +77,7 @@ function* callBatched(action: CallBatchedAction) {
         const multiCallTasks = preCallTasks.filter((t) => {
             return (
                 multicallContract &&
-                (!t.ethCall.from || t.ethCall.from == ZERO_ADDRESS) &&
+                (!t.ethCall.from || t.ethCall.from == ADDRESS_0) &&
                 (!t.ethCall.defaultBlock || t.ethCall.defaultBlock === 'latest')
             );
         });
@@ -104,7 +104,7 @@ function* callBatched(action: CallBatchedAction) {
             const tx = multicallContract.methods.aggregate(multicallCallsInput);
             const batchFetchTask = new Promise((resolve, reject) => {
                 batch.add(
-                    tx.call.request({ from: ZERO_ADDRESS }, (error: any, result: any) => {
+                    tx.call.request({ from: ADDRESS_0 }, (error: any, result: any) => {
                         if (error) reject(error);
                         resolve(result);
                     }),

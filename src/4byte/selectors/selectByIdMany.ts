@@ -1,12 +1,11 @@
 import select from './select';
-import { _4ByteSignature, SignatureId, getId } from '../model';
+import { _4ByteSignature } from '../model';
 import { memoizeArrayByRef } from '../../utils';
 
 /** @category Selectors */
-function selectByIdMany(state: any, ids?: SignatureId[]): (_4ByteSignature | null)[] {
+function selectByIdMany(state: any, ids?: string[]): (_4ByteSignature | null)[] {
     if (!ids) return select(state); //Return all
-    const idsStr = ids.map((id) => getId(id));
-    const result = select(state, idsStr);
+    const result = select(state, ids);
     return memoizeArrayByRef(result);
 }
 

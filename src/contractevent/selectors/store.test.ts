@@ -4,13 +4,13 @@ import { createStore, StoreType } from '../../store';
 import { create as createEvent } from '..';
 import { validateContractEvent } from '../model';
 import { name } from '../../contract/common';
+import { networkId } from '../../test/data';
 
 import { selectContractEvents } from '../../contract/selectors/index';
 
 describe(`${name}.selectors`, () => {
     let store: StoreType;
 
-    const networkId = '1337';
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
     const contractId = { networkId, address: ADDRESS_1 };
 
@@ -35,7 +35,7 @@ describe(`${name}.selectors`, () => {
     });
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
     });
 
     describe('selectContractEvents', () => {

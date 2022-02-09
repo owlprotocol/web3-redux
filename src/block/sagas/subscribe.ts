@@ -64,6 +64,7 @@ function* subscribe(action: SubscribeAction) {
                     yield* put(create(newBlock));
                     if (payload.returnTransactionObjects ?? true) {
                         yield* fork(
+                            //@ts-expect-error
                             blockFetch,
                             fetchAction({
                                 networkId,
@@ -78,6 +79,7 @@ function* subscribe(action: SubscribeAction) {
                     yield* put(create(newBlock));
                     if (payload.returnTransactionObjects) {
                         yield* fork(
+                            //@ts-expect-error
                             blockFetch,
                             fetchAction({
                                 networkId,

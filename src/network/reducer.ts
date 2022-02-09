@@ -1,6 +1,12 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
 
+/**
+ * Default explorer values
+ * http://etherscan.io
+ * https://api.etherscan.io/
+ */
+
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {
     const Model = sess[name];

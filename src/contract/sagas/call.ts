@@ -19,9 +19,30 @@ function* callSaga(action: CallAction) {
         const contract = yield* call(exists, { networkId, address });
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${getId(payload)} has no web3 contract`);
+        if (!web3Contract) {
+            const error = new Error(`Contract ${getId(payload)} has no web3 contract`);
+            console.error(error);
+            yield* put({
+                type: CALL_ERROR,
+                error,
+                errorMessage: (error as Error).message,
+                action,
+            });
+            return;
+        }
+
         const method = web3Contract.methods[payload.method];
-        if (!method) throw new Error(`Contract ${getId(payload)} no such method ${payload.method}`);
+        if (!method) {
+            const error = new Error(`Contract ${getId(payload)} no such method ${payload.method}`);
+            console.error(error);
+            yield* put({
+                type: CALL_ERROR,
+                error,
+                errorMessage: (error as Error).message,
+                action,
+            });
+            return;
+        }
 
         let tx: any;
         if (!payload.args || payload.args.length == 0) tx = method();

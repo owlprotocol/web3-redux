@@ -1,13 +1,13 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import ganache from 'ganache-core';
 import BlockNumber from '../../abis/BlockNumber.json';
+import { getWeb3Provider } from '../../test';
+import { networkId } from '../../test/data';
 
 import { createStore, StoreType } from '../../store';
 import { Network, EthCall } from '../../index';
-import { sleep } from '../../test/utils';
+import { sleep } from '../../utils';
 import { getIdArgs } from '../model/interface';
-const networkId = '1337';
 
 describe('ethcall.sagas', () => {
     let web3: Web3;
@@ -15,17 +15,14 @@ describe('ethcall.sagas', () => {
     let store: StoreType;
 
     before(async () => {
-        const networkIdInt = parseInt(networkId);
-        const provider = ganache.provider({
-            networkId: networkIdInt,
-        });
+        const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();
     });
 
     beforeEach(async () => {
-        store = createStore();
+        ({ store } = createStore());
         store.dispatch(Network.create({ networkId, web3 }));
     });
 
@@ -35,7 +32,7 @@ describe('ethcall.sagas', () => {
             data: BlockNumber.bytecode,
         });
         const gas1 = await tx1.estimateGas();
-        const contract = await tx1.send({ from: accounts[0], gas: gas1, gasPrice: '10000' });
+        const contract = await tx1.send({ from: accounts[0], gas: gas1, gasPrice: '875000000' });
         const tx2 = await contract.methods.setValue(42);
         await tx2.send({ from: accounts[0], gas: await tx2.estimateGas() });
 

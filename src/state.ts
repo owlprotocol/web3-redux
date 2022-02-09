@@ -7,8 +7,9 @@ import ContractEventIndex from './contracteventindex/model/interface';
 import ContractSend from './contractsend/model/interface';
 import EthCall from './ethcall/model/interface';
 import Config from './config/model/interface';
-import Account from './account/model/interface';
 import Ipfs from './ipfs/model/interface';
+import Sync from './sync/model';
+import _4Byte from './4byte/model/interface';
 import { ModelWithId } from './types/model';
 
 export interface StateRoot {
@@ -19,10 +20,14 @@ export interface StateRoot {
  * Redux State Interface for the `web3Redux` slice.
  */
 export interface State {
+    /** Redux ORM */
+    ['@@_______REDUX_ORM_STATE_FLAG']: boolean;
+    /** Redux Persist */
+    ['_persist']: { version: number; rehydrated: boolean };
     /** Networks indexed by id */
     Network: {
         items: string[];
-        itemsById: { [id: string]: ModelWithId<Network> };
+        itemsById: { [networkId: string]: Network };
     };
     /** Blocks indexed by id */
     Block: {
@@ -43,7 +48,13 @@ export interface State {
                 [networkId: string]: string[];
             };
             blockId: {
-                [blockId: string]: string[];
+                [blockId: string]: string[]; //Map blockId to list of related transactions
+            };
+            toId: {
+                [toId: string]: string[]; //Map contractId to list of related transactions sent to
+            };
+            fromId: {
+                [fromId: string]: string[]; //Map contractId to list of related transactions sent from
             };
         };
     };
@@ -95,10 +106,15 @@ export interface State {
         items: [0];
         itemsById: { [0]: ModelWithId<Config> };
     };
-    /** Accounts indexed by id */
-    Account: {
+    /** 4Byte elements indexed by id */
+    _4Byte: {
         items: string[];
-        itemsById: { [id: string]: ModelWithId<Account> };
+        itemsById: { [id: string]: ModelWithId<_4Byte> };
+    };
+    //** Sync dynamic middleware */
+    Sync: {
+        items: string[];
+        itemsById: { [id: string]: ModelWithId<Sync> };
     };
     Ipfs: {
         items: string[];
@@ -118,3 +134,5 @@ export interface State {
         };
     };
 }
+
+export default State;

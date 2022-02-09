@@ -15,6 +15,9 @@ class Model extends ORMModel {
         methods: attr(),
         web3Contract: attr(),
         web3SenderContract: attr(),
+        balance: attr(),
+        nonce: attr(),
+        code: attr(),
     };
 }
 

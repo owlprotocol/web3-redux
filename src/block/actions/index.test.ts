@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 
 import { name } from '../common';
+import { networkId } from '../../test/data';
 import { getId } from '../model/id';
 import BlockHeader from '../model/BlockHeader';
 
@@ -13,7 +14,6 @@ import { SUBSCRIBE, subscribe, SubscribeAction, isSubscribeAction } from './subs
 import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from './unsubscribe';
 
 describe(`${name}.actions`, () => {
-    const networkId = '1337';
     const item: BlockHeader = { networkId, number: 0 };
 
     it('create', () => {

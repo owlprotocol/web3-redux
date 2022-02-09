@@ -1,12 +1,17 @@
 import { createAction } from '@reduxjs/toolkit';
+import Web3 from 'web3';
 import { name } from '../common';
 import { Network } from '../model/interface';
+import validate from '../model/validate';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;
 /** @category Actions */
 export const create = createAction(CREATE, (payload: Network) => {
-    return { payload };
+    const copy = { ...payload };
+    if (payload.web3Rpc && !payload.web3) copy.web3 = new Web3(payload.web3Rpc); //Overwrite web3
+
+    return { payload: validate(copy) };
 });
 
 /** @internal */

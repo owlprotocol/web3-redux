@@ -1,31 +1,56 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AbiItem } from 'web3-utils';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
-import { BaseWeb3Contract } from '../model';
 import { create } from '../actions';
-import selectSingle from '../selectors/selectByIdSingle';
+import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced';
+import { GetNonceSyncedActionInput } from '../actions/getNonceSynced';
+import { selectByIdSingle } from '../selectors';
+import { BaseWeb3Contract } from '../model';
 
-/** @category Hooks */
+import useGetBalance from './useGetBalance';
+import useGetNonce from './useGetNonce';
+import useGetCode from './useGetCode';
+import useFetchAbi from './useFetchAbi';
+
+/**
+ * Creates a contract/EOA if it doesn't exist.
+ * Reads ethereum data and optionally syncs data.
+ * @category Hooks
+ *
+ */
+//TODO: 'once' always refreshses, 'ifnull' should refresh only if empty
 export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     networkId: string | undefined,
     address: string | undefined,
-    abi: any | undefined,
+    abi?: AbiItem[] | undefined,
+    sync?: {
+        getBalance?: 'ifnull' | GetBalanceSyncedActionInput['sync'] | false;
+        getNonce?: 'ifnull' | GetNonceSyncedActionInput['sync'] | false;
+        getCode?: 'ifnull' | true | false;
+        fetchAbi?: 'ifnull' | true | false;
+    },
 ) {
     const dispatch = useDispatch();
+    const id = networkId && address ? { networkId, address } : undefined;
 
-    const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
-    const contract = useSelector((state) =>
-        selectSingle<T>(state, networkId && address ? { networkId, address } : undefined),
-    );
-    const networkExists = !!network;
+    const contract = useSelector((state) => selectByIdSingle<T>(state, id));
     const contractExists = !!contract;
 
+    //Default sync params
+    const getBalance = sync?.getBalance ?? false;
+    const getNonce = sync?.getNonce ?? false;
+    const getCode = sync?.getCode ?? false;
+    const fetchAbi = sync?.fetchAbi ?? false;
+
+    //Create contract if inexistant
     useEffect(() => {
-        if (networkId && address && abi && networkExists && !contractExists) {
-            dispatch(create({ networkId, address, abi }));
-        }
-    }, [networkId, address, dispatch, networkExists, contractExists]);
+        if (id && !contractExists) dispatch(create({ ...id, abi }));
+    }, [dispatch, id, abi, contractExists]);
+
+    useGetBalance(networkId, address, getBalance);
+    useGetNonce(networkId, address, getNonce);
+    useGetCode(networkId, address, getCode);
+    useFetchAbi(networkId, address, fetchAbi);
 
     return contract;
 }
@@ -36,3 +61,5 @@ export function contractHookFactory<T extends BaseWeb3Contract = BaseWeb3Contrac
         return useContract<T>(networkId, address, abi);
     };
 }
+
+export default useContract;

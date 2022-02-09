@@ -1,25 +1,43 @@
-import { combineReducers, createStore as createReduxStore, applyMiddleware } from 'redux';
+import { createStore as createReduxStore, applyMiddleware, compose } from 'redux';
+import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
-import { crashReporter, onNetworkUpdate } from './middleware';
+import { crashReporter, onPersistRehydrate } from './middleware';
 import { onBlockUpdate } from './block/middleware';
-import { rootReducer } from './reducer';
-import { rootSaga } from './saga';
-import { REDUX_ROOT } from './common';
-
-const reducers = combineReducers({
-    [REDUX_ROOT]: rootReducer,
-});
+import { onNetworkUpdate } from './network/middleware';
+import isClient from './utils/isClient';
+import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist, defaultLocalStorage } from './reducer';
+import { rootSaga as defaultRootSaga } from './saga';
+const defaultMiddleware: any[] = [crashReporter, onPersistRehydrate, onNetworkUpdate, onBlockUpdate];
 
 /** @internal */
-export const createStore = () => {
+interface CreateStoreOptions {
+    persistStorage?: any;
+    middleware?: any[];
+    rootSaga?: any;
+}
+/** @internal */
+export const createStore = (options?: CreateStoreOptions) => {
+    const { persistStorage, middleware, rootSaga } = options ?? {};
+
+    const reducer = persistStorage ? createRootReducer(createReducerWeb3ReduxWithPersist(persistStorage)) : rootReducer;
+
+    //Enable redux-devtools support
+    const composeEnhancers = isClient() ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?? compose : compose;
     const sagaMiddleware = createSagaMiddleware();
-    const rootMiddleware = applyMiddleware(crashReporter, onNetworkUpdate as any, onBlockUpdate as any, sagaMiddleware);
-    const store = createReduxStore(reducers, rootMiddleware);
-    sagaMiddleware.run(rootSaga);
-    return store;
+    const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
+    const store = createReduxStore(reducer, composeEnhancers(rootMiddleware));
+    const persistor = persistStorage ? persistStore(store) : undefined;
+
+    sagaMiddleware.run(rootSaga ?? defaultRootSaga);
+
+    return { store, persistor };
 };
 
-export type StoreType = ReturnType<typeof createStore>;
+export type StoreType = ReturnType<typeof createStore>['store'];
 export type DispatchType = StoreType['dispatch'];
 
-export default createStore();
+const { store } = createStore();
+export const createStoreWithPersistor = () => createStore({ persistStorage: defaultLocalStorage });
+export { store };
+
+export default store;

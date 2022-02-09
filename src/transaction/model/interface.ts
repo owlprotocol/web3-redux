@@ -1,5 +1,5 @@
 import { TransactionReceipt } from 'web3-eth';
-import { toChecksumAddress, toHex } from 'web3-utils';
+import { toChecksumAddress, isHexStrict, hexToNumberString } from 'web3-utils';
 import { getId as getBlockId } from '../../block/model/id';
 import { ModelWithId } from '../../types/model';
 
@@ -37,18 +37,47 @@ export interface Transaction extends TransactionId {
     readonly to?: string | null;
     /** Value transferred in wei */
     readonly value?: string;
-    /**  Gas price provided by the sender in wei */
+
+    /** Gas price provided by the sender in wei */
     readonly gasPrice?: string;
     /** Gas provided by the sender */
     readonly gas?: number;
+    /** Gas used */
+    readonly gasUsed?: number;
+    /** Total gas used */
+    readonly cumulativeGasUsed?: number;
+    /**
+     * The actual value per gas deducted from the senders account.
+     * Before EIP-1559, this is equal to the transaction’s gas price.
+     * After, it is equal to
+     * baseFeePerGas + min(maxFeePerGas - baseFeePerGas, maxPriorityFeePerGas). */
+    readonly effectiveGasPrice?: number;
+
     /** The data sent along with the transaction */
     readonly input?: string;
-    /** Used to index the block this transaction is in. Computed as `${networkId}-${blockNumber}` */
-    readonly blockId?: string | null;
     /** Transaction receipt. */
     readonly receipt?: TransactionReceipt;
     /** Confirmed blocks */
     readonly confirmations?: number;
+    /** Etherscan contract genesis tx */
+    readonly contractAddress?: string;
+    /** Ethersan timestamp */
+    readonly timeStamp?: number;
+
+    /** ORM Relational */
+    /** @hidden */
+    //readonly network?: Network;
+    /** @hidden Used to index the block this transaction is in. Computed as `${networkId}-${blockNumber}` */
+    readonly blockId?: string | null;
+    //readonly block?: Block
+    /** @hidden */
+    readonly fromId?: string;
+    /** @hidden */
+    //readonly fromContract?: string;
+    /** @hidden */
+    readonly toId?: string;
+    /** @hidden */
+    //readonly toContract?: string;
 }
 
 const SEPARATOR = '-';
@@ -60,19 +89,28 @@ export function getId(id: TransactionId): string {
 /** @internal */
 export function validate(item: Transaction): ModelWithId<Transaction> {
     const id = getId(item);
-    const toChecksum = item.to ? toChecksumAddress(item.to) : undefined;
-    const fromCheckSum = item.from ? toChecksumAddress(item.from) : undefined;
-    const gasPriceHex = item.gasPrice ? toHex(item.gasPrice) : undefined;
+    const to = item.to ? toChecksumAddress(item.to) : undefined;
+    const from = item.from ? toChecksumAddress(item.from) : undefined;
+    const contractAddress = item.contractAddress ? toChecksumAddress(item.contractAddress) : undefined;
+    const gasPriceNumber = item.gasPrice
+        ? isHexStrict(item.gasPrice)
+            ? hexToNumberString(item.gasPrice)
+            : item.gasPrice
+        : undefined;
     const blockId = item.blockNumber ? getBlockId({ networkId: item.networkId, number: item.blockNumber }) : undefined;
 
-    return {
+    const result = {
         ...item,
         id,
-        to: toChecksum,
-        from: fromCheckSum,
-        gasPrice: gasPriceHex,
-        blockId,
     };
+
+    if (to) result.to = to;
+    if (from) result.from = from;
+    if (contractAddress) result.contractAddress = contractAddress;
+    if (gasPriceNumber) result.gasPrice = gasPriceNumber;
+    if (blockId) result.blockId = blockId;
+
+    return result;
 }
 
 export default Transaction;

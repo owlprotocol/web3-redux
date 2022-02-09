@@ -4,12 +4,12 @@ import { getOrm } from '../../orm';
 
 import { ContractEventIndex } from '../model';
 import { name } from '../common';
+import { networkId } from '../../test/data';
 
 import { selectEvents } from './index';
 import { validateContractEvent } from '../../contractevent/model';
 
 describe(`${name}.selectors`, () => {
-    const networkId = '1337';
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
 
     //Events
@@ -54,9 +54,6 @@ describe(`${name}.selectors`, () => {
     describe('selectEvents', () => {
         it.skip('({networkId})', () => {
             //TODO: Test fails. Redux ORM bug?
-            console.debug(state[REDUX_ROOT]['ContractEvent']);
-            console.debug(state[REDUX_ROOT]['ContractEventIndex']);
-            console.debug(state[REDUX_ROOT]['ContractEventIndexIds']);
             const selected = selectEvents(state, index1.id!);
             assert.deepEqual(selected, [event1]);
         });

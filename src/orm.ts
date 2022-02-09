@@ -8,10 +8,9 @@ import ContractEventIndexModel from './contracteventindex/model/orm';
 import ContractSendModel from './contractsend/model/orm';
 import EthCallModel from './ethcall/model/orm';
 import ConfigModel from './config/model/orm';
-import AccountModel from './account/model/orm';
 import IpfsModel from './ipfs/model/orm';
 import SyncModel from './sync/model/orm';
-import { blockTransactionsSync } from './sync/model/BlockSync';
+import _4ByteModel from './4byte/model/orm';
 
 //Fix undefined import issue
 let orm = getOrm();
@@ -31,21 +30,20 @@ export function getOrm(): any {
     orm.register(ContractSendModel);
     orm.register(EthCallModel);
     orm.register(ConfigModel);
-    orm.register(AccountModel);
     orm.register(IpfsModel);
     orm.register(SyncModel);
+    orm.register(_4ByteModel);
 
     return orm;
 }
 
 /** @internal */
 export const initializeState = (orm: any) => {
+    //TODO: redux-persist state reconciler might break this
     const state = orm.getEmptyState();
 
-    // By default, add blockTransactionsSync which dispatches
-    // createTransaction actions when block is created
-    const { Sync, Config } = orm.mutableSession(state);
-    Sync.create(blockTransactionsSync);
+    //TODO: Merge initial state redux-persist??
+    const { Config } = orm.mutableSession(state);
     Config.create({ id: 0, account: null, networkId: null });
 
     return state;

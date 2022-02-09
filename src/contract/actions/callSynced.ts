@@ -1,51 +1,24 @@
-import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { Sync } from '../../sync/model';
-import { callHash } from '../model';
-import { defaultTransactionSync } from '../../sync/model/TransactionSync';
-import { defaultBlockSync } from '../../sync/model/BlockSync';
-import { defaultEventSync } from '../../sync/model/EventSync';
+import { GenericSync, createSyncForActions } from '../../sync/model';
+import { create as createSyncAction } from '../../sync/actions';
 import { CallActionInput, call } from './call';
 
 /** @internal */
-export const CALL_SYNCED = `${name}/CALL_SYNCED`;
-/** @internal */
 export interface CallSyncedActionInput extends CallActionInput {
-    defaultBlock?: 'latest';
-    sync?: Sync | Sync['type'] | true | 'once';
+    defaultBlock?: undefined; //CallSynced actions cannot define defaultBlock parameter
+    sync: GenericSync;
 }
-/** @category Actions */
-export const callSynced = createAction(CALL_SYNCED, (payload: CallSyncedActionInput) => {
-    //Defaults
-    const { networkId, address, method, args, defaultBlock, from } = payload;
-    const callArgs = { args, defaultBlock, from };
-    let sync: Sync | undefined | 'once';
+/**
+ * @category Actions
+ * Creates a CALL action and an associated SYNC action
+ *
+ */
+export const callSynced = (payload: CallSyncedActionInput) => {
+    const { networkId, address } = payload;
     const callAction = call(payload);
-
-    if (!payload.sync || payload.sync === true) {
-        //undefined, default as true
-        sync = defaultTransactionSync(networkId, address, [callAction]);
-    } else if (payload.sync === 'Transaction') {
-        sync = defaultTransactionSync(networkId, address, [callAction]);
-    } else if (payload.sync === 'Block') {
-        sync = defaultBlockSync(networkId, [callAction]);
-    } else if (payload.sync === 'Event') {
-        sync = defaultEventSync([callAction]);
-    } else if (payload.sync === 'once') {
-        sync = 'once';
-    } else {
-        sync = payload.sync;
-        sync.actions = [callAction]; //Override sync action
-    }
-
-    //Sync object
-    if (!!sync && sync != 'once') sync.id = `${sync.type}-${callHash(networkId, address, method, callArgs)}`;
-
-    return { payload: { sync, callAction } };
-});
-/** @internal */
-export type CallSyncedAction = ReturnType<typeof callSynced>;
-/** @internal */
-export const isCallSyncedAction = callSynced.match;
+    const sync = createSyncForActions(networkId, [callAction], payload.sync, address);
+    if (sync) sync.id = `${sync.type}-${callAction.payload.id}`;
+    const syncAction = sync ? createSyncAction(sync) : undefined;
+    return { callAction, syncAction };
+};
 
 export default callSynced;

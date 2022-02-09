@@ -4,9 +4,9 @@ import { createStore, StoreType } from '../store';
 
 import { create, selectByIdSingle, selectLatestBlock, selectLatestBlockNumber } from './index';
 import { name } from './common';
+import { networkId } from '../test/data';
 
 describe(`${name}.integration`, () => {
-    const networkId = '1337';
     const item = {
         networkId,
     };
@@ -14,12 +14,12 @@ describe(`${name}.integration`, () => {
 
     let store: StoreType;
 
-    const block1 = { networkId, number: 1 };
-    const block2 = { networkId, number: 2 };
-    const block3 = { networkId, number: 3 };
+    const block1 = { networkId, number: 1, transactions: [] };
+    const block2 = { networkId, number: 2, transactions: [] };
+    const block3 = { networkId, number: 3, transactions: [] };
 
     beforeEach(() => {
-        store = createStore();
+        ({ store } = createStore());
     });
 
     describe('selectors', () => {

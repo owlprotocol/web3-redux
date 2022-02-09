@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useDebugValue } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReturnValues } from '../../contractevent/model/interface';
 import { BaseWeb3Contract } from '../model';
@@ -16,7 +16,10 @@ export interface UseEventsOptions {
     sync?: boolean; //Send event subscribe action
     blockBatch?: number;
 }
-/** @category Hooks */
+/**
+ * @category Hooks
+ * Fetch and sync contract events. Return list of events with optional filter.
+ */
 export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
@@ -51,7 +54,6 @@ export function useEvents<
                 blockBatch,
             });
         }
-        return undefined;
     }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blockBatch, contractExists, past]);
 
     const subscribeAction = useMemo(() => {
@@ -63,7 +65,6 @@ export function useEvents<
                 filter,
             });
         }
-        return undefined;
     }, [networkId, address, eventName, filterHash, contractExists, sync]);
 
     const unsubscribeAction = useMemo(() => {
@@ -75,36 +76,21 @@ export function useEvents<
                 filter,
             });
         }
-        return undefined;
     }, [networkId, address, eventName, filterHash, contractExists, sync]);
 
-    useDebugValue({ events, contractExists, past, sync, getPastAction, subscribeAction, unsubscribeAction });
-
     //Send getPast action
-    const getPast = useCallback(() => {
+    useEffect(() => {
         if (getPastAction) dispatch(getPastAction);
     }, [dispatch, getPastAction]);
 
     useEffect(() => {
-        getPast();
-    }, [getPast]);
-
-    const subscribe = useCallback(() => {
         if (subscribeAction) dispatch(subscribeAction);
-    }, [dispatch, subscribeAction]);
-
-    const unsubscribe = useCallback(() => {
-        if (unsubscribeAction) dispatch(unsubscribeAction);
-    }, [dispatch, unsubscribeAction]);
-
-    useEffect(() => {
-        subscribe();
         return () => {
-            unsubscribe();
+            if (unsubscribeAction) dispatch(unsubscribeAction);
         };
-    }, [subscribe, unsubscribe]);
+    }, [subscribeAction, unsubscribeAction]);
 
-    return [events, { getPast, subscribe, unsubscribe }];
+    return events;
 }
 
 /** @category Hooks */
@@ -122,3 +108,5 @@ export function contractEventsHookFactory<
         return useEvents<T, K, U>(networkId, address, eventName, filter, options);
     };
 }
+
+export default useEvents;

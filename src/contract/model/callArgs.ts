@@ -1,7 +1,7 @@
 import { toChecksumAddress } from 'web3-utils';
-import { ZERO_ADDRESS } from '../../utils';
 import { getId } from './interface';
 
+const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 export interface CallArgsHash<P extends any[] = any[]> {
     args?: P;
     defaultBlock?: number | 'latest';
@@ -20,7 +20,7 @@ export function callArgsHash<P extends any[] = any[]>(callArgs?: CallArgsHash<P>
 
     const options: any = {};
     if (defaultBlock && defaultBlock != 'latest') options.defaultBlock = defaultBlock;
-    if (fromCheckSum && fromCheckSum != ZERO_ADDRESS) options.from = fromCheckSum;
+    if (fromCheckSum && fromCheckSum != ADDRESS_0) options.from = fromCheckSum;
     const optionsId = JSON.stringify(options);
     if (optionsId != '{}') id = `${id}-${optionsId}`;
 

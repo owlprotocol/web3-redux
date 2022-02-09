@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
+import { callHash } from '../model/callArgs';
 
 /** @internal */
 export const CALL = `${name}/CALL`;
@@ -15,7 +16,9 @@ export interface CallActionInput {
 }
 /** @category Actions */
 export const call = createAction(CALL, (payload: CallActionInput) => {
-    return { payload: { ...payload } };
+    const { networkId, address, method, args, defaultBlock, from } = payload;
+    const id = callHash(networkId, address, method, { args, defaultBlock, from });
+    return { payload: { id, networkId, address, method, args, defaultBlock, from } };
 });
 /** @internal */
 export type CallAction = ReturnType<typeof call>;

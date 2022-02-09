@@ -1,6 +1,7 @@
 import { AbiItem, toChecksumAddress } from 'web3-utils';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { ModelWithId } from '../../types/model';
+import Transaction from '../../transaction/model/interface';
 
 /**
  * Contract Id object.
@@ -31,6 +32,16 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
     readonly web3Contract?: T;
     /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance used for send transactions */
     readonly web3SenderContract?: T;
+    /** Account balance in wei */
+    readonly balance?: string;
+    /** Account nonce aka number of transactions sent. */
+    readonly nonce?: number;
+    /** Code stored at address */
+    readonly code?: string;
+
+    /** ORM Relational */
+    readonly fromTransactions?: Transaction[];
+    readonly toTransactions?: Transaction[];
 }
 
 const SEPARATOR = '-';

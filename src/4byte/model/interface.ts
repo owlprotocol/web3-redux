@@ -1,13 +1,13 @@
 export interface SignatureId {
-    /** The keccak-256 hash of the event or function signature */
+    /** keccak256 hash event signature or 4byte function signature */
     readonly signatureHash: string;
 }
 
 export interface _4ByteSignature extends SignatureId {
-    /** Event Name */
-    readonly name?: string;
-    /** Event Args */
-    readonly args?: string[];
+    /** Pre-image */
+    readonly preImage?: string;
+    /** Signature type */
+    readonly signatureType?: 'Event' | 'Function';
 }
 
 export default _4ByteSignature;

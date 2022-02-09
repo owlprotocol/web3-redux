@@ -49,8 +49,6 @@ export type SagaAction =
     | GetBalanceAction
     | GetNonceAction
     | FetchTransactionsAction
-    | GetBalanceSyncedAction
-    | GetNonceSyncedAction
     | GetCodeAction
     | GetEnsAction
     | GetCodeAction;
@@ -68,8 +66,6 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
         isGetBalanceAction(action) ||
         isGetNonceAction(action) ||
         isFetchTransactionsAction(action) ||
-        isGetBalanceSyncedAction(action) ||
-        isGetNonceSyncedAction(action) ||
         isGetCodeAction(action) ||
         isGetEnsAction(action) ||
         isGetCodeAction(action)

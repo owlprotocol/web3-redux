@@ -33,6 +33,7 @@ specifiers:
   eslint-plugin-import: ^2.23.4
   eslint-plugin-prettier: ^3.4.0
   eslint-plugin-react-hooks: ^4.2.0
+  ethereum-ens: ^0.8.0
   fast-memoize: ^2.5.2
   ganache-core: 2.13.2
   husky: ^7.0.2
@@ -73,6 +74,7 @@ specifiers:
 dependencies:
   '@reduxjs/toolkit': 1.7.2_react-redux@7.2.6+react@17.0.2
   axios: 0.25.0
+  ethereum-ens: 0.8.0
   fast-memoize: 2.5.2
   lodash: 4.17.21
   object-hash: 2.2.0
@@ -4409,6 +4411,17 @@ packages:
       secp256k1: 4.0.3
       setimmediate: 1.0.5
 
+  /ethereum-ens/0.8.0:
+    resolution: {integrity: sha512-a8cBTF4AWw1Q1Y37V1LSCS9pRY4Mh3f8vCg5cbXCCEJ3eno1hbI/+Ccv9SZLISYpqQhaglP3Bxb/34lS4Qf7Bg==}
+    dependencies:
+      bluebird: 3.7.2
+      eth-ens-namehash: 2.0.8
+      js-sha3: 0.5.7
+      pako: 1.0.11
+      underscore: 1.9.1
+      web3: 1.6.1
+    dev: false
+
   /ethereumjs-abi/0.6.5:
     resolution: {integrity: sha1-WmN+8Wq0NHP6cqKa2QhxQFs/UkE=}
     dependencies:
@@ -7042,6 +7055,10 @@ packages:
       semver: 6.3.0
     dev: true
 
+  /pako/1.0.11:
+    resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
+    dev: false
+
   /parent-module/1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -8856,8 +8873,6 @@ packages:
 
   /underscore/1.9.1:
     resolution: {integrity: sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==}
-    dev: true
-    optional: true
 
   /unicode-canonical-property-names-ecmascript/2.0.0:
     resolution: {integrity: sha512-yY5PpDlfVIU5+y/BSCxAJRBIS1Zc2dDG3Ujq+sR0U+JjUevW2JhocOF+soROYDSaAezOzOKuyyixhD6mBknSmQ==}

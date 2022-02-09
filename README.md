@@ -8,7 +8,7 @@ A Redux library designed to efficiently sync and normalize blockchain data synce
 
 ## Docs
 
-See the official documentation at [leovigna.github.io/web3-redux/][gh-page]
+See the official documentation at [owlprotocol.github.io/web3-redux/][gh-page]
 
 ## Semantic versioning
 

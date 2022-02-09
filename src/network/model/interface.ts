@@ -22,8 +22,6 @@ export interface Network extends NetworkId {
     readonly web3?: Web3;
     /** Web3 object specialized for sending transactions. */
     readonly web3Sender?: Web3;
-    /** Ipfs Url */
-    readonly ipfsUrl?: string;
     /** @hidden Multicall.sol contract address. Used for optimized batching of calls. */
     readonly multicallAddress?: string;
     /** @hidden Multicall web3 contract instance */

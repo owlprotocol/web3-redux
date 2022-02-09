@@ -10,7 +10,6 @@ export default class Model extends ORMModel {
 
     static fields = {
         contentId: attr(),
-        networkId: attr(),
-        ipfsUrl: attr(),
+        data: attr(),
     };
 }

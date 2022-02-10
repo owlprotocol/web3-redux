@@ -35,8 +35,11 @@ export function useERC20(
     //Refresh call action will get set by the callSyncedAction() creator, we pass an empty array as an argument
     //We also disable sync if networkId/address undefined to avoid unpredictable behaviour
     const onTransferSync =
-        networkId && address
-            ? createEventSync(networkId, [], address, 'Transfer', [{ from: address }, { to: address }])
+        networkId && address && balanceOfAddress
+            ? createEventSync(networkId, [], address, 'Transfer', [
+                  { from: balanceOfAddress },
+                  { to: balanceOfAddress },
+              ])
             : false;
     const balanceOfSync = sync?.balanceOf === 'onTransfer' ? onTransferSync : sync?.balanceOf ?? 'ifnull'; //Sync user balance
     const TransferEventsOptions = sync?.TransferEventsOptions ?? { sync: false, past: false }; //Sync token Transfer events, default just reads data

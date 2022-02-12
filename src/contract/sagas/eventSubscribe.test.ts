@@ -58,7 +58,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
     });
 
     describe('eventSubscribe', () => {
-        it('(networkId,address,eventName)', async (): Promise<void> => {
+        it('(networkId,address,eventName)', async () => {
             const expectedEvents: any[] = [];
             web3Contract.events['NewValue']().on('data', (event: any) => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
@@ -79,7 +79,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             assert.deepEqual(events1, expectedEvents);
         });
 
-        it('(...,filter): [event]', async (): Promise<void> => {
+        it('(...,filter): [event]', async () => {
             const expectedEvents: any[] = [];
             web3Contract.events['NewValue']({ filter: { value: 42 } }).on('data', (event: any) => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
@@ -101,7 +101,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             assert.deepEqual(events1, expectedEvents);
         });
 
-        it('(...,filter): []', async (): Promise<void> => {
+        it('(...,filter): []', async () => {
             const expectedEvents: any[] = [];
             store.dispatch(
                 eventSubscribeAction({
@@ -121,7 +121,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             assert.deepEqual(events1, expectedEvents);
         });
 
-        it('(...,filter): multiple non-exclusive subscriptions', async (): Promise<void> => {
+        it('(...,filter): multiple non-exclusive subscriptions', async () => {
             const expectedEvents: any[] = [];
             web3Contract.events['NewValue']().on('data', (event: any) => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));

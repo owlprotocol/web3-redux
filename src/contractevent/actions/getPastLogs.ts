@@ -9,7 +9,7 @@ export const GET_PAST_LOGS = `${name}/GET_PAST_LOGS`;
 /** @internal */
 export interface GetPastLogsActionInput {
     networkId: string;
-    address: string | string[];
+    address?: string | string[];
     topics?: (null | string | string[])[];
     fromBlock?: number | 'earliest';
     toBlock?: number | 'latest';

@@ -46,7 +46,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     });
 
     describe('subscribeLogs', () => {
-        it('(networkId, address) - All events', async (): Promise<void> => {
+        it('(networkId, address) - All events', async () => {
             store.dispatch(
                 subscribeLogsAction({
                     networkId,
@@ -65,7 +65,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
             assert.equal(events1.length, 1, 'events.length');
         });
 
-        it('(networkId, address, [Transfer, from, to]) - All events', async (): Promise<void> => {
+        it('(networkId, address, [Transfer, from, to]) - All events', async () => {
             //Filter by address, Transfer event, from, address
             const Transfer = ERC20.abi.find((a) => a.name === 'Transfer');
             const eventTopic = coder.encodeEventSignature(Transfer as any);

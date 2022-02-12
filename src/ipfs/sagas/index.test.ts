@@ -1,7 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import axios from 'axios';
 import { name } from '../common';
-import { IPFS_HELLO_WORLD } from '../../utils';
+import { IPFS_HELLO_WORLD } from '../../test/data';
 import { selectIpfsUrl } from '../../config';
 
 import { selectByIdSingle } from '../selectors';
@@ -10,23 +10,22 @@ import { fetchIpfs as fetchIpfsAction, create as createAction, set as setAction 
 import fetchIpfs from './fetchIpfs';
 
 describe(`${name}.sagas`, () => {
-    const item = { contentId: IPFS_HELLO_WORLD };
-
     describe('fetchIpfs', () => {
         it('success', async () => {
-            const res = await axios.get(`https://ipfs.infura.io:5001/api/v0/cat/${IPFS_HELLO_WORLD}`);
+            const cid = IPFS_HELLO_WORLD;
+            const res = await axios.get(`https://ipfs.infura.io:5001/api/v0/cat/${cid}`);
 
-            testSaga(fetchIpfs, fetchIpfsAction(item))
+            testSaga(fetchIpfs, fetchIpfsAction(cid))
                 .next()
-                .select(selectByIdSingle, item.contentId) //Check if exists
+                .select(selectByIdSingle, cid) //Check if exists
                 .next(undefined)
-                .put(createAction({ contentId: item.contentId })) //Create with contentId
+                .put(createAction({ contentId: cid })) //Create with contentId
                 .next()
                 .select(selectIpfsUrl)
                 .next('https://ipfs.infura.io:5001') //Mock Config.ipfsUrl
-                .call(axios.get, `https://ipfs.infura.io:5001/api/v0/cat/${item.contentId}`)
+                .call(axios.get, `https://ipfs.infura.io:5001/api/v0/cat/${cid}`)
                 .next(res)
-                .put(setAction({ contentId: IPFS_HELLO_WORLD, key: 'data', value: res.data }))
+                .put(setAction({ contentId: cid, key: 'data', value: res.data }))
                 .next();
         });
     });

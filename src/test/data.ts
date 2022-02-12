@@ -79,6 +79,11 @@ const methodAbi = (BlockNumber.abi as any).filter((f: any) => f.name === method)
 const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
+//IPFS
+export const IPFS_HELLO_WORLD = 'QmWATWQ7fVPP2EFGu71UkfnqhYXDYH566qy47CnJDgvs8u';
+export const IPFS_NFT_INSTANCE = 'QmTy8w65yBXgyfG2ZBg5TrfB2hPjrDQH3RCQFJGkARStJb';
+export const IPFS_NFT_COLLECTION = 'QmbVtg1Ziv7AnuJry5p5vkY3dKRmsRLJk6uuL2JPK8doEq';
+
 //State
 const state: StateRoot = {
     [REDUX_ROOT]: getOrm().getEmptyState(),

@@ -6,7 +6,7 @@ import { Ipfs } from '../model/interface';
 import { name } from '../common';
 
 import { selectByIdSingle, selectByIdMany } from '../selectors';
-import { IPFS_HELLO_WORLD } from '../../utils';
+import { IPFS_HELLO_WORLD } from '../../test/data';
 
 describe(`${name}.selectors`, () => {
     const item: Ipfs = { contentId: IPFS_HELLO_WORLD };

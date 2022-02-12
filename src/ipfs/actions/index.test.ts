@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { IPFS_HELLO_WORLD } from '../../utils';
+import { IPFS_HELLO_WORLD } from '../../test/data';
 
 import { name } from '../common';
 

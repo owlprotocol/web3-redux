@@ -1,0 +1,12 @@
+{
+    "title": "Test NFT 1",
+    "name": "Test NFT 1",
+    "type": "object",
+    "description": "collection/1",
+    "attributes": [
+        {
+            "trait_type": "Creator",
+            "value": "Leo Vigna"
+        }
+    ]
+}

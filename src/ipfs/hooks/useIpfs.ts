@@ -13,7 +13,7 @@ export const useIpfs = (contentId: string | undefined, fetch = 'ifnull' as 'ifnu
     const content = useSelector((state) => selectIpfs(state, contentId));
     const action = useMemo(() => {
         if (contentId && ((fetch === 'ifnull' && !content) || fetch === true)) {
-            return fetchIpfsAction({ contentId });
+            return fetchIpfsAction(contentId);
         }
     }, [content, fetch]);
 

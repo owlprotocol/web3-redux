@@ -6,7 +6,7 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 
-import ERC20 from '../../abis/ERC20PresetMinterPauser.json';
+import ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
 
 import { create as createNetwork } from '../../network/actions';
 import { create as createTransaction } from '../../transaction/actions';

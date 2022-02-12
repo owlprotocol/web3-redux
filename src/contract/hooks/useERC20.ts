@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import IERC20 from '../../abis/IERC20Metadata.json';
+import IERC20 from '../../abis/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
 
 import { GenericSync } from '../../sync/model';
 import { createEventSync } from '../../sync/model/EventSync';

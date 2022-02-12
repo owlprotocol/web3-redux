@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { URL } from 'url';
-import IERC721 from '../../abis/IERC721.json';
-import IERC721Metadata from '../../abis/IERC721Metadata.json';
+import IERC721 from '../../abis/token/ERC721/IERC721.sol/IERC721.json';
+import IERC721Metadata from '../../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
 
 import { GenericSync } from '../../sync/model';
 import { createEventSync } from '../../sync/model/EventSync';

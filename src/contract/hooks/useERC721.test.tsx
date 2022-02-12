@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 import { networkId, IPFS_NFT_COLLECTION } from '../../test/data';
 
-import ERC721 from '../../abis/ERC721PresetMinterPauserAutoId.json';
+import ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
 
 import { create as createNetwork } from '../../network/actions';
 import { create as createTransaction } from '../../transaction/actions';

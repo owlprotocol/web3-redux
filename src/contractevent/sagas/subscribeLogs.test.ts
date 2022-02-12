@@ -13,11 +13,11 @@ import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';
 
 import { selectByIdMany } from '../selectors';
-import { getPastLogs as getPastLogsAction } from '../actions';
+import { subscribeLogs as subscribeLogsAction } from '../actions';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');
-describe(`${name}/sagas/getPastLogs.test.ts`, () => {
+describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let store: StoreType;
@@ -41,28 +41,28 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
 
-        await web3Contract.methods
-            .mint(accounts[0], 1)
-            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
     });
 
-    describe('getPastLogs', () => {
+    describe('subscribeLogs', () => {
         it('(networkId, address) - All events', async (): Promise<void> => {
             store.dispatch(
-                getPastLogsAction({
+                subscribeLogsAction({
                     networkId,
                     address,
                 }),
             );
 
+            await web3Contract.methods
+                .mint(accounts[0], 1)
+                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+
             await sleep(1000);
 
             const events1 = selectByIdMany(store.getState());
-            //[DefaultRoleGranted, MinterRoleGranted, PauserRoleGranted, Transfer(accounts[0])]
-            assert.equal(events1.length, 4, 'events.length');
+            //[Transfer(accounts[0])]
+            assert.equal(events1.length, 1, 'events.length');
         });
 
         it('(networkId, address, [Transfer, from, to]) - All events', async (): Promise<void> => {
@@ -74,13 +74,16 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
             const topics = [eventTopic, fromTopic, toTopic]; //[Transfer, from, to]
 
             store.dispatch(
-                getPastLogsAction({
+                subscribeLogsAction({
                     networkId,
                     address,
                     topics,
                 }),
             );
 
+            await web3Contract.methods
+                .mint(accounts[0], 1)
+                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
             await sleep(1000);
 
             const events1 = selectByIdMany(store.getState());

@@ -19,7 +19,7 @@ function* getPastLogs(action: GetPastLogsAction) {
         const result = yield* call(web3.eth.getPastLogs, options);
 
         const actions = result.map((l) => {
-            return createEvent({ networkId, ...l });
+            return createEvent({ ...l, networkId });
         });
         if (actions.length > 0) {
             const batchCreate = batchActions(actions, `${createEvent.type}/${actions.length}`);

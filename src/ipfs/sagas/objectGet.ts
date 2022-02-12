@@ -26,12 +26,12 @@ export function* objectGet(action: ObjectGetAction) {
         const linksByName = lodash.keyBy(pbNode.Links, 'Name');
         yield* put(update({ contentId, pbNode, linksByName }));
 
-        const newIpfs = pbNode.Links.map((l) => {
+        const actions = pbNode.Links.map((l) => {
             return create({ contentId: l.Hash.toString() });
         });
-        if (newIpfs.length > 0) {
-            const newIpfsBatch = batchActions(newIpfs);
-            yield* put(newIpfsBatch);
+        if (actions.length > 0) {
+            const batchCreate = batchActions(actions, `${create.type}/${actions.length}`);
+            yield* put(batchCreate);
         }
     } catch (error) {
         console.error(error);

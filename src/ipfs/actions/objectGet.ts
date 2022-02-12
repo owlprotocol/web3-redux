@@ -1,12 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
-import { isCID } from '../../utils';
+import { isCIDGuard } from '../../utils';
 import { name } from '../common';
 
 /** @internal */
 export const OBJECT_GET = `${name}/OBJECT/GET`;
 /** @category Actions */
 export const objectGet = createAction(OBJECT_GET, (payload: string) => {
-    isCID(payload);
+    isCIDGuard(payload);
     return { payload };
 });
 /** @internal */

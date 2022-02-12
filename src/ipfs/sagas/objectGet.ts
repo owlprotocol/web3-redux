@@ -11,14 +11,13 @@ const objectGet_ERROR = `${OBJECT_GET}/ERROR`;
 /** @objectGetegory Sagas */
 export function* objectGet(action: ObjectGetAction) {
     try {
-        const contentId = action.payload;
+        const ipfsUrl = yield* select(selectIpfsUrl);
+        invariant(ipfsUrl, 'IPFS URL undefined!');
 
+        const contentId = action.payload;
         //Check if contentId exists
         const content = yield* select(selectByIdSingle, contentId);
         if (!content) yield* put(create({ contentId }));
-
-        const ipfsUrl = yield* select(selectIpfsUrl);
-        invariant(ipfsUrl, 'IPFS URL undefined!');
 
         const client = createIPFSClient({ url: ipfsUrl });
 

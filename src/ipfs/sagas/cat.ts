@@ -10,14 +10,13 @@ const CAT_ERROR = `${CAT}/ERROR`;
 /** @category Sagas */
 export function* cat(action: CatAction) {
     try {
-        const contentId = action.payload;
+        const ipfsUrl = yield* select(selectIpfsUrl);
+        invariant(ipfsUrl, 'IPFS URL undefined!');
 
+        const contentId = action.payload;
         //Check if contentId exists
         const content = yield* select(selectByIdSingle, contentId);
         if (!content) yield* put(create({ contentId }));
-
-        const ipfsUrl = yield* select(selectIpfsUrl);
-        invariant(ipfsUrl, 'IPFS URL undefined!');
 
         //https://docs.ipfs.io/reference/http/api/
         const response = yield* call(axios.get, `${ipfsUrl}/api/v0/cat/${contentId}`);

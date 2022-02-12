@@ -8,4 +8,6 @@ export { memoizeReturn, memoizeWeak, memoizeArrayByRef } from './memo';
 export { mineBlocks, mineBlock } from './mineBlocks';
 export { ganacheLogger } from './ganacheLogger';
 export { getInterfaceIdentifier } from './getInterfaceIdentifier';
+export { isAddressGuard } from './isAddressGuard';
 export { isCID } from './isCID';
+export { isCIDGuard } from './isCIDGuard';

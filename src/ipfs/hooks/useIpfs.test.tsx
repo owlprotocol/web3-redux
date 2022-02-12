@@ -43,14 +43,14 @@ describe(`${name}/hooks/useIpfs.test.tsx`, () => {
         });
 
         it('default - NFT', async () => {
-            const ipfsPath = `${IPFS_NFT_COLLECTION}/1.json`;
+            const ipfsPath = `${IPFS_NFT_COLLECTION}/1`;
             const { result, waitForNextUpdate } = renderHook(() => useIpfs(ipfsPath), {
                 wrapper,
             });
 
             assert.equal(result.all.length, 1, 'result.all.length');
             await waitForNextUpdate(); //update object data root
-            await waitForNextUpdate(); //update object data 1.json
+            await waitForNextUpdate(); //update object data root/1
             await waitForNextUpdate(); //update cat data
             assert.equal(result.all.length, 4, 'result.all.length');
 

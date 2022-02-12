@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { sleep } from '../utils';
-import { IPFS_HELLO_WORLD, IPFS_NFT_INSTANCE, IPFS_NFT_COLLECTION } from '../test/data';
+import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION_1, IPFS_NFT_COLLECTION } from '../test/data';
 import { createStore, StoreType } from '../store';
 
 import { name } from './common';
@@ -27,12 +27,12 @@ describe(`${name}.integration`, () => {
             assert.equal(ipfsItem?.data, 'Hello World\n');
         });
 
-        it('(IPFS_NFT_INSTANCE)', async () => {
-            store.dispatch(cat(IPFS_NFT_INSTANCE));
+        it('(IPFS_NFT_COLLECTION_1)', async () => {
+            store.dispatch(cat(IPFS_NFT_COLLECTION_1));
 
             await sleep(1000);
-            const ipfsItem = selectByIdSingle(store.getState(), IPFS_NFT_INSTANCE);
-            assert.equal(ipfsItem?.data.name, '52 Hertz');
+            const ipfsItem = selectByIdSingle(store.getState(), IPFS_NFT_COLLECTION_1);
+            assert.equal(ipfsItem?.data.name, 'Test NFT 1');
         });
     });
 
@@ -62,10 +62,10 @@ describe(`${name}.integration`, () => {
             assert.equal(ipfsItem?.data, 'Hello World\n');
         });
 
-        it('(IPFS_NFT_COLLECTION/1.json)', async () => {
+        it('(IPFS_NFT_COLLECTION/1)', async () => {
             //Recurse path, getObject, cat final hash
-            const ipfsPath = `${IPFS_NFT_COLLECTION}/1.json`;
-            const childHash = 'QmZyAnXBwWSheQQxNZ8kCECkQHCYc79F9XJuMZXwibZeCZ';
+            const ipfsPath = `${IPFS_NFT_COLLECTION}/1`;
+            const childHash = IPFS_NFT_COLLECTION_1;
             store.dispatch(fetchIpfs(`${ipfsPath}`));
 
             await sleep(2000);

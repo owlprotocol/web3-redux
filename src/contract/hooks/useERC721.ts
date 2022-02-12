@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { URL } from 'url';
 import IERC721 from '../../abis/IERC721.json';
 import IERC721Metadata from '../../abis/IERC721Metadata.json';
 
@@ -8,6 +9,8 @@ import { createEventSync } from '../../sync/model/EventSync';
 import useContractWithAbi from './useContractWithAbi';
 import useContractCall from './useContractCall';
 import useEvents, { UseEventsOptions } from './useEvents';
+import useIpfs from '../../ipfs/hooks/useIpfs';
+import axios from 'axios';
 
 const IERC721FullAbi = [...IERC721.abi, ...IERC721Metadata.abi];
 
@@ -54,7 +57,31 @@ export function useERC721(
     });
     const tokenURI = useContractCall(networkId, address, 'tokenURI', [tokenId], {
         sync: tokenURISync,
-    });
+    }) as string | undefined;
+
+    const uri = tokenURI ? new URL(tokenURI) : undefined;
+    //Check NFT Metadata
+    //If IPFS
+    const isIpfsURI = uri?.protocol === 'ipfs:';
+    const ipfsPath = isIpfsURI ? tokenURI?.replace('ipfs://', '') : undefined;
+    const { data: ipfsContent, contentId } = useIpfs(ipfsPath);
+
+    //If HTTP(S)
+    //TODO: cache for http content
+    const isHttpURI = uri?.protocol === 'http:' || uri?.protocol === 'https:';
+    const [httpContent, sethttpContent] = useState(undefined as any);
+    useEffect(() => {
+        //Get http api content
+        if (tokenURI && isHttpURI) {
+            axios.get(tokenURI).then((response) => {
+                sethttpContent(response.data);
+            });
+        } else {
+            sethttpContent(undefined);
+        }
+    }, [isHttpURI, tokenURI]);
+
+    const metadata = ipfsContent ?? httpContent;
 
     //Events
     const Transfer = useEvents(networkId, address, 'Transfer', { tokenId }, TransferEventsOptions);
@@ -69,10 +96,12 @@ export function useERC721(
             symbol,
             ownerOf,
             tokenURI,
+            metadata,
+            contentId,
             Transfer,
             Approval,
         };
-    }, [name, symbol, ownerOf, tokenURI, Transfer, Approval]);
+    }, [name, symbol, ownerOf, tokenURI, Transfer, Approval, metadata, contentId]);
 
     return values;
 }

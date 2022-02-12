@@ -81,8 +81,8 @@ export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRES
 
 //IPFS
 export const IPFS_HELLO_WORLD = 'QmWATWQ7fVPP2EFGu71UkfnqhYXDYH566qy47CnJDgvs8u';
-export const IPFS_NFT_INSTANCE = 'QmTy8w65yBXgyfG2ZBg5TrfB2hPjrDQH3RCQFJGkARStJb';
-export const IPFS_NFT_COLLECTION = 'QmbVtg1Ziv7AnuJry5p5vkY3dKRmsRLJk6uuL2JPK8doEq';
+export const IPFS_NFT_COLLECTION = 'QmVioGYCm7EBYiJaxaciouDf5DzXArkBzibMV8Le69Z123';
+export const IPFS_NFT_COLLECTION_1 = 'QmZyAnXBwWSheQQxNZ8kCECkQHCYc79F9XJuMZXwibZeCZ';
 
 //State
 const state: StateRoot = {

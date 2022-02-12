@@ -41,6 +41,8 @@ export function* saga() {
     ]);
 }
 
+export default saga;
+
 /*
 //https://redux-saga.js.org/docs/advanced/RootSaga/#keeping-everything-alive
 export function* saga() {

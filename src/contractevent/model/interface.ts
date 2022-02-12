@@ -26,18 +26,27 @@ export interface ReturnValues {
 export interface ContractEvent<T extends ReturnValues = ReturnValues> extends ContractEventId {
     /** Used to index contract events in redux-orm. Computed as `${networkId}-${blockHash}-{logIndex}` */
     readonly id?: string;
-    /** Event name */
-    readonly name: string;
-    /** Address of contract that emitted event */
-    readonly address: string;
     /** redux-orm id of contract `${networkId}-{address}` */
     readonly contractId?: string;
+
+    /** Address of contract that emitted event */
+    readonly address: string;
+
+    /** Parsed Contract Event */
+    /** Event name */
+    readonly name?: string;
     /** Return values of event */
-    readonly returnValues: T['returnValues'];
+    readonly returnValues?: T['returnValues'];
     /** Keys of `returnValues` to index event on */
     readonly returnValuesIndexKeys?: string[] | boolean;
     /** ContractEventIndex redux-orm ids. Used for efficient filtering. */
     readonly indexIds?: string[];
+
+    /** Raw Log */
+    /** Raw non-indexed log data */
+    readonly data?: string;
+    /** Raw indexed data */
+    readonly topics?: string[];
 }
 
 const SEPARATOR = '-';
@@ -73,7 +82,7 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     const contractId = getContractId(item);
 
     //Default we only index named keys, but user can also pass (0,1,2) as argument
-    const returnValuesKeys = Object.keys(item.returnValues).filter((k: string) => isNaN(parseInt(k)));
+    const returnValuesKeys = Object.keys(item.returnValues ?? {}).filter((k: string) => isNaN(parseInt(k)));
     let returnValuesIndexKeys: string[];
     if (!item.returnValuesIndexKeys) returnValuesIndexKeys = [];
     else if (item.returnValuesIndexKeys === true) returnValuesIndexKeys = returnValuesKeys;

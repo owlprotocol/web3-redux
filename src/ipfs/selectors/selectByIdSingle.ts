@@ -3,7 +3,7 @@ import { Ipfs } from '../model/interface';
 import select from './select';
 
 /** @category Selectors */
-function selectByIdSingle(state: any, id: string | undefined): Ipfs | undefined {
+export function selectByIdSingle(state: any, id: string | undefined): Ipfs | undefined {
     if (!id) return undefined;
     isCID(id);
 

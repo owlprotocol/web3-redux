@@ -32,10 +32,11 @@ describe(`${name}/hooks/useIpfs.test.tsx`, () => {
 
             //Two synchronous renders for null, create IPFS contentId
             assert.equal(result.all.length, 2, 'result.all.length');
-            await waitForNextUpdate(); //update data
-            assert.equal(result.all.length, 3, 'result.all.length');
+            await waitForNextUpdate(); //update object data
+            await waitForNextUpdate(); //update cat data
+            assert.equal(result.all.length, 4, 'result.all.length');
 
-            const value = result.current;
+            const value = result.current?.data;
             assert.deepEqual(value, 'Hello World\n', 'content');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -47,13 +48,14 @@ describe(`${name}/hooks/useIpfs.test.tsx`, () => {
                 wrapper,
             });
 
-            //Two synchronous renders for null, create IPFS contentId
-            assert.equal(result.all.length, 2, 'result.all.length');
-            await waitForNextUpdate(); //update data
-            assert.equal(result.all.length, 3, 'result.all.length');
+            assert.equal(result.all.length, 1, 'result.all.length');
+            await waitForNextUpdate(); //update object data root
+            await waitForNextUpdate(); //update object data 1.json
+            await waitForNextUpdate(); //update cat data
+            assert.equal(result.all.length, 4, 'result.all.length');
 
-            const value = result.current;
-            assert.equal(value.title, '52 Hertz', 'content');
+            const value = result.current?.data;
+            assert.equal(value.name, 'Test NFT 1', 'content');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });

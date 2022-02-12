@@ -4,7 +4,7 @@ import selectByIdSingle from './selectByIdSingle';
  * @category Selectors
  * Recursively searches for CID at file at <BASE_CID>/path/to/file
  */
-function selectPathHash(state: any, path: string | undefined): string | undefined {
+export function selectPathHash(state: any, path: string | undefined): string | undefined {
     if (!path) return undefined;
 
     // eslint-disable-next-line prefer-const

@@ -1,12 +1,14 @@
 import { createAction } from '@reduxjs/toolkit';
+import { isCID } from '../../utils';
 import { name } from '../common';
-import { IpfsId } from '../model/interface';
 
 /** @internal */
 export const FETCH_IPFS = `${name}/FETCH_IPFS`;
 /** @category Actions */
-export const fetchIpfs = createAction(FETCH_IPFS, (payload: IpfsId) => {
-    return { payload: { contentId: payload.contentId } };
+export const fetchIpfs = createAction(FETCH_IPFS, (payload: string) => {
+    const [cid] = payload.split('/');
+    isCID(cid);
+    return { payload };
 });
 /** @internal */
 export type FetchIpfsAction = ReturnType<typeof fetchIpfs>;

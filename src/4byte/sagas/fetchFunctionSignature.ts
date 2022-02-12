@@ -1,6 +1,7 @@
-import { put, call } from 'typed-redux-saga/macro';
-import { set, FetchFunctionSignatureAction } from '../actions';
+import { put, call, select } from 'typed-redux-saga/macro';
 import axios, { AxiosResponse } from 'axios';
+import { set, create, FetchFunctionSignatureAction } from '../actions';
+import { selectByIdSingle } from '../selectors';
 
 interface _4ByteResponseItem {
     id: number;
@@ -15,6 +16,10 @@ export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
     const { payload } = action;
     const { signatureHash } = payload;
 
+    //Check if preImage exists
+    const preImage = yield* select(selectByIdSingle, signatureHash);
+    if (!preImage) yield* put(create({ signatureHash }));
+
     const functionSigRes = yield* call(
         axios.get,
         `https://www.4byte.directory/api/v1/signatures/?hex_signature=${signatureHash}`,
@@ -28,11 +33,7 @@ export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
         prev.id < curr.id ? prev : curr,
     ).text_signature;
 
-    const funcName: string = functionSig?.substring(0, functionSig.indexOf('('));
-    const args: string[] = functionSig?.substring(functionSig.indexOf('(') + 1, functionSig.indexOf(')')).split(',');
-
-    yield* put(set({ id: { signatureHash }, key: 'name', value: funcName }));
-    yield* put(set({ id: { signatureHash }, key: 'args', value: args }));
+    yield* put(set({ id: { signatureHash }, key: 'preImage', value: functionSig }));
 }
 
 export default fetchFunctionSignature;

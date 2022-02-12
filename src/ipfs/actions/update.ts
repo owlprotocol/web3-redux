@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { isCID } from '../../utils';
 import { name } from '../common';
 import { Ipfs } from '../model/interface';
 
@@ -6,6 +7,7 @@ import { Ipfs } from '../model/interface';
 export const UPDATE = `${name}/UPDATE`;
 /** @category Actions */
 export const update = createAction(UPDATE, (payload: Ipfs) => {
+    isCID(payload.contentId);
     return { payload };
 });
 /** @internal */

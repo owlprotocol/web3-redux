@@ -6,10 +6,11 @@ import { _4ByteSignature } from '../model/interface';
 import { name } from '../common';
 
 import { selectByIdSingle, selectByIdMany } from '../selectors';
-import { ADDRESS_0 } from '../../test/data';
+
+const ApproveSignature = '0x095ea7b3';
 
 describe(`${name}.selectors`, () => {
-    const item: _4ByteSignature = { signatureHash: ADDRESS_0 };
+    const item: _4ByteSignature = { signatureHash: ApproveSignature };
     const id = item.signatureHash;
 
     const state = {
@@ -39,9 +40,6 @@ describe(`${name}.selectors`, () => {
             assert.deepEqual(selectByIdMany(state), [item]);
         });
         it('([id])', () => {
-            assert.deepEqual(selectByIdMany(state), [item]);
-        });
-        it('([idDeconstructed])', () => {
             assert.deepEqual(selectByIdMany(state, [item.signatureHash]), [item]);
         });
         it('memoization', () => {

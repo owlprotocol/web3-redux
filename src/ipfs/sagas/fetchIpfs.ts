@@ -1,26 +1,41 @@
 import { put, call, select } from 'typed-redux-saga/macro';
-import axios, { AxiosResponse } from 'axios';
-import { set, create, FetchIpfsAction, FETCH_IPFS } from '../actions';
+import invariant from 'tiny-invariant';
+import { objectGet as objectGetAction, FetchIpfsAction, FETCH_IPFS, cat } from '../actions';
 import { selectIpfsUrl } from '../../config/selectors';
 import { selectByIdSingle } from '../selectors';
+import objectGet from './objectGet';
 
 const FETCH_IPFS_ERROR = `${FETCH_IPFS}/ERROR`;
 /** @category Sagas */
 export function* fetchIpfs(action: FetchIpfsAction) {
     try {
-        const { payload } = action;
-        const { contentId } = payload;
-
-        //Check if contentId exists
-        const content = yield* select(selectByIdSingle, contentId);
-        if (!content) yield* put(create({ contentId }));
-
         const ipfsUrl = yield* select(selectIpfsUrl);
+        invariant(ipfsUrl, 'IPFS URL undefined!');
 
-        //https://docs.ipfs.io/reference/http/api/
-        const response = yield* call(axios.get, `${ipfsUrl}/api/v0/cat/${contentId}`);
+        const { payload } = action;
+        // eslint-disable-next-line prefer-const
+        let [cid, ...links] = payload.split('/');
 
-        yield* put(set({ contentId, key: 'data', value: (response as AxiosResponse).data }));
+        //Recursively resolve IPFS
+        for (const p of links) {
+            let object = yield* select(selectByIdSingle, cid);
+            //If no object data
+            if (!object?.pbNode?.Data) {
+                yield* call(objectGet, objectGetAction(cid));
+                object = yield* select(selectByIdSingle, cid);
+            }
+            const link = (object?.linksByName ?? {})[p];
+            const newCid = link?.Hash;
+            invariant(newCid, `${cid}/${p} undefined!`);
+            cid = newCid.toString();
+        }
+
+        //Get object for final cid
+        const object = yield* select(selectByIdSingle, cid);
+        //If no object data
+        if (!object?.pbNode?.Data) yield* call(objectGet, objectGetAction(cid));
+
+        yield* put(cat(cid));
     } catch (error) {
         console.error(error);
         yield* put({

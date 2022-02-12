@@ -1,11 +1,16 @@
-import { put, call } from 'typed-redux-saga/macro';
-import { set, FetchEventSignatureAction } from '../actions';
+import { put, call, select } from 'typed-redux-saga/macro';
 import axios, { AxiosResponse } from 'axios';
+import { set, create, FetchEventSignatureAction } from '../actions';
+import { selectByIdSingle } from '../selectors';
 
 /** @category Sagas */
 export function* fetchEventSignature(action: FetchEventSignatureAction) {
     const { payload } = action;
     const { signatureHash } = payload;
+
+    //Check if preImage exists
+    const preImage = yield* select(selectByIdSingle, signatureHash);
+    if (!preImage) yield* put(create({ signatureHash }));
 
     const eventSigRes = yield* call(
         axios.get,
@@ -15,11 +20,7 @@ export function* fetchEventSignature(action: FetchEventSignatureAction) {
 
     if (eventSig === undefined) throw new Error('This event signature was not found in the 4Byte database');
 
-    const eventName: string = eventSig?.substring(0, eventSig.indexOf('('));
-    const args: string[] = eventSig?.substring(eventSig.indexOf('(') + 1, eventSig.indexOf(')')).split(',');
-
-    yield* put(set({ id: { signatureHash }, key: 'name', value: eventName }));
-    yield* put(set({ id: { signatureHash }, key: 'args', value: args }));
+    yield* put(set({ id: { signatureHash }, key: 'preImage', value: eventSig }));
 }
 
 export default fetchEventSignature;

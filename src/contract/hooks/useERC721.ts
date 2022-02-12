@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { URL } from 'url';
-import IERC721 from '../../abis/token/ERC721/IERC721.sol/IERC721.json';
 import IERC721Metadata from '../../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
 
 import { GenericSync } from '../../sync/model';
@@ -11,8 +10,6 @@ import useContractCall from './useContractCall';
 import useEvents, { UseEventsOptions } from './useEvents';
 import useIpfs from '../../ipfs/hooks/useIpfs';
 import axios from 'axios';
-
-const IERC721FullAbi = [...IERC721.abi, ...IERC721Metadata.abi];
 
 /**
  * @category Hooks
@@ -34,7 +31,7 @@ export function useERC721(
     },
 ) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC721FullAbi as any);
+    useContractWithAbi(networkId, address, IERC721Metadata.abi as any);
 
     //Refresh call action will get set by the callSyncedAction() creator, we pass an empty array as an argument
     //We also disable sync if networkId/address undefined to avoid unpredictable behaviour

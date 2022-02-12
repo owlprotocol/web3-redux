@@ -5,7 +5,7 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 
-import ERC165 from '../../abis/ERC165.json';
+import ERC165 from '../../abis/utils/introspection/ERC165.sol/ERC165.json';
 
 import { create as createNetwork } from '../../network/actions';
 

@@ -55,7 +55,7 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     });
 
     describe('eventGetPast', () => {
-        it('(networkId,address,eventName)', async (): Promise<void> => {
+        it('(networkId,address,eventName)', async () => {
             const expectedEvents: any[] = [];
             web3Contract.events['NewValue']().on('data', (event: any) => {
                 expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));

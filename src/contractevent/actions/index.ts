@@ -5,6 +5,7 @@ import { SET, set, SetAction, isSetAction } from './set';
 import { GET_PAST_LOGS, getPastLogs, GetPastLogsAction, isGetPastLogsAction } from './getPastLogs';
 import { SUBSCRIBE_LOGS, subscribeLogs, SubscribeLogsAction, isSubscribeLogsAction } from './subscribeLogs';
 import { UNSUBSCRIBE_LOGS, unsubscribeLogs, UnsubscribeLogsAction, isUnsubscribeLogsAction } from './unsubscribeLogs';
+import { GET_ASSETS, getAssets, GetAssetsAction, isGetAssetsAction } from './getAssets';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
@@ -28,6 +29,7 @@ export type {
     GetPastLogsAction,
     SubscribeLogsAction,
     UnsubscribeLogsAction,
+    GetAssetsAction,
 };
 
 export {
@@ -52,4 +54,7 @@ export {
     UNSUBSCRIBE_LOGS,
     unsubscribeLogs,
     isUnsubscribeLogsAction,
+    GET_ASSETS,
+    getAssets,
+    isGetAssetsAction,
 };

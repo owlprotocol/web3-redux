@@ -25,6 +25,8 @@ function* getPastLogs(action: GetPastLogsAction) {
             const batchCreate = batchActions(actions, `${createEvent.type}/${actions.length}`);
             yield* put(batchCreate);
         }
+
+        return result;
     } catch (error) {
         console.error(error);
         yield* put({

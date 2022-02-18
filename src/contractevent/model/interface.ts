@@ -101,7 +101,7 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     });
 
     //TODO: Index by networkId, contractId?
-    const indexIds: string[] = [baseIndex, ...returnValuesIndexes].map((v) => JSON.stringify(v));
+    const indexIds: string[] = [contractIndex, baseIndex, ...returnValuesIndexes].map((v) => JSON.stringify(v));
     return {
         ...item,
         name,

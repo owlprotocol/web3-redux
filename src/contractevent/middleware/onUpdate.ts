@@ -1,9 +1,10 @@
 import { AnyAction, Store } from 'redux';
+import { batchActions } from 'redux-batched-actions';
 import { AbiCoder } from 'web3-eth-abi';
 
 import { selectByIdSingle as selectContract } from '../../contract/selectors';
 
-import { CREATE, UPDATE } from '../actions';
+import { CREATE, UPDATE, set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '../actions';
 import { ContractEvent } from '../model/interface';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -11,9 +12,8 @@ const coder: AbiCoder = require('web3-eth-abi');
 /**
  * Middleware for whenever an event log created/updated.
  * Use cases:
- * - Decode batched event subscriptions that match multiple smart contracts
+ * - Decode events with undefined returnValues that are decodable with a contract abi
  */
-//TODO: Handle batched updates? Is this even required? Most updates will be fetch or subscription updates.
 export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
     let events: ContractEvent[] = [];
     if (action.type.startsWith(CREATE) || action.type.startsWith(UPDATE)) {
@@ -26,7 +26,8 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
         }
     }
 
-    //Mutate events in place
+    //Update events
+    const setActions: SetEventAction[] = [];
     events.forEach((e) => {
         if (!e.returnValues && e.data) {
             //Undefined returnValues but data present
@@ -44,15 +45,23 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
             //https://web3js.readthedocs.io/en/v1.7.0/web3-eth-abi.html?#decodelog
             //Skip the first topic for non-anonymous logs
             const returnValues = coder.decodeLog(eventAbi.inputs, e.data, topics);
-
-            //Mutate event in-place
-            //TODO: Index values?
-            //@ts-ignore
-            e.returnValues = returnValues;
+            setActions.push(
+                setEvent({
+                    id: { networkId: e.networkId, blockHash: e.blockHash, logIndex: e.logIndex },
+                    key: 'returnValues',
+                    value: returnValues,
+                }),
+            );
         }
     });
 
     next(action);
+
+    const actionsBatched =
+        setActions.length > 0
+            ? batchActions(setActions, `${SET_EVENT('returnValues')}/${setActions.length}`)
+            : undefined;
+    if (actionsBatched) store.dispatch(actionsBatched);
 };
 
 export default onUpdate;

@@ -4,5 +4,6 @@
     "includeVersion": true,
     "excludeInternal": true,
     "categoryOrder": ["Actions", "Selectors", "Hooks", "*"],
-    "readme": "./docs-static/DOCUMENTATION.md"
+    "readme": "./docs-static/DOCUMENTATION.md",
+    "plugin": []
 }

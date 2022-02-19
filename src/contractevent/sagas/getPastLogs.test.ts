@@ -7,10 +7,12 @@ import { name } from '../common';
 import { ADDRESS_0, networkId } from '../../test/data';
 
 import ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
 import { sleep } from '../../utils';
 
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';
+import { create as createContract } from '../../contract';
 
 import { selectByIdMany } from '../selectors';
 import { getPastLogs as getPastLogsAction } from '../actions';
@@ -65,27 +67,79 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
             assert.equal(events1.length, 4, 'events.length');
         });
 
-        it('(networkId, address, [Transfer, from, to]) - All events', async () => {
-            //Filter by address, Transfer event, from, address
-            const Transfer = ERC20.abi.find((a) => a.name === 'Transfer');
-            const eventTopic = coder.encodeEventSignature(Transfer as any);
-            const fromTopic = coder.encodeParameter('address', ADDRESS_0);
-            const toTopic = coder.encodeParameter('address', accounts[0]);
-            const topics = [eventTopic, fromTopic, toTopic]; //[Transfer, from, to]
+        describe('(networkId, address, [Transfer, from, to])', () => {
+            let topics: string[];
+            before(() => {
+                //Filter by address, Transfer event, from, address
+                const Transfer = ERC20.abi.find((a) => a.name === 'Transfer');
+                const eventTopic = coder.encodeEventSignature(Transfer as any);
+                const fromTopic = coder.encodeParameter('address', ADDRESS_0);
+                const toTopic = coder.encodeParameter('address', accounts[0]);
+                topics = [eventTopic, fromTopic, toTopic]; //[Transfer, from, to]
+            });
 
-            store.dispatch(
-                getPastLogsAction({
-                    networkId,
-                    address,
-                    topics,
-                }),
-            );
+            it('raw data', async () => {
+                //Trigger event.onUpdate which populates returnValues
+                store.dispatch(
+                    getPastLogsAction({
+                        networkId,
+                        address,
+                        topics,
+                    }),
+                );
 
-            await sleep(1000);
+                await sleep(1000);
 
-            const events1 = selectByIdMany(store.getState());
-            //[Transfer(zero, accounts[0])]
-            assert.equal(events1.length, 1, 'events.length');
+                const events1 = selectByIdMany(store.getState());
+                //[Transfer(zero, accounts[0])]
+                assert.equal(events1.length, 1, 'events.length');
+            });
+
+            it('event.onUpdate middleware', async () => {
+                //Create contract before events are fetched
+                store.dispatch(createContract({ networkId, address, abi: IERC20.abi as any }));
+
+                //Trigger event.onUpdate which populates returnValues
+                store.dispatch(
+                    getPastLogsAction({
+                        networkId,
+                        address,
+                        topics,
+                    }),
+                );
+
+                await sleep(1000);
+
+                //Proper decoding using middleware
+                const events1 = selectByIdMany(store.getState());
+                const event = events1[0];
+                assert.equal(event?.returnValues?.from, ADDRESS_0, 'returnValues.from');
+                assert.equal(event?.returnValues?.to, accounts[0], 'returnValues.to');
+                assert.equal(event?.returnValues?.value, 1, 'returnValues.value');
+            });
+
+            it('contract.onUpdate middleware', async () => {
+                store.dispatch(
+                    getPastLogsAction({
+                        networkId,
+                        address,
+                        topics,
+                    }),
+                );
+
+                await sleep(1000);
+
+                //Create contract after events are fetched
+                //Trigger contract.onUpdate which populates returnValues
+                store.dispatch(createContract({ networkId, address, abi: IERC20.abi as any }));
+
+                //Proper decoding using middleware
+                const events1 = selectByIdMany(store.getState());
+                const event = events1[0];
+                assert.equal(event?.returnValues?.from, ADDRESS_0, 'returnValues.from');
+                assert.equal(event?.returnValues?.to, accounts[0], 'returnValues.to');
+                assert.equal(event?.returnValues?.value, 1, 'returnValues.value');
+            });
         });
     });
 });

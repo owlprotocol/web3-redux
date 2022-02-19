@@ -6,7 +6,7 @@ import { set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '
 import { selectEvents } from '../../contracteventindex/selectors';
 
 import { CREATE, UPDATE } from '../actions';
-import { Contract, getId } from '../model';
+import { Contract } from '../model';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');
@@ -29,11 +29,12 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
 
     //Update events
     const setActions: SetEventAction[] = [];
+    const state = store.getState();
+    console.debug(state.web3Redux.ContractEventIndex);
     contracts.forEach((c) => {
         const networkId = c.networkId;
         const address = c.address;
-        const state = store.getState();
-        const events = selectEvents(state, getId({ networkId, address })) ?? [];
+        const events = selectEvents(state, JSON.stringify({ networkId, address })) ?? [];
         events.forEach((e) => {
             if (!e.returnValues && e.data) {
                 //Undefined returnValues but data present

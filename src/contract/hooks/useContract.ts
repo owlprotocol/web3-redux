@@ -15,10 +15,10 @@ import useFetchAbi from './useFetchAbi';
 /**
  * Creates a contract/EOA if it doesn't exist.
  * Reads ethereum data and optionally syncs data.
+ * 'once' always refreshes, 'ifnull' should refresh only if empty
  * @category Hooks
  *
  */
-//TODO: 'once' always refreshses, 'ifnull' should refresh only if empty
 export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     networkId: string | undefined,
     address: string | undefined,

@@ -40,7 +40,7 @@ describe(`${name}.selectors`, () => {
 
     describe('selectContractEvents', () => {
         it('returnValuesIndexKeys = undefined', () => {
-            assert.equal(event1.indexIds!.length, 1); //Base index only
+            assert.equal(event1.indexIds!.length, 2); //contractIndex, eventIndex
 
             store.dispatch(createEvent(event1));
             store.dispatch(createEvent(event2));
@@ -53,7 +53,7 @@ describe(`${name}.selectors`, () => {
         it('returnValuesIndexKeys = [val]', () => {
             const event1Indexed = validateContractEvent({ ...event1, returnValuesIndexKeys: ['val'] });
             const event2Indexed = validateContractEvent({ ...event2, returnValuesIndexKeys: ['val'] });
-            assert.equal(event1Indexed.indexIds!.length, 2);
+            assert.equal(event1Indexed.indexIds!.length, 3);
 
             store.dispatch(createEvent(event1Indexed));
             store.dispatch(createEvent(event2Indexed));
@@ -66,7 +66,7 @@ describe(`${name}.selectors`, () => {
         it('returnValuesIndexKeys = true', () => {
             const event1Indexed = validateContractEvent({ ...event1, returnValuesIndexKeys: true });
             const event2Indexed = validateContractEvent({ ...event2, returnValuesIndexKeys: true });
-            assert.equal(event1Indexed.indexIds!.length, 2);
+            assert.equal(event1Indexed.indexIds!.length, 3);
 
             store.dispatch(createEvent(event1Indexed));
             store.dispatch(createEvent(event2Indexed));

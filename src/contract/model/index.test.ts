@@ -16,6 +16,21 @@ describe(`${name}.model`, () => {
     const itemWithId: Contract = {
         ...item,
         id,
+        eventAbiBySignature: {
+            '0xac3e966f295f2d5312f973dc6d42f30a6dc1c1f76ab8ee91cc8ca5dad1fa60fd': {
+                anonymous: false,
+                inputs: [
+                    {
+                        indexed: true,
+                        internalType: 'uint256',
+                        name: 'value',
+                        type: 'uint256',
+                    },
+                ],
+                name: 'NewValue',
+                type: 'event',
+            },
+        },
     };
 
     it('getId', () => {

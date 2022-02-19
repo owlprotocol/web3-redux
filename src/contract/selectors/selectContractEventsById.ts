@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-orm';
 import { getOrm } from '../../orm';
 import { ContractEvent, ReturnValues } from '../../contractevent/model';
-import { selectEvents, selectByIdExists as selectEventIndexExists } from '../../contracteventindex/selectors';
+import { selectEvents, selectByIdSingle as selectEventIndex } from '../../contracteventindex/selectors';
 import { BaseWeb3Contract, ContractId } from '../model/interface';
 import { memoizedLodashFilter } from '../../memo';
 
@@ -34,7 +34,7 @@ export function selectContractEventsByIdFiltered<
     } else {
         const index: any = { ...baseIndex, returnValues: returnValuesFilter };
         const indexId = JSON.stringify(index);
-        if (selectEventIndexExists(state, indexId)) {
+        if (!!selectEventIndex(state, indexId)) {
             return (selectEvents(state, indexId) as ContractEvent<U>[] | undefined) ?? EMPTY_EVENTS;
         } else {
             //No index, used lodash filter

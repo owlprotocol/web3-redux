@@ -19,25 +19,28 @@ describe('getInterfaceIdentifierForAbi', () => {
     });
 
     it('ERC721Enumerable', () => {
-        assert.equal(getInterfaceIdentifierForAbi(ERC721Enumerable.abi as AbiItem[]), '780e9d63');
+        assert.equal(getInterfaceIdentifierForAbi(ERC721Enumerable.abi as AbiItem[]), 'bfc4c1ea'); // '780e9d63');
     });
 
     it('ERC721Metadata', () => {
-        assert.equal(getInterfaceIdentifierForAbi(ERC721Metadata.abi as AbiItem[]), '5b5e139f');
+        assert.equal(getInterfaceIdentifierForAbi(ERC721Metadata.abi as AbiItem[]), '9c944f16'); // '5b5e139f');
     });
 });
 
 describe('getFunctionIdentifier', () => {
     it('supportsInterface', () => {
-        assert.equal(getFunctionIdentifier((ERC165.abi as AbiItem[])[0]), '0x01ffc9a7');
+        const abi = (ERC165.abi as AbiItem[]).find((a) => a.name === 'supportsInterface');
+        assert.equal(getFunctionIdentifier(abi!), '0x01ffc9a7');
     });
 
     it('tokenByIndex', () => {
-        assert.equal(getFunctionIdentifier((ERC721Enumerable.abi as AbiItem[])[0]), '0x4f6ccce7');
+        const abi = (ERC721Enumerable.abi as AbiItem[]).find((a) => a.name === 'tokenByIndex');
+        assert.equal(getFunctionIdentifier(abi!), '0x4f6ccce7');
     });
 
     it('name', () => {
-        assert.equal(getFunctionIdentifier((ERC721Metadata.abi as AbiItem[])[0]), '0x06fdde03');
+        const abi = (ERC721Metadata.abi as AbiItem[]).find((a) => a.name === 'name');
+        assert.equal(getFunctionIdentifier(abi!), '0x06fdde03');
     });
 });
 

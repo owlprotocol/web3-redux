@@ -88,8 +88,11 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     else if (item.returnValuesIndexKeys === true) returnValuesIndexKeys = returnValuesKeys;
     else returnValuesIndexKeys = item.returnValuesIndexKeys;
 
+    //All events for contract
     const contractIndex = { networkId, address };
-    const baseIndex = { ...contractIndex, name };
+    //Events by name for contract (equivalent to signature)
+    const eventIndex = { ...contractIndex, name };
+    ///Events by returnValues filters (disabled by default)
     const keyCombinations = returnValueKeyCombinations(returnValuesIndexKeys);
 
     const returnValuesIndexes = keyCombinations.map((keys) => {
@@ -97,11 +100,14 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
         keys.forEach((k) => {
             returnValues[k] = item.returnValues[k];
         });
-        return { ...baseIndex, returnValues }; //TODO: Non-contract indexed events?
+        return { ...eventIndex, returnValues };
     });
 
-    //TODO: Index by networkId, contractId?
-    const indexIds: string[] = [baseIndex, ...returnValuesIndexes].map((v) => JSON.stringify(v));
+    const indices: any[] = [contractIndex];
+    if (name) indices.push(eventIndex);
+    indices.push(...returnValuesIndexes);
+
+    const indexIds: string[] = indices.map((v) => JSON.stringify(v));
     return {
         ...item,
         name,

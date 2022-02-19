@@ -30,7 +30,6 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
     //Update events
     const setActions: SetEventAction[] = [];
     const state = store.getState();
-    console.debug(state.web3Redux.ContractEventIndex);
     contracts.forEach((c) => {
         const networkId = c.networkId;
         const address = c.address;

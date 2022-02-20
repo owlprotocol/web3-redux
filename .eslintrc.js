@@ -48,4 +48,5 @@ module.exports = {
             files: ['**/*.ts', '**/*.tsx'],
         },
     ],
+    ignorePatterns: ['docusaurus/**'],
 };

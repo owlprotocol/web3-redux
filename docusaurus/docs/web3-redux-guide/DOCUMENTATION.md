@@ -1,6 +1,10 @@
+---
+sidebar_position: 1
+---
+
 # Web3 Redux Docs
 
-![web3-redux-1024x256.svg](./web3-redux-1024x256.svg)
+![web3-redux-1024x256.svg](/img/web3-redux-1024x256.svg)
 
 Web3 Redux Library.
 
@@ -25,7 +29,7 @@ pnpm install redux redux-saga react-redux web3 @owlprotocol/web3-redux
 
 Overview of the overall architecture of the library.
 
-![Flowchart.svg](./Flowchart.svg)
+![Flowchart.svg](/img/web3-redux-flowchart.svg)
 
 -   All web3-redux data is stored under the `web3Redux` slice of the store as a normalized json store (State). The overall interface of the state can be found under [State](./interfaces/State).
 -   [Selectors](https://github.com/reduxjs/reselect) for each [redux-orm](https://github.com/redux-orm/redux-orm) model are the preferred way to then read this data.

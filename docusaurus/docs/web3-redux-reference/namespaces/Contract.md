@@ -183,7 +183,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/index.ts:76](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/index.ts#L76)
+[src/contract/actions/index.ts:76](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/index.ts#L76)
 
 ---
 
@@ -195,7 +195,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/model/interface.ts:21](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/model/interface.ts#L21)
+[src/contract/model/interface.ts:21](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/model/interface.ts#L21)
 
 ---
 
@@ -207,7 +207,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/call.ts:24](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/call.ts#L24)
+[src/contract/actions/call.ts:24](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/call.ts#L24)
 
 ---
 
@@ -219,7 +219,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/callBatched.ts:33](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/callBatched.ts#L33)
+[src/contract/actions/callBatched.ts:33](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/callBatched.ts#L33)
 
 ---
 
@@ -231,7 +231,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/create.ts#L12)
+[src/contract/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/create.ts#L12)
 
 ---
 
@@ -243,7 +243,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/eventGetPast.ts:37](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventGetPast.ts#L37)
+[src/contract/actions/eventGetPast.ts:37](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventGetPast.ts#L37)
 
 ---
 
@@ -255,7 +255,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/eventSubscribe.ts:16](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventSubscribe.ts#L16)
+[src/contract/actions/eventSubscribe.ts:16](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventSubscribe.ts#L16)
 
 ---
 
@@ -267,7 +267,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/eventUnsubscribe.ts:16](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventUnsubscribe.ts#L16)
+[src/contract/actions/eventUnsubscribe.ts:16](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventUnsubscribe.ts#L16)
 
 ---
 
@@ -279,7 +279,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/fetchAbi.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/fetchAbi.ts#L13)
+[src/contract/actions/fetchAbi.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/fetchAbi.ts#L13)
 
 ---
 
@@ -291,7 +291,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/fetchTransactions.ts:25](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/fetchTransactions.ts#L25)
+[src/contract/actions/fetchTransactions.ts:25](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/fetchTransactions.ts#L25)
 
 ---
 
@@ -303,7 +303,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/getBalance.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getBalance.ts#L13)
+[src/contract/actions/getBalance.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getBalance.ts#L13)
 
 ---
 
@@ -315,7 +315,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/getCode.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getCode.ts#L13)
+[src/contract/actions/getCode.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getCode.ts#L13)
 
 ---
 
@@ -327,7 +327,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/getEns.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getEns.ts#L13)
+[src/contract/actions/getEns.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getEns.ts#L13)
 
 ---
 
@@ -339,7 +339,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/getNonce.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getNonce.ts#L13)
+[src/contract/actions/getNonce.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getNonce.ts#L13)
 
 ---
 
@@ -351,7 +351,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/index.ts:34](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/index.ts#L34)
+[src/contract/actions/index.ts:34](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/index.ts#L34)
 
 ---
 
@@ -363,7 +363,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/remove.ts#L13)
+[src/contract/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/remove.ts#L13)
 
 ---
 
@@ -375,7 +375,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/index.ts:41](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/index.ts#L41)
+[src/contract/actions/index.ts:41](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/index.ts#L41)
 
 ---
 
@@ -387,7 +387,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/send.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/send.ts#L20)
+[src/contract/actions/send.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/send.ts#L20)
 
 ---
 
@@ -399,7 +399,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/set.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/set.ts#L20)
+[src/contract/actions/set.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/set.ts#L20)
 
 ---
 
@@ -411,7 +411,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/update.ts#L12)
+[src/contract/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/update.ts#L12)
 
 ## Actions Variables
 
@@ -421,7 +421,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/call.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/call.ts#L18)
+[src/contract/actions/call.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/call.ts#L18)
 
 ---
 
@@ -444,7 +444,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/callBatched.ts:30](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/callBatched.ts#L30)
+[src/contract/actions/callBatched.ts:30](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/callBatched.ts#L30)
 
 ---
 
@@ -454,7 +454,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/create.ts#L8)
+[src/contract/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/create.ts#L8)
 
 ---
 
@@ -464,7 +464,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventGetPast.ts:17](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventGetPast.ts#L17)
+[src/contract/actions/eventGetPast.ts:17](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventGetPast.ts#L17)
 
 ---
 
@@ -474,7 +474,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventSubscribe.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventSubscribe.ts#L14)
+[src/contract/actions/eventSubscribe.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventSubscribe.ts#L14)
 
 ---
 
@@ -484,7 +484,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventUnsubscribe.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventUnsubscribe.ts#L14)
+[src/contract/actions/eventUnsubscribe.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventUnsubscribe.ts#L14)
 
 ---
 
@@ -494,7 +494,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/fetchAbi.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/fetchAbi.ts#L9)
+[src/contract/actions/fetchAbi.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/fetchAbi.ts#L9)
 
 ---
 
@@ -504,7 +504,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/fetchTransactions.ts:21](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/fetchTransactions.ts#L21)
+[src/contract/actions/fetchTransactions.ts:21](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/fetchTransactions.ts#L21)
 
 ---
 
@@ -514,7 +514,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getBalance.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getBalance.ts#L9)
+[src/contract/actions/getBalance.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getBalance.ts#L9)
 
 ---
 
@@ -524,7 +524,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getCode.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getCode.ts#L9)
+[src/contract/actions/getCode.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getCode.ts#L9)
 
 ---
 
@@ -534,7 +534,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getEns.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getEns.ts#L9)
+[src/contract/actions/getEns.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getEns.ts#L9)
 
 ---
 
@@ -544,7 +544,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getNonce.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getNonce.ts#L9)
+[src/contract/actions/getNonce.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getNonce.ts#L9)
 
 ---
 
@@ -554,7 +554,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/remove.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/remove.ts#L9)
+[src/contract/actions/remove.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/remove.ts#L9)
 
 ---
 
@@ -564,7 +564,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/send.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/send.ts#L18)
+[src/contract/actions/send.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/send.ts#L18)
 
 ---
 
@@ -574,7 +574,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/update.ts#L8)
+[src/contract/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/update.ts#L8)
 
 ---
 
@@ -588,7 +588,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/call.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/call.ts#L6)
+[src/contract/actions/call.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/call.ts#L6)
 
 ---
 
@@ -600,7 +600,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/callBatched.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/callBatched.ts#L5)
+[src/contract/actions/callBatched.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/callBatched.ts#L5)
 
 ---
 
@@ -612,7 +612,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/create.ts#L6)
+[src/contract/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/create.ts#L6)
 
 ---
 
@@ -624,7 +624,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventGetPast.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventGetPast.ts#L5)
+[src/contract/actions/eventGetPast.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventGetPast.ts#L5)
 
 ---
 
@@ -636,7 +636,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventSubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventSubscribe.ts#L5)
+[src/contract/actions/eventSubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventSubscribe.ts#L5)
 
 ---
 
@@ -648,7 +648,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventUnsubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventUnsubscribe.ts#L5)
+[src/contract/actions/eventUnsubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventUnsubscribe.ts#L5)
 
 ---
 
@@ -660,7 +660,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/fetchAbi.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/fetchAbi.ts#L7)
+[src/contract/actions/fetchAbi.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/fetchAbi.ts#L7)
 
 ---
 
@@ -672,7 +672,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/fetchTransactions.ts:19](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/fetchTransactions.ts#L19)
+[src/contract/actions/fetchTransactions.ts:19](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/fetchTransactions.ts#L19)
 
 ---
 
@@ -684,7 +684,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getBalance.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getBalance.ts#L7)
+[src/contract/actions/getBalance.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getBalance.ts#L7)
 
 ---
 
@@ -696,7 +696,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getCode.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getCode.ts#L7)
+[src/contract/actions/getCode.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getCode.ts#L7)
 
 ---
 
@@ -708,7 +708,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getEns.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getEns.ts#L7)
+[src/contract/actions/getEns.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getEns.ts#L7)
 
 ---
 
@@ -720,7 +720,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getNonce.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getNonce.ts#L7)
+[src/contract/actions/getNonce.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getNonce.ts#L7)
 
 ---
 
@@ -732,7 +732,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/remove.ts#L7)
+[src/contract/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/remove.ts#L7)
 
 ---
 
@@ -744,7 +744,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/send.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/send.ts#L5)
+[src/contract/actions/send.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/send.ts#L5)
 
 ---
 
@@ -756,7 +756,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/update.ts#L6)
+[src/contract/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -784,7 +784,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/set.ts#L13)
+[src/contract/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/set.ts#L13)
 
 ---
 
@@ -822,7 +822,7 @@ Creates a CALL action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/actions/callSynced.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/callSynced.ts#L15)
+[src/contract/actions/callSynced.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/callSynced.ts#L15)
 
 ---
 
@@ -855,7 +855,7 @@ Creates a GET_BALANCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/actions/getBalanceSynced.ts:16](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getBalanceSynced.ts#L16)
+[src/contract/actions/getBalanceSynced.ts:16](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getBalanceSynced.ts#L16)
 
 ---
 
@@ -888,7 +888,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/actions/getNonceSynced.ts:16](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getNonceSynced.ts#L16)
+[src/contract/actions/getNonceSynced.ts:16](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getNonceSynced.ts#L16)
 
 ---
 
@@ -932,7 +932,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/hooks/useContractCall.ts:88](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useContractCall.ts#L88)
+[src/contract/hooks/useContractCall.ts:88](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useContractCall.ts#L88)
 
 ---
 
@@ -975,7 +975,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/hooks/useEvents.ts:97](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useEvents.ts#L97)
+[src/contract/hooks/useEvents.ts:97](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useEvents.ts#L97)
 
 ---
 
@@ -1014,7 +1014,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/hooks/useContract.ts:59](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useContract.ts#L59)
+[src/contract/hooks/useContract.ts:59](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useContract.ts#L59)
 
 ---
 
@@ -1069,7 +1069,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/hooks/useContractSend.ts:44](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useContractSend.ts#L44)
+[src/contract/hooks/useContractSend.ts:44](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useContractSend.ts#L44)
 
 ---
 
@@ -1106,7 +1106,7 @@ Reads ethereum data and optionally syncs data.
 
 #### Defined in
 
-[src/contract/hooks/useContract.ts:22](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useContract.ts#L22)
+[src/contract/hooks/useContract.ts:22](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useContract.ts#L22)
 
 ---
 
@@ -1145,7 +1145,7 @@ Reads ethereum data and optionally syncs data.
 
 #### Defined in
 
-[src/contract/hooks/useERC20.ts:19](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useERC20.ts#L19)
+[src/contract/hooks/useERC20.ts:19](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useERC20.ts#L19)
 
 ---
 
@@ -1169,7 +1169,7 @@ Fetch Contract ABI
 
 #### Defined in
 
-[src/contract/hooks/useFetchAbi.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useFetchAbi.ts#L12)
+[src/contract/hooks/useFetchAbi.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useFetchAbi.ts#L12)
 
 ---
 
@@ -1193,7 +1193,7 @@ Get Contract bytecode
 
 #### Defined in
 
-[src/contract/hooks/useGetBalance.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useGetBalance.ts#L14)
+[src/contract/hooks/useGetBalance.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useGetBalance.ts#L14)
 
 ---
 
@@ -1217,7 +1217,7 @@ Get Contract bytecode
 
 #### Defined in
 
-[src/contract/hooks/useGetCode.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useGetCode.ts#L12)
+[src/contract/hooks/useGetCode.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useGetCode.ts#L12)
 
 ---
 
@@ -1241,7 +1241,7 @@ Get Contract bytecode
 
 #### Defined in
 
-[src/contract/hooks/useGetNonce.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useGetNonce.ts#L14)
+[src/contract/hooks/useGetNonce.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useGetNonce.ts#L14)
 
 ---
 
@@ -1263,7 +1263,7 @@ Get Contract bytecode
 
 #### Defined in
 
-[src/contract/hooks/useSupportsInterface.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useSupportsInterface.ts#L12)
+[src/contract/hooks/useSupportsInterface.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useSupportsInterface.ts#L12)
 
 ---
 
@@ -1291,7 +1291,7 @@ This hook is mostly used as a building block by other hooks to make sure the con
 
 #### Defined in
 
-[src/contract/hooks/useContractWithAbi.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useContractWithAbi.ts#L15)
+[src/contract/hooks/useContractWithAbi.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useContractWithAbi.ts#L15)
 
 ---
 
@@ -1326,7 +1326,7 @@ Create a contract call and return value. Functions
 
 #### Defined in
 
-[src/contract/hooks/useContractCall.ts:26](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useContractCall.ts#L26)
+[src/contract/hooks/useContractCall.ts:26](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useContractCall.ts#L26)
 
 ---
 
@@ -1374,7 +1374,7 @@ Create a contract send transaction callback method. Functions
 
 #### Defined in
 
-[src/contract/hooks/useContractSend.ts:11](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useContractSend.ts#L11)
+[src/contract/hooks/useContractSend.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useContractSend.ts#L11)
 
 ---
 
@@ -1410,7 +1410,7 @@ Fetch and sync contract events. Return list of events with optional filter. Func
 
 #### Defined in
 
-[src/contract/hooks/useEvents.ts:23](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useEvents.ts#L23)
+[src/contract/hooks/useEvents.ts:23](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useEvents.ts#L23)
 
 ---
 
@@ -1436,7 +1436,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/hooks/useFetchTransactions.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/hooks/useFetchTransactions.ts#L14)
+[src/contract/hooks/useFetchTransactions.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/hooks/useFetchTransactions.ts#L14)
 
 ---
 
@@ -1460,7 +1460,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/set.ts#L5)
+[src/contract/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/set.ts#L5)
 
 ---
 
@@ -1486,7 +1486,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/callArgs.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/model/callArgs.ts#L10)
+[src/contract/model/callArgs.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/model/callArgs.ts#L10)
 
 ---
 
@@ -1509,7 +1509,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/callArgs.ts:30](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/model/callArgs.ts#L30)
+[src/contract/model/callArgs.ts:30](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/model/callArgs.ts#L30)
 
 ---
 
@@ -1529,7 +1529,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/eventSubscription.ts:17](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/model/eventSubscription.ts#L17)
+[src/contract/model/eventSubscription.ts:17](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/model/eventSubscription.ts#L17)
 
 ---
 
@@ -1549,7 +1549,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/eventSubscription.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/model/eventSubscription.ts#L10)
+[src/contract/model/eventSubscription.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/model/eventSubscription.ts#L10)
 
 ---
 
@@ -1571,7 +1571,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/interface.ts:57](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/model/interface.ts#L57)
+[src/contract/model/interface.ts:57](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/model/interface.ts#L57)
 
 ---
 
@@ -1594,7 +1594,7 @@ action is Action
 
 #### Defined in
 
-[src/contract/actions/index.ts:78](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/index.ts#L78)
+[src/contract/actions/index.ts:78](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/index.ts#L78)
 
 ---
 
@@ -1616,7 +1616,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/call.ts:26](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/call.ts#L26)
+[src/contract/actions/call.ts:26](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/call.ts#L26)
 
 ---
 
@@ -1638,7 +1638,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/callBatched.ts:35](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/callBatched.ts#L35)
+[src/contract/actions/callBatched.ts:35](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/callBatched.ts#L35)
 
 ---
 
@@ -1660,7 +1660,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/create.ts#L14)
+[src/contract/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/create.ts#L14)
 
 ---
 
@@ -1682,7 +1682,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/eventGetPast.ts:39](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventGetPast.ts#L39)
+[src/contract/actions/eventGetPast.ts:39](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventGetPast.ts#L39)
 
 ---
 
@@ -1704,7 +1704,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/eventSubscribe.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventSubscribe.ts#L18)
+[src/contract/actions/eventSubscribe.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventSubscribe.ts#L18)
 
 ---
 
@@ -1726,7 +1726,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/eventUnsubscribe.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/eventUnsubscribe.ts#L18)
+[src/contract/actions/eventUnsubscribe.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/eventUnsubscribe.ts#L18)
 
 ---
 
@@ -1748,7 +1748,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/fetchAbi.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/fetchAbi.ts#L15)
+[src/contract/actions/fetchAbi.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/fetchAbi.ts#L15)
 
 ---
 
@@ -1770,7 +1770,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/fetchTransactions.ts:27](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/fetchTransactions.ts#L27)
+[src/contract/actions/fetchTransactions.ts:27](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/fetchTransactions.ts#L27)
 
 ---
 
@@ -1792,7 +1792,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/getBalance.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getBalance.ts#L15)
+[src/contract/actions/getBalance.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getBalance.ts#L15)
 
 ---
 
@@ -1814,7 +1814,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/getCode.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getCode.ts#L15)
+[src/contract/actions/getCode.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getCode.ts#L15)
 
 ---
 
@@ -1836,7 +1836,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/getEns.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getEns.ts#L15)
+[src/contract/actions/getEns.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getEns.ts#L15)
 
 ---
 
@@ -1858,7 +1858,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/getNonce.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/getNonce.ts#L15)
+[src/contract/actions/getNonce.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/getNonce.ts#L15)
 
 ---
 
@@ -1881,7 +1881,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/contract/actions/index.ts:36](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/index.ts#L36)
+[src/contract/actions/index.ts:36](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/index.ts#L36)
 
 ---
 
@@ -1903,7 +1903,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/remove.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/remove.ts#L15)
+[src/contract/actions/remove.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/remove.ts#L15)
 
 ---
 
@@ -1926,7 +1926,7 @@ action is SagaAction
 
 #### Defined in
 
-[src/contract/actions/index.ts:57](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/index.ts#L57)
+[src/contract/actions/index.ts:57](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/index.ts#L57)
 
 ---
 
@@ -1948,7 +1948,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/send.ts:22](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/send.ts#L22)
+[src/contract/actions/send.ts:22](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/send.ts#L22)
 
 ---
 
@@ -1973,7 +1973,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/set.ts:22](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/set.ts#L22)
+[src/contract/actions/set.ts:22](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/set.ts#L22)
 
 ---
 
@@ -1995,7 +1995,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/actions/update.ts#L14)
+[src/contract/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/actions/update.ts#L14)
 
 ---
 
@@ -2018,7 +2018,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/reducer.ts#L7)
+[src/contract/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/reducer.ts#L7)
 
 ---
 
@@ -2034,7 +2034,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/sagas/index.ts:28](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/sagas/index.ts#L28)
+[src/contract/sagas/index.ts:28](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/sagas/index.ts#L28)
 
 ---
 
@@ -2057,7 +2057,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectByFilter.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/selectors/selectByFilter.ts#L10)
+[src/contract/selectors/selectByFilter.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/selectors/selectByFilter.ts#L10)
 
 ---
 
@@ -2079,7 +2079,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/model/interface.ts:70](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/model/interface.ts#L70)
+[src/contract/model/interface.ts:70](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/model/interface.ts#L70)
 
 ---
 
@@ -2108,7 +2108,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectByIdMany.ts:25](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/selectors/selectByIdMany.ts#L25)
+[src/contract/selectors/selectByIdMany.ts:25](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/selectors/selectByIdMany.ts#L25)
 
 ---
 
@@ -2135,7 +2135,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectByIdSingle.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/selectors/selectByIdSingle.ts#L20)
+[src/contract/selectors/selectByIdSingle.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/selectors/selectByIdSingle.ts#L20)
 
 ---
 
@@ -2165,7 +2165,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectContractCallById.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/selectors/selectContractCallById.ts#L10)
+[src/contract/selectors/selectContractCallById.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/selectors/selectContractCallById.ts#L10)
 
 ---
 
@@ -2207,7 +2207,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectContractCallById.ts:27](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/selectors/selectContractCallById.ts#L27)
+[src/contract/selectors/selectContractCallById.ts:27](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/selectors/selectContractCallById.ts#L27)
 
 ---
 
@@ -2238,7 +2238,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectContractEventsById.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/selectors/selectContractEventsById.ts#L15)
+[src/contract/selectors/selectContractEventsById.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/selectors/selectContractEventsById.ts#L15)
 
 ---
 
@@ -2268,7 +2268,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectEthCallId.ts:44](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/selectors/selectEthCallId.ts#L44)
+[src/contract/selectors/selectEthCallId.ts:44](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/selectors/selectEthCallId.ts#L44)
 
 ---
 
@@ -2310,4 +2310,4 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectContractEventsById.ts:51](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/contract/selectors/selectContractEventsById.ts#L51)
+[src/contract/selectors/selectContractEventsById.ts:51](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contract/selectors/selectContractEventsById.ts#L51)

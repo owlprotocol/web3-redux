@@ -29,7 +29,7 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
     //const { siteConfig } = useDocusaurusContext();
 
-    return <Redirect to="/docs/web3-redux-guide/" />;;
+    return <Redirect to="/docs/" />;;
     /*
     return (
         <Layout

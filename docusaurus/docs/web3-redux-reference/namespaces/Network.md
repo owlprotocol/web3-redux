@@ -72,7 +72,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/index.ts:16](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/index.ts#L16)
+[src/network/actions/index.ts:16](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/index.ts#L16)
 
 ---
 
@@ -84,7 +84,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/create.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/create.ts#L18)
+[src/network/actions/create.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/create.ts#L18)
 
 ---
 
@@ -96,7 +96,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/getBlockNumber.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/getBlockNumber.ts#L12)
+[src/network/actions/getBlockNumber.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/getBlockNumber.ts#L12)
 
 ---
 
@@ -108,7 +108,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/getChainId.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/getChainId.ts#L13)
+[src/network/actions/getChainId.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/getChainId.ts#L13)
 
 ---
 
@@ -120,7 +120,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/index.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/index.ts#L9)
+[src/network/actions/index.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/index.ts#L9)
 
 ---
 
@@ -132,7 +132,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/remove.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/remove.ts#L12)
+[src/network/actions/remove.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/remove.ts#L12)
 
 ---
 
@@ -144,7 +144,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/set.ts#L21)
+[src/network/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/set.ts#L21)
 
 ---
 
@@ -156,7 +156,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/update.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/update.ts#L18)
+[src/network/actions/update.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/update.ts#L18)
 
 ## Actions Variables
 
@@ -166,7 +166,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/create.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/create.ts#L10)
+[src/network/actions/create.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/create.ts#L10)
 
 ---
 
@@ -176,7 +176,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/getBlockNumber.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/getBlockNumber.ts#L7)
+[src/network/actions/getBlockNumber.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/getBlockNumber.ts#L7)
 
 ---
 
@@ -186,7 +186,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/getChainId.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/getChainId.ts#L8)
+[src/network/actions/getChainId.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/getChainId.ts#L8)
 
 ---
 
@@ -196,7 +196,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/remove.ts#L7)
+[src/network/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/remove.ts#L7)
 
 ---
 
@@ -206,7 +206,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/update.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/update.ts#L10)
+[src/network/actions/update.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/update.ts#L10)
 
 ---
 
@@ -220,7 +220,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/create.ts#L8)
+[src/network/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/create.ts#L8)
 
 ---
 
@@ -232,7 +232,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/getBlockNumber.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/getBlockNumber.ts#L5)
+[src/network/actions/getBlockNumber.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/getBlockNumber.ts#L5)
 
 ---
 
@@ -244,7 +244,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/getChainId.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/getChainId.ts#L6)
+[src/network/actions/getChainId.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/getChainId.ts#L6)
 
 ---
 
@@ -256,7 +256,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/remove.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/remove.ts#L5)
+[src/network/actions/remove.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/remove.ts#L5)
 
 ---
 
@@ -268,7 +268,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/update.ts#L8)
+[src/network/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/update.ts#L8)
 
 ## Actions Functions
 
@@ -296,7 +296,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/set.ts#L13)
+[src/network/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/set.ts#L13)
 
 ---
 
@@ -318,7 +318,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/hooks/useLatestBlock.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/hooks/useLatestBlock.ts#L6)
+[src/network/hooks/useLatestBlock.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/hooks/useLatestBlock.ts#L6)
 
 ---
 
@@ -338,7 +338,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/hooks/useLatestBlockNumber.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/hooks/useLatestBlockNumber.ts#L6)
+[src/network/hooks/useLatestBlockNumber.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/hooks/useLatestBlockNumber.ts#L6)
 
 ---
 
@@ -362,7 +362,7 @@ Comments on Network module
 
 #### Defined in
 
-[src/network/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/set.ts#L5)
+[src/network/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/set.ts#L5)
 
 ---
 
@@ -385,7 +385,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/network/actions/index.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/index.ts#L18)
+[src/network/actions/index.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/index.ts#L18)
 
 ---
 
@@ -407,7 +407,7 @@ action is Object
 
 #### Defined in
 
-[src/network/actions/create.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/create.ts#L20)
+[src/network/actions/create.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/create.ts#L20)
 
 ---
 
@@ -429,7 +429,7 @@ action is Object
 
 #### Defined in
 
-[src/network/actions/getBlockNumber.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/getBlockNumber.ts#L14)
+[src/network/actions/getBlockNumber.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/getBlockNumber.ts#L14)
 
 ---
 
@@ -451,7 +451,7 @@ action is Object
 
 #### Defined in
 
-[src/network/actions/getChainId.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/getChainId.ts#L15)
+[src/network/actions/getChainId.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/getChainId.ts#L15)
 
 ---
 
@@ -474,7 +474,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/network/actions/index.ts:11](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/index.ts#L11)
+[src/network/actions/index.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/index.ts#L11)
 
 ---
 
@@ -496,7 +496,7 @@ action is Object
 
 #### Defined in
 
-[src/network/actions/remove.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/remove.ts#L14)
+[src/network/actions/remove.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/remove.ts#L14)
 
 ---
 
@@ -521,7 +521,7 @@ action is Object
 
 #### Defined in
 
-[src/network/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/set.ts#L23)
+[src/network/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/set.ts#L23)
 
 ---
 
@@ -543,7 +543,7 @@ action is Object
 
 #### Defined in
 
-[src/network/actions/update.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/actions/update.ts#L20)
+[src/network/actions/update.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/actions/update.ts#L20)
 
 ---
 
@@ -566,7 +566,7 @@ action is Object
 
 #### Defined in
 
-[src/network/reducer.ts:11](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/reducer.ts#L11)
+[src/network/reducer.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/reducer.ts#L11)
 
 ---
 
@@ -589,7 +589,7 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectBlocks.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectBlocks.ts#L9)
+[src/network/selectors/selectBlocks.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectBlocks.ts#L9)
 
 ---
 
@@ -610,7 +610,7 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectByFilter.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectByFilter.ts#L9)
+[src/network/selectors/selectByFilter.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectByFilter.ts#L9)
 
 ---
 
@@ -631,7 +631,7 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectByIdExists.ts:4](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectByIdExists.ts#L4)
+[src/network/selectors/selectByIdExists.ts:4](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectByIdExists.ts#L4)
 
 ---
 
@@ -652,7 +652,7 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectByIdMany.ts#L6)
+[src/network/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectByIdMany.ts#L6)
 
 ---
 
@@ -673,7 +673,7 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectByIdSingle.ts#L5)
+[src/network/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectByIdSingle.ts#L5)
 
 ---
 
@@ -694,7 +694,7 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectContracts.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectContracts.ts#L9)
+[src/network/selectors/selectContracts.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectContracts.ts#L9)
 
 ---
 
@@ -715,7 +715,7 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectLatestBlock.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectLatestBlock.ts#L5)
+[src/network/selectors/selectLatestBlock.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectLatestBlock.ts#L5)
 
 ---
 
@@ -736,7 +736,7 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectLatestBlockNumber.ts:4](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectLatestBlockNumber.ts#L4)
+[src/network/selectors/selectLatestBlockNumber.ts:4](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectLatestBlockNumber.ts#L4)
 
 ---
 
@@ -757,4 +757,4 @@ action is Object
 
 #### Defined in
 
-[src/network/selectors/selectTransactions.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/selectors/selectTransactions.ts#L9)
+[src/network/selectors/selectTransactions.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/selectors/selectTransactions.ts#L9)

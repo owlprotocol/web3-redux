@@ -78,7 +78,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/index.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/index.ts#L13)
+[src/config/actions/index.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/index.ts#L13)
 
 ---
 
@@ -90,7 +90,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/create.ts#L12)
+[src/config/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/create.ts#L12)
 
 ---
 
@@ -100,7 +100,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/index.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/index.ts#L8)
+[src/config/actions/index.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/index.ts#L8)
 
 ---
 
@@ -112,7 +112,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/remove.ts:11](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/remove.ts#L11)
+[src/config/actions/remove.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/remove.ts#L11)
 
 ---
 
@@ -124,7 +124,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/set.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/set.ts#L20)
+[src/config/actions/set.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/set.ts#L20)
 
 ---
 
@@ -136,7 +136,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/update.ts#L12)
+[src/config/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/update.ts#L12)
 
 ## Actions Variables
 
@@ -146,7 +146,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/create.ts#L8)
+[src/config/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/create.ts#L8)
 
 ---
 
@@ -156,7 +156,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/remove.ts#L7)
+[src/config/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/remove.ts#L7)
 
 ---
 
@@ -166,7 +166,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/update.ts#L8)
+[src/config/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/update.ts#L8)
 
 ---
 
@@ -180,7 +180,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/create.ts#L6)
+[src/config/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/create.ts#L6)
 
 ---
 
@@ -192,7 +192,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/remove.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/remove.ts#L5)
+[src/config/actions/remove.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/remove.ts#L5)
 
 ---
 
@@ -204,7 +204,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/setAccount.ts:4](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/setAccount.ts#L4)
+[src/config/actions/setAccount.ts:4](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/setAccount.ts#L4)
 
 ---
 
@@ -216,7 +216,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/setNetworkId.ts:4](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/setNetworkId.ts#L4)
+[src/config/actions/setNetworkId.ts:4](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/setNetworkId.ts#L4)
 
 ---
 
@@ -228,7 +228,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/update.ts#L6)
+[src/config/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -256,7 +256,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/set.ts#L13)
+[src/config/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/set.ts#L13)
 
 ---
 
@@ -284,7 +284,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/setAccount.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/setAccount.ts#L6)
+[src/config/actions/setAccount.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/setAccount.ts#L6)
 
 ---
 
@@ -312,7 +312,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/setNetworkId.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/setNetworkId.ts#L6)
+[src/config/actions/setNetworkId.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/setNetworkId.ts#L6)
 
 ---
 
@@ -330,7 +330,7 @@ Returns the Config.withId(0) Functions
 
 #### Defined in
 
-[src/config/hooks/useConfig.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/hooks/useConfig.ts#L8)
+[src/config/hooks/useConfig.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/hooks/useConfig.ts#L8)
 
 ---
 
@@ -349,7 +349,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/hooks/useAccount.ts:11](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/hooks/useAccount.ts#L11)
+[src/config/hooks/useAccount.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/hooks/useAccount.ts#L11)
 
 ---
 
@@ -368,7 +368,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/hooks/useNetworkId.ts:11](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/hooks/useNetworkId.ts#L11)
+[src/config/hooks/useNetworkId.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/hooks/useNetworkId.ts#L11)
 
 ---
 
@@ -392,7 +392,7 @@ callback that will automatically dispatch an action. Functions
 
 #### Defined in
 
-[src/config/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/set.ts#L5)
+[src/config/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/set.ts#L5)
 
 ---
 
@@ -413,7 +413,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/config/actions/index.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/index.ts#L14)
+[src/config/actions/index.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/index.ts#L14)
 
 ---
 
@@ -435,7 +435,7 @@ action is Object
 
 #### Defined in
 
-[src/config/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/create.ts#L14)
+[src/config/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/create.ts#L14)
 
 ---
 
@@ -456,7 +456,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/config/actions/index.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/index.ts#L9)
+[src/config/actions/index.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/index.ts#L9)
 
 ---
 
@@ -478,7 +478,7 @@ action is Object
 
 #### Defined in
 
-[src/config/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/remove.ts#L13)
+[src/config/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/remove.ts#L13)
 
 ---
 
@@ -503,7 +503,7 @@ action is Object
 
 #### Defined in
 
-[src/config/actions/set.ts:22](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/set.ts#L22)
+[src/config/actions/set.ts:22](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/set.ts#L22)
 
 ---
 
@@ -525,7 +525,7 @@ action is Object
 
 #### Defined in
 
-[src/config/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/actions/update.ts#L14)
+[src/config/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/actions/update.ts#L14)
 
 ---
 
@@ -548,7 +548,7 @@ action is Object
 
 #### Defined in
 
-[src/config/reducer.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/reducer.ts#L5)
+[src/config/reducer.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/reducer.ts#L5)
 
 ---
 
@@ -570,7 +570,7 @@ action is Object
 
 #### Defined in
 
-[src/config/selectors/selectAccount.ts:4](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/selectors/selectAccount.ts#L4)
+[src/config/selectors/selectAccount.ts:4](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/selectors/selectAccount.ts#L4)
 
 ---
 
@@ -590,7 +590,7 @@ action is Object
 
 #### Defined in
 
-[src/config/selectors/selectConfig.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/selectors/selectConfig.ts#L10)
+[src/config/selectors/selectConfig.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/selectors/selectConfig.ts#L10)
 
 ---
 
@@ -610,7 +610,7 @@ action is Object
 
 #### Defined in
 
-[src/config/selectors/selectIpfsUrl.ts:4](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/selectors/selectIpfsUrl.ts#L4)
+[src/config/selectors/selectIpfsUrl.ts:4](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/selectors/selectIpfsUrl.ts#L4)
 
 ---
 
@@ -630,4 +630,4 @@ action is Object
 
 #### Defined in
 
-[src/config/selectors/selectNetworkId.ts:4](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/config/selectors/selectNetworkId.ts#L4)
+[src/config/selectors/selectNetworkId.ts:4](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/config/selectors/selectNetworkId.ts#L4)

@@ -26,7 +26,7 @@ Ens domain
 
 #### Defined in
 
-[src/network/model/interface.ts:40](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L40)
+[src/network/model/interface.ts:40](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L40)
 
 ---
 
@@ -38,7 +38,7 @@ Block explorer API key
 
 #### Defined in
 
-[src/network/model/interface.ts:38](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L38)
+[src/network/model/interface.ts:38](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L38)
 
 ---
 
@@ -50,7 +50,7 @@ Block explorer API url (eg. Etherscan) to use for indexed explorer data
 
 #### Defined in
 
-[src/network/model/interface.ts:36](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L36)
+[src/network/model/interface.ts:36](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L36)
 
 ---
 
@@ -62,7 +62,7 @@ Block explorer (eg. Etherscan) to use for network.
 
 #### Defined in
 
-[src/network/model/interface.ts:34](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L34)
+[src/network/model/interface.ts:34](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L34)
 
 ---
 
@@ -74,7 +74,7 @@ Latest block nummber. Updated via getBlockNumber() or middleware tracking block 
 
 #### Defined in
 
-[src/network/model/interface.ts:32](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L32)
+[src/network/model/interface.ts:32](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L32)
 
 ---
 
@@ -86,7 +86,7 @@ Human readable name for the network
 
 #### Defined in
 
-[src/network/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L18)
+[src/network/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L18)
 
 ---
 
@@ -103,7 +103,7 @@ NetworkId.networkId
 
 #### Defined in
 
-[src/network/model/interface.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L8)
+[src/network/model/interface.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L8)
 
 ---
 
@@ -115,7 +115,7 @@ Web3 object. We recommend using a websocket connection.
 
 #### Defined in
 
-[src/network/model/interface.ts:22](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L22)
+[src/network/model/interface.ts:22](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L22)
 
 ---
 
@@ -127,7 +127,7 @@ Web3 RPC URL (websocket recommended). Used to generate Web3 instance.
 
 #### Defined in
 
-[src/network/model/interface.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L20)
+[src/network/model/interface.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L20)
 
 ---
 
@@ -139,4 +139,4 @@ Web3 object specialized for sending transactions.
 
 #### Defined in
 
-[src/network/model/interface.ts:24](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/network/model/interface.ts#L24)
+[src/network/model/interface.ts:24](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/network/model/interface.ts#L24)

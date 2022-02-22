@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 7
 ---
 
 # Contributing
@@ -10,22 +10,23 @@ sidebar_position: 2
 
 Before you do we recommend the following:
 
--   Read through the docs
+-   Read through the docs and reference
 -   Integrate `web3-redux` into one of your DApps
 -   Fork the repo and run the test suite (some tests might fail due to missing API keys)
 
-If you'd like to contribute we recommend the following:
+If you'd like to contribute:
 
 -   Look for an existing issue, and comment if interested in researching/implementing
 -   Create a new issue for feature requests/bugs
 
 Current areas of research include:
 
--   Debugging / Error Handling middleware
--
+-   Debugging & Error Handling middleware
+-   Test coverage & Additional Continuous Integration
+-   Additional documentation & guides
 -   Web3 RPC Optimizations (Multicall Contract, HTTP Batching)
--   Indexing Integrations (Etherscan)
--   Non-EVM blockchains (Solana)
+-   Indexing integrations (Etherscan)
+-   Non-EVM blockchains (eg. Solana, Cardano)
 -   Pre-configured "meta-hooks" for common interfaces
     -   ERC165, ERC20, ERC721, ERC1155 already implemented
 -   Pre-built React components ([web3-redux-components](https://github.com/owlprotocol/web3-components))

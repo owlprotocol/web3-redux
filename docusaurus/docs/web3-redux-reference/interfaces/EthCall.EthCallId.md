@@ -25,7 +25,7 @@ EthCall id components
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L14)
+[src/ethcall/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L14)
 
 ---
 
@@ -37,7 +37,7 @@ Historical block height to execute call. Defaults to `latest`
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:16](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L16)
+[src/ethcall/model/interface.ts:16](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L16)
 
 ---
 
@@ -49,7 +49,7 @@ Historical block height to execute call. Defaults to `latest`
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L18)
+[src/ethcall/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L18)
 
 ---
 
@@ -61,7 +61,7 @@ Maximum `gas` field for call.
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L20)
+[src/ethcall/model/interface.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L20)
 
 ---
 
@@ -74,7 +74,7 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L10)
+[src/ethcall/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L10)
 
 ---
 
@@ -86,4 +86,4 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L12)
+[src/ethcall/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L12)

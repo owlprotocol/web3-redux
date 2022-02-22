@@ -82,7 +82,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/index.ts:22](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/index.ts#L22)
+[src/ethcall/actions/index.ts:22](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/index.ts#L22)
 
 ---
 
@@ -94,7 +94,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/create.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/create.ts#L13)
+[src/ethcall/actions/create.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/create.ts#L13)
 
 ---
 
@@ -106,7 +106,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/fetch.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/fetch.ts#L13)
+[src/ethcall/actions/fetch.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/fetch.ts#L13)
 
 ---
 
@@ -118,7 +118,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/index.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/index.ts#L8)
+[src/ethcall/actions/index.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/index.ts#L8)
 
 ---
 
@@ -130,7 +130,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/remove.ts:20](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/remove.ts#L20)
+[src/ethcall/actions/remove.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/remove.ts#L20)
 
 ---
 
@@ -142,7 +142,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/index.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/index.ts#L15)
+[src/ethcall/actions/index.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/index.ts#L15)
 
 ---
 
@@ -154,7 +154,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/set.ts#L21)
+[src/ethcall/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/set.ts#L21)
 
 ---
 
@@ -166,7 +166,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/update.ts#L13)
+[src/ethcall/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/update.ts#L13)
 
 ## Actions Variables
 
@@ -176,7 +176,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/create.ts#L8)
+[src/ethcall/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/create.ts#L8)
 
 ---
 
@@ -186,7 +186,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/fetch.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/fetch.ts#L8)
+[src/ethcall/actions/fetch.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/fetch.ts#L8)
 
 ---
 
@@ -196,7 +196,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/remove.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/remove.ts#L9)
+[src/ethcall/actions/remove.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/remove.ts#L9)
 
 ---
 
@@ -206,7 +206,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/update.ts#L8)
+[src/ethcall/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/update.ts#L8)
 
 ---
 
@@ -220,7 +220,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/create.ts#L6)
+[src/ethcall/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/create.ts#L6)
 
 ---
 
@@ -232,7 +232,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/fetch.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/fetch.ts#L6)
+[src/ethcall/actions/fetch.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/fetch.ts#L6)
 
 ---
 
@@ -244,7 +244,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/remove.ts#L7)
+[src/ethcall/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/remove.ts#L7)
 
 ---
 
@@ -256,7 +256,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/update.ts#L6)
+[src/ethcall/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -284,7 +284,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/set.ts#L13)
+[src/ethcall/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/set.ts#L13)
 
 ---
 
@@ -308,7 +308,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/set.ts#L5)
+[src/ethcall/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/set.ts#L5)
 
 ---
 
@@ -330,7 +330,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:58](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L58)
+[src/ethcall/model/interface.ts:58](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L58)
 
 ---
 
@@ -352,7 +352,7 @@ Renames and re-exports [validate](EthCall.md#validate)
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:42](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L42)
+[src/ethcall/model/interface.ts:42](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L42)
 
 ---
 
@@ -375,7 +375,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/ethcall/actions/index.ts:24](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/index.ts#L24)
+[src/ethcall/actions/index.ts:24](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/index.ts#L24)
 
 ---
 
@@ -397,7 +397,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/actions/create.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/create.ts#L15)
+[src/ethcall/actions/create.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/create.ts#L15)
 
 ---
 
@@ -419,7 +419,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/actions/fetch.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/fetch.ts#L15)
+[src/ethcall/actions/fetch.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/fetch.ts#L15)
 
 ---
 
@@ -442,7 +442,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/ethcall/actions/index.ts:10](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/index.ts#L10)
+[src/ethcall/actions/index.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/index.ts#L10)
 
 ---
 
@@ -464,7 +464,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/actions/remove.ts:22](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/remove.ts#L22)
+[src/ethcall/actions/remove.ts:22](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/remove.ts#L22)
 
 ---
 
@@ -487,7 +487,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/actions/index.ts:17](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/index.ts#L17)
+[src/ethcall/actions/index.ts:17](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/index.ts#L17)
 
 ---
 
@@ -512,7 +512,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/set.ts#L23)
+[src/ethcall/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/set.ts#L23)
 
 ---
 
@@ -534,7 +534,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/actions/update.ts:15](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/actions/update.ts#L15)
+[src/ethcall/actions/update.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/actions/update.ts#L15)
 
 ---
 
@@ -557,7 +557,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/reducer.ts#L7)
+[src/ethcall/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/reducer.ts#L7)
 
 ---
 
@@ -579,7 +579,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/model/interface.ts:69](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/model/interface.ts#L69)
+[src/ethcall/model/interface.ts:69](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/model/interface.ts#L69)
 
 ---
 
@@ -602,7 +602,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/selectors/selectByFilter.ts:9](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/selectors/selectByFilter.ts#L9)
+[src/ethcall/selectors/selectByFilter.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/selectors/selectByFilter.ts#L9)
 
 ---
 
@@ -623,7 +623,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/selectors/selectByIdExists.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/selectors/selectByIdExists.ts#L5)
+[src/ethcall/selectors/selectByIdExists.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/selectors/selectByIdExists.ts#L5)
 
 ---
 
@@ -644,7 +644,7 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/selectors/selectByIdMany.ts#L6)
+[src/ethcall/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/selectors/selectByIdMany.ts#L6)
 
 ---
 
@@ -665,4 +665,4 @@ action is Object
 
 #### Defined in
 
-[src/ethcall/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/ethcall/selectors/selectByIdSingle.ts#L5)
+[src/ethcall/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ethcall/selectors/selectByIdSingle.ts#L5)

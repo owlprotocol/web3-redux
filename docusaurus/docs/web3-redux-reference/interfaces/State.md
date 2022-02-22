@@ -18,7 +18,7 @@ Redux ORM
 
 #### Defined in
 
-[src/state.ts:24](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L24)
+[src/state.ts:24](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L24)
 
 ---
 
@@ -39,7 +39,7 @@ Blocks indexed by id
 
 #### Defined in
 
-[src/state.ts:33](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L33)
+[src/state.ts:33](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L33)
 
 ---
 
@@ -59,7 +59,7 @@ Singleton global config
 
 #### Defined in
 
-[src/state.ts:105](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L105)
+[src/state.ts:105](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L105)
 
 ---
 
@@ -80,7 +80,7 @@ Contracts indexed by id
 
 #### Defined in
 
-[src/state.ts:62](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L62)
+[src/state.ts:62](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L62)
 
 ---
 
@@ -102,7 +102,7 @@ Contract Events indexed by id
 
 #### Defined in
 
-[src/state.ts:72](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L72)
+[src/state.ts:72](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L72)
 
 ---
 
@@ -121,7 +121,7 @@ Custom index to efficiently filter events
 
 #### Defined in
 
-[src/state.ts:85](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L85)
+[src/state.ts:85](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L85)
 
 ---
 
@@ -143,7 +143,7 @@ Join table for events and indices
 
 #### Defined in
 
-[src/state.ts:124](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L124)
+[src/state.ts:124](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L124)
 
 ---
 
@@ -164,7 +164,7 @@ ContractSend indexed by id
 
 #### Defined in
 
-[src/state.ts:90](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L90)
+[src/state.ts:90](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L90)
 
 ---
 
@@ -183,7 +183,7 @@ EthCalls indexed by id
 
 #### Defined in
 
-[src/state.ts:100](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L100)
+[src/state.ts:100](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L100)
 
 ---
 
@@ -200,7 +200,7 @@ EthCalls indexed by id
 
 #### Defined in
 
-[src/state.ts:119](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L119)
+[src/state.ts:119](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L119)
 
 ---
 
@@ -219,7 +219,7 @@ Networks indexed by id
 
 #### Defined in
 
-[src/state.ts:28](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L28)
+[src/state.ts:28](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L28)
 
 ---
 
@@ -236,7 +236,7 @@ Networks indexed by id
 
 #### Defined in
 
-[src/state.ts:115](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L115)
+[src/state.ts:115](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L115)
 
 ---
 
@@ -260,7 +260,7 @@ Transactions indexed by id
 
 #### Defined in
 
-[src/state.ts:43](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L43)
+[src/state.ts:43](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L43)
 
 ---
 
@@ -279,7 +279,7 @@ Transactions indexed by id
 
 #### Defined in
 
-[src/state.ts:110](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L110)
+[src/state.ts:110](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L110)
 
 ---
 
@@ -298,4 +298,4 @@ Redux Persist
 
 #### Defined in
 
-[src/state.ts:26](https://github.com/leovigna/web3-redux/blob/2db3cc0/src/state.ts#L26)
+[src/state.ts:26](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/state.ts#L26)

@@ -63,9 +63,9 @@ const config = {
                 items: [
                     {
                         type: 'doc',
-                        docId: 'web3-redux-guide/DOCUMENTATION',
+                        docId: 'web3-redux-quickstart/index',
                         position: 'left',
-                        label: 'Guide',
+                        label: 'Quickstart',
                     },
                     {
                         type: 'doc',

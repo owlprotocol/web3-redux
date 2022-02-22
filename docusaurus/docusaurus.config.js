@@ -10,6 +10,7 @@ const config = {
     tagline: 'Redux for Web3',
     url: 'https://owlprotocol.github.io',
     baseUrl: '/', //'/web3-redux/',
+    deploymentBranch: 'gh-pages',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
@@ -33,7 +34,7 @@ const config = {
         ],
 
     ],
-    projectName: 'docusaurus', // Usually your repo name.
+    projectName: 'web3-redux', // Usually your repo name.
 
     presets: [
         [

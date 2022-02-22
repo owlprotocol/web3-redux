@@ -31,7 +31,7 @@ Contract ABI
 
 #### Defined in
 
-[src/contract/model/interface.ts:32](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L32)
+[src/contract/model/interface.ts:32](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L32)
 
 ---
 
@@ -47,7 +47,7 @@ Contract ethereum address
 
 #### Defined in
 
-[src/contract/model/interface.ts:17](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L17)
+[src/contract/model/interface.ts:17](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L17)
 
 ---
 
@@ -59,7 +59,7 @@ Account balance in wei
 
 #### Defined in
 
-[src/contract/model/interface.ts:38](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L38)
+[src/contract/model/interface.ts:38](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L38)
 
 ---
 
@@ -71,7 +71,7 @@ Code stored at address
 
 #### Defined in
 
-[src/contract/model/interface.ts:42](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L42)
+[src/contract/model/interface.ts:42](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L42)
 
 ---
 
@@ -83,7 +83,7 @@ Ens domain associated with address
 
 #### Defined in
 
-[src/contract/model/interface.ts:44](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L44)
+[src/contract/model/interface.ts:44](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L44)
 
 ---
 
@@ -99,7 +99,7 @@ Event abis indexed by signature
 
 #### Defined in
 
-[src/contract/model/interface.ts:48](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L48)
+[src/contract/model/interface.ts:48](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L48)
 
 ---
 
@@ -111,7 +111,7 @@ ORM Relational
 
 #### Defined in
 
-[src/contract/model/interface.ts:51](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L51)
+[src/contract/model/interface.ts:51](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L51)
 
 ---
 
@@ -123,7 +123,7 @@ Used to index contracts in redux-orm. Computed as `${networkId}-${address}`
 
 #### Defined in
 
-[src/contract/model/interface.ts:30](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L30)
+[src/contract/model/interface.ts:30](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L30)
 
 ---
 
@@ -135,7 +135,7 @@ Custom label set by user for address
 
 #### Defined in
 
-[src/contract/model/interface.ts:46](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L46)
+[src/contract/model/interface.ts:46](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L46)
 
 ---
 
@@ -152,7 +152,7 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/contract/model/interface.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L15)
+[src/contract/model/interface.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L15)
 
 ---
 
@@ -164,7 +164,7 @@ Account nonce aka number of transactions sent.
 
 #### Defined in
 
-[src/contract/model/interface.ts:40](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L40)
+[src/contract/model/interface.ts:40](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L40)
 
 ---
 
@@ -174,7 +174,7 @@ Account nonce aka number of transactions sent.
 
 #### Defined in
 
-[src/contract/model/interface.ts:52](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L52)
+[src/contract/model/interface.ts:52](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L52)
 
 ---
 
@@ -186,7 +186,7 @@ Account nonce aka number of transactions sent.
 
 #### Defined in
 
-[src/contract/model/interface.ts:34](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L34)
+[src/contract/model/interface.ts:34](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L34)
 
 ---
 
@@ -198,4 +198,4 @@ Account nonce aka number of transactions sent.
 
 #### Defined in
 
-[src/contract/model/interface.ts:36](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/interface.ts#L36)
+[src/contract/model/interface.ts:36](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L36)

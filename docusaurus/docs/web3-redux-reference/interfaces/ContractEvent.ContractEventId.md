@@ -23,7 +23,7 @@ Block hash when event was emitted
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:11](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/model/interface.ts#L11)
+[src/contractevent/model/interface.ts:11](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractevent/model/interface.ts#L11)
 
 ---
 
@@ -35,7 +35,7 @@ Unique index within block of event
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/model/interface.ts#L13)
+[src/contractevent/model/interface.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractevent/model/interface.ts#L13)
 
 ---
 
@@ -48,4 +48,4 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/model/interface.ts#L9)
+[src/contractevent/model/interface.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractevent/model/interface.ts#L9)

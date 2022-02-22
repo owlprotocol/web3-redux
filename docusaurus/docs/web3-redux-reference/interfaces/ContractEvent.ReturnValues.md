@@ -17,4 +17,4 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/model/interface.ts#L18)
+[src/contractevent/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractevent/model/interface.ts#L18)

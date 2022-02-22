@@ -15,7 +15,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/contract/model/eventSubscription.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/eventSubscription.ts#L6)
+[src/contract/model/eventSubscription.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/eventSubscription.ts#L6)
 
 ---
 
@@ -25,7 +25,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/contract/model/eventSubscription.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/eventSubscription.ts#L7)
+[src/contract/model/eventSubscription.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/eventSubscription.ts#L7)
 
 ---
 
@@ -39,7 +39,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/contract/model/eventSubscription.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/eventSubscription.ts#L8)
+[src/contract/model/eventSubscription.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/eventSubscription.ts#L8)
 
 ---
 
@@ -49,4 +49,4 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/contract/model/eventSubscription.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contract/model/eventSubscription.ts#L5)
+[src/contract/model/eventSubscription.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/eventSubscription.ts#L5)

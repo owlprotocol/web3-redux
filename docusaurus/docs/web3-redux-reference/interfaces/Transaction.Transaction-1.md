@@ -26,7 +26,7 @@ Extends the web3 interface.
 
 #### Defined in
 
-[src/transaction/model/interface.ts:29](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L29)
+[src/transaction/model/interface.ts:29](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L29)
 
 ---
 
@@ -38,7 +38,7 @@ Block number where this transaction was in. `null` if pending
 
 #### Defined in
 
-[src/transaction/model/interface.ts:31](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L31)
+[src/transaction/model/interface.ts:31](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L31)
 
 ---
 
@@ -50,7 +50,7 @@ Confirmed blocks
 
 #### Defined in
 
-[src/transaction/model/interface.ts:61](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L61)
+[src/transaction/model/interface.ts:61](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L61)
 
 ---
 
@@ -62,7 +62,7 @@ Etherscan contract genesis tx
 
 #### Defined in
 
-[src/transaction/model/interface.ts:63](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L63)
+[src/transaction/model/interface.ts:63](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L63)
 
 ---
 
@@ -74,7 +74,7 @@ Total gas used
 
 #### Defined in
 
-[src/transaction/model/interface.ts:48](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L48)
+[src/transaction/model/interface.ts:48](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L48)
 
 ---
 
@@ -89,7 +89,7 @@ baseFeePerGas + min(maxFeePerGas - baseFeePerGas, maxPriorityFeePerGas).
 
 #### Defined in
 
-[src/transaction/model/interface.ts:54](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L54)
+[src/transaction/model/interface.ts:54](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L54)
 
 ---
 
@@ -101,7 +101,7 @@ Address of the sender
 
 #### Defined in
 
-[src/transaction/model/interface.ts:35](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L35)
+[src/transaction/model/interface.ts:35](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L35)
 
 ---
 
@@ -113,7 +113,7 @@ Gas provided by the sender
 
 #### Defined in
 
-[src/transaction/model/interface.ts:44](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L44)
+[src/transaction/model/interface.ts:44](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L44)
 
 ---
 
@@ -125,7 +125,7 @@ Gas price provided by the sender in wei
 
 #### Defined in
 
-[src/transaction/model/interface.ts:42](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L42)
+[src/transaction/model/interface.ts:42](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L42)
 
 ---
 
@@ -137,7 +137,7 @@ Gas used
 
 #### Defined in
 
-[src/transaction/model/interface.ts:46](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L46)
+[src/transaction/model/interface.ts:46](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L46)
 
 ---
 
@@ -156,7 +156,7 @@ This is also consistent with how other data in the store is indexed by network.
 
 #### Defined in
 
-[src/transaction/model/interface.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L15)
+[src/transaction/model/interface.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L15)
 
 ---
 
@@ -168,7 +168,7 @@ Used to index transactions in redux-orm. Computed as `${networkId}-${hash}`.
 
 #### Defined in
 
-[src/transaction/model/interface.ts:25](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L25)
+[src/transaction/model/interface.ts:25](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L25)
 
 ---
 
@@ -180,7 +180,7 @@ The data sent along with the transaction
 
 #### Defined in
 
-[src/transaction/model/interface.ts:57](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L57)
+[src/transaction/model/interface.ts:57](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L57)
 
 ---
 
@@ -197,7 +197,7 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/transaction/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L10)
+[src/transaction/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L10)
 
 ---
 
@@ -209,7 +209,7 @@ The number of transactions made by the sender prior to this one.
 
 #### Defined in
 
-[src/transaction/model/interface.ts:27](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L27)
+[src/transaction/model/interface.ts:27](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L27)
 
 ---
 
@@ -221,7 +221,7 @@ Transaction receipt.
 
 #### Defined in
 
-[src/transaction/model/interface.ts:59](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L59)
+[src/transaction/model/interface.ts:59](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L59)
 
 ---
 
@@ -233,7 +233,7 @@ Ethersan timestamp
 
 #### Defined in
 
-[src/transaction/model/interface.ts:65](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L65)
+[src/transaction/model/interface.ts:65](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L65)
 
 ---
 
@@ -245,7 +245,7 @@ Address of the receiver. `null` if it’s a contract creation transaction
 
 #### Defined in
 
-[src/transaction/model/interface.ts:37](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L37)
+[src/transaction/model/interface.ts:37](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L37)
 
 ---
 
@@ -257,7 +257,7 @@ Integer of the transactions index position in the block. `null` if pending
 
 #### Defined in
 
-[src/transaction/model/interface.ts:33](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L33)
+[src/transaction/model/interface.ts:33](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L33)
 
 ---
 
@@ -269,4 +269,4 @@ Value transferred in wei
 
 #### Defined in
 
-[src/transaction/model/interface.ts:39](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L39)
+[src/transaction/model/interface.ts:39](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L39)

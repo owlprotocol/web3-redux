@@ -1,4 +1,4 @@
-## Hooks
+# Hooks
 
 To easily read/sync data, we recommend using the built-in hooks when possible to automatically combine selectors & action dispatchers.
 

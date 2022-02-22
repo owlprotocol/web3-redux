@@ -6,6 +6,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { Redirect } from '@docusaurus/router';
 import styles from './index.module.css';
 import HomepageFeatures from '../components/HomepageFeatures';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 function HomepageHeader() {
     const { siteConfig } = useDocusaurusContext();
@@ -28,8 +29,9 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
     //const { siteConfig } = useDocusaurusContext();
+    const url = useBaseUrl('/docs')
 
-    return <Redirect to="/docs/" />;;
+    return <Redirect to={url} />;;
     /*
     return (
         <Layout

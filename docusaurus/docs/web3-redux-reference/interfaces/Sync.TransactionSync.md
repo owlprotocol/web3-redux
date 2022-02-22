@@ -29,7 +29,7 @@ BaseSync.actions
 
 #### Defined in
 
-[src/sync/model/BaseSync.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/sync/model/BaseSync.ts#L15)
+[src/sync/model/BaseSync.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/sync/model/BaseSync.ts#L15)
 
 ---
 
@@ -45,7 +45,7 @@ BaseSync.id
 
 #### Defined in
 
-[src/sync/model/BaseSync.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/sync/model/BaseSync.ts#L9)
+[src/sync/model/BaseSync.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/sync/model/BaseSync.ts#L9)
 
 ---
 
@@ -55,7 +55,7 @@ BaseSync.id
 
 #### Defined in
 
-[src/sync/model/TransactionSync.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/sync/model/TransactionSync.ts#L9)
+[src/sync/model/TransactionSync.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/sync/model/TransactionSync.ts#L9)
 
 ---
 
@@ -65,7 +65,7 @@ BaseSync.id
 
 #### Defined in
 
-[src/sync/model/TransactionSync.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/sync/model/TransactionSync.ts#L10)
+[src/sync/model/TransactionSync.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/sync/model/TransactionSync.ts#L10)
 
 ---
 
@@ -81,7 +81,7 @@ BaseSync.networkId
 
 #### Defined in
 
-[src/sync/model/BaseSync.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/sync/model/BaseSync.ts#L13)
+[src/sync/model/BaseSync.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/sync/model/BaseSync.ts#L13)
 
 ---
 
@@ -95,4 +95,4 @@ BaseSync.type
 
 #### Defined in
 
-[src/sync/model/TransactionSync.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/sync/model/TransactionSync.ts#L8)
+[src/sync/model/TransactionSync.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/sync/model/TransactionSync.ts#L8)

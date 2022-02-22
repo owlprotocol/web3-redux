@@ -88,7 +88,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/index.ts:24](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/index.ts#L24)
+[src/block/actions/index.ts:24](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/index.ts#L24)
 
 ---
 
@@ -100,7 +100,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/create.ts#L12)
+[src/block/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/create.ts#L12)
 
 ---
 
@@ -112,7 +112,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/fetch.ts:22](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/fetch.ts#L22)
+[src/block/actions/fetch.ts:22](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/fetch.ts#L22)
 
 ---
 
@@ -124,7 +124,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/index.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/index.ts#L10)
+[src/block/actions/index.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/index.ts#L10)
 
 ---
 
@@ -136,7 +136,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/remove.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/remove.ts#L10)
+[src/block/actions/remove.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/remove.ts#L10)
 
 ---
 
@@ -148,7 +148,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/index.ts:17](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/index.ts#L17)
+[src/block/actions/index.ts:17](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/index.ts#L17)
 
 ---
 
@@ -160,7 +160,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/set.ts#L21)
+[src/block/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/set.ts#L21)
 
 ---
 
@@ -172,7 +172,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/update.ts#L12)
+[src/block/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/update.ts#L12)
 
 ## Actions Variables
 
@@ -182,7 +182,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/create.ts#L8)
+[src/block/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/create.ts#L8)
 
 ---
 
@@ -192,7 +192,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/fetch.ts:19](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/fetch.ts#L19)
+[src/block/actions/fetch.ts:19](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/fetch.ts#L19)
 
 ---
 
@@ -202,7 +202,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/remove.ts#L8)
+[src/block/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/remove.ts#L8)
 
 ---
 
@@ -212,7 +212,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/subscribe.ts:18](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/subscribe.ts#L18)
+[src/block/actions/subscribe.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/subscribe.ts#L18)
 
 ---
 
@@ -222,7 +222,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/unsubscribe.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/unsubscribe.ts#L7)
+[src/block/actions/unsubscribe.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/unsubscribe.ts#L7)
 
 ---
 
@@ -232,7 +232,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/update.ts#L8)
+[src/block/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/update.ts#L8)
 
 ---
 
@@ -246,7 +246,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/create.ts#L6)
+[src/block/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/create.ts#L6)
 
 ---
 
@@ -258,7 +258,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/fetch.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/fetch.ts#L5)
+[src/block/actions/fetch.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/fetch.ts#L5)
 
 ---
 
@@ -270,7 +270,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/remove.ts#L6)
+[src/block/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/remove.ts#L6)
 
 ---
 
@@ -282,7 +282,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/subscribe.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/subscribe.ts#L5)
+[src/block/actions/subscribe.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/subscribe.ts#L5)
 
 ---
 
@@ -294,7 +294,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/unsubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/unsubscribe.ts#L5)
+[src/block/actions/unsubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/unsubscribe.ts#L5)
 
 ---
 
@@ -306,7 +306,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/update.ts#L6)
+[src/block/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -334,7 +334,7 @@ Renames and re-exports [validate](Block.md#validate)
 
 #### Defined in
 
-[src/block/actions/set.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/set.ts#L14)
+[src/block/actions/set.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/set.ts#L14)
 
 ---
 
@@ -361,7 +361,7 @@ Reads block from store and makes a call to fetch block.
 
 #### Defined in
 
-[src/block/hooks/useBlock.ts:11](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/hooks/useBlock.ts#L11)
+[src/block/hooks/useBlock.ts:11](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/hooks/useBlock.ts#L11)
 
 ---
 
@@ -384,7 +384,7 @@ Reads blocks for network and syncs data with a block subscription.
 
 #### Defined in
 
-[src/block/hooks/useBlockSync.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/hooks/useBlockSync.ts#L10)
+[src/block/hooks/useBlockSync.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/hooks/useBlockSync.ts#L10)
 
 ---
 
@@ -408,7 +408,7 @@ Reads blocks for network and syncs data with a block subscription.
 
 #### Defined in
 
-[src/block/actions/set.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/set.ts#L6)
+[src/block/actions/set.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/set.ts#L6)
 
 ---
 
@@ -430,7 +430,7 @@ Reads blocks for network and syncs data with a block subscription.
 
 #### Defined in
 
-[src/block/model/id.ts:11](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/model/id.ts#L11)
+[src/block/model/id.ts:11](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/id.ts#L11)
 
 ---
 
@@ -452,7 +452,7 @@ Reads blocks for network and syncs data with a block subscription.
 
 #### Defined in
 
-[src/block/model/id.ts:18](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/model/id.ts#L18)
+[src/block/model/id.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/id.ts#L18)
 
 ---
 
@@ -475,7 +475,7 @@ action is Action
 
 #### Defined in
 
-[src/block/actions/index.ts:26](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/index.ts#L26)
+[src/block/actions/index.ts:26](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/index.ts#L26)
 
 ---
 
@@ -497,7 +497,7 @@ action is Object
 
 #### Defined in
 
-[src/block/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/create.ts#L14)
+[src/block/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/create.ts#L14)
 
 ---
 
@@ -519,7 +519,7 @@ action is Object
 
 #### Defined in
 
-[src/block/actions/fetch.ts:24](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/fetch.ts#L24)
+[src/block/actions/fetch.ts:24](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/fetch.ts#L24)
 
 ---
 
@@ -542,7 +542,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/block/actions/index.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/index.ts#L12)
+[src/block/actions/index.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/index.ts#L12)
 
 ---
 
@@ -564,7 +564,7 @@ action is Object
 
 #### Defined in
 
-[src/block/actions/remove.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/remove.ts#L12)
+[src/block/actions/remove.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/remove.ts#L12)
 
 ---
 
@@ -587,7 +587,7 @@ action is SagaAction
 
 #### Defined in
 
-[src/block/actions/index.ts:19](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/index.ts#L19)
+[src/block/actions/index.ts:19](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/index.ts#L19)
 
 ---
 
@@ -612,7 +612,7 @@ action is Object
 
 #### Defined in
 
-[src/block/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/set.ts#L23)
+[src/block/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/set.ts#L23)
 
 ---
 
@@ -634,7 +634,7 @@ action is Object
 
 #### Defined in
 
-[src/block/actions/subscribe.ts:22](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/subscribe.ts#L22)
+[src/block/actions/subscribe.ts:22](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/subscribe.ts#L22)
 
 ---
 
@@ -656,7 +656,7 @@ action is Object
 
 #### Defined in
 
-[src/block/actions/unsubscribe.ts:11](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/unsubscribe.ts#L11)
+[src/block/actions/unsubscribe.ts:11](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/unsubscribe.ts#L11)
 
 ---
 
@@ -678,7 +678,7 @@ action is Object
 
 #### Defined in
 
-[src/block/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/actions/update.ts#L14)
+[src/block/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/actions/update.ts#L14)
 
 ---
 
@@ -701,7 +701,7 @@ action is Object
 
 #### Defined in
 
-[src/block/reducer.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/reducer.ts#L9)
+[src/block/reducer.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/reducer.ts#L9)
 
 ---
 
@@ -717,7 +717,7 @@ action is Object
 
 #### Defined in
 
-[src/block/sagas/index.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/sagas/index.ts#L7)
+[src/block/sagas/index.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/sagas/index.ts#L7)
 
 ---
 
@@ -739,7 +739,7 @@ action is Object
 
 #### Defined in
 
-[src/block/model/interface.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/model/interface.ts#L9)
+[src/block/model/interface.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/interface.ts#L9)
 
 ---
 
@@ -762,7 +762,7 @@ action is Object
 
 #### Defined in
 
-[src/block/selectors/selectByFilter.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/selectors/selectByFilter.ts#L10)
+[src/block/selectors/selectByFilter.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/selectors/selectByFilter.ts#L10)
 
 ---
 
@@ -783,7 +783,7 @@ action is Object
 
 #### Defined in
 
-[src/block/selectors/selectByIdMany.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/selectors/selectByIdMany.ts#L7)
+[src/block/selectors/selectByIdMany.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/selectors/selectByIdMany.ts#L7)
 
 ---
 
@@ -804,4 +804,4 @@ action is Object
 
 #### Defined in
 
-[src/block/selectors/selectByIdSingle.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/block/selectors/selectByIdSingle.ts#L6)
+[src/block/selectors/selectByIdSingle.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/selectors/selectByIdSingle.ts#L6)

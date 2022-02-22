@@ -9,7 +9,7 @@ const config = {
     title: 'Web3 Redux',
     tagline: 'Redux for Web3',
     url: 'https://owlprotocol.github.io',
-    baseUrl: '/', //'/web3-redux/',
+    baseUrl: '/web3-redux/',
     deploymentBranch: 'gh-pages',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',

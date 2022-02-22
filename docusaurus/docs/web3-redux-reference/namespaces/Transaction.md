@@ -72,7 +72,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/index.ts:17](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/index.ts#L17)
+[src/transaction/actions/index.ts:17](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/index.ts#L17)
 
 ---
 
@@ -84,7 +84,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/create.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/create.ts#L13)
+[src/transaction/actions/create.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/create.ts#L13)
 
 ---
 
@@ -96,7 +96,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/fetch.ts:11](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/fetch.ts#L11)
+[src/transaction/actions/fetch.ts:11](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/fetch.ts#L11)
 
 ---
 
@@ -106,7 +106,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/index.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/index.ts#L7)
+[src/transaction/actions/index.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/index.ts#L7)
 
 ---
 
@@ -118,7 +118,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/remove.ts#L13)
+[src/transaction/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/remove.ts#L13)
 
 ---
 
@@ -128,7 +128,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/index.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/index.ts#L12)
+[src/transaction/actions/index.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/index.ts#L12)
 
 ---
 
@@ -140,7 +140,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/set.ts#L21)
+[src/transaction/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/set.ts#L21)
 
 ---
 
@@ -152,7 +152,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/update.ts#L13)
+[src/transaction/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/update.ts#L13)
 
 ## Actions Variables
 
@@ -162,7 +162,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/create.ts#L8)
+[src/transaction/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/create.ts#L8)
 
 ---
 
@@ -172,7 +172,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/fetch.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/fetch.ts#L8)
+[src/transaction/actions/fetch.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/fetch.ts#L8)
 
 ---
 
@@ -182,7 +182,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/remove.ts#L8)
+[src/transaction/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/remove.ts#L8)
 
 ---
 
@@ -192,7 +192,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/update.ts#L8)
+[src/transaction/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/update.ts#L8)
 
 ---
 
@@ -206,7 +206,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/create.ts#L6)
+[src/transaction/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/create.ts#L6)
 
 ---
 
@@ -218,7 +218,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/fetch.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/fetch.ts#L6)
+[src/transaction/actions/fetch.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/fetch.ts#L6)
 
 ---
 
@@ -230,7 +230,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/remove.ts#L6)
+[src/transaction/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/remove.ts#L6)
 
 ---
 
@@ -242,7 +242,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/update.ts#L6)
+[src/transaction/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -270,7 +270,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/set.ts#L13)
+[src/transaction/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/set.ts#L13)
 
 ---
 
@@ -294,7 +294,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/set.ts#L5)
+[src/transaction/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/set.ts#L5)
 
 ---
 
@@ -316,7 +316,7 @@ Renames and re-exports [validate](Transaction.md#validate)
 
 #### Defined in
 
-[src/transaction/model/interface.ts:85](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L85)
+[src/transaction/model/interface.ts:85](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L85)
 
 ---
 
@@ -337,7 +337,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/transaction/actions/index.ts:18](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/index.ts#L18)
+[src/transaction/actions/index.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/index.ts#L18)
 
 ---
 
@@ -359,7 +359,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/actions/create.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/create.ts#L15)
+[src/transaction/actions/create.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/create.ts#L15)
 
 ---
 
@@ -381,7 +381,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/actions/fetch.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/fetch.ts#L13)
+[src/transaction/actions/fetch.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/fetch.ts#L13)
 
 ---
 
@@ -402,7 +402,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/transaction/actions/index.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/index.ts#L8)
+[src/transaction/actions/index.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/index.ts#L8)
 
 ---
 
@@ -424,7 +424,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/actions/remove.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/remove.ts#L15)
+[src/transaction/actions/remove.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/remove.ts#L15)
 
 ---
 
@@ -445,7 +445,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/actions/index.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/index.ts#L13)
+[src/transaction/actions/index.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/index.ts#L13)
 
 ---
 
@@ -470,7 +470,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/set.ts#L23)
+[src/transaction/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/set.ts#L23)
 
 ---
 
@@ -492,7 +492,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/actions/update.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/actions/update.ts#L15)
+[src/transaction/actions/update.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/actions/update.ts#L15)
 
 ---
 
@@ -514,7 +514,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/model/interface.ts:90](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L90)
+[src/transaction/model/interface.ts:90](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/model/interface.ts#L90)
 
 ---
 
@@ -537,7 +537,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/reducer.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/reducer.ts#L6)
+[src/transaction/reducer.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/reducer.ts#L6)
 
 ---
 
@@ -558,7 +558,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/selectors/selectByFilter.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/selectors/selectByFilter.ts#L10)
+[src/transaction/selectors/selectByFilter.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/selectors/selectByFilter.ts#L10)
 
 ---
 
@@ -579,7 +579,7 @@ action is Object
 
 #### Defined in
 
-[src/transaction/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/selectors/selectByIdMany.ts#L6)
+[src/transaction/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/selectors/selectByIdMany.ts#L6)
 
 ---
 
@@ -600,4 +600,4 @@ action is Object
 
 #### Defined in
 
-[src/transaction/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/selectors/selectByIdSingle.ts#L5)
+[src/transaction/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/transaction/selectors/selectByIdSingle.ts#L5)

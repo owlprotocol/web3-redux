@@ -64,7 +64,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/index.ts:35](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/index.ts#L35)
+[src/4byte/actions/index.ts:35](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/index.ts#L35)
 
 ---
 
@@ -76,7 +76,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/create.ts#L12)
+[src/4byte/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/create.ts#L12)
 
 ---
 
@@ -88,7 +88,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/fetchEventSignature.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/fetchEventSignature.ts#L14)
+[src/4byte/actions/fetchEventSignature.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/fetchEventSignature.ts#L14)
 
 ---
 
@@ -100,7 +100,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/fetchFunctionSignature.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/fetchFunctionSignature.ts#L14)
+[src/4byte/actions/fetchFunctionSignature.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/fetchFunctionSignature.ts#L14)
 
 ---
 
@@ -112,7 +112,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/index.ts:20](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/index.ts#L20)
+[src/4byte/actions/index.ts:20](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/index.ts#L20)
 
 ---
 
@@ -124,7 +124,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/remove.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/remove.ts#L14)
+[src/4byte/actions/remove.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/remove.ts#L14)
 
 ---
 
@@ -136,7 +136,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/index.ts:27](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/index.ts#L27)
+[src/4byte/actions/index.ts:27](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/index.ts#L27)
 
 ---
 
@@ -148,7 +148,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/set.ts:26](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/set.ts#L26)
+[src/4byte/actions/set.ts:26](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/set.ts#L26)
 
 ---
 
@@ -160,7 +160,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/update.ts#L12)
+[src/4byte/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/update.ts#L12)
 
 ## Action Variables
 
@@ -170,7 +170,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/create.ts#L8)
+[src/4byte/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/create.ts#L8)
 
 ---
 
@@ -182,7 +182,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/fetchEventSignature.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/fetchEventSignature.ts#L8)
+[src/4byte/actions/fetchEventSignature.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/fetchEventSignature.ts#L8)
 
 ---
 
@@ -192,7 +192,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/fetchFunctionSignature.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/fetchFunctionSignature.ts#L8)
+[src/4byte/actions/fetchFunctionSignature.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/fetchFunctionSignature.ts#L8)
 
 ---
 
@@ -202,7 +202,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/remove.ts#L8)
+[src/4byte/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/remove.ts#L8)
 
 ---
 
@@ -212,7 +212,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/update.ts#L8)
+[src/4byte/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/update.ts#L8)
 
 ---
 
@@ -226,7 +226,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/create.ts#L6)
+[src/4byte/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/create.ts#L6)
 
 ---
 
@@ -238,7 +238,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/fetchEventSignature.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/fetchEventSignature.ts#L6)
+[src/4byte/actions/fetchEventSignature.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/fetchEventSignature.ts#L6)
 
 ---
 
@@ -250,7 +250,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/fetchFunctionSignature.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/fetchFunctionSignature.ts#L6)
+[src/4byte/actions/fetchFunctionSignature.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/fetchFunctionSignature.ts#L6)
 
 ---
 
@@ -262,7 +262,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/remove.ts#L6)
+[src/4byte/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/remove.ts#L6)
 
 ---
 
@@ -274,7 +274,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/update.ts#L6)
+[src/4byte/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -303,7 +303,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/set.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/set.ts#L14)
+[src/4byte/actions/set.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/set.ts#L14)
 
 ---
 
@@ -327,7 +327,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/4byte/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/set.ts#L5)
+[src/4byte/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/set.ts#L5)
 
 ---
 
@@ -350,7 +350,7 @@ action is Action
 
 #### Defined in
 
-[src/4byte/actions/index.ts:37](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/index.ts#L37)
+[src/4byte/actions/index.ts:37](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/index.ts#L37)
 
 ---
 
@@ -372,7 +372,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/create.ts#L14)
+[src/4byte/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/create.ts#L14)
 
 ---
 
@@ -394,7 +394,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/actions/fetchEventSignature.ts:16](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/fetchEventSignature.ts#L16)
+[src/4byte/actions/fetchEventSignature.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/fetchEventSignature.ts#L16)
 
 ---
 
@@ -416,7 +416,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/actions/fetchFunctionSignature.ts:16](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/fetchFunctionSignature.ts#L16)
+[src/4byte/actions/fetchFunctionSignature.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/fetchFunctionSignature.ts#L16)
 
 ---
 
@@ -439,7 +439,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/4byte/actions/index.ts:22](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/index.ts#L22)
+[src/4byte/actions/index.ts:22](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/index.ts#L22)
 
 ---
 
@@ -461,7 +461,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/actions/remove.ts:16](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/remove.ts#L16)
+[src/4byte/actions/remove.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/remove.ts#L16)
 
 ---
 
@@ -484,7 +484,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/actions/index.ts:30](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/index.ts#L30)
+[src/4byte/actions/index.ts:30](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/index.ts#L30)
 
 ---
 
@@ -509,7 +509,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/actions/set.ts:28](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/set.ts#L28)
+[src/4byte/actions/set.ts:28](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/set.ts#L28)
 
 ---
 
@@ -531,7 +531,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/actions/update.ts#L14)
+[src/4byte/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/actions/update.ts#L14)
 
 ---
 
@@ -554,7 +554,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/reducer.ts#L7)
+[src/4byte/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/reducer.ts#L7)
 
 ---
 
@@ -570,7 +570,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/sagas/index.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/sagas/index.ts#L7)
+[src/4byte/sagas/index.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/sagas/index.ts#L7)
 
 ---
 
@@ -593,7 +593,7 @@ action is Object
 
 #### Defined in
 
-[src/4byte/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/selectors/selectByIdMany.ts#L6)
+[src/4byte/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/selectors/selectByIdMany.ts#L6)
 
 ---
 
@@ -614,4 +614,4 @@ action is Object
 
 #### Defined in
 
-[src/4byte/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/4byte/selectors/selectByIdSingle.ts#L5)
+[src/4byte/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/4byte/selectors/selectByIdSingle.ts#L5)

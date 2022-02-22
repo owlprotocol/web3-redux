@@ -23,4 +23,4 @@ ipfs hash
 
 #### Defined in
 
-[src/ipfs/model/interface.ts:4](https://github.com/leovigna/web3-redux/blob/cff01f0/src/ipfs/model/interface.ts#L4)
+[src/ipfs/model/interface.ts:4](https://github.com/leovigna/web3-redux/blob/bca52d1/src/ipfs/model/interface.ts#L4)

@@ -17,7 +17,7 @@ Transaction confirmations > 0.
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:36](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/model/interface.ts#L36)
+[src/contractsend/model/interface.ts:36](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L36)
 
 ---
 
@@ -29,7 +29,7 @@ Errored. Wallet rejection or network error.
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:32](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/model/interface.ts#L32)
+[src/contractsend/model/interface.ts:32](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L32)
 
 ---
 
@@ -41,7 +41,7 @@ Pending blockchain confirmation. Hash created but 0 confirmations.
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:34](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/model/interface.ts#L34)
+[src/contractsend/model/interface.ts:34](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L34)
 
 ---
 
@@ -53,4 +53,4 @@ Pending wallet signature. No transaction hash.
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:30](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/model/interface.ts#L30)
+[src/contractsend/model/interface.ts:30](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L30)

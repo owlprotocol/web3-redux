@@ -75,7 +75,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/index.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/index.ts#L14)
+[src/contractsend/actions/index.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/index.ts#L14)
 
 ---
 
@@ -87,7 +87,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/create.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/create.ts#L13)
+[src/contractsend/actions/create.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/create.ts#L13)
 
 ---
 
@@ -99,7 +99,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/index.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/index.ts#L7)
+[src/contractsend/actions/index.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/index.ts#L7)
 
 ---
 
@@ -111,7 +111,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/remove.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/remove.ts#L11)
+[src/contractsend/actions/remove.ts:11](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/remove.ts#L11)
 
 ---
 
@@ -123,7 +123,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/set.ts#L21)
+[src/contractsend/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/set.ts#L21)
 
 ---
 
@@ -135,7 +135,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/update.ts#L13)
+[src/contractsend/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/update.ts#L13)
 
 ## Actions Variables
 
@@ -145,7 +145,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/create.ts#L8)
+[src/contractsend/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/create.ts#L8)
 
 ---
 
@@ -155,7 +155,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/remove.ts#L8)
+[src/contractsend/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/remove.ts#L8)
 
 ---
 
@@ -165,7 +165,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/update.ts#L8)
+[src/contractsend/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/update.ts#L8)
 
 ---
 
@@ -179,7 +179,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/create.ts#L6)
+[src/contractsend/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/create.ts#L6)
 
 ---
 
@@ -191,7 +191,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/remove.ts#L6)
+[src/contractsend/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/remove.ts#L6)
 
 ---
 
@@ -203,7 +203,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/update.ts#L6)
+[src/contractsend/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -231,7 +231,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/set.ts#L13)
+[src/contractsend/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/set.ts#L13)
 
 ---
 
@@ -255,7 +255,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/set.ts#L5)
+[src/contractsend/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/set.ts#L5)
 
 ---
 
@@ -277,7 +277,7 @@ Renames and re-exports [validate](ContractSend.md#validate)
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:83](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/model/interface.ts#L83)
+[src/contractsend/model/interface.ts:83](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/model/interface.ts#L83)
 
 ---
 
@@ -300,7 +300,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/contractsend/actions/index.ts:16](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/index.ts#L16)
+[src/contractsend/actions/index.ts:16](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/index.ts#L16)
 
 ---
 
@@ -322,7 +322,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/actions/create.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/create.ts#L15)
+[src/contractsend/actions/create.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/create.ts#L15)
 
 ---
 
@@ -345,7 +345,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/contractsend/actions/index.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/index.ts#L9)
+[src/contractsend/actions/index.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/index.ts#L9)
 
 ---
 
@@ -367,7 +367,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/remove.ts#L13)
+[src/contractsend/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/remove.ts#L13)
 
 ---
 
@@ -392,7 +392,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/set.ts#L23)
+[src/contractsend/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/set.ts#L23)
 
 ---
 
@@ -414,7 +414,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/actions/update.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/actions/update.ts#L15)
+[src/contractsend/actions/update.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/actions/update.ts#L15)
 
 ---
 
@@ -437,7 +437,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/reducer.ts#L7)
+[src/contractsend/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/reducer.ts#L7)
 
 ---
 
@@ -459,7 +459,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:97](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/model/interface.ts#L97)
+[src/contractsend/model/interface.ts:97](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/model/interface.ts#L97)
 
 ---
 
@@ -482,7 +482,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/selectors/selectByFilter.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/selectors/selectByFilter.ts#L9)
+[src/contractsend/selectors/selectByFilter.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/selectors/selectByFilter.ts#L9)
 
 ---
 
@@ -503,7 +503,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/selectors/selectByIdExists.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/selectors/selectByIdExists.ts#L5)
+[src/contractsend/selectors/selectByIdExists.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/selectors/selectByIdExists.ts#L5)
 
 ---
 
@@ -524,7 +524,7 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/selectors/selectByIdMany.ts#L6)
+[src/contractsend/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/selectors/selectByIdMany.ts#L6)
 
 ---
 
@@ -545,4 +545,4 @@ action is Object
 
 #### Defined in
 
-[src/contractsend/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractsend/selectors/selectByIdSingle.ts#L5)
+[src/contractsend/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractsend/selectors/selectByIdSingle.ts#L5)

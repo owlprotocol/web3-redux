@@ -1,6 +1,6 @@
 {
-    "name": "docusaurus",
-    "version": "0.0.0",
+    "name": "@owlprotocol/web3-redux-docs",
+    "version": "0.1.10",
     "private": true,
     "scripts": {
         "docusaurus": "docusaurus",

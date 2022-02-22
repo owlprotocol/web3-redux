@@ -88,11 +88,11 @@ const config = {
                 style: 'dark',
                 links: [
                     {
-                        title: 'Guide',
+                        title: 'Quickstart',
                         items: [
                             {
-                                label: 'Guide',
-                                to: '/docs/web3-redux-guide',
+                                label: 'Quickstart',
+                                to: '/docs/web3-redux-quickstart',
                             },
                         ],
                     },

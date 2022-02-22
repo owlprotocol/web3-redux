@@ -28,7 +28,7 @@ This is also consistent with how other data in the store is indexed by network.
 
 #### Defined in
 
-[src/transaction/model/interface.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/transaction/model/interface.ts#L15)
+[src/transaction/model/interface.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L15)
 
 ---
 
@@ -41,4 +41,4 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/transaction/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/transaction/model/interface.ts#L10)
+[src/transaction/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/transaction/model/interface.ts#L10)

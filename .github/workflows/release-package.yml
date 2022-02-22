@@ -21,9 +21,6 @@ jobs:
         with:
           path: ~/.pnpm-store/
           key: ${{ runner.os }}-build-${{ env.cache-name }}
-      # Set login for package registries
-      - run: npm set //registry.npmjs.org/:_authToken=${{secrets.NPMJS_TOKEN}}
-      - run: npm set //npm.pkg.github.com/:_authToken=${{secrets.GPR_TOKEN}}
       # Install
       - run: pnpm i
       # Publish NPMJS

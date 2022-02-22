@@ -29,7 +29,7 @@ store.dispatch(Network.create({ networkId: '1',  /*web3Rpc: 'ws://localhost:8546
 
 Web3-Redux will autoumatically use the envvar configured RPC as a default for supported networks (Ethereum, Testnets, Polygon). For custom networks, you can manually set the `web3Rpc` parameter in the create action.
 
-For more details on supported envvars (additional default networks), check out [Reference/Environment](TBD).
+For more details on supported envvars (additional default networks), check out [Reference/Environment](#).
 Also see the React Documentation on [Adding Custom Environment Variables](https://create-react-app.dev/docs/adding-custom-environment-variables/).
 
 ## React Config
@@ -63,4 +63,4 @@ store.dispatch(Network.create({ networkId: '1', web3Rpc: 'ws://localhost:8546' }
 
 ## Advanced
 
-For more dynamic configuration such as integration with Metamask, and setting up a dual configuration with a `web3Sender` object, check out [Integrations/Metamask](TBD).
+For more dynamic configuration such as integration with Metamask, and setting up a dual configuration with a `web3Sender` object, check out [Integrations/Metamask](#).

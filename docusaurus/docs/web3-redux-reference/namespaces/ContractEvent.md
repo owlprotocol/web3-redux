@@ -92,7 +92,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/index.ts:18](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/index.ts#L18)
+[src/contractevent/actions/index.ts:18](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/index.ts#L18)
 
 ---
 
@@ -104,7 +104,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/create.ts#L12)
+[src/contractevent/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/create.ts#L12)
 
 ---
 
@@ -116,7 +116,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/getAssets.ts:23](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/getAssets.ts#L23)
+[src/contractevent/actions/getAssets.ts:23](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/getAssets.ts#L23)
 
 ---
 
@@ -128,7 +128,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/getPastLogs.ts:62](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/getPastLogs.ts#L62)
+[src/contractevent/actions/getPastLogs.ts:62](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/getPastLogs.ts#L62)
 
 ---
 
@@ -140,7 +140,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/index.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/index.ts#L11)
+[src/contractevent/actions/index.ts:11](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/index.ts#L11)
 
 ---
 
@@ -152,7 +152,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/remove.ts:11](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/remove.ts#L11)
+[src/contractevent/actions/remove.ts:11](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/remove.ts#L11)
 
 ---
 
@@ -164,7 +164,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/set.ts#L21)
+[src/contractevent/actions/set.ts:21](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/set.ts#L21)
 
 ---
 
@@ -176,7 +176,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/subscribeLogs.ts:41](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/subscribeLogs.ts#L41)
+[src/contractevent/actions/subscribeLogs.ts:41](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/subscribeLogs.ts#L41)
 
 ---
 
@@ -188,7 +188,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/unsubscribeLogs.ts:41](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/unsubscribeLogs.ts#L41)
+[src/contractevent/actions/unsubscribeLogs.ts:41](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/unsubscribeLogs.ts#L41)
 
 ---
 
@@ -200,7 +200,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/update.ts#L13)
+[src/contractevent/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/update.ts#L13)
 
 ## Actions Variables
 
@@ -210,7 +210,7 @@ Renames and re-exports [validate](ContractEvent.md#validate)
 
 #### Defined in
 
-[src/contractevent/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/create.ts#L8)
+[src/contractevent/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/create.ts#L8)
 
 ---
 
@@ -223,7 +223,7 @@ Get past logs using raw filter.
 
 #### Defined in
 
-[src/contractevent/actions/getPastLogs.ts:22](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/getPastLogs.ts#L22)
+[src/contractevent/actions/getPastLogs.ts:22](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/getPastLogs.ts#L22)
 
 ---
 
@@ -233,7 +233,7 @@ Get past logs using raw filter.
 
 #### Defined in
 
-[src/contractevent/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/remove.ts#L8)
+[src/contractevent/actions/remove.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/remove.ts#L8)
 
 ---
 
@@ -246,7 +246,7 @@ Get past logs using raw filter.
 
 #### Defined in
 
-[src/contractevent/actions/subscribeLogs.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/subscribeLogs.ts#L15)
+[src/contractevent/actions/subscribeLogs.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/subscribeLogs.ts#L15)
 
 ---
 
@@ -259,7 +259,7 @@ Get past logs using raw filter.
 
 #### Defined in
 
-[src/contractevent/actions/unsubscribeLogs.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/unsubscribeLogs.ts#L15)
+[src/contractevent/actions/unsubscribeLogs.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/unsubscribeLogs.ts#L15)
 
 ---
 
@@ -269,7 +269,7 @@ Get past logs using raw filter.
 
 #### Defined in
 
-[src/contractevent/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/update.ts#L8)
+[src/contractevent/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/update.ts#L8)
 
 ---
 
@@ -286,7 +286,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/getAssets.ts:19](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/getAssets.ts#L19)
+[src/contractevent/actions/getAssets.ts:19](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/getAssets.ts#L19)
 
 ---
 
@@ -300,7 +300,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/create.ts#L6)
+[src/contractevent/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/create.ts#L6)
 
 ---
 
@@ -312,7 +312,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/getAssets.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/getAssets.ts#L6)
+[src/contractevent/actions/getAssets.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/getAssets.ts#L6)
 
 ---
 
@@ -324,7 +324,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/getPastLogs.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/getPastLogs.ts#L8)
+[src/contractevent/actions/getPastLogs.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/getPastLogs.ts#L8)
 
 ---
 
@@ -336,7 +336,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/remove.ts#L6)
+[src/contractevent/actions/remove.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/remove.ts#L6)
 
 ---
 
@@ -348,7 +348,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/subscribeLogs.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/subscribeLogs.ts#L9)
+[src/contractevent/actions/subscribeLogs.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/subscribeLogs.ts#L9)
 
 ---
 
@@ -360,7 +360,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/unsubscribeLogs.ts:9](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/unsubscribeLogs.ts#L9)
+[src/contractevent/actions/unsubscribeLogs.ts:9](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/unsubscribeLogs.ts#L9)
 
 ---
 
@@ -372,7 +372,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/update.ts#L6)
+[src/contractevent/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -400,7 +400,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/set.ts#L13)
+[src/contractevent/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/set.ts#L13)
 
 ---
 
@@ -424,7 +424,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/set.ts#L5)
+[src/contractevent/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/set.ts#L5)
 
 ---
 
@@ -446,7 +446,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:54](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/model/interface.ts#L54)
+[src/contractevent/model/interface.ts:54](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/model/interface.ts#L54)
 
 ---
 
@@ -468,7 +468,7 @@ interfaces but simply implement one of event signatures. Variables
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:60](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/model/interface.ts#L60)
+[src/contractevent/model/interface.ts:60](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/model/interface.ts#L60)
 
 ---
 
@@ -491,7 +491,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/contractevent/actions/index.ts:20](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/index.ts#L20)
+[src/contractevent/actions/index.ts:20](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/index.ts#L20)
 
 ---
 
@@ -513,7 +513,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/create.ts#L14)
+[src/contractevent/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/create.ts#L14)
 
 ---
 
@@ -535,7 +535,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/actions/getAssets.ts:25](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/getAssets.ts#L25)
+[src/contractevent/actions/getAssets.ts:25](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/getAssets.ts#L25)
 
 ---
 
@@ -557,7 +557,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/actions/getPastLogs.ts:64](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/getPastLogs.ts#L64)
+[src/contractevent/actions/getPastLogs.ts:64](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/getPastLogs.ts#L64)
 
 ---
 
@@ -580,7 +580,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/contractevent/actions/index.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/index.ts#L13)
+[src/contractevent/actions/index.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/index.ts#L13)
 
 ---
 
@@ -602,7 +602,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/remove.ts#L13)
+[src/contractevent/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/remove.ts#L13)
 
 ---
 
@@ -627,7 +627,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/set.ts#L23)
+[src/contractevent/actions/set.ts:23](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/set.ts#L23)
 
 ---
 
@@ -649,7 +649,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/actions/subscribeLogs.ts:43](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/subscribeLogs.ts#L43)
+[src/contractevent/actions/subscribeLogs.ts:43](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/subscribeLogs.ts#L43)
 
 ---
 
@@ -671,7 +671,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/actions/unsubscribeLogs.ts:43](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/unsubscribeLogs.ts#L43)
+[src/contractevent/actions/unsubscribeLogs.ts:43](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/unsubscribeLogs.ts#L43)
 
 ---
 
@@ -693,7 +693,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/actions/update.ts:15](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/actions/update.ts#L15)
+[src/contractevent/actions/update.ts:15](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/actions/update.ts#L15)
 
 ---
 
@@ -716,7 +716,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/reducer.ts:8](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/reducer.ts#L8)
+[src/contractevent/reducer.ts:8](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/reducer.ts#L8)
 
 ---
 
@@ -738,7 +738,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:76](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/model/interface.ts#L76)
+[src/contractevent/model/interface.ts:76](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/model/interface.ts#L76)
 
 ---
 
@@ -761,7 +761,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/selectors/selectByIdExists.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/selectors/selectByIdExists.ts#L5)
+[src/contractevent/selectors/selectByIdExists.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/selectors/selectByIdExists.ts#L5)
 
 ---
 
@@ -782,7 +782,7 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/selectors/selectByIdMany.ts#L6)
+[src/contractevent/selectors/selectByIdMany.ts:6](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/selectors/selectByIdMany.ts#L6)
 
 ---
 
@@ -803,4 +803,4 @@ action is Object
 
 #### Defined in
 
-[src/contractevent/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/contractevent/selectors/selectByIdSingle.ts#L5)
+[src/contractevent/selectors/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/cff01f0/src/contractevent/selectors/selectByIdSingle.ts#L5)

@@ -1,15 +1,13 @@
-name: Default Actions
+name: Test deployment
 
 on:
-  push:
-    branches:
-      - master
-      - develop
-  pull_request: ~
+  pull_request:
+    branches: [master]
+    paths: [website/**]
 
 jobs:
-  run-tests:
-    name: Run Tests
+  test-deploy:
+    name: Test deployment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,5 +24,8 @@ jobs:
           path: ~/.pnpm-store/
           key: ${{ runner.os }}-build-${{ env.cache-name }}
       # Install
-      - run: pnpm i
-      - run: npm run test
+      - working-directory: docusaurus
+        run: pnpm install
+      # Build
+      - working-directory: docusaurus
+        run: pnpm build

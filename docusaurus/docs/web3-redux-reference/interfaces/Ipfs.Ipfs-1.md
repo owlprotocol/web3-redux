@@ -27,7 +27,7 @@ ipfs hash
 
 #### Defined in
 
-[src/ipfs/model/interface.ts:4](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ipfs/model/interface.ts#L4)
+[src/ipfs/model/interface.ts:4](https://github.com/leovigna/web3-redux/blob/cff01f0/src/ipfs/model/interface.ts#L4)
 
 ---
 
@@ -39,7 +39,7 @@ Decoded data
 
 #### Defined in
 
-[src/ipfs/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ipfs/model/interface.ts#L14)
+[src/ipfs/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/ipfs/model/interface.ts#L14)
 
 ---
 
@@ -55,7 +55,7 @@ Links by Name
 
 #### Defined in
 
-[src/ipfs/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ipfs/model/interface.ts#L12)
+[src/ipfs/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/cff01f0/src/ipfs/model/interface.ts#L12)
 
 ---
 
@@ -68,4 +68,4 @@ See https://github.com/ipld/specs/blob/master/block-layer/codecs/dag-pb.md
 
 #### Defined in
 
-[src/ipfs/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/ipfs/model/interface.ts#L10)
+[src/ipfs/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/cff01f0/src/ipfs/model/interface.ts#L10)

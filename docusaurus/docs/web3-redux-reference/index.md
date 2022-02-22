@@ -35,7 +35,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/common.ts:2](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/common.ts#L2)
+[src/common.ts:2](https://github.com/leovigna/web3-redux/blob/cff01f0/src/common.ts#L2)
 
 ## Functions
 
@@ -62,7 +62,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/store.ts:30](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/store.ts#L30)
+[src/store.ts:30](https://github.com/leovigna/web3-redux/blob/cff01f0/src/store.ts#L30)
 
 ---
 
@@ -78,7 +78,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/orm.ts:19](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/orm.ts#L19)
+[src/orm.ts:19](https://github.com/leovigna/web3-redux/blob/cff01f0/src/orm.ts#L19)
 
 ---
 
@@ -99,7 +99,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/reducer.ts:92](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/reducer.ts#L92)
+[src/reducer.ts:92](https://github.com/leovigna/web3-redux/blob/cff01f0/src/reducer.ts#L92)
 
 ---
 
@@ -113,4 +113,4 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/saga.ts:14](https://github.com/leovigna/web3-redux/blob/a7bfc9c/src/saga.ts#L14)
+[src/saga.ts:14](https://github.com/leovigna/web3-redux/blob/cff01f0/src/saga.ts#L14)

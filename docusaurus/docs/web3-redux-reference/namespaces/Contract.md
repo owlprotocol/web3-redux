@@ -53,25 +53,10 @@ Comments on Contract module
 
 ## Actions Functions
 
--   [set](Contract.md#set)
-
-## Actions
-
-Creates a CALL action and an associated SYNC action Functions
-
 -   [callSynced](Contract.md#callsynced)
-
-## Actions
-
-Creates a GET_BALANCE action and an associated SYNC action Functions
-
 -   [getBalanceSynced](Contract.md#getbalancesynced)
-
-## Actions
-
-Creates a GET_NONCE action and an associated SYNC action Functions
-
 -   [getNonceSynced](Contract.md#getnoncesynced)
+-   [set](Contract.md#set)
 
 ## Hooks Functions
 
@@ -80,44 +65,23 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 -   [contractHookFactory](Contract.md#contracthookfactory)
 -   [contractSendHookFactory](Contract.md#contractsendhookfactory)
 -   [useContract](Contract.md#usecontract)
+-   [useContractCall](Contract.md#usecontractcall)
+-   [useContractSend](Contract.md#usecontractsend)
+-   [useContractWithAbi](Contract.md#usecontractwithabi)
+-   [useERC1155](Contract.md#useerc1155)
+-   [useERC165](Contract.md#useerc165)
 -   [useERC20](Contract.md#useerc20)
+-   [useERC721](Contract.md#useerc721)
+-   [useEvents](Contract.md#useevents)
 -   [useFetchAbi](Contract.md#usefetchabi)
+-   [useFetchTransactions](Contract.md#usefetchtransactions)
 -   [useGetBalance](Contract.md#usegetbalance)
 -   [useGetCode](Contract.md#usegetcode)
 -   [useGetNonce](Contract.md#usegetnonce)
+-   [useMultiToken](Contract.md#usemultitoken)
+-   [useNFT](Contract.md#usenft)
 -   [useSupportsInterface](Contract.md#usesupportsinterface)
-
-## Hooks
-
-Creates a contract/EOA if it doesn&#x27;t exist.
-Optional abi parameter also sets the contract&#x27;s ABI.
-This hook is mostly used as a building block by other hooks to make sure the contract is in the store. Functions
-
--   [useContractWithAbi](Contract.md#usecontractwithabi)
-
-## Hooks
-
-Create a contract call and return value. Functions
-
--   [useContractCall](Contract.md#usecontractcall)
-
-## Hooks
-
-Create a contract send transaction callback method. Functions
-
--   [useContractSend](Contract.md#usecontractsend)
-
-## Hooks
-
-Fetch and sync contract events. Return list of events with optional filter. Functions
-
--   [useEvents](Contract.md#useevents)
-
-## Hooks
-
-Fetch transactions from/to contract using Etherscan API Functions
-
--   [useFetchTransactions](Contract.md#usefetchtransactions)
+-   [useToken](Contract.md#usetoken)
 
 ## Other Functions
 
@@ -183,7 +147,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/index.ts:76](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/index.ts#L76)
+[src/contract/actions/index.ts:76](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/index.ts#L76)
 
 ---
 
@@ -195,7 +159,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/model/interface.ts:21](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L21)
+[src/contract/model/interface.ts:21](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/interface.ts#L21)
 
 ---
 
@@ -207,7 +171,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/call.ts:24](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/call.ts#L24)
+[src/contract/actions/call.ts:27](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/call.ts#L27)
 
 ---
 
@@ -219,7 +183,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/callBatched.ts:33](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/callBatched.ts#L33)
+[src/contract/actions/callBatched.ts:33](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/callBatched.ts#L33)
 
 ---
 
@@ -231,7 +195,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/create.ts#L12)
+[src/contract/actions/create.ts:12](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/create.ts#L12)
 
 ---
 
@@ -243,7 +207,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/eventGetPast.ts:37](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventGetPast.ts#L37)
+[src/contract/actions/eventGetPast.ts:37](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventGetPast.ts#L37)
 
 ---
 
@@ -255,7 +219,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/eventSubscribe.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventSubscribe.ts#L16)
+[src/contract/actions/eventSubscribe.ts:16](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventSubscribe.ts#L16)
 
 ---
 
@@ -267,7 +231,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/eventUnsubscribe.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventUnsubscribe.ts#L16)
+[src/contract/actions/eventUnsubscribe.ts:16](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventUnsubscribe.ts#L16)
 
 ---
 
@@ -279,7 +243,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/fetchAbi.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/fetchAbi.ts#L13)
+[src/contract/actions/fetchAbi.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/fetchAbi.ts#L13)
 
 ---
 
@@ -291,7 +255,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/fetchTransactions.ts:25](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/fetchTransactions.ts#L25)
+[src/contract/actions/fetchTransactions.ts:25](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/fetchTransactions.ts#L25)
 
 ---
 
@@ -303,7 +267,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/getBalance.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getBalance.ts#L13)
+[src/contract/actions/getBalance.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getBalance.ts#L13)
 
 ---
 
@@ -315,7 +279,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/getCode.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getCode.ts#L13)
+[src/contract/actions/getCode.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getCode.ts#L13)
 
 ---
 
@@ -327,7 +291,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/getEns.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getEns.ts#L13)
+[src/contract/actions/getEns.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getEns.ts#L13)
 
 ---
 
@@ -339,7 +303,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/getNonce.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getNonce.ts#L13)
+[src/contract/actions/getNonce.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getNonce.ts#L13)
 
 ---
 
@@ -351,7 +315,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/index.ts:34](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/index.ts#L34)
+[src/contract/actions/index.ts:34](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/index.ts#L34)
 
 ---
 
@@ -363,7 +327,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/remove.ts#L13)
+[src/contract/actions/remove.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/remove.ts#L13)
 
 ---
 
@@ -375,7 +339,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/index.ts:41](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/index.ts#L41)
+[src/contract/actions/index.ts:41](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/index.ts#L41)
 
 ---
 
@@ -387,7 +351,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/send.ts:20](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/send.ts#L20)
+[src/contract/actions/send.ts:20](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/send.ts#L20)
 
 ---
 
@@ -399,7 +363,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/set.ts:20](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/set.ts#L20)
+[src/contract/actions/set.ts:20](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/set.ts#L20)
 
 ---
 
@@ -411,7 +375,7 @@ Renames and re-exports [validate](Contract.md#validate)
 
 #### Defined in
 
-[src/contract/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/update.ts#L12)
+[src/contract/actions/update.ts:12](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/update.ts#L12)
 
 ## Actions Variables
 
@@ -419,9 +383,11 @@ Renames and re-exports [validate](Contract.md#validate)
 
 • **call**: `ActionCreatorWithPreparedPayload`<[payload: CallActionInput], { `address`: `string` ; `args`: `undefined` \| `any`[] ; `defaultBlock`: `undefined` \| `number` \| `"latest"` ; `from`: `undefined` \| `string` ; `id`: `string` ; `method`: `string` ; `networkId`: `string` }, `string`, `never`, `never`\>
 
+Create contract
+
 #### Defined in
 
-[src/contract/actions/call.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/call.ts#L18)
+[src/contract/actions/call.ts:21](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/call.ts#L21)
 
 ---
 
@@ -444,7 +410,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/callBatched.ts:30](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/callBatched.ts#L30)
+[src/contract/actions/callBatched.ts:30](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/callBatched.ts#L30)
 
 ---
 
@@ -454,7 +420,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/create.ts#L8)
+[src/contract/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/create.ts#L8)
 
 ---
 
@@ -464,7 +430,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventGetPast.ts:17](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventGetPast.ts#L17)
+[src/contract/actions/eventGetPast.ts:17](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventGetPast.ts#L17)
 
 ---
 
@@ -474,7 +440,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventSubscribe.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventSubscribe.ts#L14)
+[src/contract/actions/eventSubscribe.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventSubscribe.ts#L14)
 
 ---
 
@@ -484,7 +450,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventUnsubscribe.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventUnsubscribe.ts#L14)
+[src/contract/actions/eventUnsubscribe.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventUnsubscribe.ts#L14)
 
 ---
 
@@ -494,7 +460,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/fetchAbi.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/fetchAbi.ts#L9)
+[src/contract/actions/fetchAbi.ts:9](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/fetchAbi.ts#L9)
 
 ---
 
@@ -504,7 +470,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/fetchTransactions.ts:21](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/fetchTransactions.ts#L21)
+[src/contract/actions/fetchTransactions.ts:21](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/fetchTransactions.ts#L21)
 
 ---
 
@@ -514,7 +480,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getBalance.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getBalance.ts#L9)
+[src/contract/actions/getBalance.ts:9](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getBalance.ts#L9)
 
 ---
 
@@ -524,7 +490,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getCode.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getCode.ts#L9)
+[src/contract/actions/getCode.ts:9](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getCode.ts#L9)
 
 ---
 
@@ -534,7 +500,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getEns.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getEns.ts#L9)
+[src/contract/actions/getEns.ts:9](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getEns.ts#L9)
 
 ---
 
@@ -544,7 +510,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getNonce.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getNonce.ts#L9)
+[src/contract/actions/getNonce.ts:9](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getNonce.ts#L9)
 
 ---
 
@@ -554,7 +520,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/remove.ts:9](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/remove.ts#L9)
+[src/contract/actions/remove.ts:9](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/remove.ts#L9)
 
 ---
 
@@ -564,7 +530,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/send.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/send.ts#L18)
+[src/contract/actions/send.ts:18](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/send.ts#L18)
 
 ---
 
@@ -574,7 +540,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/update.ts#L8)
+[src/contract/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/update.ts#L8)
 
 ---
 
@@ -588,7 +554,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/call.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/call.ts#L6)
+[src/contract/actions/call.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/call.ts#L6)
 
 ---
 
@@ -600,7 +566,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/callBatched.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/callBatched.ts#L5)
+[src/contract/actions/callBatched.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/callBatched.ts#L5)
 
 ---
 
@@ -612,7 +578,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/create.ts#L6)
+[src/contract/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/create.ts#L6)
 
 ---
 
@@ -624,7 +590,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventGetPast.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventGetPast.ts#L5)
+[src/contract/actions/eventGetPast.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventGetPast.ts#L5)
 
 ---
 
@@ -636,7 +602,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventSubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventSubscribe.ts#L5)
+[src/contract/actions/eventSubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventSubscribe.ts#L5)
 
 ---
 
@@ -648,7 +614,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/eventUnsubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventUnsubscribe.ts#L5)
+[src/contract/actions/eventUnsubscribe.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventUnsubscribe.ts#L5)
 
 ---
 
@@ -660,7 +626,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/fetchAbi.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/fetchAbi.ts#L7)
+[src/contract/actions/fetchAbi.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/fetchAbi.ts#L7)
 
 ---
 
@@ -672,7 +638,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/fetchTransactions.ts:19](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/fetchTransactions.ts#L19)
+[src/contract/actions/fetchTransactions.ts:19](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/fetchTransactions.ts#L19)
 
 ---
 
@@ -684,7 +650,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getBalance.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getBalance.ts#L7)
+[src/contract/actions/getBalance.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getBalance.ts#L7)
 
 ---
 
@@ -696,7 +662,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getCode.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getCode.ts#L7)
+[src/contract/actions/getCode.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getCode.ts#L7)
 
 ---
 
@@ -708,7 +674,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getEns.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getEns.ts#L7)
+[src/contract/actions/getEns.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getEns.ts#L7)
 
 ---
 
@@ -720,7 +686,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/getNonce.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getNonce.ts#L7)
+[src/contract/actions/getNonce.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getNonce.ts#L7)
 
 ---
 
@@ -732,7 +698,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/remove.ts#L7)
+[src/contract/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/remove.ts#L7)
 
 ---
 
@@ -744,7 +710,7 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/send.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/send.ts#L5)
+[src/contract/actions/send.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/send.ts#L5)
 
 ---
 
@@ -756,45 +722,15 @@ Calls will be batched busing Multicall if:
 
 #### Defined in
 
-[src/contract/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/update.ts#L6)
+[src/contract/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/update.ts#L6)
 
 ## Actions Functions
-
-### set
-
-▸ `Const` **set**(`payload`): `Object`
-
-#### Parameters
-
-| Name      | Type             |
-| :-------- | :--------------- |
-| `payload` | `SetActionInput` |
-
-#### Returns
-
-`Object`
-
-| Name            | Type                                                                                                                                                       |
-| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `payload`       | { `id`: `string` ; `key`: keyof [`Contract`](../interfaces/Contract.Contract-1.md)<[`BaseWeb3Contract`](Contract.md#baseweb3contract)\> ; `value`: `any` } |
-| `payload.id`    | `string`                                                                                                                                                   |
-| `payload.key`   | keyof [`Contract`](../interfaces/Contract.Contract-1.md)<[`BaseWeb3Contract`](Contract.md#baseweb3contract)\>                                              |
-| `payload.value` | `any`                                                                                                                                                      |
-| `type`          | `string`                                                                                                                                                   |
-
-#### Defined in
-
-[src/contract/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/set.ts#L13)
-
----
-
-## Actions
-
-Creates a CALL action and an associated SYNC action Functions
 
 ### callSynced
 
 ▸ `Const` **callSynced**(`payload`): `Object`
+
+Creates a CALL action and an associated SYNC action
 
 #### Parameters
 
@@ -822,17 +758,15 @@ Creates a CALL action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/actions/callSynced.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/callSynced.ts#L15)
+[src/contract/actions/callSynced.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/callSynced.ts#L15)
 
 ---
-
-## Actions
-
-Creates a GET_BALANCE action and an associated SYNC action Functions
 
 ### getBalanceSynced
 
 ▸ `Const` **getBalanceSynced**(`payload`): `Object`
+
+Creates a GET_BALANCE action and an associated SYNC action
 
 #### Parameters
 
@@ -855,17 +789,15 @@ Creates a GET_BALANCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/actions/getBalanceSynced.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getBalanceSynced.ts#L16)
+[src/contract/actions/getBalanceSynced.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getBalanceSynced.ts#L15)
 
 ---
-
-## Actions
-
-Creates a GET_NONCE action and an associated SYNC action Functions
 
 ### getNonceSynced
 
 ▸ `Const` **getNonceSynced**(`payload`): `Object`
+
+Creates a GET_NONCE action and an associated SYNC action
 
 #### Parameters
 
@@ -888,7 +820,35 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/actions/getNonceSynced.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getNonceSynced.ts#L16)
+[src/contract/actions/getNonceSynced.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getNonceSynced.ts#L15)
+
+---
+
+### set
+
+▸ `Const` **set**(`payload`): `Object`
+
+#### Parameters
+
+| Name      | Type             |
+| :-------- | :--------------- |
+| `payload` | `SetActionInput` |
+
+#### Returns
+
+`Object`
+
+| Name            | Type                                                                                                                                                       |
+| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `payload`       | { `id`: `string` ; `key`: keyof [`Contract`](../interfaces/Contract.Contract-1.md)<[`BaseWeb3Contract`](Contract.md#baseweb3contract)\> ; `value`: `any` } |
+| `payload.id`    | `string`                                                                                                                                                   |
+| `payload.key`   | keyof [`Contract`](../interfaces/Contract.Contract-1.md)<[`BaseWeb3Contract`](Contract.md#baseweb3contract)\>                                              |
+| `payload.value` | `any`                                                                                                                                                      |
+| `type`          | `string`                                                                                                                                                   |
+
+#### Defined in
+
+[src/contract/actions/set.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/set.ts#L13)
 
 ---
 
@@ -897,6 +857,8 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 ### contractCallHookFactory
 
 ▸ **contractCallHookFactory**<`T`, `K`\>(`method`): (`networkId`: `undefined` \| `string`, `address`: `undefined` \| `string`, `args?`: `Parameters`<`T`[`"methods"`][`k`]\>, `options?`: `UseContractCallOptions`) => `undefined` \| `Await`<`ReturnType`<`ReturnType`<`T`[`"methods"`][`k`]\>[``"call"``]\>\>
+
+Factory method for contract call hook
 
 #### Type parameters
 
@@ -932,7 +894,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/hooks/useContractCall.ts:88](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useContractCall.ts#L88)
+[src/contract/hooks/useContractCall.ts:91](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useContractCall.ts#L91)
 
 ---
 
@@ -975,7 +937,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/hooks/useEvents.ts:97](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useEvents.ts#L97)
+[src/contract/hooks/useEvents.ts:97](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useEvents.ts#L97)
 
 ---
 
@@ -1014,7 +976,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/hooks/useContract.ts:59](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useContract.ts#L59)
+[src/contract/hooks/useContract.ts:59](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useContract.ts#L59)
 
 ---
 
@@ -1069,7 +1031,7 @@ Creates a GET_NONCE action and an associated SYNC action Functions
 
 #### Defined in
 
-[src/contract/hooks/useContractSend.ts:44](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useContractSend.ts#L44)
+[src/contract/hooks/useContractSend.ts:44](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useContractSend.ts#L44)
 
 ---
 
@@ -1106,202 +1068,15 @@ Reads ethereum data and optionally syncs data.
 
 #### Defined in
 
-[src/contract/hooks/useContract.ts:22](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useContract.ts#L22)
+[src/contract/hooks/useContract.ts:22](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useContract.ts#L22)
 
 ---
-
-### useERC20
-
-▸ **useERC20**(`networkId`, `address`, `balanceOfAddress`, `sync?`): `Object`
-
-#### Parameters
-
-| Name                          | Type                                                                            |
-| :---------------------------- | :------------------------------------------------------------------------------ |
-| `networkId`                   | `undefined` \| `string`                                                         |
-| `address`                     | `undefined` \| `string`                                                         |
-| `balanceOfAddress`            | `undefined` \| `string`                                                         |
-| `sync?`                       | `Object`                                                                        |
-| `sync.ApprovalEventsOptions?` | `UseEventsOptions`                                                              |
-| `sync.TransferEventsOptions?` | `UseEventsOptions`                                                              |
-| `sync.balanceOf?`             | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) \| `"onTransfer"` |
-| `sync.totalSupply?`           | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync)                   |
-
-#### Returns
-
-`Object`
-
-| Name              | Type                                                                                                                                               |
-| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ApprovalOwner`   | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
-| `ApprovalSpender` | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
-| `TransferFrom`    | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
-| `TransferTo`      | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
-| `balanceOf`       | `any`                                                                                                                                              |
-| `decimals`        | `any`                                                                                                                                              |
-| `name`            | `any`                                                                                                                                              |
-| `symbol`          | `any`                                                                                                                                              |
-| `totalSupply`     | `any`                                                                                                                                              |
-
-#### Defined in
-
-[src/contract/hooks/useERC20.ts:19](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useERC20.ts#L19)
-
----
-
-### useFetchAbi
-
-▸ **useFetchAbi**(`networkId`, `address`, `fetch?`): `undefined` \| `AbiItem`[]
-
-Fetch Contract ABI
-
-#### Parameters
-
-| Name        | Type                    |
-| :---------- | :---------------------- |
-| `networkId` | `undefined` \| `string` |
-| `address`   | `undefined` \| `string` |
-| `fetch`     | `boolean` \| `"ifnull"` |
-
-#### Returns
-
-`undefined` \| `AbiItem`[]
-
-#### Defined in
-
-[src/contract/hooks/useFetchAbi.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useFetchAbi.ts#L12)
-
----
-
-### useGetBalance
-
-▸ **useGetBalance**(`networkId`, `address`, `sync?`): `undefined` \| `string`
-
-Get Contract bytecode
-
-#### Parameters
-
-| Name        | Type                                                          |
-| :---------- | :------------------------------------------------------------ |
-| `networkId` | `undefined` \| `string`                                       |
-| `address`   | `undefined` \| `string`                                       |
-| `sync`      | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) |
-
-#### Returns
-
-`undefined` \| `string`
-
-#### Defined in
-
-[src/contract/hooks/useGetBalance.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useGetBalance.ts#L14)
-
----
-
-### useGetCode
-
-▸ **useGetCode**(`networkId`, `address`, `fetch?`): `undefined` \| `string`
-
-Get Contract bytecode
-
-#### Parameters
-
-| Name        | Type                    |
-| :---------- | :---------------------- |
-| `networkId` | `undefined` \| `string` |
-| `address`   | `undefined` \| `string` |
-| `fetch`     | `boolean` \| `"ifnull"` |
-
-#### Returns
-
-`undefined` \| `string`
-
-#### Defined in
-
-[src/contract/hooks/useGetCode.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useGetCode.ts#L12)
-
----
-
-### useGetNonce
-
-▸ **useGetNonce**(`networkId`, `address`, `sync?`): `undefined` \| `number`
-
-Get Contract bytecode
-
-#### Parameters
-
-| Name        | Type                                                          |
-| :---------- | :------------------------------------------------------------ |
-| `networkId` | `undefined` \| `string`                                       |
-| `address`   | `undefined` \| `string`                                       |
-| `sync`      | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) |
-
-#### Returns
-
-`undefined` \| `number`
-
-#### Defined in
-
-[src/contract/hooks/useGetNonce.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useGetNonce.ts#L14)
-
----
-
-### useSupportsInterface
-
-▸ **useSupportsInterface**(`networkId`, `address`, `interfaceId`): `any`
-
-#### Parameters
-
-| Name          | Type                    | Description                                                                                                                                             |
-| :------------ | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `networkId`   | `undefined` \| `string` |                                                                                                                                                         |
-| `address`     | `undefined` \| `string` |                                                                                                                                                         |
-| `interfaceId` | `undefined` \| `string` | Fetch if contract supports interface. Note that you must first add an IERC165 contract to the store with `useContract(networkId, address, IER165.abi);` |
-
-#### Returns
-
-`any`
-
-#### Defined in
-
-[src/contract/hooks/useSupportsInterface.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useSupportsInterface.ts#L12)
-
----
-
-## Hooks
-
-Creates a contract/EOA if it doesn&#x27;t exist.
-Optional abi parameter also sets the contract&#x27;s ABI.
-This hook is mostly used as a building block by other hooks to make sure the contract is in the store. Functions
-
-### useContractWithAbi
-
-▸ **useContractWithAbi**(`networkId`, `address`, `abi?`): `undefined` \| [`Contract`](../interfaces/Contract.Contract-1.md)<[`BaseWeb3Contract`](Contract.md#baseweb3contract)\>
-
-#### Parameters
-
-| Name        | Type                    |
-| :---------- | :---------------------- |
-| `networkId` | `undefined` \| `string` |
-| `address`   | `undefined` \| `string` |
-| `abi?`      | `AbiItem`[]             |
-
-#### Returns
-
-`undefined` \| [`Contract`](../interfaces/Contract.Contract-1.md)<[`BaseWeb3Contract`](Contract.md#baseweb3contract)\>
-
-#### Defined in
-
-[src/contract/hooks/useContractWithAbi.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useContractWithAbi.ts#L15)
-
----
-
-## Hooks
-
-Create a contract call and return value. Functions
 
 ### useContractCall
 
 ▸ **useContractCall**<`T`, `K`\>(`networkId`, `address`, `method`, `args?`, `options?`): `Await`<`ReturnType`<`ReturnType`<`T`[`"methods"`][`k`]\>[``"call"``]\>\> \| `undefined`
+
+Create a contract call and return value.
 
 #### Type parameters
 
@@ -1326,17 +1101,15 @@ Create a contract call and return value. Functions
 
 #### Defined in
 
-[src/contract/hooks/useContractCall.ts:26](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useContractCall.ts#L26)
+[src/contract/hooks/useContractCall.ts:26](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useContractCall.ts#L26)
 
 ---
-
-## Hooks
-
-Create a contract send transaction callback method. Functions
 
 ### useContractSend
 
 ▸ **useContractSend**<`T`, `K`\>(`networkId`, `address`, `method`): (`__namedParameters`: { `args`: `Parameters`<`T`[`"methods"`][`k`]\> ; `from`: `string` ; `value?`: `string` }) => `void`
+
+Create a contract send transaction callback method.
 
 #### Type parameters
 
@@ -1374,17 +1147,185 @@ Create a contract send transaction callback method. Functions
 
 #### Defined in
 
-[src/contract/hooks/useContractSend.ts:11](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useContractSend.ts#L11)
+[src/contract/hooks/useContractSend.ts:11](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useContractSend.ts#L11)
 
 ---
 
-## Hooks
+### useContractWithAbi
 
-Fetch and sync contract events. Return list of events with optional filter. Functions
+▸ **useContractWithAbi**(`networkId`, `address`, `abi?`): `undefined` \| [`Contract`](../interfaces/Contract.Contract-1.md)<[`BaseWeb3Contract`](Contract.md#baseweb3contract)\>
+
+Creates a contract/EOA if it doesn't exist.
+Optional abi parameter also sets the contract's ABI.
+This hook is mostly used as a building block by other hooks to make sure the contract is in the store.
+
+#### Parameters
+
+| Name        | Type                    |
+| :---------- | :---------------------- |
+| `networkId` | `undefined` \| `string` |
+| `address`   | `undefined` \| `string` |
+| `abi?`      | `AbiItem`[]             |
+
+#### Returns
+
+`undefined` \| [`Contract`](../interfaces/Contract.Contract-1.md)<[`BaseWeb3Contract`](Contract.md#baseweb3contract)\>
+
+#### Defined in
+
+[src/contract/hooks/useContractWithAbi.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useContractWithAbi.ts#L14)
+
+---
+
+### useERC1155
+
+▸ **useERC1155**(`networkId`, `address`, `balanceOfAddress`, `balanceOfTokenId`, `sync?`): `Object`
+
+Contract hook for ERC1155 interface.
+Will automatically set ABI if not set already.
+
+#### Parameters
+
+| Name                          | Type                                                                            |
+| :---------------------------- | :------------------------------------------------------------------------------ |
+| `networkId`                   | `undefined` \| `string`                                                         |
+| `address`                     | `undefined` \| `string`                                                         |
+| `balanceOfAddress`            | `undefined` \| `string`                                                         |
+| `balanceOfTokenId`            | `undefined` \| `string`                                                         |
+| `sync?`                       | `Object`                                                                        |
+| `sync.TransferEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.balanceOf?`             | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) \| `"onTransfer"` |
+
+#### Returns
+
+`Object`
+
+| Name           | Type                                                                                                                                               |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TransferFrom` | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `TransferTo`   | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `balanceOf`    | `any`                                                                                                                                              |
+| `uri`          | `undefined` \| `string`                                                                                                                            |
+
+#### Defined in
+
+[src/contract/hooks/useERC1155.ts:19](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useERC1155.ts#L19)
+
+---
+
+### useERC165
+
+▸ **useERC165**(`networkId`, `address`, `interfaceId`): `any`
+
+Contract hook for ERC165 interface.
+Fetch if contract supports interface.
+
+#### Parameters
+
+| Name          | Type                    |
+| :------------ | :---------------------- |
+| `networkId`   | `undefined` \| `string` |
+| `address`     | `undefined` \| `string` |
+| `interfaceId` | `undefined` \| `string` |
+
+#### Returns
+
+`any`
+
+#### Defined in
+
+[src/contract/hooks/useSupportsInterface.ts:11](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useSupportsInterface.ts#L11)
+
+---
+
+### useERC20
+
+▸ **useERC20**(`networkId`, `address`, `balanceOfAddress`, `sync?`): `Object`
+
+Contract hook for ERC20 interface.
+Will automatically set ABI if not set already.
+
+#### Parameters
+
+| Name                          | Type                                                                            |
+| :---------------------------- | :------------------------------------------------------------------------------ |
+| `networkId`                   | `undefined` \| `string`                                                         |
+| `address`                     | `undefined` \| `string`                                                         |
+| `balanceOfAddress`            | `undefined` \| `string`                                                         |
+| `sync?`                       | `Object`                                                                        |
+| `sync.ApprovalEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.TransferEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.balanceOf?`             | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) \| `"onTransfer"` |
+| `sync.totalSupply?`           | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync)                   |
+
+#### Returns
+
+`Object`
+
+| Name              | Type                                                                                                                                               |
+| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ApprovalOwner`   | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `ApprovalSpender` | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `TransferFrom`    | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `TransferTo`      | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `balanceOf`       | `any`                                                                                                                                              |
+| `decimals`        | `any`                                                                                                                                              |
+| `name`            | `any`                                                                                                                                              |
+| `symbol`          | `any`                                                                                                                                              |
+| `totalSupply`     | `any`                                                                                                                                              |
+
+#### Defined in
+
+[src/contract/hooks/useERC20.ts:17](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useERC20.ts#L17)
+
+---
+
+### useERC721
+
+▸ **useERC721**(`networkId`, `address`, `tokenId`, `sync?`): `Object`
+
+Contract hook for ERC721 interface.
+Will automatically set ABI if not set already.
+
+#### Parameters
+
+| Name                          | Type                                                                            |
+| :---------------------------- | :------------------------------------------------------------------------------ |
+| `networkId`                   | `undefined` \| `string`                                                         |
+| `address`                     | `undefined` \| `string`                                                         |
+| `tokenId`                     | `undefined` \| `string`                                                         |
+| `sync?`                       | `Object`                                                                        |
+| `sync.ApprovalEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.TransferEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.ownerOf?`               | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) \| `"onTransfer"` |
+| `sync.tokenURI?`              | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync)                   |
+
+#### Returns
+
+`Object`
+
+| Name        | Type                                                                                                                                               |
+| :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Approval`  | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `Transfer`  | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `contentId` | `undefined` \| `string`                                                                                                                            |
+| `metadata`  | `any`                                                                                                                                              |
+| `name`      | `any`                                                                                                                                              |
+| `ownerOf`   | `any`                                                                                                                                              |
+| `symbol`    | `any`                                                                                                                                              |
+| `tokenURI`  | `undefined` \| `string`                                                                                                                            |
+
+#### Defined in
+
+[src/contract/hooks/useERC721.ts:20](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useERC721.ts#L20)
+
+---
 
 ### useEvents
 
 ▸ **useEvents**<`T`, `K`, `U`\>(`networkId`, `address`, `eventName`, `filter?`, `options?`): `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<`U`\>[]
+
+Fetch and sync contract events. Return list of events with optional filter.
 
 #### Type parameters
 
@@ -1410,17 +1351,39 @@ Fetch and sync contract events. Return list of events with optional filter. Func
 
 #### Defined in
 
-[src/contract/hooks/useEvents.ts:23](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useEvents.ts#L23)
+[src/contract/hooks/useEvents.ts:23](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useEvents.ts#L23)
 
 ---
 
-## Hooks
+### useFetchAbi
 
-Fetch transactions from/to contract using Etherscan API Functions
+▸ **useFetchAbi**(`networkId`, `address`, `fetch?`): `undefined` \| `AbiItem`[]
+
+Fetch Contract ABI
+
+#### Parameters
+
+| Name        | Type                    |
+| :---------- | :---------------------- |
+| `networkId` | `undefined` \| `string` |
+| `address`   | `undefined` \| `string` |
+| `fetch`     | `boolean` \| `"ifnull"` |
+
+#### Returns
+
+`undefined` \| `AbiItem`[]
+
+#### Defined in
+
+[src/contract/hooks/useFetchAbi.ts:12](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useFetchAbi.ts#L12)
+
+---
 
 ### useFetchTransactions
 
 ▸ **useFetchTransactions**(`networkId`, `address`, `options?`): [`Transaction`](../interfaces/Transaction.Transaction-1.md)[]
+
+Fetch transactions from/to contract using Etherscan API
 
 #### Parameters
 
@@ -1436,7 +1399,219 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/hooks/useFetchTransactions.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/hooks/useFetchTransactions.ts#L14)
+[src/contract/hooks/useFetchTransactions.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useFetchTransactions.ts#L14)
+
+---
+
+### useGetBalance
+
+▸ **useGetBalance**(`networkId`, `address`, `sync?`): `undefined` \| `string`
+
+Get Contract bytecode
+
+#### Parameters
+
+| Name        | Type                                                          |
+| :---------- | :------------------------------------------------------------ |
+| `networkId` | `undefined` \| `string`                                       |
+| `address`   | `undefined` \| `string`                                       |
+| `sync`      | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) |
+
+#### Returns
+
+`undefined` \| `string`
+
+#### Defined in
+
+[src/contract/hooks/useGetBalance.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useGetBalance.ts#L14)
+
+---
+
+### useGetCode
+
+▸ **useGetCode**(`networkId`, `address`, `fetch?`): `undefined` \| `string`
+
+Get Contract bytecode
+
+#### Parameters
+
+| Name        | Type                    |
+| :---------- | :---------------------- |
+| `networkId` | `undefined` \| `string` |
+| `address`   | `undefined` \| `string` |
+| `fetch`     | `boolean` \| `"ifnull"` |
+
+#### Returns
+
+`undefined` \| `string`
+
+#### Defined in
+
+[src/contract/hooks/useGetCode.ts:12](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useGetCode.ts#L12)
+
+---
+
+### useGetNonce
+
+▸ **useGetNonce**(`networkId`, `address`, `sync?`): `undefined` \| `number`
+
+Get Contract bytecode
+
+#### Parameters
+
+| Name        | Type                                                          |
+| :---------- | :------------------------------------------------------------ |
+| `networkId` | `undefined` \| `string`                                       |
+| `address`   | `undefined` \| `string`                                       |
+| `sync`      | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) |
+
+#### Returns
+
+`undefined` \| `number`
+
+#### Defined in
+
+[src/contract/hooks/useGetNonce.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useGetNonce.ts#L14)
+
+---
+
+### useMultiToken
+
+▸ `Const` **useMultiToken**(`networkId`, `address`, `balanceOfAddress`, `balanceOfTokenId`, `sync?`): `Object`
+
+Alias for
+
+#### Parameters
+
+| Name                          | Type                                                                            |
+| :---------------------------- | :------------------------------------------------------------------------------ |
+| `networkId`                   | `undefined` \| `string`                                                         |
+| `address`                     | `undefined` \| `string`                                                         |
+| `balanceOfAddress`            | `undefined` \| `string`                                                         |
+| `balanceOfTokenId`            | `undefined` \| `string`                                                         |
+| `sync?`                       | `Object`                                                                        |
+| `sync.TransferEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.balanceOf?`             | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) \| `"onTransfer"` |
+
+#### Returns
+
+`Object`
+
+| Name           | Type                                                                                                                                               |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TransferFrom` | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `TransferTo`   | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `balanceOf`    | `any`                                                                                                                                              |
+| `uri`          | `undefined` \| `string`                                                                                                                            |
+
+#### Defined in
+
+[src/contract/hooks/useERC1155.ts:92](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useERC1155.ts#L92)
+
+---
+
+### useNFT
+
+▸ `Const` **useNFT**(`networkId`, `address`, `tokenId`, `sync?`): `Object`
+
+Alias for useERC721.
+
+#### Parameters
+
+| Name                          | Type                                                                            |
+| :---------------------------- | :------------------------------------------------------------------------------ |
+| `networkId`                   | `undefined` \| `string`                                                         |
+| `address`                     | `undefined` \| `string`                                                         |
+| `tokenId`                     | `undefined` \| `string`                                                         |
+| `sync?`                       | `Object`                                                                        |
+| `sync.ApprovalEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.TransferEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.ownerOf?`               | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) \| `"onTransfer"` |
+| `sync.tokenURI?`              | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync)                   |
+
+#### Returns
+
+`Object`
+
+| Name        | Type                                                                                                                                               |
+| :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Approval`  | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `Transfer`  | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `contentId` | `undefined` \| `string`                                                                                                                            |
+| `metadata`  | `any`                                                                                                                                              |
+| `name`      | `any`                                                                                                                                              |
+| `ownerOf`   | `any`                                                                                                                                              |
+| `symbol`    | `any`                                                                                                                                              |
+| `tokenURI`  | `undefined` \| `string`                                                                                                                            |
+
+#### Defined in
+
+[src/contract/hooks/useERC721.ts:109](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useERC721.ts#L109)
+
+---
+
+### useSupportsInterface
+
+▸ `Const` **useSupportsInterface**(`networkId`, `address`, `interfaceId`): `any`
+
+Alias for useERC165.
+
+#### Parameters
+
+| Name          | Type                    |
+| :------------ | :---------------------- |
+| `networkId`   | `undefined` \| `string` |
+| `address`     | `undefined` \| `string` |
+| `interfaceId` | `undefined` \| `string` |
+
+#### Returns
+
+`any`
+
+#### Defined in
+
+[src/contract/hooks/useSupportsInterface.ts:27](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useSupportsInterface.ts#L27)
+
+---
+
+### useToken
+
+▸ `Const` **useToken**(`networkId`, `address`, `balanceOfAddress`, `sync?`): `Object`
+
+Alias for useERC20.
+
+#### Parameters
+
+| Name                          | Type                                                                            |
+| :---------------------------- | :------------------------------------------------------------------------------ |
+| `networkId`                   | `undefined` \| `string`                                                         |
+| `address`                     | `undefined` \| `string`                                                         |
+| `balanceOfAddress`            | `undefined` \| `string`                                                         |
+| `sync?`                       | `Object`                                                                        |
+| `sync.ApprovalEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.TransferEventsOptions?` | `UseEventsOptions`                                                              |
+| `sync.balanceOf?`             | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync) \| `"onTransfer"` |
+| `sync.totalSupply?`           | `false` \| `"ifnull"` \| [`GenericSync`](Sync.md#genericsync)                   |
+
+#### Returns
+
+`Object`
+
+| Name              | Type                                                                                                                                               |
+| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ApprovalOwner`   | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `ApprovalSpender` | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `TransferFrom`    | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `TransferTo`      | `undefined` \| [`ContractEvent`](../interfaces/ContractEvent.ContractEvent-1.md)<[`ReturnValues`](../interfaces/ContractEvent.ReturnValues.md)\>[] |
+| `balanceOf`       | `any`                                                                                                                                              |
+| `decimals`        | `any`                                                                                                                                              |
+| `name`            | `any`                                                                                                                                              |
+| `symbol`          | `any`                                                                                                                                              |
+| `totalSupply`     | `any`                                                                                                                                              |
+
+#### Defined in
+
+[src/contract/hooks/useERC20.ts:95](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/hooks/useERC20.ts#L95)
 
 ---
 
@@ -1460,7 +1635,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/set.ts#L5)
+[src/contract/actions/set.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/set.ts#L5)
 
 ---
 
@@ -1486,7 +1661,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/callArgs.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/callArgs.ts#L10)
+[src/contract/model/callArgs.ts:10](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/callArgs.ts#L10)
 
 ---
 
@@ -1509,7 +1684,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/callArgs.ts:30](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/callArgs.ts#L30)
+[src/contract/model/callArgs.ts:30](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/callArgs.ts#L30)
 
 ---
 
@@ -1529,7 +1704,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/eventSubscription.ts:17](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/eventSubscription.ts#L17)
+[src/contract/model/eventSubscription.ts:17](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/eventSubscription.ts#L17)
 
 ---
 
@@ -1549,7 +1724,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/eventSubscription.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/eventSubscription.ts#L10)
+[src/contract/model/eventSubscription.ts:10](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/eventSubscription.ts#L10)
 
 ---
 
@@ -1571,7 +1746,7 @@ Fetch transactions from/to contract using Etherscan API Functions
 
 #### Defined in
 
-[src/contract/model/interface.ts:57](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L57)
+[src/contract/model/interface.ts:57](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/interface.ts#L57)
 
 ---
 
@@ -1594,7 +1769,7 @@ action is Action
 
 #### Defined in
 
-[src/contract/actions/index.ts:78](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/index.ts#L78)
+[src/contract/actions/index.ts:78](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/index.ts#L78)
 
 ---
 
@@ -1616,7 +1791,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/call.ts:26](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/call.ts#L26)
+[src/contract/actions/call.ts:29](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/call.ts#L29)
 
 ---
 
@@ -1638,7 +1813,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/callBatched.ts:35](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/callBatched.ts#L35)
+[src/contract/actions/callBatched.ts:35](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/callBatched.ts#L35)
 
 ---
 
@@ -1660,7 +1835,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/create.ts#L14)
+[src/contract/actions/create.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/create.ts#L14)
 
 ---
 
@@ -1682,7 +1857,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/eventGetPast.ts:39](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventGetPast.ts#L39)
+[src/contract/actions/eventGetPast.ts:39](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventGetPast.ts#L39)
 
 ---
 
@@ -1704,7 +1879,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/eventSubscribe.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventSubscribe.ts#L18)
+[src/contract/actions/eventSubscribe.ts:18](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventSubscribe.ts#L18)
 
 ---
 
@@ -1726,7 +1901,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/eventUnsubscribe.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/eventUnsubscribe.ts#L18)
+[src/contract/actions/eventUnsubscribe.ts:18](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/eventUnsubscribe.ts#L18)
 
 ---
 
@@ -1748,7 +1923,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/fetchAbi.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/fetchAbi.ts#L15)
+[src/contract/actions/fetchAbi.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/fetchAbi.ts#L15)
 
 ---
 
@@ -1770,7 +1945,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/fetchTransactions.ts:27](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/fetchTransactions.ts#L27)
+[src/contract/actions/fetchTransactions.ts:27](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/fetchTransactions.ts#L27)
 
 ---
 
@@ -1792,7 +1967,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/getBalance.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getBalance.ts#L15)
+[src/contract/actions/getBalance.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getBalance.ts#L15)
 
 ---
 
@@ -1814,7 +1989,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/getCode.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getCode.ts#L15)
+[src/contract/actions/getCode.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getCode.ts#L15)
 
 ---
 
@@ -1836,7 +2011,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/getEns.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getEns.ts#L15)
+[src/contract/actions/getEns.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getEns.ts#L15)
 
 ---
 
@@ -1858,7 +2033,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/getNonce.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/getNonce.ts#L15)
+[src/contract/actions/getNonce.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/getNonce.ts#L15)
 
 ---
 
@@ -1881,7 +2056,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/contract/actions/index.ts:36](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/index.ts#L36)
+[src/contract/actions/index.ts:36](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/index.ts#L36)
 
 ---
 
@@ -1903,7 +2078,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/remove.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/remove.ts#L15)
+[src/contract/actions/remove.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/remove.ts#L15)
 
 ---
 
@@ -1926,7 +2101,7 @@ action is SagaAction
 
 #### Defined in
 
-[src/contract/actions/index.ts:57](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/index.ts#L57)
+[src/contract/actions/index.ts:57](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/index.ts#L57)
 
 ---
 
@@ -1948,7 +2123,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/send.ts:22](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/send.ts#L22)
+[src/contract/actions/send.ts:22](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/send.ts#L22)
 
 ---
 
@@ -1973,7 +2148,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/set.ts:22](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/set.ts#L22)
+[src/contract/actions/set.ts:22](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/set.ts#L22)
 
 ---
 
@@ -1995,7 +2170,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/actions/update.ts#L14)
+[src/contract/actions/update.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/actions/update.ts#L14)
 
 ---
 
@@ -2018,7 +2193,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/reducer.ts#L7)
+[src/contract/reducer.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/reducer.ts#L7)
 
 ---
 
@@ -2034,7 +2209,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/sagas/index.ts:28](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/sagas/index.ts#L28)
+[src/contract/sagas/index.ts:28](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/sagas/index.ts#L28)
 
 ---
 
@@ -2057,7 +2232,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectByFilter.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/selectors/selectByFilter.ts#L10)
+[src/contract/selectors/selectByFilter.ts:10](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/selectors/selectByFilter.ts#L10)
 
 ---
 
@@ -2079,7 +2254,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/model/interface.ts:70](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L70)
+[src/contract/model/interface.ts:70](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/interface.ts#L70)
 
 ---
 
@@ -2108,7 +2283,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectByIdMany.ts:25](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/selectors/selectByIdMany.ts#L25)
+[src/contract/selectors/selectByIdMany.ts:25](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/selectors/selectByIdMany.ts#L25)
 
 ---
 
@@ -2135,7 +2310,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectByIdSingle.ts:20](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/selectors/selectByIdSingle.ts#L20)
+[src/contract/selectors/selectByIdSingle.ts:20](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/selectors/selectByIdSingle.ts#L20)
 
 ---
 
@@ -2165,7 +2340,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectContractCallById.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/selectors/selectContractCallById.ts#L10)
+[src/contract/selectors/selectContractCallById.ts:10](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/selectors/selectContractCallById.ts#L10)
 
 ---
 
@@ -2207,7 +2382,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectContractCallById.ts:27](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/selectors/selectContractCallById.ts#L27)
+[src/contract/selectors/selectContractCallById.ts:27](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/selectors/selectContractCallById.ts#L27)
 
 ---
 
@@ -2238,7 +2413,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectContractEventsById.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/selectors/selectContractEventsById.ts#L15)
+[src/contract/selectors/selectContractEventsById.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/selectors/selectContractEventsById.ts#L15)
 
 ---
 
@@ -2268,7 +2443,7 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectEthCallId.ts:44](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/selectors/selectEthCallId.ts#L44)
+[src/contract/selectors/selectEthCallId.ts:44](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/selectors/selectEthCallId.ts#L44)
 
 ---
 
@@ -2310,4 +2485,4 @@ action is Object
 
 #### Defined in
 
-[src/contract/selectors/selectContractEventsById.ts:51](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/selectors/selectContractEventsById.ts#L51)
+[src/contract/selectors/selectContractEventsById.ts:51](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/selectors/selectContractEventsById.ts#L51)

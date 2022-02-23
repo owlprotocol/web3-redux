@@ -9,9 +9,8 @@ export interface GetNonceSyncedActionInput extends ContractId {
     sync: GenericSync;
 }
 /**
- * @category Actions
  * Creates a GET_NONCE action and an associated SYNC action
- *
+ * @category Actions
  */
 export const getNonceSynced = (payload: GetNonceSyncedActionInput) => {
     const { networkId } = payload;

@@ -11,11 +11,9 @@ import useContractCall from './useContractCall';
 import useEvents, { UseEventsOptions } from './useEvents';
 
 /**
+ * Contract hook for ERC1155 interface.
+ * Will automatically set ABI if not set already.
  * @category Hooks
- * @param networkId
- * @param address
- * @param interfaceId
- * Contract hook for ERC1155 interface. Will automatically set ABI if not set already.
  *
  */
 export function useERC1155(
@@ -86,7 +84,11 @@ export function useERC1155(
     return values;
 }
 
-//Alias
+/**
+ * Alias for
+ * @category Hooks
+ *
+ */
 export const useMultiToken = useERC1155;
 
 export default useERC1155;

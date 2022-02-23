@@ -22,7 +22,7 @@ Can be extended to store any key-value pairs.
 
 #### Defined in
 
-[src/config/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/config/model/interface.ts#L12)
+[src/config/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/be15552/src/config/model/interface.ts#L12)
 
 ---
 
@@ -32,7 +32,7 @@ Can be extended to store any key-value pairs.
 
 #### Defined in
 
-[src/config/model/interface.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/config/model/interface.ts#L6)
+[src/config/model/interface.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/config/model/interface.ts#L6)
 
 ---
 
@@ -44,7 +44,7 @@ Ipfs Url
 
 #### Defined in
 
-[src/config/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/config/model/interface.ts#L14)
+[src/config/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/config/model/interface.ts#L14)
 
 ---
 
@@ -54,4 +54,4 @@ Ipfs Url
 
 #### Defined in
 
-[src/config/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/bca52d1/src/config/model/interface.ts#L10)
+[src/config/model/interface.ts:10](https://github.com/leovigna/web3-redux/blob/be15552/src/config/model/interface.ts#L10)

@@ -5,11 +5,10 @@ import { create } from '../actions';
 import { selectByIdSingle } from '../selectors';
 
 /**
- * @category Hooks
- *
  * Creates a contract/EOA if it doesn't exist.
  * Optional abi parameter also sets the contract's ABI.
  * This hook is mostly used as a building block by other hooks to make sure the contract is in the store.
+ * @category Hooks
  *
  */
 export function useContractWithAbi(

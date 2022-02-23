@@ -8,8 +8,8 @@ export interface CallSyncedActionInput extends CallActionInput {
     sync: GenericSync;
 }
 /**
- * @category Actions
  * Creates a CALL action and an associated SYNC action
+ * @category Actions
  *
  */
 export const callSynced = (payload: CallSyncedActionInput) => {

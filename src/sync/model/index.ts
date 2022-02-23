@@ -3,12 +3,19 @@ import BlockSync, { createBlockSyncEveryBlock } from './BlockSync';
 import EventSync from './EventSync';
 import TransactionSync, { createTransactionSyncForAddress } from './TransactionSync';
 
+/**
+ * Sync Middleware Type
+ */
 export type Sync = BlockSync | TransactionSync | EventSync;
 export type { BlockSync, EventSync, TransactionSync };
 
+/**
+ * Sync Middleware Type + simplified notation
+ */
 export type GenericSync = EventSync | 'Block' | 'Transaction' | number | 'once';
-/** @category Actions
+/**
  * Create a Sync object from generic parameters
+ * @category Actions
  */
 export function createSyncForActions(
     networkId: string,

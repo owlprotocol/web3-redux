@@ -17,8 +17,8 @@ export interface UseEventsOptions {
     blockBatch?: number;
 }
 /**
- * @category Hooks
  * Fetch and sync contract events. Return list of events with optional filter.
+ * @category Hooks
  */
 export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,

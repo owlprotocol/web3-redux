@@ -1,4 +1,8 @@
-## Metamask
+---
+sidebar_position: 1
+---
+
+# Metamask
 
 See [Manual Network Initialization](#manual) for more detail.
 Metamask can cause issues as the injected Web3 instance is mutable and changes as users change networks. To mitigate this, Networks can be initialized with 2 web3 instances, one for read-only calls (eg. Infura) and one for wallet signed send transactions (Metamask). This way, subcriptions and call syncs can continue to work even if a user changes networks.

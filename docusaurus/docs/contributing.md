@@ -6,7 +6,7 @@ sidebar_position: 7
 
 ## Project Management
 
-`web3-redux` was originally created by [@leovigna](https://github.com/leovigna) and is now actively maintained by Owl Protocol as a library used in all of our DApps. The library is MIT licensed and anyone is free to contribute.
+`web3-redux` was originally created by [@leovigna](https://github.com/leovigna) and is now actively maintained by [@owlprotocol](https://github.com/owlprotocol) as a library used in all of our DApps. The library is MIT licensed and anyone is free to contribute.
 
 Before you do we recommend the following:
 
@@ -16,8 +16,8 @@ Before you do we recommend the following:
 
 If you'd like to contribute:
 
--   Look for an existing issue, and comment if interested in researching/implementing
--   Create a new issue for feature requests/bugs
+-   Look for an existing [issue](https://github.com/owlprotocol/web3-redux/issues), and comment if interested in researching/implementing
+-   Create a [new issue](https://github.com/owlprotocol/web3-redux/issues/new) for feature requests/bugs
 
 Current areas of research include:
 
@@ -25,7 +25,7 @@ Current areas of research include:
 -   Test coverage & Additional Continuous Integration
 -   Additional documentation & guides
 -   Web3 RPC Optimizations (Multicall Contract, HTTP Batching)
--   Indexing integrations (Etherscan)
+-   Indexing integrations (Etherscan, The Graph)
 -   Non-EVM blockchains (eg. Solana, Cardano)
 -   Pre-configured "meta-hooks" for common interfaces
     -   ERC165, ERC20, ERC721, ERC1155 already implemented

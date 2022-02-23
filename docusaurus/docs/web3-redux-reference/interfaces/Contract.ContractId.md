@@ -25,7 +25,7 @@ Contract ethereum address
 
 #### Defined in
 
-[src/contract/model/interface.ts:17](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L17)
+[src/contract/model/interface.ts:17](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/interface.ts#L17)
 
 ---
 
@@ -38,4 +38,4 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/contract/model/interface.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contract/model/interface.ts#L15)
+[src/contract/model/interface.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/interface.ts#L15)

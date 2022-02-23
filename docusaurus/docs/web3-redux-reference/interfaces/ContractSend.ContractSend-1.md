@@ -27,7 +27,7 @@ Contract ethereum address
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L14)
+[src/contractsend/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L14)
 
 ---
 
@@ -43,7 +43,7 @@ Contract method parameters
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L18)
+[src/contractsend/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L18)
 
 ---
 
@@ -55,7 +55,7 @@ First confirmed block hash
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:58](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L58)
+[src/contractsend/model/interface.ts:58](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L58)
 
 ---
 
@@ -67,7 +67,7 @@ First confirmed block number
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:56](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L56)
+[src/contractsend/model/interface.ts:56](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L56)
 
 ---
 
@@ -79,7 +79,7 @@ Confirmation blocks
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:54](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L54)
+[src/contractsend/model/interface.ts:54](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L54)
 
 ---
 
@@ -91,7 +91,7 @@ redux-orm id of contract send `${networkId}-{address}`
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:42](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L42)
+[src/contractsend/model/interface.ts:42](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L42)
 
 ---
 
@@ -103,7 +103,7 @@ Error
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:50](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L50)
+[src/contractsend/model/interface.ts:50](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L50)
 
 ---
 
@@ -119,7 +119,7 @@ Send address
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:20](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L20)
+[src/contractsend/model/interface.ts:20](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L20)
 
 ---
 
@@ -131,7 +131,7 @@ Used to index send data in redux-orm. Computed as `${networkId}-${address}-{meth
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:40](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L40)
+[src/contractsend/model/interface.ts:40](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L40)
 
 ---
 
@@ -147,7 +147,7 @@ Contract method name
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L16)
+[src/contractsend/model/interface.ts:16](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L16)
 
 ---
 
@@ -164,7 +164,7 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L12)
+[src/contractsend/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L12)
 
 ---
 
@@ -176,7 +176,7 @@ Receipt generated once data sent to node
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:52](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L52)
+[src/contractsend/model/interface.ts:52](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L52)
 
 ---
 
@@ -188,7 +188,7 @@ Track status of send transaction
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:48](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L48)
+[src/contractsend/model/interface.ts:48](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L48)
 
 ---
 
@@ -200,7 +200,7 @@ Transaction hash. Generated once data is signed.`
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:44](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L44)
+[src/contractsend/model/interface.ts:44](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L44)
 
 ---
 
@@ -212,7 +212,7 @@ redux-orm id of transaction `${networkId}-{transactionHash}`
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:46](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L46)
+[src/contractsend/model/interface.ts:46](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L46)
 
 ---
 
@@ -228,4 +228,4 @@ Value sent in wei
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:22](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L22)
+[src/contractsend/model/interface.ts:22](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L22)

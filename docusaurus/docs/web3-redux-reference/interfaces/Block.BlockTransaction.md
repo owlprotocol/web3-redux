@@ -27,7 +27,7 @@ Integer of the difficulty for this block
 
 #### Defined in
 
-[src/block/model/BlockTransaction.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockTransaction.ts#L13)
+[src/block/model/BlockTransaction.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockTransaction.ts#L13)
 
 ---
 
@@ -43,7 +43,7 @@ The “extra data” field of this block
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:31](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L31)
+[src/block/model/BlockHeader.ts:31](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L31)
 
 ---
 
@@ -59,7 +59,7 @@ The maximum gas allowed in this block
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:33](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L33)
+[src/block/model/BlockHeader.ts:33](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L33)
 
 ---
 
@@ -75,7 +75,7 @@ The total used gas by all transactions in this block
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:35](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L35)
+[src/block/model/BlockHeader.ts:35](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L35)
 
 ---
 
@@ -91,7 +91,7 @@ The total used gas by all transactions in this block
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:13](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L13)
+[src/block/model/BlockHeader.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L13)
 
 ---
 
@@ -107,7 +107,7 @@ Used to index in redux-orm. Computed as `${networkId}-${number}`
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:11](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L11)
+[src/block/model/BlockHeader.ts:11](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L11)
 
 ---
 
@@ -123,7 +123,7 @@ Used to index in redux-orm. Computed as `${networkId}-${number}`
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:21](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L21)
+[src/block/model/BlockHeader.ts:21](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L21)
 
 ---
 
@@ -139,7 +139,7 @@ The address of the beneficiary to whom the mining rewards were given
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:29](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L29)
+[src/block/model/BlockHeader.ts:29](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L29)
 
 ---
 
@@ -155,7 +155,7 @@ Blockchain network id. See [chainlist](https://chainlist.org/) for a list of net
 
 #### Defined in
 
-[src/block/model/id.ts:4](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/id.ts#L4)
+[src/block/model/id.ts:4](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/id.ts#L4)
 
 ---
 
@@ -171,7 +171,7 @@ Blockchain network id. See [chainlist](https://chainlist.org/) for a list of net
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:17](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L17)
+[src/block/model/BlockHeader.ts:17](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L17)
 
 ---
 
@@ -187,7 +187,7 @@ Block number
 
 #### Defined in
 
-[src/block/model/id.ts:6](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/id.ts#L6)
+[src/block/model/id.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/id.ts#L6)
 
 ---
 
@@ -203,7 +203,7 @@ Block number
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L15)
+[src/block/model/BlockHeader.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L15)
 
 ---
 
@@ -219,7 +219,7 @@ Block number
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:27](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L27)
+[src/block/model/BlockHeader.ts:27](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L27)
 
 ---
 
@@ -235,7 +235,7 @@ Block number
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:19](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L19)
+[src/block/model/BlockHeader.ts:19](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L19)
 
 ---
 
@@ -247,7 +247,7 @@ Integer the size of this block in bytes
 
 #### Defined in
 
-[src/block/model/BlockTransaction.ts:11](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockTransaction.ts#L11)
+[src/block/model/BlockTransaction.ts:11](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockTransaction.ts#L11)
 
 ---
 
@@ -263,7 +263,7 @@ Integer the size of this block in bytes
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:25](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L25)
+[src/block/model/BlockHeader.ts:25](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L25)
 
 ---
 
@@ -279,7 +279,7 @@ The unix timestamp for when the block was collated
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:37](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L37)
+[src/block/model/BlockHeader.ts:37](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L37)
 
 ---
 
@@ -291,7 +291,7 @@ Integer of the total difficulty of the chain until this block
 
 #### Defined in
 
-[src/block/model/BlockTransaction.ts:15](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockTransaction.ts#L15)
+[src/block/model/BlockTransaction.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockTransaction.ts#L15)
 
 ---
 
@@ -307,7 +307,7 @@ Integer of the total difficulty of the chain until this block
 
 #### Defined in
 
-[src/block/model/BlockHeader.ts:23](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockHeader.ts#L23)
+[src/block/model/BlockHeader.ts:23](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockHeader.ts#L23)
 
 ---
 
@@ -319,7 +319,7 @@ Transaction objects or ids
 
 #### Defined in
 
-[src/block/model/BlockTransaction.ts:19](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockTransaction.ts#L19)
+[src/block/model/BlockTransaction.ts:19](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockTransaction.ts#L19)
 
 ---
 
@@ -331,4 +331,4 @@ Array of uncle hashes
 
 #### Defined in
 
-[src/block/model/BlockTransaction.ts:17](https://github.com/leovigna/web3-redux/blob/bca52d1/src/block/model/BlockTransaction.ts#L17)
+[src/block/model/BlockTransaction.ts:17](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/BlockTransaction.ts#L17)

@@ -12,11 +12,9 @@ import useIpfs from '../../ipfs/hooks/useIpfs';
 import axios from 'axios';
 
 /**
+ * Contract hook for ERC721 interface.
+ * Will automatically set ABI if not set already.
  * @category Hooks
- * @param networkId
- * @param address
- * @param interfaceId
- * Contract hook for ERC721 interface. Will automatically set ABI if not set already.
  *
  */
 export function useERC721(
@@ -103,7 +101,11 @@ export function useERC721(
     return values;
 }
 
-//Alias
+/**
+ * Alias for useERC721.
+ * @category Hooks
+ *
+ */
 export const useNFT = useERC721;
 
 export default useERC721;

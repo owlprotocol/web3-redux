@@ -7,8 +7,8 @@ import { fetchTransactions } from '../actions';
 import { FetchTransactionOptions } from '../actions/fetchTransactions';
 
 /**
- * @category Hooks
  * Fetch transactions from/to contract using Etherscan API
+ * @category Hooks
  *
  */
 export function useFetchTransactions(

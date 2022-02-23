@@ -1,8 +1,14 @@
 ---
-sidebar_position: 2
+sidebar_position: 0
 ---
 
-# Initialize the Redux Store
+# Custom Redux Store
+
+## Basic Setup
+
+## X
+
+## Persistence
 
 In most situations, you will want to add web3-redux to your existing redux store. The web3Reducer MUST be stored at the `web3Redux` key in your store.
 

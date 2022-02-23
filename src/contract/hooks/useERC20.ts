@@ -9,11 +9,9 @@ import useContractCall from './useContractCall';
 import useEvents, { UseEventsOptions } from './useEvents';
 
 /**
+ * Contract hook for ERC20 interface.
+ * Will automatically set ABI if not set already.
  * @category Hooks
- * @param networkId
- * @param address
- * @param interfaceId
- * Contract hook for ERC20 interface. Will automatically set ABI if not set already.
  *
  */
 export function useERC20(
@@ -89,7 +87,11 @@ export function useERC20(
     return values;
 }
 
-//Alias
+/**
+ * Alias for useERC20.
+ * @category Hooks
+ *
+ */
 export const useToken = useERC20;
 
 export default useERC20;

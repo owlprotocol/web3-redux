@@ -25,7 +25,7 @@ Contract ethereum address
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L14)
+[src/contractsend/model/interface.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L14)
 
 ---
 
@@ -37,7 +37,7 @@ Contract method parameters
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L18)
+[src/contractsend/model/interface.ts:18](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L18)
 
 ---
 
@@ -49,7 +49,7 @@ Send address
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:20](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L20)
+[src/contractsend/model/interface.ts:20](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L20)
 
 ---
 
@@ -61,7 +61,7 @@ Contract method name
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:16](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L16)
+[src/contractsend/model/interface.ts:16](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L16)
 
 ---
 
@@ -74,7 +74,7 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L12)
+[src/contractsend/model/interface.ts:12](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L12)
 
 ---
 
@@ -86,4 +86,4 @@ Value sent in wei
 
 #### Defined in
 
-[src/contractsend/model/interface.ts:22](https://github.com/leovigna/web3-redux/blob/bca52d1/src/contractsend/model/interface.ts#L22)
+[src/contractsend/model/interface.ts:22](https://github.com/leovigna/web3-redux/blob/be15552/src/contractsend/model/interface.ts#L22)

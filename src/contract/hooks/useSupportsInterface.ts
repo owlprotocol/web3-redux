@@ -1,20 +1,25 @@
+import IERC165 from '../../abis/utils/introspection/IERC165.sol/IERC165.json';
+import useContractWithAbi from './useContractWithAbi';
 import useContractCall from './useContractCall';
 
 /**
- * @category Hooks
- * @param networkId
- * @param address
- * @param interfaceId
+ * Contract hook for ERC165 interface.
  * Fetch if contract supports interface.
- * Note that you must first add an IERC165 contract to the store with `useContract(networkId, address, IER165.abi);`
+ * @category Hooks
  *
  */
-export function useSupportsInterface(
-    networkId: string | undefined,
-    address: string | undefined,
-    interfaceId: string | undefined,
-) {
+export function useERC165(networkId: string | undefined, address: string | undefined, interfaceId: string | undefined) {
+    //Create abi in store if non-existant
+    useContractWithAbi(networkId, address, IERC165.abi as any);
+
     return useContractCall(networkId, address, 'supportsInterface', [interfaceId], { sync: 'once' });
 }
+
+/**
+ * Alias for useERC165.
+ * @category Hooks
+ *
+ */
+export const useSupportsInterface = useERC165;
 
 export default useSupportsInterface;

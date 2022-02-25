@@ -1,5 +1,5 @@
 /**
- * Comments on EthCall module
+ * EVM call data module.
  * @module EthCall
  */
 

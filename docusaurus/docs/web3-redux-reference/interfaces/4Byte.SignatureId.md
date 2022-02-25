@@ -23,4 +23,4 @@ keccak256 hash event signature or 4byte function signature
 
 #### Defined in
 
-[src/4byte/model/interface.ts:3](https://github.com/leovigna/web3-redux/blob/be15552/src/4byte/model/interface.ts#L3)
+[src/4byte/model/interface.ts:3](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/4byte/model/interface.ts#L3)

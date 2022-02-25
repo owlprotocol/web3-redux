@@ -21,7 +21,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/contract/model/callArgs.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/callArgs.ts#L6)
+[src/contract/model/callArgs.ts:6](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contract/model/callArgs.ts#L6)
 
 ---
 
@@ -31,7 +31,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/contract/model/callArgs.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/callArgs.ts#L7)
+[src/contract/model/callArgs.ts:7](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contract/model/callArgs.ts#L7)
 
 ---
 
@@ -41,4 +41,4 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/contract/model/callArgs.ts:8](https://github.com/leovigna/web3-redux/blob/be15552/src/contract/model/callArgs.ts#L8)
+[src/contract/model/callArgs.ts:8](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contract/model/callArgs.ts#L8)

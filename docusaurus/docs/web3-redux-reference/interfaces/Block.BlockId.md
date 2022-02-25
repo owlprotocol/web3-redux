@@ -25,7 +25,7 @@ Blockchain network id. See [chainlist](https://chainlist.org/) for a list of net
 
 #### Defined in
 
-[src/block/model/id.ts:4](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/id.ts#L4)
+[src/block/model/id.ts:4](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/block/model/id.ts#L4)
 
 ---
 
@@ -37,4 +37,4 @@ Block number
 
 #### Defined in
 
-[src/block/model/id.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/block/model/id.ts#L6)
+[src/block/model/id.ts:6](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/block/model/id.ts#L6)

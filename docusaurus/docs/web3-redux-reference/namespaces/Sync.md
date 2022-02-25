@@ -55,7 +55,7 @@ Comments on Sync module
 
 #### Defined in
 
-[src/sync/actions/index.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/index.ts#L13)
+[src/sync/actions/index.ts:13](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/index.ts#L13)
 
 ---
 
@@ -67,7 +67,7 @@ Comments on Sync module
 
 #### Defined in
 
-[src/sync/actions/create.ts:11](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/create.ts#L11)
+[src/sync/actions/create.ts:11](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/create.ts#L11)
 
 ---
 
@@ -79,7 +79,7 @@ Sync Middleware Type + simplified notation
 
 #### Defined in
 
-[src/sync/model/index.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/model/index.ts#L15)
+[src/sync/model/index.ts:15](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/model/index.ts#L15)
 
 ---
 
@@ -91,7 +91,7 @@ Sync Middleware Type + simplified notation
 
 #### Defined in
 
-[src/sync/actions/index.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/index.ts#L6)
+[src/sync/actions/index.ts:6](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/index.ts#L6)
 
 ---
 
@@ -103,7 +103,7 @@ Sync Middleware Type + simplified notation
 
 #### Defined in
 
-[src/sync/actions/remove.ts:10](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/remove.ts#L10)
+[src/sync/actions/remove.ts:10](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/remove.ts#L10)
 
 ---
 
@@ -115,7 +115,7 @@ Sync Middleware Type
 
 #### Defined in
 
-[src/sync/model/index.ts:9](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/model/index.ts#L9)
+[src/sync/model/index.ts:9](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/model/index.ts#L9)
 
 ---
 
@@ -127,7 +127,7 @@ Sync Middleware Type
 
 #### Defined in
 
-[src/sync/actions/update.ts:11](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/update.ts#L11)
+[src/sync/actions/update.ts:11](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/update.ts#L11)
 
 ## Actions Variables
 
@@ -137,7 +137,7 @@ Sync Middleware Type
 
 #### Defined in
 
-[src/sync/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/create.ts#L8)
+[src/sync/actions/create.ts:8](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/create.ts#L8)
 
 ---
 
@@ -147,7 +147,7 @@ Sync Middleware Type
 
 #### Defined in
 
-[src/sync/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/remove.ts#L7)
+[src/sync/actions/remove.ts:7](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/remove.ts#L7)
 
 ---
 
@@ -157,7 +157,7 @@ Sync Middleware Type
 
 #### Defined in
 
-[src/sync/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/update.ts#L8)
+[src/sync/actions/update.ts:8](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/update.ts#L8)
 
 ---
 
@@ -171,7 +171,7 @@ Sync Middleware Type
 
 #### Defined in
 
-[src/sync/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/create.ts#L6)
+[src/sync/actions/create.ts:6](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/create.ts#L6)
 
 ---
 
@@ -183,7 +183,7 @@ Sync Middleware Type
 
 #### Defined in
 
-[src/sync/actions/remove.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/remove.ts#L5)
+[src/sync/actions/remove.ts:5](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/remove.ts#L5)
 
 ---
 
@@ -195,7 +195,7 @@ Sync Middleware Type
 
 #### Defined in
 
-[src/sync/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/update.ts#L6)
+[src/sync/actions/update.ts:6](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/update.ts#L6)
 
 ## Actions Functions
 
@@ -220,7 +220,7 @@ Create a Sync object from generic parameters
 
 #### Defined in
 
-[src/sync/model/index.ts:20](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/model/index.ts#L20)
+[src/sync/model/index.ts:20](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/model/index.ts#L20)
 
 ---
 
@@ -245,7 +245,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/sync/actions/index.ts:15](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/index.ts#L15)
+[src/sync/actions/index.ts:15](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/index.ts#L15)
 
 ---
 
@@ -267,7 +267,7 @@ action is Object
 
 #### Defined in
 
-[src/sync/actions/create.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/create.ts#L13)
+[src/sync/actions/create.ts:13](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/create.ts#L13)
 
 ---
 
@@ -290,7 +290,7 @@ action is ReducerAction
 
 #### Defined in
 
-[src/sync/actions/index.ts:8](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/index.ts#L8)
+[src/sync/actions/index.ts:8](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/index.ts#L8)
 
 ---
 
@@ -312,7 +312,7 @@ action is Object
 
 #### Defined in
 
-[src/sync/actions/remove.ts:12](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/remove.ts#L12)
+[src/sync/actions/remove.ts:12](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/remove.ts#L12)
 
 ---
 
@@ -334,7 +334,7 @@ action is Object
 
 #### Defined in
 
-[src/sync/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/actions/update.ts#L13)
+[src/sync/actions/update.ts:13](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/actions/update.ts#L13)
 
 ---
 
@@ -355,7 +355,7 @@ action is Object
 
 #### Defined in
 
-[src/sync/reducer.ts:3](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/reducer.ts#L3)
+[src/sync/reducer.ts:3](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/reducer.ts#L3)
 
 ---
 
@@ -378,7 +378,7 @@ action is Object
 
 #### Defined in
 
-[src/sync/selector/selectByIdExists.ts:4](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/selector/selectByIdExists.ts#L4)
+[src/sync/selector/selectByIdExists.ts:4](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/selector/selectByIdExists.ts#L4)
 
 ---
 
@@ -399,7 +399,7 @@ action is Object
 
 #### Defined in
 
-[src/sync/selector/selectByIdMany.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/selector/selectByIdMany.ts#L5)
+[src/sync/selector/selectByIdMany.ts:5](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/selector/selectByIdMany.ts#L5)
 
 ---
 
@@ -420,4 +420,4 @@ action is Object
 
 #### Defined in
 
-[src/sync/selector/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/be15552/src/sync/selector/selectByIdSingle.ts#L5)
+[src/sync/selector/selectByIdSingle.ts:5](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/sync/selector/selectByIdSingle.ts#L5)

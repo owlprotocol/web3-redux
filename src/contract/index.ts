@@ -1,5 +1,5 @@
 /**
- * Comments on Contract module
+ * EVM smart contract / EOA module.
  * @module Contract
  */
 

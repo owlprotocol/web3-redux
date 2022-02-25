@@ -15,7 +15,7 @@ export interface CallActionInput {
     gas?: number;
 }
 /**
- * Create contract
+ * Create contract call
  * @category Actions
  */
 export const call = createAction(CALL, (payload: CallActionInput) => {

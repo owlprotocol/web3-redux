@@ -74,9 +74,11 @@ const config = {
                         position: 'left',
                         label: 'Reference',
                     },
+                    /*
                     {
                         type: 'docsVersionDropdown',
                     },
+                    */
                     {
                         href: 'https://github.com/owlprotocol/web3-redux',
                         label: 'GitHub',

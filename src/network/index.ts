@@ -1,5 +1,5 @@
 /**
- * Comments on Network module
+ * EVM network config module.
  * @module Network
  */
 

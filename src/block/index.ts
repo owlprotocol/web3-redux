@@ -1,5 +1,5 @@
 /**
- * Comments on Block module
+ * EVM block data module.
  * @module Block
  */
 

@@ -33,7 +33,7 @@ Address of contract that emitted event
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:33](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L33)
+[src/contractevent/model/interface.ts:33](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L33)
 
 ---
 
@@ -49,7 +49,7 @@ Block hash when event was emitted
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:11](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L11)
+[src/contractevent/model/interface.ts:11](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L11)
 
 ---
 
@@ -61,7 +61,7 @@ redux-orm id of contract `${networkId}-{address}`
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:30](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L30)
+[src/contractevent/model/interface.ts:30](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L30)
 
 ---
 
@@ -73,7 +73,7 @@ Raw non-indexed log data
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:47](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L47)
+[src/contractevent/model/interface.ts:47](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L47)
 
 ---
 
@@ -85,7 +85,7 @@ Used to index contract events in redux-orm. Computed as `${networkId}-${blockHas
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:28](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L28)
+[src/contractevent/model/interface.ts:28](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L28)
 
 ---
 
@@ -97,7 +97,7 @@ ContractEventIndex redux-orm ids. Used for efficient filtering.
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:43](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L43)
+[src/contractevent/model/interface.ts:43](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L43)
 
 ---
 
@@ -113,7 +113,7 @@ Unique index within block of event
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:13](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L13)
+[src/contractevent/model/interface.ts:13](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L13)
 
 ---
 
@@ -125,7 +125,7 @@ Event name
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:37](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L37)
+[src/contractevent/model/interface.ts:37](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L37)
 
 ---
 
@@ -142,7 +142,7 @@ See [chainlist](https://chainlist.org/) for a list of networks.
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:9](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L9)
+[src/contractevent/model/interface.ts:9](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L9)
 
 ---
 
@@ -154,7 +154,7 @@ Return values of event
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:39](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L39)
+[src/contractevent/model/interface.ts:39](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L39)
 
 ---
 
@@ -166,7 +166,7 @@ Keys of `returnValues` to index event on
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:41](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L41)
+[src/contractevent/model/interface.ts:41](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L41)
 
 ---
 
@@ -178,4 +178,4 @@ Raw indexed data
 
 #### Defined in
 
-[src/contractevent/model/interface.ts:49](https://github.com/leovigna/web3-redux/blob/be15552/src/contractevent/model/interface.ts#L49)
+[src/contractevent/model/interface.ts:49](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/contractevent/model/interface.ts#L49)

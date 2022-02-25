@@ -14,6 +14,7 @@ custom_edit_url: null
 -   [Contract](namespaces/Contract.md)
 -   [ContractEvent](namespaces/ContractEvent.md)
 -   [ContractSend](namespaces/ContractSend.md)
+-   [Environment](namespaces/Environment.md)
 -   [EthCall](namespaces/EthCall.md)
 -   [Ipfs](namespaces/Ipfs.md)
 -   [Network](namespaces/Network.md)
@@ -35,7 +36,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/common.ts:2](https://github.com/leovigna/web3-redux/blob/be15552/src/common.ts#L2)
+[src/common.ts:2](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/common.ts#L2)
 
 ## Functions
 
@@ -62,7 +63,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/store.ts:30](https://github.com/leovigna/web3-redux/blob/be15552/src/store.ts#L30)
+[src/store.ts:30](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/store.ts#L30)
 
 ---
 
@@ -78,7 +79,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/orm.ts:19](https://github.com/leovigna/web3-redux/blob/be15552/src/orm.ts#L19)
+[src/orm.ts:19](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/orm.ts#L19)
 
 ---
 
@@ -99,7 +100,7 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/reducer.ts:92](https://github.com/leovigna/web3-redux/blob/be15552/src/reducer.ts#L92)
+[src/reducer.ts:92](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/reducer.ts#L92)
 
 ---
 
@@ -113,4 +114,4 @@ custom_edit_url: null
 
 #### Defined in
 
-[src/saga.ts:14](https://github.com/leovigna/web3-redux/blob/be15552/src/saga.ts#L14)
+[src/saga.ts:14](https://github.com/leovigna/web3-redux/blob/eb7b6c0/src/saga.ts#L14)

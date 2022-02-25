@@ -1,3 +1,8 @@
+/**
+ * Environment variable utilities.
+ * @module Environment
+ */
+
 import path from 'path';
 import isClient from './utils/isClient';
 
@@ -11,15 +16,27 @@ if (!isClient()) {
     require('dotenv').config({ path: envfile });
 }
 
-function getEnvVar(name: string) {
+/**
+ * Get an environment variable in one of the following formants:
+ * - `name`
+ * - `REACT_APP_name`
+ * - `NEXT_PUBLIC_name`
+ */
+export function getEnvVar(name: string) {
     return process.env[name] ?? process.env[`REACT_APP_${name}`] ?? process.env[`NEXT_PUBLIC_${name}`];
 }
 
+/**
+ * Infura API Project Id.
+ * Used to defive default Infura connection uri. */
 export const INFURA_API_KEY = getEnvVar('INFURA_API_KEY');
+/** Etherscan API Key */
 export const ETHERSCAN_API_KEY = getEnvVar('ETHERSCAN_API_KEY');
 export const LOG_REDUX_ACTIONS = getEnvVar('LOG_REDUX_ACTIONS');
 
+/** Local Ganache Blockchain */
 export const GANACHE_RPC = getEnvVar('GANACHE_RPC') ?? 'ws://localhost:8546';
+/** Ethereum Mainnet Blockchain */
 export const MAINNET_RPC =
     getEnvVar('MAINNET_RPC') ?? INFURA_API_KEY ? `wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}` : undefined;
 export const ROPSTEN_RPC =
@@ -53,6 +70,9 @@ export const OPTIMISM_KOVAN_RPC =
 //Infura uses Basic Auth for IPFS
 //https://infura.io/docs/ipfs#section/Getting-Started/Create-your-Infura-IPFS-project
 //TODO: Add basic auth support
+/** Infura Project Id for IPFS API */
 export const INFURA_IPFS_PROJECT_ID = getEnvVar('INFURA_IPFS_PROJECT_ID');
+/** Infura Basic Auth for IPFS */
 export const INFURA_IPFS_PROJECT_SECRET = getEnvVar('INFURA_IPFS_PROJECT_SECRET');
+/** IPFS RPC */
 export const IPFS_URL = getEnvVar('IPFS_URL') ?? 'https://ipfs.infura.io:5001';

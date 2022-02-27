@@ -1,17 +1,18 @@
 import { put, call, select } from 'typed-redux-saga/macro';
-import axios, { AxiosResponse } from 'axios';
 import invariant from 'tiny-invariant';
+import toBuffer from 'it-to-buffer';
 
 import { set, create, CatAction, CAT } from '../actions';
-import { selectIpfsUrl } from '../../config/selectors';
+
+import { selectConfig } from '../../config/selectors';
 import { selectByIdSingle } from '../selectors';
 
 const CAT_ERROR = `${CAT}/ERROR`;
 /** @category Sagas */
 export function* cat(action: CatAction) {
     try {
-        const ipfsUrl = yield* select(selectIpfsUrl);
-        invariant(ipfsUrl, 'IPFS URL undefined!');
+        const client = (yield* select(selectConfig)).ipfsClient;
+        invariant(client, 'IPFS client undefined!');
 
         const contentId = action.payload;
         //Check if contentId exists
@@ -19,9 +20,18 @@ export function* cat(action: CatAction) {
         if (!content) yield* put(create({ contentId }));
 
         //https://docs.ipfs.io/reference/http/api/
-        const response = yield* call(axios.get, `${ipfsUrl}/api/v0/cat/${contentId}`);
-
-        yield* put(set({ contentId, key: 'data', value: (response as AxiosResponse).data }));
+        //https://github.com/ipfs/js-ipfs/blob/master/docs/MIGRATION-TO-ASYNC-AWAIT.md#pull-stream-pipelines
+        const catGen = client.cat(contentId);
+        const catDataPromise = toBuffer(catGen);
+        const decoder = new TextDecoder();
+        const catData = yield* call(async () => {
+            return catDataPromise;
+        });
+        let catDecoded = decoder.decode(catData);
+        try {
+            catDecoded = JSON.parse(catDecoded);
+        } catch {}
+        yield* put(set({ contentId, key: 'data', value: catDecoded }));
     } catch (error) {
         console.error(error);
         yield* put({

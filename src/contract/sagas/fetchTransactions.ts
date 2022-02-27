@@ -40,7 +40,7 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     const apiClient = network.explorerApiClient;
     if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
 
-    const request = {
+    const options = {
         params: {
             module: 'account',
             action: 'txlist',
@@ -53,7 +53,7 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
         },
     };
 
-    const response = (yield* call(apiClient.get as any, request)) as AxiosResponse;
+    const response = (yield* call(apiClient.get as any, '/', options)) as AxiosResponse;
     const transactions = response.data?.result as EtherscanTx[];
     if (transactions) {
         const transactionsCreate = transactions.map((t) =>

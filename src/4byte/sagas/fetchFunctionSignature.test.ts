@@ -56,7 +56,7 @@ describe('4byte/sagas/fetchFunctionSignature.test.ts', () => {
     });
 
     after(() => {
-        moxios.uninstall(axios);
+        moxios.uninstall(client);
     });
 
     it('testSaga()', async () => {

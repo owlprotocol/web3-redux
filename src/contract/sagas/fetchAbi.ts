@@ -18,7 +18,7 @@ export function* fetchAbi(action: FetchAbiAction) {
     const apiClient = network.explorerApiClient;
     if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
 
-    const request = {
+    const options = {
         params: {
             module: 'contract',
             action: 'getabi',
@@ -26,7 +26,7 @@ export function* fetchAbi(action: FetchAbiAction) {
         },
     };
 
-    const response = (yield* call(apiClient as any, request)) as AxiosResponse;
+    const response = (yield* call(apiClient.get as any, '/', options)) as AxiosResponse;
     const abi = JSON.parse(response.data?.result) as AbiItem[];
 
     yield* put(setAction({ id: { networkId, address }, key: 'abi', value: abi }));

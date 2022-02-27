@@ -1,5 +1,7 @@
 import { assert } from 'chai';
-import { name } from '../common';
+import axios from 'axios';
+import moxios from 'moxios';
+
 import WETH from '../../abis/WETH.json';
 
 import { sleep } from '../../utils';
@@ -8,19 +10,27 @@ import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';
 import { selectByIdSingle as selectContract } from '../selectors';
 import { fetchAbi as fetchAbiAction } from '../actions';
-import { ETHERSCAN_API_KEY } from '../../environment';
 
-describe(`${name}.sagas.fetchAbi`, () => {
+describe('contract/sagas/fetchAbi.test.ts', () => {
     let store: StoreType;
-    const address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'; //WETH contract
+    const address = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; //WETH contract
+    const client = axios.create({ baseURL: 'https://api.etherscan.io/api' });
+
+    before(async () => {
+        //Moxios install
+        moxios.install(client);
+    });
+
+    after(() => {
+        moxios.uninstall(client);
+    });
 
     beforeEach(async () => {
         ({ store } = createStore());
         store.dispatch(
             createNetwork({
                 networkId,
-                explorerApiUrl: 'https://api.etherscan.io/api',
-                explorerApiKey: ETHERSCAN_API_KEY,
+                explorerApiClient: client,
             }),
         );
     });
@@ -33,7 +43,14 @@ describe(`${name}.sagas.fetchAbi`, () => {
                     address,
                 }),
             );
-            await sleep(2000);
+
+            await moxios.wait(() => {
+                const request = moxios.requests.mostRecent();
+                assert.deepEqual(request.config.params, { module: 'contract', action: 'getabi', address });
+                request.respondWith({ status: 200, response: { result: JSON.stringify(WETH.abi) } });
+            });
+
+            await sleep(100);
             //Selector
             const contract = selectContract(store.getState(), { networkId, address });
             assert.deepEqual(contract?.abi, WETH.abi as any, 'contract.abi != WETH.abi');

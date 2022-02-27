@@ -1,5 +1,6 @@
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
+import { Axios } from 'axios';
 
 /** @internal */
 export interface NetworkId {
@@ -36,6 +37,8 @@ export interface Network extends NetworkId {
     readonly explorerApiUrl?: string;
     /** Block explorer API key */
     readonly explorerApiKey?: string;
+    /** Block explorer API HTTP Client */
+    readonly explorerApiClient?: Axios;
     /** Ens domain */
     readonly ens?: string;
 }

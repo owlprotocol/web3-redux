@@ -1,5 +1,6 @@
 import { assert } from 'chai';
-import BlockNumberAbi from '../../abis/BlockNumber.json';
+import { cloneDeep } from 'lodash';
+import BlockNumberArtifact from '../../abis/BlockNumber.json';
 
 import { name } from '../common';
 import { networkId } from '../../test/data';
@@ -15,7 +16,7 @@ describe(`${name}.actions`, () => {
     const item: Contract = {
         networkId,
         address,
-        abi: BlockNumberAbi.abi as any,
+        abi: cloneDeep(BlockNumberArtifact.abi) as any, //Avoid mutation of abi
     };
     const id: ContractId = { networkId, address };
     const itemWithId = {

@@ -1,6 +1,7 @@
 import { select, put, call } from 'typed-redux-saga/macro';
 import { batchActions } from 'redux-batched-actions';
-import axios from 'axios';
+import { AxiosResponse } from 'axios';
+
 import networkExists from '../../network/sagas/exists';
 import { create as createTransaction } from '../../transaction/actions';
 import { create, FetchTransactionsAction } from '../actions';
@@ -36,13 +37,10 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     if (!account) yield* put(create({ networkId, address }));
 
     const network = yield* call(networkExists, networkId);
-    const apiUrl = network.explorerApiUrl;
-    const apiKey = network.explorerApiKey;
-    if (!apiUrl) throw new Error(`Network ${networkId} missing apiUrl`);
+    const apiClient = network.explorerApiClient;
+    if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
 
     const request = {
-        method: 'get',
-        url: apiUrl,
         params: {
             module: 'account',
             action: 'txlist',
@@ -52,12 +50,10 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
             page: page ?? 1,
             offset: offset ?? 10,
             sort: sort ?? 'desc', //Default fetches latest tx
-            apikey: apiKey,
         },
     };
 
-    //@ts-expect-error
-    const response = yield* call(axios, request);
+    const response = (yield* call(apiClient.get as any, request)) as AxiosResponse;
     const transactions = response.data?.result as EtherscanTx[];
     if (transactions) {
         const transactionsCreate = transactions.map((t) =>

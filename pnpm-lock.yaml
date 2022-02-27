@@ -19,6 +19,7 @@ specifiers:
   '@types/chai': ^4.2.21
   '@types/lodash': ^4.14.176
   '@types/mocha': ^9.1.0
+  '@types/moxios': ^0.4.15
   '@types/node': ^16.4.13
   '@types/react': 17.0.2
   '@types/react-dom': 17.0.2
@@ -116,6 +117,7 @@ devDependencies:
   '@types/chai': 4.3.0
   '@types/lodash': 4.14.178
   '@types/mocha': 9.1.0
+  '@types/moxios': 0.4.15
   '@types/node': 16.11.22
   '@types/react': 17.0.2
   '@types/react-dom': 17.0.2
@@ -1961,6 +1963,14 @@ packages:
     resolution: {integrity: sha512-QCWHkbMv4Y5U9oW10Uxbr45qMMSzl4OzijsozynUAgx3kEHUdXB00udx2dWDQ7f2TU2a2uuiFaRZjCe3unPpeg==}
     dev: true
 
+  /@types/moxios/0.4.15:
+    resolution: {integrity: sha512-eHD7i0/Uu7pFGzS4uIed2InJLj5H6xOOsqPjGtRyvyC/jnzRt6q6Xtnm2PQlkcqKHjRybEqjw71dcPnzfDouhw==}
+    dependencies:
+      axios: 0.25.0
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
   /@types/node/12.20.43:
     resolution: {integrity: sha512-HCfJdaYqJX3BCzeihgZrD7b85Cu05OC/GVJ4kEYIflwUs4jbnUlLLWoq7hw1LBcdvUyehO+gr6P5JQ895/2ZfA==}
 
@@ -2461,7 +2471,6 @@ packages:
       follow-redirects: 1.14.7
     transitivePeerDependencies:
       - debug
-    dev: false
 
   /babel-code-frame/6.26.0:
     resolution: {integrity: sha1-Y/1D99weO7fONZR9uP42mj9Yx0s=}
@@ -5031,7 +5040,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}

@@ -1,5 +1,7 @@
 import { AbiCoder } from 'web3-eth-abi';
-import BlockNumber from '../abis/BlockNumber.json';
+import { cloneDeep } from 'lodash';
+
+import BlockNumberArtifact from '../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../common';
 
 import { validateContract } from '../contract';
@@ -28,7 +30,7 @@ export const network1 = { networkId };
 export const contract1 = validateContract({
     networkId,
     address: ADDRESS_1,
-    abi: BlockNumber.abi as any,
+    abi: cloneDeep(BlockNumberArtifact.abi) as any,
 });
 
 export const contract1Id = { networkId, address: ADDRESS_1 };
@@ -75,7 +77,7 @@ export const transaction2 = validateTransaction({
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');
 const method = 'getValue';
-const methodAbi = (BlockNumber.abi as any).filter((f: any) => f.name === method)[0];
+const methodAbi = (cloneDeep(BlockNumberArtifact.abi) as any).filter((f: any) => f.name === method)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 

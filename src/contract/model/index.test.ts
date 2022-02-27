@@ -1,15 +1,14 @@
 import { assert } from 'chai';
-import BlockNumberAbi from '../../abis/BlockNumber.json';
-
-import { name } from '../common';
+import { cloneDeep } from 'lodash';
+import BlockNumberArtifact from '../../abis/BlockNumber.json';
 import { Contract, getId, validate } from '../model/interface';
 
-describe(`${name}.model`, () => {
+describe('Contract/model/index.test.ts', () => {
     const networkId = '1337';
     const item: Contract = {
         networkId,
         address: '0x0000000000000000000000000000000000000001',
-        abi: BlockNumberAbi.abi as any,
+        abi: cloneDeep(BlockNumberArtifact.abi) as any,
     };
 
     const id = `${item.networkId}-${item.address}`;

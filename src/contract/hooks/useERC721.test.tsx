@@ -7,9 +7,11 @@ import { renderHook } from '@testing-library/react-hooks';
 import { cloneDeep } from 'lodash';
 import axios from 'axios';
 import moxios from 'moxios';
+import * as IPFS from 'ipfs-http-client';
+import { URL } from 'url';
 
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
-import { networkId, IPFS_NFT_COLLECTION } from '../../test/data';
+import { networkId, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data';
 
 import ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
 
@@ -18,15 +20,15 @@ import { create as createTransaction } from '../../transaction/actions';
 import { create as createBlock } from '../../block/actions';
 import { create as createEvent } from '../../contractevent/actions';
 
-import { name } from '../common';
 import { createStore, StoreType } from '../../store';
+import { update as updateConfig } from '../../config/actions';
 
 import useERC721 from './useERC721';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
-describe(`${name}/hooks/useERC721.test.tsx`, () => {
+describe('contract/hooks/useERC721.test.tsx', () => {
     jsdom({ url: 'http://localhost' });
 
     const baseUri = 'https://owlprotocol.xyz/v1/';
@@ -41,16 +43,6 @@ describe(`${name}/hooks/useERC721.test.tsx`, () => {
     let address: string;
 
     before(async () => {
-        //Moxios install
-        moxios.install(axios);
-        moxios.stubRequest('https://owlprotocol.xyz/v1/0', {
-            status: 200,
-            response: { name: 'Herbie Starbelly' },
-        });
-        moxios.stubRequest('https://owlprotocol.xyz/v1/0', {
-            status: 200,
-            response: { name: 'Herbie Starbelly' },
-        });
         const provider = getWeb3Provider();
         //@ts-ignore
         web3 = new Web3(provider);
@@ -65,49 +57,262 @@ describe(`${name}/hooks/useERC721.test.tsx`, () => {
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
+        web3Contract = await new web3.eth.Contract(cloneDeep(ERC721.abi) as any)
+            .deploy({
+                arguments: ['Test NFT', 'TEST', baseUri],
+                data: ERC721.bytecode,
+            })
+            .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
+        address = web3Contract.options.address;
+        await web3Contract.methods.mint(accounts[0]).send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
     });
 
-    describe('useERC721()', async () => {
-        it('default - HTTP metadata', async () => {
-            web3Contract = await new web3.eth.Contract(cloneDeep(ERC721.abi) as any)
-                .deploy({
-                    arguments: ['Test NFT', 'TEST', baseUri],
-                    data: ERC721.bytecode,
-                })
-                .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
-            address = web3Contract.options.address;
-            await web3Contract.methods
-                .mint(accounts[0])
-                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-
-            const { result, waitForNextUpdate } = renderHook(() => useERC721(networkId, address, '0'), {
+    it('defaults', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useERC721(networkId, address, '0', { tokenURI: false }),
+            {
                 wrapper,
-            });
+            },
+        );
+
+        //Two synchronous renders for useContractWithAbi
+        assert.equal(result.all.length, 2, 'result.all.length');
+        await waitForNextUpdate(); //name
+        await waitForNextUpdate(); //symbol
+        await waitForNextUpdate(); //ownerOf
+        assert.equal(result.all.length, 5, 'result.all.length');
+
+        const value = result.current;
+        assert.equal(value.name, 'Test NFT', 'name');
+        assert.equal(value.symbol, 'TEST', 'symbol');
+        assert.equal(value.ownerOf, accounts[0], 'ownerOf');
+
+        //No additional re-renders frm background tasks
+        await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+
+        moxios.uninstall(axios);
+    });
+
+    describe('Transfer', () => {
+        //Sync new transfer events
+        it('sync', async () => {
+            const { result, waitForNextUpdate } = renderHook(
+                () =>
+                    useERC721(networkId, address, '0', {
+                        ownerOf: false,
+                        tokenURI: false,
+                        TransferEventsOptions: { sync: true },
+                    }),
+                {
+                    wrapper,
+                },
+            );
+
+            //Two synchronous renders for useContractWithAbi
+            assert.equal(result.all.length, 2, 'result.all.length');
+            await waitForNextUpdate(); //name
+            await waitForNextUpdate(); //symbol
+            assert.equal(result.all.length, 4, 'result.all.length');
+
+            //Mint function emits Transfer event with to = <accounts[0]>
+            web3Contract.methods
+                .transferFrom(accounts[0], accounts[1], 0)
+                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+            await waitForNextUpdate(); //update events
+
+            const value = result.current;
+            assert.equal(value.Transfer!.length, 1, 'Transfer');
+
+            assert.equal(result.all.length, 5, 'result.all.length');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+        });
+        //Get past Transfer events
+        it('past', async () => {
+            const { result, waitForNextUpdate } = renderHook(
+                () =>
+                    useERC721(networkId, address, '0', {
+                        ownerOf: false,
+                        tokenURI: false,
+                        TransferEventsOptions: { past: true },
+                    }),
+                {
+                    wrapper,
+                },
+            );
+
+            //Two synchronous renders for useContractWithAbi
+            assert.equal(result.all.length, 2, 'result.all.length');
+            await waitForNextUpdate(); //name
+            await waitForNextUpdate(); //symbol
+            assert.equal(result.all.length, 4, 'result.all.length');
+
+            await waitForNextUpdate(); //update events
+            const value = result.current;
+            assert.equal(value.Transfer!.length, 1, 'Transfer');
+
+            assert.equal(result.all.length, 5, 'result.all.length');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+        });
+    });
+    describe('ownerOf', () => {
+        it('Transaction', async () => {
+            const { result, waitForNextUpdate } = renderHook(
+                () => useERC721(networkId, address, '0', { ownerOf: 'Transaction', tokenURI: false }),
+                {
+                    wrapper,
+                },
+            );
 
             //Two synchronous renders for useContractWithAbi
             assert.equal(result.all.length, 2, 'result.all.length');
             await waitForNextUpdate(); //name
             await waitForNextUpdate(); //symbol
             await waitForNextUpdate(); //ownerOf
-            await waitForNextUpdate(); //tokenURI & Fetch HTTP
-            assert.equal(result.all.length, 7, 'result.all.length');
+            assert.equal(result.all.length, 5, 'result.all.length');
+
+            await web3Contract.methods
+                .transferFrom(accounts[0], accounts[1], 0)
+                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+            //Create transaction, triggering a refresh
+            store.dispatch(
+                createTransaction({
+                    networkId,
+                    hash: '0x1',
+                    from: accounts[0],
+                    to: address,
+                }),
+            );
+
+            await waitForNextUpdate(); //ownerOf gets updated by detecting new transaction
 
             const value = result.current;
-            assert.equal(value.name, 'Test NFT', 'name');
-            assert.equal(value.symbol, 'TEST', 'symbol');
-            assert.equal(value.ownerOf, accounts[0], 'ownerOf');
-            assert.equal(value.tokenURI, `${baseUri}0`, 'tokenURI');
-            assert.equal(value.metadata.name, 'Herbie Starbelly', 'metadata.name');
+            assert.equal(value.ownerOf, accounts[1], 'ownerOf'); //updated balance
 
-            assert.deepEqual(value.Transfer, [], 'Transfer');
-            assert.deepEqual(value.Approval, [], 'Approval');
+            assert.equal(result.all.length, 6, 'result.all.length');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+        });
+        it('Block', async () => {
+            const { result, waitForNextUpdate } = renderHook(
+                () => useERC721(networkId, address, '0', { ownerOf: 'Block', tokenURI: false }),
+                {
+                    wrapper,
+                },
+            );
 
+            //Two synchronous renders for useContractWithAbi
+            assert.equal(result.all.length, 2, 'result.all.length');
+            await waitForNextUpdate(); //name
+            await waitForNextUpdate(); //symbol
+            await waitForNextUpdate(); //ownerOf
+            assert.equal(result.all.length, 5, 'result.all.length');
+
+            await web3Contract.methods
+                .transferFrom(accounts[0], accounts[1], 0)
+                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+            //Create block, triggering a refresh
+            store.dispatch(
+                createBlock({
+                    networkId,
+                    number: 1,
+                }),
+            );
+            await waitForNextUpdate();
+
+            const value = result.current;
+            assert.equal(value.ownerOf, accounts[1], 'ownerOf'); //updated owner
+            assert.equal(result.all.length, 6, 'result.all.length');
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+        });
+        it('onTransfer', async () => {
+            const { result, waitForNextUpdate } = renderHook(
+                () => useERC721(networkId, address, '0', { ownerOf: 'onTransfer', tokenURI: false }),
+                {
+                    wrapper,
+                },
+            );
+
+            //Two synchronous renders for useContractWithAbi
+            assert.equal(result.all.length, 2, 'result.all.length');
+            await waitForNextUpdate(); //name
+            await waitForNextUpdate(); //symbol
+            await waitForNextUpdate(); //ownerOf
+            assert.equal(result.all.length, 5, 'result.all.length');
+
+            await web3Contract.methods
+                .transferFrom(accounts[0], accounts[1], 0)
+                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+            //Create event, triggering a refresh
+            store.dispatch(
+                createEvent({
+                    networkId,
+                    address,
+                    blockHash: '0x1',
+                    logIndex: 0,
+                    name: 'Transfer',
+                    returnValues: { from: accounts[0], to: accounts[1], tokenId: 0 },
+                }),
+            );
+            //Synchronous update to TransferTo events
+            assert.equal(result.all.length, 6, 'result.all.length');
+            await waitForNextUpdate();
+
+            const value = result.current;
+            assert.equal(value.ownerOf, accounts[1], 'ownerOf'); //updated owner
             assert.equal(result.all.length, 7, 'result.all.length');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
+    });
 
-        it('default - IPFS metadata', async () => {
+    describe('useERC721() - metadata', async () => {
+        it('HTTP metadata', async () => {
+            const nft1Uri = new URL('0', baseUri).toString();
+            //Moxios install
+            moxios.install(axios);
+            await web3Contract.methods
+                .mint(accounts[0])
+                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+
+            const { result, waitForNextUpdate } = renderHook(
+                () =>
+                    useERC721(networkId, address, '0', {
+                        ownerOf: false,
+                    }),
+                {
+                    wrapper,
+                },
+            );
+
+            //Two synchronous renders for useContractWithAbi
+            assert.equal(result.all.length, 2, 'result.all.length');
+            await waitForNextUpdate(); //name
+            await waitForNextUpdate(); //symbol
+            await waitForNextUpdate(); //tokenURI
+            await moxios.wait(() => {
+                const request = moxios.requests.mostRecent();
+                assert.equal(request.config.url, nft1Uri);
+                request.respondWith({ status: 200, response: { name: 'Herbie Starbelly' } });
+            });
+            await waitForNextUpdate(); //fetch HTTP
+            assert.equal(result.all.length, 6, 'result.all.length');
+
+            const value = result.current;
+            assert.equal(value.tokenURI, nft1Uri, 'tokenURI');
+            assert.equal(value.metadata.name, 'Herbie Starbelly', 'metadata.name');
+
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+
+            moxios.uninstall(axios);
+        });
+
+        it('IPFS metadata', async () => {
+            const nft1Uri = new URL('1', baseUriIpfs).toString();
+            //Contract setup
             web3Contract = await new web3.eth.Contract(ERC721.abi as any)
                 .deploy({
                     arguments: ['Test NFT', 'TEST', baseUriIpfs],
@@ -122,226 +327,40 @@ describe(`${name}/hooks/useERC721.test.tsx`, () => {
                 .mint(accounts[0])
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
-            const { result, waitForNextUpdate } = renderHook(() => useERC721(networkId, address, '1'), {
-                wrapper,
-            });
+            //IPFS Mock
+            const mockIPFSNode = await startMockIPFSNode();
+            const client = IPFS.create({ url: mockIPFSNode.url });
+            store.dispatch(updateConfig({ id: '0', ipfsClient: client }));
+
+            //Hook
+            const { result, waitForNextUpdate } = renderHook(
+                () =>
+                    useERC721(networkId, address, '1', {
+                        ownerOf: false,
+                    }),
+                {
+                    wrapper,
+                },
+            );
 
             //Two synchronous renders for useContractWithAbi
             assert.equal(result.all.length, 2, 'result.all.length');
-            await waitForNextUpdate(); //name
-            await waitForNextUpdate(); //symbol
-            await waitForNextUpdate(); //ownerOf
             await waitForNextUpdate(); //tokenURI
             await waitForNextUpdate(); //GET/OBJECT (root)
             await waitForNextUpdate(); //CREATE (with childHash cid updating result of selectPathHash) + GET/OBJECT (root/1)
-            //await waitForNextUpdate(); //IPFS CAT
-            console.debug(result.all);
-            assert.equal(result.all.length, 10, 'result.all.length');
+            await waitForNextUpdate(); //IPFS CAT
+            await waitForNextUpdate();
+            await waitForNextUpdate();
+            assert.equal(result.all.length, 9, 'result.all.length');
 
             const value = result.current;
-            assert.equal(value.name, 'Test NFT', 'name');
-            assert.equal(value.symbol, 'TEST', 'symbol');
-            assert.equal(value.ownerOf, accounts[0], 'ownerOf');
-            assert.equal(value.tokenURI, `${baseUriIpfs}1`, 'tokenURI');
+            assert.equal(value.tokenURI, nft1Uri, 'tokenURI');
             assert.equal(value.metadata.name, 'Test NFT 1', 'metadata.name');
 
-            assert.deepEqual(value.Transfer, [], 'Transfer');
-            assert.deepEqual(value.Approval, [], 'Approval');
-
-            assert.equal(result.all.length, 10, 'result.all.length');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-        });
-    });
 
-    describe('useERC721() - sync options', async () => {
-        beforeEach(async () => {
-            web3Contract = await new web3.eth.Contract(ERC721.abi as any)
-                .deploy({
-                    arguments: ['Test NFT', 'TEST', baseUri],
-                    data: ERC721.bytecode,
-                })
-                .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
-            address = web3Contract.options.address;
-            await web3Contract.methods
-                .mint(accounts[0])
-                .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-        });
-        describe('Transfer', () => {
-            //Sync new transfer events
-            it.skip('sync', async () => {
-                const { result, waitForNextUpdate } = renderHook(
-                    () => useERC721(networkId, address, '0', { TransferEventsOptions: { sync: true } }),
-                    {
-                        wrapper,
-                    },
-                );
-
-                //Two synchronous renders for useContractWithAbi
-                assert.equal(result.all.length, 2, 'result.all.length');
-                await waitForNextUpdate(); //name
-                await waitForNextUpdate(); //symbol
-                await waitForNextUpdate(); //ownerOf
-                await waitForNextUpdate(); //tokenURI
-                await waitForNextUpdate(); //tokenURI Fetch HTTP
-                assert.equal(result.all.length, 7, 'result.all.length');
-
-                //Mint function emits Transfer event with to = <accounts[0]>
-                web3Contract.methods
-                    .transferFrom(accounts[0], accounts[1], 0)
-                    .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-                await waitForNextUpdate(); //update events
-
-                const value = result.current;
-                assert.equal(value.Transfer!.length, 1, 'Transfer');
-
-                assert.equal(result.all.length, 8, 'result.all.length');
-                //No additional re-renders frm background tasks
-                await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-            });
-            //Get past Transfer events
-            it.skip('past', async () => {
-                const { result, waitForNextUpdate } = renderHook(
-                    () => useERC721(networkId, address, '0', { TransferEventsOptions: { past: true } }),
-                    {
-                        wrapper,
-                    },
-                );
-
-                //Two synchronous renders for useContractWithAbi
-                assert.equal(result.all.length, 2, 'result.all.length');
-                await waitForNextUpdate(); //name
-                await waitForNextUpdate(); //symbol
-                await waitForNextUpdate(); //ownerOf
-                await waitForNextUpdate(); //tokenURI
-                await waitForNextUpdate(); //events
-                await waitForNextUpdate(); //tokenURI Fetch HTTP
-                assert.equal(result.all.length, 8, 'result.all.length');
-
-                const value = result.current;
-                assert.equal(value.Transfer!.length, 1, 'Transfer');
-
-                assert.equal(result.all.length, 8, 'result.all.length');
-                //No additional re-renders frm background tasks
-                await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-            });
-        });
-        describe('ownerOf', () => {
-            it.skip('Transaction', async () => {
-                const { result, waitForNextUpdate } = renderHook(
-                    () => useERC721(networkId, address, '0', { ownerOf: 'Transaction' }),
-                    {
-                        wrapper,
-                    },
-                );
-
-                //Two synchronous renders for useContractWithAbi
-                assert.equal(result.all.length, 2, 'result.all.length');
-                await waitForNextUpdate(); //name
-                await waitForNextUpdate(); //symbol
-                await waitForNextUpdate(); //ownerOf
-                await waitForNextUpdate(); //tokenURI
-                await waitForNextUpdate(); //tokenURI Fetch HTTP
-                assert.equal(result.all.length, 7, 'result.all.length');
-
-                await web3Contract.methods
-                    .transferFrom(accounts[0], accounts[1], 0)
-                    .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-                //Create transaction, triggering a refresh
-                store.dispatch(
-                    createTransaction({
-                        networkId,
-                        hash: '0x1',
-                        from: accounts[0],
-                        to: address,
-                    }),
-                );
-
-                await waitForNextUpdate(); //ownerOf gets updated by detecting new transaction
-
-                const value = result.current;
-                assert.equal(value.ownerOf, accounts[1], 'ownerOf'); //updated balance
-
-                assert.equal(result.all.length, 8, 'result.all.length');
-                //No additional re-renders frm background tasks
-                await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-            });
-            it.skip('Block', async () => {
-                const { result, waitForNextUpdate } = renderHook(
-                    () => useERC721(networkId, address, '0', { ownerOf: 'Block' }),
-                    {
-                        wrapper,
-                    },
-                );
-
-                //Two synchronous renders for useContractWithAbi
-                assert.equal(result.all.length, 2, 'result.all.length');
-                await waitForNextUpdate(); //name
-                await waitForNextUpdate(); //symbol
-                await waitForNextUpdate(); //ownerOf
-                await waitForNextUpdate(); //tokenURI
-                await waitForNextUpdate(); //tokenURI Fetch HTTP
-                assert.equal(result.all.length, 7, 'result.all.length');
-
-                await web3Contract.methods
-                    .transferFrom(accounts[0], accounts[1], 0)
-                    .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-                //Create block, triggering a refresh
-                store.dispatch(
-                    createBlock({
-                        networkId,
-                        number: 1,
-                    }),
-                );
-                await waitForNextUpdate();
-
-                const value = result.current;
-                assert.equal(value.ownerOf, accounts[1], 'ownerOf'); //updated owner
-                assert.equal(result.all.length, 8, 'result.all.length');
-                //No additional re-renders frm background tasks
-                await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-            });
-            it.skip('onTransfer', async () => {
-                const { result, waitForNextUpdate } = renderHook(
-                    () => useERC721(networkId, address, '0', { ownerOf: 'onTransfer' }),
-                    {
-                        wrapper,
-                    },
-                );
-
-                //Two synchronous renders for useContractWithAbi
-                assert.equal(result.all.length, 2, 'result.all.length');
-                await waitForNextUpdate(); //name
-                await waitForNextUpdate(); //symbol
-                await waitForNextUpdate(); //ownerOf
-                await waitForNextUpdate(); //tokenURI
-                await waitForNextUpdate(); //tokenURI Fetch HTTP
-                assert.equal(result.all.length, 7, 'result.all.length');
-
-                await web3Contract.methods
-                    .transferFrom(accounts[0], accounts[1], 0)
-                    .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-                //Create event, triggering a refresh
-                store.dispatch(
-                    createEvent({
-                        networkId,
-                        address,
-                        blockHash: '0x1',
-                        logIndex: 0,
-                        name: 'Transfer',
-                        returnValues: { from: accounts[0], to: accounts[1], tokenId: 0 },
-                    }),
-                );
-                //Synchronous update to TransferTo events
-                assert.equal(result.all.length, 8, 'result.all.length');
-                await waitForNextUpdate();
-
-                const value = result.current;
-                assert.equal(value.ownerOf, accounts[1], 'ownerOf'); //updated owner
-                assert.equal(result.all.length, 9, 'result.all.length');
-                //No additional re-renders frm background tasks
-                await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-            });
+            mockIPFSNode.stop();
         });
     });
 });

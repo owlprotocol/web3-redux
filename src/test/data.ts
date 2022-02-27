@@ -1,5 +1,6 @@
 import { AbiCoder } from 'web3-eth-abi';
 import { cloneDeep } from 'lodash';
+import * as MockHTTP from 'mockttp';
 
 import BlockNumberArtifact from '../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../common';
@@ -82,9 +83,55 @@ const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
 //IPFS
+export const HELLO_WORLD = 'Hello World!\n';
+export const DAG_NODE_HELLO_WORLD = { Data: Buffer.from(HELLO_WORLD).toString('base64'), Links: [] };
 export const IPFS_HELLO_WORLD = 'QmWATWQ7fVPP2EFGu71UkfnqhYXDYH566qy47CnJDgvs8u';
+
+export const NFT_1 = { name: 'Test NFT 1' };
+export const IPFS_NFT_1 = 'QmZyAnXBwWSheQQxNZ8kCECkQHCYc79F9XJuMZXwibZeCZ';
+export const DAG_NODE_NFT_1 = { Data: Buffer.from(JSON.stringify(NFT_1)).toString('base64'), Links: [] };
+
+export const DAG_NODE_NFT_COLLECTION = {
+    Data: Buffer.from([]).toString('base64'),
+    Links: [
+        {
+            Hash: IPFS_NFT_1,
+            Name: '1',
+        },
+    ],
+};
 export const IPFS_NFT_COLLECTION = 'QmVioGYCm7EBYiJaxaciouDf5DzXArkBzibMV8Le69Z123';
-export const IPFS_NFT_COLLECTION_1 = 'QmZyAnXBwWSheQQxNZ8kCECkQHCYc79F9XJuMZXwibZeCZ';
+
+/** Create and start MockHTTP server that mocks IPFS API with some data */
+export async function startMockIPFSNode() {
+    const mockIPFSNode = MockHTTP.getLocal();
+    await mockIPFSNode.start();
+    //object/get
+    const p1 = mockIPFSNode
+        .forPost(`${mockIPFSNode.url}/api/v0/object/get`)
+        .withQuery({ arg: IPFS_HELLO_WORLD })
+        .thenReply(200, JSON.stringify(DAG_NODE_HELLO_WORLD));
+    const p2 = mockIPFSNode
+        .forPost(`${mockIPFSNode.url}/api/v0/object/get`)
+        .withQuery({ arg: IPFS_NFT_COLLECTION })
+        .thenReply(200, JSON.stringify(DAG_NODE_NFT_COLLECTION));
+    const p3 = mockIPFSNode
+        .forPost(`${mockIPFSNode.url}/api/v0/object/get`)
+        .withQuery({ arg: IPFS_NFT_1 })
+        .thenReply(200, JSON.stringify(DAG_NODE_NFT_1));
+    //cat
+    const p4 = mockIPFSNode
+        .forPost(`${mockIPFSNode.url}/api/v0/cat`)
+        .withQuery({ arg: IPFS_HELLO_WORLD })
+        .thenReply(200, 'Hello World\n');
+    const p5 = mockIPFSNode
+        .forPost(`${mockIPFSNode.url}/api/v0/cat`)
+        .withQuery({ arg: IPFS_NFT_1 })
+        .thenReply(200, JSON.stringify(NFT_1), { 'content-type': 'application/json' });
+
+    await Promise.all([p1, p2, p3, p4, p5]);
+    return mockIPFSNode;
+}
 
 //State
 const state: StateRoot = {

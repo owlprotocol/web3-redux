@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
-import * as MockHTTP from 'mockttp';
-import { IPFS_HELLO_WORLD } from '../../test/data';
+import { Mockttp } from 'mockttp';
+import { IPFS_HELLO_WORLD, startMockIPFSNode } from '../../test/data';
 import { sleep } from '../../utils';
 
 import { createStore, StoreType } from '../../store';
@@ -14,21 +14,15 @@ import objectGet from './objectGet';
 import { selectConfig } from '../../config/selectors';
 
 describe('ipfs/sagas/objectGet.test.ts', () => {
-    const mockNode = MockHTTP.getLocal();
     let client: IPFS.IPFSHTTPClient;
-    const dagNode = { Data: Buffer.from('Hello World\n').toString('base64'), Links: [] };
+    let mockIPFSNode: Mockttp;
 
     before(async () => {
-        await mockNode.start();
-        client = IPFS.create({ url: mockNode.url });
-
-        await mockNode
-            .forPost(`${mockNode.url}/api/v0/object/get`)
-            .withQuery({ arg: IPFS_HELLO_WORLD })
-            .thenReply(200, JSON.stringify(dagNode));
+        mockIPFSNode = await startMockIPFSNode();
+        client = IPFS.create({ url: mockIPFSNode.url });
     });
 
-    after(() => mockNode.stop());
+    after(() => mockIPFSNode.stop());
 
     it('testSaga()', async () => {
         const cid = IPFS_HELLO_WORLD;

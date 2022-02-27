@@ -60,14 +60,14 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
             createTransaction({
                 ...t,
                 networkId,
-                blockNumber: parseInt(t.blockNumber),
-                nonce: parseInt(t.nonce),
-                transactionIndex: parseInt(t.transactionIndex),
-                gas: parseInt(t.gas),
-                gasUsed: parseInt(t.gasUsed),
-                cumulativeGasUsed: parseInt(t.cumulativeGasUsed),
-                confirmations: parseInt(t.confirmations),
-                timeStamp: parseInt(t.timeStamp),
+                blockNumber: t.blockNumber ? parseInt(t.blockNumber) : undefined,
+                nonce: t.nonce ? parseInt(t.nonce) : undefined,
+                transactionIndex: t.transactionIndex ? parseInt(t.transactionIndex) : undefined,
+                gas: t.gas ? parseInt(t.gas) : undefined,
+                gasUsed: t.gasUsed ? parseInt(t.gasUsed) : undefined,
+                cumulativeGasUsed: t.cumulativeGasUsed ? parseInt(t.cumulativeGasUsed) : undefined,
+                confirmations: t.confirmations ? parseInt(t.confirmations) : undefined,
+                timeStamp: t.timeStamp ? parseInt(t.timeStamp) : undefined,
             }),
         );
 

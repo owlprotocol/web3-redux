@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
-import * as MockHTTP from 'mockttp';
+import { Mockttp } from 'mockttp';
 
-import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION_1 } from '../../test/data';
+import { IPFS_HELLO_WORLD, IPFS_NFT_1, startMockIPFSNode } from '../../test/data';
 import { sleep } from '../../utils';
 
 import { createStore, StoreType } from '../../store';
@@ -15,39 +15,15 @@ import { create as createAction, set as setAction, cat as catAction } from '../a
 import cat from './cat';
 
 describe('ipfs/sagas/cat.test.ts', () => {
-    const mockNode = MockHTTP.getLocal();
     let client: IPFS.IPFSHTTPClient;
+    let mockIPFSNode: Mockttp;
 
     before(async () => {
-        await mockNode.start();
-        client = IPFS.create({ url: mockNode.url });
-
-        await mockNode
-            .forPost(`${mockNode.url}/api/v0/cat`)
-            .withQuery({ arg: IPFS_HELLO_WORLD })
-            .thenReply(200, 'Hello World\n');
-        await mockNode
-            .forPost(`${mockNode.url}/api/v0/cat`)
-            .withQuery({ arg: IPFS_NFT_COLLECTION_1 })
-            .thenReply(
-                200,
-                JSON.stringify({
-                    title: 'Test NFT 1',
-                    name: 'Test NFT 1',
-                    type: 'object',
-                    description: 'collection/1',
-                    attributes: [
-                        {
-                            trait_type: 'Creator',
-                            value: 'Leo Vigna',
-                        },
-                    ],
-                }),
-                { 'content-type': 'application/json' },
-            );
+        mockIPFSNode = await startMockIPFSNode();
+        client = IPFS.create({ url: mockIPFSNode.url });
     });
 
-    after(() => mockNode.stop());
+    after(() => mockIPFSNode.stop());
 
     it('testSaga()', async () => {
         const cid = IPFS_HELLO_WORLD;
@@ -84,11 +60,11 @@ describe('ipfs/sagas/cat.test.ts', () => {
             assert.equal(ipfsItem?.data, 'Hello World\n');
         });
 
-        it('cat(IPFS_NFT_COLLECTION_1)', async () => {
-            store.dispatch(catAction(IPFS_NFT_COLLECTION_1));
+        it('cat(IPFS_NFT_1)', async () => {
+            store.dispatch(catAction(IPFS_NFT_1));
 
             await sleep(100);
-            const ipfsItem = selectByIdSingle(store.getState(), IPFS_NFT_COLLECTION_1);
+            const ipfsItem = selectByIdSingle(store.getState(), IPFS_NFT_1);
             assert.equal(ipfsItem?.data.name, 'Test NFT 1');
         });
     });

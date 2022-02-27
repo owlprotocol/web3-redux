@@ -23,7 +23,7 @@ export function useFetchTransactions(
     const transactionsFrom = useSelector((state) => selectByFilter(state, { from: address }));
     const transactionsTo = useSelector((state) => selectByFilter(state, { to: address }));
     const transactionsGenesisTx = useSelector((state) => selectByFilter(state, { contractAddress: address }));
-    const explorerApiExists = !!network?.explorerApiUrl;
+    const explorerApiExists = !!network?.explorerApiClient;
 
     //Fetch transactions (Etherscan)
     const fetchTransactionsAction = useMemo(() => {

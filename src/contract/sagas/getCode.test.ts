@@ -1,10 +1,12 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
+import { cloneDeep } from 'lodash';
+
 import { getWeb3Provider } from '../../test';
 import { sleep } from '../../utils';
 
-import BlockNumber from '../../abis/BlockNumber.json';
+import BlockNumberArtifact from '../../abis/BlockNumber.json';
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network/actions';
@@ -45,8 +47,8 @@ describe(`${name}.integration`, () => {
 
         it('Smart Contract - Code', async () => {
             //Deploy contract
-            const tx = new web3.eth.Contract(BlockNumber.abi as AbiItem[]).deploy({
-                data: BlockNumber.bytecode,
+            const tx = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[]).deploy({
+                data: BlockNumberArtifact.bytecode,
             });
             const gas = await tx.estimateGas();
             const web3Contract = await tx.send({ from: item.address, gas, gasPrice: '875000000' });
@@ -57,7 +59,7 @@ describe(`${name}.integration`, () => {
             await sleep(100);
 
             const account = selectByIdSingle(store.getState(), { networkId, address });
-            assert.equal(account?.code, '0x' + BlockNumber.deployedBytecode, 'smart contract code');
+            assert.equal(account?.code, '0x' + BlockNumberArtifact.deployedBytecode, 'smart contract code');
         });
     });
 });

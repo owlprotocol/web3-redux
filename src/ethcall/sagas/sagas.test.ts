@@ -1,6 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import BlockNumber from '../../abis/BlockNumber.json';
+import { cloneDeep } from 'lodash';
+
+import BlockNumberArtifact from '../../abis/BlockNumber.json';
 import { getWeb3Provider } from '../../test';
 import { networkId } from '../../test/data';
 
@@ -28,8 +30,8 @@ describe('ethcall.sagas', () => {
 
     it('store.dispatch(EthCall.fetch())', async () => {
         //Deploy contract
-        const tx1 = new web3.eth.Contract(BlockNumber.abi as any[]).deploy({
-            data: BlockNumber.bytecode,
+        const tx1 = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as any[]).deploy({
+            data: BlockNumberArtifact.bytecode,
         });
         const gas1 = await tx1.estimateGas();
         const contract = await tx1.send({ from: accounts[0], gas: gas1, gasPrice: '875000000' });

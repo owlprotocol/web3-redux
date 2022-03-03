@@ -1,0 +1,31 @@
+name: Test deployment
+
+on:
+  pull_request:
+    branches: [master]
+    paths: [website/**]
+
+jobs:
+  test-deploy:
+    name: Test deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "16.14"
+      # PNPM Cache
+      - run: npm i --global pnpm
+      - name: Cache pnpm store
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pnpm-store
+        with:
+          path: ~/.pnpm-store/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+      # Install
+      - working-directory: docusaurus
+        run: pnpm install
+      # Build
+      - working-directory: docusaurus
+        run: pnpm build

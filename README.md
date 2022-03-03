@@ -10,6 +10,10 @@ A Redux library designed to efficiently sync and normalize blockchain data synce
 
 See the official documentation at [owlprotocol.github.io/web3-redux/][gh-page]
 
+## Contributing
+
+See the contributor's guide at
+
 ## Semantic versioning
 
 This project follows [semver](https://semver.org/) as closely as possible
@@ -21,6 +25,8 @@ MIT License.
 
 [repo]: https://github.com/owlprotocol/web3-redux
 [gh-page]: https://owlprotocol.github.io/web3-redux/
+[gh-page-contributor]: https://owlprotocol.github.io/web3-redux/
+[gh-page-]: https://owlprotocol.github.io/web3-redux/
 [npm-image-version]: https://img.shields.io/npm/v/@owlprotocol/web3-redux.svg
 [npm-image-downloads]: https://img.shields.io/npm/dm/@owlprotocol/web3-redux.svg
 [npm-url]: https://npmjs.org/package/@owlprotocol/web3-redux

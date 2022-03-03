@@ -3,8 +3,9 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import { cloneDeep } from 'lodash';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
-import BlockNumber from '../../abis/BlockNumber.json';
+import BlockNumberArtifact from '../../abis/BlockNumber.json';
 
 import { create as createNetwork } from '../../network/actions';
 import { create as createTransaction } from '../../transaction/actions';
@@ -41,9 +42,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(BlockNumber.abi as any)
+        web3Contract = await new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as any)
             .deploy({
-                data: BlockNumber.bytecode,
+                data: BlockNumberArtifact.bytecode,
             })
             .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
@@ -54,7 +55,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             create({
                 networkId,
                 address,
-                abi: BlockNumber.abi as any,
+                abi: cloneDeep(BlockNumberArtifact.abi) as any,
             }),
         );
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;

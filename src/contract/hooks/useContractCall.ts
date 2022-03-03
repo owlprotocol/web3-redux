@@ -20,8 +20,8 @@ export interface UseContractCallOptions {
 }
 
 /**
- * @category Hooks
  * Create a contract call and return value.
+ * @category Hooks
  */
 export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
     networkId: string | undefined,
@@ -84,7 +84,10 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     return contractCall;
 }
 
-/** @category Hooks */
+/**
+ * Factory method for contract call hook
+ * @category Hooks
+ */
 export function contractCallHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,

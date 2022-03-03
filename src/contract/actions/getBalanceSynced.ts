@@ -9,9 +9,8 @@ export interface GetBalanceSyncedActionInput extends ContractId {
     sync: GenericSync;
 }
 /**
- * @category Actions
  * Creates a GET_BALANCE action and an associated SYNC action
- *
+ * @category Actions
  */
 export const getBalanceSynced = (payload: GetBalanceSyncedActionInput) => {
     const { networkId } = payload;

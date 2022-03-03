@@ -1,5 +1,5 @@
 /**
- * Comments on Transaction module
+ * EVM transaction data module.
  * @module Transaction
  */
 

@@ -5,8 +5,8 @@ import { send } from '../actions';
 import selectSingle from '../selectors/selectByIdSingle';
 
 /**
- * @category Hooks
  * Create a contract send transaction callback method.
+ * @category Hooks
  */
 export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
     networkId: string | undefined,

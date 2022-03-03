@@ -1,26 +1,38 @@
 import { assert } from 'chai';
 // eslint-disable-next-line prettier/prettier
 import { Provider } from 'react-redux';
+import * as IPFS from 'ipfs-http-client';
+import { Mockttp } from 'mockttp';
 import { renderHook } from '@testing-library/react-hooks';
-import { expectThrowsAsync } from '../../test';
-import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION } from '../../test/data';
 
-import { name } from '../common';
+import { expectThrowsAsync } from '../../test';
+import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data';
+
 import { createStore, StoreType } from '../../store';
+import { update as updateConfig } from '../../config/actions';
 
 import useIpfs from './useIpfs';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
-describe(`${name}/hooks/useIpfs.test.tsx`, () => {
+describe('ipfs/hooks/useIpfs.test.tsx', () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
     let wrapper: any;
+    let client: IPFS.IPFSHTTPClient;
+    let mockIPFSNode: Mockttp;
+    before(async () => {
+        mockIPFSNode = await startMockIPFSNode();
+        client = IPFS.create({ url: mockIPFSNode.url });
+    });
+
+    after(() => mockIPFSNode.stop());
 
     beforeEach(async () => {
         ({ store } = createStore());
+        store.dispatch(updateConfig({ id: '0', ipfsClient: client }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

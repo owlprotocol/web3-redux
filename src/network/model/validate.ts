@@ -1,4 +1,6 @@
 import Web3 from 'web3';
+import axios from 'axios';
+
 import Network from './interface';
 import { defaultNetworks } from '../defaults';
 /**
@@ -22,6 +24,14 @@ export function validate(network: Network): Network {
     if (explorerApiKey) validatedNetwork.explorerApiKey = explorerApiKey;
     if (web3Rpc) validatedNetwork.web3Rpc = web3Rpc;
     if (web3) validatedNetwork.web3 = web3;
+
+    let explorerApiClient = network.explorerApiClient;
+    if (!explorerApiClient && explorerApiUrl) {
+        if (explorerApiKey)
+            explorerApiClient = axios.create({ baseURL: explorerApiUrl, params: { apikey: explorerApiKey } });
+        else explorerApiClient = axios.create({ baseURL: explorerApiUrl });
+    }
+    if (explorerApiClient) validatedNetwork.explorerApiClient = explorerApiClient;
 
     return validatedNetwork;
 }

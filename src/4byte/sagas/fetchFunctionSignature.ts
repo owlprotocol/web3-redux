@@ -1,5 +1,8 @@
 import { put, call, select } from 'typed-redux-saga/macro';
-import axios, { AxiosResponse } from 'axios';
+import invariant from 'tiny-invariant';
+import { AxiosResponse } from 'axios';
+
+import { selectConfig } from '../../config/selectors';
 import { set, create, FetchFunctionSignatureAction } from '../actions';
 import { selectByIdSingle } from '../selectors';
 
@@ -16,14 +19,14 @@ export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
     const { payload } = action;
     const { signatureHash } = payload;
 
+    const client = (yield* select(selectConfig))._4byteClient;
+    invariant(client, '4byte client undefined!');
+
     //Check if preImage exists
     const preImage = yield* select(selectByIdSingle, signatureHash);
     if (!preImage) yield* put(create({ signatureHash }));
 
-    const functionSigRes = yield* call(
-        axios.get,
-        `https://www.4byte.directory/api/v1/signatures/?hex_signature=${signatureHash}`,
-    );
+    const functionSigRes = yield* call(client.get, `/signatures/?hex_signature=${signatureHash}`);
     const functionSigResArr: _4ByteResponseItem[] | undefined = (functionSigRes as AxiosResponse).data?.results;
 
     if (functionSigResArr === undefined) throw new Error('This function signature was not found in the 4Byte database');

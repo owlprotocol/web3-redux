@@ -14,7 +14,10 @@ export interface CallActionInput {
     defaultBlock?: number | 'latest';
     gas?: number;
 }
-/** @category Actions */
+/**
+ * Create contract call
+ * @category Actions
+ */
 export const call = createAction(CALL, (payload: CallActionInput) => {
     const { networkId, address, method, args, defaultBlock, from } = payload;
     const id = callHash(networkId, address, method, { args, defaultBlock, from });

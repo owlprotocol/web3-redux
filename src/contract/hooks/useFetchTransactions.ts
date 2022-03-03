@@ -7,8 +7,8 @@ import { fetchTransactions } from '../actions';
 import { FetchTransactionOptions } from '../actions/fetchTransactions';
 
 /**
- * @category Hooks
  * Fetch transactions from/to contract using Etherscan API
+ * @category Hooks
  *
  */
 export function useFetchTransactions(
@@ -23,7 +23,7 @@ export function useFetchTransactions(
     const transactionsFrom = useSelector((state) => selectByFilter(state, { from: address }));
     const transactionsTo = useSelector((state) => selectByFilter(state, { to: address }));
     const transactionsGenesisTx = useSelector((state) => selectByFilter(state, { contractAddress: address }));
-    const explorerApiExists = !!network?.explorerApiUrl;
+    const explorerApiExists = !!network?.explorerApiClient;
 
     //Fetch transactions (Etherscan)
     const fetchTransactionsAction = useMemo(() => {

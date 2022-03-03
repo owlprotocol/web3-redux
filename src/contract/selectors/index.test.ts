@@ -1,7 +1,9 @@
 import { assert } from 'chai';
 import { AbiCoder } from 'web3-eth-abi';
 import Web3 from 'web3';
-import BlockNumberAbi from '../../abis/BlockNumber.json';
+import { cloneDeep } from 'lodash';
+
+import BlockNumberArtifact from '../../abis/BlockNumber.json';
 import { event1, event2, transaction1, transaction2, ADDRESS_0 } from '../../test/data';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
@@ -23,7 +25,7 @@ describe(`${name}.selectors`, () => {
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';
     //EthCall
     const method = 'getValue';
-    const methodAbi = (BlockNumberAbi.abi as any).filter((f: any) => f.name === method)[0];
+    const methodAbi = (cloneDeep(BlockNumberArtifact.abi) as any).filter((f: any) => f.name === method)[0];
     const data = coder.encodeFunctionCall(methodAbi, []);
     const ethCall = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
@@ -115,7 +117,7 @@ describe(`${name}.selectors`, () => {
         });
     });
     describe('selectContractCall', () => {
-        const abi = BlockNumberAbi.abi as any;
+        const abi = cloneDeep(BlockNumberArtifact.abi) as any;
         const web3Contract = new web3.eth.Contract(abi, address);
 
         before(() => {

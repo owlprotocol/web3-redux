@@ -20,7 +20,7 @@ export function useFetchAbi(
     const contract = useSelector((state) => selectByIdSingle(state, id));
     const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
     const contractExists = !!contract;
-    const explorerApiExists = !!network?.explorerApiUrl;
+    const explorerApiExists = !!network?.explorerApiClient;
     const abiExists = !!contract?.abi;
 
     //Fetch abi (Etherscan)

@@ -122,19 +122,7 @@
         "typescript": "4.4.4"
     },
     "files": [
-        "*",
-        "!test",
-        "!./**/*.test.*",
-        "!abis",
-        "abis/Multicall.json",
-        "abis/IERC20.json",
-        "abis/IERC20Metadata.json",
-        "abis/IERC721.json",
-        "abis/IERC721Metadata.json",
-        "abis/IERC165.json",
-        "!types/ethers",
-        "!types/truffle",
-        "!types/web3"
+        "*"
     ],
     "main": "index.js",
     "types": "index.d.ts",

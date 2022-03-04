@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import axios from 'axios';
 import moxios from 'moxios';
+import fetchEventSignature from './fetchEventSignature';
 import { networkId } from '../../test/data';
 import { sleep } from '../../utils';
 
@@ -16,7 +17,6 @@ import fetchEventSignatureAction from '../actions/fetchEventSignature';
 import setAction from '../actions/set';
 
 //Sagas
-import fetchEventSignature from './fetchEventSignature';
 
 describe('4byte/sagas/fetchEventSignature.test.ts', () => {
     const TransferPreImage = 'Transfer(address,address,uint256)';

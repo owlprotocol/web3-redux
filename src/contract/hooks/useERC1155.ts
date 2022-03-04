@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
 import invariant from 'tiny-invariant';
 import { isAddress } from 'web3-utils';
+import useContractWithAbi from './useContractWithAbi';
+import useContractCall from './useContractCall';
+import useEvents, { UseEventsOptions } from './useEvents';
 import IERC1155MetadataURI from '../../abis/token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI.json';
 
 import { GenericSync } from '../../sync/model';
 import { createEventSync } from '../../sync/model/EventSync';
-
-import useContractWithAbi from './useContractWithAbi';
-import useContractCall from './useContractCall';
-import useEvents, { UseEventsOptions } from './useEvents';
 
 /**
  * Contract hook for ERC1155 interface.

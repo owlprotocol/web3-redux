@@ -1,5 +1,5 @@
-import { Sync } from '../../sync/model';
 import { BaseWeb3Contract } from './interface';
+import { Sync } from '../../sync/model';
 
 /**
  * Contract call object. Stores a cached contract call.

@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
+import useGetNonce from './useGetNonce';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 import { networkId, ADDRESS_0 } from '../../test/data';
 
@@ -12,8 +13,6 @@ import { create as createBlock } from '../../block/actions';
 import { name } from '../common';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-
-import useGetNonce from './useGetNonce';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

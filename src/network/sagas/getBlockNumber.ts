@@ -1,6 +1,6 @@
 import { put, call } from 'typed-redux-saga/macro';
-import { set as setAction, GetBlockNumberAction } from '../actions';
 import networkExists from './exists';
+import { set as setAction, GetBlockNumberAction } from '../actions';
 
 function* getBlockNumber(action: GetBlockNumberAction) {
     const { payload } = action;

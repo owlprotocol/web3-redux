@@ -1,5 +1,5 @@
-import Transaction from '../../transaction/model/interface';
 import BlockHeader from './BlockHeader';
+import Transaction from '../../transaction/model/interface';
 
 /**
  * Block object with additional data. Typically returned by individual Web3 getBlock request.

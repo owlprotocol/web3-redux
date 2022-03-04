@@ -1,10 +1,10 @@
 import { assert } from 'chai';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
+import useAccount from './useAccount';
 import { ADDRESS_0, ADDRESS_1 } from '../../test/data';
 import { name } from '../common';
 import { createStore, StoreType } from '../../store';
-import useAccount from './useAccount';
 import { setAccount } from '../actions';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires

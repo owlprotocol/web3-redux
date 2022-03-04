@@ -2,9 +2,9 @@ import { put, call, fork, take } from 'typed-redux-saga/macro';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import Web3 from 'web3';
 
+import blockFetch from './fetch';
 import BlockHeader from '../model/BlockHeader';
 import { create, fetch as fetchAction, SUBSCRIBE } from '../actions';
-import blockFetch from './fetch';
 import networkExists from '../../network/sagas/exists';
 import { Network } from '../../network/model';
 import { SubscribeAction } from '../actions/subscribe';

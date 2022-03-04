@@ -10,9 +10,9 @@ import { networkId, block1 } from '../../test/data';
 
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-import { useBlock } from './index';
 import { BlockTransaction, validate } from '../model';
 import { getWeb3Provider } from '../../test';
+import { useBlock } from './index';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

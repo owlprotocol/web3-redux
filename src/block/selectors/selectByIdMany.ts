@@ -1,7 +1,7 @@
+import { select } from './select';
 import { BlockId, getId } from '../model/id';
 import BlockTransaction from '../model/BlockTransaction';
 import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
-import { select } from './select';
 
 /** @category Selectors */
 export function selectByIdMany(state: any, ids?: BlockId[]): (BlockTransaction | undefined)[] {

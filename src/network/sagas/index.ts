@@ -1,7 +1,7 @@
 import { all, takeEvery } from 'typed-redux-saga/macro';
-import { GET_BLOCK_NUMBER, GET_CHAIN_ID } from '../actions';
 import getBlockNumber from './getBlockNumber';
 import getChainId from './getChainId';
+import { GET_BLOCK_NUMBER, GET_CHAIN_ID } from '../actions';
 
 /** @internal */
 export default function* saga() {

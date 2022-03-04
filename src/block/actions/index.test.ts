@@ -1,10 +1,5 @@
 import { assert } from 'chai';
 
-import { name } from '../common';
-import { networkId } from '../../test/data';
-import { getId } from '../model/id';
-import BlockHeader from '../model/BlockHeader';
-
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
@@ -12,6 +7,10 @@ import { set, SET, SetAction, isSetAction } from './set';
 import { FETCH, fetch, FetchAction, isFetchAction } from './fetch';
 import { SUBSCRIBE, subscribe, SubscribeAction, isSubscribeAction } from './subscribe';
 import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from './unsubscribe';
+import BlockHeader from '../model/BlockHeader';
+import { getId } from '../model/id';
+import { networkId } from '../../test/data';
+import { name } from '../common';
 
 describe(`${name}.actions`, () => {
     const item: BlockHeader = { networkId, number: 0 };

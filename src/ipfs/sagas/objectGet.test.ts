@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
 import { Mockttp } from 'mockttp';
+import objectGet from './objectGet';
 import { IPFS_HELLO_WORLD, startMockIPFSNode } from '../../test/data';
 import { sleep } from '../../utils';
 
@@ -10,7 +11,6 @@ import { update as updateConfig } from '../../config/actions';
 import { selectByIdSingle } from '../selectors';
 import { create as createAction, objectGet as objectGetAction } from '../actions';
 
-import objectGet from './objectGet';
 import { selectConfig } from '../../config/selectors';
 
 describe('ipfs/sagas/objectGet.test.ts', () => {

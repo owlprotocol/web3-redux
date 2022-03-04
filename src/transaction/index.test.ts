@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 import { batchActions } from 'redux-batched-actions';
-import { createStore, StoreType } from '../store';
-import { create, selectByIdSingle, selectByFilter } from './index';
 import { name } from './common';
+import { createStore, StoreType } from '../store';
 import { networkId, transaction1 } from '../test/data';
+import { create, selectByIdSingle, selectByFilter } from './index';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;

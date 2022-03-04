@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
+import useGetBalance from './useGetBalance';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 import { networkId, ADDRESS_0 } from '../../test/data';
 
@@ -12,8 +13,6 @@ import { create as createBlock } from '../../block/actions';
 import { name } from '../common';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-
-import useGetBalance from './useGetBalance';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

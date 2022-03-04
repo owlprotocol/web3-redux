@@ -1,8 +1,8 @@
-import { validate as validateTransaction } from '../../transaction/model/interface';
-import { isStrings } from '../../utils';
 import { getId } from './id';
 import BlockTransaction from './BlockTransaction';
 import BlockHeader from './BlockHeader';
+import { isStrings } from '../../utils';
+import { validate as validateTransaction } from '../../transaction/model/interface';
 import { ModelWithId } from '../../types/model';
 
 /** @internal */

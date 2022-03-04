@@ -1,6 +1,6 @@
+import { CallActionInput, call } from './call';
 import { GenericSync, createSyncForActions } from '../../sync/model';
 import { create as createSyncAction } from '../../sync/actions';
-import { CallActionInput, call } from './call';
 
 /** @internal */
 export interface CallSyncedActionInput extends CallActionInput {

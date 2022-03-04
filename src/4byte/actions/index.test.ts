@@ -1,13 +1,12 @@
 import { assert } from 'chai';
 
-import { name } from '../common';
-import { _4ByteSignature } from '../model/interface';
-import { ADDRESS_0 } from '../../test/data';
-
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 import { set, SET, SetAction, isSetAction } from './set';
+import { ADDRESS_0 } from '../../test/data';
+import { _4ByteSignature } from '../model/interface';
+import { name } from '../common';
 
 describe(`${name}.action`, () => {
     const item: _4ByteSignature = { signatureHash: ADDRESS_0 };

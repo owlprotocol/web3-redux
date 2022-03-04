@@ -10,6 +10,7 @@ import moxios from 'moxios';
 import * as IPFS from 'ipfs-http-client';
 import { URL } from 'url';
 
+import useERC721 from './useERC721';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 import { networkId, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data';
 
@@ -22,8 +23,6 @@ import { create as createEvent } from '../../contractevent/actions';
 
 import { createStore, StoreType } from '../../store';
 import { update as updateConfig } from '../../config/actions';
-
-import useERC721 from './useERC721';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

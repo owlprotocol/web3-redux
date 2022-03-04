@@ -1,5 +1,5 @@
-import { EthCall, EthCallId, getId } from '../model/interface';
 import select from './select';
+import { EthCall, EthCallId, getId } from '../model/interface';
 
 /** @category Selectors */
 function selectByIdSingle(state: any, id: EthCallId | string | undefined): EthCall | undefined {

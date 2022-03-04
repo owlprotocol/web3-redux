@@ -1,5 +1,5 @@
-import { Network } from '../model/interface';
 import select from './select';
+import { Network } from '../model/interface';
 
 /** @category Selectors */
 function selectByIdSingle(state: any, id: string | undefined): Network | undefined {

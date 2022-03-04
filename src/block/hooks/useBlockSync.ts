@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useCallback } from 'react';
 import * as BlockActions from '../actions';
 import { selectByIdSingle as selectNetwork, selectBlocks } from '../../network/selectors';
-import { useEffect, useCallback } from 'react';
 
 /**
  * Reads blocks for network and syncs data with a block subscription.

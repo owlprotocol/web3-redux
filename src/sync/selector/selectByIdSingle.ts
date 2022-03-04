@@ -1,5 +1,5 @@
-import { Sync } from '../model';
 import select from './select';
+import { Sync } from '../model';
 
 /** @category Selectors */
 function selectByIdSingle(state: any, id: string | undefined): Sync | undefined {

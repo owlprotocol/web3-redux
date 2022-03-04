@@ -1,12 +1,12 @@
 import { put, call, fork } from 'typed-redux-saga/macro';
 import { batchActions } from 'redux-batched-actions';
 import { EventData } from 'web3-eth-contract';
+import exists from './exists';
 import { create as createEvent } from '../../contractevent/actions';
 import { EventGetPastAction, EVENT_GET_PAST } from '../actions';
 import networkExists from '../../network/sagas/exists';
 
 import { getId } from '../model';
-import exists from './exists';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
 

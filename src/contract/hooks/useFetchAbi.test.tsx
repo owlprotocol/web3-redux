@@ -1,18 +1,15 @@
+import { Provider } from 'react-redux';
 import { assert } from 'chai';
 import axios from 'axios';
 import moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
-import { Provider } from 'react-redux';
-
-import WETH from '../../abis/WETH.json';
-
-import { create as createNetwork } from '../../network/actions';
-
-import { networkId } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create } from '../actions';
-
 import useFetchAbi from './useFetchAbi';
+import { create as createNetwork } from '../../network/actions';
+import { create } from '../actions';
+import WETH from '../../abis/WETH.json';
+import { WETH as WETH_ADDRESS, networkId } from '../../test/data';
+import { StoreType, createStore } from '../../store';
+
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');
 
@@ -22,7 +19,7 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
     let store: StoreType;
     let wrapper: any;
 
-    const address = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; //WETH contract
+    const address = WETH_ADDRESS; //WETH contract
     const client = axios.create({ baseURL: 'https://api.etherscan.io/api' });
 
     before(async () => {

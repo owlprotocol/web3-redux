@@ -1,5 +1,5 @@
-import { Transaction, TransactionId, getId } from '../model/interface';
 import select from './select';
+import { Transaction, TransactionId, getId } from '../model/interface';
 
 /** @category Selectors */
 function selectByIdSingle(state: any, id: TransactionId | undefined): Transaction | undefined {

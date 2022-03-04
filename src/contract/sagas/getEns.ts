@@ -1,9 +1,9 @@
 import { select, put, call } from 'typed-redux-saga/macro';
+import ENS from 'ethereum-ens';
 import networkExists from '../../network/sagas/exists';
 import { set, create, GetEnsAction } from '../actions';
 import { selectByIdSingle } from '../selectors';
 //@ts-ignore
-import ENS from 'ethereum-ens';
 
 /** @category Sagas */
 export function* getEns(action: GetEnsAction) {

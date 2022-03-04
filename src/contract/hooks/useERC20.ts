@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
+import useContractWithAbi from './useContractWithAbi';
+import useContractCall from './useContractCall';
+import useEvents, { UseEventsOptions } from './useEvents';
 import IERC20 from '../../abis/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
 
 import { GenericSync } from '../../sync/model';
 import { createEventSync } from '../../sync/model/EventSync';
-
-import useContractWithAbi from './useContractWithAbi';
-import useContractCall from './useContractCall';
-import useEvents, { UseEventsOptions } from './useEvents';
 
 /**
  * Contract hook for ERC20 interface.

@@ -1,5 +1,5 @@
-import { ContractSend, ContractSendId, getId } from '../model/interface';
 import select from './select';
+import { ContractSend, ContractSendId, getId } from '../model/interface';
 
 /** @category Selectors */
 function selectByIdSingle(state: any, id: ContractSendId | undefined): ContractSend | undefined {

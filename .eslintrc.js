@@ -28,6 +28,13 @@ module.exports = {
         'import/no-anonymous-default-export': 'off',
         'import/no-cycle': 'error',
         'import/no-self-import': 'error',
+        //https://dev.to/diballesteros/how-to-quickly-configure-eslint-for-import-sorting-2h73
+        'import/order': [
+            1,
+            {
+                groups: ['external', 'builtin', 'internal', 'sibling', 'parent', 'index'],
+            },
+        ],
         '@typescript-eslint/no-unused-vars': ['error', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',

@@ -1,5 +1,5 @@
-import { _4ByteSignature } from '../model';
 import select from './select';
+import { _4ByteSignature } from '../model';
 
 /** @category Selectors */
 function selectByIdSingle(state: any, id: string | undefined): _4ByteSignature | undefined {

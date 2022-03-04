@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Sync } from '../model';
 import { name } from './common';
+import { Sync } from '../model';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;

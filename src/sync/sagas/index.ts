@@ -1,12 +1,11 @@
 import { all } from 'typed-redux-saga/macro';
+import blockSync from './blockSync';
+import eventSync from './eventSync';
+import transactionSync from './transactionSync';
 import takeEveryBatched from '../../utils/takeEveryBatched';
 import { CREATE as CREATE_BLOCK, UPDATE as UPDATE_BLOCK } from '../../block/actions';
 import { CREATE as CREATE_TRANSACTION } from '../../transaction/actions';
 import { CREATE as CREATE_EVENT } from '../../contractevent/actions';
-
-import blockSync from './blockSync';
-import eventSync from './eventSync';
-import transactionSync from './transactionSync';
 
 //TODO: Rate-limit or cache block? This can avoid issues if a frontend component is dispatching
 // too many actions. However, it is sensible that a block be overwritten or transaction updated.

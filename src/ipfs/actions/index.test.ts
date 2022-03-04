@@ -1,13 +1,12 @@
 import { assert } from 'chai';
+import { create, CREATE, CreateAction, isCreateAction } from './create';
+import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
+import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 import { IPFS_HELLO_WORLD } from '../../test/data';
 
 import { name } from '../common';
 
 import { Ipfs } from '../model/interface';
-
-import { create, CREATE, CreateAction, isCreateAction } from './create';
-import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
-import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 
 describe(`${name}.actions`, () => {
     const contentId = IPFS_HELLO_WORLD;

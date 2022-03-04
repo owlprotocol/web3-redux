@@ -1,5 +1,5 @@
-import { Sync } from '../model';
 import select from './select';
+import { Sync } from '../model';
 
 /** @category Selectors */
 function selectByIdMany(state: any, ids?: string[]): (Sync | null)[] {

@@ -1,20 +1,20 @@
-import { AbiCoder } from 'web3-eth-abi';
-import { cloneDeep } from 'lodash';
 import * as MockHTTP from 'mockttp';
 
+import { AbiCoder } from 'web3-eth-abi';
+import { cloneDeep } from 'lodash';
 import BlockNumberArtifact from '../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../common';
-
+import { StateRoot } from '../state';
+import { getOrm } from '../orm';
+import { validateBlock } from '../block';
 import { validateContract } from '../contract';
 import { validateContractEvent } from '../contractevent';
 import { validateEthCall } from '../ethcall';
-import { validateBlock } from '../block';
 import { validateTransaction } from '../transaction';
 
-import { getOrm } from '../orm';
-import { StateRoot } from '../state';
-
 export const networkId = '1336';
+
+//Addresses
 export const addressList = [
     '0x0000000000000000000000000000000000000000',
     '0x0000000000000000000000000000000000000001',
@@ -23,6 +23,8 @@ export const addressList = [
 export const ADDRESS_0 = addressList[0];
 export const ADDRESS_1 = addressList[1];
 export const ADDRESS_2 = addressList[2];
+export const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
 
 //Network
 export const network1 = { networkId };

@@ -1,13 +1,13 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
+import useContractWithAbi from './useContractWithAbi';
 import IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
 
 import { name } from '../common';
 import { networkId, ADDRESS_0 } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 
-import useContractWithAbi from './useContractWithAbi';
 import { expectThrowsAsync } from '../../test';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires

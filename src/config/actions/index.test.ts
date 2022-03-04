@@ -1,13 +1,12 @@
 import { assert } from 'chai';
 
-import { name } from '../common';
-import { networkId, ADDRESS_0 } from '../../test/data';
-import Config from '../model/interface';
-
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 import { set, SET, SetAction, isSetAction } from './set';
+import Config from '../model/interface';
+import { networkId, ADDRESS_0 } from '../../test/data';
+import { name } from '../common';
 
 describe(`${name}.actions`, () => {
     const item: Config = { id: '0', networkId, account: ADDRESS_0 };

@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import { AbiItem } from 'web3-utils';
 import {
     getInterfaceIdentifierForAbi,
     getFunctionIdentifier,
@@ -8,7 +9,6 @@ import {
     getInterfaceIdentifier,
     get4ByteIdentifier,
 } from './getInterfaceIdentifier';
-import { AbiItem } from 'web3-utils';
 import ERC165 from '../abis/utils/introspection/IERC165.sol/IERC165.json';
 import ERC721Enumerable from '../abis/token/ERC721/extensions/IERC721Enumerable.sol/IERC721Enumerable.json';
 import ERC721Metadata from '../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';

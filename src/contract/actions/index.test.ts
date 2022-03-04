@@ -1,15 +1,14 @@
 import { assert } from 'chai';
 import { cloneDeep } from 'lodash';
+import { create, CREATE, CreateAction, isCreateAction } from './create';
+import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
+import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 import BlockNumberArtifact from '../../abis/BlockNumber.json';
 
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
 import { Contract, ContractId } from '../model/interface';
-
-import { create, CREATE, CreateAction, isCreateAction } from './create';
-import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
-import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
 
 describe(`${name}.actions`, () => {
     const address = '0x0000000000000000000000000000000000000001';

@@ -1,11 +1,11 @@
 import { END, eventChannel, EventChannel, TakeableChannel } from 'redux-saga';
 import { put, call, take } from 'typed-redux-saga/macro';
 import { PromiEvent, TransactionReceipt } from 'web3-core';
+import exists from './exists';
 import { ContractSendStatus } from '../../contractsend/model';
 import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions';
 import { create as createTransaction } from '../../transaction/actions';
 import { SEND, SendAction } from '../actions';
-import exists from './exists';
 import networkExists from '../../network/sagas/exists';
 import { Contract, getId } from '../model';
 

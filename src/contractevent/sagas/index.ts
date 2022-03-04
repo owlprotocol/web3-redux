@@ -1,8 +1,8 @@
 import { all, takeEvery, spawn } from 'typed-redux-saga/macro';
-import { GET_PAST_LOGS, GET_ASSETS } from '../actions';
 import getAssets from './getAssets';
 import getPastLogs from './getPastLogs';
 import subscribeLogsLoop from './subscribeLogs';
+import { GET_PAST_LOGS, GET_ASSETS } from '../actions';
 
 /** @internal */
 export function* saga() {

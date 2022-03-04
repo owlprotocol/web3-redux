@@ -1,8 +1,8 @@
 import { all, takeEvery } from 'typed-redux-saga/macro';
-import { OBJECT_GET, CAT, FETCH_IPFS } from '../actions';
 import objectGet from './objectGet';
 import cat from './cat';
 import fetchIpfs from './fetchIpfs';
+import { OBJECT_GET, CAT, FETCH_IPFS } from '../actions';
 
 /** @internal */
 export function* saga() {

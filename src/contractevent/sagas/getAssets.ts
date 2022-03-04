@@ -4,6 +4,7 @@ import { AbiCoder } from 'web3-eth-abi';
 import lodash from 'lodash';
 import { batchActions } from 'redux-batched-actions';
 
+import getPastLogs from './getPastLogs';
 import IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
 import IERC721 from '../../abis/token/ERC721/IERC721.sol/IERC721.json';
 import IERC1155 from '../../abis/token/ERC1155/IERC1155.sol/IERC1155.json';
@@ -11,7 +12,6 @@ import IERC1155 from '../../abis/token/ERC1155/IERC1155.sol/IERC1155.json';
 import { create as createContract } from '../../contract/actions';
 import { GetAssetsAction, GET_ASSETS, getPastLogs as getPastLogsAction } from '../actions';
 import networkExists from '../../network/sagas/exists';
-import getPastLogs from './getPastLogs';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');

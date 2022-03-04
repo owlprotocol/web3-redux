@@ -3,6 +3,8 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
 import { Mockttp } from 'mockttp';
 
+import fetchIpfs from './fetchIpfs';
+import objectGet from './objectGet';
 import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION, IPFS_NFT_1, startMockIPFSNode } from '../../test/data';
 import { sleep } from '../../utils';
 
@@ -10,9 +12,6 @@ import { createStore, StoreType } from '../../store';
 import { update as updateConfig } from '../../config/actions';
 import { selectByIdSingle, selectPathHash } from '../selectors';
 import { fetchIpfs as fetchIpfsAction, objectGet as objectGetAction, cat as catAction } from '../actions';
-
-import fetchIpfs from './fetchIpfs';
-import objectGet from './objectGet';
 
 describe('ipfs/sagas/fetchIpfs.test.ts', () => {
     let client: IPFS.IPFSHTTPClient;

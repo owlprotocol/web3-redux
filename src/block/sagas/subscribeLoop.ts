@@ -1,8 +1,8 @@
 import { take, cancel, fork } from 'typed-redux-saga/macro';
+import subscribe from './subscribe';
 import { isSubscribeAction, isUnsubscribeAction } from '../actions';
 import { SubscribeAction } from '../actions/subscribe';
 import { UnsubscribeAction } from '../actions/unsubscribe';
-import subscribe from './subscribe';
 
 function* subscribeLoop() {
     const subscribed: { [key: string]: boolean } = {};

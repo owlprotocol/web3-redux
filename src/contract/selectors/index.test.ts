@@ -11,10 +11,10 @@ import { getOrm } from '../../orm';
 import { Contract, validate } from '../model/interface';
 import { name } from '../common';
 
-import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
 import { validateEthCall } from '../../ethcall/model';
 import { StateRoot } from '../../state';
 import { ModelWithId } from '../../types/model';
+import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const coder: AbiCoder = require('web3-eth-abi');

@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import axios from 'axios';
 import moxios from 'moxios';
+import fetchFunctionSignature from './fetchFunctionSignature';
 import { networkId } from '../../test/data';
 import { sleep } from '../../utils';
 
@@ -16,7 +17,6 @@ import fetchFunctionSignatureAction from '../actions/fetchFunctionSignature';
 import setAction from '../actions/set';
 
 //Sagas
-import fetchFunctionSignature from './fetchFunctionSignature';
 
 describe('4byte/sagas/fetchFunctionSignature.test.ts', () => {
     const ApprovePreImage = 'approve(address,uint256)';

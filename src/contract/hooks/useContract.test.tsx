@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { map } from 'lodash';
+import useContract from './useContract';
 import { getWeb3Provider } from '../../test';
 
 import { create as createNetwork } from '../../network/actions';
@@ -11,8 +12,6 @@ import { name } from '../common';
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
-
-import useContract from './useContract';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsdom = require('mocha-jsdom');

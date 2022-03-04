@@ -1,4 +1,15 @@
 import { takeEvery, all, spawn } from 'typed-redux-saga/macro';
+import call from './call';
+import callBatched from './callBatched';
+import eventGetPast from './eventGetPast';
+import eventSubscribe from './eventSubscribe';
+import send from './send';
+import fetchAbi from './fetchAbi';
+import getBalance from './getBalance';
+import getNonce from './getNonce';
+import fetchTransactions from './fetchTransactions';
+import getCode from './getCode';
+import getEns from './getEns';
 import {
     CALL,
     CALL_BATCHED,
@@ -11,17 +22,6 @@ import {
     GET_BALANCE,
     GET_NONCE,
 } from '../actions';
-import call from './call';
-import callBatched from './callBatched';
-import eventGetPast from './eventGetPast';
-import eventSubscribe from './eventSubscribe';
-import send from './send';
-import fetchAbi from './fetchAbi';
-import getBalance from './getBalance';
-import getNonce from './getNonce';
-import fetchTransactions from './fetchTransactions';
-import getCode from './getCode';
-import getEns from './getEns';
 
 //https://redux-saga.js.org/docs/advanced/RootSaga
 /** @internal */

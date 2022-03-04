@@ -6,8 +6,8 @@ import { ContractEventIndex } from '../model';
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
-import { selectEvents } from './index';
 import { validateContractEvent } from '../../contractevent/model';
+import { selectEvents } from './index';
 
 describe(`${name}.selectors`, () => {
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';

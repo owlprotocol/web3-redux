@@ -3,13 +3,13 @@ import axios from 'axios';
 import moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
+import useFetchTransactions from './useFetchTransactions';
 import { create as createNetwork } from '../../network/actions';
 
 import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
-import useFetchTransactions from './useFetchTransactions';
 import { expectThrowsAsync } from '../../test';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import Web3 from 'web3';
+import exists from './exists';
+import fetch from './fetch';
 import { getWeb3Provider } from '../../test';
 
 import { Network } from '../../network/model';
@@ -15,8 +17,6 @@ import fetchAction from '../actions/fetch';
 import createAction from '../actions/create';
 
 //Sagas
-import exists from './exists';
-import fetch from './fetch';
 import { BlockId, BlockHeader } from '../model';
 
 describe(`${name}.sagas`, () => {

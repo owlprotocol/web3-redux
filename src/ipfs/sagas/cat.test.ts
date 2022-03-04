@@ -3,6 +3,7 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
 import { Mockttp } from 'mockttp';
 
+import cat from './cat';
 import { IPFS_HELLO_WORLD, IPFS_NFT_1, startMockIPFSNode } from '../../test/data';
 import { sleep } from '../../utils';
 
@@ -11,8 +12,6 @@ import { update as updateConfig } from '../../config/actions';
 import { selectByIdSingle } from '../selectors';
 import { selectConfig } from '../../config/selectors';
 import { create as createAction, set as setAction, cat as catAction } from '../actions';
-
-import cat from './cat';
 
 describe('ipfs/sagas/cat.test.ts', () => {
     let client: IPFS.IPFSHTTPClient;

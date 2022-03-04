@@ -1,9 +1,9 @@
+import selectEthCallId from './selectEthCallId';
 import { BaseWeb3Contract, CallArgsHash } from '../model';
 import { Await } from '../../types/promise';
 import { ContractId } from '../model/interface';
 
 import selectEthCallById from '../../ethcall/selectors/selectByIdSingle';
-import selectEthCallId from './selectEthCallId';
 
 //Contract Call
 /** @category Selectors */

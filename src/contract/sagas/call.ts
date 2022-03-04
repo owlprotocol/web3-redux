@@ -1,12 +1,12 @@
 import { put, call } from 'typed-redux-saga/macro';
 
+import exists from './exists';
 import networkExists from '../../network/sagas/exists';
 import { validateEthCall, getEthCallIdArgs } from '../../ethcall/model';
 import { create as createEthCall, set as setEthCall } from '../../ethcall/actions';
 
 import { getId } from '../model';
 import { CallAction, CALL } from '../actions';
-import exists from './exists';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 

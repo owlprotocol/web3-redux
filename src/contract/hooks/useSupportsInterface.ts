@@ -1,6 +1,6 @@
-import IERC165 from '../../abis/utils/introspection/IERC165.sol/IERC165.json';
 import useContractWithAbi from './useContractWithAbi';
 import useContractCall from './useContractCall';
+import IERC165 from '../../abis/utils/introspection/IERC165.sol/IERC165.json';
 
 /**
  * Contract hook for ERC165 interface.

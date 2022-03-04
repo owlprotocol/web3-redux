@@ -5,7 +5,7 @@ import moxios from 'moxios';
 import WETH from '../../abis/WETH.json';
 
 import { sleep } from '../../utils';
-import { networkId } from '../../test/data';
+import { networkId, WETH as WETH_ADDRESS } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';
 import { selectByIdSingle as selectContract } from '../selectors';
@@ -13,7 +13,7 @@ import { fetchAbi as fetchAbiAction } from '../actions';
 
 describe('contract/sagas/fetchAbi.test.ts', () => {
     let store: StoreType;
-    const address = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; //WETH contract
+    const address = WETH_ADDRESS; //WETH contract
     const client = axios.create({ baseURL: 'https://api.etherscan.io/api' });
 
     before(async () => {

@@ -1,11 +1,15 @@
-name: Default Actions
+name: Web3 Redux Components Tests
 
 on:
   push:
     branches:
       - master
       - develop
-  pull_request: ~
+    paths:
+      - packages/web3-redux-components/**
+  pull_request:
+    paths:
+      - packages/web3-redux-components/**
 
 jobs:
   run-tests:
@@ -28,4 +32,4 @@ jobs:
       # Install
       - run: pnpm i
       - run: npm run bootstrap
-      - run: npm run test
+      - run: npm run test:web3-redux-components

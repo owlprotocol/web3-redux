@@ -1,13 +1,19 @@
-name: Web3 Redux Docs Build Test
+name: Web3 Redux Tests
 
 on:
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - packages/web3-redux/**
   pull_request:
-    branches: [master]
-    paths: [packages/web3-redux-docs/**]
+    paths:
+      - packages/web3-redux/**
 
 jobs:
-  test-deploy:
-    name: Test deployment
+  run-tests:
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,4 +31,5 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}
       # Install
       - run: pnpm i
-      - run: npm run bootstrap # Automatically builds with "prepare" script
+      - run: npm run bootstrap
+      - run: npm run test:web3-redux

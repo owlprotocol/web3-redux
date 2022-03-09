@@ -19,12 +19,12 @@
     "clean:package-lock": "rimraf packages/*/package-lock.json",
     "setup": "npm-run-all clean bootstrap",
     "prepare": "husky install",
-    "test": "npm-run-all test:web3-redux",
-    "test:web3-redux": "cd packages/web3-redux && npm run test"
+    "test": "npm-run-all -p test:web3-redux test:web3-redux-components",
+    "test:web3-redux": "cd packages/web3-redux && npm run test",
+    "test:web3-redux-components": "cd packages/web3-redux && npm run test"
   },
   "dependencies": {
     "lerna": "^4.0.0",
-    "lint-staged": "^11.1.2",
     "npm-run-all": "^4.1.5",
     "husky": "^7.0.4",
     "rimraf": "^3.0.2"

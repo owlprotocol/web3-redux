@@ -21,9 +21,9 @@ const config = {
             'docusaurus-plugin-typedoc',
             {
                 // Typedoc options
-                entryPoints: ["../src"],
+                entryPoints: ["../web3-redux/src"],
                 out: "web3-redux-reference",
-                tsconfig: '../tsconfig.json',
+                tsconfig: '../web3-redux/tsconfig.json',
                 watch: process.env.TYPEDOC_WATCH,
                 readme: 'none',
                 // Plugin options

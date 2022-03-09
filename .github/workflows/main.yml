@@ -27,4 +27,5 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}
       # Install
       - run: pnpm i
+      - run: npm run bootstrap
       - run: npm run test

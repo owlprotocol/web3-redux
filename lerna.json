@@ -1,0 +1,18 @@
+{
+  "npmClient": "pnpm",
+  "packages": [
+    "packages/web3-redux",
+    "packages/web3-redux-components",
+    "packages/web3-redux-docs"
+  ],
+  "publish": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "bootstrap": {
+    "npmClientArgs": [
+      "--no-package-lock"
+    ]
+  },
+  "version": "independent",
+  "hoist": false
+}

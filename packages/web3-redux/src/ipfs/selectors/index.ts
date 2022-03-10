@@ -1,5 +1,3 @@
-import selectByIdMany from './selectByIdMany';
-import selectByIdSingle from './selectByIdSingle';
-
-export { selectByIdMany, selectByIdSingle };
+export { selectByIdMany } from './selectByIdMany';
+export { selectByIdSingle } from './selectByIdSingle';
 export { selectPathHash } from './selectPathHash';

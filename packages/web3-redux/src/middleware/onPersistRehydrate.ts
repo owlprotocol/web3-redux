@@ -1,7 +1,7 @@
 import { AnyAction, Store } from 'redux';
 import { batchActions } from 'redux-batched-actions';
-import Network from '../network';
-import Contract from '../contract';
+import * as Network from '../network';
+import * as Contract from '../contract';
 
 export const onPersistRehydrate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
     next(action);

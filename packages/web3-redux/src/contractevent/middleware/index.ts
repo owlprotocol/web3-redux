@@ -1,3 +1,1 @@
-import onUpdate from './onUpdate';
-
-export { onUpdate as onEventUpdate };
+export { onUpdate, onUpdate as onEventUpdate } from './onUpdate';

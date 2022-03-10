@@ -1,3 +1,1 @@
-import onUpdate from './onUpdate';
-
-export { onUpdate as onContractUpdate };
+export { onUpdate, onUpdate as onContractUpdate } from './onUpdate';

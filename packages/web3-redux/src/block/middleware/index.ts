@@ -1,3 +1,1 @@
-import onUpdate from './onUpdate';
-
-export { onUpdate as onBlockUpdate };
+export { onUpdate, onUpdate as onBlockUpdate } from './onUpdate';

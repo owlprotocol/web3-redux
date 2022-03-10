@@ -1,10 +1,10 @@
-import BaseSync from './BaseSync';
+import { BaseSync } from './BaseSync';
 
 /**
  * Sync middleware to handle [Transaction](./Transaction.Transaction-1) CREATE/UPDATE actions.
  */
 //TODO: Implement Set based matching
-export default interface TransactionSync extends BaseSync {
+export interface TransactionSync extends BaseSync {
     type: 'Transaction';
     matchFrom?: string; //| string[];
     matchTo?: string; // | string[];

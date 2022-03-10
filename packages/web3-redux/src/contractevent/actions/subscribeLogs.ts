@@ -3,7 +3,7 @@ import { toChecksumAddress, isHexStrict } from 'web3-utils';
 import { map } from 'lodash';
 import invariant from 'tiny-invariant';
 import { name } from '../common';
-import LogsSubscription from '../model/logsSubscription';
+import { LogsSubscription } from '../model/logsSubscription';
 
 /** @internal */
 export const SUBSCRIBE_LOGS = `${name}/SUBSCRIBE_LOGS`;

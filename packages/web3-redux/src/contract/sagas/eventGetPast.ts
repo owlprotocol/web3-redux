@@ -29,7 +29,7 @@ function* eventGetPastInRange(networkId: string, address: string, name: string, 
     }
 }
 
-function* eventGetPast(action: EventGetPastAction) {
+export function* eventGetPast(action: EventGetPastAction) {
     try {
         const { payload } = action;
         const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch } = payload;

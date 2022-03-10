@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import axios from 'axios';
-import moxios from 'moxios';
-import fetchFunctionSignature from './fetchFunctionSignature';
+import * as moxios from 'moxios';
+import { fetchFunctionSignature } from './fetchFunctionSignature';
 import { networkId } from '../../test/data';
 import { sleep } from '../../utils';
 

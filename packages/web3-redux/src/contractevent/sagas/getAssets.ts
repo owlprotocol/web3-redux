@@ -1,19 +1,19 @@
 import { put, call, all } from 'typed-redux-saga/macro';
 import invariant from 'tiny-invariant';
 import { AbiCoder } from 'web3-eth-abi';
-import lodash from 'lodash';
+import { flatten, compact, map, uniq } from 'lodash';
 import { batchActions } from 'redux-batched-actions';
 
 import getPastLogs from './getPastLogs';
-import IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
-import IERC721 from '../../abis/token/ERC721/IERC721.sol/IERC721.json';
-import IERC1155 from '../../abis/token/ERC1155/IERC1155.sol/IERC1155.json';
+import * as IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
+import * as IERC721 from '../../abis/token/ERC721/IERC721.sol/IERC721.json';
+import * as IERC1155 from '../../abis/token/ERC1155/IERC1155.sol/IERC1155.json';
 
 import { create as createContract } from '../../contract/actions';
 import { GetAssetsAction, GET_ASSETS, getPastLogs as getPastLogsAction } from '../actions';
 import networkExists from '../../network/sagas/exists';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');
 
 const GET_ASSETS_ERROR = `${GET_ASSETS}/ERROR`;
@@ -60,14 +60,14 @@ function* getAssets(action: GetAssetsAction) {
         //Flatten and parse results
         const results = yield* all([ERC20or721LogsFrom, ERC20or721LogsTo, ERC1155LogsFrom, ERC1155LogsTo]);
 
-        const ERC20or721Logs = lodash.flatten(lodash.compact([results[0], results[1]]));
+        const ERC20or721Logs = flatten(compact([results[0], results[1]]));
         const ERC20Logs = ERC20or721Logs.filter((l) => l.topics.length === 3);
         const ERC721Logs = ERC20or721Logs.filter((l) => l.topics.length === 4); //tokenId indexed
-        const ERC20Address = lodash.uniq(lodash.map(ERC20Logs, 'address'));
-        const ERC721Address = lodash.uniq(lodash.map(ERC721Logs, 'address'));
+        const ERC20Address = uniq(map(ERC20Logs, 'address'));
+        const ERC721Address = uniq(map(ERC721Logs, 'address'));
 
-        const ERC1155Logs = lodash.flatten(lodash.compact([results[2], results[3]]));
-        const ERC1155Address = lodash.uniq(lodash.map(ERC1155Logs, 'address'));
+        const ERC1155Logs = flatten(compact([results[2], results[3]]));
+        const ERC1155Address = uniq(map(ERC1155Logs, 'address'));
 
         //console.debug({ ERC20Address, ERC721Address, ERC1155Address })
 

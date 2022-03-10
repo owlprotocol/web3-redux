@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { cloneDeep } from 'lodash';
-import BlockNumberArtifact from '../../abis/BlockNumber.json';
+import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
 import { Contract, getId, validate } from '../model/interface';
 
 describe('Contract/model/index.test.ts', () => {

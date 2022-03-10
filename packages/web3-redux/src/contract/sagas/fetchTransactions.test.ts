@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import axios from 'axios';
-import moxios from 'moxios';
+import * as moxios from 'moxios';
 
 import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';

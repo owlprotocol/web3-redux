@@ -2,7 +2,7 @@ import * as MockHTTP from 'mockttp';
 
 import { AbiCoder } from 'web3-eth-abi';
 import { cloneDeep } from 'lodash';
-import BlockNumberArtifact from '../abis/BlockNumber.json';
+import * as BlockNumberArtifact from '../abis/BlockNumber.json';
 import { REDUX_ROOT } from '../common';
 import { StateRoot } from '../state';
 import { getOrm } from '../orm';
@@ -77,7 +77,7 @@ export const transaction2 = validateTransaction({
 });
 
 //Ethcall
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');
 const method = 'getValue';
 const methodAbi = (cloneDeep(BlockNumberArtifact.abi) as any).filter((f: any) => f.name === method)[0];

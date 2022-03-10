@@ -1,5 +1,3 @@
-import { Network } from './interface';
+export { validate } from './validate';
 
-export type { Network };
-
-export default {};
+export type { Network } from './interface';

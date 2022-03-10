@@ -1,17 +1,24 @@
 {
-    "compilerOptions": {
-        "jsx": "react-jsx",
-        "sourceMap": false,
-        "outDir": "lib",
-        "strict": true,
-        "lib": ["esnext", "dom"],
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "skipLibCheck": true,
-        "downlevelIteration": true,
-        "isolatedModules": true
-    },
-    "include": ["src/**/*"]
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "sourceMap": false,
+    "outDir": "lib/types",
+    "strict": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "esModuleInterop": false,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "isolatedModules": true,
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "target": "esnext",
+  "module": "esnext",
 }

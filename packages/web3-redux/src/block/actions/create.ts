@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common';
-import BlockHeader, { validate } from '../model/interface';
+import { validate, BlockHeader } from '../model';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;

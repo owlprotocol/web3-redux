@@ -5,9 +5,9 @@ import { getWeb3Provider } from '../../test';
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
-import ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
-import ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
-import ERC1155 from '../../abis/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
+import * as ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import * as ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
+import * as ERC1155 from '../../abis/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
 
 import { sleep } from '../../utils';
 

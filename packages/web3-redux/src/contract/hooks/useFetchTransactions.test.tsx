@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 import axios from 'axios';
-import moxios from 'moxios';
+import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import useFetchTransactions from './useFetchTransactions';
+import { useFetchTransactions } from './useFetchTransactions';
 import { create as createNetwork } from '../../network/actions';
 
 import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data';
@@ -12,7 +12,7 @@ import { create } from '../actions';
 
 import { expectThrowsAsync } from '../../test';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe('contract/hooks/useFetchTransactions.test.tsx', () => {

@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-orm';
 
-import Transaction from '../../transaction/model/interface';
-import BlockTransaction from '../model/BlockTransaction';
+import { Transaction } from '../../transaction/model';
+import { BlockTransaction } from '../model';
 import { getOrm } from '../../orm';
 
 /** @internal */

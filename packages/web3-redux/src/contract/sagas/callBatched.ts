@@ -3,14 +3,14 @@ import { validate as validatedEthCall } from '../../ethcall/model';
 import { create as createEthCall } from '../../ethcall/actions';
 import { Contract } from '../model';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
-import selectByIdMany from '../selectors/selectByIdMany';
+import { selectByIdMany } from '../selectors/selectByIdMany';
 import networkExists from '../../network/sagas/exists';
 import { Network } from '../../network/model';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
 
-function* callBatched(action: CallBatchedAction) {
+export function* callBatched(action: CallBatchedAction) {
     try {
         const { payload } = action;
         const { requests, networkId } = payload;

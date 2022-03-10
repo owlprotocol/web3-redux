@@ -1,13 +1,13 @@
 import { assert } from 'chai';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import useAccount from './useAccount';
+import { useAccount } from './useAccount';
 import { ADDRESS_0, ADDRESS_1 } from '../../test/data';
 import { name } from '../common';
 import { createStore, StoreType } from '../../store';
 import { setAccount } from '../actions';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe(`${name}/hooks/useAccount.test.tsx`, () => {

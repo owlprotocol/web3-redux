@@ -50,7 +50,7 @@ function sendChannel(tx: PromiEvent<TransactionReceipt>): EventChannel<ContractS
     });
 }
 
-function* send(action: SendAction) {
+export function* send(action: SendAction) {
     try {
         const { payload } = action;
         const { networkId, address, method, args, from } = payload;

@@ -4,10 +4,10 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import useERC20 from './useERC20';
+import { useERC20 } from './useERC20';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 
-import ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import * as ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
 
 import { create as createNetwork } from '../../network/actions';
 import { create as createTransaction } from '../../transaction/actions';
@@ -18,7 +18,7 @@ import { name } from '../common';
 import { ADDRESS_0, networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe(`${name}/hooks/useERC20.test.tsx`, () => {

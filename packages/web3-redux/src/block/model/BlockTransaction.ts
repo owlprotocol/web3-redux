@@ -1,12 +1,12 @@
-import BlockHeader from './BlockHeader';
-import Transaction from '../../transaction/model/interface';
+import { BlockHeader } from './BlockHeader';
+import { Transaction } from '../../transaction/model';
 
 /**
  * Block object with additional data. Typically returned by individual Web3 getBlock request.
  * @see {@link BlockHeader}.
  *
  */
-export interface BlockTransaction extends BlockHeader {
+interface BlockTransaction extends BlockHeader {
     /**  Integer the size of this block in bytes */
     readonly size?: number;
     /** Integer of the difficulty for this block */
@@ -19,4 +19,4 @@ export interface BlockTransaction extends BlockHeader {
     readonly transactions?: Transaction[] | string[];
 }
 
-export default BlockTransaction;
+export type { BlockTransaction };

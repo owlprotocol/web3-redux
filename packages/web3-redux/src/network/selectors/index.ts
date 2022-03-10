@@ -19,15 +19,3 @@ export {
     selectTransactions,
     selectContracts,
 };
-
-export default {
-    selectByIdMany,
-    selectByIdSingle,
-    selectByIdExists,
-    selectByFilter,
-    selectBlocks,
-    selectLatestBlock,
-    selectLatestBlockNumber,
-    selectTransactions,
-    selectContracts,
-};

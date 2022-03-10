@@ -1,5 +1,5 @@
 /** Id components for Block */
-export interface BlockId {
+interface BlockId {
     /** Blockchain network id. See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
     /** Block number */
@@ -21,3 +21,5 @@ export function getIdDeconstructed(id: string): BlockId {
     const [networkId, number] = id.split(SEPARATOR); //Assumes separator not messed up
     return { networkId, number: parseInt(number) };
 }
+
+export type { BlockId };

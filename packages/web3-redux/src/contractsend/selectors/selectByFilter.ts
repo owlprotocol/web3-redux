@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
 import { name } from '../common';
 import { getOrm } from '../../orm';
-import ContractSend from '../model/interface';
-import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
+import { ContractSend } from '../model/interface';
+import { memoizeArrayByRef } from '../../utils/memo';
 
 type selectByFilterType = (state: any, filter: Partial<ContractSend> | undefined) => ContractSend[];
 /** @category Selectors */

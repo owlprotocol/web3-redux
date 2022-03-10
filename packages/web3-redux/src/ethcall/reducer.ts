@@ -1,6 +1,6 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import EthCall, { getId } from './model/interface';
+import { EthCall, getId } from './model/interface';
 import { ORMModel, ModelWithId } from '../types/model';
 
 /** @internal */

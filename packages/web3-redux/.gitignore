@@ -15,10 +15,12 @@ yarn.lock
 # production
 /build
 /lib
+/lib-es
 
 # misc
 .DS_Store
 .env
+.vscode
 
 npm-debug.log*
 yarn-debug.log*

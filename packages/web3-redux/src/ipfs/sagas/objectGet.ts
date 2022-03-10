@@ -1,6 +1,6 @@
 import { put, call, select } from 'typed-redux-saga/macro';
 import invariant from 'tiny-invariant';
-import lodash from 'lodash';
+import { keyBy } from 'lodash';
 import { batchActions } from 'redux-batched-actions';
 import { update, create, ObjectGetAction, OBJECT_GET } from '../actions';
 
@@ -21,7 +21,7 @@ export function* objectGet(action: ObjectGetAction) {
 
         //https://github.com/ipfs/js-ipfs/blob/master/docs/core-api/BLOCK.md#ipfsblockgetcid-options
         const pbNode = yield* call(client.object.get, contentId as any);
-        const linksByName = lodash.keyBy(pbNode.Links, 'Name');
+        const linksByName = keyBy(pbNode.Links, 'Name');
         yield* put(update({ contentId, pbNode, linksByName }));
 
         const actions = pbNode.Links.map((l) => {

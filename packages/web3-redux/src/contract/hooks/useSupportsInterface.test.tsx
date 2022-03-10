@@ -5,7 +5,7 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 
-import ERC165 from '../../abis/utils/introspection/ERC165.sol/ERC165.json';
+import * as ERC165 from '../../abis/utils/introspection/ERC165.sol/ERC165.json';
 
 import { create as createNetwork } from '../../network/actions';
 
@@ -14,9 +14,9 @@ import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
-import useSupportsInterface from '../hooks/useSupportsInterface';
+import { useSupportsInterface } from '../hooks/useSupportsInterface';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {

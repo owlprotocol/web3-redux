@@ -1,5 +1,3 @@
-import memoizeReturn from './memoizeReturn';
-import memoizeWeak from './memoWeak';
-import memoizeArrayByRef from './memoizeArrayByRef';
-
-export { memoizeReturn, memoizeWeak, memoizeArrayByRef };
+export { memoizeReturn } from './memoizeReturn';
+export { memoizeWeak } from './memoWeak';
+export { memoizeArrayByRef } from './memoizeArrayByRef';

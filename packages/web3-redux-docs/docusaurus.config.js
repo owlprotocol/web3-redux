@@ -32,6 +32,21 @@ const config = {
                 }
             }
         ],
+        /*
+        [
+            'docusaurus-plugin-typedoc',
+            {
+                entryPoints: ["../web3-redux-components/src"],
+                out: "web3-redux-components-reference",
+                tsconfig: '../web3-redux-components/tsconfig.json',
+                watch: process.env.TYPEDOC_WATCH,
+                readme: 'none',
+                sidebar: {
+                    categoryLabel: 'Reference',
+                }
+            }
+        ],
+        */
 
     ],
     projectName: 'web3-redux', // Usually your repo name.

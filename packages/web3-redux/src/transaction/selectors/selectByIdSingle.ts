@@ -2,7 +2,7 @@ import select from './select';
 import { Transaction, TransactionId, getId } from '../model/interface';
 
 /** @category Selectors */
-function selectByIdSingle(state: any, id: TransactionId | undefined): Transaction | undefined {
+export function selectByIdSingle(state: any, id: TransactionId | undefined): Transaction | undefined {
     if (!id) return undefined;
 
     const idStr = getId(id);

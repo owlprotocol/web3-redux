@@ -1,13 +1,13 @@
 import { createSelector } from 'redux-orm';
 import { name } from '../common';
 import { getOrm } from '../../orm';
-import Contract from '../model/interface';
-import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
+import { Contract } from '../model/interface';
+import { memoizeArrayByRef } from '../../utils/memo';
 
 /** @internal */
 type selectByFilterType = (state: any, filter: Partial<Contract> | undefined) => Contract[];
 /** @internal */
-const selectByFilter: selectByFilterType = createSelector(
+export const selectByFilter: selectByFilterType = createSelector(
     getOrm(),
     (_1: any, filter: Partial<Contract> | undefined) => filter,
     (session: any, filter: Partial<Contract> | undefined) => {

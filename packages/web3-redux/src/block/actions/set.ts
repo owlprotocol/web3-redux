@@ -1,5 +1,5 @@
 import { name } from '../common';
-import BlockHeader from '../model/BlockHeader';
+import { BlockHeader } from '../model/BlockHeader';
 import { BlockId } from '../model/id';
 
 /** @internal */

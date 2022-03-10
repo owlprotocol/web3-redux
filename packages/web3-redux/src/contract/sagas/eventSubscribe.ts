@@ -94,7 +94,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
     }
 }
 
-function* eventSubscribeLoop() {
+export function* eventSubscribeLoop() {
     const subscribed: { [key: string]: boolean } = {};
     const tasks: { [key: string]: any } = {};
     const pattern = (action: { type: string }) => {

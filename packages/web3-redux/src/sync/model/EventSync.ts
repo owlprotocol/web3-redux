@@ -1,4 +1,4 @@
-import BaseSync from './BaseSync';
+import { BaseSync } from './BaseSync';
 
 /**
  * Sync middleware to handle [ContractEvent](./ContractEvent.ContractEvent-1) CREATE/UPDATE actions.

@@ -9,7 +9,7 @@ import {
     SetAction,
     UpdateAction,
 } from './actions';
-import Ipfs from './model/interface';
+import { Ipfs } from './model/interface';
 import { ORMModel } from '../types/model';
 
 /** @internal */

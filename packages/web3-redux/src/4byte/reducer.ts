@@ -1,6 +1,6 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import _4ByteSignature from './model/interface';
+import { _4ByteSignature } from './model/interface';
 import { ORMModel } from '../types/model';
 
 /** @internal */

@@ -2,16 +2,17 @@
  * Environment variable utilities.
  * @module Environment
  */
+import { isClient } from './utils/isClient';
 
-import path from 'path';
-import isClient from './utils/isClient';
-
-//Pass custom env file arg
-const args = process.argv;
-const envfileName = args.length > 2 ? args[2] : '.env';
-const envfile = path.resolve(process.cwd(), envfileName);
-//Avoid crashing if in React context
+//Avoid crashing if in browser context
 if (!isClient()) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const path = require('path');
+    //Pass custom env file arg
+    const args = process.argv;
+    const envfileName = args.length > 2 ? args[2] : '.env';
+    const envfile = path.resolve(process.cwd(), envfileName);
+
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     require('dotenv').config({ path: envfile });
 }

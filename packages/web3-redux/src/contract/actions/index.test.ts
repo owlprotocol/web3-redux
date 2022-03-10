@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash';
 import { create, CREATE, CreateAction, isCreateAction } from './create';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove';
-import BlockNumberArtifact from '../../abis/BlockNumber.json';
+import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
 
 import { name } from '../common';
 import { networkId } from '../../test/data';

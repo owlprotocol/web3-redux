@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-orm';
-import lodash from 'lodash';
+import { filter } from 'lodash';
 import { getOrm } from '../../orm';
 import { ContractEvent, ReturnValues } from '../../contractevent/model';
 import { selectEvents, selectByIdSingle as selectEventIndex } from '../../contracteventindex/selectors';
@@ -16,11 +16,11 @@ export function selectContractEventsByIdFiltered<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
->(
-    state: any,
-    idArgs: ContractId | undefined,
-    eventName: K | undefined,
-    returnValuesFilter?: { [key: string]: any },
+    >(
+        state: any,
+        idArgs: ContractId | undefined,
+        eventName: K | undefined,
+        returnValuesFilter?: { [key: string]: any },
 ): ContractEvent<U>[] | undefined {
     if (!idArgs) return undefined;
 
@@ -40,7 +40,7 @@ export function selectContractEventsByIdFiltered<
             //No index, used lodash filter
             const events = selectEvents(state, baseIndexId) as ContractEvent<U>[] | undefined;
             if (!events) return EMPTY_EVENTS;
-            const eventsFiltered = lodash.filter(events, { returnValues: returnValuesFilter });
+            const eventsFiltered = filter(events, { returnValues: returnValuesFilter });
 
             return eventsFiltered;
         }
@@ -52,10 +52,11 @@ export function selectEventsFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
->(eventName: K) {
+    >(eventName: K) {
     return (state: any, id: ContractId | undefined, filter?: any): U[] | undefined => {
         return selectContractEventsByIdFiltered<T, K, U>(state, id, eventName, filter) as U[] | undefined;
     };
 }
 
-export default selectContractEventsByIdFiltered;
+export const selectContractEvents = selectContractEventsByIdFiltered;
+export default selectContractEvents;

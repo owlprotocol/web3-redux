@@ -7,7 +7,7 @@ import { set, SET, SetAction, isSetAction } from './set';
 import { FETCH, fetch, FetchAction, isFetchAction } from './fetch';
 import { SUBSCRIBE, subscribe, SubscribeAction, isSubscribeAction } from './subscribe';
 import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from './unsubscribe';
-import BlockHeader from '../model/BlockHeader';
+import { BlockHeader } from '../model/BlockHeader';
 import { getId } from '../model/id';
 import { networkId } from '../../test/data';
 import { name } from '../common';

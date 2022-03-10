@@ -1,10 +1,6 @@
-import { BlockId, getId, getIdDeconstructed } from './id';
-import { validate } from './interface';
-import BlockHeader from './BlockHeader';
-import BlockTransaction from './BlockTransaction';
+export { getId, getId as getBlockId, getIdDeconstructed } from './id';
+export { validate, validate as validateBlock } from './interface';
 
-export type { BlockId };
-export type { BlockHeader, BlockTransaction };
-
-export { getId, getIdDeconstructed, validate };
-export { getId as getBlockId, validate as validateBlock };
+export type { BlockId } from './id';
+export type { BlockHeader } from './BlockHeader';
+export type { BlockTransaction } from './BlockTransaction';

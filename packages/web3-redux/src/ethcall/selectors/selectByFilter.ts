@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
 import { name } from '../common';
 import { getOrm } from '../../orm';
-import EthCall from '../model/interface';
-import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
+import { EthCall } from '../model/interface';
+import { memoizeArrayByRef } from '../../utils/memo';
 
 type selectByFilterType = (state: any, filter: Partial<EthCall> | undefined) => EthCall[];
 /** @category Selectors */

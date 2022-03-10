@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { URL } from 'url';
-import useContractWithAbi from './useContractWithAbi';
-import useContractCall from './useContractCall';
-import useEvents, { UseEventsOptions } from './useEvents';
-import IERC721Metadata from '../../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
+import { useContractWithAbi } from './useContractWithAbi';
+import { useContractCall } from './useContractCall';
+import { useEvents, UseEventsOptions } from './useEvents';
+import * as IERC721Metadata from '../../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
 
 import { GenericSync } from '../../sync/model';
 import { createEventSync } from '../../sync/model/EventSync';
 
-import useIpfs from '../../ipfs/hooks/useIpfs';
+import { useIpfs } from '../../ipfs/hooks/useIpfs';
 
 /**
  * Contract hook for ERC721 interface.

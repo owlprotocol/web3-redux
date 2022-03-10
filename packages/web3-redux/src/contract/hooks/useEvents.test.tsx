@@ -6,7 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { cloneDeep } from 'lodash';
 import { getWeb3Provider } from '../../test';
 
-import BlockNumberArtifact from '../../abis/BlockNumber.json';
+import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
 
 import { create as createNetwork } from '../../network/actions';
 import { validateContractEvent } from '../../contractevent';
@@ -16,9 +16,9 @@ import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
-import useEvents from '../hooks/useEvents';
+import { useEvents } from '../hooks/useEvents';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe(`${name}/hooks/useEvents.tsx`, () => {

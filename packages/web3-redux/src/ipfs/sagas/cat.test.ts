@@ -3,7 +3,7 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
 import { Mockttp } from 'mockttp';
 
-import cat from './cat';
+import { cat } from './cat';
 import { IPFS_HELLO_WORLD, IPFS_NFT_1, startMockIPFSNode } from '../../test/data';
 import { sleep } from '../../utils';
 

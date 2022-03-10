@@ -6,15 +6,15 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import { cloneDeep } from 'lodash';
 import axios from 'axios';
-import moxios from 'moxios';
+import * as moxios from 'moxios';
 import * as IPFS from 'ipfs-http-client';
 import { URL } from 'url';
 
-import useERC721 from './useERC721';
+import { useERC721 } from './useERC721';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
 import { networkId, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data';
 
-import ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
+import * as ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
 
 import { create as createNetwork } from '../../network/actions';
 import { create as createTransaction } from '../../transaction/actions';
@@ -24,7 +24,7 @@ import { create as createEvent } from '../../contractevent/actions';
 import { createStore, StoreType } from '../../store';
 import { update as updateConfig } from '../../config/actions';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe('contract/hooks/useERC721.test.tsx', () => {

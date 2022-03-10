@@ -9,7 +9,7 @@ import { getWeb3Provider } from '../../test';
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
-import BlockNumberArtifact from '../../abis/BlockNumber.json';
+import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
 
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';

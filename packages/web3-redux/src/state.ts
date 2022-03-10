@@ -1,15 +1,15 @@
-import Network from './network/model/interface';
-import Block from './block/model/interface';
-import Transaction from './transaction/model/interface';
-import Contract from './contract/model/interface';
-import ContractEvent from './contractevent/model/interface';
-import ContractEventIndex from './contracteventindex/model/interface';
-import ContractSend from './contractsend/model/interface';
-import EthCall from './ethcall/model/interface';
-import Config from './config/model/interface';
-import Ipfs from './ipfs/model/interface';
-import Sync from './sync/model';
-import _4Byte from './4byte/model/interface';
+import { Network } from './network/model';
+import { BlockHeader } from './block/model';
+import { Transaction } from './transaction/model/interface';
+import { Contract } from './contract/model/interface';
+import { ContractEvent } from './contractevent/model/interface';
+import { ContractEventIndex } from './contracteventindex/model/interface';
+import { ContractSend } from './contractsend/model/interface';
+import { EthCall } from './ethcall/model/interface';
+import { Config } from './config/model/interface';
+import { Ipfs } from './ipfs/model/interface';
+import { Sync } from './sync/model';
+import { _4ByteSignature } from './4byte/model/interface';
 import { ModelWithId } from './types/model';
 
 export interface StateRoot {
@@ -32,7 +32,7 @@ export interface State {
     /** Blocks indexed by id */
     Block: {
         items: string[];
-        itemsById: { [id: string]: ModelWithId<Block> };
+        itemsById: { [id: string]: ModelWithId<BlockHeader> };
         indexes: {
             networkId: {
                 [networkId: string]: string[];
@@ -109,7 +109,7 @@ export interface State {
     /** 4Byte elements indexed by id */
     _4Byte: {
         items: string[];
-        itemsById: { [id: string]: ModelWithId<_4Byte> };
+        itemsById: { [id: string]: ModelWithId<_4ByteSignature> };
     };
     //** Sync dynamic middleware */
     Sync: {

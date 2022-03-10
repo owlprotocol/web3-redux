@@ -41,24 +41,3 @@ export {
     getChainId,
     isGetChainIdAction,
 };
-
-export default {
-    CREATE,
-    create,
-    isCreateAction,
-    REMOVE,
-    remove,
-    isRemoveAction,
-    UPDATE,
-    update,
-    isUpdateAction,
-    SET,
-    set,
-    isSetAction,
-    GET_BLOCK_NUMBER,
-    getBlockNumber,
-    isGetBlockNumberAction,
-    GET_CHAIN_ID,
-    getChainId,
-    isGetChainIdAction,
-};

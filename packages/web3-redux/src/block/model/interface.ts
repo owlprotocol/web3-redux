@@ -1,6 +1,5 @@
 import { getId } from './id';
-import BlockTransaction from './BlockTransaction';
-import BlockHeader from './BlockHeader';
+import { BlockTransaction } from './BlockTransaction';
 import { isStrings } from '../../utils';
 import { validate as validateTransaction } from '../../transaction/model/interface';
 import { ModelWithId } from '../../types/model';
@@ -24,5 +23,3 @@ export function validate(item: BlockTransaction): ModelWithId<BlockTransaction> 
 
     return result;
 }
-
-export default BlockHeader;

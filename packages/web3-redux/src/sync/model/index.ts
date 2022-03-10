@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
-import BlockSync, { createBlockSyncEveryBlock } from './BlockSync';
-import EventSync from './EventSync';
-import TransactionSync, { createTransactionSyncForAddress } from './TransactionSync';
+import { BlockSync, createBlockSyncEveryBlock } from './BlockSync';
+import { EventSync } from './EventSync';
+import { TransactionSync, createTransactionSyncForAddress } from './TransactionSync';
 
 /**
  * Sync Middleware Type

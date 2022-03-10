@@ -1,7 +1,7 @@
 import { all, takeEvery } from 'typed-redux-saga/macro';
-import objectGet from './objectGet';
-import cat from './cat';
-import fetchIpfs from './fetchIpfs';
+import { objectGet } from './objectGet';
+import { cat } from './cat';
+import { fetchIpfs } from './fetchIpfs';
 import { OBJECT_GET, CAT, FETCH_IPFS } from '../actions';
 
 /** @internal */

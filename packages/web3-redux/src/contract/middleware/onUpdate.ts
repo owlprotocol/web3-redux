@@ -8,7 +8,7 @@ import { selectEvents } from '../../contracteventindex/selectors';
 import { CREATE, UPDATE } from '../actions';
 import { Contract } from '../model';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');
 /**
  * Middleware for whenever a contract created/updated.

@@ -9,9 +9,9 @@ import {
     getInterfaceIdentifier,
     get4ByteIdentifier,
 } from './getInterfaceIdentifier';
-import ERC165 from '../abis/utils/introspection/IERC165.sol/IERC165.json';
-import ERC721Enumerable from '../abis/token/ERC721/extensions/IERC721Enumerable.sol/IERC721Enumerable.json';
-import ERC721Metadata from '../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
+import * as ERC165 from '../abis/utils/introspection/IERC165.sol/IERC165.json';
+import * as ERC721Enumerable from '../abis/token/ERC721/extensions/IERC721Enumerable.sol/IERC721Enumerable.json';
+import * as ERC721Metadata from '../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
 
 describe('getInterfaceIdentifierForAbi', () => {
     it('ERC165', () => {

@@ -8,7 +8,7 @@ import { onNetworkUpdate } from './network/middleware';
 import { onContractUpdate } from './contract/middleware';
 import { onEventUpdate } from './contractevent/middleware';
 
-import isClient from './utils/isClient';
+import { isClient } from './utils/isClient';
 import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist, defaultLocalStorage } from './reducer';
 import { rootSaga as defaultRootSaga } from './saga';
 const defaultMiddleware: any[] = [

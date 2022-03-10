@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
 import { name } from '../common';
 import { getOrm } from '../../orm';
-import Network from '../model/interface';
-import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
+import { Network } from '../model/interface';
+import { memoizeArrayByRef } from '../../utils/memo';
 
 type selectByFilterType = (state: any, filter: Partial<Network> | undefined) => Network[];
 /** @category Selectors */

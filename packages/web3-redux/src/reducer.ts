@@ -5,7 +5,7 @@ import { persistReducer } from 'redux-persist';
 import { WebStorage } from 'redux-persist/lib/types';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { NetworkTransform, ContractTransform, SyncTransform } from './transform';
-import isClient from './utils/isClient';
+import { isClient } from './utils/isClient';
 import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
 import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
 import { Action as TransactionAction, isReducerAction as isTransactionAction } from './transaction/actions';

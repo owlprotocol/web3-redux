@@ -2,7 +2,7 @@ import { createSelector } from 'redux-orm';
 import { toChecksumAddress } from 'web3-utils';
 import { name } from '../common';
 import { getOrm } from '../../orm';
-import Transaction from '../model/interface';
+import { Transaction } from '../model/interface';
 //import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
 
 type selectByFilterType = (state: any, filter?: Partial<Transaction> | undefined) => Transaction[];

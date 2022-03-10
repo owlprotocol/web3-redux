@@ -1,9 +1,9 @@
 import { AbiItem, toChecksumAddress } from 'web3-utils';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiCoder } from 'web3-eth-abi';
-import lodash from 'lodash';
+import { filter, keyBy } from 'lodash';
 import { ModelWithId } from '../../types/model';
-import Transaction from '../../transaction/model/interface';
+import { Transaction } from '../../transaction/model/interface';
 
 /**
  * Contract Id object.
@@ -64,14 +64,14 @@ export function getIdDeconstructed(id: string): ContractId {
     return { networkId, address: toChecksumAddress(address) };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');
 /** @internal */
 export function validate(contract: Contract): ModelWithId<Contract> {
     const { networkId, address, abi } = contract;
     const id = getId({ networkId, address });
-    const eventAbis = lodash.filter(abi, (x) => x.type === 'event');
-    const eventAbiBySignature = lodash.keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
+    const eventAbis = filter(abi, (x) => x.type === 'event');
+    const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
 
     const result = {
         ...contract,

@@ -1,3 +1,1 @@
-import useTransaction from './useTransaction';
-
-export { useTransaction };
+export { useTransaction } from './useTransaction';

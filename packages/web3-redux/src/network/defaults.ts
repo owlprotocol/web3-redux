@@ -1,4 +1,4 @@
-import Network from './model/interface';
+import { Network } from './model/interface';
 import {
     ETHERSCAN_API_KEY,
     GANACHE_RPC,

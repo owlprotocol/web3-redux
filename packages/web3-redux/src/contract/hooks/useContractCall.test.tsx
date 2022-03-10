@@ -5,7 +5,7 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import { cloneDeep } from 'lodash';
 import { getWeb3Provider, expectThrowsAsync } from '../../test';
-import BlockNumberArtifact from '../../abis/BlockNumber.json';
+import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
 
 import { create as createNetwork } from '../../network/actions';
 import { create as createTransaction } from '../../transaction/actions';
@@ -17,10 +17,10 @@ import { networkId } from '../../test/data';
 import { createStore, StoreType } from '../../store';
 import { create } from '../actions';
 
-import useContractCall from '../hooks/useContractCall';
+import { useContractCall } from '../hooks/useContractCall';
 import { createEventSync } from '../../sync/model/EventSync';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe(`${name}/hooks/useContractCall.test.tsx`, () => {

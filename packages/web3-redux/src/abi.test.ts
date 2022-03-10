@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { cloneDeep } from 'lodash';
-import BlockNumberArtifact from './abis/BlockNumber.json';
+import * as BlockNumberArtifact from './abis/BlockNumber.json';
 import { ZERO_ADDRESS } from './utils';
 
 describe('abi.test.ts', () => {

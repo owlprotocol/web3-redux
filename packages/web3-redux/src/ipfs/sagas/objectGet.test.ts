@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
 import { Mockttp } from 'mockttp';
-import objectGet from './objectGet';
+import { objectGet } from './objectGet';
 import { IPFS_HELLO_WORLD, startMockIPFSNode } from '../../test/data';
 import { sleep } from '../../utils';
 

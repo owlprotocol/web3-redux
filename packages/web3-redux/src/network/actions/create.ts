@@ -1,8 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import Web3 from 'web3';
 import { name } from '../common';
-import { Network } from '../model/interface';
-import validate from '../model/validate';
+import { Network, validate } from '../model';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;

@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import { REDUX_ROOT } from '../../common';
-import { getOrm } from '../../orm';
+import { REDUX_ROOT } from '../../common.js';
+import { getOrm } from '../../orm.js';
 
 import { getId, BlockTransaction } from '../model';
 import { name } from '../common';

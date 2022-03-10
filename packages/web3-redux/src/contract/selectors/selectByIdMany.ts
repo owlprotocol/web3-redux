@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
-import Transaction from '../../transaction/model/interface';
+import { Transaction } from '../../transaction/model/interface';
 import { getOrm } from '../../orm';
 import { Contract, ContractId, getId, BaseWeb3Contract } from '../model/interface';
-import memoizeArrayByRef from '../../utils/memo/memoizeArrayByRef';
+import { memoizeArrayByRef } from '../../utils/memo';
 
 /** @internal */
 type selectManyType = (state: any, id?: string[]) => Contract[] | undefined;
@@ -22,7 +22,7 @@ const selectMany: selectManyType = createSelector(
 );
 
 /** @category Selectors */
-function selectByIdMany<T extends BaseWeb3Contract = BaseWeb3Contract>(
+export function selectByIdMany<T extends BaseWeb3Contract = BaseWeb3Contract>(
     state: any,
     ids?: ContractId[],
 ): (Contract<T> | undefined)[] {

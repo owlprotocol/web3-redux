@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import axios from 'axios';
-import moxios from 'moxios';
+import * as moxios from 'moxios';
 
-import WETH from '../../abis/WETH.json';
+import * as WETH from '../../abis/WETH.json';
 
 import { sleep } from '../../utils';
 import { networkId, WETH as WETH_ADDRESS } from '../../test/data';

@@ -6,8 +6,8 @@ import { getWeb3Provider } from '../../test';
 import { name } from '../common';
 import { ADDRESS_0, networkId } from '../../test/data';
 
-import ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
-import IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
+import * as ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import * as IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
 import { sleep } from '../../utils';
 
 import { createStore, StoreType } from '../../store';
@@ -17,7 +17,7 @@ import { create as createContract } from '../../contract';
 import { selectByIdMany } from '../selectors';
 import { getPastLogs as getPastLogsAction } from '../actions';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');
 describe(`${name}/sagas/getPastLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store

@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
-import useContractWithAbi from './useContractWithAbi';
-import IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
+import { useContractWithAbi } from './useContractWithAbi';
+import * as IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
 
 import { name } from '../common';
 import { networkId, ADDRESS_0 } from '../../test/data';
@@ -10,7 +10,7 @@ import { createStore, StoreType } from '../../store';
 
 import { expectThrowsAsync } from '../../test';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe(`${name}/hooks/useContractWithAbi.test.tsx`, () => {

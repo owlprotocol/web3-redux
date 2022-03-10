@@ -1,7 +1,7 @@
 import { name } from './common';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import ContractEvent, { getId } from './model/interface';
-import ContractEventIndex from '../contracteventindex/model/interface';
+import { ContractEvent, getId } from './model/interface';
+import { ContractEventIndex } from '../contracteventindex/model/interface';
 import { ORMModel, ModelWithId } from '../types/model';
 
 /** @internal */

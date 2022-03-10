@@ -9,8 +9,8 @@ import { sleep } from '../../utils';
 import { name } from '../common';
 import { networkId } from '../../test/data';
 
-import BlockNumberArtifact from '../../abis/BlockNumber.json';
-import Multicall from '../../abis/Multicall.json';
+import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
+import * as Multicall from '../../abis/Multicall.json';
 
 import { createStore, StoreType } from '../../store';
 import { create as createNetwork } from '../../network';

@@ -7,7 +7,7 @@ import { selectByIdSingle as selectContract } from '../../contract/selectors';
 import { CREATE, UPDATE, set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '../actions';
 import { ContractEvent } from '../model/interface';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');
 /**
  * Middleware for whenever an event log created/updated.

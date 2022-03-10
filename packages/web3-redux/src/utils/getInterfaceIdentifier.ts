@@ -1,5 +1,5 @@
 import { AbiItem, keccak256 } from 'web3-utils';
-import lodash from 'lodash';
+import { map } from 'lodash';
 
 export function getInterfaceIdentifierForAbi(abi: AbiItem[]): string {
     if (abi.length === 0) return '';
@@ -16,7 +16,7 @@ export function getFunctionIdentifier(item: AbiItem): string {
 
     if (!inputs || inputs.length === 0) return get4ByteIdentifier((finalStr += ')'));
 
-    finalStr += lodash.map(inputs, 'type').join(',');
+    finalStr += map(inputs, 'type').join(',');
     finalStr += ')';
 
     return get4ByteIdentifier(finalStr);

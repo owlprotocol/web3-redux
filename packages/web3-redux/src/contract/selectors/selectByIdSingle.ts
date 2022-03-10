@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-orm';
-import Transaction from '../../transaction/model/interface';
+import { Transaction } from '../../transaction/model/interface';
 import { getOrm } from '../../orm';
 import { Contract, ContractId, getId, BaseWeb3Contract } from '../model/interface';
 
@@ -17,7 +17,7 @@ const selectSingle: selectSingleType = createSelector(
 );
 
 /** @category Selectors */
-function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(
+export function selectByIdSingle<T extends BaseWeb3Contract = BaseWeb3Contract>(
     state: any,
     id: ContractId | undefined,
 ): Contract<T> | undefined {

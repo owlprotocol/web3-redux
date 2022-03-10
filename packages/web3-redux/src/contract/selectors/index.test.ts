@@ -3,7 +3,7 @@ import { AbiCoder } from 'web3-eth-abi';
 import Web3 from 'web3';
 import { cloneDeep } from 'lodash';
 
-import BlockNumberArtifact from '../../abis/BlockNumber.json';
+import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
 import { event1, event2, transaction1, transaction2, ADDRESS_0 } from '../../test/data';
 import { REDUX_ROOT } from '../../common';
 import { getOrm } from '../../orm';
@@ -16,7 +16,7 @@ import { StateRoot } from '../../state';
 import { ModelWithId } from '../../types/model';
 import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');
 
 describe(`${name}.selectors`, () => {

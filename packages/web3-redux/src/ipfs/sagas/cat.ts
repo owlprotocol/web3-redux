@@ -1,6 +1,8 @@
 import { put, call, select } from 'typed-redux-saga/macro';
 import invariant from 'tiny-invariant';
-import toBuffer from 'it-to-buffer';
+//TODO: FIX Replace with ECMA Module
+//@ts-ignore
+import * as toBuffer from 'it-to-buffer';
 
 import { set, create, CatAction, CAT } from '../actions';
 

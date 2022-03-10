@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-commonjs
 module.exports = {
     env: {
         node: true,
@@ -24,10 +25,13 @@ module.exports = {
         'no-console': 'warn',
         'no-unused-vars': 'off',
         'no-empty': 'warn',
-        'import/no-named-as-default': 'off',
-        'import/no-anonymous-default-export': 'off',
+        'import/extensions': ['error', 'ignorePackages', { json: 'always' }],
+        'import/no-named-as-default': 'error',
+        'import/no-commonjs': 'error',
+        'import/no-anonymous-default-export': 'error',
         'import/no-cycle': 'error',
         'import/no-self-import': 'error',
+        'import/no-unresolved': ['error', { ignore: ['\.js$'] }],
         //https://dev.to/diballesteros/how-to-quickly-configure-eslint-for-import-sorting-2h73
         'import/order': [
             1,

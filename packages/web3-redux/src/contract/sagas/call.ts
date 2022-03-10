@@ -10,7 +10,7 @@ import { CallAction, CALL } from '../actions';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 
-function* callSaga(action: CallAction) {
+export function* callSaga(action: CallAction) {
     try {
         const { payload } = action;
         const { networkId, address, from, defaultBlock } = payload;

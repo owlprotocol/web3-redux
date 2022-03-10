@@ -14,7 +14,7 @@ import { BlockTransaction, validate } from '../model';
 import { getWeb3Provider } from '../../test';
 import { useBlock } from './index';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');
 
 describe(`${name}/hooks/useBlock.test.tsx`, () => {

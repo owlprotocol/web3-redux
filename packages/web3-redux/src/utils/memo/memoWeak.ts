@@ -6,9 +6,9 @@ import memoize from 'fast-memoize';
 //TODO: Type inference
 interface memoizeWeakOptions {
     separator?: string; //string separator for composite key
-    serializer?: ([...params]: any[]) => any[]; //used serialize certain params to json
+    serializer?: (params: any[]) => any[]; //used serialize certain params to json
 }
-export default function memoizeWeak(fn: (...args: any[]) => any, options?: memoizeWeakOptions) {
+export function memoizeWeak(fn: (...args: any[]) => any, options?: memoizeWeakOptions) {
     const separator = options?.separator ?? '-';
     const defaultSerializer = ([...params]) => {
         return [...params];
@@ -79,3 +79,5 @@ export default function memoizeWeak(fn: (...args: any[]) => any, options?: memoi
         strategy: memoize.strategies.variadic,
     });
 }
+
+export default memoizeWeak;

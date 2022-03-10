@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import Web3 from 'web3';
-import { name } from '../common';
+import { name } from '../common.js';
 
 /** @internal */
 export const GET_CHAIN_ID = `${name}/GET_CHAIN_ID`;

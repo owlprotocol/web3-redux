@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
 
-import { Transaction } from '../../transaction/model';
-import { BlockTransaction } from '../model';
-import { getOrm } from '../../orm';
+import { Transaction } from '../../transaction/model/index.js';
+import { BlockTransaction } from '../model/index.js';
+import { getOrm } from '../../orm.js';
 
 /** @internal */
 export type selectSingle = (state: any, id?: string) => BlockTransaction | undefined;

@@ -3,16 +3,16 @@ import Web3 from 'web3';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 
-import { create as createNetwork } from '../../network/actions';
+import { create as createNetwork } from '../../network/actions/index.js';
 
-import { name } from '../common';
-import { networkId, block1 } from '../../test/data';
+import { name } from '../common.js';
+import { networkId, block1 } from '../../test/data.js';
 
-import { createStore, StoreType } from '../../store';
-import { create } from '../actions';
-import { BlockTransaction, validate } from '../model';
-import { getWeb3Provider } from '../../test';
-import { useBlock } from './index';
+import { createStore, StoreType } from '../../store.js';
+import { create } from '../actions/index.js';
+import { BlockTransaction, validate } from '../model/index.js';
+import { getWeb3Provider } from '../../test/index.js';
+import { useBlock } from './index.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

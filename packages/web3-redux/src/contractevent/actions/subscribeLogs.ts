@@ -2,8 +2,8 @@ import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress, isHexStrict } from 'web3-utils';
 import { map } from 'lodash';
 import invariant from 'tiny-invariant';
-import { name } from '../common';
-import { LogsSubscription } from '../model/logsSubscription';
+import { name } from '../common.js';
+import { LogsSubscription } from '../model/logsSubscription.js';
 
 /** @internal */
 export const SUBSCRIBE_LOGS = `${name}/SUBSCRIBE_LOGS`;

@@ -1,12 +1,12 @@
 import { put, call, fork } from 'typed-redux-saga/macro';
 import { batchActions } from 'redux-batched-actions';
 import { EventData } from 'web3-eth-contract';
-import exists from './exists';
-import { create as createEvent } from '../../contractevent/actions';
-import { EventGetPastAction, EVENT_GET_PAST } from '../actions';
-import networkExists from '../../network/sagas/exists';
+import exists from './exists.js';
+import { create as createEvent } from '../../contractevent/actions/index.js';
+import { EventGetPastAction, EVENT_GET_PAST } from '../actions/index.js';
+import networkExists from '../../network/sagas/exists.js';
 
-import { getId } from '../model';
+import { getId } from '../model/index.js';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
 

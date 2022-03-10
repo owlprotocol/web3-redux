@@ -1,7 +1,7 @@
 import { put, call, select } from 'typed-redux-saga/macro';
-import { create as createTransaction, update as updateTransaction, FetchAction } from '../actions';
-import networkExists from '../../network/sagas/exists';
-import { selectByIdSingle } from '../selectors';
+import { create as createTransaction, update as updateTransaction, FetchAction } from '../actions/index.js';
+import networkExists from '../../network/sagas/exists.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 function* fetch(action: FetchAction) {
     const { payload } = action;

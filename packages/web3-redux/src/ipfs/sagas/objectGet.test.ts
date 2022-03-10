@@ -2,16 +2,16 @@ import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
 import { Mockttp } from 'mockttp';
-import { objectGet } from './objectGet';
-import { IPFS_HELLO_WORLD, startMockIPFSNode } from '../../test/data';
-import { sleep } from '../../utils';
+import { objectGet } from './objectGet.js';
+import { IPFS_HELLO_WORLD, startMockIPFSNode } from '../../test/data.js';
+import { sleep } from '../../utils/index.js';
 
-import { createStore, StoreType } from '../../store';
-import { update as updateConfig } from '../../config/actions';
-import { selectByIdSingle } from '../selectors';
-import { create as createAction, objectGet as objectGetAction } from '../actions';
+import { createStore, StoreType } from '../../store.js';
+import { update as updateConfig } from '../../config/actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
+import { create as createAction, objectGet as objectGetAction } from '../actions/index.js';
 
-import { selectConfig } from '../../config/selectors';
+import { selectConfig } from '../../config/selectors/index.js';
 
 describe('ipfs/sagas/objectGet.test.ts', () => {
     let client: IPFS.IPFSHTTPClient;

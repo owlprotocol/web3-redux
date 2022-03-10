@@ -1,14 +1,14 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { getWeb3Provider } from '../../test';
+import { getWeb3Provider } from '../../test/index.js';
 
-import { networkId } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create as createNetwork } from '../../network/actions';
-import { Contract } from '../model/interface';
-import { name } from '../common';
-import { selectByIdSingle } from '../selectors';
-import { create as createAction, getBalance as getBalanceAction } from '../actions';
+import { networkId } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { Contract } from '../model/interface.js';
+import { name } from '../common.js';
+import { selectByIdSingle } from '../selectors/index.js';
+import { create as createAction, getBalance as getBalanceAction } from '../actions/index.js';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;

@@ -1,5 +1,5 @@
 import { AddressInfo, Server } from 'net';
-import { sleep } from './sleep';
+import { sleep } from './sleep.js';
 
 export async function sleepForPort(httpServer: Server, ms: number): Promise<number> {
     return new Promise<number>((resolve, reject) => {

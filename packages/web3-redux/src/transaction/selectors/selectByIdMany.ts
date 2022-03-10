@@ -1,6 +1,6 @@
-import select from './select';
-import { Transaction, TransactionId, getId } from '../model/interface';
-import { memoizeArrayByRef } from '../../utils/memo/memoizeArrayByRef';
+import select from './select.js';
+import { Transaction, TransactionId, getId } from '../model/interface.js';
+import { memoizeArrayByRef } from '../../utils/memo/index.js';
 
 /** @category Selectors */
 export function selectByIdMany(state: any, ids?: TransactionId[]): (Transaction | null)[] {

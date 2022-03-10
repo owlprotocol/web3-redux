@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
-import { name } from '../common';
-import { BlockHeader, BlockId, getId, getIdDeconstructed, validate } from './index';
+import { name } from '../common.js';
+import { BlockHeader, BlockId, getId, getIdDeconstructed, validate } from './index.js';
 
 describe(`${name}.model`, () => {
     const item: BlockHeader = { networkId: '1337', number: 0 };

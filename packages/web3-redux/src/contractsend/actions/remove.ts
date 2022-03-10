@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { ContractSendId } from '../model/interface';
+import { name } from '../common.js';
+import { ContractSendId } from '../model/interface.js';
 
 /** @internal */
 export const REMOVE = `${name}/DELETE`;

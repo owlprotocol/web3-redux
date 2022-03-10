@@ -1,9 +1,9 @@
 import { createSelector } from 'redux-orm';
 import { filter } from 'lodash';
-import { getOrm } from '../../orm';
-import { ContractEvent, ReturnValues } from '../../contractevent/model';
-import { selectEvents, selectByIdSingle as selectEventIndex } from '../../contracteventindex/selectors';
-import { BaseWeb3Contract, ContractId } from '../model/interface';
+import { getOrm } from '../../orm.js';
+import { ContractEvent, ReturnValues } from '../../contractevent/model/index.js';
+import { selectEvents, selectByIdSingle as selectEventIndex } from '../../contracteventindex/selectors/index.js';
+import { BaseWeb3Contract, ContractId } from '../model/interface.js';
 
 //Events
 type selectContractEventsById = (state: any, id: string | undefined) => ContractEvent[] | null;

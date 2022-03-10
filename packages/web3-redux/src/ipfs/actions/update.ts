@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { isCIDGuard } from '../../utils';
-import { name } from '../common';
-import { Ipfs } from '../model/interface';
+import { isCIDGuard } from '../../utils/index.js';
+import { name } from '../common.js';
+import { Ipfs } from '../model/interface.js';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;

@@ -25,16 +25,22 @@ module.exports = {
         'no-console': 'warn',
         'no-unused-vars': 'off',
         'no-empty': 'warn',
-        'import/extensions': ['error', 'ignorePackages', { json: 'always' }],
+        'import/extensions': ['warn', 'ignorePackages', { json: 'always' }],
         'import/no-named-as-default': 'error',
         'import/no-commonjs': 'error',
         'import/no-anonymous-default-export': 'error',
         'import/no-cycle': 'error',
         'import/no-self-import': 'error',
-        'import/no-unresolved': ['error', { ignore: ['\.js$'] }],
+        'import/no-unresolved': ['error', { ignore: ['.js$'] }],
+        'import/no-internal-modules': [
+            'off',
+            {
+                allow: ['.json$'],
+            },
+        ],
         //https://dev.to/diballesteros/how-to-quickly-configure-eslint-for-import-sorting-2h73
         'import/order': [
-            1,
+            'warn',
             {
                 groups: ['external', 'builtin', 'internal', 'sibling', 'parent', 'index'],
             },

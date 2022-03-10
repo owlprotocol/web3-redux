@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { callHash } from '../model/callArgs';
+import { name } from '../common.js';
+import { callHash } from '../model/callArgs.js';
 
 /** @internal */
 export const CALL = `${name}/CALL`;

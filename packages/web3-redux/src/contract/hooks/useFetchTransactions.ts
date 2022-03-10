@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
-import { selectByFilter } from '../../transaction/selectors';
+import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors/index.js';
+import { selectByFilter } from '../../transaction/selectors/index.js';
 
-import { fetchTransactions } from '../actions';
-import { FetchTransactionOptions } from '../actions/fetchTransactions';
+import { fetchTransactions } from '../actions/index.js';
+import { FetchTransactionOptions } from '../actions/fetchTransactions.js';
 
 /**
  * Fetch transactions from/to contract using Etherscan API

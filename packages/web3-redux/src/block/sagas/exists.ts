@@ -1,7 +1,7 @@
 import { select } from 'typed-redux-saga/macro';
-import { name } from '../common';
-import { selectByIdSingle } from '../selectors';
-import { BlockId } from '../model';
+import { name } from '../common.js';
+import { selectByIdSingle } from '../selectors/index.js';
+import { BlockId } from '../model/index.js';
 
 /** @category Sagas */
 function* exists(id: BlockId) {

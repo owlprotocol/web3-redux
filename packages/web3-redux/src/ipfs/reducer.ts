@@ -1,4 +1,4 @@
-import { name } from './common';
+import { name } from './common.js';
 import {
     ReducerAction,
     isCreateAction,
@@ -8,9 +8,9 @@ import {
     RemoveAction,
     SetAction,
     UpdateAction,
-} from './actions';
-import { Ipfs } from './model/interface';
-import { ORMModel } from '../types/model';
+} from './actions/index.js';
+import { Ipfs } from './model/interface.js';
+import { ORMModel } from '../types/model.js';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {

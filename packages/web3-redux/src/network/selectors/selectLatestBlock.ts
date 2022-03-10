@@ -1,5 +1,5 @@
-import selectLatestBlockNumber from './selectLatestBlockNumber';
-import { selectByIdSingle } from '../../block/selectors';
+import selectLatestBlockNumber from './selectLatestBlockNumber.js';
+import { selectByIdSingle } from '../../block/selectors/index.js';
 
 /** @category Selectors */
 function selectLatestBlock(state: any, id: string | undefined) {

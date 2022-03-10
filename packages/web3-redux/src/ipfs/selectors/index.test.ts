@@ -1,12 +1,12 @@
 import { assert } from 'chai';
-import { REDUX_ROOT } from '../../common';
-import { getOrm } from '../../orm';
+import { REDUX_ROOT } from '../../common.js';
+import { getOrm } from '../../orm.js';
 
-import { Ipfs } from '../model/interface';
-import { name } from '../common';
+import { Ipfs } from '../model/interface.js';
+import { name } from '../common.js';
 
-import { selectByIdSingle, selectByIdMany } from '../selectors';
-import { IPFS_HELLO_WORLD } from '../../test/data';
+import { selectByIdSingle, selectByIdMany } from '../selectors/index.js';
+import { IPFS_HELLO_WORLD } from '../../test/data.js';
 
 describe(`${name}.selectors`, () => {
     const item: Ipfs = { contentId: IPFS_HELLO_WORLD };

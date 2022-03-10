@@ -1,9 +1,9 @@
 import { put, select, all } from 'typed-redux-saga/macro';
 import { Action } from 'redux';
 import { isMatch, reduce } from 'lodash';
-import { CreateAction } from '../../contractevent/actions';
-import { selectByIdMany } from '../selector';
-import { EventSync } from '../model';
+import { CreateAction } from '../../contractevent/actions/index.js';
+import { selectByIdMany } from '../selector/index.js';
+import { EventSync } from '../model/index.js';
 
 //Handle on event update
 function* eventSync({ payload }: CreateAction) {

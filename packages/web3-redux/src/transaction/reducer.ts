@@ -1,6 +1,6 @@
-import { name } from './common';
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import { getId } from './model/interface';
+import { name } from './common.js';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
+import { getId } from './model/interface.js';
 
 /** @category Selectors */
 export function reducer(sess: any, action: ReducerAction) {

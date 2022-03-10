@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-orm';
-import { ContractEvent } from '../../contractevent/model/interface';
-import { getOrm } from '../../orm';
+import { ContractEvent } from '../../contractevent/model/interface.js';
+import { getOrm } from '../../orm.js';
 
 const selector = createSelector(getOrm().ContractEventIndex.events);
 

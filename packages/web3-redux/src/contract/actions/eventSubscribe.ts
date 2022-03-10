@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
+import { name } from '../common.js';
 
 /** @internal */
 export const EVENT_SUBSCRIBE = `${name}/EVENT_SUBSCRIBE`;

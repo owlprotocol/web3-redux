@@ -1,13 +1,13 @@
 import { END, eventChannel, EventChannel, TakeableChannel } from 'redux-saga';
 import { put, call, take } from 'typed-redux-saga/macro';
 import { PromiEvent, TransactionReceipt } from 'web3-core';
-import exists from './exists';
-import { ContractSendStatus } from '../../contractsend/model';
-import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions';
-import { create as createTransaction } from '../../transaction/actions';
-import { SEND, SendAction } from '../actions';
-import networkExists from '../../network/sagas/exists';
-import { Contract, getId } from '../model';
+import exists from './exists.js';
+import { ContractSendStatus } from '../../contractsend/model/index.js';
+import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions/index.js';
+import { create as createTransaction } from '../../transaction/actions/index.js';
+import { SEND, SendAction } from '../actions/index.js';
+import networkExists from '../../network/sagas/exists.js';
+import { Contract, getId } from '../model/index.js';
 
 const CONTRACT_SEND_HASH = `${SEND}/HASH`;
 const CONTRACT_SEND_RECEIPT = `${SEND}/RECEIPT`;
@@ -16,10 +16,10 @@ const CONTRACT_SEND_ERROR = `${SEND}/ERROR`;
 const CONTRACT_SEND_DONE = `${SEND}/DONE`;
 interface ContractSendChannelMessage {
     type:
-        | typeof CONTRACT_SEND_HASH
-        | typeof CONTRACT_SEND_RECEIPT
-        | typeof CONTRACT_SEND_CONFIRMATION
-        | typeof CONTRACT_SEND_ERROR;
+    | typeof CONTRACT_SEND_HASH
+    | typeof CONTRACT_SEND_RECEIPT
+    | typeof CONTRACT_SEND_CONFIRMATION
+    | typeof CONTRACT_SEND_ERROR;
     error?: any;
     hash?: string;
     receipt?: TransactionReceipt;
@@ -46,7 +46,7 @@ function sendChannel(tx: PromiEvent<TransactionReceipt>): EventChannel<ContractS
                 emitter(END);
             });
         // The subscriber must return an unsubscribe function
-        return () => {}; //eslint-disable-line @typescript-eslint/no-empty-function
+        return () => { }; //eslint-disable-line @typescript-eslint/no-empty-function
     });
 }
 

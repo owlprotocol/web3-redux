@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AbiItem } from 'web3-utils';
-import { create } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import { create } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 /**
  * Creates a contract/EOA if it doesn't exist.

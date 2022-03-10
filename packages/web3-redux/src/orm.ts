@@ -1,17 +1,17 @@
 import { ORM } from 'redux-orm';
-import NetworkModel from './network/model/orm';
-import BlockModel from './block/model/orm';
-import TransactionModel from './transaction/model/orm';
-import ContractModel from './contract/model/orm';
-import ContractEventModel from './contractevent/model/orm';
-import ContractEventIndexModel from './contracteventindex/model/orm';
-import ContractSendModel from './contractsend/model/orm';
-import EthCallModel from './ethcall/model/orm';
-import ConfigModel from './config/model/orm';
-import IpfsModel from './ipfs/model/orm';
-import SyncModel from './sync/model/orm';
-import _4ByteModel from './4byte/model/orm';
-import { IPFS_URL, _4BYTE_URL } from './environment';
+import NetworkModel from './network/model/orm.js';
+import BlockModel from './block/model/orm.js';
+import TransactionModel from './transaction/model/orm.js';
+import ContractModel from './contract/model/orm.js';
+import ContractEventModel from './contractevent/model/orm.js';
+import ContractEventIndexModel from './contracteventindex/model/orm.js';
+import ContractSendModel from './contractsend/model/orm.js';
+import EthCallModel from './ethcall/model/orm.js';
+import ConfigModel from './config/model/orm.js';
+import IpfsModel from './ipfs/model/orm.js';
+import SyncModel from './sync/model/orm.js';
+import _4ByteModel from './4byte/model/orm.js';
+import { IPFS_URL, _4BYTE_URL } from './environment.js';
 
 //Fix undefined import issue
 let orm = getOrm();

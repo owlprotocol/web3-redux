@@ -1,4 +1,4 @@
-import selectByIdMany from './selectByIdMany';
-import selectByIdSingle from './selectByIdSingle';
+import selectByIdMany from './selectByIdMany.js';
+import selectByIdSingle from './selectByIdSingle.js';
 
 export { selectByIdMany, selectByIdSingle };

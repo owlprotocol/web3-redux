@@ -4,12 +4,12 @@ import * as moxios from 'moxios';
 
 import * as WETH from '../../abis/WETH.json';
 
-import { sleep } from '../../utils';
-import { networkId, WETH as WETH_ADDRESS } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create as createNetwork } from '../../network';
-import { selectByIdSingle as selectContract } from '../selectors';
-import { fetchAbi as fetchAbiAction } from '../actions';
+import { sleep } from '../../utils/index.js';
+import { networkId, WETH as WETH_ADDRESS } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
+import { create as createNetwork } from '../../network/index.js';
+import { selectByIdSingle as selectContract } from '../selectors/index.js';
+import { fetchAbi as fetchAbiAction } from '../actions/index.js';
 
 describe('contract/sagas/fetchAbi.test.ts', () => {
     let store: StoreType;

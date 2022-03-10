@@ -3,13 +3,13 @@ import Web3 from 'web3';
 import { cloneDeep } from 'lodash';
 
 import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
-import { getWeb3Provider } from '../../test';
-import { networkId } from '../../test/data';
+import { getWeb3Provider } from '../../test/index.js';
+import { networkId } from '../../test/data.js';
 
-import { createStore, StoreType } from '../../store';
-import { Network, EthCall } from '../../index';
-import { sleep } from '../../utils';
-import { getIdArgs } from '../model/interface';
+import { createStore, StoreType } from '../../store.js';
+import { Network, EthCall } from '../../index.js';
+import { sleep } from '../../utils/index.js';
+import { getIdArgs } from '../model/interface.js';
 
 describe('ethcall.sagas', () => {
     let web3: Web3;

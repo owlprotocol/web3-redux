@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
-import { BlockHeader } from '../../block/model';
+import { BlockHeader } from '../../block/model/index.js';
 
-import { name } from '../common';
-import { getOrm } from '../../orm';
+import { name } from '../common.js';
+import { getOrm } from '../../orm.js';
 
 const select = createSelector(getOrm()[name].blocks);
 /** @category Selectors */

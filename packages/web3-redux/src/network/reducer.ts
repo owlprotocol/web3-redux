@@ -1,5 +1,5 @@
-import { name } from './common';
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
+import { name } from './common.js';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {

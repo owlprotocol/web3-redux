@@ -1,10 +1,10 @@
-import { CREATE, create, CreateAction, isCreateAction } from './create';
-import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove';
-import { UPDATE, update, UpdateAction, isUpdateAction } from './update';
-import { SET, set, SetAction, isSetAction } from './set';
-import { FETCH_IPFS, fetchIpfs, FetchIpfsAction, isFetchIpfsAction } from './fetchIpfs';
-import { OBJECT_GET, objectGet, ObjectGetAction, isObjectGetAction } from './objectGet';
-import { CAT, cat, CatAction, isCatAction } from './cat';
+import { CREATE, create, CreateAction, isCreateAction } from './create.js';
+import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove.js';
+import { UPDATE, update, UpdateAction, isUpdateAction } from './update.js';
+import { SET, set, SetAction, isSetAction } from './set.js';
+import { FETCH_IPFS, fetchIpfs, FetchIpfsAction, isFetchIpfsAction } from './fetchIpfs.js';
+import { OBJECT_GET, objectGet, ObjectGetAction, isObjectGetAction } from './objectGet.js';
+import { CAT, cat, CatAction, isCatAction } from './cat.js';
 
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
 

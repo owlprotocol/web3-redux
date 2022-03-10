@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAccount } from '../actions';
-import { selectAccount } from '../selectors';
+import { setAccount } from '../actions/index.js';
+import { selectAccount } from '../selectors/index.js';
 
 /**
  * @category Hooks

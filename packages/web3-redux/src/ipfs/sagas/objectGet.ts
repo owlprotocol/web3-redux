@@ -2,10 +2,10 @@ import { put, call, select } from 'typed-redux-saga/macro';
 import invariant from 'tiny-invariant';
 import { keyBy } from 'lodash';
 import { batchActions } from 'redux-batched-actions';
-import { update, create, ObjectGetAction, OBJECT_GET } from '../actions';
+import { update, create, ObjectGetAction, OBJECT_GET } from '../actions/index.js';
 
-import { selectConfig } from '../../config/selectors';
-import { selectByIdSingle } from '../selectors';
+import { selectConfig } from '../../config/selectors/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 const objectGet_ERROR = `${OBJECT_GET}/ERROR`;
 /** @objectGetegory Sagas */

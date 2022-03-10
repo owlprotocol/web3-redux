@@ -1,10 +1,10 @@
 import { assert } from 'chai';
-import { name } from './common';
-import { selectEvents } from './selectors/index';
-import { createStore, StoreType } from '../store';
-import { networkId } from '../test/data';
-import { create as createEvent } from '../contractevent/actions';
-import { validateContractEvent } from '../contractevent';
+import { name } from './common.js';
+import { selectEvents } from './selectors/index.js';
+import { createStore, StoreType } from '../store.js';
+import { networkId } from '../test/data.js';
+import { create as createEvent } from '../contractevent/actions/index.js';
+import { validateContractEvent } from '../contractevent/index.js';
 
 describe(`${name}.integration`, () => {
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';

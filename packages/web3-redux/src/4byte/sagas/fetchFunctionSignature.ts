@@ -2,9 +2,9 @@ import { put, call, select } from 'typed-redux-saga/macro';
 import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
 
-import { selectConfig } from '../../config/selectors';
-import { set, create, FetchFunctionSignatureAction } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import { selectConfig } from '../../config/selectors/index.js';
+import { set, create, FetchFunctionSignatureAction } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 interface _4ByteResponseItem {
     id: number;

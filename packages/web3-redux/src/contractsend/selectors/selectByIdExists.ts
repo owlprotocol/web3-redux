@@ -1,5 +1,5 @@
-import selectByIdSingle from './selectByIdSingle';
-import { ContractSendId } from '../model/interface';
+import selectByIdSingle from './selectByIdSingle.js';
+import { ContractSendId } from '../model/interface.js';
 
 /** @category Selectors */
 function selectByIdExists(state: any, id: ContractSendId | undefined): boolean {

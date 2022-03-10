@@ -2,7 +2,7 @@
  * Environment variable utilities.
  * @module Environment
  */
-import { isClient } from './utils/isClient';
+import { isClient } from './utils/isClient.js';
 
 //Avoid crashing if in browser context
 if (!isClient()) {

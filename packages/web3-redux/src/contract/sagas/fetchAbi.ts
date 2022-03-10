@@ -2,9 +2,9 @@ import { select, put, call } from 'typed-redux-saga/macro';
 import { AxiosResponse } from 'axios';
 import { AbiItem } from 'web3-utils';
 
-import networkExists from '../../network/sagas/exists';
-import { create, set as setAction, FetchAbiAction } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import networkExists from '../../network/sagas/exists.js';
+import { create, set as setAction, FetchAbiAction } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 /** @category Sagas */
 export function* fetchAbi(action: FetchAbiAction) {

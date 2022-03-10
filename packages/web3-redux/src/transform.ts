@@ -1,7 +1,7 @@
 import { createTransform } from 'redux-persist';
 import { omit, mapValues } from 'lodash';
 import Web3 from 'web3';
-import { State } from './state';
+import { State } from './state.js';
 
 export const NetworkTransform = createTransform(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

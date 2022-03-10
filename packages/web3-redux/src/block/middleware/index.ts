@@ -1,1 +1,1 @@
-export { onUpdate, onUpdate as onBlockUpdate } from './onUpdate';
+export { onUpdate, onUpdate as onBlockUpdate } from './onUpdate.js';

@@ -1,6 +1,6 @@
 import { useDebugValue } from 'react';
 import { useSelector } from 'react-redux';
-import selectLatestBlock from '../selectors/selectLatestBlock';
+import selectLatestBlock from '../selectors/selectLatestBlock.js';
 
 /** @category Hooks */
 export default function useLatestBlock(networkId: string | undefined) {

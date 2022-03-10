@@ -2,19 +2,19 @@ import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import axios from 'axios';
 import * as moxios from 'moxios';
-import { fetchEventSignature } from './fetchEventSignature';
-import { networkId } from '../../test/data';
-import { sleep } from '../../utils';
+import { fetchEventSignature } from './fetchEventSignature.js';
+import { networkId } from '../../test/data.js';
+import { sleep } from '../../utils/index.js';
 
-import { createStore, StoreType } from '../../store';
-import { selectByIdSingle } from '../selectors';
-import { selectConfig } from '../../config/selectors';
-import { update as updateConfig } from '../../config/actions';
+import { createStore, StoreType } from '../../store.js';
+import { selectByIdSingle } from '../selectors/index.js';
+import { selectConfig } from '../../config/selectors/index.js';
+import { update as updateConfig } from '../../config/actions/index.js';
 
 //Actions
-import createAction from '../actions/create';
-import fetchEventSignatureAction from '../actions/fetchEventSignature';
-import setAction from '../actions/set';
+import createAction from '../actions/create.js';
+import fetchEventSignatureAction from '../actions/fetchEventSignature.js';
+import setAction from '../actions/set.js';
 
 //Sagas
 

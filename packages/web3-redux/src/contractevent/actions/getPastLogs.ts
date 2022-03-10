@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress, isHexStrict } from 'web3-utils';
 import { map } from 'lodash';
 import invariant from 'tiny-invariant';
-import { name } from '../common';
+import { name } from '../common.js';
 
 /** @internal */
 export const GET_PAST_LOGS = `${name}/GET_PAST_LOGS`;

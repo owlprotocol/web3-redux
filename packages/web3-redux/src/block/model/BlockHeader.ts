@@ -1,4 +1,4 @@
-import { BlockId } from './id';
+import { BlockId } from './id.js';
 
 /**
  * Block header object. Typically returned by Web3 websocket subscriptions.

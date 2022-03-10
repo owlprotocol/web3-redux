@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { isCIDGuard } from '../../utils';
-import { name } from '../common';
+import { isCIDGuard } from '../../utils/index.js';
+import { name } from '../common.js';
 
 /** @internal */
 export const FETCH_IPFS = `${name}/FETCH_IPFS`;

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { SignatureId } from '../model';
+import { name } from '../common.js';
+import { SignatureId } from '../model/index.js';
 
 /** @internal */
 export const FETCH_FUNCTION_SIGNATURE = `${name}/FETCH_FUNCTION_SIGNATURE`;

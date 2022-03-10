@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { cloneDeep } from 'lodash';
 import * as BlockNumberArtifact from './abis/BlockNumber.json';
-import { ZERO_ADDRESS } from './utils';
+import { ZERO_ADDRESS } from './utils/index.js';
 
 describe('abi.test.ts', () => {
     it('web3.eth.Contract mutates abi', () => {

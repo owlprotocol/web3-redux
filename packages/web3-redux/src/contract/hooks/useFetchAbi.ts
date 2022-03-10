@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
-import { fetchAbi } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors/index.js';
+import { fetchAbi } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 /**
  * Fetch Contract ABI

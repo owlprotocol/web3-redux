@@ -1,16 +1,16 @@
 import { assert } from 'chai';
 import { Persistor, getStoredState } from 'redux-persist';
 import { mapValues, omit } from 'lodash';
-import { create as createTransaction } from './transaction/actions';
-import { create as createNetwork } from './network/actions';
-import { selectByIdSingle as selectNetwork } from './network/selectors';
+import { create as createTransaction } from './transaction/actions/index.js';
+import { create as createNetwork } from './network/actions/index.js';
+import { selectByIdSingle as selectNetwork } from './network/selectors/index.js';
 
-import { createStore, StoreType } from './store';
-import { ContractTransform, NetworkTransform, SyncTransform } from './transform';
-import { LocalStorageAsyncMock } from './utils/localstorageAsync';
-import { transaction1 } from './test/data';
-import { State } from './state';
-import { REDUX_ROOT } from './common';
+import { createStore, StoreType } from './store.js';
+import { ContractTransform, NetworkTransform, SyncTransform } from './transform.js';
+import { LocalStorageAsyncMock } from './utils/localstorageAsync.js';
+import { transaction1 } from './test/data.js';
+import { State } from './state.js';
+import { REDUX_ROOT } from './common.js';
 
 function noMetaState(state: State) {
     const models = omit(state, ['@@_______REDUX_ORM_STATE_FLAG', '_persist']);

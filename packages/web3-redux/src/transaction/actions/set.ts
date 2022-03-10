@@ -1,5 +1,5 @@
-import { name } from '../common';
-import { Transaction, getId, TransactionId } from '../model/interface';
+import { name } from '../common.js';
+import { Transaction, getId, TransactionId } from '../model/interface.js';
 
 /** @internal */
 export const SET = (key: keyof Transaction) => `${name}/SET/${key.toUpperCase()}`;

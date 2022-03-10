@@ -1,8 +1,8 @@
 import { put, select, all } from 'typed-redux-saga/macro';
 import { Action } from 'redux';
-import { CreateAction } from '../../block/actions';
-import { selectByIdMany } from '../selector';
-import { BlockSync } from '../model';
+import { CreateAction } from '../../block/actions/index.js';
+import { selectByIdMany } from '../selector/index.js';
+import { BlockSync } from '../model/index.js';
 
 //Handle on block update
 function* blockSync({ payload }: CreateAction) {

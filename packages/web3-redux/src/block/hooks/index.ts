@@ -1,2 +1,2 @@
-export { useBlockSync } from './useBlockSync';
-export { useBlock } from './useBlock';
+export { useBlockSync } from './useBlockSync.js';
+export { useBlock } from './useBlock.js';

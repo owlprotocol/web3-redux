@@ -1,7 +1,7 @@
 import { select } from 'typed-redux-saga/macro';
-import { name } from '../common';
-import { selectByIdSingle } from '../selectors';
-import { ContractId } from '../model/interface';
+import { name } from '../common.js';
+import { selectByIdSingle } from '../selectors/index.js';
+import { ContractId } from '../model/interface.js';
 
 function* exists(id: ContractId) {
     const result: ReturnType<typeof selectByIdSingle> = yield* select(selectByIdSingle, id);

@@ -3,17 +3,17 @@ import { put, call, cancel, take, fork } from 'typed-redux-saga/macro';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';
-import exists from './exists';
-import { create as createEvent } from '../../contractevent/actions';
-import { eventSubscriptionHash, getId } from '../model';
+import exists from './exists.js';
+import { create as createEvent } from '../../contractevent/actions/index.js';
+import { eventSubscriptionHash, getId } from '../model/index.js';
 import {
     EventSubscribeAction,
     EventUnsubscribeAction,
     EVENT_SUBSCRIBE,
     isEventSubscribeAction,
     isEventUnsubscribeAction,
-} from '../actions';
-import networkExists from '../../network/sagas/exists';
+} from '../actions/index.js';
+import networkExists from '../../network/sagas/exists.js';
 
 const SUBSCRIBE_DATA = `${EVENT_SUBSCRIBE}/DATA`;
 const SUBSCRIBE_ERROR = `${EVENT_SUBSCRIBE}/ERROR`;

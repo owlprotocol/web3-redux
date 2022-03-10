@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BaseWeb3Contract } from '../model';
-import { send } from '../actions';
-import selectSingle from '../selectors/selectByIdSingle';
+import { BaseWeb3Contract } from '../model/index.js';
+import { send } from '../actions/index.js';
+import selectSingle from '../selectors/selectByIdSingle.js';
 
 /**
  * Create a contract send transaction callback method.
@@ -44,7 +44,7 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
 export function contractSendHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
->(method: K) {
+    >(method: K) {
     return (networkId: string | undefined, address: string | undefined) => {
         return useContractSend<T, K>(networkId, address, method);
     };

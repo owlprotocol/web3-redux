@@ -2,15 +2,15 @@ import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import { useGetCode } from './useGetCode';
-import { getWeb3Provider } from '../../test';
+import { useGetCode } from './useGetCode.js';
+import { getWeb3Provider } from '../../test/index.js';
 
-import { create as createNetwork } from '../../network/actions';
+import { create as createNetwork } from '../../network/actions/index.js';
 
-import { name } from '../common';
-import { networkId } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create } from '../actions';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
+import { create } from '../actions/index.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

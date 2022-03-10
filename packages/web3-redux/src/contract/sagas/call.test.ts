@@ -3,19 +3,19 @@ import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import { cloneDeep } from 'lodash';
-import { getWeb3Provider } from '../../test';
-import { sleep } from '../../utils';
+import { getWeb3Provider } from '../../test/index.js';
+import { sleep } from '../../utils/index.js';
 
-import { name } from '../common';
+import { name } from '../common.js';
 
 import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
-import { networkId } from '../../test/data';
+import { networkId } from '../../test/data.js';
 
-import { createStore, StoreType } from '../../store';
-import { create as createNetwork } from '../../network';
+import { createStore, StoreType } from '../../store.js';
+import { create as createNetwork } from '../../network/index.js';
 
-import { selectContractCall } from '../selectors';
-import { create as createAction, call as callAction } from '../actions';
+import { selectContractCall } from '../selectors/index.js';
+import { create as createAction, call as callAction } from '../actions/index.js';
 
 describe(`${name}.sagas.call`, () => {
     let web3: Web3; //Web3 loaded from store

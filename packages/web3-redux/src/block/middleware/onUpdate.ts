@@ -1,14 +1,14 @@
 import { AnyAction, Store } from 'redux';
 import { batchActions } from 'redux-batched-actions';
-import { selectLatestBlockNumber } from '../../network/selectors';
-import { set as setNetwork } from '../../network/actions';
-import { Transaction } from '../../transaction/model/interface';
-import { create as createTransaction } from '../../transaction/actions';
-import { getTransactionId } from '../../transaction/model';
+import { selectLatestBlockNumber } from '../../network/selectors/index.js';
+import { set as setNetwork } from '../../network/actions/index.js';
+import { Transaction } from '../../transaction/model/interface.js';
+import { create as createTransaction } from '../../transaction/actions/index.js';
+import { getTransactionId } from '../../transaction/model/index.js';
 
-import { isCreateAction, isUpdateAction, isSetAction } from '../actions';
-import { isStrings } from '../../utils';
-import { getBlockId } from '../model';
+import { isCreateAction, isUpdateAction, isSetAction } from '../actions/index.js';
+import { isStrings } from '../../utils/index.js';
+import { getBlockId } from '../model/index.js';
 
 /**
  * Middleware for whenever a block is created/updated.

@@ -1,11 +1,11 @@
 import { put, all, select, call } from 'typed-redux-saga/macro';
-import { validate as validatedEthCall } from '../../ethcall/model';
-import { create as createEthCall } from '../../ethcall/actions';
-import { Contract } from '../model';
-import { create, CallBatchedAction, CALL_BATCHED } from '../actions';
-import { selectByIdMany } from '../selectors/selectByIdMany';
-import networkExists from '../../network/sagas/exists';
-import { Network } from '../../network/model';
+import { validate as validatedEthCall } from '../../ethcall/model/index.js';
+import { create as createEthCall } from '../../ethcall/actions/index.js';
+import { Contract } from '../model/index.js';
+import { create, CallBatchedAction, CALL_BATCHED } from '../actions/index.js';
+import { selectByIdMany } from '../selectors/selectByIdMany.js';
+import networkExists from '../../network/sagas/exists.js';
+import { Network } from '../../network/model/index.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;

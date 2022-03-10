@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import Web3 from 'web3';
-import { name } from '../common';
-import { Network, validate } from '../model';
+import { name } from '../common.js';
+import { Network, validate } from '../model/index.js';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;

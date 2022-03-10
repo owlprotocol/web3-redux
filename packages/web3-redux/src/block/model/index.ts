@@ -1,6 +1,6 @@
-export { getId, getId as getBlockId, getIdDeconstructed } from './id';
-export { validate, validate as validateBlock } from './interface';
+export { getId, getId as getBlockId, getIdDeconstructed } from './id.js';
+export { validate, validate as validateBlock } from './interface.js';
 
-export type { BlockId } from './id';
-export type { BlockHeader } from './BlockHeader';
-export type { BlockTransaction } from './BlockTransaction';
+export type { BlockId } from './id.js';
+export type { BlockHeader } from './BlockHeader.js';
+export type { BlockTransaction } from './BlockTransaction.js';

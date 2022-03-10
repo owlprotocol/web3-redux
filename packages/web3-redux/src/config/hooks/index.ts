@@ -1,3 +1,3 @@
-export { useAccount } from './useAccount';
-export { useConfig } from './useConfig';
-export { useNetworkId } from './useNetworkId';
+export { useAccount } from './useAccount.js';
+export { useConfig } from './useConfig.js';
+export { useNetworkId } from './useNetworkId.js';

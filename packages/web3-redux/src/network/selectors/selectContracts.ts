@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
-import { Contract } from '../../contract/model';
+import { Contract } from '../../contract/model/index.js';
 
-import { name } from '../common';
-import { getOrm } from '../../orm';
+import { name } from '../common.js';
+import { getOrm } from '../../orm.js';
 
 const select = createSelector(getOrm()[name].contracts);
 /** @category Selectors */

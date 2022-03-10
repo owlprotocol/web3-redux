@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { IpfsId } from '../model/interface';
+import { name } from '../common.js';
+import { IpfsId } from '../model/interface.js';
 
 /** @internal */
 export const REMOVE = `${name}/DELETE`;

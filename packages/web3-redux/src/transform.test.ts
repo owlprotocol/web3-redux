@@ -1,10 +1,10 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { ContractTransform, NetworkTransform } from './transform';
-import { network1, contract1 } from './test/data';
-import { StateRoot } from './state';
-import { getOrm } from './orm';
-import { REDUX_ROOT } from './common';
+import { ContractTransform, NetworkTransform } from './transform.js';
+import { network1, contract1 } from './test/data.js';
+import { StateRoot } from './state.js';
+import { getOrm } from './orm.js';
+import { REDUX_ROOT } from './common.js';
 
 describe('redux-persist Transforms', () => {
     let state: StateRoot;

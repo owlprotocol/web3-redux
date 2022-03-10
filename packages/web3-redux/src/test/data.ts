@@ -3,14 +3,14 @@ import * as MockHTTP from 'mockttp';
 import { AbiCoder } from 'web3-eth-abi';
 import { cloneDeep } from 'lodash';
 import * as BlockNumberArtifact from '../abis/BlockNumber.json';
-import { REDUX_ROOT } from '../common';
-import { StateRoot } from '../state';
-import { getOrm } from '../orm';
-import { validateBlock } from '../block';
-import { validateContract } from '../contract';
-import { validateContractEvent } from '../contractevent';
-import { validateEthCall } from '../ethcall';
-import { validateTransaction } from '../transaction';
+import { REDUX_ROOT } from '../common.js';
+import { StateRoot } from '../state.js';
+import { getOrm } from '../orm.js';
+import { validateBlock } from '../block/index.js';
+import { validateContract } from '../contract/index.js';
+import { validateContractEvent } from '../contractevent/index.js';
+import { validateEthCall } from '../ethcall/index.js';
+import { validateTransaction } from '../transaction/index.js';
 
 export const networkId = '1336';
 

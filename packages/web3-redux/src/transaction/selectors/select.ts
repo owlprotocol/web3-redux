@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-orm';
-import { name } from '../common';
-import { getOrm } from '../../orm';
+import { name } from '../common.js';
+import { getOrm } from '../../orm.js';
 
 const orm = getOrm();
 /** @internal */

@@ -1,4 +1,4 @@
-import { Network } from './model/interface';
+import { Network } from './model/interface.js';
 import {
     ETHERSCAN_API_KEY,
     GANACHE_RPC,
@@ -28,7 +28,7 @@ import {
     POLYGON_MUMBAI_EXPLORER_API,
     ARBITRUM_EXPLORER,
     ARBITRUM_EXPLORER_API,
-} from '../environment';
+} from '../environment.js';
 
 export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '1337': {

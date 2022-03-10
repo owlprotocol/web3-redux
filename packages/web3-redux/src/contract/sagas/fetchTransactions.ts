@@ -2,10 +2,10 @@ import { select, put, call } from 'typed-redux-saga/macro';
 import { batchActions } from 'redux-batched-actions';
 import { AxiosResponse } from 'axios';
 
-import networkExists from '../../network/sagas/exists';
-import { create as createTransaction } from '../../transaction/actions';
-import { create, FetchTransactionsAction } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import networkExists from '../../network/sagas/exists.js';
+import { create as createTransaction } from '../../transaction/actions/index.js';
+import { create, FetchTransactionsAction } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 interface EtherscanTx {
     blockNumber: string;

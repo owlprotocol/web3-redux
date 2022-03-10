@@ -1,10 +1,10 @@
 import { assert } from 'chai';
-import { name } from './common';
-import { create as createBlock, validateBlock } from '../block';
-import { createStore, StoreType } from '../store';
+import { name } from './common.js';
+import { create as createBlock, validateBlock } from '../block/index.js';
+import { createStore, StoreType } from '../store.js';
 
-import { networkId } from '../test/data';
-import { create, selectByIdSingle, selectLatestBlock, selectLatestBlockNumber } from './index';
+import { networkId } from '../test/data.js';
+import { create, selectByIdSingle, selectLatestBlock, selectLatestBlockNumber } from './index.js';
 
 describe(`${name}.integration`, () => {
     const item = {

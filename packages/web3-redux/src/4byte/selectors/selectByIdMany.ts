@@ -1,6 +1,6 @@
-import select from './select';
-import { _4ByteSignature } from '../model';
-import { memoizeArrayByRef } from '../../utils';
+import select from './select.js';
+import { _4ByteSignature } from '../model/index.js';
+import { memoizeArrayByRef } from '../../utils/index.js';
 
 /** @category Selectors */
 function selectByIdMany(state: any, ids?: string[]): (_4ByteSignature | null)[] {

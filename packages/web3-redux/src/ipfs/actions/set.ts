@@ -1,5 +1,5 @@
-import { name } from '../common';
-import { Ipfs } from '../model/interface';
+import { name } from '../common.js';
+import { Ipfs } from '../model/interface.js';
 
 /** @internal */
 export const SET = (key: keyof Ipfs) => `${name}/SET/${key.toUpperCase()}`;

@@ -1,8 +1,8 @@
-import { getId } from './id';
-import { BlockTransaction } from './BlockTransaction';
-import { isStrings } from '../../utils';
-import { validate as validateTransaction } from '../../transaction/model/interface';
-import { ModelWithId } from '../../types/model';
+import { getId } from './id.js';
+import { BlockTransaction } from './BlockTransaction.js';
+import { isStrings } from '../../utils/index.js';
+import { validate as validateTransaction } from '../../transaction/model/interface.js';
+import { ModelWithId } from '../../types/model.js';
 
 /** @internal */
 export function validate(item: BlockTransaction): ModelWithId<BlockTransaction> {

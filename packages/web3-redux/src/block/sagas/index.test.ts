@@ -1,23 +1,23 @@
 import { expect } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import Web3 from 'web3';
-import exists from './exists';
-import fetch from './fetch';
-import { getWeb3Provider } from '../../test';
+import exists from './exists.js';
+import fetch from './fetch.js';
+import { getWeb3Provider } from '../../test/index.js';
 
-import { Network } from '../../network/model';
-import networkExists from '../../network/sagas/exists';
+import { Network } from '../../network/model/index.js';
+import networkExists from '../../network/sagas/exists.js';
 
-import { name } from '../common';
-import { networkId } from '../../test/data';
-import { selectByIdSingle } from '../selectors';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 //Actions
-import fetchAction from '../actions/fetch';
-import createAction from '../actions/create';
+import fetchAction from '../actions/fetch.js';
+import createAction from '../actions/create.js';
 
 //Sagas
-import { BlockId, BlockHeader } from '../model';
+import { BlockId, BlockHeader } from '../model/index.js';
 
 describe(`${name}.sagas`, () => {
     const item: BlockHeader = { networkId, number: 0 };

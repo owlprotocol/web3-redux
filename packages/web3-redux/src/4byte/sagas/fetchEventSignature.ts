@@ -2,9 +2,9 @@ import { put, call, select } from 'typed-redux-saga/macro';
 import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
 
-import { selectConfig } from '../../config/selectors';
-import { set, create, FetchEventSignatureAction } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import { selectConfig } from '../../config/selectors/index.js';
+import { set, create, FetchEventSignatureAction } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 /** @category Sagas */
 export function* fetchEventSignature(action: FetchEventSignatureAction) {

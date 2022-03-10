@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { memoizeReturn, memoizeWeak, memoizeArrayByRef } from '.';
+import { memoizeReturn, memoizeWeak, memoizeArrayByRef } from './index.js';
 
 describe('memo', () => {
     describe('memoizeReturn', () => {

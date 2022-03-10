@@ -4,19 +4,19 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import { cloneDeep } from 'lodash';
 
-import { getWeb3Provider } from '../../test';
-import { name } from '../common';
-import { networkId } from '../../test/data';
+import { getWeb3Provider } from '../../test/index.js';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
 
 import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
-import { sleep } from '../../utils';
+import { sleep } from '../../utils/index.js';
 
-import { createStore, StoreType } from '../../store';
-import { create as createNetwork } from '../../network';
-import { validate as validatedContractEvent } from '../../contractevent/model';
+import { createStore, StoreType } from '../../store.js';
+import { create as createNetwork } from '../../network/index.js';
+import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
 
-import { selectContractEvents } from '../selectors';
-import { create as createAction, eventGetPast as eventGetPastAction } from '../actions';
+import { selectContractEvents } from '../selectors/index.js';
+import { create as createAction, eventGetPast as eventGetPastAction } from '../actions/index.js';
 
 describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store

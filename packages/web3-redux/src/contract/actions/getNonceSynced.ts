@@ -1,8 +1,8 @@
 import { toChecksumAddress } from 'web3-utils';
-import { getNonce } from './getNonce';
-import { GenericSync, createSyncForActions } from '../../sync/model';
-import { create as createSyncAction } from '../../sync/actions';
-import { ContractId, getId } from '../model/interface';
+import { getNonce } from './getNonce.js';
+import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
+import { create as createSyncAction } from '../../sync/actions/index.js';
+import { ContractId, getId } from '../model/interface.js';
 
 /** @internal */
 export interface GetNonceSyncedActionInput extends ContractId {

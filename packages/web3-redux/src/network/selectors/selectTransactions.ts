@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
-import { Transaction } from '../../transaction/model';
+import { Transaction } from '../../transaction/model/index.js';
 
-import { name } from '../common';
-import { getOrm } from '../../orm';
+import { name } from '../common.js';
+import { getOrm } from '../../orm.js';
 
 const select = createSelector(getOrm()[name].transactions);
 /** @category Selectors */

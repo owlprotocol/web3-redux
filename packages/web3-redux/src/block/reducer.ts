@@ -1,8 +1,8 @@
 import { omit } from 'lodash';
-import { name } from './common';
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import { BlockHeader, getId } from './model';
-import { ORMModel, ModelWithId } from '../types/model';
+import { name } from './common.js';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
+import { BlockHeader, getId } from './model/index.js';
+import { ORMModel, ModelWithId } from '../types/model.js';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {

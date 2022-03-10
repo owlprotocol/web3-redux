@@ -2,16 +2,16 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
-import { getWeb3Provider } from '../../test';
+import { getWeb3Provider } from '../../test/index.js';
 
-import { networkId, transaction1 } from '../../test/data';
-import { create as createNetwork } from '../../network/actions';
-import { create as createTransaction } from '../actions';
+import { networkId, transaction1 } from '../../test/data.js';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { create as createTransaction } from '../actions/index.js';
 
-import { name } from '../common';
-import { createStore, StoreType } from '../../store';
-import { Transaction, validate } from '../model/interface';
-import { useTransaction } from './index';
+import { name } from '../common.js';
+import { createStore, StoreType } from '../../store.js';
+import { Transaction, validate } from '../model/interface.js';
+import { useTransaction } from './index.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

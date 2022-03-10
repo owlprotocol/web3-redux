@@ -1,5 +1,5 @@
-import { _4ByteSignature, SignatureId } from '../model';
-import { name } from '../common';
+import { _4ByteSignature, SignatureId } from '../model/index.js';
+import { name } from '../common.js';
 
 /** @internal */
 export const SET = (key: keyof _4ByteSignature) => `${name}/SET/${key.toUpperCase()}`;

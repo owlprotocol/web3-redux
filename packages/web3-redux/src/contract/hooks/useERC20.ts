@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { useContractWithAbi } from './useContractWithAbi';
-import { useContractCall } from './useContractCall';
-import { useEvents, UseEventsOptions } from './useEvents';
+import { useContractWithAbi } from './useContractWithAbi.js';
+import { useContractCall } from './useContractCall.js';
+import { useEvents, UseEventsOptions } from './useEvents.js';
 import * as IERC20 from '../../abis/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
 
-import { GenericSync } from '../../sync/model';
-import { createEventSync } from '../../sync/model/EventSync';
+import { GenericSync } from '../../sync/model/index.js';
+import { createEventSync } from '../../sync/model/EventSync.js';
 
 /**
  * Contract hook for ERC20 interface.
@@ -34,9 +34,9 @@ export function useERC20(
     const onTransferSync =
         networkId && address && balanceOfAddress
             ? createEventSync(networkId, [], address, 'Transfer', [
-                  { from: balanceOfAddress },
-                  { to: balanceOfAddress },
-              ])
+                { from: balanceOfAddress },
+                { to: balanceOfAddress },
+            ])
             : false;
     const balanceOfSync = sync?.balanceOf === 'onTransfer' ? onTransferSync : sync?.balanceOf ?? 'ifnull'; //Sync user balance
     const TransferEventsOptions = sync?.TransferEventsOptions ?? { sync: false, past: false }; //Sync token Transfer events, default just reads data

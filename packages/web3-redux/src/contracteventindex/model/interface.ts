@@ -1,4 +1,4 @@
-import { ContractEvent } from '../../contractevent/model/interface';
+import { ContractEvent } from '../../contractevent/model/interface.js';
 
 export interface ContractEventIndex {
     readonly id?: string;

@@ -1,5 +1,5 @@
 import { put, call } from 'typed-redux-saga/macro';
-import { create as createAction, GetChainIdAction } from '../actions';
+import { create as createAction, GetChainIdAction } from '../actions/index.js';
 
 function* getChainId(action: GetChainIdAction) {
     const { payload } = action;

@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReturnValues } from '../../contractevent/model/interface';
-import { BaseWeb3Contract } from '../model';
-import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions';
-import { EventGetPastActionInput } from '../actions/eventGetPast';
-import selectSingle from '../selectors/selectByIdSingle';
-import selectEvents from '../selectors/selectContractEventsById';
+import { ReturnValues } from '../../contractevent/model/interface.js';
+import { BaseWeb3Contract } from '../model/index.js';
+import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions/index.js';
+import { EventGetPastActionInput } from '../actions/eventGetPast.js';
+import selectSingle from '../selectors/selectByIdSingle.js';
+import selectEvents from '../selectors/selectContractEventsById.js';
 
 //Contract Events
 /** @internal */
@@ -24,12 +24,12 @@ export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
->(
-    networkId: string | undefined,
-    address: string | undefined,
-    eventName: K | undefined,
-    filter?: { [key: string]: any },
-    options?: UseEventsOptions,
+    >(
+        networkId: string | undefined,
+        address: string | undefined,
+        eventName: K | undefined,
+        filter?: { [key: string]: any },
+        options?: UseEventsOptions,
 ) {
     const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
 
@@ -98,7 +98,7 @@ export function contractEventsHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
->(eventName: K) {
+    >(eventName: K) {
     return (
         networkId: string | undefined,
         address: string | undefined,

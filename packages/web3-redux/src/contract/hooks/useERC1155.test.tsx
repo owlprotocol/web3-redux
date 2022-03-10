@@ -4,19 +4,19 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import { useERC1155 } from './useERC1155';
-import { getWeb3Provider, expectThrowsAsync } from '../../test';
+import { useERC1155 } from './useERC1155.js';
+import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
 import * as ERC1155 from '../../abis/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
 
-import { create as createNetwork } from '../../network/actions';
-import { create as createTransaction } from '../../transaction/actions';
-import { create as createBlock } from '../../block/actions';
-import { create as createEvent } from '../../contractevent/actions';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { create as createTransaction } from '../../transaction/actions/index.js';
+import { create as createBlock } from '../../block/actions/index.js';
+import { create as createEvent } from '../../contractevent/actions/index.js';
 
-import { name } from '../common';
-import { ADDRESS_0, networkId } from '../../test/data';
-import { createStore, StoreType } from '../../store';
+import { name } from '../common.js';
+import { ADDRESS_0, networkId } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

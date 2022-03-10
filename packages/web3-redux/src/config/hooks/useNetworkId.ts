@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setNetworkId } from '../actions';
-import { selectNetworkId } from '../selectors';
+import { setNetworkId } from '../actions/index.js';
+import { selectNetworkId } from '../selectors/index.js';
 
 /**
  * @category Hooks

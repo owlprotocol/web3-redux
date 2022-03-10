@@ -1,7 +1,7 @@
-import { name } from './common';
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import { EthCall, getId } from './model/interface';
-import { ORMModel, ModelWithId } from '../types/model';
+import { name } from './common.js';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
+import { EthCall, getId } from './model/interface.js';
+import { ORMModel, ModelWithId } from '../types/model.js';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {

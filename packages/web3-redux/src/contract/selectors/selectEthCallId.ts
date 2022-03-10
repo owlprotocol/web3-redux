@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
-import { BaseWeb3Contract, CallArgsHash, Contract, getId } from '../model';
-import { getOrm } from '../../orm';
-import { getEthCallId } from '../../ethcall/model';
-import { ContractId } from '../model/interface';
+import { BaseWeb3Contract, CallArgsHash, Contract, getId } from '../model/index.js';
+import { getOrm } from '../../orm.js';
+import { getEthCallId } from '../../ethcall/model/index.js';
+import { ContractId } from '../model/interface.js';
 
 //Contract Call
 const selectEthCallIdSelector = createSelector(

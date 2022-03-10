@@ -2,12 +2,12 @@ import { assert } from 'chai';
 import axios from 'axios';
 import * as moxios from 'moxios';
 
-import { networkId } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create as createNetwork } from '../../network/actions';
-import { selectByIdMany } from '../../transaction/selectors';
-import { fetchTransactions } from '../actions';
-import { sleep } from '../../utils';
+import { networkId } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { selectByIdMany } from '../../transaction/selectors/index.js';
+import { fetchTransactions } from '../actions/index.js';
+import { sleep } from '../../utils/index.js';
 
 describe('contract/sagas/fetchTransactions.test.ts', () => {
     let store: StoreType;

@@ -1,8 +1,8 @@
 import { put, call, select } from 'typed-redux-saga/macro';
 import invariant from 'tiny-invariant';
-import { objectGet } from './objectGet';
-import { objectGet as objectGetAction, FetchIpfsAction, cat } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import { objectGet } from './objectGet.js';
+import { objectGet as objectGetAction, FetchIpfsAction, cat } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 /** @category Sagas */
 export function* fetchIpfs(action: FetchIpfsAction) {

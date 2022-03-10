@@ -1,7 +1,7 @@
 import { TransactionReceipt } from 'web3-eth';
 import { toChecksumAddress, isHexStrict, hexToNumberString } from 'web3-utils';
-import { getId as getBlockId } from '../../block/model/id';
-import { ModelWithId } from '../../types/model';
+import { getId as getBlockId } from '../../block/model/id.js';
+import { ModelWithId } from '../../types/model.js';
 
 /** Transaction id components */
 export interface TransactionId {

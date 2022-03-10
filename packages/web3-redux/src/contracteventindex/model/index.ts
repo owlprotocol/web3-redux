@@ -1,3 +1,3 @@
-import { ContractEventIndex } from './interface';
+import { ContractEventIndex } from './interface.js';
 
 export type { ContractEventIndex };

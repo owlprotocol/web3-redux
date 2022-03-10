@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-orm';
-import { name } from '../common';
-import { getOrm } from '../../orm';
-import { Config } from '../model/interface';
+import { name } from '../common.js';
+import { getOrm } from '../../orm.js';
+import { Config } from '../model/interface.js';
 
 /** @internal */
 const select = createSelector(getOrm()[name]);

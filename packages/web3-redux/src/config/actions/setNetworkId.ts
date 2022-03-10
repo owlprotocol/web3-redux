@@ -1,4 +1,4 @@
-import { SET, set } from './set';
+import { SET, set } from './set.js';
 
 /** @internal */
 export const SET_NETWORK_ID = SET('networkId');

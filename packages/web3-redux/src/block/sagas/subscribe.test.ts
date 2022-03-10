@@ -1,16 +1,16 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { getWeb3Provider } from '../../test';
-import { mineBlock, sleep } from '../../utils';
+import { getWeb3Provider } from '../../test/index.js';
+import { mineBlock, sleep } from '../../utils/index.js';
 
-import { create as createNetwork } from '../../network/actions';
-import { createStore, StoreType } from '../../store';
-import { BlockHeader, BlockTransaction, validate } from '../model';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { createStore, StoreType } from '../../store.js';
+import { BlockHeader, BlockTransaction, validate } from '../model/index.js';
 
-import { name } from '../common';
-import { networkId } from '../../test/data';
-import { subscribe as subscribeAction, unsubscribe as unsubscribeAction } from '../actions';
-import { selectByIdMany } from '../selectors';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
+import { subscribe as subscribeAction, unsubscribe as unsubscribeAction } from '../actions/index.js';
+import { selectByIdMany } from '../selectors/index.js';
 
 describe(`${name}.subscribe`, () => {
     let accounts: string[];

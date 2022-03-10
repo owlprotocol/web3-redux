@@ -1,8 +1,8 @@
 import { put, select, all } from 'typed-redux-saga/macro';
 import { Action } from 'redux';
-import { CreateAction } from '../../transaction/actions';
-import { selectByIdMany } from '../selector';
-import { TransactionSync } from '../model';
+import { CreateAction } from '../../transaction/actions/index.js';
+import { selectByIdMany } from '../selector/index.js';
+import { TransactionSync } from '../model/index.js';
 
 //Handle on transaction update
 function* transactionSync({ payload }: CreateAction) {

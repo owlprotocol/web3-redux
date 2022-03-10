@@ -1,3 +1,3 @@
-export { selectByIdMany } from './selectByIdMany';
-export { selectByIdSingle } from './selectByIdSingle';
-export { selectPathHash } from './selectPathHash';
+export { selectByIdMany } from './selectByIdMany.js';
+export { selectByIdSingle } from './selectByIdSingle.js';
+export { selectPathHash } from './selectPathHash.js';

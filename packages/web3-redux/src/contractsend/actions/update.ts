@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { ContractSend, validate } from '../model/interface';
+import { name } from '../common.js';
+import { ContractSend, validate } from '../model/interface.js';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;

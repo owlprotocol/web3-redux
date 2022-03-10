@@ -1,5 +1,5 @@
-import selectByIdSingle from './selectByIdSingle';
-import { EthCallId } from '../model/interface';
+import selectByIdSingle from './selectByIdSingle.js';
+import { EthCallId } from '../model/interface.js';
 
 /** @category Selectors */
 function selectByIdExists(state: any, id: EthCallId | undefined): boolean {

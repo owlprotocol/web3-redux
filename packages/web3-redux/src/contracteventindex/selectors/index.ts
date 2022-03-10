@@ -1,2 +1,2 @@
-export { selectByIdSingle } from './selectByIdSingle';
-export { selectEvents } from './selectEvents';
+export { selectByIdSingle } from './selectByIdSingle.js';
+export { selectEvents } from './selectEvents.js';

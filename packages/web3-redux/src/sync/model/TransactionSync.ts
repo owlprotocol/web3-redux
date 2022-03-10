@@ -1,4 +1,4 @@
-import { BaseSync } from './BaseSync';
+import { BaseSync } from './BaseSync.js';
 
 /**
  * Sync middleware to handle [Transaction](./Transaction.Transaction-1) CREATE/UPDATE actions.

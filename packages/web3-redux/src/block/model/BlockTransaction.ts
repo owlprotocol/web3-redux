@@ -1,5 +1,5 @@
-import { BlockHeader } from './BlockHeader';
-import { Transaction } from '../../transaction/model';
+import { BlockHeader } from './BlockHeader.js';
+import { Transaction } from '../../transaction/model/index.js';
 
 /**
  * Block object with additional data. Typically returned by individual Web3 getBlock request.

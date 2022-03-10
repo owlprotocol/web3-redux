@@ -1,4 +1,4 @@
-import { ContractEvent, ContractEventId, getId, getIdDeconstructed, validate, ReturnValues } from './interface';
+import { ContractEvent, ContractEventId, getId, getIdDeconstructed, validate, ReturnValues } from './interface.js';
 
 export type { ContractEvent, ContractEventId };
 export type { ReturnValues };

@@ -4,21 +4,21 @@ import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import { cloneDeep } from 'lodash';
-import { getWeb3Provider, expectThrowsAsync } from '../../test';
+import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
 
-import { create as createNetwork } from '../../network/actions';
-import { create as createTransaction } from '../../transaction/actions';
-import { create as createBlock } from '../../block/actions';
-import { create as createEvent } from '../../contractevent/actions';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { create as createTransaction } from '../../transaction/actions/index.js';
+import { create as createBlock } from '../../block/actions/index.js';
+import { create as createEvent } from '../../contractevent/actions/index.js';
 
-import { name } from '../common';
-import { networkId } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create } from '../actions';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
+import { create } from '../actions/index.js';
 
-import { useContractCall } from '../hooks/useContractCall';
-import { createEventSync } from '../../sync/model/EventSync';
+import { useContractCall } from '../hooks/useContractCall.js';
+import { createEventSync } from '../../sync/model/EventSync.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

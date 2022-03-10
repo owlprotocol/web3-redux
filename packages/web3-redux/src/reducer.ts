@@ -4,34 +4,37 @@ import { enableBatching } from 'redux-batched-actions';
 import { persistReducer } from 'redux-persist';
 import { WebStorage } from 'redux-persist/lib/types';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
-import { NetworkTransform, ContractTransform, SyncTransform } from './transform';
-import { isClient } from './utils/isClient';
-import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions';
-import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions';
-import { Action as TransactionAction, isReducerAction as isTransactionAction } from './transaction/actions';
-import { Action as ContractAction, isReducerAction as isContractAction } from './contract/actions';
-import { Action as ContractEventAction, isReducerAction as isContractEventAction } from './contractevent/actions';
-import { Action as ContractSendAction, isReducerAction as isContractSendAction } from './contractsend/actions';
-import { Action as EthCallAction, isReducerAction as isEthCallAction } from './ethcall/actions';
-import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions';
-import { Action as IpfsAction, isReducerAction as isIpfsAction } from './ipfs/actions';
-import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions';
-import { Action as SyncAction, isReducerAction as isSyncAction } from './sync/actions';
+import { NetworkTransform, ContractTransform, SyncTransform } from './transform.js';
+import { isClient } from './utils/isClient.js';
+import { Action as NetworkAction, isReducerAction as isNetworkAction } from './network/actions/index.js';
+import { Action as BlockAction, isReducerAction as isBlockAction } from './block/actions/index.js';
+import { Action as TransactionAction, isReducerAction as isTransactionAction } from './transaction/actions/index.js';
+import { Action as ContractAction, isReducerAction as isContractAction } from './contract/actions/index.js';
+import {
+    Action as ContractEventAction,
+    isReducerAction as isContractEventAction,
+} from './contractevent/actions/index.js';
+import { Action as ContractSendAction, isReducerAction as isContractSendAction } from './contractsend/actions/index.js';
+import { Action as EthCallAction, isReducerAction as isEthCallAction } from './ethcall/actions/index.js';
+import { Action as ConfigAction, isReducerAction as isConfigAction } from './config/actions/index.js';
+import { Action as IpfsAction, isReducerAction as isIpfsAction } from './ipfs/actions/index.js';
+import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions/index.js';
+import { Action as SyncAction, isReducerAction as isSyncAction } from './sync/actions/index.js';
 
-import networkReducer from './network/reducer';
-import blockReducer from './block/reducer';
-import transactionReducer from './transaction/reducer';
-import contractReducer from './contract/reducer';
-import contractEventReducer from './contractevent/reducer';
-import contractSendReducer from './contractsend/reducer';
-import ethCallReducer from './ethcall/reducer';
-import configReducer from './config/reducer';
-import ipfsReducer from './ipfs/reducer';
-import syncReducer from './sync/reducer';
-import _4ByteReducer from './4byte/reducer';
+import networkReducer from './network/reducer.js';
+import blockReducer from './block/reducer.js';
+import transactionReducer from './transaction/reducer.js';
+import contractReducer from './contract/reducer.js';
+import contractEventReducer from './contractevent/reducer.js';
+import contractSendReducer from './contractsend/reducer.js';
+import ethCallReducer from './ethcall/reducer.js';
+import configReducer from './config/reducer.js';
+import ipfsReducer from './ipfs/reducer.js';
+import syncReducer from './sync/reducer.js';
+import _4ByteReducer from './4byte/reducer.js';
 
-import { getOrm, initializeState } from './orm';
-import { REDUX_ROOT } from './common';
+import { getOrm, initializeState } from './orm.js';
+import { REDUX_ROOT } from './common.js';
 
 export type Action =
     | NetworkAction

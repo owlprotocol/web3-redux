@@ -1,7 +1,7 @@
 import { select, put, call } from 'typed-redux-saga/macro';
-import networkExists from '../../network/sagas/exists';
-import { set, create, GetNonceAction } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import networkExists from '../../network/sagas/exists.js';
+import { set, create, GetNonceAction } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 /** @category Sagas */
 export function* getNonce(action: GetNonceAction) {

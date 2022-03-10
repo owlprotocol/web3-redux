@@ -1,4 +1,4 @@
-import { LOG_REDUX_ACTIONS } from '../environment';
+import { LOG_REDUX_ACTIONS } from '../environment.js';
 
 //@ts-ignore
 export const crashReporter = () => (next) => (action) => {

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { Config, validate } from '../model';
+import { name } from '../common.js';
+import { Config, validate } from '../model/index.js';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;

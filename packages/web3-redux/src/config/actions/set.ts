@@ -1,5 +1,5 @@
-import { name } from '../common';
-import { Config } from '../model/interface';
+import { name } from '../common.js';
+import { Config } from '../model/interface.js';
 
 /** @internal */
 export const SET = (key: keyof Config) => `${name}/SET/${(key as string).toUpperCase()}`;

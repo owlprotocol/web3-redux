@@ -4,17 +4,17 @@ import Web3 from 'web3';
 import { cloneDeep } from 'lodash';
 
 import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
-import { event1, event2, transaction1, transaction2, ADDRESS_0 } from '../../test/data';
-import { REDUX_ROOT } from '../../common';
-import { getOrm } from '../../orm';
+import { event1, event2, transaction1, transaction2, ADDRESS_0 } from '../../test/data.js';
+import { REDUX_ROOT } from '../../common.js';
+import { getOrm } from '../../orm.js';
 
-import { Contract, validate } from '../model/interface';
-import { name } from '../common';
+import { Contract, validate } from '../model/interface.js';
+import { name } from '../common.js';
 
-import { validateEthCall } from '../../ethcall/model';
-import { StateRoot } from '../../state';
-import { ModelWithId } from '../../types/model';
-import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index';
+import { validateEthCall } from '../../ethcall/model/index.js';
+import { StateRoot } from '../../state.js';
+import { ModelWithId } from '../../types/model.js';
+import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');

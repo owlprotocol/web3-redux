@@ -1,5 +1,5 @@
 import { EventData } from 'web3-eth-contract';
-import { getId } from './interface';
+import { getId } from './interface.js';
 
 export interface EventSubscription {
     networkId: string;

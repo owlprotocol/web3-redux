@@ -1,1 +1,1 @@
-export { onUpdate, onUpdate as onEventUpdate } from './onUpdate';
+export { onUpdate, onUpdate as onEventUpdate } from './onUpdate.js';

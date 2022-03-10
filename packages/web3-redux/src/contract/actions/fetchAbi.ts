@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
-import { name } from '../common';
-import { ContractId } from '../model/interface';
+import { name } from '../common.js';
+import { ContractId } from '../model/interface.js';
 
 /** @internal */
 export const FETCH_ABI = `${name}/FETCH_ABI`;

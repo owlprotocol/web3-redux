@@ -1,10 +1,10 @@
 import { assert } from 'chai';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import { useNetworkId } from './useNetworkId';
-import { name } from '../common';
-import { createStore, StoreType } from '../../store';
-import { setNetworkId } from '../actions';
+import { useNetworkId } from './useNetworkId.js';
+import { name } from '../common.js';
+import { createStore, StoreType } from '../../store.js';
+import { setNetworkId } from '../actions/index.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

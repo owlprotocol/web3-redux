@@ -1,5 +1,5 @@
 import { toChecksumAddress } from 'web3-utils';
-import { getId } from './interface';
+import { getId } from './interface.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 export interface CallArgsHash<P extends any[] = any[]> {

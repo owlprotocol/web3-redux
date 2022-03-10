@@ -3,12 +3,12 @@ import { assert } from 'chai';
 import axios from 'axios';
 import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
-import { useFetchAbi } from './useFetchAbi';
-import { create as createNetwork } from '../../network/actions';
-import { create } from '../actions';
+import { useFetchAbi } from './useFetchAbi.js';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { create } from '../actions/index.js';
 import * as WETH from '../../abis/WETH.json';
-import { WETH as WETH_ADDRESS, networkId } from '../../test/data';
-import { StoreType, createStore } from '../../store';
+import { WETH as WETH_ADDRESS, networkId } from '../../test/data.js';
+import { StoreType, createStore } from '../../store.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

@@ -1,3 +1,3 @@
-export { memoizeReturn } from './memoizeReturn';
-export { memoizeWeak } from './memoWeak';
-export { memoizeArrayByRef } from './memoizeArrayByRef';
+export { memoizeReturn } from './memoizeReturn.js';
+export { memoizeWeak } from './memoWeak.js';
+export { memoizeArrayByRef } from './memoizeArrayByRef.js';

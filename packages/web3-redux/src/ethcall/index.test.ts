@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-import { name } from './common';
-import { createStore, StoreType } from '../store';
-import { addressList } from '../test/data';
-import { getIdArgs, validate, create, selectByIdSingle } from './index';
+import { name } from './common.js';
+import { createStore, StoreType } from '../store.js';
+import { addressList } from '../test/data.js';
+import { getIdArgs, validate, create, selectByIdSingle } from './index.js';
 
 describe(`${name}.integration`, () => {
     const networkId = '1337';

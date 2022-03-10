@@ -1,12 +1,12 @@
 import { assert } from 'chai';
-import { createStore, StoreType } from '../../store';
+import { create as createEvent } from './../actions/index.js';
+import { createStore, StoreType } from '../../store.js';
 
-import { create as createEvent } from '..';
-import { validateContractEvent } from '../model';
-import { name } from '../../contract/common';
-import { networkId } from '../../test/data';
+import { validateContractEvent } from '../model/index.js';
+import { name } from '../../contract/common.js';
+import { networkId } from '../../test/data.js';
 
-import { selectContractEvents } from '../../contract/selectors/index';
+import { selectContractEvents } from '../../contract/selectors/index.js';
 
 describe(`${name}.selectors`, () => {
     let store: StoreType;

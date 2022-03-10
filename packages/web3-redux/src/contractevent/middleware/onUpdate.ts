@@ -2,10 +2,10 @@ import { AnyAction, Store } from 'redux';
 import { batchActions } from 'redux-batched-actions';
 import { AbiCoder } from 'web3-eth-abi';
 
-import { selectByIdSingle as selectContract } from '../../contract/selectors';
+import { selectByIdSingle as selectContract } from '../../contract/selectors/index.js';
 
-import { CREATE, UPDATE, set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '../actions';
-import { ContractEvent } from '../model/interface';
+import { CREATE, UPDATE, set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '../actions/index.js';
+import { ContractEvent } from '../model/interface.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');

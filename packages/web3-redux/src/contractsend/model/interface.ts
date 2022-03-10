@@ -1,7 +1,7 @@
 import { toChecksumAddress } from 'web3-utils';
-import { getId as getContractId } from '../../contract/model/interface';
-import { getTransactionId } from '../../transaction/model';
-import { ModelWithId } from '../../types/model';
+import { getId as getContractId } from '../../contract/model/interface.js';
+import { getTransactionId } from '../../transaction/model/index.js';
+import { ModelWithId } from '../../types/model.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 

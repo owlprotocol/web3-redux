@@ -2,12 +2,12 @@ import { assert } from 'chai';
 import { REDUX_ROOT } from '../../common.js';
 import { getOrm } from '../../orm.js';
 
-import { getId, BlockTransaction } from '../model';
-import { name } from '../common';
+import { getId, BlockTransaction } from '../model/index.js';
+import { name } from '../common.js';
 
-import { StateRoot } from '../../state';
-import { ModelWithId } from '../../types/model';
-import { selectByIdSingle, selectByIdMany, selectByFilter } from './index';
+import { StateRoot } from '../../state.js';
+import { ModelWithId } from '../../types/model.js';
+import { selectByIdSingle, selectByIdMany, selectByFilter } from './index.js';
 
 describe(`${name}.selectors`, () => {
     const item: BlockTransaction = { networkId: '1337', number: 0, transactions: [] };

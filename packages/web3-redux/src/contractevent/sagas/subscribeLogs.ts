@@ -11,10 +11,10 @@ import {
     SUBSCRIBE_LOGS,
     isSubscribeLogsAction,
     isUnsubscribeLogsAction,
-} from '../actions';
-import networkExists from '../../network/sagas/exists';
-import { UnsubscribeLogsAction } from '../actions/unsubscribeLogs';
-import { getLogsSubscriptionId } from '../model/logsSubscription';
+} from '../actions/index.js';
+import networkExists from '../../network/sagas/exists.js';
+import { UnsubscribeLogsAction } from '../actions/unsubscribeLogs.js';
+import { getLogsSubscriptionId } from '../model/logsSubscription.js';
 
 const SUBSCRIBE_DATA = `${SUBSCRIBE_LOGS}/DATA`;
 const SUBSCRIBE_ERROR = `${SUBSCRIBE_LOGS}/ERROR`;

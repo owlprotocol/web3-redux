@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectIpfs, selectPathHash } from '../selectors';
-import { fetchIpfs as fetchIpfsAction } from '../actions';
+import { selectByIdSingle as selectIpfs, selectPathHash } from '../selectors/index.js';
+import { fetchIpfs as fetchIpfsAction } from '../actions/index.js';
 
 /**
  * Reads IPFS content from store and makes a call to fetch content.

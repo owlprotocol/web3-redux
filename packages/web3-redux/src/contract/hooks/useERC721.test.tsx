@@ -10,19 +10,19 @@ import * as moxios from 'moxios';
 import * as IPFS from 'ipfs-http-client';
 import { URL } from 'url';
 
-import { useERC721 } from './useERC721';
-import { getWeb3Provider, expectThrowsAsync } from '../../test';
-import { networkId, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data';
+import { useERC721 } from './useERC721.js';
+import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
+import { networkId, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data.js';
 
 import * as ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
 
-import { create as createNetwork } from '../../network/actions';
-import { create as createTransaction } from '../../transaction/actions';
-import { create as createBlock } from '../../block/actions';
-import { create as createEvent } from '../../contractevent/actions';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { create as createTransaction } from '../../transaction/actions/index.js';
+import { create as createBlock } from '../../block/actions/index.js';
+import { create as createEvent } from '../../contractevent/actions/index.js';
 
-import { createStore, StoreType } from '../../store';
-import { update as updateConfig } from '../../config/actions';
+import { createStore, StoreType } from '../../store.js';
+import { update as updateConfig } from '../../config/actions/index.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

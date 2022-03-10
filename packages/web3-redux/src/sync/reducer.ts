@@ -1,4 +1,4 @@
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction } from './actions';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction } from './actions/index.js';
 
 export function reducer(sess: any, action: ReducerAction) {
     const Model = sess.Sync;

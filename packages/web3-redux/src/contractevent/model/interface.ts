@@ -1,7 +1,7 @@
 import { toChecksumAddress } from 'web3-utils';
-import { getId as getContractId } from '../../contract/model/interface';
-import { combinationAll } from '../../utils/combination';
-import { ModelWithId } from '../../types/model';
+import { getId as getContractId } from '../../contract/model/interface.js';
+import { combinationAll } from '../../utils/combination.js';
+import { ModelWithId } from '../../types/model.js';
 
 export interface ContractEventId {
     /** Blockchain network id.

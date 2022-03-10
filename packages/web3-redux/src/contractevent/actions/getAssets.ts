@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
-import { name } from '../common';
+import { name } from '../common.js';
 
 /** @internal */
 export const GET_ASSETS = `${name}/GET_ASSETS`;

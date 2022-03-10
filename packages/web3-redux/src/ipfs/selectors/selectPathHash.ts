@@ -1,4 +1,4 @@
-import { selectByIdSingle } from './selectByIdSingle';
+import { selectByIdSingle } from './selectByIdSingle.js';
 
 /**
  * @category Selectors

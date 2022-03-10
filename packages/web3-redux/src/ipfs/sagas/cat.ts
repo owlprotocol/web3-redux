@@ -4,10 +4,10 @@ import invariant from 'tiny-invariant';
 //@ts-ignore
 import * as toBuffer from 'it-to-buffer';
 
-import { set, create, CatAction, CAT } from '../actions';
+import { set, create, CatAction, CAT } from '../actions/index.js';
 
-import { selectConfig } from '../../config/selectors';
-import { selectByIdSingle } from '../selectors';
+import { selectConfig } from '../../config/selectors/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 const CAT_ERROR = `${CAT}/ERROR`;
 /** @category Sagas */
@@ -32,7 +32,7 @@ export function* cat(action: CatAction) {
         let catDecoded = decoder.decode(catData);
         try {
             catDecoded = JSON.parse(catDecoded);
-        } catch {}
+        } catch { }
         yield* put(set({ contentId, key: 'data', value: catDecoded }));
     } catch (error) {
         console.error(error);

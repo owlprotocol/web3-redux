@@ -1,15 +1,15 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Await } from '../../types/promise';
+import { Await } from '../../types/promise.js';
 
-import { remove as removeSync } from '../../sync/actions';
-import { GenericSync } from '../../sync/model';
+import { remove as removeSync } from '../../sync/actions/index.js';
+import { GenericSync } from '../../sync/model/index.js';
 
-import { BaseWeb3Contract } from '../model';
-import { callSynced } from '../actions';
-import selectSingle from '../selectors/selectByIdSingle';
-import selectContractCall from '../selectors/selectContractCallById';
+import { BaseWeb3Contract } from '../model/index.js';
+import { callSynced } from '../actions/index.js';
+import selectSingle from '../selectors/selectByIdSingle.js';
+import selectContractCall from '../selectors/selectContractCallById.js';
 
 //Contract Call
 /** @internal */
@@ -91,7 +91,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
 export function contractCallHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
->(method: K) {
+    >(method: K) {
     return (
         networkId: string | undefined,
         address: string | undefined,

@@ -1,6 +1,6 @@
-import { select } from './select';
-import { BlockId, getId } from '../model/id';
-import { BlockTransaction } from '../model/BlockTransaction';
+import { select } from './select.js';
+import { BlockId, getId } from '../model/id.js';
+import { BlockTransaction } from '../model/BlockTransaction.js';
 
 /** @category Selectors */
 export function selectByIdSingle(state: any, id: BlockId | undefined): BlockTransaction | undefined {

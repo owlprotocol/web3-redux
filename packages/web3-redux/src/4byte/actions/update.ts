@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { _4ByteSignature } from '../model';
+import { name } from '../common.js';
+import { _4ByteSignature } from '../model/index.js';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;

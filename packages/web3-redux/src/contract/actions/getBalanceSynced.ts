@@ -1,8 +1,8 @@
 import { toChecksumAddress } from 'web3-utils';
-import { getBalance } from './getBalance';
-import { GenericSync, createSyncForActions } from '../../sync/model';
-import { create as createSyncAction } from '../../sync/actions';
-import { ContractId, getId } from '../model/interface';
+import { getBalance } from './getBalance.js';
+import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
+import { create as createSyncAction } from '../../sync/actions/index.js';
+import { ContractId, getId } from '../model/interface.js';
 
 /** @internal */
 export interface GetBalanceSyncedActionInput extends ContractId {

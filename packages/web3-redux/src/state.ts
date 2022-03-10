@@ -1,16 +1,16 @@
-import { Network } from './network/model';
-import { BlockHeader } from './block/model';
-import { Transaction } from './transaction/model/interface';
-import { Contract } from './contract/model/interface';
-import { ContractEvent } from './contractevent/model/interface';
-import { ContractEventIndex } from './contracteventindex/model/interface';
-import { ContractSend } from './contractsend/model/interface';
-import { EthCall } from './ethcall/model/interface';
-import { Config } from './config/model/interface';
-import { Ipfs } from './ipfs/model/interface';
-import { Sync } from './sync/model';
-import { _4ByteSignature } from './4byte/model/interface';
-import { ModelWithId } from './types/model';
+import { Network } from './network/model/index.js';
+import { BlockHeader } from './block/model/index.js';
+import { Transaction } from './transaction/model/interface.js';
+import { Contract } from './contract/model/interface.js';
+import { ContractEvent } from './contractevent/model/interface.js';
+import { ContractEventIndex } from './contracteventindex/model/interface.js';
+import { ContractSend } from './contractsend/model/interface.js';
+import { EthCall } from './ethcall/model/interface.js';
+import { Config } from './config/model/interface.js';
+import { Ipfs } from './ipfs/model/interface.js';
+import { Sync } from './sync/model/index.js';
+import { _4ByteSignature } from './4byte/model/interface.js';
+import { ModelWithId } from './types/model.js';
 
 export interface StateRoot {
     web3Redux: State;

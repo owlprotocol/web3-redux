@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors';
-import { selectByIdSingle as selectTransaction } from '../selectors';
-import { fetch as fetchAction } from '../actions';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
+import { selectByIdSingle as selectTransaction } from '../selectors/index.js';
+import { fetch as fetchAction } from '../actions/index.js';
 
 /**
  * Reads transaction from store and makes a call to fetch transaction.

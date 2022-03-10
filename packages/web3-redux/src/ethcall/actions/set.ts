@@ -1,5 +1,5 @@
-import { name } from '../common';
-import { EthCall, getId, EthCallId } from '../model/interface';
+import { name } from '../common.js';
+import { EthCall, getId, EthCallId } from '../model/interface.js';
 
 /** @internal */
 export const SET = (key: keyof EthCall) => `${name}/SET/${key.toUpperCase()}`;

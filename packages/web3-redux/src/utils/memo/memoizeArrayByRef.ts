@@ -1,4 +1,4 @@
-import { memoizeWeak } from './memoWeak';
+import { memoizeWeak } from './memoWeak.js';
 
 const memoizeParamsByRef = memoizeWeak((...items: any[]) => {
     return [...items];

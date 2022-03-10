@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors';
-import { remove as removeSync } from '../../sync/actions';
-import { GenericSync } from '../../sync/model';
-import { getBalanceSynced } from '../actions';
-import { selectByIdSingle } from '../selectors';
+import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors/index.js';
+import { remove as removeSync } from '../../sync/actions/index.js';
+import { GenericSync } from '../../sync/model/index.js';
+import { getBalanceSynced } from '../actions/index.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 /**
  * Get Contract bytecode

@@ -1,8 +1,8 @@
 import Web3 from 'web3';
 import axios from 'axios';
 
-import { Network } from './interface';
-import { defaultNetworks } from '../defaults';
+import { Network } from './interface.js';
+import { defaultNetworks } from '../defaults.js';
 /**
  * Validate network with default values.
  * @param network

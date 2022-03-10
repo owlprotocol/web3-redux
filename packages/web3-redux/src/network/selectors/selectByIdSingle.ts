@@ -1,5 +1,5 @@
-import select from './select';
-import { Network } from '../model/interface';
+import select from './select.js';
+import { Network } from '../model/interface.js';
 
 /** @category Selectors */
 function selectByIdSingle(state: any, id: string | undefined): Network | undefined {

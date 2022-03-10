@@ -4,20 +4,20 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import { cloneDeep } from 'lodash';
 
-import { getWeb3Provider } from '../../test';
+import { getWeb3Provider } from '../../test/index.js';
 
-import { name } from '../common';
-import { networkId } from '../../test/data';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
 
 import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
 
-import { createStore, StoreType } from '../../store';
-import { create as createNetwork } from '../../network';
-import { validate as validatedContractEvent } from '../../contractevent/model';
+import { createStore, StoreType } from '../../store.js';
+import { create as createNetwork } from '../../network/index.js';
+import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
 
-import { ContractId } from '../model';
-import { selectContractEvents } from '../selectors';
-import { create as createAction, eventSubscribe as eventSubscribeAction } from '../actions';
+import { ContractId } from '../model/index.js';
+import { selectContractEvents } from '../selectors/index.js';
+import { create as createAction, eventSubscribe as eventSubscribeAction } from '../actions/index.js';
 
 describe(`${name}.sagas.eventSubscribe`, () => {
     let web3: Web3; //Web3 loaded from store

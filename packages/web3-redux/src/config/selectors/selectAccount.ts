@@ -1,4 +1,4 @@
-import { selectConfig } from './selectConfig';
+import { selectConfig } from './selectConfig.js';
 
 /** @category Selectors */
 export function selectAccount(state: any) {

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { toChecksumAddress } from 'web3-utils';
-import { name } from '../common';
+import { name } from '../common.js';
 
 export interface FetchTransactionOptions {
     startblock?: number;

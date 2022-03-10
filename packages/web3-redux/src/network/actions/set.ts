@@ -1,5 +1,5 @@
-import { name } from '../common';
-import { Network } from '../model/interface';
+import { name } from '../common.js';
+import { Network } from '../model/interface.js';
 
 /** @internal */
 export const SET = (key: keyof Network) => `${name}/SET/${key.toUpperCase()}`;

@@ -1,6 +1,6 @@
-import select from './select';
-import { ContractSend, ContractSendId, getId } from '../model/interface';
-import { memoizeArrayByRef } from '../../utils/memo';
+import select from './select.js';
+import { ContractSend, ContractSendId, getId } from '../model/interface.js';
+import { memoizeArrayByRef } from '../../utils/memo/index.js';
 
 /** @category Selectors */
 function selectByIdMany(state: any, ids?: ContractSendId[]): (ContractSend | null)[] {

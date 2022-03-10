@@ -1,6 +1,6 @@
-import select from './select';
-import { Network } from '../model/interface';
-import { memoizeArrayByRef } from '../../utils/memo';
+import select from './select.js';
+import { Network } from '../model/interface.js';
+import { memoizeArrayByRef } from '../../utils/memo/index.js';
 
 /** @category Selectors */
 function selectByIdMany(state: any, ids?: string[]): (Network | null)[] {

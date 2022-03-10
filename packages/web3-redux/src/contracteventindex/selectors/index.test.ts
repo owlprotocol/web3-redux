@@ -1,13 +1,13 @@
 import { assert } from 'chai';
-import { REDUX_ROOT } from '../../common';
-import { getOrm } from '../../orm';
+import { REDUX_ROOT } from '../../common.js';
+import { getOrm } from '../../orm.js';
 
-import { ContractEventIndex } from '../model';
-import { name } from '../common';
-import { networkId } from '../../test/data';
+import { ContractEventIndex } from '../model/index.js';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
 
-import { validateContractEvent } from '../../contractevent/model';
-import { selectEvents } from './index';
+import { validateContractEvent } from '../../contractevent/model/index.js';
+import { selectEvents } from './index.js';
 
 describe(`${name}.selectors`, () => {
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';

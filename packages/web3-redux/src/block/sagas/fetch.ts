@@ -1,8 +1,8 @@
 import { select, put, call } from 'typed-redux-saga/macro';
 import { isHexStrict } from 'web3-utils';
-import { create, update, FetchAction } from '../actions';
-import networkExists from '../../network/sagas/exists';
-import { selectByIdSingle } from '../selectors';
+import { create, update, FetchAction } from '../actions/index.js';
+import networkExists from '../../network/sagas/exists.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 /** @category Sagas */
 function* fetch(action: FetchAction) {

@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
-import { name } from '../common';
-import { getOrm } from '../../orm';
+import { name } from '../common.js';
+import { getOrm } from '../../orm.js';
 
-import { ContractEventIndex } from '../model/interface';
+import { ContractEventIndex } from '../model/interface.js';
 
 /** @internal */
 const select = createSelector(getOrm()[name]);

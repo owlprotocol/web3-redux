@@ -1,7 +1,7 @@
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions';
-import { getId, Contract } from './model';
-import { Network } from '../network/model';
-import { ORMModel, ModelWithId } from '../types/model';
+import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
+import { getId, Contract } from './model/index.js';
+import { Network } from '../network/model/index.js';
+import { ORMModel, ModelWithId } from '../types/model.js';
 
 /** @internal */
 export function reducer(sess: any, action: ReducerAction) {

@@ -3,15 +3,15 @@ import { testSaga } from 'redux-saga-test-plan';
 import * as IPFS from 'ipfs-http-client';
 import { Mockttp } from 'mockttp';
 
-import { fetchIpfs } from './fetchIpfs';
-import { objectGet } from './objectGet';
-import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION, IPFS_NFT_1, startMockIPFSNode } from '../../test/data';
-import { sleep } from '../../utils';
+import { fetchIpfs } from './fetchIpfs.js';
+import { objectGet } from './objectGet.js';
+import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION, IPFS_NFT_1, startMockIPFSNode } from '../../test/data.js';
+import { sleep } from '../../utils/index.js';
 
-import { createStore, StoreType } from '../../store';
-import { update as updateConfig } from '../../config/actions';
-import { selectByIdSingle, selectPathHash } from '../selectors';
-import { fetchIpfs as fetchIpfsAction, objectGet as objectGetAction, cat as catAction } from '../actions';
+import { createStore, StoreType } from '../../store.js';
+import { update as updateConfig } from '../../config/actions/index.js';
+import { selectByIdSingle, selectPathHash } from '../selectors/index.js';
+import { fetchIpfs as fetchIpfsAction, objectGet as objectGetAction, cat as catAction } from '../actions/index.js';
 
 describe('ipfs/sagas/fetchIpfs.test.ts', () => {
     let client: IPFS.IPFSHTTPClient;

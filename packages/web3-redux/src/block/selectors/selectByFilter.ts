@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
-import { name } from '../common';
-import { getOrm } from '../../orm';
-import { BlockHeader } from '../model';
-import { memoizeArrayByRef } from '../../utils/memo';
+import { name } from '../common.js';
+import { getOrm } from '../../orm.js';
+import { BlockHeader } from '../model/index.js';
+import { memoizeArrayByRef } from '../../utils/memo/index.js';
 
 /** @internal */
 type selectByFilterType = (state: any, filter: Partial<BlockHeader> | undefined) => BlockHeader[];

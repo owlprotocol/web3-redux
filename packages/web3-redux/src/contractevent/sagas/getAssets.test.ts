@@ -1,21 +1,21 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
-import { getWeb3Provider } from '../../test';
-import { name } from '../common';
-import { networkId } from '../../test/data';
+import { getWeb3Provider } from '../../test/index.js';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
 
 import * as ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
 import * as ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
 import * as ERC1155 from '../../abis/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
 
-import { sleep } from '../../utils';
+import { sleep } from '../../utils/index.js';
 
-import { createStore, StoreType } from '../../store';
-import { create as createNetwork } from '../../network';
-import { selectByIdMany as selectContracts } from '../../contract/selectors';
+import { createStore, StoreType } from '../../store.js';
+import { create as createNetwork } from '../../network/index.js';
+import { selectByIdMany as selectContracts } from '../../contract/selectors/index.js';
 
-import { getAssets as getAssetsAction } from '../actions';
+import { getAssets as getAssetsAction } from '../actions/index.js';
 
 describe(`${name}/sagas/getAssets.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store

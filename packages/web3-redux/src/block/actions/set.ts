@@ -1,6 +1,6 @@
-import { name } from '../common';
-import { BlockHeader } from '../model/BlockHeader';
-import { BlockId } from '../model/id';
+import { name } from '../common.js';
+import { BlockHeader } from '../model/BlockHeader.js';
+import { BlockId } from '../model/id.js';
 
 /** @internal */
 export const SET = (key: keyof BlockHeader) => `${name}/SET/${key.toUpperCase()}`;

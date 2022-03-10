@@ -1,4 +1,4 @@
-import { EthCall, EthCallId, getId, getIdArgs, validate } from './interface';
+import { EthCall, EthCallId, getId, getIdArgs, validate } from './interface.js';
 
 export type { EthCall, EthCallId as EthCallId };
 

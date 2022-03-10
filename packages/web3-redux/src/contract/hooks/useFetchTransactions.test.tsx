@@ -3,14 +3,14 @@ import axios from 'axios';
 import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import { useFetchTransactions } from './useFetchTransactions';
-import { create as createNetwork } from '../../network/actions';
+import { useFetchTransactions } from './useFetchTransactions.js';
+import { create as createNetwork } from '../../network/actions/index.js';
 
-import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create } from '../actions';
+import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
+import { create } from '../actions/index.js';
 
-import { expectThrowsAsync } from '../../test';
+import { expectThrowsAsync } from '../../test/index.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

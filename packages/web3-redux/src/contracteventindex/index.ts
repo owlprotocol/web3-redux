@@ -3,4 +3,4 @@
  * @module ContractEventIndex
  */
 
-export * from './model';
+export * from './model/index.js';

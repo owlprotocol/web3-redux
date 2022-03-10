@@ -3,18 +3,18 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import { getWeb3Provider, expectThrowsAsync } from '../../test';
+import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
 import * as ERC165 from '../../abis/utils/introspection/ERC165.sol/ERC165.json';
 
-import { create as createNetwork } from '../../network/actions';
+import { create as createNetwork } from '../../network/actions/index.js';
 
-import { name } from '../common';
-import { networkId } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create } from '../actions';
+import { name } from '../common.js';
+import { networkId } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
+import { create } from '../actions/index.js';
 
-import { useSupportsInterface } from '../hooks/useSupportsInterface';
+import { useSupportsInterface } from '../hooks/useSupportsInterface.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

@@ -5,12 +5,12 @@ import * as IPFS from 'ipfs-http-client';
 import { Mockttp } from 'mockttp';
 import { renderHook } from '@testing-library/react-hooks';
 
-import { useIpfs } from './useIpfs';
-import { expectThrowsAsync } from '../../test';
-import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data';
+import { useIpfs } from './useIpfs.js';
+import { expectThrowsAsync } from '../../test/index.js';
+import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data.js';
 
-import { createStore, StoreType } from '../../store';
-import { update as updateConfig } from '../../config/actions';
+import { createStore, StoreType } from '../../store.js';
+import { update as updateConfig } from '../../config/actions/index.js';
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const jsdom = require('mocha-jsdom');

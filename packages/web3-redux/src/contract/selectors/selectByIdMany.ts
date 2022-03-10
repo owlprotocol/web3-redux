@@ -1,8 +1,8 @@
 import { createSelector } from 'redux-orm';
-import { Transaction } from '../../transaction/model/interface';
-import { getOrm } from '../../orm';
-import { Contract, ContractId, getId, BaseWeb3Contract } from '../model/interface';
-import { memoizeArrayByRef } from '../../utils/memo';
+import { Transaction } from '../../transaction/model/interface.js';
+import { getOrm } from '../../orm.js';
+import { Contract, ContractId, getId, BaseWeb3Contract } from '../model/interface.js';
+import { memoizeArrayByRef } from '../../utils/memo/index.js';
 
 /** @internal */
 type selectManyType = (state: any, id?: string[]) => Contract[] | undefined;

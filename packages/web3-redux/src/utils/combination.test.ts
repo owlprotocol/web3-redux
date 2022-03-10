@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { combination, combinationAll } from './combination';
+import { combination, combinationAll } from './combination.js';
 
 describe('combination', () => {
     it('combination', async () => {

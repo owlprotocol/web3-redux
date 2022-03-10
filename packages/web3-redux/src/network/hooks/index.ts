@@ -1,4 +1,4 @@
-import useLatestBlock from './useLatestBlock';
-import useLatestBlockNumber from './useLatestBlockNumber';
+import useLatestBlock from './useLatestBlock.js';
+import useLatestBlockNumber from './useLatestBlockNumber.js';
 
 export { useLatestBlock, useLatestBlockNumber };

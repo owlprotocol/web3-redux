@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AbiItem } from 'web3-utils';
-import { useGetBalance } from './useGetBalance';
-import { useGetNonce } from './useGetNonce';
-import { useGetCode } from './useGetCode';
-import { useFetchAbi } from './useFetchAbi';
-import { create } from '../actions';
-import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced';
-import { GetNonceSyncedActionInput } from '../actions/getNonceSynced';
-import { selectByIdSingle } from '../selectors';
-import { BaseWeb3Contract } from '../model';
+import { useGetBalance } from './useGetBalance.js';
+import { useGetNonce } from './useGetNonce.js';
+import { useGetCode } from './useGetCode.js';
+import { useFetchAbi } from './useFetchAbi.js';
+import { create } from '../actions/index.js';
+import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced.js';
+import { GetNonceSyncedActionInput } from '../actions/getNonceSynced.js';
+import { selectByIdSingle } from '../selectors/index.js';
+import { BaseWeb3Contract } from '../model/index.js';
 
 /**
  * Creates a contract/EOA if it doesn't exist.

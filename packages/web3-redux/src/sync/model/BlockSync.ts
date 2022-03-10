@@ -1,4 +1,4 @@
-import { BaseSync } from './BaseSync';
+import { BaseSync } from './BaseSync.js';
 
 /**
  * Sync middleware to handle {@link BlockHeader} CREATE/UPDATE actions.

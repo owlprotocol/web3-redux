@@ -3,17 +3,17 @@ import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import { cloneDeep } from 'lodash';
 
-import { getWeb3Provider } from '../../test';
-import { sleep } from '../../utils';
+import { getWeb3Provider } from '../../test/index.js';
+import { sleep } from '../../utils/index.js';
 
 import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
-import { networkId } from '../../test/data';
-import { createStore, StoreType } from '../../store';
-import { create as createNetwork } from '../../network/actions';
-import { Contract } from '../model/interface';
-import { name } from '../common';
-import { selectByIdSingle } from '../selectors';
-import { create as createAction, getCode as getCodeAction } from '../actions';
+import { networkId } from '../../test/data.js';
+import { createStore, StoreType } from '../../store.js';
+import { create as createNetwork } from '../../network/actions/index.js';
+import { Contract } from '../model/interface.js';
+import { name } from '../common.js';
+import { selectByIdSingle } from '../selectors/index.js';
+import { create as createAction, getCode as getCodeAction } from '../actions/index.js';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;

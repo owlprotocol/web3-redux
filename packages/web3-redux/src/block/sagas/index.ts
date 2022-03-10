@@ -1,7 +1,7 @@
 import { all, takeEvery, spawn } from 'typed-redux-saga/macro';
-import fetch from './fetch';
-import subscribeLoop from './subscribeLoop';
-import { FETCH } from '../actions';
+import fetch from './fetch.js';
+import subscribeLoop from './subscribeLoop.js';
+import { FETCH } from '../actions/index.js';
 
 /** @internal */
 export function* saga() {

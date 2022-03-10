@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectConfig } from '../selectors';
+import { selectConfig } from '../selectors/index.js';
 
 /**
  * @category Hooks

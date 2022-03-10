@@ -1,34 +1,34 @@
-import { CREATE, create, CreateAction, isCreateAction } from './create';
-import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove';
-import { UPDATE, update, UpdateAction, isUpdateAction } from './update';
-import { SET, set, SetAction, isSetAction } from './set';
-import { CALL, call, CallAction, isCallAction } from './call';
-import { CALL_BATCHED, callBatched, CallBatchedAction, isCallBatchedAction } from './callBatched';
-import { SEND, send, SendAction, isSendAction } from './send';
-import { EVENT_GET_PAST, eventGetPast, EventGetPastAction, isEventGetPastAction } from './eventGetPast';
-import { EVENT_SUBSCRIBE, eventSubscribe, EventSubscribeAction, isEventSubscribeAction } from './eventSubscribe';
+import { CREATE, create, CreateAction, isCreateAction } from './create.js';
+import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove.js';
+import { UPDATE, update, UpdateAction, isUpdateAction } from './update.js';
+import { SET, set, SetAction, isSetAction } from './set.js';
+import { CALL, call, CallAction, isCallAction } from './call.js';
+import { CALL_BATCHED, callBatched, CallBatchedAction, isCallBatchedAction } from './callBatched.js';
+import { SEND, send, SendAction, isSendAction } from './send.js';
+import { EVENT_GET_PAST, eventGetPast, EventGetPastAction, isEventGetPastAction } from './eventGetPast.js';
+import { EVENT_SUBSCRIBE, eventSubscribe, EventSubscribeAction, isEventSubscribeAction } from './eventSubscribe.js';
 import {
     EVENT_UNSUBSCRIBE,
     eventUnsubscribe,
     EventUnsubscribeAction,
     isEventUnsubscribeAction,
-} from './eventUnsubscribe';
-import { FETCH_ABI, fetchAbi, FetchAbiAction, isFetchAbiAction } from './fetchAbi';
-import { GET_BALANCE, getBalance, GetBalanceAction, isGetBalanceAction } from './getBalance';
-import { GET_NONCE, getNonce, GetNonceAction, isGetNonceAction } from './getNonce';
+} from './eventUnsubscribe.js';
+import { FETCH_ABI, fetchAbi, FetchAbiAction, isFetchAbiAction } from './fetchAbi.js';
+import { GET_BALANCE, getBalance, GetBalanceAction, isGetBalanceAction } from './getBalance.js';
+import { GET_NONCE, getNonce, GetNonceAction, isGetNonceAction } from './getNonce.js';
 import {
     FETCH_TRANSACTIONS,
     fetchTransactions,
     FetchTransactionsAction,
     isFetchTransactionsAction,
-} from './fetchTransactions';
-import { GET_CODE, getCode, GetCodeAction, isGetCodeAction } from './getCode';
-import { GET_ENS, getEns, GetEnsAction, isGetEnsAction } from './getEns';
+} from './fetchTransactions.js';
+import { GET_CODE, getCode, GetCodeAction, isGetCodeAction } from './getCode.js';
+import { GET_ENS, getEns, GetEnsAction, isGetEnsAction } from './getEns.js';
 
 /* Synced composite actions */
-export { callSynced } from './callSynced';
-export { getBalanceSynced } from './getBalanceSynced';
-export { getNonceSynced } from './getNonceSynced';
+export { callSynced } from './callSynced.js';
+export { getBalanceSynced } from './getBalanceSynced.js';
+export { getNonceSynced } from './getNonceSynced.js';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;

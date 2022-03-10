@@ -1,8 +1,8 @@
-import { CREATE, create, CreateAction, isCreateAction } from './create';
-import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove';
-import { UPDATE, update, UpdateAction, isUpdateAction } from './update';
-import { SET, set, SetAction, isSetAction } from './set';
-import { FETCH, fetch, FetchAction, isFetchAction } from './fetch';
+import { CREATE, create, CreateAction, isCreateAction } from './create.js';
+import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove.js';
+import { UPDATE, update, UpdateAction, isUpdateAction } from './update.js';
+import { SET, set, SetAction, isSetAction } from './set.js';
+import { FETCH, fetch, FetchAction, isFetchAction } from './fetch.js';
 
 /** @internal */
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;

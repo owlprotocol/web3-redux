@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import invariant from 'tiny-invariant';
 import { isAddress } from 'web3-utils';
-import { useContractWithAbi } from './useContractWithAbi';
-import { useContractCall } from './useContractCall';
-import { useEvents, UseEventsOptions } from './useEvents';
+import { useContractWithAbi } from './useContractWithAbi.js';
+import { useContractCall } from './useContractCall.js';
+import { useEvents, UseEventsOptions } from './useEvents.js';
 import * as IERC1155MetadataURI from '../../abis/token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI.json';
 
-import { GenericSync } from '../../sync/model';
-import { createEventSync } from '../../sync/model/EventSync';
+import { GenericSync } from '../../sync/model/index.js';
+import { createEventSync } from '../../sync/model/EventSync.js';
 
 /**
  * Contract hook for ERC1155 interface.
@@ -38,9 +38,9 @@ export function useERC1155(
     const onTransferSync =
         networkId && address && balanceOfAddress
             ? createEventSync(networkId, [], address, 'TransferSingle', [
-                  { from: balanceOfAddress, id: balanceOfTokenId },
-                  { to: balanceOfAddress, id: balanceOfTokenId },
-              ])
+                { from: balanceOfAddress, id: balanceOfTokenId },
+                { to: balanceOfAddress, id: balanceOfTokenId },
+            ])
             : false;
     const balanceOfSync = sync?.balanceOf === 'onTransfer' ? onTransferSync : sync?.balanceOf ?? 'ifnull'; //Sync user balance
     const TransferEventsOptions = sync?.TransferEventsOptions ?? { sync: false, past: false }; //Sync token Transfer events, default just reads data

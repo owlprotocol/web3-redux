@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { name } from '../common';
-import { BlockHeader, validate } from '../model';
+import { name } from '../common.js';
+import { BlockHeader, validate } from '../model/index.js';
 
 /** @internal */
 export const UPDATE = `${name}/UPDATE`;

@@ -1,8 +1,8 @@
 import { AnyAction, Store } from 'redux';
 import Web3 from 'web3';
 import { batchActions } from 'redux-batched-actions';
-import * as Network from '../index';
-import * as Contract from '../../contract';
+import * as Network from '../index.js';
+import * as Contract from '../../contract/index.js';
 
 //When Network web3 or web3Sender is changed, update all corresponding contracts
 export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {

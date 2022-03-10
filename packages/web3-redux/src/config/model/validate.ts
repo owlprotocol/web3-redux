@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { create as createIPFSClient } from 'ipfs-http-client';
 
-import { Config } from './interface';
+import { Config } from './interface.js';
 /**
  * Validate config.
  * @param config

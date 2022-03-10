@@ -1,6 +1,6 @@
 import { select } from 'typed-redux-saga/macro';
-import { name } from '../common';
-import { selectByIdSingle } from '../selectors';
+import { name } from '../common.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 function* exists(id: string) {
     const result = yield* select(selectByIdSingle, id);

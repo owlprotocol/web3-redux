@@ -1,11 +1,11 @@
 import { assert } from 'chai';
-import { REDUX_ROOT } from '../../common';
-import { getOrm } from '../../orm';
+import { REDUX_ROOT } from '../../common.js';
+import { getOrm } from '../../orm.js';
 
-import { _4ByteSignature } from '../model/interface';
-import { name } from '../common';
+import { _4ByteSignature } from '../model/interface.js';
+import { name } from '../common.js';
 
-import { selectByIdSingle, selectByIdMany } from '../selectors';
+import { selectByIdSingle, selectByIdMany } from '../selectors/index.js';
 
 const ApproveSignature = '0x095ea7b3';
 

@@ -1,2 +1,2 @@
-export { crashReporter } from './crashReporter';
-export { onPersistRehydrate } from './onPersistRehydrate';
+export { crashReporter } from './crashReporter.js';
+export { onPersistRehydrate } from './onPersistRehydrate.js';

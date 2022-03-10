@@ -1,4 +1,4 @@
-import { Transaction, TransactionId, getId, validate } from './interface';
+import { Transaction, TransactionId, getId, validate } from './interface.js';
 
 export type { Transaction, TransactionId };
 

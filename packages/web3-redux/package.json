@@ -32,16 +32,28 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "scripts": {
     "clean": "npm-run-all -p clean:lib clean:types",
     "clean:lib": "rimraf lib",
     "clean:types": "rimraf src/types/ethers src/types/truffle src/types/web3",
     "test": "mocha 'lib/cjs/**/*.test.js'",
     "start": "node lib/index.js",
-    "build": "npm-run-all generate-types tsc copy babel",
+    "build": "npm-run-all generate-types tsc copy esbuild",
     "esbuild": "node esbuild.config.mjs",
     "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
-    "build:watch": "npm-run-all -p tsc:watch babel:watch",
+    "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
     "tsc": "tsc",
     "tsc:watch": "tsc -w",
     "babel": "babel src --out-dir lib/babel --extensions \".ts,.tsx\" --source-maps true --copy-files",
@@ -62,12 +74,14 @@
     "@reduxjs/toolkit": "^1.6.2",
     "axios": "0.25.0",
     "ethereum-ens": "^0.8.0",
+    "events": "^3.3.0",
     "fast-memoize": "^2.5.2",
     "ipfs-http-client": "^56.0.1",
     "it-to-buffer": "^2.0.2",
     "lodash": "^4.17.21",
     "multiformats": "^9.6.3",
     "object-hash": "^2.2.0",
+    "path-browserify": "^1.0.1",
     "re-reselect": "^4.0.0",
     "redux": "4.1.2",
     "redux-batched-actions": "^0.5.0",
@@ -76,6 +90,7 @@
     "redux-saga": "^1.1.3",
     "reselect": "4.1.5",
     "tiny-invariant": "1.2.0",
+    "url": "^0.11.0",
     "web3": "1.7.0",
     "web3-core": "1.7.0",
     "web3-core-subscriptions": "1.7.0",
@@ -118,6 +133,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "esbuild": "^0.14.25",
+    "esbuild-plugin-alias": "^0.2.1",
     "esbuild-plugin-babel": "^0.2.3",
     "esbuild-plugin-copy": "^1.1.0",
     "eslint": "^8.10.0",

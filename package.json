@@ -11,22 +11,24 @@
   "license": "MIT",
   "author": "Leo Vigna",
   "scripts": {
+    "build:web3-redux": "cd packages/web3-redux && npm run build",
+    "build:web3-redudx-docs": "cd packages/web3-redux-docs && npm run build",
     "bootstrap": "lerna bootstrap",
     "clean": "npm-run-all -p clean:lib clean:node_modules clean:pnpm-lock clean:package-lock",
     "clean:lib": "rimraf packages/*/lib",
     "clean:node_modules": "rimraf packages/*/node_modules",
     "clean:pnpm-lock": "rimraf packages/*/pnpm-lock.yaml",
     "clean:package-lock": "rimraf packages/*/package-lock.json",
-    "setup": "npm-run-all clean bootstrap",
+    "setup": "npm-run-all clean bootstrap build:web3-redux",
     "prepare": "husky install",
     "test": "npm-run-all -p test:web3-redux test:web3-redux-components",
     "test:web3-redux": "cd packages/web3-redux && npm run test",
     "test:web3-redux-components": "cd packages/web3-redux && npm run test"
   },
   "dependencies": {
+    "husky": "^7.0.4",
     "lerna": "^4.0.0",
     "npm-run-all": "^4.1.5",
-    "husky": "^7.0.4",
     "rimraf": "^3.0.2"
   }
 }

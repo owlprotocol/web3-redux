@@ -1,5 +1,6 @@
 import * as esbuild from 'esbuild';
 import { copy } from 'esbuild-plugin-copy';
+//import alias from 'esbuild-plugin-alias';
 import { NodeResolvePlugin } from '@esbuild-plugins/node-resolve';
 import * as glob from 'glob';
 
@@ -9,6 +10,7 @@ const files = glob.default.sync('src/**/*.{ts,tsx,json}');
 const excludeNodeModulesPlugin = NodeResolvePlugin({
     extensions: ['.ts', '.js', '.json'],
     onResolved: (resolved) => {
+        //console.debug(resolved)
         if (resolved.includes('node_modules')) {
             return {
                 external: true,
@@ -28,6 +30,14 @@ const copyStaticFilesPlugin = copy({
     keepStructure: true,
 });
 
+/*
+const aliasPlugin = alias({
+    events: 'events',
+    path: 'path-browserify',
+    url: 'url',
+});
+*/
+
 const ESBUILD_WATCH = process.env.ESBUILD_WATCH === 'true' || process.env.ESBUILD_WATCH === '1';
 const watch = ESBUILD_WATCH
     ? {
@@ -40,7 +50,8 @@ const watch = ESBUILD_WATCH
 
 const baseConfig = {
     sourcemap: 'external',
-    platform: 'node', //'browser',
+    //platform: 'node', //'browser',
+    target: 'es6',
     inject: ['./react-shim.mjs'],
     plugins: [excludeNodeModulesPlugin, copyStaticFilesPlugin],
     watch,
@@ -66,20 +77,27 @@ await esbuild.default.build({
 });
 */
 
-/*
 //CJS Bundle
 await esbuild.default.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
-    outdir: 'dist/cjs',
-    //outfile: 'lib-es/index.js',
-    //external: ['path', 'events', 'url'], //override, only loaded in Node environment
-    plugins: [excludeNodeModulesPlugin],
-    //sourcemap: 'external',
-    platform: 'node', //'browser',
+    outfile: 'lib/dist/index.js',
     format: 'cjs',
+    external: ['url', 'events', 'path'],
+    ...baseConfig,
 });
 
+await esbuild.default.build({
+    entryPoints: ['src/index.ts'],
+    bundle: true,
+    minify: true,
+    outfile: 'lib/dist/index.min.js',
+    format: 'cjs',
+    external: ['url', 'events', 'path'],
+    ...baseConfig,
+});
+
+/*
 //ESM Bundle
 await esbuild.default.build({
     entryPoints: ['src/index.ts'],

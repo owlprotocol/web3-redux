@@ -1,4 +1,4 @@
-import { put, select, all } from 'typed-redux-saga/macro';
+import { put, select, all } from 'typed-redux-saga';
 import { Action } from 'redux';
 import { isMatch, reduce } from 'lodash';
 import { CreateAction } from '../../contractevent/actions/index.js';

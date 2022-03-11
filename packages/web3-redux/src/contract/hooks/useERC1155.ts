@@ -4,7 +4,7 @@ import { isAddress } from 'web3-utils';
 import { useContractWithAbi } from './useContractWithAbi.js';
 import { useContractCall } from './useContractCall.js';
 import { useEvents, UseEventsOptions } from './useEvents.js';
-import * as IERC1155MetadataURI from '../../abis/token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI.json';
+import { IERC1155MetadataURI } from '../../abis/index.js';
 
 import { GenericSync } from '../../sync/model/index.js';
 import { createEventSync } from '../../sync/model/EventSync.js';

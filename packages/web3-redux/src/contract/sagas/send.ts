@@ -1,5 +1,5 @@
 import { END, eventChannel, EventChannel, TakeableChannel } from 'redux-saga';
-import { put, call, take } from 'typed-redux-saga/macro';
+import { put, call, take } from 'typed-redux-saga';
 import { PromiEvent, TransactionReceipt } from 'web3-core';
 import exists from './exists.js';
 import { ContractSendStatus } from '../../contractsend/model/index.js';

@@ -1,4 +1,4 @@
-import Web3 from 'web3';
+import Web3 from 'web3/types/index.d.js';
 
 export function mineBlock(web3: Web3) {
     return new Promise((resolve) => {

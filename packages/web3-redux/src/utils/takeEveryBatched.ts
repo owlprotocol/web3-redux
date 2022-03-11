@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { BatchAction } from 'redux-batched-actions';
-import { take, fork } from 'typed-redux-saga/macro';
+import { take, fork } from 'typed-redux-saga';
 
 //https://redux-saga.js.org/docs/api#takeeverypattern-saga-args
 //A modified version of takeEvery to support actions sent with redux-saga-batch

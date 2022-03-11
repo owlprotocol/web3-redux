@@ -1,4 +1,4 @@
-import { select, put, call } from 'typed-redux-saga/macro';
+import { select, put, call } from 'typed-redux-saga';
 import { isHexStrict } from 'web3-utils';
 import { create, update, FetchAction } from '../actions/index.js';
 import networkExists from '../../network/sagas/exists.js';

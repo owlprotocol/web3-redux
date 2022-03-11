@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useERC1155 } from './useERC1155.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
-import * as ERC1155 from '../../abis/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
+import { ERC1155PresetMinterPauser } from '../../abis/index.js';
 
 import { create as createNetwork } from '../../network/actions/index.js';
 import { create as createTransaction } from '../../transaction/actions/index.js';
@@ -40,10 +40,10 @@ describe(`${name}/hooks/useERC1155.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(ERC1155.abi as any)
+        web3Contract = await new web3.eth.Contract(ERC1155PresetMinterPauser.abi as any)
             .deploy({
                 arguments: ['http://example.com/{id}'],
-                data: ERC1155.bytecode,
+                data: ERC1155PresetMinterPauser.bytecode,
             })
             .send({ from: accounts[0], gas: 4000000, gasPrice: '875000000' });
         address = web3Contract.options.address;

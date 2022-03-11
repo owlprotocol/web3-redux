@@ -1,4 +1,4 @@
-import { select, put, call } from 'typed-redux-saga/macro';
+import { select, put, call } from 'typed-redux-saga';
 import networkExists from '../../network/sagas/exists.js';
 import { set, create, GetNonceAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';

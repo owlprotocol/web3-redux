@@ -3,7 +3,7 @@ import { AbiCoder } from 'web3-eth-abi';
 import Web3 from 'web3';
 import { cloneDeep } from 'lodash';
 
-import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
+import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js'
 import { event1, event2, transaction1, transaction2, ADDRESS_0 } from '../../test/data.js';
 import { REDUX_ROOT } from '../../common.js';
 import { getOrm } from '../../orm.js';

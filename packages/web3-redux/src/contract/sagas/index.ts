@@ -1,4 +1,4 @@
-import { takeEvery, all, spawn } from 'typed-redux-saga/macro';
+import { takeEvery, all, spawn } from 'typed-redux-saga';
 import { callSaga } from './call.js';
 import { callBatched } from './callBatched.js';
 import { eventGetPast } from './eventGetPast.js';

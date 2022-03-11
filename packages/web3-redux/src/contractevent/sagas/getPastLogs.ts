@@ -1,4 +1,4 @@
-import { put, call } from 'typed-redux-saga/macro';
+import { put, call } from 'typed-redux-saga';
 import { batchActions } from 'redux-batched-actions';
 import invariant from 'tiny-invariant';
 import { create as createEvent, GetPastLogsAction, GET_PAST_LOGS } from '../actions/index.js';

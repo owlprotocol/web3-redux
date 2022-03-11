@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
     "jsx": "react-jsx",
     "sourceMap": false,
     "outDir": "lib/types",
@@ -9,16 +11,22 @@
       "dom"
     ],
     "esModuleInterop": false,
-    "resolveJsonModule": true,
+    "resolveJsonModule": false,
     "declaration": true,
     "emitDeclarationOnly": true,
     "skipLibCheck": true,
     "downlevelIteration": true,
     "isolatedModules": true,
+    "types": [
+      "node",
+      "mocha"
+    ]
   },
   "include": [
     "src/**/*"
   ],
-  "target": "esnext",
-  "module": "esnext",
+  "exclude": [
+    "src/types/web3",
+    "./**/node_modules/ipfs-utils/**/*"
+  ],
 }

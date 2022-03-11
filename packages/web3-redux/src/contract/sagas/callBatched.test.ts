@@ -9,8 +9,7 @@ import { sleep } from '../../utils/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 
-import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
-import * as Multicall from '../../abis/Multicall.json';
+import { BlockNumber as BlockNumberArtifact, Multicall } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
 import { create as createNetwork } from '../../network/index.js';

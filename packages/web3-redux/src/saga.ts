@@ -1,4 +1,4 @@
-import { all, spawn } from 'typed-redux-saga/macro';
+import { all, spawn } from 'typed-redux-saga';
 
 import networkSaga from './network/sagas/index.js';
 import blockSaga from './block/sagas/index.js';

@@ -1,4 +1,4 @@
-import { put, call, fork } from 'typed-redux-saga/macro';
+import { put, call, fork } from 'typed-redux-saga';
 import { batchActions } from 'redux-batched-actions';
 import { EventData } from 'web3-eth-contract';
 import exists from './exists.js';

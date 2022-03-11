@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useContractWithAbi } from './useContractWithAbi.js';
 import { useContractCall } from './useContractCall.js';
 import { useEvents, UseEventsOptions } from './useEvents.js';
-import * as IERC20 from '../../abis/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
+import { IERC20Metadata } from '../../abis/index.js';
 
 import { GenericSync } from '../../sync/model/index.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
@@ -25,7 +25,7 @@ export function useERC20(
     },
 ) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC20.abi as any);
+    useContractWithAbi(networkId, address, IERC20Metadata.abi as any);
 
     //Default sync params
     const totalSupplySync = sync?.totalSupply ?? 'ifnull'; //Some tokens might have dynamic supply

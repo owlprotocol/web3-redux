@@ -8,7 +8,7 @@ import { sleep } from '../../utils/index.js';
 
 import { name } from '../common.js';
 
-import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
+import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js'
 import { networkId } from '../../test/data.js';
 
 import { createStore, StoreType } from '../../store.js';

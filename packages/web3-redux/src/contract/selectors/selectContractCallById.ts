@@ -10,11 +10,11 @@ import selectEthCallById from '../../ethcall/selectors/selectByIdSingle.js';
 export function selectContractCallById<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
-    >(
-        state: any,
-        idArgs: ContractId | undefined,
-        methodName: K | undefined,
-        callArgs?: CallArgsHash<Parameters<T['methods'][K]>>,
+>(
+    state: any,
+    idArgs: ContractId | undefined,
+    methodName: K | undefined,
+    callArgs?: CallArgsHash<Parameters<T['methods'][K]>>,
 ): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
     if (!idArgs) return undefined;
     const ethCallId = selectEthCallId(state, idArgs, methodName, callArgs);
@@ -27,7 +27,7 @@ export function selectContractCallById<
 export function selectContractCallFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
-    >(methodName: K) {
+>(methodName: K) {
     type U = Await<ReturnType<ReturnType<T['methods'][K]>['call']>>;
     return (
         state: any,

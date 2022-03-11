@@ -16,11 +16,11 @@ export function selectContractEventsByIdFiltered<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
-    >(
-        state: any,
-        idArgs: ContractId | undefined,
-        eventName: K | undefined,
-        returnValuesFilter?: { [key: string]: any },
+>(
+    state: any,
+    idArgs: ContractId | undefined,
+    eventName: K | undefined,
+    returnValuesFilter?: { [key: string]: any },
 ): ContractEvent<U>[] | undefined {
     if (!idArgs) return undefined;
 
@@ -52,7 +52,7 @@ export function selectEventsFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
-    >(eventName: K) {
+>(eventName: K) {
     return (state: any, id: ContractId | undefined, filter?: any): U[] | undefined => {
         return selectContractEventsByIdFiltered<T, K, U>(state, id, eventName, filter) as U[] | undefined;
     };

@@ -1,4 +1,4 @@
-import { put, select, all } from 'typed-redux-saga/macro';
+import { put, select, all } from 'typed-redux-saga';
 import { Action } from 'redux';
 import { CreateAction } from '../../transaction/actions/index.js';
 import { selectByIdMany } from '../selector/index.js';

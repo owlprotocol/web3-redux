@@ -6,7 +6,7 @@ import { cloneDeep } from 'lodash';
 import { getWeb3Provider } from '../../test/index.js';
 import { sleep } from '../../utils/index.js';
 
-import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
+import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js'
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 import { create as createNetwork } from '../../network/actions/index.js';

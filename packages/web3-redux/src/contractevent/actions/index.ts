@@ -4,7 +4,12 @@ import { UPDATE, update, UpdateAction, isUpdateAction } from './update.js';
 import { SET, set, SetAction, isSetAction } from './set.js';
 import { GET_PAST_LOGS, getPastLogs, GetPastLogsAction, isGetPastLogsAction } from './getPastLogs.js';
 import { SUBSCRIBE_LOGS, subscribeLogs, SubscribeLogsAction, isSubscribeLogsAction } from './subscribeLogs.js';
-import { UNSUBSCRIBE_LOGS, unsubscribeLogs, UnsubscribeLogsAction, isUnsubscribeLogsAction } from './unsubscribeLogs.js';
+import {
+    UNSUBSCRIBE_LOGS,
+    unsubscribeLogs,
+    UnsubscribeLogsAction,
+    isUnsubscribeLogsAction,
+} from './unsubscribeLogs.js';
 import { GET_ASSETS, getAssets, GetAssetsAction, isGetAssetsAction } from './getAssets.js';
 
 /** @internal */

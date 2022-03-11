@@ -5,9 +5,11 @@ import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 
-import * as ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
-import * as ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
-import * as ERC1155 from '../../abis/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
+import {
+    ERC20PresetMinterPauser,
+    ERC721PresetMinterPauserAutoId,
+    ERC1155PresetMinterPauser,
+} from '../../abis/index.js';
 
 import { sleep } from '../../utils/index.js';
 
@@ -33,22 +35,22 @@ describe(`${name}/sagas/getAssets.test.ts`, () => {
     });
 
     beforeEach(async () => {
-        ERC20Contract = await new web3.eth.Contract(ERC20.abi as any)
+        ERC20Contract = await new web3.eth.Contract(ERC20PresetMinterPauser.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: ERC20.bytecode,
+                data: ERC20PresetMinterPauser.bytecode,
             })
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-        ERC721Contract = await new web3.eth.Contract(ERC721.abi as any)
+        ERC721Contract = await new web3.eth.Contract(ERC721PresetMinterPauserAutoId.abi as any)
             .deploy({
                 arguments: ['Test NFT', 'TEST', 'https://api.example.com/'],
-                data: ERC721.bytecode,
+                data: ERC721PresetMinterPauserAutoId.bytecode,
             })
             .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
-        ERC1155Contract = await new web3.eth.Contract(ERC1155.abi as any)
+        ERC1155Contract = await new web3.eth.Contract(ERC1155PresetMinterPauser.abi as any)
             .deploy({
                 arguments: ['http://example.com/{id}'],
-                data: ERC1155.bytecode,
+                data: ERC1155PresetMinterPauser.bytecode,
             })
             .send({ from: accounts[0], gas: 4000000, gasPrice: '875000000' });
 

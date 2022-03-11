@@ -9,37 +9,35 @@ import {
     getInterfaceIdentifier,
     get4ByteIdentifier,
 } from './getInterfaceIdentifier.js';
-import * as ERC165 from '../abis/utils/introspection/IERC165.sol/IERC165.json';
-import * as ERC721Enumerable from '../abis/token/ERC721/extensions/IERC721Enumerable.sol/IERC721Enumerable.json';
-import * as ERC721Metadata from '../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
+import { IERC165, IERC721Enumerable, IERC721Metadata } from '../abis/index.js';
 
 describe('getInterfaceIdentifierForAbi', () => {
     it('ERC165', () => {
-        assert.equal(getInterfaceIdentifierForAbi(ERC165.abi as AbiItem[]), '01ffc9a7');
+        assert.equal(getInterfaceIdentifierForAbi(IERC165.abi as AbiItem[]), '01ffc9a7');
     });
 
     it('ERC721Enumerable', () => {
-        assert.equal(getInterfaceIdentifierForAbi(ERC721Enumerable.abi as AbiItem[]), 'bfc4c1ea'); // '780e9d63');
+        assert.equal(getInterfaceIdentifierForAbi(IERC721Enumerable.abi as AbiItem[]), 'bfc4c1ea'); // '780e9d63');
     });
 
     it('ERC721Metadata', () => {
-        assert.equal(getInterfaceIdentifierForAbi(ERC721Metadata.abi as AbiItem[]), '9c944f16'); // '5b5e139f');
+        assert.equal(getInterfaceIdentifierForAbi(IERC721Metadata.abi as AbiItem[]), '9c944f16'); // '5b5e139f');
     });
 });
 
 describe('getFunctionIdentifier', () => {
     it('supportsInterface', () => {
-        const abi = (ERC165.abi as AbiItem[]).find((a) => a.name === 'supportsInterface');
+        const abi = (IERC165.abi as AbiItem[]).find((a) => a.name === 'supportsInterface');
         assert.equal(getFunctionIdentifier(abi!), '0x01ffc9a7');
     });
 
     it('tokenByIndex', () => {
-        const abi = (ERC721Enumerable.abi as AbiItem[]).find((a) => a.name === 'tokenByIndex');
+        const abi = (IERC721Enumerable.abi as AbiItem[]).find((a) => a.name === 'tokenByIndex');
         assert.equal(getFunctionIdentifier(abi!), '0x4f6ccce7');
     });
 
     it('name', () => {
-        const abi = (ERC721Metadata.abi as AbiItem[]).find((a) => a.name === 'name');
+        const abi = (IERC721Metadata.abi as AbiItem[]).find((a) => a.name === 'name');
         assert.equal(getFunctionIdentifier(abi!), '0x06fdde03');
     });
 });

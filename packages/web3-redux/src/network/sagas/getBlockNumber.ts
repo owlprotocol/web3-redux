@@ -1,4 +1,4 @@
-import { put, call } from 'typed-redux-saga/macro';
+import { put, call } from 'typed-redux-saga';
 import networkExists from './exists.js';
 import { set as setAction, GetBlockNumberAction } from '../actions/index.js';
 

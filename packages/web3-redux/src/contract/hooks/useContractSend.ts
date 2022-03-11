@@ -44,7 +44,7 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
 export function contractSendHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
-    >(method: K) {
+>(method: K) {
     return (networkId: string | undefined, address: string | undefined) => {
         return useContractSend<T, K>(networkId, address, method);
     };

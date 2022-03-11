@@ -1,4 +1,4 @@
-import { put, call } from 'typed-redux-saga/macro';
+import { put, call } from 'typed-redux-saga';
 import { create, FetchAction, FETCH, set } from '../actions/index.js';
 import networkExists from '../../network/sagas/exists.js';
 import { Network } from '../../network/model/index.js';

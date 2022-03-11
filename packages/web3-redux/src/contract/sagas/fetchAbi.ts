@@ -1,4 +1,4 @@
-import { select, put, call } from 'typed-redux-saga/macro';
+import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
 import { AbiItem } from 'web3-utils';
 

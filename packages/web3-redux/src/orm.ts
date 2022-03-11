@@ -14,7 +14,7 @@ import _4ByteModel from './4byte/model/orm.js';
 import { IPFS_URL, _4BYTE_URL } from './environment.js';
 
 //Fix undefined import issue
-let orm = getOrm();
+let orm: any;
 /** @internal */
 export function getOrm(): any {
     if (orm) return orm;

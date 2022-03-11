@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
 import { useContractWithAbi } from './useContractWithAbi.js';
-import * as IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
+import { IERC20 } from '../../abis/index.js';
 
 import { name } from '../common.js';
 import { networkId, ADDRESS_0 } from '../../test/data.js';

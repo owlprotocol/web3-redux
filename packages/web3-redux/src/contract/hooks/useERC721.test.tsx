@@ -14,7 +14,7 @@ import { useERC721 } from './useERC721.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { networkId, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data.js';
 
-import * as ERC721 from '../../abis/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
+import { ERC721PresetMinterPauserAutoId } from '../../abis/index.js';
 
 import { create as createNetwork } from '../../network/actions/index.js';
 import { create as createTransaction } from '../../transaction/actions/index.js';
@@ -56,10 +56,10 @@ describe('contract/hooks/useERC721.test.tsx', () => {
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
-        web3Contract = await new web3.eth.Contract(cloneDeep(ERC721.abi) as any)
+        web3Contract = await new web3.eth.Contract(cloneDeep(ERC721PresetMinterPauserAutoId.abi) as any)
             .deploy({
                 arguments: ['Test NFT', 'TEST', baseUri],
-                data: ERC721.bytecode,
+                data: ERC721PresetMinterPauserAutoId.bytecode,
             })
             .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
@@ -312,10 +312,10 @@ describe('contract/hooks/useERC721.test.tsx', () => {
         it('IPFS metadata', async () => {
             const nft1Uri = new URL('1', baseUriIpfs).toString();
             //Contract setup
-            web3Contract = await new web3.eth.Contract(ERC721.abi as any)
+            web3Contract = await new web3.eth.Contract(ERC721PresetMinterPauserAutoId.abi as any)
                 .deploy({
                     arguments: ['Test NFT', 'TEST', baseUriIpfs],
-                    data: ERC721.bytecode,
+                    data: ERC721PresetMinterPauserAutoId.bytecode,
                 })
                 .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
             address = web3Contract.options.address;

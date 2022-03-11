@@ -1,4 +1,4 @@
-import { put, call } from 'typed-redux-saga/macro';
+import { put, call } from 'typed-redux-saga';
 
 import exists from './exists.js';
 import networkExists from '../../network/sagas/exists.js';

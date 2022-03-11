@@ -15,7 +15,6 @@ yarn.lock
 # production
 /build
 /lib
-/lib-es
 
 # misc
 .DS_Store

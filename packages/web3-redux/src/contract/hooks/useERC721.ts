@@ -4,7 +4,7 @@ import { URL } from 'url';
 import { useContractWithAbi } from './useContractWithAbi.js';
 import { useContractCall } from './useContractCall.js';
 import { useEvents, UseEventsOptions } from './useEvents.js';
-import * as IERC721Metadata from '../../abis/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
+import { IERC721Metadata } from '../../abis/index.js';
 
 import { GenericSync } from '../../sync/model/index.js';
 import { createEventSync } from '../../sync/model/EventSync.js';

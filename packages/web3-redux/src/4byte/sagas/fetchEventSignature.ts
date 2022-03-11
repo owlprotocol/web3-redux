@@ -1,4 +1,4 @@
-import { put, call, select } from 'typed-redux-saga/macro';
+import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
 

@@ -1,4 +1,4 @@
-import { put, call, cancel, take, fork } from 'typed-redux-saga/macro';
+import { put, call, cancel, take, fork } from 'typed-redux-saga';
 import { Action } from 'redux';
 import invariant from 'tiny-invariant';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';

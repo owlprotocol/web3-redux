@@ -1,4 +1,4 @@
-import { put, call, select } from 'typed-redux-saga/macro';
+import { put, call, select } from 'typed-redux-saga';
 import { create as createTransaction, update as updateTransaction, FetchAction } from '../actions/index.js';
 import networkExists from '../../network/sagas/exists.js';
 import { selectByIdSingle } from '../selectors/index.js';

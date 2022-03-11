@@ -5,7 +5,7 @@ import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import { cloneDeep } from 'lodash';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
-import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
+import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js'
 
 import { create as createNetwork } from '../../network/actions/index.js';
 import { create as createTransaction } from '../../transaction/actions/index.js';

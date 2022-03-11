@@ -1,4 +1,4 @@
-import { select } from 'typed-redux-saga/macro';
+import { select } from 'typed-redux-saga';
 import { name } from '../common.js';
 import { selectByIdSingle } from '../selectors/index.js';
 

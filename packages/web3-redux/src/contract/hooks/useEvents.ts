@@ -24,12 +24,12 @@ export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
-    >(
-        networkId: string | undefined,
-        address: string | undefined,
-        eventName: K | undefined,
-        filter?: { [key: string]: any },
-        options?: UseEventsOptions,
+>(
+    networkId: string | undefined,
+    address: string | undefined,
+    eventName: K | undefined,
+    filter?: { [key: string]: any },
+    options?: UseEventsOptions,
 ) {
     const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
 
@@ -98,7 +98,7 @@ export function contractEventsHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
-    >(eventName: K) {
+>(eventName: K) {
     return (
         networkId: string | undefined,
         address: string | undefined,

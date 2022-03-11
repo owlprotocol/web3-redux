@@ -10,7 +10,7 @@ module.exports = {
         'plugin:import/recommended',
         'plugin:import/typescript',
     ],
-    plugins: ['@typescript-eslint', 'prettier', 'import', 'react-hooks', '@jambit/typed-redux-saga'],
+    plugins: ['@typescript-eslint', 'prettier', 'import', 'react-hooks' /*'@jambit/typed-redux-saga'*/],
     parserOptions: {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports

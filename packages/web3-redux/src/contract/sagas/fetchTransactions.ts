@@ -1,4 +1,4 @@
-import { select, put, call } from 'typed-redux-saga/macro';
+import { select, put, call } from 'typed-redux-saga';
 import { batchActions } from 'redux-batched-actions';
 import { AxiosResponse } from 'axios';
 

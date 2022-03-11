@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useERC20 } from './useERC20.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
-import * as ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import { ERC20PresetMinterPauser } from '../../abis/index.js';
 
 import { create as createNetwork } from '../../network/actions/index.js';
 import { create as createTransaction } from '../../transaction/actions/index.js';
@@ -40,10 +40,10 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(ERC20.abi as any)
+        web3Contract = await new web3.eth.Contract(ERC20PresetMinterPauser.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: ERC20.bytecode,
+                data: ERC20PresetMinterPauser.bytecode,
             })
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
         address = web3Contract.options.address;

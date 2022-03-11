@@ -1,8 +1,6 @@
-import * as MockHTTP from 'mockttp';
-
 import { AbiCoder } from 'web3-eth-abi';
 import { cloneDeep } from 'lodash';
-import * as BlockNumberArtifact from '../abis/BlockNumber.json';
+import { getLocal as getLocalMockHTTP } from 'mockttp';
 import { REDUX_ROOT } from '../common.js';
 import { StateRoot } from '../state.js';
 import { getOrm } from '../orm.js';
@@ -11,6 +9,10 @@ import { validateContract } from '../contract/index.js';
 import { validateContractEvent } from '../contractevent/index.js';
 import { validateEthCall } from '../ethcall/index.js';
 import { validateTransaction } from '../transaction/index.js';
+import { BlockNumber } from '../abis/index.js';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
+//const MockHTTP = require('mockttp');
 
 export const networkId = '1336';
 
@@ -33,7 +35,7 @@ export const network1 = { networkId };
 export const contract1 = validateContract({
     networkId,
     address: ADDRESS_1,
-    abi: cloneDeep(BlockNumberArtifact.abi) as any,
+    abi: cloneDeep(BlockNumber.abi) as any,
 });
 
 export const contract1Id = { networkId, address: ADDRESS_1 };
@@ -80,7 +82,7 @@ export const transaction2 = validateTransaction({
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const coder: AbiCoder = require('web3-eth-abi');
 const method = 'getValue';
-const methodAbi = (cloneDeep(BlockNumberArtifact.abi) as any).filter((f: any) => f.name === method)[0];
+const methodAbi = (cloneDeep(BlockNumber.abi) as any).filter((f: any) => f.name === method)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
@@ -106,7 +108,7 @@ export const IPFS_NFT_COLLECTION = 'QmVioGYCm7EBYiJaxaciouDf5DzXArkBzibMV8Le69Z1
 
 /** Create and start MockHTTP server that mocks IPFS API with some data */
 export async function startMockIPFSNode() {
-    const mockIPFSNode = MockHTTP.getLocal();
+    const mockIPFSNode = getLocalMockHTTP();
     await mockIPFSNode.start();
     //object/get
     const p1 = mockIPFSNode

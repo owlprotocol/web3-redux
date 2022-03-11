@@ -1,4 +1,4 @@
-import { all, takeEvery, spawn } from 'typed-redux-saga/macro';
+import { all, takeEvery, spawn } from 'typed-redux-saga';
 import fetch from './fetch.js';
 import subscribeLoop from './subscribeLoop.js';
 import { FETCH } from '../actions/index.js';

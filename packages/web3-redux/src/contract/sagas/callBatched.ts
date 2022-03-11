@@ -1,4 +1,4 @@
-import { put, all, select, call } from 'typed-redux-saga/macro';
+import { put, all, select, call } from 'typed-redux-saga';
 import { validate as validatedEthCall } from '../../ethcall/model/index.js';
 import { create as createEthCall } from '../../ethcall/actions/index.js';
 import { Contract } from '../model/index.js';

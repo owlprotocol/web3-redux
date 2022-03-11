@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { cloneDeep } from 'lodash';
 
-import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
+import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js'
 import { getWeb3Provider } from '../../test/index.js';
 import { networkId } from '../../test/data.js';
 

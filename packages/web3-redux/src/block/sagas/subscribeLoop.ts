@@ -1,4 +1,4 @@
-import { take, cancel, fork } from 'typed-redux-saga/macro';
+import { take, cancel, fork } from 'typed-redux-saga';
 import subscribe from './subscribe.js';
 import { isSubscribeAction, isUnsubscribeAction } from '../actions/index.js';
 import { SubscribeAction } from '../actions/subscribe.js';

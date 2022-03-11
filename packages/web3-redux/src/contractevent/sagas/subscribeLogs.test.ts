@@ -6,7 +6,7 @@ import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
 
-import * as ERC20 from '../../abis/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import { ERC20PresetMinterPauser } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
@@ -33,10 +33,10 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(ERC20.abi as any)
+        web3Contract = await new web3.eth.Contract(ERC20PresetMinterPauser.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: ERC20.bytecode,
+                data: ERC20PresetMinterPauser.bytecode,
             })
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
@@ -67,7 +67,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
 
         it('(networkId, address, [Transfer, from, to]) - All events', async () => {
             //Filter by address, Transfer event, from, address
-            const Transfer = ERC20.abi.find((a) => a.name === 'Transfer');
+            const Transfer = ERC20PresetMinterPauser.abi.find((a: any) => a.name === 'Transfer');
             const eventTopic = coder.encodeEventSignature(Transfer as any);
             const fromTopic = coder.encodeParameter('address', ADDRESS_0);
             const toTopic = coder.encodeParameter('address', accounts[0]);

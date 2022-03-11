@@ -91,7 +91,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
 export function contractCallHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
-    >(method: K) {
+>(method: K) {
     return (
         networkId: string | undefined,
         address: string | undefined,

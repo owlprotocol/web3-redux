@@ -6,7 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { cloneDeep } from 'lodash';
 import { getWeb3Provider } from '../../test/index.js';
 
-import * as BlockNumberArtifact from '../../abis/BlockNumber.json';
+import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js'
 
 import { create as createNetwork } from '../../network/actions/index.js';
 import { validateContractEvent } from '../../contractevent/index.js';

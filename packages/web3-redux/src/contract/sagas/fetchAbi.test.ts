@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import axios from 'axios';
 import * as moxios from 'moxios';
 
-import * as WETH from '../../abis/WETH.json';
+import { WETH } from '../../abis/index.js';
 
 import { sleep } from '../../utils/index.js';
 import { networkId, WETH as WETH_ADDRESS } from '../../test/data.js';

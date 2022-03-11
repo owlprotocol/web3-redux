@@ -1,4 +1,4 @@
-import { all } from 'typed-redux-saga/macro';
+import { all } from 'typed-redux-saga';
 import blockSync from './blockSync.js';
 import eventSync from './eventSync.js';
 import transactionSync from './transactionSync.js';

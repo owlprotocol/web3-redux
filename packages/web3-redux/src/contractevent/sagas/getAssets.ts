@@ -1,13 +1,11 @@
-import { put, call, all } from 'typed-redux-saga/macro';
+import { put, call, all } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { AbiCoder } from 'web3-eth-abi';
 import { flatten, compact, map, uniq } from 'lodash';
 import { batchActions } from 'redux-batched-actions';
 
 import getPastLogs from './getPastLogs.js';
-import * as IERC20 from '../../abis/token/ERC20/IERC20.sol/IERC20.json';
-import * as IERC721 from '../../abis/token/ERC721/IERC721.sol/IERC721.json';
-import * as IERC1155 from '../../abis/token/ERC1155/IERC1155.sol/IERC1155.json';
+import { IERC20, IERC721, IERC1155 } from '../../abis/index.js';
 
 import { create as createContract } from '../../contract/actions/index.js';
 import { GetAssetsAction, GET_ASSETS, getPastLogs as getPastLogsAction } from '../actions/index.js';
@@ -19,9 +17,9 @@ const coder: AbiCoder = require('web3-eth-abi');
 const GET_ASSETS_ERROR = `${GET_ASSETS}/ERROR`;
 
 //Event logs, comments denote [indexed params] - [unindexed data]
-const ERC20Transfer = IERC20.abi.find((a) => a.name === 'Transfer'); //[Transfer, from, to] - [data]
+const ERC20Transfer = IERC20.abi.find((a: any) => a.name === 'Transfer'); //[Transfer, from, to] - [data]
 //const ERC721Transfer = IERC721.abi.find((a) => a.name === 'Transfer');          //[Transfer, from, to, tokenId] - []
-const ERC1155Transfer = IERC1155.abi.find((a) => a.name === 'TransferSingle'); //[TransferSingle, operator, from, to] - [tokenId]
+const ERC1155Transfer = IERC1155.abi.find((a: any) => a.name === 'TransferSingle'); //[TransferSingle, operator, from, to] - [tokenId]
 
 //both have same topics[0]
 const ERC20or721TransferTopic = coder.encodeEventSignature(ERC20Transfer as any);

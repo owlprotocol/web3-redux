@@ -1,4 +1,4 @@
-import { select, put, call } from 'typed-redux-saga/macro';
+import { select, put, call } from 'typed-redux-saga';
 import ENS from 'ethereum-ens';
 import networkExists from '../../network/sagas/exists.js';
 import { set, create, GetEnsAction } from '../actions/index.js';

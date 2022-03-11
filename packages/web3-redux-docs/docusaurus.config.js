@@ -24,7 +24,7 @@ const config = {
                 entryPoints: ["../web3-redux/src"],
                 out: "web3-redux-reference",
                 tsconfig: '../web3-redux/tsconfig.json',
-                watch: process.env.TYPEDOC_WATCH,
+                watch: process.env.TYPEDOC_WATCH === "true" || process.env.TYPEDOC_WATCH === '1',
                 readme: 'none',
                 // Plugin options
                 sidebar: {

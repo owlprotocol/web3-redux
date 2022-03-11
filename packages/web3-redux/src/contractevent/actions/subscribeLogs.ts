@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { toChecksumAddress, isHexStrict } from 'web3-utils';
-import { map } from 'lodash';
+import { map } from '../../utils/lodash/index.js';
 import invariant from 'tiny-invariant';
+import { toChecksumAddress, isHexStrict } from '../../utils/web3-utils/index.js';
 import { name } from '../common.js';
 import { LogsSubscription } from '../model/logsSubscription.js';
 

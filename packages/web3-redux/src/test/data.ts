@@ -1,6 +1,6 @@
 import { AbiCoder } from 'web3-eth-abi';
-import { cloneDeep } from 'lodash';
 import { getLocal as getLocalMockHTTP } from 'mockttp';
+import { cloneDeep } from '../utils/lodash/index.js';
 import { REDUX_ROOT } from '../common.js';
 import { StateRoot } from '../state.js';
 import { getOrm } from '../orm.js';

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from '../../utils/lodash/index.js';
 import axios from 'axios';
 import * as moxios from 'moxios';
 import * as IPFS from 'ipfs-http-client';

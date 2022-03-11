@@ -1,4 +1,4 @@
-import { toChecksumAddress } from 'web3-utils';
+import { toChecksumAddress } from '../../utils/web3-utils/index.js'
 import { getId } from './interface.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';

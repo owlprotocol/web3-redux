@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { cloneDeep } from 'lodash';
 import { BlockNumber } from './abis/index.js';
 import { ZERO_ADDRESS } from './utils/index.js';
+import { cloneDeep } from './utils/lodash/index.js';
 
 describe('abi.test.ts', () => {
     it('web3.eth.Contract mutates abi', () => {

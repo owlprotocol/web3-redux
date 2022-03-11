@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import { map } from 'lodash';
+import { map } from '../../utils/lodash/index.js';
 import { useContract } from './useContract.js';
 import { getWeb3Provider } from '../../test/index.js';
 

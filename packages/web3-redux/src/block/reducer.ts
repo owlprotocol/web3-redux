@@ -1,7 +1,7 @@
-import { omit } from 'lodash';
 import { name } from './common.js';
 import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
 import { BlockHeader, getId } from './model/index.js';
+import { omit } from '../utils/lodash/index.js';
 import { ORMModel, ModelWithId } from '../types/model.js';
 
 /** @internal */

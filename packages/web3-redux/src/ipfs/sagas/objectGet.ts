@@ -1,6 +1,6 @@
 import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
-import { keyBy } from 'lodash';
+import { keyBy } from '../../utils/lodash/index.js';
 import { batchActions } from 'redux-batched-actions';
 import { update, create, ObjectGetAction, OBJECT_GET } from '../actions/index.js';
 

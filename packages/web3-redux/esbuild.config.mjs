@@ -1,8 +1,6 @@
 import * as esbuild from 'esbuild';
 import { copy } from 'esbuild-plugin-copy';
 import { NodeResolvePlugin } from '@esbuild-plugins/node-resolve';
-import babel from 'esbuild-plugin-babel';
-
 import * as glob from 'glob';
 
 const files = glob.default.sync('src/**/*.{ts,tsx,json}');
@@ -30,36 +28,45 @@ const copyStaticFilesPlugin = copy({
     keepStructure: true,
 });
 
-const babelPlugin = babel({
-    config: {
-        presets: [['@babel/preset-env', { modules: false }]],
-        plugins: ['babel-plugin-macros'],
-    },
-});
+const ESBUILD_WATCH = process.env.ESBUILD_WATCH === 'true' || process.env.ESBUILD_WATCH === '1';
+const watch = ESBUILD_WATCH
+    ? {
+        onRebuild: (error) => {
+            if (error) console.error('watch esbuild failed:', error);
+            else console.log('watch esbuild succeeded');
+        },
+    }
+    : false;
+
+const baseConfig = {
+    sourcemap: 'external',
+    platform: 'node', //'browser',
+    inject: ['./react-shim.mjs'],
+    plugins: [excludeNodeModulesPlugin, copyStaticFilesPlugin],
+    watch,
+};
 
 //CJS Library
 await esbuild.default.build({
     entryPoints: files,
     bundle: false,
     outdir: 'lib/cjs',
-    plugins: [excludeNodeModulesPlugin, copyStaticFilesPlugin],
-    sourcemap: 'external',
-    platform: 'node', //'browser',
+    //outExtension: { '.js': '.cjs' },
     format: 'cjs',
-    inject: ['./react-shim.mjs'],
+    ...baseConfig,
 });
-/*
 //ESM Library
+/*
 await esbuild.default.build({
     entryPoints: files,
     bundle: false,
     outdir: 'lib/esm',
-    plugins: [excludeNodeModulesPlugin],
-    sourcemap: 'external',
-    platform: 'node', //'browser',
     format: 'esm',
+    ...baseConfig,
 });
+*/
 
+/*
 //CJS Bundle
 await esbuild.default.build({
     entryPoints: ['src/index.ts'],

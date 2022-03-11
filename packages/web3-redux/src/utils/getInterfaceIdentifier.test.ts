@@ -1,5 +1,4 @@
 import { assert } from 'chai';
-import { AbiItem } from 'web3-utils';
 import {
     getInterfaceIdentifierForAbi,
     getFunctionIdentifier,
@@ -9,6 +8,7 @@ import {
     getInterfaceIdentifier,
     get4ByteIdentifier,
 } from './getInterfaceIdentifier.js';
+import { AbiItem } from '../utils/web3-utils/index.js';
 import { IERC165, IERC721Enumerable, IERC721Metadata } from '../abis/index.js';
 
 describe('getInterfaceIdentifierForAbi', () => {

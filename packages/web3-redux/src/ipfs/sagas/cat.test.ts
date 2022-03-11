@@ -24,7 +24,7 @@ describe('ipfs/sagas/cat.test.ts', () => {
 
     after(() => mockIPFSNode.stop());
 
-    it.skip('testSaga()', async () => {
+    it('testSaga()', async () => {
         const cid = IPFS_HELLO_WORLD;
         const encoder = new TextEncoder();
 
@@ -56,10 +56,10 @@ describe('ipfs/sagas/cat.test.ts', () => {
             assert.isUndefined(ipfsItem?.pbNode?.Data, 'pbNode.Data');
             assert.isUndefined(ipfsItem?.pbNode?.Links, 'pbNode.Links');
             assert.isUndefined(ipfsItem?.linksByName, 'linkByName');
-            //assert.equal(ipfsItem?.data, 'Hello World\n');
+            assert.equal(ipfsItem?.data, 'Hello World\n');
         });
 
-        it.skip('cat(IPFS_NFT_1)', async () => {
+        it('cat(IPFS_NFT_1)', async () => {
             store.dispatch(catAction(IPFS_NFT_1));
 
             await sleep(100);

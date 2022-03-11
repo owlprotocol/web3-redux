@@ -1,5 +1,5 @@
-import { toChecksumAddress } from 'web3-utils';
 import { getBalance } from './getBalance.js';
+import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
 import { create as createSyncAction } from '../../sync/actions/index.js';
 import { ContractId, getId } from '../model/interface.js';

@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
-import { AbiItem } from 'web3-utils';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from '../../utils/lodash/index.js';
+import { AbiItem } from '../../utils/web3-utils/index.js';
 import { getWeb3Provider } from '../../test/index.js';
 import { sleep } from '../../utils/index.js';
 

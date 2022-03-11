@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from '../../utils/lodash/index.js';
 import { create, CREATE, CreateAction, isCreateAction } from './create.js';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update.js';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove.js';

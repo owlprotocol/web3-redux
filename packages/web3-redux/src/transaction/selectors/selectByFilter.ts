@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-orm';
-import { toChecksumAddress } from 'web3-utils';
+import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { name } from '../common.js';
 import { getOrm } from '../../orm.js';
 import { Transaction } from '../model/interface.js';

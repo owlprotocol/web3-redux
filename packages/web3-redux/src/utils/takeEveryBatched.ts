@@ -2,8 +2,8 @@ import { AnyAction } from 'redux';
 import { BatchAction } from 'redux-batched-actions';
 import { take, fork } from 'typed-redux-saga';
 
-//https://redux-saga.js.org/docs/api#takeeverypattern-saga-args
-//A modified version of takeEvery to support actions sent with redux-saga-batch
+//https://typed-redux-saga.js.org/docs/api#takeeverypattern-saga-args
+//A modified version of takeEvery to support actions sent with typed-redux-saga-batch
 //Pattern is matched against batch name and assumes all child actions match pattern
 const takeEveryBatched = (patternOrChannel: any, saga: any, ...args: any[]) =>
     fork(function* () {

@@ -24,17 +24,15 @@ export function* cat(action: CatAction) {
         //https://docs.ipfs.io/reference/http/api/
         //https://github.com/ipfs/js-ipfs/blob/master/docs/MIGRATION-TO-ASYNC-AWAIT.md#pull-stream-pipelines
         const catGen = client.cat(contentId);
-        console.debug({ catGen });
         const catDataPromise = toBuffer(catGen);
         const decoder = new TextDecoder();
         const catData = yield* call(async () => {
             return catDataPromise;
         });
         let catDecoded = decoder.decode(catData);
-        console.debug({ catDecoded });
         try {
             catDecoded = JSON.parse(catDecoded);
-        } catch { }
+        } catch {}
         yield* put(set({ contentId, key: 'data', value: catDecoded }));
     } catch (error) {
         yield* put({

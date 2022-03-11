@@ -1,6 +1,6 @@
 import { put, select, all } from 'typed-redux-saga';
 import { Action } from 'redux';
-import { isMatch, reduce } from 'lodash';
+import { isMatch, reduce } from '../../utils/lodash/index.js';
 import { CreateAction } from '../../contractevent/actions/index.js';
 import { selectByIdMany } from '../selector/index.js';
 import { EventSync } from '../model/index.js';

@@ -1,5 +1,5 @@
-import { put, call, fork, take } from 'typed-redux-saga';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
+import { put, call, fork, take } from 'typed-redux-saga';
 import Web3 from 'web3';
 
 import blockFetch from './fetch.js';

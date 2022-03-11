@@ -1,5 +1,5 @@
 import { select, put, call } from 'typed-redux-saga';
-import { isHexStrict } from 'web3-utils';
+import { isHexStrict } from '../../utils/web3-utils/index.js';
 import { create, update, FetchAction } from '../actions/index.js';
 import networkExists from '../../network/sagas/exists.js';
 import { selectByIdSingle } from '../selectors/index.js';

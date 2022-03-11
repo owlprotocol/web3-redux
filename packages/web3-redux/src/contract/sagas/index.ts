@@ -23,7 +23,7 @@ import {
     GET_NONCE,
 } from '../actions/index.js';
 
-//https://redux-saga.js.org/docs/advanced/RootSaga
+//https://typed-redux-saga.js.org/docs/advanced/RootSaga
 /** @internal */
 export function* saga() {
     yield* all([
@@ -44,7 +44,7 @@ export function* saga() {
 export default saga;
 
 /*
-//https://redux-saga.js.org/docs/advanced/RootSaga/#keeping-everything-alive
+//https://typed-redux-saga.js.org/docs/advanced/RootSaga/#keeping-everything-alive
 export function* saga() {
     const sagas = [
         takeEvery(CALL, contractCall),

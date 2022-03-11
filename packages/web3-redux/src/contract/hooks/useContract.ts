@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AbiItem } from 'web3-utils';
 import { useGetBalance } from './useGetBalance.js';
 import { useGetNonce } from './useGetNonce.js';
 import { useGetCode } from './useGetCode.js';
 import { useFetchAbi } from './useFetchAbi.js';
+import { AbiItem } from '../../utils/web3-utils/index.js';
 import { create } from '../actions/index.js';
 import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced.js';
 import { GetNonceSyncedActionInput } from '../actions/getNonceSynced.js';

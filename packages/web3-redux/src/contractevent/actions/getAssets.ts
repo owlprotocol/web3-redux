@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { toChecksumAddress } from 'web3-utils';
+import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { name } from '../common.js';
 
 /** @internal */

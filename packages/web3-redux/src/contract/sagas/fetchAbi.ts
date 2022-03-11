@@ -1,6 +1,6 @@
 import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
-import { AbiItem } from 'web3-utils';
+import { AbiItem } from '../../utils/web3-utils/index.js';
 
 import networkExists from '../../network/sagas/exists.js';
 import { create, set as setAction, FetchAbiAction } from '../actions/index.js';

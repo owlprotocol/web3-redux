@@ -18,7 +18,7 @@ specifiers:
   '@typechain/truffle-v5': ^5.0.0
   '@typechain/web3-v1': ^3.0.0
   '@types/chai': ^4.2.21
-  '@types/lodash': ^4.14.176
+  '@types/lodash': ^4.14.179
   '@types/mocha': ^9.1.0
   '@types/moxios': ^0.4.15
   '@types/node': ^16.11.26
@@ -47,7 +47,7 @@ specifiers:
   ipfs-http-client: ^56.0.1
   it-to-buffer: ^2.0.2
   lint-staged: ^11.1.2
-  lodash: 4.17.21
+  lodash: ^4.17.21
   mocha: ^9.0.3
   mocha-jsdom: ^2.0.0
   mockttp: ^2.6.0

@@ -1,7 +1,7 @@
 import { put, call, all } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { AbiCoder } from 'web3-eth-abi';
-import { flatten, compact, map, uniq } from 'lodash';
+import { flatten, compact, map, uniq } from '../../utils/lodash/index.js';
 import { batchActions } from 'redux-batched-actions';
 
 import getPastLogs from './getPastLogs.js';

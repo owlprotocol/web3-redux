@@ -5,6 +5,5 @@ import { GET_BLOCK_NUMBER, GET_CHAIN_ID } from '../actions/index.js';
 
 /** @internal */
 export default function* saga() {
-    yield* all([takeEvery(GET_BLOCK_NUMBER, getBlockNumber)]);
-    yield* all([takeEvery(GET_CHAIN_ID, getChainId)]);
+    yield* all([takeEvery(GET_BLOCK_NUMBER, getBlockNumber), takeEvery(GET_CHAIN_ID, getChainId)]);
 }

@@ -3,9 +3,9 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from '../../utils/lodash/index.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js'
+import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
 import { create as createNetwork } from '../../network/actions/index.js';
 import { create as createTransaction } from '../../transaction/actions/index.js';

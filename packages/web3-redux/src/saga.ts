@@ -10,7 +10,7 @@ import syncSaga from './sync/sagas/index.js';
 import ipfsSaga from './ipfs/sagas/index.js';
 import _4ByteSaga from './4byte/sagas/index.js';
 
-//https://redux-saga.js.org/docs/advanced/RootSaga.html
+//https://typed-redux-saga.js.org/docs/advanced/RootSaga.html
 export function* rootSaga() {
     yield* all([
         spawn(networkSaga),

@@ -1,7 +1,7 @@
-import { AbiItem, toChecksumAddress } from 'web3-utils';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { AbiCoder } from 'web3-eth-abi';
-import { filter, keyBy } from 'lodash';
+import { filter, keyBy } from '../../utils/lodash/index.js';
+import { AbiItem, toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { ModelWithId } from '../../types/model.js';
 import { Transaction } from '../../transaction/model/interface.js';
 

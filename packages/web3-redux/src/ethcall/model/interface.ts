@@ -1,4 +1,4 @@
-import { toChecksumAddress } from 'web3-utils';
+import { toChecksumAddress } from '../../utils/web3-utils/index.js'
 import { getId as getContractId } from '../../contract/model/interface.js';
 import { ModelWithId } from '../../types/model.js';
 

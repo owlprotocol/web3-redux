@@ -1,7 +1,7 @@
+import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import { put, call, cancel, take, fork } from 'typed-redux-saga';
 import { Action } from 'redux';
 import invariant from 'tiny-invariant';
-import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import { Subscription } from 'web3-core-subscriptions';
 import { Log } from 'web3-core';
 

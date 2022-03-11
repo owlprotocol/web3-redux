@@ -1,5 +1,5 @@
-import { AbiItem, keccak256 } from 'web3-utils';
-import { map } from 'lodash';
+import { map } from './lodash/index.js';
+import { keccak256, AbiItem } from '../utils/web3-utils/index.js';
 
 export function getInterfaceIdentifierForAbi(abi: AbiItem[]): string {
     if (abi.length === 0) return '';

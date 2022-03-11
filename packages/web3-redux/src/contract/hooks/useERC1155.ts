@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import invariant from 'tiny-invariant';
-import { isAddress } from 'web3-utils';
 import { useContractWithAbi } from './useContractWithAbi.js';
 import { useContractCall } from './useContractCall.js';
 import { useEvents, UseEventsOptions } from './useEvents.js';
+import { isAddress } from '../../utils/web3-utils/index.js';
 import { IERC1155MetadataURI } from '../../abis/index.js';
 
 import { GenericSync } from '../../sync/model/index.js';

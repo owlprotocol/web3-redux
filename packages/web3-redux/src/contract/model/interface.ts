@@ -1,9 +1,11 @@
 import { Contract as Web3Contract } from 'web3-eth-contract';
-import { AbiCoder } from 'web3-eth-abi';
+import Coder, { AbiCoder } from 'web3-eth-abi';
 import { filter, keyBy } from '../../utils/lodash/index.js';
 import { AbiItem, toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { ModelWithId } from '../../types/model.js';
 import { Transaction } from '../../transaction/model/interface.js';
+
+const coder = Coder as unknown as AbiCoder;
 
 /**
  * Contract Id object.
@@ -64,8 +66,6 @@ export function getIdDeconstructed(id: string): ContractId {
     return { networkId, address: toChecksumAddress(address) };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const coder: AbiCoder = require('web3-eth-abi');
 /** @internal */
 export function validate(contract: Contract): ModelWithId<Contract> {
     const { networkId, address, abi } = contract;

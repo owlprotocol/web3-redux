@@ -12,8 +12,7 @@ import { HELLO_WORLD, HELLO_WORLD_QMHASH, NFT_COLLECTION_QMHASH, moxiosIPFS, NFT
 import { createStore, StoreType } from '../../store.js';
 import { update as updateConfig } from '../../config/actions/index.js';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
+import jsdom from 'mocha-jsdom';
 
 describe('ipfs/hooks/useIpfs.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

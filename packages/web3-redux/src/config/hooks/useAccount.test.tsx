@@ -1,14 +1,12 @@
 import { assert } from 'chai';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
+import jsdom from 'mocha-jsdom';
 import { useAccount } from './useAccount.js';
 import { ADDRESS_0, ADDRESS_1 } from '../../test/data.js';
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
 import { setAccount } from '../actions/index.js';
-
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
 
 describe(`${name}/hooks/useAccount.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

@@ -81,7 +81,8 @@ await esbuild.default.build({
 await esbuild.default.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
-    outfile: 'lib/dist/index.js',
+    minify: false,
+    outfile: 'lib/dist/cjs/index.js',
     format: 'cjs',
     external: ['url', 'events', 'path'],
     ...baseConfig,
@@ -91,23 +92,29 @@ await esbuild.default.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
     minify: true,
-    outfile: 'lib/dist/index.min.js',
+    outfile: 'lib/dist/cjs/index.min.js',
     format: 'cjs',
     external: ['url', 'events', 'path'],
     ...baseConfig,
 });
 
-/*
 //ESM Bundle
 await esbuild.default.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
-    outdir: 'dist/esm',
-    //outfile: 'lib-es/index.js',
-    //external: ['path', 'events', 'url'], //override, only loaded in Node environment
-    plugins: [excludeNodeModulesPlugin],
-    //sourcemap: 'external',
-    platform: 'node', //'browser',
+    minify: false,
+    outfile: 'lib/dist/esm/index.js',
     format: 'esm',
+    external: ['path', 'events', 'url'],
+    ...baseConfig,
 });
-*/
+
+await esbuild.default.build({
+    entryPoints: ['src/index.ts'],
+    bundle: true,
+    minify: true,
+    outfile: 'lib/dist/esm/index.min.js',
+    format: 'esm',
+    external: ['path', 'events', 'url'],
+    ...baseConfig,
+});

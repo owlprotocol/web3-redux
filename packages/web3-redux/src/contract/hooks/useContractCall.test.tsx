@@ -20,8 +20,7 @@ import { create } from '../actions/index.js';
 import { useContractCall } from '../hooks/useContractCall.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
+import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

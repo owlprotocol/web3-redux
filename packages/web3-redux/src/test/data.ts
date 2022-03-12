@@ -1,4 +1,4 @@
-import { AbiCoder } from 'web3-eth-abi';
+import Coder, { AbiCoder } from 'web3-eth-abi';
 
 import { toWei } from '../utils/web3-utils/index.js';
 import { cloneDeep } from '../utils/lodash/index.js';
@@ -12,8 +12,7 @@ import { validateEthCall } from '../ethcall/index.js';
 import { validateTransaction } from '../transaction/index.js';
 import { BlockNumber, IERC20 } from '../abis/index.js';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-//const MockHTTP = require('mockttp');
+const coder = Coder as unknown as AbiCoder;
 
 export const networkId = '1336';
 
@@ -118,8 +117,6 @@ export const transaction2 = validateTransaction({
 });
 
 //Ethcall
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const coder: AbiCoder = require('web3-eth-abi');
 const method = 'getValue';
 const methodAbi = (cloneDeep(BlockNumber.abi) as any).filter((f: any) => f.name === method)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);

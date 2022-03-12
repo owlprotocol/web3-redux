@@ -10,8 +10,7 @@ import { WETH } from '../../abis/index.js';
 import { WETH as WETH_ADDRESS, networkId } from '../../test/data.js';
 import { StoreType, createStore } from '../../store.js';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
+import jsdom from 'mocha-jsdom';
 
 describe('contract/hooks/useFetchAbi.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

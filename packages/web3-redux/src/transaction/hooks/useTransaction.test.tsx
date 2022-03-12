@@ -13,8 +13,7 @@ import { createStore, StoreType } from '../../store.js';
 import { Transaction, validate } from '../model/interface.js';
 import { useTransaction } from './index.js';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
+import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useTransaction.tsx`, () => {
     jsdom({ url: 'http://localhost' });

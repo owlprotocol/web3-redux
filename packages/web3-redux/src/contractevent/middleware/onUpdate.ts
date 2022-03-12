@@ -1,19 +1,18 @@
 import { AnyAction, Store } from 'redux';
 import { batchActions } from 'redux-batched-actions';
-import { AbiCoder } from 'web3-eth-abi';
+import Coder, { AbiCoder } from 'web3-eth-abi';
 
 import { selectByIdSingle as selectContract } from '../../contract/selectors/index.js';
 
 import { CREATE, UPDATE, set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '../actions/index.js';
 import { ContractEvent } from '../model/interface.js';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const coder: AbiCoder = require('web3-eth-abi');
 /**
  * Middleware for whenever an event log created/updated.
  * Use cases:
  * - Decode events with undefined returnValues that are decodable with a contract abi
  */
+const coder = Coder as unknown as AbiCoder;
 export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
     let events: ContractEvent[] = [];
     if (action.type.startsWith(CREATE) || action.type.startsWith(UPDATE)) {

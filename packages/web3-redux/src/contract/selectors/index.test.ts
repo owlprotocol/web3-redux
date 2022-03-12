@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { AbiCoder } from 'web3-eth-abi';
+import Coder, { AbiCoder } from 'web3-eth-abi';
 import Web3 from 'web3';
 import { cloneDeep } from '../../utils/lodash/index.js';
 
@@ -16,9 +16,7 @@ import { StateRoot } from '../../state.js';
 import { ModelWithId } from '../../types/model.js';
 import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index.js';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const coder: AbiCoder = require('web3-eth-abi');
-
+const coder = Coder as unknown as AbiCoder;
 describe(`${name}.selectors`, () => {
     const web3 = new Web3('https://localhost:8545');
     const networkId = '1337';

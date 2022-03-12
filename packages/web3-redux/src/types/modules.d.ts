@@ -1,5 +1,6 @@
 declare module 'redux-orm';
 declare module 'ethereum-ens';
+declare module 'mocha-jsdom';
 
 /*
 declare module 'typed-redux-saga' {

@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
-import { AbiCoder } from 'web3-eth-abi';
+import Coder, { AbiCoder } from 'web3-eth-abi';
 import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
@@ -16,8 +16,7 @@ import { create as createContract } from '../../contract/index.js';
 import { selectByIdMany } from '../selectors/index.js';
 import { getPastLogs as getPastLogsAction } from '../actions/index.js';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const coder: AbiCoder = require('web3-eth-abi');
+const coder = Coder as unknown as AbiCoder;
 describe(`${name}/sagas/getPastLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];

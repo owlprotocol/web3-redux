@@ -16,8 +16,7 @@ import { create } from '../actions/index.js';
 
 import { useSupportsInterface } from '../hooks/useSupportsInterface.js';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
+import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

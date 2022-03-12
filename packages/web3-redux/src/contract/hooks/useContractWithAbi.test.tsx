@@ -10,8 +10,7 @@ import { createStore, StoreType } from '../../store.js';
 
 import { expectThrowsAsync } from '../../test/index.js';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
+import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useContractWithAbi.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

@@ -18,8 +18,7 @@ import { create } from '../actions/index.js';
 
 import { useEvents } from '../hooks/useEvents.js';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
+import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useEvents.tsx`, () => {
     jsdom({ url: 'http://localhost' });

@@ -18,8 +18,7 @@ import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const jsdom = require('mocha-jsdom');
+import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useERC1155.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

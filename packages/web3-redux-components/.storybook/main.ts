@@ -1,6 +1,8 @@
 //NodeJS Polyfills
 //https://medium.com/@ftaioli/using-node-js-builtin-modules-with-vite-6194737c2cd2
 const NodeGlobalsPolyfillPlugin = require('@esbuild-plugins/node-globals-polyfill').NodeGlobalsPolyfillPlugin
+const EnvironmentPlugin = require('vite-plugin-environment').default;
+
 //const NodeModulesPolyfillPlugin = require('@esbuild-plugins/node-modules-polyfill').NodeModulesPolyfillPlugin
 
 module.exports = {
@@ -23,7 +25,7 @@ module.exports = {
     async viteFinal(config: any) {
         config.optimizeDeps.include = [
             ...(config.optimizeDeps?.include ?? []),
-            '@owlprotocol/web3-redux',
+            // '@owlprotocol/web3-redux',
         ];
 
         // Enable esbuild polyfill plugins
@@ -37,8 +39,18 @@ module.exports = {
             //NodeModulesPolyfillPlugin(),
         ]
 
+        //Define envvars
+        config.define = {
+            ...config.define,
+        }
+
         console.debug(config.optimizeDeps)
         console.debug(config.plugins)
+        config.plugins = [
+            //Expose envars with traditional process.env
+            EnvironmentPlugin('all', { prefix: 'VITE_' }),
+            ...config.plugins
+        ]
         return config;
 
         config.resolve.alias = {
@@ -75,23 +87,6 @@ module.exports = {
             domain: 'rollup-plugin-node-polyfills/polyfills/domain',
             */
         }
-
-        config.optimizeDeps.include = [
-            ...(config.optimizeDeps?.include ?? []),
-            '@owlprotocol/web3-redux',
-            '@storybook/core-common',
-        ];
-
-        //https://github.com/eirslett/storybook-builder-vite/issues/141
-        config.define = {
-            ...config.define,
-            global: {}
-        }
-
-
-
-        console.debug(config.resolve)
-
         return config;
     }
 };

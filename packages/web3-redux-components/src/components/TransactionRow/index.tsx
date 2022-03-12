@@ -1,4 +1,4 @@
-//import { Transaction } from '@owlprotocol/web3-redux';
+import { Transaction } from '@owlprotocol/web3-redux';
 import composeHooks from 'react-hooks-compose';
 import { Link } from 'react-router-dom';
 import { toBN, fromWei } from 'web3-utils';
@@ -10,7 +10,7 @@ export interface Props {
     hash: string;
 }
 export const useTransactionRow = ({ networkId, hash }: Props) => {
-    const transaction = {}//Transaction.useTransaction(networkId, hash);
+    const transaction = Transaction.useTransaction(networkId, hash);
     const { blockNumber, from, to, value } = transaction ?? {};
 
     //TODO

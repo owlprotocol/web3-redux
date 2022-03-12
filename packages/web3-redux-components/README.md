@@ -18,3 +18,9 @@ https://github.com/eirslett/storybook-builder-vite/issues/141
 ## Addons break
 Try on private window =>
 Application/Storage/Clear site data
+
+https://nirtamir.com/blog/vite-in-production
+
+
+https://nodejs.org/api/packages.html#packages_conditional_exports
+https://vitejs.dev/config/#resolve-conditions

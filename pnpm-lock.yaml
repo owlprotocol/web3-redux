@@ -198,6 +198,7 @@ importers:
       vite: ^2.8.0
       vite-dts: ^1.0.4
       vite-plugin-checker: ^0.4.2
+      vite-plugin-environment: ^1.1.0
       web3-utils: 1.7.0
     dependencies:
       '@owlprotocol/web3-redux': link:../web3-redux/lib
@@ -245,6 +246,7 @@ importers:
       vite: 2.8.6
       vite-dts: 1.0.4_vite@2.8.6
       vite-plugin-checker: 0.4.2_vite@2.8.6
+      vite-plugin-environment: 1.1.0_vite@2.8.6
 
   packages/web3-redux-docs:
     specifiers:
@@ -20815,6 +20817,14 @@ packages:
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.4
       vscode-uri: 3.0.3
+    dev: true
+
+  /vite-plugin-environment/1.1.0_vite@2.8.6:
+    resolution: {integrity: sha512-ay0vYB8DEB7xB5sqVzOgLyTaGH5jbnvghzoDBmHvMx2Y2k1WUl0QQUuyu7oeiKnmIJDc8ciklhVcGc4lXMKyiA==}
+    peerDependencies:
+      vite: ^2.7
+    dependencies:
+      vite: 2.8.6
     dev: true
 
   /vite-plugin-mdx/3.5.10_@mdx-js+mdx@1.6.22+vite@2.8.6:

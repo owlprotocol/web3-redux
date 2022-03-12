@@ -24,7 +24,11 @@ if (!isClient()) {
  * - `NEXT_PUBLIC_name`
  */
 export function getEnvVar(name: string) {
-    return process.env[name] ?? process.env[`REACT_APP_${name}`] ?? process.env[`NEXT_PUBLIC_${name}`];
+    const prefixes = ['', 'REACT_APP_', 'NEXT_PUBLIC_', 'VITE_'];
+    for (const p of prefixes) {
+        const fullName = `${p}${name}`;
+        if (process.env[fullName]) return process.env[fullName];
+    }
 }
 
 /**

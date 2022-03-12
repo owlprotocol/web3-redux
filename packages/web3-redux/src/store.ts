@@ -9,7 +9,12 @@ import { onContractUpdate } from './contract/middleware/index.js';
 import { onEventUpdate } from './contractevent/middleware/index.js';
 
 import { isClient } from './utils/isClient.js';
-import { rootReducer, createRootReducer, createReducerWeb3ReduxWithPersist, defaultLocalStorage } from './reducer.js';
+import {
+    rootReducer,
+    createRootReducer,
+    createReducerWeb3ReduxWithPersist,
+    getDefaultLocalStorage,
+} from './reducer.js';
 import { rootSaga as defaultRootSaga } from './saga.js';
 const defaultMiddleware: any[] = [
     crashReporter,
@@ -48,7 +53,7 @@ export type StoreType = ReturnType<typeof createStore>['store'];
 export type DispatchType = StoreType['dispatch'];
 
 const { store } = createStore();
-export const createStoreWithPersistor = () => createStore({ persistStorage: defaultLocalStorage });
+export const createStoreWithPersistor = () => createStore({ persistStorage: getDefaultLocalStorage() });
 export { store };
 
 export default store;

@@ -81,11 +81,6 @@ export const createReducerWeb3ReduxWithPersist = (storage: WebStorage) => {
     return persistReducer(persistConfig as any, reducerWeb3ReduxWithBatching);
 };
 
-export const defaultLocalStorage = isClient()
-    ? require('redux-persist/lib/storage').default
-    : require('./utils/localstorageAsync').getLocalStorageAsyncMock();
-export const reducerWeb3ReduxWithPersist = createReducerWeb3ReduxWithPersist(defaultLocalStorage); //
-
 export const createRootReducer = (reducerWeb3Redux: Reducer) => {
     return combineReducers({
         [REDUX_ROOT]: reducerWeb3Redux,
@@ -93,6 +88,16 @@ export const createRootReducer = (reducerWeb3Redux: Reducer) => {
 };
 
 export const rootReducer = createRootReducer(reducerWeb3ReduxWithBatching); //Default reducer has no persist
-export const rootReducerWithPersist = createRootReducer(reducerWeb3ReduxWithPersist);
+
+//Persist
+export const getDefaultLocalStorage = () => {
+    if (isClient()) require('redux-persist/lib/storage').default;
+    else return require('./utils/localstorageAsync.js').getLocalStorageAsyncMock();
+};
+
+export const getRootReducerWithDefaultPersist = () => {
+    const reducerWeb3Redux = createReducerWeb3ReduxWithPersist(getDefaultLocalStorage());
+    return createRootReducer(reducerWeb3Redux);
+};
 
 export default rootReducer;

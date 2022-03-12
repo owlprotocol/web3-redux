@@ -1,10 +1,10 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Network, TestData } from '@owlprotocol/web3-redux';
+import { Network } from '@owlprotocol/web3-redux';
 import { networkIdArgType, transactionHashArgType } from '../../test/storybookArgs';
 import { withMockData } from '../../hoc';
 import { TransactionRow, Props } from '.';
 
-const Wrapper = withMockData(TransactionRow, [Network.create(TestData.network1)]);
+const Wrapper = withMockData(TransactionRow, [Network.create({ networkId: '1' })]);
 const Template: ComponentStory<typeof TransactionRow> = (args: any) => <Wrapper {...args} />;
 export const Main = Template.bind({});
 const Args: Props = {

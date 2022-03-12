@@ -1,7 +1,8 @@
 import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
-import { keyBy } from '../../utils/lodash/index.js';
 import { batchActions } from 'redux-batched-actions';
+import { AxiosResponse } from 'axios';
+import { keyBy } from '../../utils/lodash/index.js';
 import { update, create, ObjectGetAction, OBJECT_GET } from '../actions/index.js';
 
 import { selectConfig } from '../../config/selectors/index.js';
@@ -20,13 +21,17 @@ export function* objectGet(action: ObjectGetAction) {
         if (!content) yield* put(create({ contentId }));
 
         //https://github.com/ipfs/js-ipfs/blob/master/docs/core-api/BLOCK.md#ipfsblockgetcid-options
-        const pbNode = yield* call(client.object.get, contentId as any);
+        //https://docs.ipfs.io/reference/http/api/#api-v0-object-get
+        const response = (yield* call(client.post, '/api/v0/object/get', { arg: contentId })) as AxiosResponse;
+        const pbNode = response.data as { Links?: { Name: string }[] };
         const linksByName = keyBy(pbNode.Links, 'Name');
-        yield* put(update({ contentId, pbNode, linksByName }));
+        yield* put(update({ contentId, pbNode: pbNode as any, linksByName }));
 
-        const actions = pbNode.Links.map((l) => {
-            return create({ contentId: l.Hash.toString() });
-        });
+        //TODO Add pbNode type
+        const actions =
+            pbNode.Links?.map((l: any) => {
+                return create({ contentId: l.Hash.toString() });
+            }) ?? [];
         if (actions.length > 0) {
             const batchCreate = batchActions(actions, `${create.type}/${actions.length}`);
             yield* put(batchCreate);

@@ -1,13 +1,13 @@
 import { assert } from 'chai';
 // eslint-disable-next-line prettier/prettier
 import { Provider } from 'react-redux';
-import * as IPFS from 'ipfs-http-client';
-import { Mockttp } from 'mockttp';
 import { renderHook } from '@testing-library/react-hooks';
+import axios from 'axios';
+import * as moxios from 'moxios';
 
 import { useIpfs } from './useIpfs.js';
 import { expectThrowsAsync } from '../../test/index.js';
-import { IPFS_HELLO_WORLD, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data.js';
+import { HELLO_WORLD, HELLO_WORLD_QMHASH, NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
 import { update as updateConfig } from '../../config/actions/index.js';
@@ -20,53 +20,52 @@ describe('ipfs/hooks/useIpfs.test.tsx', () => {
 
     let store: StoreType;
     let wrapper: any;
-    let client: IPFS.IPFSHTTPClient;
-    let mockIPFSNode: Mockttp;
-    before(async () => {
-        mockIPFSNode = await startMockIPFSNode();
-        client = IPFS.create({ url: mockIPFSNode.url });
-    });
-
-    after(() => mockIPFSNode.stop());
+    before(() => moxios.install(axios));
+    after(() => moxios.uninstall(axios));
 
     beforeEach(async () => {
         ({ store } = createStore());
-        store.dispatch(updateConfig({ id: '0', ipfsClient: client }));
+        store.dispatch(updateConfig({ id: '0', ipfsClient: axios }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
     describe('useIpfs()', async () => {
         it('default - Hello World', async () => {
-            const { result, waitForNextUpdate } = renderHook(() => useIpfs(IPFS_HELLO_WORLD), {
+            const { result, waitForNextUpdate } = renderHook(() => useIpfs(HELLO_WORLD_QMHASH), {
                 wrapper,
             });
 
             //Two synchronous renders for null, create IPFS contentId
             assert.equal(result.all.length, 2, 'result.all.length');
-            await waitForNextUpdate(); //update object data
-            await waitForNextUpdate(); //update cat data
+            //await waitForNextUpdate(); //update object data
+            //await waitForNextUpdate(); //update cat data
+            await moxiosIPFS();
+            await moxiosIPFS();
             assert.equal(result.all.length, 4, 'result.all.length');
 
             const value = result.current?.data;
-            assert.deepEqual(value, 'Hello World\n', 'content');
+            assert.deepEqual(value, HELLO_WORLD, 'content');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
         it('default - NFT', async () => {
-            const ipfsPath = `${IPFS_NFT_COLLECTION}/1`;
+            const ipfsPath = `${NFT_COLLECTION_QMHASH}/0`;
             const { result, waitForNextUpdate } = renderHook(() => useIpfs(ipfsPath), {
                 wrapper,
             });
 
             assert.equal(result.all.length, 1, 'result.all.length');
-            await waitForNextUpdate(); //update object data root
-            await waitForNextUpdate(); //update object data root/1
-            await waitForNextUpdate(); //update cat data
+            //await waitForNextUpdate(); //update object data root
+            //await waitForNextUpdate(); //update object data root/1
+            //await waitForNextUpdate(); //update cat data
+            await moxiosIPFS();
+            await moxiosIPFS();
+            await moxiosIPFS();
             assert.equal(result.all.length, 4, 'result.all.length');
 
             const value = result.current?.data;
-            assert.equal(value.name, 'Test NFT 1', 'content');
+            assert.equal(value.name, NFT_0.name, 'content');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });

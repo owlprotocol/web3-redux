@@ -51,7 +51,7 @@ const watch = ESBUILD_WATCH
 const baseConfig = {
     sourcemap: 'external',
     //platform: 'node', //'browser',
-    target: 'es6',
+    //target: 'es6',
     inject: ['./react-shim.mjs'],
     plugins: [excludeNodeModulesPlugin, copyStaticFilesPlugin],
     watch,

@@ -2,14 +2,14 @@ import { assert } from 'chai';
 import { create, CREATE, CreateAction, isCreateAction } from './create.js';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update.js';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove.js';
-import { IPFS_HELLO_WORLD } from '../../test/data.js';
+import { HELLO_WORLD_QMHASH } from '../../test/ipfs.js';
 
 import { name } from '../common.js';
 
 import { Ipfs } from '../model/interface.js';
 
 describe(`${name}.actions`, () => {
-    const contentId = IPFS_HELLO_WORLD;
+    const contentId = HELLO_WORLD_QMHASH;
     const item: Ipfs = {
         contentId,
     };

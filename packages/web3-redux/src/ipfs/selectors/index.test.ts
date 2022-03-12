@@ -6,10 +6,10 @@ import { Ipfs } from '../model/interface.js';
 import { name } from '../common.js';
 
 import { selectByIdSingle, selectByIdMany } from '../selectors/index.js';
-import { IPFS_HELLO_WORLD } from '../../test/data.js';
+import { HELLO_WORLD_QMHASH } from '../../test/ipfs.js';
 
 describe(`${name}.selectors`, () => {
-    const item: Ipfs = { contentId: IPFS_HELLO_WORLD };
+    const item: Ipfs = { contentId: HELLO_WORLD_QMHASH };
     const contentId = item.contentId;
     const itemWithId = { id: contentId, ...item };
 

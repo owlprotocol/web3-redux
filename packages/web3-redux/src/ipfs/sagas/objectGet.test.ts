@@ -1,10 +1,10 @@
 import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
-import * as IPFS from 'ipfs-http-client';
-import { Mockttp } from 'mockttp';
+import axios from 'axios';
+import * as moxios from 'moxios';
+
 import { objectGet } from './objectGet.js';
-import { IPFS_HELLO_WORLD, startMockIPFSNode } from '../../test/data.js';
-import { sleep } from '../../utils/index.js';
+import { HELLO_WORLD_QMHASH, moxiosIPFS } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
 import { update as updateConfig } from '../../config/actions/index.js';
@@ -14,23 +14,16 @@ import { create as createAction, objectGet as objectGetAction } from '../actions
 import { selectConfig } from '../../config/selectors/index.js';
 
 describe('ipfs/sagas/objectGet.test.ts', () => {
-    let client: IPFS.IPFSHTTPClient;
-    let mockIPFSNode: Mockttp;
-
-    before(async () => {
-        mockIPFSNode = await startMockIPFSNode();
-        client = IPFS.create({ url: mockIPFSNode.url });
-    });
-
-    after(() => mockIPFSNode.stop());
+    before(() => moxios.install(axios));
+    after(() => moxios.uninstall(axios));
 
     it('testSaga()', async () => {
-        const cid = IPFS_HELLO_WORLD;
+        const cid = HELLO_WORLD_QMHASH;
 
         testSaga(objectGet, objectGetAction(cid))
             .next()
             .select(selectConfig)
-            .next({ ipfsClient: client })
+            .next({ ipfsClient: axios })
             .select(selectByIdSingle, cid) //Check if exists
             .next(undefined)
             .put(createAction({ contentId: cid })) //Create with contentId
@@ -42,14 +35,15 @@ describe('ipfs/sagas/objectGet.test.ts', () => {
 
         beforeEach(() => {
             ({ store } = createStore());
-            store.dispatch(updateConfig({ id: '0', ipfsClient: client }));
+            store.dispatch(updateConfig({ id: '0', ipfsClient: axios }));
         });
 
         it('objectGet(IPFS_HELLO_WORLD)', async () => {
-            store.dispatch(objectGetAction(IPFS_HELLO_WORLD));
+            store.dispatch(objectGetAction(HELLO_WORLD_QMHASH));
 
-            await sleep(100);
-            const ipfsItem = selectByIdSingle(store.getState(), IPFS_HELLO_WORLD);
+            await moxiosIPFS();
+
+            const ipfsItem = selectByIdSingle(store.getState(), HELLO_WORLD_QMHASH);
             assert.isDefined(ipfsItem?.pbNode?.Data, 'pbNode.Data');
             assert.isDefined(ipfsItem?.pbNode?.Links, 'pbNode.Links');
             assert.isDefined(ipfsItem?.linksByName, 'linkByName');

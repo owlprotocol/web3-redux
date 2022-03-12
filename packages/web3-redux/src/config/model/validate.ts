@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { create as createIPFSClient } from 'ipfs-http-client';
 
 import { Config } from './interface.js';
 /**
@@ -7,7 +6,7 @@ import { Config } from './interface.js';
  * @param config
  */
 export function validate(config: Config): Config {
-    const ipfsClient = config.ipfsClient ?? (config.ipfsUrl ? createIPFSClient({ url: config.ipfsUrl }) : undefined);
+    const ipfsClient = config.ipfsClient ?? (config.ipfsUrl ? axios.create({ baseURL: config.ipfsUrl }) : undefined);
     const _4byteClient =
         config._4byteClient ?? (config._4byteUrl ? axios.create({ baseURL: config._4byteUrl }) : undefined);
 

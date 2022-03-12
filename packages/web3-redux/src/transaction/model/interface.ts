@@ -1,4 +1,4 @@
-import { TransactionReceipt } from 'web3-eth';
+import { TransactionReceipt } from 'web3-core';
 import { toChecksumAddress, isHexStrict, hexToNumberString } from '../../utils/web3-utils/index.js';
 import { getId as getBlockId } from '../../block/model/id.js';
 import { ModelWithId } from '../../types/model.js';

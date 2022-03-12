@@ -4,15 +4,13 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import { cloneDeep } from '../../utils/lodash/index.js';
 import axios from 'axios';
 import * as moxios from 'moxios';
-import * as IPFS from 'ipfs-http-client';
-import { URL } from 'url';
-
 import { useERC721 } from './useERC721.js';
+import { cloneDeep } from '../../utils/lodash/index.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
-import { networkId, IPFS_NFT_COLLECTION, startMockIPFSNode } from '../../test/data.js';
+import { networkId } from '../../test/data.js';
+import { NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../test/ipfs.js';
 
 import { ERC721PresetMinterPauserAutoId } from '../../abis/index.js';
 
@@ -30,9 +28,6 @@ const jsdom = require('mocha-jsdom');
 describe('contract/hooks/useERC721.test.tsx', () => {
     jsdom({ url: 'http://localhost' });
 
-    const baseUri = 'https://owlprotocol.xyz/v1/';
-    const baseUriIpfs = `ipfs://${IPFS_NFT_COLLECTION}/`;
-
     let store: StoreType;
     let wrapper: any;
 
@@ -46,6 +41,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
         //@ts-ignore
         web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();
+        moxios.install(axios);
     });
 
     after(() => {
@@ -58,17 +54,16 @@ describe('contract/hooks/useERC721.test.tsx', () => {
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
         web3Contract = await new web3.eth.Contract(cloneDeep(ERC721PresetMinterPauserAutoId.abi) as any)
             .deploy({
-                arguments: ['Test NFT', 'TEST', baseUri],
+                arguments: ['Test NFT', 'TEST', `http://localhost/${NFT_COLLECTION_QMHASH}/`],
                 data: ERC721PresetMinterPauserAutoId.bytecode,
             })
             .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
         await web3Contract.methods.mint(accounts[0]).send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
     });
-
     it('defaults', async () => {
         const { result, waitForNextUpdate } = renderHook(
-            () => useERC721(networkId, address, '0', { tokenURI: false }),
+            () => useERC721(networkId, address, '0', { tokenURI: false, metadata: false }),
             {
                 wrapper,
             },
@@ -88,8 +83,6 @@ describe('contract/hooks/useERC721.test.tsx', () => {
 
         //No additional re-renders frm background tasks
         await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-
-        moxios.uninstall(axios);
     });
 
     describe('Transfer', () => {
@@ -100,6 +93,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                     useERC721(networkId, address, '0', {
                         ownerOf: false,
                         tokenURI: false,
+                        metadata: false,
                         TransferEventsOptions: { sync: true },
                     }),
                 {
@@ -133,6 +127,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                     useERC721(networkId, address, '0', {
                         ownerOf: false,
                         tokenURI: false,
+                        metadata: false,
                         TransferEventsOptions: { past: true },
                     }),
                 {
@@ -158,7 +153,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
     describe('ownerOf', () => {
         it('Transaction', async () => {
             const { result, waitForNextUpdate } = renderHook(
-                () => useERC721(networkId, address, '0', { ownerOf: 'Transaction', tokenURI: false }),
+                () => useERC721(networkId, address, '0', { ownerOf: 'Transaction', tokenURI: false, metadata: false }),
                 {
                     wrapper,
                 },
@@ -195,7 +190,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
         });
         it('Block', async () => {
             const { result, waitForNextUpdate } = renderHook(
-                () => useERC721(networkId, address, '0', { ownerOf: 'Block', tokenURI: false }),
+                () => useERC721(networkId, address, '0', { ownerOf: 'Block', tokenURI: false, metadata: false }),
                 {
                     wrapper,
                 },
@@ -228,7 +223,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
         });
         it('onTransfer', async () => {
             const { result, waitForNextUpdate } = renderHook(
-                () => useERC721(networkId, address, '0', { ownerOf: 'onTransfer', tokenURI: false }),
+                () => useERC721(networkId, address, '0', { ownerOf: 'onTransfer', tokenURI: false, metadata: false }),
                 {
                     wrapper,
                 },
@@ -269,9 +264,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
 
     describe('useERC721() - metadata', async () => {
         it('HTTP metadata', async () => {
-            const nft1Uri = new URL('0', baseUri).toString();
             //Moxios install
-            moxios.install(axios);
             await web3Contract.methods
                 .mint(accounts[0])
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
@@ -280,6 +273,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                 () =>
                     useERC721(networkId, address, '0', {
                         ownerOf: false,
+                        metadata: true,
                     }),
                 {
                     wrapper,
@@ -291,30 +285,21 @@ describe('contract/hooks/useERC721.test.tsx', () => {
             await waitForNextUpdate(); //name
             await waitForNextUpdate(); //symbol
             await waitForNextUpdate(); //tokenURI
-            await moxios.wait(() => {
-                const request = moxios.requests.mostRecent();
-                assert.equal(request.config.url, nft1Uri);
-                request.respondWith({ status: 200, response: { name: 'Herbie Starbelly' } });
-            });
-            await waitForNextUpdate(); //fetch HTTP
-            assert.equal(result.all.length, 6, 'result.all.length');
+            assert.equal(result.all.length, 5, 'result.all.length');
+            assert.equal(result.current.tokenURI, `http://localhost/${NFT_COLLECTION_QMHASH}/0`, 'tokenURI');
 
-            const value = result.current;
-            assert.equal(value.tokenURI, nft1Uri, 'tokenURI');
-            assert.equal(value.metadata.name, 'Herbie Starbelly', 'metadata.name');
+            //@ts-ignore
+            await moxiosIPFS(); //fetch HTTP
+            assert.equal(result.current.metadata.name, NFT_0.name, 'metadata.name');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-
-            moxios.uninstall(axios);
         });
-
         it('IPFS metadata', async () => {
-            const nft1Uri = new URL('1', baseUriIpfs).toString();
             //Contract setup
             web3Contract = await new web3.eth.Contract(ERC721PresetMinterPauserAutoId.abi as any)
                 .deploy({
-                    arguments: ['Test NFT', 'TEST', baseUriIpfs],
+                    arguments: ['Test NFT', 'TEST', `ipfs://${NFT_COLLECTION_QMHASH}/`],
                     data: ERC721PresetMinterPauserAutoId.bytecode,
                 })
                 .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
@@ -327,15 +312,14 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
             //IPFS Mock
-            const mockIPFSNode = await startMockIPFSNode();
-            const client = IPFS.create({ url: mockIPFSNode.url });
-            store.dispatch(updateConfig({ id: '0', ipfsClient: client }));
+            store.dispatch(updateConfig({ id: '0', ipfsClient: axios }));
 
             //Hook
             const { result, waitForNextUpdate } = renderHook(
                 () =>
-                    useERC721(networkId, address, '1', {
+                    useERC721(networkId, address, '0', {
                         ownerOf: false,
+                        metadata: true,
                     }),
                 {
                     wrapper,
@@ -344,22 +328,19 @@ describe('contract/hooks/useERC721.test.tsx', () => {
 
             //Two synchronous renders for useContractWithAbi
             assert.equal(result.all.length, 2, 'result.all.length');
+            await waitForNextUpdate(); //name
+            await waitForNextUpdate(); //symbol
             await waitForNextUpdate(); //tokenURI
-            await waitForNextUpdate(); //GET/OBJECT (root)
-            await waitForNextUpdate(); //CREATE (with childHash cid updating result of selectPathHash) + GET/OBJECT (root/1)
-            await waitForNextUpdate(); //IPFS CAT
-            await waitForNextUpdate();
-            await waitForNextUpdate();
-            assert.equal(result.all.length, 9, 'result.all.length');
+            assert.equal(result.all.length, 6, 'result.all.length');
+            assert.equal(result.current.tokenURI, `ipfs://${NFT_COLLECTION_QMHASH}/0`, 'tokenURI');
 
-            const value = result.current;
-            assert.equal(value.tokenURI, nft1Uri, 'tokenURI');
-            assert.equal(value.metadata.name, 'Test NFT 1', 'metadata.name');
+            await moxiosIPFS(); //GET/OBJECT (root)
+            await moxiosIPFS(); //GET/OBJECT (root/1)
+            await moxiosIPFS(); //CAT (root/1)
+            assert.equal(result.current.metadata.name, NFT_0.name, 'metadata.name');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-
-            mockIPFSNode.stop();
         });
     });
 });

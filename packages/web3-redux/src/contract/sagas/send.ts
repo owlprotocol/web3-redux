@@ -16,10 +16,10 @@ const CONTRACT_SEND_ERROR = `${SEND}/ERROR`;
 const CONTRACT_SEND_DONE = `${SEND}/DONE`;
 interface ContractSendChannelMessage {
     type:
-        | typeof CONTRACT_SEND_HASH
-        | typeof CONTRACT_SEND_RECEIPT
-        | typeof CONTRACT_SEND_CONFIRMATION
-        | typeof CONTRACT_SEND_ERROR;
+    | typeof CONTRACT_SEND_HASH
+    | typeof CONTRACT_SEND_RECEIPT
+    | typeof CONTRACT_SEND_CONFIRMATION
+    | typeof CONTRACT_SEND_ERROR;
     error?: any;
     hash?: string;
     receipt?: TransactionReceipt;
@@ -46,7 +46,7 @@ function sendChannel(tx: PromiEvent<TransactionReceipt>): EventChannel<ContractS
                 emitter(END);
             });
         // The subscriber must return an unsubscribe function
-        return () => {}; //eslint-disable-line @typescript-eslint/no-empty-function
+        return () => { }; //eslint-disable-line @typescript-eslint/no-empty-function
     });
 }
 

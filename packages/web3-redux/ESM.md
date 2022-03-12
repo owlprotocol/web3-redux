@@ -19,3 +19,6 @@ https://github.com/igoradamenko/esbuild-plugin-alias#readme
 
 ## TODO
 Fid solution for https://github.com/agiledigital/typed-redux-saga#babel-macro
+
+
+https://bundlephobia.com/

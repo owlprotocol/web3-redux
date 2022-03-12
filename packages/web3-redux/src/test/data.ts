@@ -1,5 +1,6 @@
 import { AbiCoder } from 'web3-eth-abi';
-import { getLocal as getLocalMockHTTP } from 'mockttp';
+
+import { toWei } from '../utils/web3-utils/index.js';
 import { cloneDeep } from '../utils/lodash/index.js';
 import { REDUX_ROOT } from '../common.js';
 import { StateRoot } from '../state.js';
@@ -9,7 +10,7 @@ import { validateContract } from '../contract/index.js';
 import { validateContractEvent } from '../contractevent/index.js';
 import { validateEthCall } from '../ethcall/index.js';
 import { validateTransaction } from '../transaction/index.js';
-import { BlockNumber } from '../abis/index.js';
+import { BlockNumber, IERC20 } from '../abis/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 //const MockHTTP = require('mockttp');
@@ -21,10 +22,26 @@ export const addressList = [
     '0x0000000000000000000000000000000000000000',
     '0x0000000000000000000000000000000000000001',
     '0x0000000000000000000000000000000000000002',
+    '0x0000000000000000000000000000000000000003',
+    '0x0000000000000000000000000000000000000004',
+    '0x0000000000000000000000000000000000000005',
+    '0x0000000000000000000000000000000000000006',
+    '0x0000000000000000000000000000000000000007',
+    '0x0000000000000000000000000000000000000008',
+    '0x0000000000000000000000000000000000000009',
 ];
 export const ADDRESS_0 = addressList[0];
 export const ADDRESS_1 = addressList[1];
 export const ADDRESS_2 = addressList[2];
+export const ADDRESS_3 = addressList[3];
+export const ADDRESS_4 = addressList[4];
+export const ADDRESS_5 = addressList[5];
+export const ADDRESS_6 = addressList[6];
+export const ADDRESS_7 = addressList[7];
+export const ADDRESS_8 = addressList[8];
+export const ADDRESS_9 = addressList[9];
+
+//Popular addresses
 export const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
 
@@ -32,10 +49,32 @@ export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
 export const network1 = { networkId };
 
 //Contract
+export const contract0 = validateContract({
+    networkId,
+    address: ADDRESS_0,
+    abi: cloneDeep(BlockNumber.abi) as any,
+});
+
+//Used in tests
 export const contract1 = validateContract({
     networkId,
     address: ADDRESS_1,
     abi: cloneDeep(BlockNumber.abi) as any,
+});
+export const contract2 = validateContract({
+    networkId,
+    address: ADDRESS_2,
+    balance: toWei('1'),
+    nonce: 1,
+});
+export const contractWETH = validateContract({
+    networkId: '1',
+    address: WETH,
+    abi: cloneDeep(IERC20.abi) as any,
+});
+export const contractVITALIK = validateContract({
+    networkId: '1',
+    address: VITALIK,
 });
 
 export const contract1Id = { networkId, address: ADDRESS_1 };
@@ -85,57 +124,6 @@ const method = 'getValue';
 const methodAbi = (cloneDeep(BlockNumber.abi) as any).filter((f: any) => f.name === method)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
-
-//IPFS
-export const HELLO_WORLD = 'Hello World!\n';
-export const DAG_NODE_HELLO_WORLD = { Data: Buffer.from(HELLO_WORLD).toString('base64'), Links: [] };
-export const IPFS_HELLO_WORLD = 'QmWATWQ7fVPP2EFGu71UkfnqhYXDYH566qy47CnJDgvs8u';
-
-export const NFT_1 = { name: 'Test NFT 1' };
-export const IPFS_NFT_1 = 'QmZyAnXBwWSheQQxNZ8kCECkQHCYc79F9XJuMZXwibZeCZ';
-export const DAG_NODE_NFT_1 = { Data: Buffer.from(JSON.stringify(NFT_1)).toString('base64'), Links: [] };
-
-export const DAG_NODE_NFT_COLLECTION = {
-    Data: Buffer.from([]).toString('base64'),
-    Links: [
-        {
-            Hash: IPFS_NFT_1,
-            Name: '1',
-        },
-    ],
-};
-export const IPFS_NFT_COLLECTION = 'QmVioGYCm7EBYiJaxaciouDf5DzXArkBzibMV8Le69Z123';
-
-/** Create and start MockHTTP server that mocks IPFS API with some data */
-export async function startMockIPFSNode() {
-    const mockIPFSNode = getLocalMockHTTP();
-    await mockIPFSNode.start();
-    //object/get
-    const p1 = mockIPFSNode
-        .forPost(`${mockIPFSNode.url}/api/v0/object/get`)
-        .withQuery({ arg: IPFS_HELLO_WORLD })
-        .thenReply(200, JSON.stringify(DAG_NODE_HELLO_WORLD));
-    const p2 = mockIPFSNode
-        .forPost(`${mockIPFSNode.url}/api/v0/object/get`)
-        .withQuery({ arg: IPFS_NFT_COLLECTION })
-        .thenReply(200, JSON.stringify(DAG_NODE_NFT_COLLECTION));
-    const p3 = mockIPFSNode
-        .forPost(`${mockIPFSNode.url}/api/v0/object/get`)
-        .withQuery({ arg: IPFS_NFT_1 })
-        .thenReply(200, JSON.stringify(DAG_NODE_NFT_1));
-    //cat
-    const p4 = mockIPFSNode
-        .forPost(`${mockIPFSNode.url}/api/v0/cat`)
-        .withQuery({ arg: IPFS_HELLO_WORLD })
-        .thenReply(200, 'Hello World\n');
-    const p5 = mockIPFSNode
-        .forPost(`${mockIPFSNode.url}/api/v0/cat`)
-        .withQuery({ arg: IPFS_NFT_1 })
-        .thenReply(200, JSON.stringify(NFT_1), { 'content-type': 'application/json' });
-
-    await Promise.all([p1, p2, p3, p4, p5]);
-    return mockIPFSNode;
-}
 
 //State
 const state: StateRoot = {

@@ -24,6 +24,7 @@ export function useERC721(
     sync?: {
         ownerOf?: 'ifnull' | GenericSync | false | 'onTransfer'; //Update call on Transfer event
         tokenURI?: 'ifnull' | GenericSync | false;
+        metadata?: boolean;
         TransferEventsOptions?: UseEventsOptions;
         ApprovalEventsOptions?: UseEventsOptions;
     },
@@ -59,7 +60,7 @@ export function useERC721(
     //If IPFS
     const isIpfsURI = uri?.protocol === 'ipfs:';
     const ipfsPath = isIpfsURI ? tokenURI?.replace('ipfs://', '') : undefined;
-    const { data: ipfsContent, contentId } = useIpfs(ipfsPath);
+    const { data: ipfsContent, contentId } = useIpfs(ipfsPath, sync?.metadata);
 
     //If HTTP(S)
     //TODO: cache for http content
@@ -67,14 +68,14 @@ export function useERC721(
     const [httpContent, sethttpContent] = useState(undefined as any);
     useEffect(() => {
         //Get http api content
-        if (tokenURI && isHttpURI) {
+        if (tokenURI && isHttpURI && sync?.metadata) {
             axios.get(tokenURI).then((response) => {
                 sethttpContent(response.data);
             });
         } else {
             sethttpContent(undefined);
         }
-    }, [isHttpURI, tokenURI]);
+    }, [isHttpURI, tokenURI, sync?.metadata]);
 
     const metadata = ipfsContent ?? httpContent;
 

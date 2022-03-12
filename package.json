@@ -13,7 +13,7 @@
   "scripts": {
     "build:web3-redux": "cd packages/web3-redux && npm run build",
     "build:web3-redudx-docs": "cd packages/web3-redux-docs && npm run build",
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --shamefully-hoist",
     "clean": "npm-run-all -p clean:lib clean:node_modules clean:pnpm-lock clean:package-lock",
     "clean:lib": "rimraf packages/*/lib",
     "clean:node_modules": "rimraf packages/*/node_modules",

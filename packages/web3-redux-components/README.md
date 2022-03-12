@@ -7,5 +7,14 @@ React template built with CRA and configured with additional utilities:
 * Editor Config: `.editorconfig`, `.vscode`
 * Netlify Config: `.netlify`
 
-## Webpack 5 Config
-https://webpack.js.org/configuration/resolve#resolvefallback
+## Issues
+Electron dependency (added as dev dependency)
+https://github.com/ipfs/js-ipfs-utils/issues/154
+PNPM
+https://github.com/vitejs/vite/issues/324
+
+https://github.com/eirslett/storybook-builder-vite/issues/141
+
+## Addons break
+Try on private window =>
+Application/Storage/Clear site data

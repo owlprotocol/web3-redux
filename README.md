@@ -20,3 +20,7 @@ Install your dependencies
 pnpm run bootstrap
 ```
 Lerna will link your packages and download the required dependencies.
+
+
+
+https://github.com/pnpm/pnpm/issues/2959

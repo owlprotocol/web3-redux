@@ -8,11 +8,10 @@ export interface Props {
     address: string;
 }
 export const ERC20Display = ({ networkId, address }: Props) => {
-    const d = Contract.CALL;
-    console.debug(d);
     return (
         <>
             Display an ERC20 Token at {address} on network {networkId}.
+            {Contract.CALL} a
         </>
     );
 };

@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 
 //Typescript, ESLint check
 import Checker from 'vite-plugin-checker';
+//SVGR
+import svgrPlugin from 'vite-plugin-svgr';
 
 //NodeJS Polyfills
 //https://medium.com/@ftaioli/using-node-js-builtin-modules-with-vite-6194737c2cd2
@@ -16,6 +18,11 @@ import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
 export default defineConfig({
     plugins: [
         react(),
+        svgrPlugin({
+            svgrOptions: {
+                icon: true,
+            },
+        }),
         Checker({
             typescript: true,
             overlay: true,

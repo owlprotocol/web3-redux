@@ -17,6 +17,12 @@ export interface NetworkId {
 export interface Network extends NetworkId {
     /** Human readable name for the network */
     readonly name?: string;
+    /** Native currency */
+    readonly currency?: {
+        readonly name: string;
+        readonly symbol: string;
+        readonly decimals: number;
+    };
     /** Web3 RPC URL (websocket recommended). Used to generate Web3 instance. */
     readonly web3Rpc?: string;
     /** Web3 object. We recommend using a websocket connection. */

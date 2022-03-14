@@ -1,10 +1,8 @@
-//import { ADDRESS_0, VITALIK, WETH } from '@owlprotocol/web3-redux/test/data';
+import { TestData } from '@owlprotocol/web3-redux';
+const { ADDRESS_0, VITALIK, WETH } = TestData;
 
-const ADDRESS_0 = '';
-const VITALIK = '';
-const WETH = '';
 export const networkIdArgType = {
-    options: ['1'],
+    options: ['1', '10', '137', '200'],
     control: { type: 'select' },
 };
 

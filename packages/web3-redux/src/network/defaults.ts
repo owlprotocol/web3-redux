@@ -30,15 +30,29 @@ import {
     ARBITRUM_EXPLORER_API,
 } from '../environment.js';
 
+const ETHER = {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+};
+
+const MATIC = {
+    name: 'Matic',
+    symbol: 'MATIC',
+    decimals: 18,
+};
+
 export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '1337': {
         networkId: '1337',
         name: 'ganache',
+        currency: ETHER,
         web3Rpc: GANACHE_RPC,
     },
     '1': {
         networkId: '1',
         name: 'Mainnet',
+        currency: ETHER,
         web3Rpc: MAINNET_RPC,
         explorerUrl: MAINNET_EXPLORER,
         explorerApiUrl: MAINNET_EXPLORER_API,
@@ -47,6 +61,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '3': {
         networkId: '3',
         name: 'Ropsten',
+        currency: ETHER,
         web3Rpc: ROPSTEN_RPC,
         explorerUrl: ROPSTEN_EXPLORER,
         explorerApiUrl: ROPSTEN_EXPLORER_API,
@@ -55,6 +70,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '4': {
         networkId: '4',
         name: 'Rinkeby',
+        currency: ETHER,
         web3Rpc: RINKEBY_RPC,
         explorerUrl: RINKEBY_EXPLORER,
         explorerApiUrl: ROPSTEN_EXPLORER_API,
@@ -71,6 +87,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '42': {
         networkId: '42',
         name: 'Kovan',
+        currency: ETHER,
         web3Rpc: KOVAN_RPC,
         explorerUrl: KOVAN_EXPLORER,
         explorerApiUrl: KOVAN_EXPLORER_API,
@@ -79,6 +96,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '137': {
         networkId: '137',
         name: 'Polygon',
+        currency: MATIC,
         web3Rpc: POLYGON_RPC,
         explorerUrl: POLYGON_EXPLORER,
         explorerApiUrl: POLYGON_EXPLORER_API,
@@ -87,6 +105,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '80001': {
         networkId: '80001',
         name: 'Polygon Mumbai Testnet',
+        currency: ETHER,
         web3Rpc: POLYGON_MUMBAI_RPC,
         explorerUrl: POLYGON_MUMBAI_EXPLORER,
         explorerApiUrl: POLYGON_MUMBAI_EXPLORER_API,
@@ -95,6 +114,7 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '42161': {
         networkId: '42161',
         name: 'Arbitrum One',
+        currency: ETHER,
         web3Rpc: ARBITRUM_RPC,
         explorerUrl: ARBITRUM_EXPLORER,
         explorerApiUrl: ARBITRUM_EXPLORER_API,
@@ -103,16 +123,19 @@ export const defaultNetworks: { [networkId: string]: Network | undefined } = {
     '421611': {
         networkId: '421611',
         name: 'Arbitrum Rinkeby',
+        currency: ETHER,
         web3Rpc: ARBITRUM_RINKEBY_RPC,
     },
     '10': {
         networkId: '10',
         name: 'Optimism',
+        currency: ETHER,
         web3Rpc: OPTIMISM_RPC,
     },
     '69': {
         networkId: '69',
         name: 'Optimism Kovan',
+        currency: ETHER,
         web3Rpc: OPTIMISM_KOVAN_RPC,
     },
 };

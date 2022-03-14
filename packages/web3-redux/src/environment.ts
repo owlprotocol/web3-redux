@@ -69,33 +69,33 @@ export const KOVAN_EXPLORER = getEnvVar('KOVAN_EXPLORER') ?? 'https://kovan.ethe
 export const KOVAN_EXPLORER_API = getEnvVar('KOVAN_EXPLORER_API') ?? 'https://api-kovan.etherscan.io/api';
 
 export const POLYGON_RPC =
-    getEnvVar('POLYGON_RPC') ?? INFURA_API_KEY ? `http://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}` : undefined;
+    getEnvVar('POLYGON_RPC') ?? INFURA_API_KEY ? `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}` : undefined;
 export const POLYGON_EXPLORER = getEnvVar('POLYGON_EXPLORER') ?? 'https://polygonscan.io/';
 export const POLYGON_EXPLORER_API = getEnvVar('POLYGON_EXPLORER_API') ?? 'https://api.polygonscan.io/api';
 
 export const POLYGON_MUMBAI_RPC =
     getEnvVar('POLYGON_MUMBAI_RPC') ?? INFURA_API_KEY
-        ? `http://polygon-mumbai.infura.io/v3/${INFURA_API_KEY}`
+        ? `https://polygon-mumbai.infura.io/v3/${INFURA_API_KEY}`
         : undefined;
 export const POLYGON_MUMBAI_EXPLORER = getEnvVar('POLYGON_MUMBAI_EXPLORER') ?? 'https://testnet.polygonscan.io/';
 export const POLYGON_MUMBAI_EXPLORER_API =
     getEnvVar('POLYGON_MUMBAI_EXPLORER_API') ?? 'https://api-testnet.polygonscan.io/api';
 
 export const ARBITRUM_RPC =
-    getEnvVar('ARBITRUM_RPC') ?? INFURA_API_KEY ? `http://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}` : undefined;
+    getEnvVar('ARBITRUM_RPC') ?? INFURA_API_KEY ? `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}` : undefined;
 export const ARBITRUM_EXPLORER = getEnvVar('ARBITRUM_EXPLORER') ?? 'https://arbiscan.io/';
 export const ARBITRUM_EXPLORER_API = getEnvVar('ARBITRUM_EXPLORER_API') ?? 'https://api.arbiscan.io/api';
 
 export const ARBITRUM_RINKEBY_RPC =
     getEnvVar('ARBITRUM_RINKEBY_RPC') ?? INFURA_API_KEY
-        ? `http://arbitrum-rinkeby.infura.io/v3/${INFURA_API_KEY}`
+        ? `https://arbitrum-rinkeby.infura.io/v3/${INFURA_API_KEY}`
         : undefined;
 
 export const OPTIMISM_RPC =
-    getEnvVar('OPTIMISM_RPC') ?? INFURA_API_KEY ? `http://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}` : undefined;
+    getEnvVar('OPTIMISM_RPC') ?? INFURA_API_KEY ? `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}` : undefined;
 export const OPTIMISM_KOVAN_RPC =
     getEnvVar('OPTIMISM_KOVAN_RPC') ?? INFURA_API_KEY
-        ? `http://optimism-kovan.infura.io/v3/${INFURA_API_KEY}`
+        ? `https://optimism-kovan.infura.io/v3/${INFURA_API_KEY}`
         : undefined;
 
 //IPFS

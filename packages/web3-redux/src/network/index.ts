@@ -8,3 +8,4 @@ export * from './actions/index.js';
 export * from './selectors/index.js';
 export * from './reducer.js';
 export * from './hooks/index.js';
+export { defaultNetworks } from './defaults.js';

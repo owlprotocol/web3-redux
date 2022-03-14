@@ -12,8 +12,8 @@ export function useAccount() {
     const dispatch = useDispatch();
     const value = useSelector(selectAccount);
     const setAccountCallback = useCallback(
-        (networkId: string) => {
-            dispatch(setAccount(networkId));
+        (account: string) => {
+            dispatch(setAccount(account));
         },
         [dispatch],
     );

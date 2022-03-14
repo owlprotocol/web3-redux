@@ -2,8 +2,11 @@
 //https://medium.com/@ftaioli/using-node-js-builtin-modules-with-vite-6194737c2cd2
 const NodeGlobalsPolyfillPlugin = require('@esbuild-plugins/node-globals-polyfill').NodeGlobalsPolyfillPlugin
 const EnvironmentPlugin = require('vite-plugin-environment').default;
-
 //const NodeModulesPolyfillPlugin = require('@esbuild-plugins/node-modules-polyfill').NodeModulesPolyfillPlugin
+
+//Typescript, ESLint check
+const Checker = require('vite-plugin-checker').default;
+const svgrPlugin = require('vite-plugin-svgr');
 
 module.exports = {
     stories: [
@@ -21,11 +24,15 @@ module.exports = {
     },
     features: {
         storyStoreV7: true,
+        interactionsDebugger: true,
     },
     async viteFinal(config: any) {
         config.optimizeDeps.include = [
             ...(config.optimizeDeps?.include ?? []),
             // '@owlprotocol/web3-redux',
+            '@storybook/testing-library',
+            '@storybook/jest',
+            'js-sha3'
         ];
 
         // Enable esbuild polyfill plugins
@@ -39,18 +46,34 @@ module.exports = {
             //NodeModulesPolyfillPlugin(),
         ]
 
-        //Define envvars
-        config.define = {
-            ...config.define,
-        }
-
-        console.debug(config.optimizeDeps)
-        console.debug(config.plugins)
         config.plugins = [
             //Expose envars with traditional process.env
             EnvironmentPlugin('all', { prefix: 'VITE_' }),
+            svgrPlugin({
+                svgrOptions: {
+                    icon: true,
+                },
+            }),
+            Checker({
+                typescript: true,
+                overlay: true,
+                eslint: {
+                    lintCommand: 'eslint --ext .ts,.tsx src --fix',
+                },
+            }),
             ...config.plugins
-        ]
+        ];
+
+        config.resolve.alias = {
+            ...(config.resolve?.alias ?? {}),
+            stream: 'rollup-plugin-node-polyfills/polyfills/stream',
+            http: 'rollup-plugin-node-polyfills/polyfills/http',
+            https: 'rollup-plugin-node-polyfills/polyfills/http',
+        }
+
+        console.debug(config.optimizeDeps)
+        //console.debug(config.plugins)
+
         return config;
 
         config.resolve.alias = {

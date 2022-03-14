@@ -1,0 +1,35 @@
+name: Web3 Redux Tests
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - packages/web3-redux/**
+  pull_request:
+    paths:
+      - packages/web3-redux/**
+
+jobs:
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "16.14"
+      # PNPM Cache
+      - run: npm i --global pnpm
+      - name: Cache pnpm store
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pnpm-store
+        with:
+          path: ~/.pnpm-store/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+      # Install
+      - run: pnpm i
+      - run: npm run bootstrap
+      - run: npm run test:web3-redux

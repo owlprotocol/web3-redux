@@ -1,32 +1,26 @@
-# Web3 Redux
+# Web3 Redux Monorepo
 
-[![NPM Package Version][npm-image-version]][npm-url]
-[![NPM Package Downloads][npm-image-downloads]][npm-url]
-![web3-redux-1024x256.svg](./docs-static/web3-redux-1024x256.svg)
+## TL;DR
+```
+git clone git@github.com:owlprotocol/web3-redux.git
+pnpm install
+pnpm run bootstrap
+pnpm run test
+```
 
-A Redux library designed to efficiently sync and normalize blockchain data synced using [web3.js](https://github.com/ChainSafe/web3.js) and [redux](https://github.com/reduxjs/redux).
+## Projects
+* [web3-redux](./packages/web3-redux): Core Web3-Redux library
+* [web3-redux-components](./packages/web3-redux-components): Web3-Redux React Component library
+* [web3-redux-docs](./packages/web3-redux-docs): Docusaurus documentation.
 
-## Docs
+## Lerna
+This monorepo uses [lerna.js](https://lerna.js.org/) for package management. Lerna enables project-level local package management in a development environment. This avoids having to deploy an actively developed library to a package registry when simply looking to use it with another project. Make sure that packages refer to the correct local version otherwise lerna will try to fetch the version stored on npmjs.
+Install your dependencies
+```
+pnpm run bootstrap
+```
+Lerna will link your packages and download the required dependencies.
 
-See the official documentation at [owlprotocol.github.io/web3-redux/][gh-page]
 
-## Contributing
 
-See the contributor's guide at
-
-## Semantic versioning
-
-This project follows [semver](https://semver.org/) as closely as possible
-
-## License
-
-2021 Owl Protocol
-MIT License.
-
-[repo]: https://github.com/owlprotocol/web3-redux
-[gh-page]: https://owlprotocol.github.io/web3-redux/
-[gh-page-contributor]: https://owlprotocol.github.io/web3-redux/
-[gh-page-]: https://owlprotocol.github.io/web3-redux/
-[npm-image-version]: https://img.shields.io/npm/v/@owlprotocol/web3-redux.svg
-[npm-image-downloads]: https://img.shields.io/npm/dm/@owlprotocol/web3-redux.svg
-[npm-url]: https://npmjs.org/package/@owlprotocol/web3-redux
+https://github.com/pnpm/pnpm/issues/2959

@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "eg2.vscode-npm-script",
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig",
+    "mikestead.dotenv",
+    "ecmel.vscode-html-css",
+    "jock.svg",
+    "wix.glean",
+  ]
+}

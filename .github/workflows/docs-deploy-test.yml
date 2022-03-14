@@ -1,9 +1,9 @@
-name: Test deployment
+name: Web3 Redux Docs Build Test
 
 on:
   pull_request:
     branches: [master]
-    paths: [website/**]
+    paths: [packages/web3-redux-docs/**]
 
 jobs:
   test-deploy:
@@ -24,8 +24,5 @@ jobs:
           path: ~/.pnpm-store/
           key: ${{ runner.os }}-build-${{ env.cache-name }}
       # Install
-      - working-directory: docusaurus
-        run: pnpm install
-      # Build
-      - working-directory: docusaurus
-        run: pnpm build
+      - run: pnpm i
+      - run: npm run bootstrap # Automatically builds with "prepare" script

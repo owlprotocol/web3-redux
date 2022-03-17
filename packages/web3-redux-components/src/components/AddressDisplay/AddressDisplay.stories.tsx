@@ -5,8 +5,9 @@ const Template: ComponentStory<typeof AddressDisplay> = (args: any) => <AddressD
 export const Main = Template.bind({});
 
 const Args: Props = {
-    address: '0x63CD72389dc25DaF9A5c5016a4a6487',
+    address: '0xf6AEfc54843FDA83437D67A2DbEc7A9BB834ff4E',
     label: 'Main',
+    isFavorite: false,
 };
 
 Main.args = Args;

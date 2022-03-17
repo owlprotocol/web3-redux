@@ -1,6 +1,6 @@
 import { ThemeProvider } from 'styled-components';
-import { THEME_COLORS } from '../constants';
 import getDisplayName from './getDisplayName';
+import { THEME_COLORS } from '../constants';
 
 export const withThemeProvider = (WrappedComponent: any) => {
     const component = (props: string) => (

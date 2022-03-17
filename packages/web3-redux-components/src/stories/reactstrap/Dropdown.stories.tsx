@@ -9,7 +9,7 @@ export default {
 const Template: ComponentStory<typeof Dropdown> = () => (
     <div className="d-flex justify-content-center p-5">
         {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
-        <Dropdown toggle={function noRefCheck() { }}>
+        <Dropdown toggle={function noRefCheck() {}}>
             <DropdownToggle caret>Dropdown</DropdownToggle>
             <DropdownMenu>
                 <DropdownItem header>Header</DropdownItem>

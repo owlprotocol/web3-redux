@@ -16,7 +16,7 @@ const items: { name: string; amount: string | undefined; icon: string | undefine
     },
 ];
 
-export const WalletDropdown = ({ }) => {
+export const WalletDropdown = ({}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [chosen, setChosen] = useState(items[0]);
     const classname = classnames('Dropdown-root', { 'is-open': isOpen });

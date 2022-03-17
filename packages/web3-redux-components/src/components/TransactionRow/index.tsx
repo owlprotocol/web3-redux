@@ -2,8 +2,8 @@ import { Transaction } from '@owlprotocol/web3-redux';
 import composeHooks from 'react-hooks-compose';
 import { Link } from 'react-router-dom';
 import { toBN, fromWei } from 'web3-utils';
-import { shortenHash } from '../../utils';
 import { RowContainer } from './styles';
+import { shortenHash } from '../../utils';
 
 export interface Props {
     networkId: string;

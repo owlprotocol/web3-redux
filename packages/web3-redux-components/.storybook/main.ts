@@ -6,6 +6,7 @@ const EnvironmentPlugin = require('vite-plugin-environment').default;
 
 //Typescript, ESLint check
 const Checker = require('vite-plugin-checker').default;
+//SVGR
 const svgrPlugin = require('vite-plugin-svgr');
 
 module.exports = {

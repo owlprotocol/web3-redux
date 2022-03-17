@@ -1,7 +1,35 @@
 {
   "name": "@owlprotocol/web3-redux-components",
-  "version": "0.1.0",
+  "version": "1.0.0-beta.1",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owlprotocol/web3-redux"
+  },
+  "homepage": "https://owlprotocol.github.io/web3-redux",
+  "copyright": "Copyright 2021 Owl Protocol",
+  "author": {
+    "name": "Leo Vigna",
+    "email": "leo.vigna@gmail.com",
+    "url": "https://github.com/leovigna/"
+  },
+  "license": "MIT",
+  "files": [
+    "*"
+  ],
+  "publishConfig": {
+    "directory": "lib"
+  },
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
+    }
+  },
+  "type": "commonjs",
+  "main": "./dist/cjs/index.js",
+  "types": "./types/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

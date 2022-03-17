@@ -11,6 +11,18 @@ import { WalletContext } from '../src/constants/web3React'
 import { getLibrary } from '../src/utils/getLibrary'
 import { withMockData } from '../src/hoc';
 
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+
+const colors = {
+    brand: {
+        900: '#1a365d',
+        800: '#153e75',
+        700: '#2a69ac',
+    },
+}
+
+const theme = extendTheme({ colors })
+
 export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
@@ -40,7 +52,9 @@ export const decorators = [
                     <Web3ProviderWallet getLibrary={getLibrary}>
                         <Router>
                             <Provider store={store}>
-                                <StoryWithData />
+                                <ChakraProvider theme={theme}>
+                                    <StoryWithData />
+                                </ChakraProvider>
                             </Provider>
                         </Router>
                     </Web3ProviderWallet>

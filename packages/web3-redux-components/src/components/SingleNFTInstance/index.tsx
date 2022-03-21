@@ -61,7 +61,13 @@ const Price = styled.div`
     line-height: 24px;
 `;
 
-const SingleNFTInstance = ({ itemName, owner, price }) => (
+export interface Props {
+    itemName: string;
+    owner: string;
+    price: string;
+}
+
+const SingleNFTInstance = ({ itemName, owner, price }: Props) => (
     <Wrapper>
         <Item />
         <Name>{itemName}</Name>

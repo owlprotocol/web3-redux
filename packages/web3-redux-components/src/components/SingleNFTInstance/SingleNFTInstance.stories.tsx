@@ -19,4 +19,5 @@ Main.args = {
     itemName: 'Name',
     owner: 'Owner',
     price: '0.050',
+    isSelected: false,
 };

@@ -8,6 +8,7 @@ const Wrapper = styled.div`
     width: 264px;
     padding: 16px;
     box-shadow: inset 0px 1px 4px 0px rgb(95 99 109 / 57%);
+    border: ${(props: any) => props.isSelected && '1px solid rgba(68, 71, 226, 1)'};
 `;
 
 const Item = styled.div`
@@ -65,10 +66,12 @@ export interface Props {
     itemName: string;
     owner: string;
     price: string;
+    isSelected: boolean;
 }
 
-const SingleNFTInstance = ({ itemName, owner, price }: Props) => (
-    <Wrapper>
+const SingleNFTInstance = ({ itemName, owner, price, isSelected }: Props) => (
+    // @ts-ignore
+    <Wrapper isSelected={isSelected}>
         <Item />
         <Name>{itemName}</Name>
         <Flex>

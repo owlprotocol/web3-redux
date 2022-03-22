@@ -57,6 +57,9 @@ import { ReactComponent as BrokenLink } from './assets/BrokenLink.svg'
 import { ReactComponent as ArrowPositive } from './assets/ArrowPositive.svg'
 import { ReactComponent as ArrowNegative } from './assets/ArrowNegative.svg'
 
+import { ReactComponent as Heart } from './functions/Heart.svg'
+import { ReactComponent as HeartActive } from './functions/Heart.active.svg'
+
 const IconSelect = (icon: string) => {
     switch (icon) {
         case 'BCH':
@@ -154,6 +157,11 @@ const IconSelect = (icon: string) => {
             return <ArrowPositive/>
         case 'arrow-negative':
             return <ArrowNegative/>
+
+        case 'heart':
+            return <Heart/>
+        case 'heart.active':
+            return <HeartActive/>
 
         default:
             break;

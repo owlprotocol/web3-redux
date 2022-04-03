@@ -1,16 +1,7 @@
 import { useState } from 'react';
-import Icon from '../Icon';
+import { Button } from '@chakra-ui/react';
 import styled from 'styled-components';
-
-const Wrapper = styled.div`
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    background-color: rgba(44, 44, 48, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
+import Icon from '../Icon';
 
 const Text = styled.span`
     font-size: 16px;
@@ -22,20 +13,20 @@ export interface Props {
     text: string;
 }
 
-const Button = ({ onClick, icon, text }: Props) => {
+const OwlButton = ({ onClick, icon, text }: Props) => {
     const [isActive, setActive] = useState(false);
     const clickHandler = () => {
         setActive(!isActive);
         onClick && onClick();
-    }
+    };
 
     return (
         // @ts-ignore
-        <Wrapper onClick={clickHandler}>
+        <Button onClick={clickHandler}>
             {icon && <Icon icon={isActive ? `${icon}.active` : icon} />}
             {text && <Text>{text}</Text>}
-        </Wrapper>
+        </Button>
     );
-}
+};
 
-export default Button;
+export default OwlButton;

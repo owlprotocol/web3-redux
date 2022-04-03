@@ -11,7 +11,8 @@ import { WalletContext } from '../src/constants/web3React'
 import { getLibrary } from '../src/utils/getLibrary'
 import { withMockData } from '../src/hoc';
 
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from '../src/theme';
 
 const colors = {
     brand: {
@@ -20,8 +21,6 @@ const colors = {
         700: '#2a69ac',
     },
 }
-
-const theme = extendTheme({ colors })
 
 export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },

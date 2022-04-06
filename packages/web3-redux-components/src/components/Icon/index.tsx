@@ -57,110 +57,71 @@ import { ReactComponent as BrokenLink } from './assets/BrokenLink.svg'
 import { ReactComponent as ArrowPositive } from './assets/ArrowPositive.svg'
 import { ReactComponent as ArrowNegative } from './assets/ArrowNegative.svg'
 
-const IconSelect = (icon: string) => {
-    switch (icon) {
-        case 'BCH':
-            return <BCHIcon/>
-        case 'BTC':
-            return <BTCIcon/>
-        case 'DOCE':
-            return <DOCEIcon/>
-        case 'EOS':
-            return <EOSIcon/>
-        case 'ETH':
-            return <ETHIcon/>
-        case 'LTC':
-            return <LTCIcon/>
-        case 'Split':
-            return <SplitIcon/>
-        case 'TRX':
-            return <TRXIcon/>
-        case 'XRP':
-            return <XRPIcon/>
-        case 'Double':
-            return <DoubleIcon/>
-        case 'Stand':
-            return <StandIcon/>
-        case 'Hit':
-            return <HitIcon/>
-        case 'chevron-up':
-            return <ChevronIcon/>
-        case 'chevron-down':
-            return <ChevronIcon/>
-        case 'deposit':
-            return <DepositIcon/>
-        case 'account':
-            return <AccountIcon/>
+import { ReactComponent as Heart } from './functions/Heart.svg'
+import { ReactComponent as HeartActive } from './functions/Heart.active.svg'
 
-        case 'three-dots':
-            return <ThreeDotsIcon/>
-        case 'pallete':
-            return <PalleteIcon/>
-        case 'notifications':
-            return <NotificationsIcon/>
-        case 'currencies':
-            return <CurrenciesIcon/>
-        case 'menu-allgames':
-            return <MenuAllGames/>
-        case 'menu-coinflip':
-            return <MenuCoinFlip/>
-        case 'menu-roulette':
-            return <MenuRoulette/>
-        case 'menu-baccarat':
-            return <MenuBaccarat/>
-        case 'menu-blackjack':
-            return <MenuBlackjack/>
-        case 'menu-governance':
-            return <MenuGovernance/>
+// @ts-ignore
+export const ICONS = {
+    'BCH': <BCHIcon />,
+    'BTC': <BTCIcon />,
+    'DOCE': <DOCEIcon />,
+    'EOS': <EOSIcon />,
+    'ETH': <ETHIcon />,
+    'LTC': <LTCIcon />,
+    'Split': <SplitIcon />,
+    'TRX': <TRXIcon />,
+    'XRP': <XRPIcon />,
+    'Double': <DoubleIcon />,
+    'Stand': <StandIcon />,
+    'Hit': <HitIcon />,
+    'chevron-up': <ChevronIcon />,
+    'chevron-down': <ChevronIcon />,
+    'deposit': <DepositIcon />,
+    'account': <AccountIcon />,
+    'three-dots': <ThreeDotsIcon />,
+    'pallete': <PalleteIcon />,
+    'notifications': <NotificationsIcon />,
+    'currencies': <CurrenciesIcon />,
+    'menu-allgames': <MenuAllGames />,
+    'menu-coinflip': <MenuCoinFlip />,
+    'menu-roulette': <MenuRoulette />,
+    'menu-baccarat': <MenuBaccarat />,
+    'menu-blackjack': <MenuBlackjack />,
+    'menu-governance': <MenuGovernance />,
+    'coinflip': <Coin />,
+    'avatar': <Avatar />,
+    'about': <About />,
+    'docs': <Docs />,
+    'discord': <Discord />,
+    'vsign': <VSign />,
+    'lock': <Lock />,
+    'game-table': <GameTable />,
+    'game-coins': <GameCoins />,
+    'info-icon': <InfoIcon />,
+    'coin-head': <HeadIcon />,
+    'coin-tails': <TailsIcon />,
+    'head-sm': <HeadSmall />,
+    'tails-sm': <TailsSmall />,
+    'loader': <Loader />,
+    'broken-link': <BrokenLink />,
+    'arrow-positive': <ArrowPositive />,
+    'arrow-negative': <ArrowNegative />,
+    'heart': <Heart />,
+    'heart.active': <HeartActive />,
+};
 
-        case 'coinflip':
-            return <Coin/>
-        case 'avatar':
-            return <Avatar/>
+// @ts-ignore
+const IconSelect = (icon: string) => ICONS[icon];
 
-        case 'about':
-            return <About/>
-        case 'docs':
-            return <Docs/>
-        case 'discord':
-            return <Discord/>
+const Wrapper = styled.div`
+    display: inline-block;
 
-        case 'vsign':
-            return <VSign/>
-        case 'lock':
-            return <Lock/>
-
-        case 'game-table':
-            return <GameTable/>
-        case 'game-coins':
-            return <GameCoins/>
-        case 'info-icon':
-            return <InfoIcon/>
-
-        case 'coin-head':
-            return <HeadIcon/>
-        case 'coin-tails':
-            return <TailsIcon/>
-        case 'head-sm':
-            return <HeadSmall/>
-        case 'tails-sm':
-            return <TailsSmall/>
-        case 'loader':
-            return <Loader/>
-        case 'broken-link':
-            return <BrokenLink/>
-
-        case 'arrow-positive':
-            return <ArrowPositive/>
-        case 'arrow-negative':
-            return <ArrowNegative/>
-
-        default:
-            break;
+    svg {
+        width: 100%;
+        height: 100%;
     }
-}
+`;
 
-const Wrapper = styled.span``;
 const Icon = ({ icon, style, className }: any) => {
     const classNames = classnames('icon', icon, className)
 

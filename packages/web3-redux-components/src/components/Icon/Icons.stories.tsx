@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Icon from '.';
+import Icon, { ICONS } from '.';
 
 export default {
     title: 'Graphics/Icons',
@@ -8,15 +8,15 @@ export default {
 
 const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />;
 
-export const Coins = Template.bind({});
+export const Main = Template.bind({});
 
-Coins.args = {
+Main.args = {
     icon: 'ETH',
 };
 
-Coins.argTypes = {
+Main.argTypes = {
     icon: {
-        options: ['BCH', 'BTC', 'ETH', 'DOCE', 'LTC', 'XRP'],
+        options: Object.keys(ICONS),
         control: { type: 'select' },
     },
 };

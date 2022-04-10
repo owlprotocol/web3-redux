@@ -44,7 +44,6 @@ const Controls = styled.div`
     button {
         width: 30px;
         height: 30px;
-        margin-left: 18px;
     }
 `;
 

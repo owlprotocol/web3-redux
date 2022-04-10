@@ -1,7 +1,5 @@
-import React from 'react';
 import styled from 'styled-components';
-
-const Button = styled.button``;
+import Icon from '../Icon';
 
 const Wrapper = styled.div`
     background: #2c2c30;
@@ -10,6 +8,10 @@ const Wrapper = styled.div`
     padding: 16px;
     display: flex;
     align-items: center;
+
+    > .icon {
+        margin-right: 16px;
+    }
 
     input {
         background: transparent;
@@ -23,22 +25,24 @@ const ValidationMsg = styled.div`
     color: rgba(255, 4, 32, 0.64);
     font-weight: 400;
     font-size: 14px;
-    margin: 1px 0 0 18px;
+    margin: 3px 0 0 3px;
 `;
 
 export interface Props {
     onChange: () => any;
+    placeholder: string;
+    hasError: boolean;
+    icon: string;
 }
 
-const AddressInput = ({ onChange }: Props) => (
+const InputField = ({ icon, onChange, placeholder, hasError }: Props) => (
     <>
         <Wrapper>
-            <input type="text" onChange={onChange} placeholder="Enter address" />
-            <Button />
-            <Button />
+            <Icon icon={icon} />
+            <input type="text" onChange={onChange} placeholder={placeholder} />
         </Wrapper>
-        <ValidationMsg>*Invalid address</ValidationMsg>
+        {hasError && <ValidationMsg>*Invalid address</ValidationMsg>}
     </>
 );
 
-export default AddressInput;
+export default InputField;

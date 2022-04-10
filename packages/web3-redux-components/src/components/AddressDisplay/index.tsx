@@ -2,11 +2,8 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '@chakra-ui/react';
 import styled from 'styled-components';
 import copy from 'copy-to-clipboard';
-import { ReactComponent as HeartIcon } from './assets/heart.svg';
-import { ReactComponent as HeartActiveIcon } from './assets/heart-active.svg';
-import { ReactComponent as PencilIcon } from './assets/pencil.svg';
-import { ReactComponent as CopyIcon } from './assets/copy.svg';
 import QRCodePopover from '../QRCodePopover';
+import OwlButton from '../Button';
 
 const Wrapper = styled.div`
     background: #2c2c30;
@@ -45,8 +42,8 @@ const Controls = styled.div`
     padding-top: 6px;
 
     button {
-        width: 22px;
-        height: 22px;
+        width: 30px;
+        height: 30px;
         margin-left: 18px;
     }
 `;
@@ -140,13 +137,9 @@ const AddressDisplay = ({ address, label, isFavorite }: Props) => {
                 </div>
             ) : (
                 <Controls>
-                    <button onClick={handleCopy}>
-                        <CopyIcon />
-                    </button>
-                    <button onClick={handleFavorite}>{_isFavorite ? <HeartActiveIcon /> : <HeartIcon />}</button>
-                    <button onClick={() => setEditLabel(true)}>
-                        <PencilIcon />
-                    </button>
+                    <OwlButton onClick={handleCopy} icon="copy" text="" />
+                    <OwlButton onClick={handleFavorite} icon={_isFavorite ? 'heart.active' : 'heart'} text="" />
+                    <OwlButton onClick={() => setEditLabel(true)} icon="pencil" text="" />
                 </Controls>
             )}
         </Wrapper>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Button = styled.button``;
 
 const Wrapper = styled.div`
-    background: #2C2C30;
+    background: #2c2c30;
     border-radius: 8px;
     height: 52px;
     padding: 16px;

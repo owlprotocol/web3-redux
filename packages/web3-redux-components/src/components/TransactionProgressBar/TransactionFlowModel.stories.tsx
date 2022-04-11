@@ -1,9 +1,9 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import TransactionFlowModel, { Props } from '.';
+import TransactionProgressBar, { Props } from '.';
 
-const Template: ComponentStory<typeof TransactionFlowModel> = (args: any) => (
+const Template: ComponentStory<typeof TransactionProgressBar> = (args: any) => (
     <div style={{ padding: '30px' }}>
-        <TransactionFlowModel {...args} />
+        <TransactionProgressBar {...args} />
     </div>
 );
 export const Main = Template.bind({});
@@ -18,6 +18,6 @@ Main.args = Args;
 Main.argTypes = {};
 
 export default {
-    title: 'TransactionFlowModel/TransactionFlowModel',
-    component: TransactionFlowModel,
-} as ComponentMeta<typeof TransactionFlowModel>;
+    title: 'Transaction/TransactionProgressBar',
+    component: TransactionProgressBar,
+} as ComponentMeta<typeof TransactionProgressBar>;

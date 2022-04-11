@@ -69,7 +69,7 @@ export interface Props {
 const DEFAULT_LABELS = ['', '', '', ''];
 
 // @ts-ignore
-const TransactionFlowModel = ({ stage, labels = DEFAULT_LABELS, stageError }: Props) => {
+const TransactionProgressBar = ({ stage, labels = DEFAULT_LABELS, stageError }: Props) => {
     const theme = useTheme();
     console.log({ theme });
 
@@ -91,4 +91,4 @@ const TransactionFlowModel = ({ stage, labels = DEFAULT_LABELS, stageError }: Pr
     );
 };
 
-export default TransactionFlowModel;
+export default TransactionProgressBar;

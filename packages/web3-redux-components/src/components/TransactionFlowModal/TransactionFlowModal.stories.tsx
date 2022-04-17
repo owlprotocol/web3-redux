@@ -11,7 +11,7 @@ export const Main = Template.bind({});
 
 Main.args = {
     isOpen: true,
-    title: 'Allow LINK Spend',
+    tokenName: 'LINK',
     stage: 1,
 };
 

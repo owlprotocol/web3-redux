@@ -12,19 +12,21 @@ import styled from 'styled-components';
 import { ReactComponent as CardIcon } from './assets/card.svg';
 import { ReactComponent as InProgressIcon } from './assets/inprog.svg';
 import { ReactComponent as ConfirmedIcon } from './assets/confirmed.svg';
+import TransactionProgressBar from '../TransactionProgressBar';
 
-const ProgBarDummy = styled.div`
+const TransactionProgressBarWrapper = styled.div`
     width: 100%;
+    max-width: 550px;
+    margin: 12px auto 86px;
     height: 100px;
-    background-color: #eee;
     border-radius: 8px;
-    margin: 12px auto 96px;
 `;
 
 export interface Props {
     isOpen: boolean;
-    title: string;
+    tokenName: string;
     stage: number;
+    actionHandler: any;
 }
 
 const StatusIcon = ({ icon }: any) => {
@@ -34,7 +36,7 @@ const StatusIcon = ({ icon }: any) => {
     else return <InProgressIcon style={{ width: '100%', height: '100%' }} />;
 };
 
-const TransactionFlowModal = ({ isOpen, title, stage }: Props) => {
+const TransactionFlowModal = ({ isOpen, tokenName, stage, actionHandler }: Props) => {
     const { onClose } = useDisclosure();
     const settings = {
         closeOnEsc: false,
@@ -42,11 +44,13 @@ const TransactionFlowModal = ({ isOpen, title, stage }: Props) => {
         isOpen: isOpen,
         onClose: onClose,
         isCentered: true,
-        size: 'xl',
+        size: '2xl',
         autoFocus: false,
+        trapFocus: false,
     };
 
     const buttonText = stage === 5 ? 'View transaction' : 'Next';
+    const TXFlowLabels = [`Allow ${tokenName} spend`, 'Receive allowance confirmation', 'Swap tokens', 'Confirmation'];
 
     return (
         <>
@@ -54,19 +58,21 @@ const TransactionFlowModal = ({ isOpen, title, stage }: Props) => {
                 <ModalOverlay />
                 <ModalContent bg="#1C1C24" borderRadius={'8px'}>
                     <ModalBody>
-                        <ProgBarDummy />
+                        <TransactionProgressBarWrapper>
+                            <TransactionProgressBar stage={stage} labels={TXFlowLabels} />
+                        </TransactionProgressBarWrapper>
                         <Box w="96px" h="72px" margin={'0 auto 24px'}>
                             <StatusIcon icon={stage} />
                         </Box>
                         <Box textStyle="title" mb="12px" textAlign={'center'}>
-                            {title}
+                            Allow {tokenName} Spend
                         </Box>
                         <Box textStyle="paragraph" mb="12px" textAlign={'center'}>
-                            Please confirm the proposed LINK spend allowance in wallet
+                            Please confirm the proposed {tokenName} spend allowance in wallet
                         </Box>
                     </ModalBody>
                     <ModalFooter>
-                        <Button m={'12% auto 12%'} onClick={onClose} w="260px" colorScheme="blue">
+                        <Button m={'12% auto 12%'} onClick={actionHandler} w="260px" colorScheme="blue">
                             {buttonText}
                         </Button>
                     </ModalFooter>

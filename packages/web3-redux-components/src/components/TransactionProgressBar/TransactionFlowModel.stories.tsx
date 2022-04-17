@@ -10,7 +10,7 @@ export const Main = Template.bind({});
 
 const Args: Props = {
     stage: 1,
-    labels: ['Allow LINK spend    ', 'Receive allowance confirmation    ', 'Swap tokens    ', 'Confirmation'],
+    labels: ['Allow LINK spend', 'Receive allowance confirmation', 'Swap tokens', 'Confirmation'],
     stageError: 1,
 };
 

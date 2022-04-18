@@ -15,6 +15,7 @@ const StageWrapper: any = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 
     > div:first-of-type {
         border-color: ${(props: any) => (props.isActive ? '#2c2c30' : '#4447e2')};
@@ -45,16 +46,16 @@ const LineSaparator: any = styled.div`
 `;
 
 const StageLabel: any = styled.div`
-    color: ${(props: any) => (props.isAltColor ? '#2c2c30' : '#4447E2')};
+    color: ${(props: any) => (props.isAltColor ? '#70797B' : '#4447E2')};
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     padding: 20px 0;
     margin: -22px 0;
-    width: 130px;
+    width: 120px;
     height: 80px;
     position: absolute;
-    bottom: 0;
+    bottom: -55px;
     z-index: 1;
     text-align: center;
     overflow: hidden;
@@ -62,8 +63,8 @@ const StageLabel: any = styled.div`
 
 export interface Props {
     stage: number;
-    labels: [string, string, string, string];
-    stageError: number;
+    labels: string[];
+    stageError?: number;
 }
 
 const DEFAULT_LABELS = ['', '', '', ''];

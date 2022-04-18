@@ -1,7 +1,15 @@
 import { extendTheme } from '@chakra-ui/react';
 
-// @ts-ignore
-const theme = extendTheme({
+const components = {
+    Button: {
+        baseStyle: {
+            fontWeight: 'bold',
+            color: '#fff',
+        },
+    },
+};
+
+const themeOverrides = {
     styles: {
         global: {
             'html, body': {
@@ -10,6 +18,18 @@ const theme = extendTheme({
             },
         },
     },
-});
+    textStyles: {
+        title: {
+            // responsive sizes TBA
+            fontSize: ['20px', '20px'],
+            fontWeight: '400',
+            lineHeight: '27px',
+        },
+    },
+    components,
+};
+
+// @ts-ignore
+const theme = extendTheme(themeOverrides);
 
 export default theme;

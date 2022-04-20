@@ -1,8 +1,9 @@
+import { useTheme } from '@chakra-ui/react';
 import styled from 'styled-components';
 import Icon from '../Icon';
 
-const Wrapper = styled.div`
-    background: #1C1C24;
+const Wrapper: any = styled.div`
+    background: ${(props: any) => props.color5};
     border-radius: 12px;
     height: 346px;
     width: 264px;
@@ -12,7 +13,7 @@ const Wrapper = styled.div`
 `;
 
 const Item = styled.div`
-    background: #2C2F33;
+    background: #2c2f33;
     border-radius: 12px;
     width: 100%;
     height: 196px;
@@ -27,20 +28,20 @@ const Flex = styled.div`
 `;
 
 const Name = styled.div`
-    color: #FFFFFF;
+    color: #ffffff;
     font-weight: 700;
     font-size: 14px;
     line-height: 20px;
     text-align: center;
     padding: 6px;
-    border: 2px solid #2D2D3A;
+    border: 2px solid #2d2d3a;
     box-sizing: border-box;
     border-radius: 12px;
     margin-bottom: 16px;
 `;
 
 const Avatar = styled.div`
-    background: #2C2F33;
+    background: #2c2f33;
     margin-right: 8px;
     width: 24px;
     height: 24px;
@@ -48,15 +49,15 @@ const Avatar = styled.div`
     float: left;
 `;
 
-const Owner = styled.div`
-    color: #92929D;
+const Owner: any = styled.div`
+    color: ${(props: any) => props.color9};
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
 `;
 
-const Price = styled.div`
-    color: #92929D;
+const Price: any = styled.div`
+    color: ${(props: any) => props.color9};
     font-weight: 600;
     font-size: 14px;
     line-height: 24px;
@@ -69,22 +70,26 @@ export interface Props {
     isSelected: boolean;
 }
 
-const SingleNFTInstance = ({ itemName, owner, price, isSelected }: Props) => (
-    // @ts-ignore
-    <Wrapper isSelected={isSelected}>
-        <Item />
-        <Name>{itemName}</Name>
-        <Flex>
-            <Owner>
-                <Avatar />
-                {owner}
-            </Owner>
-        </Flex>
-        <Flex>
-            <Price>{price} ETH</Price>
-            <Icon icon="ETH" />
-        </Flex>
-    </Wrapper>
-);
+const SingleNFTInstance = ({ itemName, owner, price, isSelected }: Props) => {
+    const { themes } = useTheme();
+
+    return (
+        // @ts-ignore
+        <Wrapper isSelected={isSelected} color5={themes.color5}>
+            <Item />
+            <Name>{itemName}</Name>
+            <Flex>
+                <Owner color9={themes.color9}>
+                    <Avatar />
+                    {owner}
+                </Owner>
+            </Flex>
+            <Flex>
+                <Price color9={themes.color9}>{price} ETH</Price>
+                <Icon icon="ETH" />
+            </Flex>
+        </Wrapper>
+    );
+};
 
 export default SingleNFTInstance;

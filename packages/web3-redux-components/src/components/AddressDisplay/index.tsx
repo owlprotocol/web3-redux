@@ -5,8 +5,8 @@ import copy from 'copy-to-clipboard';
 import QRCodePopover from '../QRCodePopover';
 import OwlButton from '../Button';
 
-const Wrapper = styled.div`
-    background: #2c2c30;
+const Wrapper: any = styled.div`
+    background: ${(props: any) => props.color6};
     border-radius: 12px;
     height: 60px;
     width: 100%;
@@ -23,17 +23,18 @@ const Wrapper = styled.div`
     input {
         flex: 1;
         background-color: transparent;
-        border-bottom: 1px solid #92929d;
+        border-bottom: 1px solid;
+        border-color: ${(props: any) => props.color9};
         margin-right: 12px;
-        color: #92929d;
+        color: ${(props: any) => props.color9};
     }
 `;
 
-const Address = styled.div`
+const Address: any = styled.div`
     font-weight: 600;
     font-size: 14px;
     line-height: 24px;
-    color: #92929d;
+    color: ${(props: any) => props.color9};
     flex: 1;
     word-break: break-all;
 `;
@@ -59,8 +60,8 @@ const SaveButton = styled.button`
     text-align: center;
 `;
 
-const CancelButton = styled.button`
-    color: #92929d;
+const CancelButton: any = styled.button`
+    color: ${(props: any) => props.color9};
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
@@ -74,12 +75,11 @@ export interface Props {
 }
 
 const AddressDisplay = ({ address, label, isFavorite }: Props) => {
+    const { themes } = useTheme();
+
     const [editLabel, setEditLabel] = useState(false);
     const [_label, setLabel] = useState('');
     const [_isFavorite, setFavorite] = useState(false);
-
-    const theme = useTheme();
-    console.log({ theme });
 
     useEffect(() => {
         setLabel(label);
@@ -105,7 +105,7 @@ const AddressDisplay = ({ address, label, isFavorite }: Props) => {
     };
 
     return (
-        <Wrapper>
+        <Wrapper color6={themes.color6} color9={themes.color9}>
             <QRCodePopover address={address} />
 
             {editLabel && (
@@ -118,7 +118,7 @@ const AddressDisplay = ({ address, label, isFavorite }: Props) => {
             )}
 
             {!editLabel && (
-                <Address>
+                <Address color9={themes.color9}>
                     {_label ? (
                         <div>
                             {_label} &lt; {address} &gt;
@@ -132,7 +132,9 @@ const AddressDisplay = ({ address, label, isFavorite }: Props) => {
             {editLabel ? (
                 <div>
                     <SaveButton onClick={handleSave}>Save</SaveButton>
-                    <CancelButton onClick={() => setEditLabel(false)}>Cancel</CancelButton>
+                    <CancelButton onClick={() => setEditLabel(false)} color9={themes.color9}>
+                        Cancel
+                    </CancelButton>
                 </div>
             ) : (
                 <Controls>

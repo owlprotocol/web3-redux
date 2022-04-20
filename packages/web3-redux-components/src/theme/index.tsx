@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
+import { THEME_COLORS } from '../constants';
 
 const components = {
     Button: {
@@ -27,6 +28,7 @@ const themeOverrides = {
         },
     },
     components,
+    themes: THEME_COLORS['theme1'],
 };
 
 // @ts-ignore

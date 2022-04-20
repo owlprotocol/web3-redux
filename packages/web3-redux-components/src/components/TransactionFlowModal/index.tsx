@@ -7,6 +7,7 @@ import {
     ModalFooter,
     ModalBody,
     Button,
+    useTheme,
 } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { ReactComponent as CardIcon } from './assets/card.svg';
@@ -37,7 +38,9 @@ const StatusIcon = ({ icon }: any) => {
 };
 
 const TransactionFlowModal = ({ isOpen, tokenName, stage, actionHandler }: Props) => {
+    const { themes } = useTheme();
     const { onClose } = useDisclosure();
+
     const settings = {
         closeOnEsc: false,
         closeOnOverlayClick: false,
@@ -56,7 +59,7 @@ const TransactionFlowModal = ({ isOpen, tokenName, stage, actionHandler }: Props
         <>
             <Modal {...settings}>
                 <ModalOverlay />
-                <ModalContent bg="#1C1C24" borderRadius={'8px'}>
+                <ModalContent bg={themes.color5} borderRadius={'8px'}>
                     <ModalBody>
                         <TransactionProgressBarWrapper>
                             <TransactionProgressBar stage={stage} labels={TXFlowLabels} />

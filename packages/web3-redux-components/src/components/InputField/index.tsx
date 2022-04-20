@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import { useTheme } from '@chakra-ui/react';
 import Icon from '../Icon';
 
-const Wrapper = styled.div`
-    background: #2c2c30;
+const Wrapper: any = styled.div`
+    background: ${(props: any) => props.color6};
     border-radius: 8px;
     height: 52px;
     padding: 16px;
@@ -35,14 +36,18 @@ export interface Props {
     icon: string;
 }
 
-const InputField = ({ icon, onChange, placeholder, hasError }: Props) => (
-    <>
-        <Wrapper>
-            <Icon icon={icon} />
-            <input type="text" onChange={onChange} placeholder={placeholder} />
-        </Wrapper>
-        {hasError && <ValidationMsg>*Invalid address</ValidationMsg>}
-    </>
-);
+const InputField = ({ icon, onChange, placeholder, hasError }: Props) => {
+    const { themes } = useTheme();
+
+    return (
+        <>
+            <Wrapper color6={themes.color6}>
+                <Icon icon={icon} />
+                <input type="text" onChange={onChange} placeholder={placeholder} />
+            </Wrapper>
+            {hasError && <ValidationMsg>*Invalid address</ValidationMsg>}
+        </>
+    );
+};
 
 export default InputField;

@@ -19,6 +19,7 @@ pnpm install @owlprotocol/web3-redux @owlprotocol/web3-redux-components
 See the official documentation at [owlprotocol.github.io/web3-redux/][gh-page]
 
 ## Local Development
+These instructions are only relevant if you are looking to contribute to web3-redux.
 #### Install
 ```
 git clone git@github.com:owlprotocol/web3-redux.git

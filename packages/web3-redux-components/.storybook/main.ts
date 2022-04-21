@@ -51,16 +51,17 @@ module.exports = {
 
         // Enable esbuild polyfill plugins
         config.optimizeDeps.esbuildOptions = config.optimizeDeps.esbuildOptions ?? {}
-        /*
+
         config.optimizeDeps.esbuildOptions.define = {
-            global: "globalThis"
+            global: 'globalThis'
         }
-        */
+
         config.optimizeDeps.esbuildOptions.plugins = [
             ...(config.optimizeDeps?.esbuildOptions?.plugins ?? []),
             NodeGlobalsPolyfillPlugin({
                 process: true,
                 buffer: true,
+                define: { 'process.env.NODE_ENV': '"production"' },
             }),
             //NodeModulesPolyfillPlugin(),
         ]

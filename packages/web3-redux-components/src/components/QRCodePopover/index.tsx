@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Popover, PopoverContent, PopoverTrigger, PopoverBody } from '@chakra-ui/react';
+import { ReactComponent as QRIcon } from './assets/qr.svg';
+import { ReactComponent as QRHoverIcon } from './assets/qr-hover.svg';
+import { ReactComponent as QRSelectedIcon } from './assets/qr-selected.svg';
 import Erc20QRGenerator from '../Erc20QRGenerator';
-import { ReactComponent as QRIcon } from './assets/qr.svg'
-import { ReactComponent as QRHoverIcon } from './assets/qr-hover.svg'
-import { ReactComponent as QRSelectedIcon } from './assets/qr-selected.svg'
 
 export interface Props {
     address: string;
@@ -21,7 +21,7 @@ const QRbutton = styled.button`
 `;
 
 const QRPopup = styled.div`
-    background: #1C1C24;
+    background: #1c1c24;
     border-radius: 8px;
     padding: 12px;
     position: relative;
@@ -37,20 +37,19 @@ const QRCodePopover = ({ address }: Props) => {
     const [isSelected, setSelected] = useState(false);
 
     return (
-        <Popover closeOnBlur={false} onClose={() => setSelected(false)} placement='bottom'>
+        <Popover closeOnBlur={false} onClose={() => setSelected(false)} placement="bottom">
             <PopoverTrigger>
                 <QRbutton
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
-                    onClick={() => setSelected(true)}>
-                    {isSelected ? <QRSelectedIcon /> : (
-                        isHovered ? <QRHoverIcon /> : <QRIcon />
-                    )}
+                    onClick={() => setSelected(true)}
+                >
+                    {isSelected ? <QRSelectedIcon /> : isHovered ? <QRHoverIcon /> : <QRIcon />}
                 </QRbutton>
             </PopoverTrigger>
 
             {/* @ts-ignore */}
-            <PopoverContent w='240px' h='240px' _focus={false}>
+            <PopoverContent w="240px" h="240px" _focus={false}>
                 <QRPopup>
                     <PopoverBody>
                         <Erc20QRGenerator address={address} />
@@ -59,6 +58,6 @@ const QRCodePopover = ({ address }: Props) => {
             </PopoverContent>
         </Popover>
     );
-}
+};
 
 export default QRCodePopover;

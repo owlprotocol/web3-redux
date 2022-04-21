@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Icon from '../Icon';
 
 const Wrapper = styled.div`
-    background: #1C1C24;
+    background: #1c1c24;
     border-radius: 12px;
     height: 346px;
     width: 264px;
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const Item = styled.div`
-    background: #2C2F33;
+    background: #2c2f33;
     border-radius: 12px;
     width: 100%;
     height: 196px;
@@ -27,20 +27,20 @@ const Flex = styled.div`
 `;
 
 const Name = styled.div`
-    color: #FFFFFF;
+    color: #ffffff;
     font-weight: 700;
     font-size: 14px;
     line-height: 20px;
     text-align: center;
     padding: 6px;
-    border: 2px solid #2D2D3A;
+    border: 2px solid #2d2d3a;
     box-sizing: border-box;
     border-radius: 12px;
     margin-bottom: 16px;
 `;
 
 const Avatar = styled.div`
-    background: #2C2F33;
+    background: #2c2f33;
     margin-right: 8px;
     width: 24px;
     height: 24px;
@@ -49,14 +49,14 @@ const Avatar = styled.div`
 `;
 
 const Owner = styled.div`
-    color: #92929D;
+    color: #92929d;
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
 `;
 
 const Price = styled.div`
-    color: #92929D;
+    color: #92929d;
     font-weight: 600;
     font-size: 14px;
     line-height: 24px;

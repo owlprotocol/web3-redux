@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import EthereumQRPlugin from 'ethereum-qr-code'
+import EthereumQRPlugin from 'ethereum-qr-code';
 
 export interface Props {
     address: string;
@@ -18,23 +18,20 @@ const Wrapper = styled.div`
 `;
 
 const Erc20QRGenerator = ({ address }: Props) => {
-
     useEffect(() => {
         const config = {
             to: address,
         };
 
-        const qr = new EthereumQRPlugin()
+        const qr = new EthereumQRPlugin();
         try {
-            qr.toCanvas(config, { selector: '#qr-code' })
+            qr.toCanvas(config, { selector: '#qr-code' });
         } catch (err) {
             console.log(err);
         }
-    })
+    });
 
-    return (
-        <Wrapper id="qr-code" />
-    );
-}
+    return <Wrapper id="qr-code" />;
+};
 
 export default Erc20QRGenerator;

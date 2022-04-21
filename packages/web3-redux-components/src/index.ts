@@ -1,7 +1,7 @@
 export {
     ContractCode,
     ERC20DropDown,
-    Icon,
+    //Icon,
     NetworkDropdown,
     NetworkIcon,
     TransactionRow,

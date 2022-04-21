@@ -1,6 +1,6 @@
 export { ContractCode } from './ContractCode';
 export { ERC20DropDown } from './ERC20DropDown';
-export { Icon } from './Icon';
+//export { Icon } from './Icon';
 export { NetworkDropdown } from './NetworkDropdown';
 export { NetworkIcon } from './NetworkIcon';
 export { TransactionRow } from './TransactionRow';

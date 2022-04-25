@@ -5,7 +5,7 @@ label: 'Contract Call'
 
 # Contract Event
 
-A contract event log is like notification on the blockchain that some data has changed. Event logs are indexed separately and are an efficient way to get past updates or listen to new ones. The ERC20 token `Transfer(from, to, value)` event is emitted whenever a token is transferred for example.
+A contract event log is a notification on the blockchain that some data has changed. Event logs are indexed separately and are an efficient way to get previous updates or listen to new ones. The ERC20 token `Transfer(from, to, value)` event is emitted whenever a token is transferred for example.
 
 ## Past Events
 
@@ -28,7 +28,7 @@ const ERC20Component = ({ networkId, address, account }) => {
 ```
 
 :::tip
-The `filter` parameter is used to only query Transfer events from `account`. This leverages the indexing features of event logs and is often required to efficiently query only the relevent events.
+The `filter` parameter is used to only query `Transfer` events from `account`. This leverages the indexing features of event logs and is often required to efficiently query only relevent events.
 :::
 :::caution
 Getting past events can be an expensive operation. We recommend limiting the amount of data queried using filters or block range parameters.
@@ -41,7 +41,7 @@ Event subscriptions can enable your app to efficiently get updates regarding a s
 To get updates on new events, enable the `sync` option of the hook. The Web3-Redux event subscription hook is configured to automatically start/stop the correct subscription if any relevant parameters of the hook change: this avoids having "zombie" subscriptions that continue syncing a contract that is no longer needed.
 
 ```tsx
-import { Contract } from '@leovigna/web3-redux';
+import { Contract } from '@owlprotocol/web3-redux';
 const ERC20Component = ({ networkId, address, account }) => {
     const filter = { from: account }; //Filter only Transfer sent by account
     // Sync events
@@ -56,4 +56,17 @@ While some features of Web3-Redux might work with an HTTP (`http://`) connection
 
 ## All Events
 
-To fetch all events (both past and new updates) simply enable both `sync` and `past` options.
+To fetch all events (both past and future updates) simply enable both `sync` and `past` options.
+
+```tsx
+import { Contract } from '@owlprotocol/web3-redux';
+const ERC20Component = ({ networkId, address, account }) => {
+    const filter = { from: account }; //Filter only Transfer sent by account
+    // Sync events
+    const newTransfers = Contract.useEvents(networkId, address, 'Transfer', filter, {
+        sync: true,
+        past: true
+    });
+    //...
+};
+```

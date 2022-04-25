@@ -1,10 +1,11 @@
 ---
 sidebar_position: 3
+label: 'Sync Middleware'
 ---
 
 # Sync Middleware
 
-Web3-Redux comes with a built-in Sync ta model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs, [BlockSync](../web3-redux-reference/interfaces/Sync.BlockSync.md), [EventSync](../web3-redux-reference/interfaces/Sync.EventSync.md), and [TransactionSync](../web3-redux-reference/interfaces/Sync.TransactionSync.md) which each can trigger actions upon receiving updates to a new block, new event, or new transaction.
+Web3-Redux comes with a built-in Sync model which serves as a form of dynamic middleware that can be added, removed, and customized. There are three types of syncs: [BlockSync](../web3-redux-reference/interfaces/Sync.BlockSync.md), [EventSync](../web3-redux-reference/interfaces/Sync.EventSync.md), and [TransactionSync](../web3-redux-reference/interfaces/Sync.TransactionSync.md) which each can trigger actions upon receiving updates to a new block, new event or new transaction, respectively.
 
 Sync middleware can be useful when looking to dispatch your own custom Redux action as a result of some blockchain update. They are also used as the building blocks for the Contract Call sync.
 
@@ -27,7 +28,7 @@ Sync.create({ id: '1', type: 'Block', matchBlockNumberModulo: 1, actions });
 
 ## Event Sync
 
-This middleware listens for [ContractEvent/CREATE](../web3-redux-reference/namespaces/ContractEvent.md#create) actions, and if an event matches its `matchAddress`, `matchName`, and `matchReturnValues`, will dispatch its `actions`.
+This middleware listens for [ContractEvent/CREATE](../web3-redux-reference/namespaces/ContractEvent.md#create) actions, and if an event matches its `matchAddress`, `matchName` and `matchReturnValues`, will dispatch its `actions`.
 The following example filters for `Transfer` events:
 
 ```typescript
@@ -42,7 +43,7 @@ An event sync middleware is **NOT** the same as an event subscription. Sync midd
 
 ## Transaction Sync
 
-This middleware listens for [Transaction/CREATE](../web3-redux-reference/namespaces/Transaction.md#create) actions, and if an transaction matches its `matchFrom` and `matchTo` parameteres, will dispatch its `actions`.
+This middleware listens for [Transaction/CREATE](../web3-redux-reference/namespaces/Transaction.md#create) actions and if an transaction matches its `matchFrom` and `matchTo` parameteres, will dispatch its `actions`.
 The following example filters for tranaction from a particular sender:
 
 ```typescript

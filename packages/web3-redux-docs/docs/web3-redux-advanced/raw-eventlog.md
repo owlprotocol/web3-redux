@@ -1,3 +1,6 @@
+---
+label: 'Raw Event Logs'
+---
 # Raw Event Logs
 
 :::warning

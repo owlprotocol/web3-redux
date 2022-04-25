@@ -7,7 +7,7 @@ label: 'Configure Network'
 
 ## Network
 
-All entities in the Web3-Redux store are indexed by networkId. Web3-Redux let's you sync multiple networks concurrently (eg. sync Mainnet & Ropsten blocks). The [Network](../web3-redux-reference/interfaces/Network.Network-1.md) object is meant to store a global `web3` object that is responsible for connecting to the Ethereum RPC. You must first configure a network by adding it to the store and passing it a web3 instance or an Ethereum RPC.
+All entities in the Web3-Redux store are indexed by `networkId`. Web3-Redux let's you sync multiple networks concurrently (eg. sync Mainnet & Ropsten blocks). The [Network](../web3-redux-reference/interfaces/Network.Network-1.md) object is meant to store a global `web3` object that is responsible for connecting to the Ethereum RPC. You must first configure a network by adding it to the store and passing it a web3 instance or an Ethereum RPC.
 :::tip
 We recomend using a Websocket (`wss://`) connection as this enables more advanced usage such as subscriptions.
 :::
@@ -28,7 +28,7 @@ You can configure your network by simply dispatching the following create action
 store.dispatch(Network.create({ networkId: '1',  /*web3Rpc: 'ws://localhost:8546'*/})
 ```
 
-Web3-Redux will automatically use the envvar configured RPC as a default for supported networks (Ethereum, Testnets, Polygon). For custom networks, you can manually set the `web3Rpc` parameter in the create action.
+Web3-Redux will automatically use the environment variable configured RPC as a default for supported networks (Ethereum, Testnets, Polygon). For custom networks, you can manually set the `web3Rpc` parameter in the create action.
 
 For more details on supported envvars (additional default networks), check out [Reference/Environment](../web3-redux-reference/namespaces/Environment.md).
 Also see the React Documentation on [Adding Custom Environment Variables](https://create-react-app.dev/docs/adding-custom-environment-variables/).
@@ -58,10 +58,10 @@ const App = () => {
 In pure Redux, the configuration can be dispatched from the store.
 
 ```typescript
-import { Network } from '@leovigna/web3-redux';
+import { Network } from '@owlprotocol/web3-redux';
 store.dispatch(Network.create({ networkId: '1' }));
 ```
 
 ## Advanced
 
-For more dynamic configuration such as integration with Metamask, and setting up a dual configuration with a `web3Sender` object, check out [Integrations/Metamask](../web3-redux-integrations/metamask.md).
+For more dynamic configuration such as integrating with Metamask or setting a dual configuration using a `web3Sender` object. (Check out [Integrations/Metamask](../web3-redux-integrations/metamask.md))

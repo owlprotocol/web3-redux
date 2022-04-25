@@ -5,7 +5,7 @@ label: 'Configure Store'
 
 # Initialize the Redux Store
 
-In this quickstart example, we will be using the default Web3-Redux store. You may have a more complex setup depending on your needs however:
+In this quickstart example, we will be using the default Web3-Redux store. You may also leverage a more complex setup depending on your needs:
 
 -   Enable persistance middleware using [redux-persist](https://github.com/rt2zz/redux-persist). See [Advanced/Persistence](/docs/web3-redux-advanced/persistence)
 -   Integrate web3-redux with existing redux store. This is often required in more complex applications that need to store their own state. See [Advanced/Custom Store](../web3-redux-advanced/custom_store.md).

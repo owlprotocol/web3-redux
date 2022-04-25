@@ -1,3 +1,6 @@
+---
+label: 'Batching with Multicall'
+---
 # Batching with Multicall
 
 :::warning

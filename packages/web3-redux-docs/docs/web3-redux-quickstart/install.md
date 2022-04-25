@@ -13,4 +13,4 @@ pnpm install redux redux-saga react-redux web3 @owlprotocol/web3-redux
 
 ## Redux DevTools
 
-We also recommend installing the [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) Chrome extension for easy
+We also recommend installing the [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) Chrome extension for easy debugging.

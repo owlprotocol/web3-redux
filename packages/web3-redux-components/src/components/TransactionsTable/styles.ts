@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper: any = styled.div`
     .table {
-        color: #70797b;
+        color: ${(props: any) => props.color8};
         font-weight: 500;
         font-size: 18px;
         line-height: 28px;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 
     .table > thead {
         background-color: #ffffff;
-        color: #70797b;
+        color: ${(props: any) => props.color8};
         font-weight: 500;
         font-size: 16px;
         line-height: 28px;

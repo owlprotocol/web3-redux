@@ -22,6 +22,19 @@ export const parameters = {
             date: /Date$/,
         },
     },
+    backgrounds: {
+        default: 'owl',
+        values:[
+            {
+                name: 'owl',
+                value: THEME_COLORS['theme1'].color5,
+            },
+            {
+                name: 'white',
+                value: THEME_COLORS['theme1'].color7,
+            },
+        ],
+    },
 }
 
 //Browser wallet context provider
@@ -38,7 +51,7 @@ export const decorators = [
             Contract.create(TestData.contractWETH),
         ]);
         return (
-            <ThemeProvider theme={THEME_COLORS.light}>
+            <ThemeProvider theme={THEME_COLORS.theme1}>
                 <Web3ReactProvider getLibrary={getLibrary}>
                     <Web3ProviderWallet getLibrary={getLibrary}>
                         <Router>

@@ -18,8 +18,8 @@ const StageWrapper: any = styled.div`
     position: relative;
 
     > div:first-of-type {
-        border-color: ${(props: any) => (props.isActive ? '#2c2c30' : '#4447e2')};
-        color: ${(props: any) => (props.isActive ? '#2c2c30' : '#4447e2')};
+        border-color: ${(props: any) => (props.isActive ? props.color6 : props.color1)};
+        color: ${(props: any) => (props.isActive ? props.color6 : props.color1)};
         border: 1px solid;
         width: 32px;
         height: 32px;
@@ -39,14 +39,14 @@ const StageWrapper: any = styled.div`
 `;
 
 const LineSaparator: any = styled.div`
-    background: ${(props: any) => (props.isAltColor ? '#2c2c30' : '#4447E2')};
+    background: ${(props: any) => (props.isAltColor ? props.color6 : props.color1)};
     width: 160px;
     height: 2px;
     flex: 1;
 `;
 
 const StageLabel: any = styled.div`
-    color: ${(props: any) => (props.isAltColor ? '#70797B' : '#4447E2')};
+    color: ${(props: any) => (props.isAltColor ? props.color8 : props.color1)};
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
@@ -71,21 +71,26 @@ const DEFAULT_LABELS = ['', '', '', ''];
 
 // @ts-ignore
 const TransactionProgressBar = ({ stage, labels = DEFAULT_LABELS, stageError }: Props) => {
-    const theme = useTheme();
-    console.log({ theme });
+    const { themes } = useTheme();
 
     return (
         <Wrapper>
             {[...Array(4)].map((x, idx) => (
                 <>
                     <StageWrapper
+                        color6={themes.color6}
+                        color1={themes.color1}
                         isActive={stage < idx + 1}
                         className={classNames({ 'has-error': stageError === idx + 1 })}
                     >
                         <div>{stageError === idx + 1 ? <ErrorIcon /> : stage < idx + 1 ? idx + 1 : <VSignIcon />}</div>
-                        <StageLabel isAltColor={stage < idx + 1}>{labels[idx]}</StageLabel>
+                        <StageLabel color8={themes.color8} color1={themes.color1} isAltColor={stage < idx + 1}>
+                            {labels[idx]}
+                        </StageLabel>
                     </StageWrapper>
-                    {idx !== 3 && <LineSaparator isAltColor={stage <= idx + 1} />}
+                    {idx !== 3 && (
+                        <LineSaparator color6={themes.color6} color1={themes.color1} isAltColor={stage <= idx + 1} />
+                    )}
                 </>
             ))}
         </Wrapper>

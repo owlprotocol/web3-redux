@@ -1,3 +1,4 @@
+import { useTheme } from '@chakra-ui/react';
 import { Table as ReactstrapTable } from 'reactstrap';
 import { map } from 'lodash';
 import { Contract } from '@owlprotocol/web3-redux';
@@ -13,11 +14,13 @@ export interface Props {
 //const INTERNAL_HEADER_LABELS = ['parent txn hash', 'block', 'age', 'from', 'to', 'value'];
 
 export const TransactionsTable = ({ networkId, address }: Props) => {
+    const { themes } = useTheme();
+
     const transactions = Contract.useFetchTransactions(networkId, address);
     const hashList = map(transactions, 'hash');
 
     return (
-        <Wrapper>
+        <Wrapper color8={themes.color8}>
             <ReactstrapTable responsive>
                 <thead>
                     <tr>

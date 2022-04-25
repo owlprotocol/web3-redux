@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-<<<<<<< HEAD
-import { Popover, PopoverContent, PopoverTrigger, PopoverBody } from '@chakra-ui/react';
-=======
 import { Popover, PopoverContent, PopoverTrigger, PopoverBody, useTheme } from '@chakra-ui/react';
->>>>>>> develop
 import { ReactComponent as QRIcon } from './assets/qr.svg';
 import { ReactComponent as QRHoverIcon } from './assets/qr-hover.svg';
 import { ReactComponent as QRSelectedIcon } from './assets/qr-selected.svg';

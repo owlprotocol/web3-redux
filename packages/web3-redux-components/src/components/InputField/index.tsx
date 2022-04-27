@@ -33,7 +33,7 @@ export interface Props {
     onChange: () => any;
     placeholder: string;
     hasError: boolean;
-    icon: string;
+    icon?: string;
 }
 
 const InputField = ({ icon, onChange, placeholder, hasError }: Props) => {
@@ -42,7 +42,7 @@ const InputField = ({ icon, onChange, placeholder, hasError }: Props) => {
     return (
         <>
             <Wrapper color6={themes.color6}>
-                <Icon icon={icon} />
+                {icon && <Icon icon={icon} />}
                 <input type="text" onChange={onChange} placeholder={placeholder} />
             </Wrapper>
             {hasError && <ValidationMsg>*Invalid address</ValidationMsg>}

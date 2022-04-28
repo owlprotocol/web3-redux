@@ -1,15 +1,21 @@
 import InputField from '../../InputField';
 
-interface Props {
+export interface Props {
     type: string;
-    placeholder: string;
-    onChange: () => any;
+    name: string;
+    onChange?: any;
+    errMsg?: string;
 }
 
-const AbiEntityInput = ({ type, placeholder, onChange }: Props) => {
+const AbiEntityInput = ({ type, name, onChange, errMsg }: Props) => {
     return (
-        <div data-type={type}>
-            <InputField placeholder={placeholder} hasError={false} onChange={onChange} />
+        <div data-type={type} data-name={name}>
+            <InputField
+                placeholder={name}
+                errMsg={errMsg}
+                // @ts-ignore
+                onChange={({ target }: any) => onChange(name, target.value, type)}
+            />
             <br />
         </div>
     );

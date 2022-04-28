@@ -11,4 +11,6 @@ export const Main = Template.bind({});
 
 Main.args = {
     icon: 'heart',
+    text: 'string',
+    bg: 'blue',
 };

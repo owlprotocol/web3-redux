@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { Textarea, Box, useTheme } from '@chakra-ui/react';
 import Web3 from 'web3';
 import AbiEntityInput from './AbiEntityInput';
+import { writeToContract } from './functions';
 import Button from '../Button';
-// import ContractSample from './abi.json';
 
 const TYPES_TO_INCLUDE = ['constructor', 'address', 'function', 'bool', 'string', 'uint8', 'uint256', 'byte'];
 
@@ -15,7 +15,7 @@ const AbiForm = () => {
     const [formValues, setFormValues] = useState<any>({});
     let contractEntities = [];
 
-    const handleEntityChange = (name: string, value: string, type: string) => {
+    const handleEntityChange = (name: string, value: any, type: string) => {
         setError({});
         let _value = value;
 
@@ -41,44 +41,20 @@ const AbiForm = () => {
         });
     };
 
-    const validate = () => {
-        _.each(formValues, (contractEntity, name) => {
-            switch (contractEntity.type) {
-                case 'address':
-                    const isAddress = Web3.utils.isAddress(contractEntity.value as string);
-
-                    if (!isAddress) {
-                        setError({
-                            ...errors,
-                            [name]: 'Not a valid Address',
-                        });
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        });
-
-        if (_.isEmpty(errors)) return true;
-        return false;
-    };
-
-    const writeToContract = (name: string) => {
-        setError({});
-
-        if (validate()) {
-            console.log('Run => ', name);
-        } else {
-            alert('check error msgs');
-        }
-    };
-
     try {
         contractEntities = JSON.parse(abiJSON).filter((el: any) => _.includes(TYPES_TO_INCLUDE, el.type));
     } catch (err) {
         console.error(err);
     }
+
+    const resetForm = () => {
+        setError({});
+        setFormValues({});
+    };
+
+    const handleSubmit = (functionName: string) => {
+        writeToContract({ functionName, formValues, setError, errors, resetForm });
+    };
 
     return (
         <div>
@@ -119,11 +95,7 @@ const AbiForm = () => {
                                             />
                                         );
                                     })}
-                                    <Button
-                                        text="Write"
-                                        onClick={() => writeToContract(entity.name)}
-                                        bg={themes.color1}
-                                    />
+                                    <Button text="Write" onClick={() => handleSubmit(entity.name)} bg={themes.color1} />
                                 </div>
                             )}
                         </Box>

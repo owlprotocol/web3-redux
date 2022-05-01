@@ -1,13 +1,14 @@
 import { useTheme } from '@chakra-ui/react';
 import styled from 'styled-components';
 import Icon from '../Icon';
+import OwlButton from '../Button';
+import { shortenHash } from '../../utils';
 
 const Wrapper: any = styled.div`
     background: ${(props: any) => props.color5};
     border-radius: 12px;
-    height: 346px;
     width: 264px;
-    padding: 16px;
+    padding: 16px 16px 12px 16px;
     box-shadow: inset 0px 1px 4px 0px rgb(95 99 109 / 57%);
     border: ${(props: any) => props.isSelected && '1px solid rgba(68, 71, 226, 1)'};
 `;
@@ -25,6 +26,12 @@ const Flex = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-bottom: 8px;
+`;
+
+const FlexCenter = styled.div`
+    display: flex;
+    align-items: center;
+    margin-right: -12px;
 `;
 
 const Name = styled.div`
@@ -49,7 +56,7 @@ const Avatar = styled.div`
     float: left;
 `;
 
-const Owner: any = styled.div`
+const OwnerAddress: any = styled.div`
     color: ${(props: any) => props.color9};
     font-weight: 400;
     font-size: 14px;
@@ -65,12 +72,14 @@ const Price: any = styled.div`
 
 export interface Props {
     itemName: string;
-    owner: string;
+    ownerAddress: string;
     price: string;
     isSelected: boolean;
+    token: string;
+    handleFavorite: any;
 }
 
-const SingleNFTInstance = ({ itemName, owner, price, isSelected }: Props) => {
+const SingleNFTInstance = ({ itemName, ownerAddress, price, isSelected, token, handleFavorite }: Props) => {
     const { themes } = useTheme();
 
     return (
@@ -79,15 +88,21 @@ const SingleNFTInstance = ({ itemName, owner, price, isSelected }: Props) => {
             <Item />
             <Name>{itemName}</Name>
             <Flex>
-                <Owner color9={themes.color9}>
+                <OwnerAddress color9={themes.color9}>
                     <Avatar />
-                    {owner}
-                </Owner>
+                    {shortenHash(ownerAddress)}
+                </OwnerAddress>
+                <FlexCenter>
+                    {!price && <Icon icon={token} />}
+                    <OwlButton onClick={handleFavorite} icon="heart" w="0" h="0" />
+                </FlexCenter>
             </Flex>
-            <Flex>
-                <Price color9={themes.color9}>{price} ETH</Price>
-                <Icon icon="ETH" />
-            </Flex>
+            {price && (
+                <Flex>
+                    <Price color9={themes.color9}>{price} ETH</Price>
+                    <Icon icon="ETH" />
+                </Flex>
+            )}
         </Wrapper>
     );
 };

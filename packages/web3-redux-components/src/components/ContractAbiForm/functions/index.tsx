@@ -67,12 +67,21 @@ interface WriteToContractProps {
     formValues: [];
     setError: any;
     errors: any;
+    setResults: any;
 }
-export const writeToContract = ({ functionName, resetForm, formValues, setError, errors }: WriteToContractProps) => {
+export const writeToContract = ({
+    functionName,
+    resetForm,
+    formValues,
+    setError,
+    errors,
+    setResults,
+}: WriteToContractProps) => {
     resetForm();
 
     if (validate({ formValues, setError, errors })) {
         console.log('Run => ', functionName, formValues);
+        setResults({});
     } else {
         alert('check error msgs');
     }

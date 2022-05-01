@@ -11,6 +11,7 @@ const TYPES_TO_INCLUDE = ['constructor', 'address', 'function', 'bool', 'string'
 const AbiForm = () => {
     const { themes } = useTheme();
     const [abiJSON, setABI] = useState('');
+    const [results, setResults] = useState({});
     const [errors, setError] = useState({});
     const [formValues, setFormValues] = useState<any>({});
     let contractEntities = [];
@@ -53,7 +54,7 @@ const AbiForm = () => {
     };
 
     const handleSubmit = (functionName: string) => {
-        writeToContract({ functionName, formValues, setError, errors, resetForm });
+        writeToContract({ functionName, formValues, setError, errors, resetForm, setResults });
     };
 
     return (
@@ -96,6 +97,10 @@ const AbiForm = () => {
                                         );
                                     })}
                                     <Button text="Write" onClick={() => handleSubmit(entity.name)} bg={themes.color1} />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    {!_.isEmpty(results) && (
+                                        <Button text="Show Transaction" onClick={() => null} bg={themes.color2} />
+                                    )}
                                 </div>
                             )}
                         </Box>

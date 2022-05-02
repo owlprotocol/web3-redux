@@ -1,11 +1,18 @@
 import InputField from '../../InputField';
 
-const AbiInput = () => {
+interface Props {
+    type: string;
+    placeholder: string;
+    onChange: () => any;
+}
+
+const AbiEntityInput = ({ type, placeholder, onChange }: Props) => {
     return (
-        <div>
-            <InputField placeholder="Place" hasError={false} onChange={() => null} />
+        <div data-type={type}>
+            <InputField placeholder={placeholder} hasError={false} onChange={onChange} />
+            <br />
         </div>
     );
 };
 
-export default AbiInput;
+export default AbiEntityInput;

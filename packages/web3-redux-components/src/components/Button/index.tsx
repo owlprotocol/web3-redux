@@ -8,18 +8,20 @@ const Text = styled.span`
 
 export interface Props {
     onClick: () => any;
-    icon: string;
-    text: string;
+    icon?: string;
+    text?: string;
+    w?: string;
+    h?: string;
 }
 
-const OwlButton = ({ onClick, icon, text }: Props) => {
+const OwlButton = ({ onClick, icon, text, w, h }: Props) => {
     const clickHandler = () => {
         onClick && onClick();
     };
 
     return (
         // @ts-ignore
-        <Button onClick={clickHandler} bg="transparent">
+        <Button onClick={clickHandler} bg="transparent" w={w} h={h}>
             {icon && <Icon icon={icon} />}
             {text && <Text>{text}</Text>}
         </Button>

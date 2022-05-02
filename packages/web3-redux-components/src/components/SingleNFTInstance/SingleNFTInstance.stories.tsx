@@ -16,8 +16,18 @@ const Template: ComponentStory<typeof SingleNFTInstance> = (args: any) => <Wrapp
 export const Main = Template.bind({});
 
 Main.args = {
-    itemName: 'Name',
-    owner: 'Owner',
+    itemName: 'NFT Name',
+    ownerAddress: '0xf6AEfc54843FDA83437D67A2DbEc7A9BB834ff4E',
     price: '0.050',
     isSelected: false,
+    token: 'ETH',
+};
+
+export const Secondary = Template.bind({});
+
+Secondary.args = {
+    itemName: 'NFT Name',
+    ownerAddress: '0xf6AEfc54843FDA83437D67A2DbEc7A9BB834ff4E',
+    isSelected: false,
+    token: 'ETH',
 };

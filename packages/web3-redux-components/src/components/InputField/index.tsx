@@ -1,5 +1,5 @@
+import { Input, useTheme } from '@chakra-ui/react';
 import styled from 'styled-components';
-import { useTheme } from '@chakra-ui/react';
 import Icon from '../Icon';
 
 const Wrapper: any = styled.div`
@@ -47,8 +47,17 @@ const InputField = ({ icon, onChange, placeholder, errMsg }: Props) => {
     return (
         <>
             <Wrapper color6={themes.color6}>
-                {icon && <Icon icon={icon} />}
-                <input type="text" onChange={onChange} placeholder={placeholder} />
+                {icon && <Icon icon={icon} w={'20px'} h={'20px'} />}
+                <Input
+                    type="text"
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    color={themes.color8}
+                    _placeholder={{ color: themes.color8 }}
+                    bg={themes.color6}
+                    w={'100%'}
+                    p={0}
+                />
             </Wrapper>
             {errMsg && <ValidationMsg>*{errMsg}</ValidationMsg>}
         </>

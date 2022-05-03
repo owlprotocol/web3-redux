@@ -14,7 +14,7 @@
     "tsc:watch": "tsc --watch"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.8.6",
+    "@chakra-ui/react": "1.8.8",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@owlprotocol/web3-redux": "../web3-redux/lib",

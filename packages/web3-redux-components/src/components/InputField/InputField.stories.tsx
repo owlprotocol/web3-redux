@@ -8,12 +8,25 @@ export default {
 
 const Template: ComponentStory<typeof InputField> = (args: any) => <InputField {...args} />;
 export const Main = Template.bind({});
+export const WithIcon = Template.bind({});
+export const WithError = Template.bind({});
 
-const args: Props = {
+const mainArgs: Props = {
+    onChange: () => null,
+    placeholder: 'Enter address',
+};
+Main.args = mainArgs;
+
+const withIconArgs: Props = {
     onChange: () => null,
     placeholder: 'Enter address',
     icon: 'pencil',
-    errMsg: 'Invalid string',
 };
+WithIcon.args = withIconArgs;
 
-Main.args = args;
+const withErrorArgs: Props = {
+    onChange: () => null,
+    placeholder: 'Enter address',
+    errMsg: 'The address is invalid.',
+};
+WithError.args = withErrorArgs;

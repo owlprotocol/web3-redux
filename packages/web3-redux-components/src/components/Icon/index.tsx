@@ -62,6 +62,7 @@ import { ReactComponent as Heart } from './functions/Heart.svg';
 import { ReactComponent as HeartActive } from './functions/Heart.active.svg';
 import { ReactComponent as Copy } from './functions/copy.svg';
 import { ReactComponent as Pencil } from './functions/pencil.svg';
+import { ReactComponent as Search } from './functions/search.svg';
 
 // @ts-ignore
 export const ICONS = {
@@ -113,6 +114,7 @@ export const ICONS = {
     'heart.active': <HeartActive />,
     copy: <Copy />,
     pencil: <Pencil />,
+    search: <Search />,
 };
 
 // @ts-ignore

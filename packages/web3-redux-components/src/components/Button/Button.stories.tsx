@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Button from '.';
+import Button, { Props } from '.';
 
 export default {
     title: 'Atoms/Button',
@@ -7,26 +7,32 @@ export default {
 } as ComponentMeta<typeof Button>;
 
 const Template: ComponentStory<typeof Button> = (args: any) => <Button {...args} />;
-export const Main = Template.bind({});
+export const TextOnly = Template.bind({});
+export const IconOnly = Template.bind({});
+export const IconAndText = Template.bind({});
 
-Main.args = {
-    icon: 'pencil',
-    text: '',
-    w: '45',
-    h: '45',
-    iconW: '10',
-    iconH: '10',
-    bg: '',
+const textOnlyArgs: Props = {
+    onClick: () => null,
+    text: 'Text Only Button',
+    bg: '#4447E2',
+    w: '171px',
 };
+TextOnly.args = textOnlyArgs;
 
-export const WithText = Template.bind({});
-
-WithText.args = {
-    icon: 'pencil',
-    text: 'Click Here',
-    w: '200',
-    h: '45',
-    iconW: '5',
-    iconH: '5',
-    bg: 'blue',
+const iconOnlyArgs: Props = {
+    onClick: () => null,
+    icon: 'heart',
+    iconW: '28px',
+    iconH: '28px',
 };
+IconOnly.args = iconOnlyArgs;
+
+const iconAndTextArgs: Props = {
+    onClick: () => null,
+    icon: 'pencil',
+    text: 'Edit',
+    iconW: '42px',
+    iconH: '26px',
+    bg: '#4447E2',
+};
+IconAndText.args = iconAndTextArgs;

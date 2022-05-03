@@ -19,6 +19,11 @@ const Wrapper: any = styled.div`
         border: 0;
         width: 100%;
         color: #fff;
+
+        &:focus {
+            outline: none;
+            border: 0;
+        }
     }
 `;
 
@@ -32,20 +37,20 @@ const ValidationMsg = styled.div`
 export interface Props {
     onChange: () => any;
     placeholder: string;
-    hasError: boolean;
-    icon: string;
+    errMsg?: string;
+    icon?: string;
 }
 
-const InputField = ({ icon, onChange, placeholder, hasError }: Props) => {
+const InputField = ({ icon, onChange, placeholder, errMsg }: Props) => {
     const { themes } = useTheme();
 
     return (
         <>
             <Wrapper color6={themes.color6}>
-                <Icon icon={icon} />
+                {icon && <Icon icon={icon} />}
                 <input type="text" onChange={onChange} placeholder={placeholder} />
             </Wrapper>
-            {hasError && <ValidationMsg>*Invalid address</ValidationMsg>}
+            {errMsg && <ValidationMsg>*{errMsg}</ValidationMsg>}
         </>
     );
 };

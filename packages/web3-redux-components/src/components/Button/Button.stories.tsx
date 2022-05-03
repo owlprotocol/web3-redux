@@ -16,6 +16,7 @@ Main.args = {
     h: '45',
     iconW: '10',
     iconH: '10',
+    bg: '',
 };
 
 export const WithText = Template.bind({});
@@ -27,4 +28,5 @@ WithText.args = {
     h: '45',
     iconW: '5',
     iconH: '5',
+    bg: 'blue',
 };

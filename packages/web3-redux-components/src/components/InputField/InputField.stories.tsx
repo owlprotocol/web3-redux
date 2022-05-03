@@ -12,8 +12,8 @@ export const Main = Template.bind({});
 const args: Props = {
     onChange: () => null,
     placeholder: 'Enter address',
-    hasError: false,
     icon: 'pencil',
+    errMsg: 'Invalid string',
 };
 
 Main.args = args;

@@ -195,6 +195,7 @@ importers:
       eslint-plugin-storybook: ^0.5.7
       ethereum-qr-code: ^0.3.0
       framer-motion: ^6
+      lodash: ^4.17.21
       prettier: ^2.5.1
       rc: ^1.2.8
       react: ^17.0.2
@@ -226,6 +227,7 @@ importers:
       copy-to-clipboard: 3.3.1
       ethereum-qr-code: 0.3.0
       framer-motion: 6.2.8_react-dom@17.0.2+react@17.0.2
+      lodash: 4.17.21
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hooks-compose: 2.0.16_react@17.0.2

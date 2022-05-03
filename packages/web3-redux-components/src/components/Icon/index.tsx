@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import styled from 'styled-components';
 import classnames from 'classnames';
 
@@ -115,26 +116,31 @@ export const ICONS = {
 };
 
 // @ts-ignore
-const IconSelect = (icon: string) => ICONS[icon];
+const IconSelect = (icon: string | undefined) => ICONS[icon || 'ETH'];
 
-const Wrapper = styled.div`
-    display: inline-block;
-
-    svg {
-        width: 100%;
-        height: 100%;
-        min-width: 18px;
-        min-height: 18px;
+const Wrapper: any = styled.div`
+    & > svg {
+        width: 100% !important;
+        height: 100% !important;
     }
 `;
 
-const Icon = ({ icon, style, className }: any) => {
+export interface Props {
+    icon: string | undefined;
+    style?: string;
+    className?: string;
+    w?: number | string;
+    h?: number | string;
+    transform?: string;
+    mr?: number;
+}
+const Icon = ({ icon, style, className, w = 10, h = 10, transform = '', mr }: Props) => {
     const classNames = classnames('icon', icon, className);
 
     return (
-        <Wrapper className={classNames} style={style}>
-            {IconSelect(icon)}
-        </Wrapper>
+        <Box className={classNames} width={w} height={h} transform={transform} mr={mr}>
+            <Wrapper style={style}>{IconSelect(icon)}</Wrapper>
+        </Box>
     );
 };
 

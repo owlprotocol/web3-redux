@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "build-storybook -s public",
+    "build": "vite build",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",

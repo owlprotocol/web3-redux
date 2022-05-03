@@ -12,16 +12,17 @@ export interface Props {
     text?: string;
     w?: string;
     h?: string;
+    bg?: string;
 }
 
-const OwlButton = ({ onClick, icon, text, w, h }: Props) => {
+const OwlButton = ({ onClick, icon, text, w, h, bg = 'transparent' }: Props) => {
     const clickHandler = () => {
         onClick && onClick();
     };
 
     return (
         // @ts-ignore
-        <Button onClick={clickHandler} bg="transparent" w={w} h={h}>
+        <Button onClick={clickHandler} bg={bg} w={w} h={h}>
             {icon && <Icon icon={icon} />}
             {text && <Text>{text}</Text>}
         </Button>

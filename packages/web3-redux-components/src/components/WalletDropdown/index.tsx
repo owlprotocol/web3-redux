@@ -16,7 +16,7 @@ const items: { name: string; amount: string | undefined; icon: string | undefine
     },
 ];
 
-export const WalletDropdown = ({ }) => {
+export const WalletDropdown = ({}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [chosen, setChosen] = useState(items[0]);
     const classname = classnames('Dropdown-root', { 'is-open': isOpen });
@@ -43,11 +43,7 @@ export const WalletDropdown = ({ }) => {
             <div className="Dropdown-control" onClick={() => setIsOpen(!isOpen)}>
                 <span>{chosen.amount}</span>
                 <Icon icon={chosen.icon} />
-                {isOpen ? (
-                    <Icon icon="chevron-up" style={{ transform: 'rotate(180deg)' }} />
-                ) : (
-                    <Icon icon="chevron-down" />
-                )}
+                {isOpen ? <Icon icon="chevron-up" transform={'rotate(180deg)'} /> : <Icon icon="chevron-down" />}
             </div>
 
             {isOpen && (

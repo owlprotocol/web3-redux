@@ -10,5 +10,21 @@ const Template: ComponentStory<typeof Button> = (args: any) => <Button {...args}
 export const Main = Template.bind({});
 
 Main.args = {
-    icon: 'heart',
+    icon: 'pencil',
+    text: '',
+    w: '45',
+    h: '45',
+    iconW: '10',
+    iconH: '10',
+};
+
+export const WithText = Template.bind({});
+
+WithText.args = {
+    icon: 'pencil',
+    text: 'Click Here',
+    w: '200',
+    h: '45',
+    iconW: '5',
+    iconH: '5',
 };

@@ -27,7 +27,7 @@ export const parameters = {
         values:[
             {
                 name: 'owl',
-                value: THEME_COLORS['theme1'].color5,
+                value: THEME_COLORS['theme1'].storyBG,
             },
             {
                 name: 'white',

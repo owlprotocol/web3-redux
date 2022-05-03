@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTheme } from '@chakra-ui/react';
+import { useTheme, Box } from '@chakra-ui/react';
 import styled from 'styled-components';
 import copy from 'copy-to-clipboard';
 import QRCodePopover from '../QRCodePopover';
@@ -7,13 +7,13 @@ import OwlButton from '../Button';
 
 const Wrapper: any = styled.div`
     background: ${(props: any) => props.color6};
-    border-radius: 12px;
     height: 60px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 16px;
+    border-radius: ${(props: any) => `${props.borderRadius}px`};
 
     svg {
         width: 100%;
@@ -31,21 +31,14 @@ const Wrapper: any = styled.div`
 `;
 
 const Address: any = styled.div`
+    height: 24px;
+    line-height: 24px;
     font-weight: 600;
     font-size: 14px;
-    line-height: 24px;
     color: ${(props: any) => props.color9};
     flex: 1;
     word-break: break-all;
-`;
-
-const Controls = styled.div`
-    padding-top: 6px;
-
-    button {
-        width: 30px;
-        height: 30px;
-    }
+    overflow: hidden;
 `;
 
 const SaveButton = styled.button`
@@ -72,9 +65,10 @@ export interface Props {
     address: string;
     label: string;
     isFavorite: boolean;
+    borderRadius?: number;
 }
 
-const AddressDisplay = ({ address, label, isFavorite }: Props) => {
+const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12 }: Props) => {
     const { themes } = useTheme();
 
     const [editLabel, setEditLabel] = useState(false);
@@ -105,7 +99,7 @@ const AddressDisplay = ({ address, label, isFavorite }: Props) => {
     };
 
     return (
-        <Wrapper color6={themes.color6} color9={themes.color9}>
+        <Wrapper color6={themes.color6} color9={themes.color9} borderRadius={borderRadius}>
             <QRCodePopover address={address} />
 
             {editLabel && (
@@ -130,18 +124,18 @@ const AddressDisplay = ({ address, label, isFavorite }: Props) => {
             )}
 
             {editLabel ? (
-                <div>
+                <Box display={'flex'} alignItems={'center'}>
                     <SaveButton onClick={handleSave}>Save</SaveButton>
                     <CancelButton onClick={() => setEditLabel(false)} color9={themes.color9}>
                         Cancel
                     </CancelButton>
-                </div>
+                </Box>
             ) : (
-                <Controls>
+                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} w={'70px'}>
                     <OwlButton onClick={handleCopy} icon="copy" text="" />
                     <OwlButton onClick={handleFavorite} icon={_isFavorite ? 'heart.active' : 'heart'} text="" />
                     <OwlButton onClick={() => setEditLabel(true)} icon="pencil" text="" />
-                </Controls>
+                </Box>
             )}
         </Wrapper>
     );

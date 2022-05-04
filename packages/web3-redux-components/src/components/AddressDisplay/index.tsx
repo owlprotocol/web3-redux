@@ -131,7 +131,7 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12 }: Props
                     </CancelButton>
                 </Box>
             ) : (
-                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} w={'70px'}>
+                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
                     <OwlButton onClick={handleCopy} icon="copy" text="" />
                     <OwlButton onClick={handleFavorite} icon={_isFavorite ? 'heart.active' : 'heart'} text="" />
                     <OwlButton onClick={() => setEditLabel(true)} icon="pencil" text="" />

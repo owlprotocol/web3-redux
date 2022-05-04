@@ -42,8 +42,12 @@ export const WalletDropdown = ({}) => {
         <Wrapper className={classname} ref={elmRef}>
             <div className="Dropdown-control" onClick={() => setIsOpen(!isOpen)}>
                 <span>{chosen.amount}</span>
-                <Icon icon={chosen.icon} />
-                {isOpen ? <Icon icon="chevron-up" transform={'rotate(180deg)'} /> : <Icon icon="chevron-down" />}
+                <Icon icon={chosen.icon} w="20px" h="20px" />
+                {isOpen ? (
+                    <Icon icon="chevron-up" transform={'rotate(180deg)'} />
+                ) : (
+                    <Icon icon="chevron-down" w="20px" h="20px" />
+                )}
             </div>
 
             {isOpen && (
@@ -59,7 +63,7 @@ export const WalletDropdown = ({}) => {
                             }}
                         >
                             <span>{amount}</span>
-                            <Icon icon={icon} />
+                            <Icon icon={icon} w="20px" h="20px" />
                             <span>{name}</span>
                         </div>
                     ))}

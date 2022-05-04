@@ -51,7 +51,7 @@ export const WalletConnectPresenter = ({
     if (networkId && !isSupportedNetworkId(networkId)) {
         return (
             <WrongNetwork>
-                <Icon icon="broken-link" />
+                <Icon icon="broken-link" w="20px" h="20px" />
                 <span>Wrong Network</span>
             </WrongNetwork>
         );
@@ -69,7 +69,7 @@ export const WalletConnectPresenter = ({
 
 const WalletConnect = composeHooks(() => ({
     useWalletConnect: () => useWalletConnect(),
-}))(WalletConnectPresenter) as ({ }: any) => JSX.Element;
+}))(WalletConnectPresenter) as ({}: any) => JSX.Element;
 
 //@ts-expect-error
 WalletConnect.displayName = 'WalletConnect';

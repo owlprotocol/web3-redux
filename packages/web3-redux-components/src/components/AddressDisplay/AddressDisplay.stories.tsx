@@ -14,6 +14,6 @@ Main.args = Args;
 Main.argTypes = {};
 
 export default {
-    title: 'AddressDisplay/AddressDisplay',
+    title: 'Address/AddressDisplay',
     component: AddressDisplay,
 } as ComponentMeta<typeof AddressDisplay>;

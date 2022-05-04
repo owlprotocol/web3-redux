@@ -26,7 +26,7 @@ const ContractItem = ({ icon, network, address, label = '', interfaces, isFavori
     return (
         <Wrapper color5={themes.color5}>
             <Box display={'flex'} alignItems={'center'} mr={4} color={themes.color9}>
-                <Icon icon={icon} w={8} h={8} mr={2} />
+                <Icon icon={icon} w="21px" h="21px" mr={2} />
                 {network}
             </Box>
             <Box w={'60%'}>

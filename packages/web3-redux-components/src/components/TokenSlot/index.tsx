@@ -71,7 +71,7 @@ const TokenSlot = ({ token, value, dollarValue, isSelected }: Props) => {
                 <Flex centered>
                     <Value color9={themes.color9}>{value}</Value>
                     <Flex>
-                        <Icon icon="ETH" />
+                        <Icon icon="ETH" w="20px" h="20px" />
                         &nbsp;&nbsp;
                         <Badge>{token}</Badge>
                     </Flex>

@@ -93,14 +93,14 @@ const SingleNFTInstance = ({ itemName, ownerAddress, price, isSelected, token, h
                     {shortenHash(ownerAddress)}
                 </OwnerAddress>
                 <FlexCenter>
-                    {!price && <Icon icon={token} />}
+                    {!price && <Icon icon={token} w="20px" h="20px" />}
                     <OwlButton onClick={handleFavorite} icon="heart" w="0" h="0" />
                 </FlexCenter>
             </Flex>
             {price && (
                 <Flex>
                     <Price color9={themes.color9}>{price} ETH</Price>
-                    <Icon icon="ETH" />
+                    <Icon icon="ETH" w="20px" h="20px" />
                 </Flex>
             )}
         </Wrapper>

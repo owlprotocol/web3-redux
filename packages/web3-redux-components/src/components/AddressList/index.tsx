@@ -10,7 +10,7 @@ const AddressList = ({ address = [], handleRemoveAddress }: Props) => {
 
     return (
         <Box display={'flex'} alignItems={'center'}>
-            <Stack spacing={4}>
+            <Stack spacing={3}>
                 {address.map((address, key) => (
                     <Tag key={key} variant="solid" w={'100%'} bg={themes.color5}>
                         <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} w={'100%'}>

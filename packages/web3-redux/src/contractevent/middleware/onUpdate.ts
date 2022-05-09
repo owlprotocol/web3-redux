@@ -1,6 +1,6 @@
 import { AnyAction, Store } from 'redux';
 import { batchActions } from 'redux-batched-actions';
-import Coder, { AbiCoder } from 'web3-eth-abi';
+import { coder } from '../../utils/web3-eth-abi/index.js';
 
 import { selectByIdSingle as selectContract } from '../../contract/selectors/index.js';
 
@@ -12,7 +12,6 @@ import { ContractEvent } from '../model/interface.js';
  * Use cases:
  * - Decode events with undefined returnValues that are decodable with a contract abi
  */
-const coder = Coder as unknown as AbiCoder;
 export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
     let events: ContractEvent[] = [];
     if (action.type.startsWith(CREATE) || action.type.startsWith(UPDATE)) {

@@ -1,17 +1,15 @@
 import { put, call, all } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
-import Coder, { AbiCoder } from 'web3-eth-abi';
 import { batchActions } from 'redux-batched-actions';
-
 import getPastLogs from './getPastLogs.js';
+import { coder } from '../../utils/web3-eth-abi/index.js';
+
 import { flatten, compact, map, uniq } from '../../utils/lodash/index.js';
 import { IERC20, IERC721, IERC1155 } from '../../abis/index.js';
 
 import { create as createContract } from '../../contract/actions/index.js';
 import { GetAssetsAction, GET_ASSETS, getPastLogs as getPastLogsAction } from '../actions/index.js';
 import networkExists from '../../network/sagas/exists.js';
-
-const coder = Coder as unknown as AbiCoder;
 
 const GET_ASSETS_ERROR = `${GET_ASSETS}/ERROR`;
 

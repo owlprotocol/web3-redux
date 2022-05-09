@@ -1,14 +1,12 @@
 import { AnyAction, Store } from 'redux';
 import { batchActions } from 'redux-batched-actions';
-import Coder, { AbiCoder } from 'web3-eth-abi';
+import { coder } from '../../utils/web3-eth-abi/index.js';
 import { set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '../../contractevent/actions/index.js';
 
 import { selectEvents } from '../../contracteventindex/selectors/index.js';
 
 import { CREATE, UPDATE } from '../actions/index.js';
 import { Contract } from '../model/index.js';
-
-const coder = Coder as unknown as AbiCoder;
 
 /**
  * Middleware for whenever a contract created/updated.

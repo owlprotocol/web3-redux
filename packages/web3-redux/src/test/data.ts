@@ -1,5 +1,4 @@
-import Coder, { AbiCoder } from 'web3-eth-abi';
-
+import { coder } from '../utils/web3-eth-abi/index.js';
 import { toWei } from '../utils/web3-utils/index.js';
 import { cloneDeep } from '../utils/lodash/index.js';
 import { REDUX_ROOT } from '../common.js';
@@ -11,8 +10,6 @@ import { validateContractEvent } from '../contractevent/index.js';
 import { validateEthCall } from '../ethcall/index.js';
 import { validateTransaction } from '../transaction/index.js';
 import { BlockNumber, IERC20 } from '../abis/index.js';
-
-const coder = Coder as unknown as AbiCoder;
 
 export const networkId = '1336';
 

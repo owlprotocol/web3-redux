@@ -14,7 +14,7 @@ yarn.lock
 
 # production
 /build
-/lib
+/lib/*
 /dist
 /types
 

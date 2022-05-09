@@ -1,4 +1,4 @@
-import { Contract as Web3Contract } from 'web3-eth-contract';
+import type { Contract as Web3Contract } from 'web3-eth-contract';
 import Coder, { AbiCoder } from 'web3-eth-abi';
 import { filter, keyBy } from '../../utils/lodash/index.js';
 import { AbiItem, toChecksumAddress } from '../../utils/web3-utils/index.js';

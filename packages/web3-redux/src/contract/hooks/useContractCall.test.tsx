@@ -1,8 +1,9 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import { Contract as Web3Contract } from 'web3-eth-contract';
+import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import jsdom from 'mocha-jsdom';
 import { cloneDeep } from '../../utils/lodash/index.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
@@ -19,8 +20,6 @@ import { create } from '../actions/index.js';
 
 import { useContractCall } from '../hooks/useContractCall.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
-
-import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

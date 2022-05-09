@@ -10,8 +10,6 @@ import {
     Environment
 } from '@owlprotocol/web3-redux';
 Environment.setEnvironment(getEnvironment());
-console.debug(Environment.getEnvironment())
-console.debug(Environment.INFURA_API_KEY())
 
 import { THEME_COLORS } from '../src/constants';
 import { WalletContext } from '../src/constants/web3React'

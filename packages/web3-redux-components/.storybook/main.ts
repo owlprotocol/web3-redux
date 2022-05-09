@@ -3,8 +3,8 @@ const { mergeConfig } = require('vite');
 
 //https://medium.com/@ftaioli/using-node-js-builtin-modules-with-vite-6194737c2cd2
 //ESBuild Plugins
-const NodeGlobalsPolyfillPlugin = require('@esbuild-plugins/node-globals-polyfill').NodeGlobalsPolyfillPlugin
-const NodeModulesPolyfillPlugin = require('@esbuild-plugins/node-modules-polyfill').NodeModulesPolyfillPlugin
+//const NodeGlobalsPolyfillPlugin = require('@esbuild-plugins/node-globals-polyfill').NodeGlobalsPolyfillPlugin
+//const NodeModulesPolyfillPlugin = require('@esbuild-plugins/node-modules-polyfill').NodeModulesPolyfillPlugin
 
 //Rollup Plugins
 const rollupInject = require('@rollup/plugin-inject')
@@ -81,7 +81,7 @@ module.exports = {
                     https: 'rollup-plugin-node-polyfills/polyfills/http',
                     buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
                     web3: 'web3/dist/web3.min.js',
-                    //'@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/cjs/index.min.js'
+                    //'@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/web3-redux-lib.es.min.js'
                 }
             },
             build: {

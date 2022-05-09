@@ -72,7 +72,7 @@ const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: Props) 
                         className="page-controls"
                     />
                     <div>
-                        {currentPage * pageSize}/{items.length}
+                        {visibleItems[currentPage - 1]?.length}/{items.length}
                     </div>
                 </Box>
             </Box>

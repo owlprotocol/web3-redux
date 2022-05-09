@@ -24,7 +24,7 @@ export const parameters = {
     },
     backgrounds: {
         default: 'owl',
-        values:[
+        values: [
             {
                 name: 'owl',
                 value: THEME_COLORS['theme1'].color5,

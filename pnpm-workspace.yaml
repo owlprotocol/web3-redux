@@ -2,3 +2,5 @@ packages:
   - "packages/web3-redux"
   - "packages/web3-redux-components"
   - "packages/web3-redux-docs"
+
+shamefully-hoist: false

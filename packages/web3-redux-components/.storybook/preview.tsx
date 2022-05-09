@@ -4,7 +4,14 @@ import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core'
 import { ThemeProvider } from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Network, Contract, TestData, store } from '@owlprotocol/web3-redux';
+import { getEnvironment } from '../src/environment';
+import {
+    Network, Contract, TestData, store,
+    Environment
+} from '@owlprotocol/web3-redux';
+Environment.setEnvironment(getEnvironment());
+console.debug(Environment.getEnvironment())
+console.debug(Environment.INFURA_API_KEY())
 
 import { THEME_COLORS } from '../src/constants';
 import { WalletContext } from '../src/constants/web3React'

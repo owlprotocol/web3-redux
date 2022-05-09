@@ -18,7 +18,7 @@ export { rootSaga } from './saga.js';
 export type { State } from './state.js';
 export * as Environment from './environment.js';
 export * as TestData from './test/data.js';
-export { store } from './store';
+export { store } from './store.js';
 
 export {
     getOrm,

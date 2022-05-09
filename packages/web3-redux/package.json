@@ -14,51 +14,38 @@
     "url": "https://github.com/leovigna/"
   },
   "license": "MIT",
+  "type": "commonjs",
+  "main": "./dist/web3-redux-lib.cjs.js",
+  "module": "./dist/web3-redux-lib.es.js",
+  "types": "./types/index.d.ts",
   "files": [
-    "*"
+    "dist/*",
+    "lib/*",
+    "src/*",
+    "LICENSE",
+    "README.md"
   ],
-  "publishConfig": {
-    "directory": "lib"
-  },
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js"
+      "require": "./dist/web3-redux-lib.cjs.js",
+      "import": "./dist/web3-redux-lib.es.js"
     }
   },
-  "type": "commonjs",
-  "main": "./dist/cjs/index.js",
-  "types": "./types/index.d.ts",
   "engines": {
     "node": ">=16.0.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "scripts": {
     "clean": "npm-run-all -p clean:lib clean:types",
     "clean:lib": "rimraf lib",
     "clean:types": "rimraf src/types/ethers src/types/truffle src/types/web3",
     "test": "mocha 'lib/cjs/**/*.test.js'",
-    "start": "node lib/index.js",
-    "build": "npm-run-all generate-types tsc copy esbuild",
+    "build": "npm-run-all generate-types tsc esbuild",
     "esbuild": "node esbuild.config.mjs",
     "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
     "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
     "tsc": "tsc",
     "tsc:watch": "tsc -w",
-    "copy": "npm-run-all copy:prepublish",
-    "copy:prepublish": "cp package.json lib/ && cp README.md lib/ && cp LICENSE lib/",
     "generate-types": "npm-run-all -p generate-types:web3",
     "generate-types:web3": "typechain --target=web3-v1 --out-dir=src/types/web3 'src/abis/*.json'",
     "lint": "eslint src",

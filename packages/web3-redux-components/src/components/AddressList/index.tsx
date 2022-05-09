@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Pagination from 'rc-pagination';
 import styled from 'styled-components';
 
-const CONTAINER_HEIGHT = '400px';
+const CONTAINER_HEIGHT = '500px';
 const Wrapper = styled.div`
     .page-controls {
         list-style-type: none;
@@ -13,6 +13,14 @@ const Wrapper = styled.div`
         & > li {
             padding: 0 8px;
             cursor: pointer;
+
+            &:after {
+                content: '|';
+                position: relative;
+                left: 8px;
+                top: -1px;
+                font-size: 11px;
+            }
         }
 
         .rc-pagination-prev,
@@ -43,12 +51,18 @@ const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: Props) 
                 <Box mb={8} height={CONTAINER_HEIGHT} overflowY={'auto'}>
                     <Box flexWrap={'wrap'} flexDir={'row'}>
                         {visibleItems[currentPage - 1]?.map((address, key) => (
-                            <Box p={1} key={key} w={'50%'} display={'inline-block'}>
+                            <Box p={2} key={key} w={'50%'} display={'inline-block'}>
                                 <Tag variant="solid" bg={themes.color5} as="button">
-                                    <Box h={4} w={'95%'} overflow={'hidden'} display={'inline-block'}>
+                                    <Box
+                                        h={4}
+                                        w={'95%'}
+                                        overflow={'hidden'}
+                                        display={'inline-block'}
+                                        color={themes.color9}
+                                    >
                                         {address}
                                     </Box>
-                                    <CloseButton onClick={handleRemoveAddress} float={'right'} />
+                                    <CloseButton onClick={handleRemoveAddress} float={'right'} color={themes.color9} />
                                 </Tag>
                             </Box>
                         ))}
@@ -63,6 +77,8 @@ const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: Props) 
                     p={'11px 16px'}
                     m={'-14px'}
                     borderRadius={'0 0 10px 10px'}
+                    fontSize={'12px'}
+                    fontWeight={'semibold'}
                 >
                     <Pagination
                         onChange={onChange}

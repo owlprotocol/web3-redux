@@ -4,7 +4,7 @@ import { Network, Config } from '@owlprotocol/web3-redux';
 import { ActiveChainDot } from './styles';
 import NetworkIcon from '../NetworkIcon';
 
-export const NetworkDropdown = ({ }) => {
+export const NetworkDropdown = ({}) => {
     const [open, setOpen] = useState(false);
     const toggle = () => setOpen(!open);
 

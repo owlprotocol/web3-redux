@@ -9,13 +9,22 @@ import { defaultNetworks } from '../defaults.js';
  */
 export function validate(network: Network): Network {
     const networkId = network.networkId;
-    const defaultNetworkForId = defaultNetworks[networkId];
+    const defaultNetworkForId = defaultNetworks()[networkId];
     const name = network.name ?? defaultNetworkForId?.name;
     const explorerUrl = network.explorerUrl ?? defaultNetworkForId?.explorerUrl;
     const explorerApiUrl = network.explorerApiUrl ?? defaultNetworkForId?.explorerApiUrl;
     const explorerApiKey = network.explorerApiKey ?? defaultNetworkForId?.explorerApiKey;
     const web3Rpc = network.web3Rpc ?? defaultNetworkForId?.web3Rpc;
-    const web3 = network.web3 ?? (web3Rpc ? new Web3(web3Rpc) : undefined);
+
+    let web3 = network.web3;
+    if (!web3 && web3Rpc) {
+        web3 = new Web3(web3Rpc);
+        //Silence ENS Error
+        //@ts-ignore
+        web3.eth.ens._lastSyncCheck = Number.MAX_SAFE_INTEGER;
+        //@ts-ignore
+        web3.eth.ens.registryAddress = '0x0000000000000000000000000000000000000000';
+    }
 
     const validatedNetwork = { ...network };
     if (name) validatedNetwork.name = name;

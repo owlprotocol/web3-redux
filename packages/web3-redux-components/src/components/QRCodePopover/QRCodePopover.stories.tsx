@@ -5,7 +5,7 @@ const Template: ComponentStory<typeof QRCodePopover> = (args: any) => <QRCodePop
 export const Main = Template.bind({});
 
 const Args: Props = {
-    address: '0xf6AEfc54843FDA83437D67A2DbEc7A9BB834ff4E'
+    address: '0xf6AEfc54843FDA83437D67A2DbEc7A9BB834ff4E',
 };
 
 Main.args = Args;

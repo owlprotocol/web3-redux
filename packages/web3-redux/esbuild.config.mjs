@@ -57,7 +57,7 @@ const baseConfig = {
     watch,
 };
 
-//CJS Library
+//CJS Library (Testing)
 await esbuild.default.build({
     entryPoints: files,
     bundle: false,
@@ -82,7 +82,7 @@ await esbuild.default.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
     minify: false,
-    outfile: 'lib/dist/cjs/index.js',
+    outfile: 'dist/web3-redux-lib.cjs.js',
     format: 'cjs',
     external: ['url', 'events', 'path'],
     ...baseConfig,
@@ -92,7 +92,7 @@ await esbuild.default.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
     minify: true,
-    outfile: 'lib/dist/cjs/index.min.js',
+    outfile: 'dist/web3-redux-lib.cjs.min.js',
     format: 'cjs',
     external: ['url', 'events', 'path'],
     ...baseConfig,
@@ -103,7 +103,7 @@ await esbuild.default.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
     minify: false,
-    outfile: 'lib/dist/esm/index.js',
+    outfile: 'dist/web3-redux-lib.es.js',
     format: 'esm',
     external: ['path', 'events', 'url'],
     ...baseConfig,
@@ -113,7 +113,7 @@ await esbuild.default.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
     minify: true,
-    outfile: 'lib/dist/esm/index.min.js',
+    outfile: 'dist/web3-redux-lib.es.min.js',
     format: 'esm',
     external: ['path', 'events', 'url'],
     ...baseConfig,

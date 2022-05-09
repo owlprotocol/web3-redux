@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { Contract as Web3Contract } from 'web3-eth-contract';
+import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';

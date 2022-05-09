@@ -52,7 +52,7 @@ const useMetamask = () => {
 
         if (selectedWeb3) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const defaultNetwork = Network.defaultNetworks[DEFAULT_CHAIN_ID as string]!;
+            const defaultNetwork = Network.defaultNetworks()[DEFAULT_CHAIN_ID as string]!;
             const chain = {
                 chainId: parseInt(defaultNetwork.networkId),
                 chainName: defaultNetwork.name,

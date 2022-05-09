@@ -2,7 +2,7 @@ import { assert } from 'chai';
 // eslint-disable-next-line prettier/prettier
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import { Contract as Web3Contract } from 'web3-eth-contract';
+import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import axios from 'axios';
 import * as moxios from 'moxios';

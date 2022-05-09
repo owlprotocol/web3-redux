@@ -1,4 +1,6 @@
 import { select, put, call } from 'typed-redux-saga';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Eth } from 'web3-eth';
 import { isHexStrict } from '../../utils/web3-utils/index.js';
 import { create, update, FetchAction } from '../actions/index.js';
 import networkExists from '../../network/sagas/exists.js';

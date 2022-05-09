@@ -1,114 +1,83 @@
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 
-//Typescript, ESLint check
-import Checker from 'vite-plugin-checker';
-//SVGR
-import svgrPlugin from 'vite-plugin-svgr';
+//Rollup Plugins
+import rollupInject from '@rollup/plugin-inject';
 
-//NodeJS Polyfills
-//https://medium.com/@ftaioli/using-node-js-builtin-modules-with-vite-6194737c2cd2
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
-import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
-import rollupNodePolyFill from 'rollup-plugin-node-polyfills';
-//import path from 'path';
-//import dts from 'vite-dts'
+//Vite Plugins
+import ReactPlugin from '@vitejs/plugin-react';
+import CheckerPlugin from 'vite-plugin-checker';
+import SVGRPlugin from 'vite-plugin-svgr';
+import DTSPlugin from 'vite-dts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        react(),
-        svgrPlugin({
-            svgrOptions: {
-                icon: true,
-            },
+        ReactPlugin(),
+        rollupInject({
+            Buffer: ['buffer', 'Buffer'],
         }),
-        Checker({
+        SVGRPlugin(),
+        CheckerPlugin({
             typescript: true,
             overlay: true,
             eslint: {
                 lintCommand: 'eslint --ext .ts,.tsx src --fix',
             },
         }),
+        DTSPlugin()
     ],
     resolve: {
         alias: {
-            // This Rollup aliases are extracted from @esbuild-plugins/node-modules-polyfill,
-            // see https://github.com/remorses/esbuild-plugins/blob/master/node-modules-polyfill/src/polyfills.ts
-            // process and buffer are excluded because already managed
-            // by node-globals-polyfill
-            util: 'rollup-plugin-node-polyfills/polyfills/util',
-            sys: 'util',
-            events: 'rollup-plugin-node-polyfills/polyfills/events',
             stream: 'rollup-plugin-node-polyfills/polyfills/stream',
-            path: 'rollup-plugin-node-polyfills/polyfills/path',
-            querystring: 'rollup-plugin-node-polyfills/polyfills/qs',
-            punycode: 'rollup-plugin-node-polyfills/polyfills/punycode',
-            url: 'rollup-plugin-node-polyfills/polyfills/url',
-            string_decoder: 'rollup-plugin-node-polyfills/polyfills/string-decoder',
             http: 'rollup-plugin-node-polyfills/polyfills/http',
             https: 'rollup-plugin-node-polyfills/polyfills/http',
-            os: 'rollup-plugin-node-polyfills/polyfills/os',
-            assert: 'rollup-plugin-node-polyfills/polyfills/assert',
-            constants: 'rollup-plugin-node-polyfills/polyfills/constants',
-            _stream_duplex: 'rollup-plugin-node-polyfills/polyfills/readable-stream/duplex',
-            _stream_passthrough: 'rollup-plugin-node-polyfills/polyfills/readable-stream/passthrough',
-            _stream_readable: 'rollup-plugin-node-polyfills/polyfills/readable-stream/readable',
-            _stream_writable: 'rollup-plugin-node-polyfills/polyfills/readable-stream/writable',
-            _stream_transform: 'rollup-plugin-node-polyfills/polyfills/readable-stream/transform',
-            timers: 'rollup-plugin-node-polyfills/polyfills/timers',
-            console: 'rollup-plugin-node-polyfills/polyfills/console',
-            vm: 'rollup-plugin-node-polyfills/polyfills/vm',
-            zlib: 'rollup-plugin-node-polyfills/polyfills/zlib',
-            tty: 'rollup-plugin-node-polyfills/polyfills/tty',
-            domain: 'rollup-plugin-node-polyfills/polyfills/domain',
-        },
-    },
-    optimizeDeps: {
-        //https://vitejs.dev/config/#optimizedeps-include
-        include: ['@owlprotocol/web3-redux'],
-        esbuildOptions: {
-            // Node.js global to browser globalThis
-            define: {
-                global: 'globalThis',
-            },
-            // Enable esbuild polyfill plugins
-            plugins: [
-                NodeGlobalsPolyfillPlugin({
-                    process: true,
-                    buffer: true,
-                }),
-                NodeModulesPolyfillPlugin(),
-            ],
+            buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
+            web3: 'web3/dist/web3.min.js'
         },
     },
     build: {
-        /*
         //Library Mode
         //https://vitejs.dev/guide/build.html#library-mode
         lib: {
-            entry: path.resolve(__dirname, 'src/index.ts'),
-            name: 'MyComponentLib',
-            fileName: (format) => `my-component-lib.${format}.js`,
+            entry: resolve(__dirname, 'src/index.ts'),
+            name: 'Web3ReduxComponentsLib',
+            fileName: (format) => `web3-redux-components-lib.${format}.js`,
         },
-        */
         rollupOptions: {
-            /*
             //Library Mode
-            external: ['react', 'react-dom'],
+            external: [
+                '@owlprotocol/web3-redux',
+                '@web3-react/abstract-connector',
+                '@web3-react/core',
+                '@web3-react/injected-connector',
+                'bootstrap',
+                'react',
+                'react-dom',
+                'react-hooks-compose',
+                'react-redux',
+                'react-router-dom',
+                'reactstrap',
+                'styled-components',
+                'web3'
+            ],
             output: {
                 globals: {
-                    react: 'React',
+                    '@owlprotocol/web3-redux': 'Web3Redux',
+                    '@web3-react/abstract-connector': 'Web3ReactAbstractConnector',
+                    '@web3-react/core': 'Web3ReactCore',
+                    '@web3-react/injected-connector': 'Web3ReactInjectedConnector',
+                    'bootstrap': 'Bootstrap',
+                    'react': 'React',
                     'react-dom': 'ReactDOM',
+                    'react-hooks-compose': 'ReactHooksCompose',
+                    'react-redux': 'ReactRedux',
+                    'react-router-dom': 'ReactRouterDOM',
+                    'reactstrap': 'Reactstrap',
+                    'styled-components': 'StyledComponents',
+                    web3: 'Web3'
                 },
-            },
-            */
-            plugins: [
-                // Enable rollup polyfills plugin
-                // used during production bundling
-                rollupNodePolyFill(),
-                //dts(), //Generate .d.ts in production
-            ],
+            }
         },
     },
 });

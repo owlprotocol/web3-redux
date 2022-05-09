@@ -1,11 +1,9 @@
-import { Contract as Web3Contract } from 'web3-eth-contract';
-import Coder, { AbiCoder } from 'web3-eth-abi';
+import type { Contract as Web3Contract } from 'web3-eth-contract';
+import { coder } from '../../utils/web3-eth-abi/index.js';
 import { filter, keyBy } from '../../utils/lodash/index.js';
 import { AbiItem, toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { ModelWithId } from '../../types/model.js';
 import { Transaction } from '../../transaction/model/interface.js';
-
-const coder = Coder as unknown as AbiCoder;
 
 /**
  * Contract Id object.

@@ -11,8 +11,9 @@
   "license": "MIT",
   "author": "Leo Vigna",
   "scripts": {
+    "build": "npm-run-all build:web3-redux build:web3-redux-components",
     "build:web3-redux": "cd packages/web3-redux && npm run build",
-    "build:web3-redux-components": "cd packages/web3-redux-components && npm run build",
+    "build:web3-redux-components": "cd packages/web3-redux-components && npm run build-storybook",
     "build:web3-redux-docs": "cd packages/web3-redux-docs && npm run build",
     "clean": "npm-run-all -p clean:lib clean:node_modules",
     "clean:lib": "rimraf packages/*/lib",

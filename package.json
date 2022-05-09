@@ -18,7 +18,7 @@
     "clean": "npm-run-all -p clean:lib clean:node_modules",
     "clean:lib": "rimraf packages/*/lib",
     "clean:node_modules": "rimraf packages/*/node_modules",
-    "postinstall": "husky install && npm run build:web3-redux",
+    "husky:install": "husky install",
     "test": "npm-run-all -p test:web3-redux test:web3-redux-components",
     "test:web3-redux": "cd packages/web3-redux && npm run test",
     "test:web3-redux-components": "cd packages/web3-redux && npm run test",

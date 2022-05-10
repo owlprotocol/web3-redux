@@ -1,15 +1,17 @@
+import { useTheme, Tr, Td, Th } from '@chakra-ui/react';
 import { Transaction } from '@owlprotocol/web3-redux';
 import composeHooks from 'react-hooks-compose';
 import { Link } from 'react-router-dom';
-import { toBN, fromWei } from 'web3-utils';
-import { RowContainer } from './styles';
-import { shortenHash } from '../../utils';
+import { shortenHash, toBN, fromWei } from '../../utils';
 
 export interface Props {
     networkId: string;
     hash: string;
 }
 export const useTransactionRow = ({ networkId, hash }: Props) => {
+    const { themes } = useTheme();
+    console.log(themes);
+
     const transaction = Transaction.useTransaction(networkId, hash);
     const { blockNumber, from, to, value } = transaction ?? {};
 
@@ -24,52 +26,52 @@ export const useTransactionRow = ({ networkId, hash }: Props) => {
     return { method, blockNumber, from, to, value, fee };
 };
 
-//['hash', 'method', 'blockNumber', 'age', 'from', 'to', 'value', 'fee'];
 export interface PresenterProps {
-    hash: string;
-    method: string;
-    blockNumber: number;
-    from: string;
-    to: string;
-    value: string;
-    fee: string;
+    hash?: string;
+    method?: string;
+    blockNumber?: number;
+    age?: string;
+    from?: string;
+    to?: string;
+    value?: string;
+    fee?: string;
 }
-export const TransactionRowPresenter = ({ hash, method, blockNumber, from, to, value, fee }: PresenterProps) => {
+export const TransactionRowPresenter = ({ hash, method, blockNumber, age, from, to, value, fee }: PresenterProps) => {
     return (
-        <tr key={hash}>
-            <th scope="row" key="hash">
-                <RowContainer>
-                    <Link to={`/tx/${hash}`}>{shortenHash(hash)}</Link>
-                </RowContainer>
-            </th>
-            <th scope="row" key="method">
-                <RowContainer className="method">{method}</RowContainer>
-            </th>
-            <th scope="row" key="blockNumber">
-                <RowContainer>
+        <Tr key={hash}>
+            <Th scope="row" key="hash">
+                <Td>
+                    <Link to={`/tx/${hash}`}>{shortenHash(hash || '')}</Link>
+                </Td>
+            </Th>
+            <Th scope="row" key="method">
+                <Td className="method">{method}</Td>
+            </Th>
+            <Th scope="row" key="blockNumber">
+                <Td>
                     <Link to={`/block/${blockNumber}`}>{blockNumber}</Link>
-                </RowContainer>
-            </th>
-            {/*<th scope="row" key="age">
-                <RowContainer>{age}</RowContainer>
-            </th>*/}
-            <th scope="row" key="from">
-                <RowContainer>
+                </Td>
+            </Th>
+            <Th scope="row" key="age">
+                <Td>{age}</Td>
+            </Th>
+            <Th scope="row" key="from">
+                <Td>
                     <Link to={`/address/${from}`}>{from}</Link>
-                </RowContainer>
-            </th>
-            <th scope="row" key="to">
-                <RowContainer>
+                </Td>
+            </Th>
+            <Th scope="row" key="to">
+                <Td>
                     <Link to={`/address/${to}`}>{to}</Link>
-                </RowContainer>
-            </th>
-            <th scope="row" key="value">
-                <RowContainer>{value}</RowContainer>
-            </th>
-            <th scope="row" key="fee">
-                <RowContainer>{fee}</RowContainer>
-            </th>
-        </tr>
+                </Td>
+            </Th>
+            <Th scope="row" key="value">
+                <Td>{value}</Td>
+            </Th>
+            <Th scope="row" key="fee">
+                <Td>{fee}</Td>
+            </Th>
+        </Tr>
     );
 };
 

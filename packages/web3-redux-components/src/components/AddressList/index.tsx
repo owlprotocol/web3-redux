@@ -52,7 +52,7 @@ const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: Props) 
                     <Box flexWrap={'wrap'} flexDir={'row'}>
                         {visibleItems[currentPage - 1]?.map((address, key) => (
                             <Box p={2} key={key} w={'50%'} display={'inline-block'}>
-                                <Tag variant="solid" bg={themes.color5} as="button">
+                                <Tag variant="solid" bg={themes.color5} as="button" w={'100%'}>
                                     <Box
                                         h={4}
                                         w={'95%'}

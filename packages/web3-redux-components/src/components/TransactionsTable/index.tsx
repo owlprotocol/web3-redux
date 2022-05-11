@@ -1,16 +1,17 @@
-import { useTheme, TableContainer, Table, Thead, Tbody, Tr, Td, Th } from '@chakra-ui/react';
+import { useTheme, TableContainer, Table, Thead, Tbody, Tr, Td, Th, Badge } from '@chakra-ui/react';
+import styled from 'styled-components';
+
+const TableWrapper = styled.div`
+    table tr:nth-child(odd) {
+        background-color: #1c1c24;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #2c2c30;
+    }
+`;
 
 const THEAD_LABELS = ['txn hash', 'method', 'block', 'age', 'from', 'to', 'value', 'txn fee'];
-const DEF = {
-    txHash: '0x4bd5480860b3e28391c0506b0e99aae1f5163df5f88db0c80e3b4b567a1caf3f',
-    method: 'Approve',
-    blockNumber: 14724278,
-    age: '3 days 22 hrs ago',
-    from: '0x35b051a09ce7136202ed7ad858849f1e0f11ed8d',
-    to: 'USDC: USDC Token',
-    value: '0 Ether',
-    fee: '0.002669500796',
-};
 
 const ExternalLink = ({ to, children }: any) => (
     <a href={to} target="_blank" rel="noreferrer">
@@ -31,65 +32,70 @@ export interface ItemProps {
 export interface Props {
     items?: ItemProps[];
 }
-export const TransactionTable = ({ items = [DEF, DEF, DEF, DEF, DEF, DEF, DEF, DEF, DEF] }) => {
+export const TransactionTable = ({ items = [] }: Props) => {
     const { themes } = useTheme();
 
     return (
-        <TableContainer>
-            <Table variant="simple">
-                <Thead bg={themes.color5}>
-                    {THEAD_LABELS.map((header, key) => (
-                        <Tr key={key}>
-                            <Th color={themes.color9} textTransform={'capitalize'}>
-                                {header}
-                            </Th>
+        <TableWrapper>
+            <TableContainer color={themes.color9}>
+                <Table variant="unstyled">
+                    <Thead>
+                        <Tr bg={themes.color5}>
+                            {THEAD_LABELS.map((header, key) => (
+                                <Th textTransform={'capitalize'} key={key}>
+                                    {header}
+                                </Th>
+                            ))}
                         </Tr>
-                    ))}
-                </Thead>
-                <Tbody>
-                    {items.map((item) => {
-                        const { txHash, method, blockNumber, age, from, to, value, fee } = item;
+                    </Thead>
+                    <br />
+                    <Tbody>
+                        {items.map((item) => {
+                            const { txHash, method, blockNumber, age, from, to, value, fee } = item;
 
-                        return (
-                            <Tr key={txHash}>
-                                <Th>
-                                    <Td>
-                                        <ExternalLink to={`/tx/${txHash}`}>{txHash}</ExternalLink>
-                                    </Td>
-                                </Th>
-                                <Th>
-                                    <Td className="method">{method}</Td>
-                                </Th>
-                                <Th>
-                                    <Td>
-                                        <ExternalLink to={`/block/${blockNumber}`}>{blockNumber}</ExternalLink>
-                                    </Td>
-                                </Th>
-                                <Th>
-                                    <Td>{age}</Td>
-                                </Th>
-                                <Th>
-                                    <Td>
-                                        <ExternalLink to={`/address/${from}`}>{from}</ExternalLink>
-                                    </Td>
-                                </Th>
-                                <Th>
-                                    <Td>
-                                        <ExternalLink to={`/address/${to}`}>{to}</ExternalLink>
-                                    </Td>
-                                </Th>
-                                <Th>
-                                    <Td>{value}</Td>
-                                </Th>
-                                <Th>
-                                    <Td>{fee}</Td>
-                                </Th>
-                            </Tr>
-                        );
-                    })}
-                </Tbody>
-            </Table>
-        </TableContainer>
+                            return (
+                                <Tr key={txHash}>
+                                    <Th>
+                                        <Td p={0}>
+                                            <ExternalLink to={`/tx/${txHash}`}>{txHash}</ExternalLink>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>
+                                            <Badge textTransform={'capitalize'}>{method}</Badge>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>
+                                            <ExternalLink to={`/block/${blockNumber}`}>{blockNumber}</ExternalLink>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>{age}</Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>
+                                            <ExternalLink to={`/address/${from}`}>{from}</ExternalLink>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>
+                                            <ExternalLink to={`/address/${to}`}>{to}</ExternalLink>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>{value}</Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>{fee}</Td>
+                                    </Th>
+                                </Tr>
+                            );
+                        })}
+                    </Tbody>
+                </Table>
+            </TableContainer>
+        </TableWrapper>
     );
 };
 

@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-    display: flex;
-
-    button {
-        max-width: 330px;
-    }
+    display: inline-flex;
 `;
 
 export const AccountBalance = styled.div`

@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
+import { useTheme } from '@chakra-ui/react';
 import { Config, Contract } from '@owlprotocol/web3-redux';
 import { fromWei } from 'web3-utils';
 import composeHooks from 'react-hooks-compose';
-import { Button } from 'reactstrap';
 import { WrongNetwork, Wrapper, AccountBalance } from './styles';
+import Icon from '../Icon';
+import Button from '../Button';
 import { isSupportedNetworkId } from '../../constants/web3React';
 import { shortenHash } from '../../utils';
 import useMetamask from '../../hooks/useMetamask';
 import useConfigureFromWeb3React from '../../hooks/useConfigureFromWeb3React';
-import Icon from '../Icon';
 
 export const useWalletConnect = () => {
     useConfigureFromWeb3React(); //Update web3-redux config
@@ -20,7 +21,10 @@ export const useWalletConnect = () => {
     const balanceFormatted = balance ? fromWei(balance, 'ether').substring(0, 6) : undefined;
     const btnText = account ? shortenHash(account) : undefined;
 
+    // TODO: Add component prop to controll on-mount-connect.
     useEffect(() => {
+        if (true) return;
+
         //Try connect on mount
         if (!web3) {
             try {
@@ -35,17 +39,19 @@ export const useWalletConnect = () => {
 };
 
 export interface PresenterProps {
-    networkId: string | undefined;
-    balance: string | undefined;
     connectWallet?: (...params: any[]) => any;
-    btnText: string | undefined;
+    networkId?: string | undefined;
+    balance?: string | undefined;
+    showBalance?: boolean;
 }
 export const WalletConnectPresenter = ({
     networkId,
     balance,
     connectWallet = () => console.log('Clicked Connect'),
-    btnText = 'Connect Wallet',
+    showBalance = false,
 }: PresenterProps) => {
+    const { themes } = useTheme();
+
     // Wallet connected but wrong network
     // replace the wallet connet component.
     if (networkId && !isSupportedNetworkId(networkId)) {
@@ -59,10 +65,15 @@ export const WalletConnectPresenter = ({
 
     return (
         <Wrapper>
-            {balance && <AccountBalance>{balance} ETH</AccountBalance>}
-            <Button secondary icon="currencies" onClick={connectWallet}>
-                {networkId} {btnText}
-            </Button>
+            {showBalance && balance && <AccountBalance>{balance} ETH</AccountBalance>}
+            <Button
+                bg={themes.color6}
+                color={themes.color7}
+                onClick={connectWallet}
+                text="Connect Wallet"
+                borderRadius={12}
+                fontWeight={'bold'}
+            />
         </Wrapper>
     );
 };

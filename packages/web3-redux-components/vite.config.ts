@@ -1,4 +1,3 @@
-import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 //Rollup Plugins
@@ -8,7 +7,8 @@ import rollupInject from '@rollup/plugin-inject';
 import ReactPlugin from '@vitejs/plugin-react';
 import CheckerPlugin from 'vite-plugin-checker';
 import SVGRPlugin from 'vite-plugin-svgr';
-import DTSPlugin from 'vite-dts'
+import DTSPlugin from 'vite-dts';
+import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -25,7 +25,7 @@ export default defineConfig({
                 lintCommand: 'eslint --ext .ts,.tsx src --fix',
             },
         }),
-        DTSPlugin()
+        DTSPlugin(),
     ],
     resolve: {
         alias: {
@@ -33,7 +33,7 @@ export default defineConfig({
             http: 'rollup-plugin-node-polyfills/polyfills/http',
             https: 'rollup-plugin-node-polyfills/polyfills/http',
             buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
-            web3: 'web3/dist/web3.min.js'
+            web3: 'web3/dist/web3.min.js',
         },
     },
     build: {
@@ -51,15 +51,13 @@ export default defineConfig({
                 '@web3-react/abstract-connector',
                 '@web3-react/core',
                 '@web3-react/injected-connector',
-                'bootstrap',
                 'react',
                 'react-dom',
                 'react-hooks-compose',
                 'react-redux',
                 'react-router-dom',
-                'reactstrap',
                 'styled-components',
-                'web3'
+                'web3',
             ],
             output: {
                 globals: {
@@ -67,17 +65,15 @@ export default defineConfig({
                     '@web3-react/abstract-connector': 'Web3ReactAbstractConnector',
                     '@web3-react/core': 'Web3ReactCore',
                     '@web3-react/injected-connector': 'Web3ReactInjectedConnector',
-                    'bootstrap': 'Bootstrap',
-                    'react': 'React',
+                    react: 'React',
                     'react-dom': 'ReactDOM',
                     'react-hooks-compose': 'ReactHooksCompose',
                     'react-redux': 'ReactRedux',
                     'react-router-dom': 'ReactRouterDOM',
-                    'reactstrap': 'Reactstrap',
                     'styled-components': 'StyledComponents',
-                    web3: 'Web3'
+                    web3: 'Web3',
                 },
-            }
+            },
         },
     },
 });

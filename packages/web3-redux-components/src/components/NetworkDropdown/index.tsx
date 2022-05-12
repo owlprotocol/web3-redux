@@ -1,40 +1,22 @@
 import { useState } from 'react';
-import { Dropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap';
-import { Network, Config } from '@owlprotocol/web3-redux';
-import { ActiveChainDot } from './styles';
+import { Box, useTheme } from '@chakra-ui/react';
+import Dropdown from '../Dropdown';
 import NetworkIcon from '../NetworkIcon';
 
-export const NetworkDropdown = ({}) => {
-    const [open, setOpen] = useState(false);
-    const toggle = () => setOpen(!open);
-
-    const networks = Network.useNetworks() as Network.Network[];
-    const [activeNetworkId, setNetworkId] = Config.useNetworkId();
-    const activeNetwork = Network.useNetwork(activeNetworkId);
+export interface Props {
+    options: string[];
+}
+export const NetworkDropdown = ({ options = [] }: Props) => {
+    const { themes } = useTheme();
+    const [selectedNetwork, setSelectedNetwork] = useState('1');
 
     return (
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        <Dropdown width="165px" isOpen={open} toggle={toggle}>
-            <DropdownToggle caret>
-                {activeNetwork ? (
-                    <>
-                        <NetworkIcon networkId={activeNetwork.networkId} />
-                        <span>{activeNetwork.name}</span>
-                    </>
-                ) : (
-                    <span>Select a network</span>
-                )}
-            </DropdownToggle>
-            <DropdownMenu>
-                {networks.map(({ networkId, name }, idx) => (
-                    <DropdownItem key={idx} className="list-item" onClick={() => setNetworkId(networkId)}>
-                        <NetworkIcon networkId={networkId} />
-                        <span>{name}</span>
-                        {activeNetworkId === networkId && <ActiveChainDot />}
-                    </DropdownItem>
-                ))}
-            </DropdownMenu>
-        </Dropdown>
+        <Box display={'flex'} alignItems={'center'} borderRadius={4} bg={themes.color6} color={themes.color8}>
+            <Box p={2}>
+                <NetworkIcon networkId={selectedNetwork} />
+            </Box>
+            <Dropdown placeholder="Select a network" options={options} onChange={setSelectedNetwork} />
+        </Box>
     );
 };
 

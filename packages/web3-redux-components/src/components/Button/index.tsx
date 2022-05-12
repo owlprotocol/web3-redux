@@ -11,7 +11,8 @@ export interface Props {
     iconH?: number | string;
     bg?: string;
     color?: string;
-    borderRadius?: number;
+    borderRadius?: number | string;
+    fontWeight?: number | string;
 }
 
 const OwlButton = ({
@@ -25,6 +26,7 @@ const OwlButton = ({
     bg = 'transparent',
     color,
     borderRadius,
+    fontWeight,
 }: Props) => {
     const { themes } = useTheme();
     const defaultColor = themes.color4;
@@ -47,6 +49,7 @@ const OwlButton = ({
             pb={2}
             color={color || defaultColor}
             borderRadius={borderRadius}
+            fontWeight={fontWeight}
         >
             {icon && <Icon icon={icon} w={iconW} h={iconH} mr={2} />}
             {text && (

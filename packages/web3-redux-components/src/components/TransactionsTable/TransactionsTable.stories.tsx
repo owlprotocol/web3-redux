@@ -1,19 +1,29 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { networkIdArgType, addressArgType } from '../../test/storybookArgs';
-import { TransactionsTable } from '.';
+import TransactionsTable, { Props } from '.';
 
 export default {
-    title: 'Transaction/TransactionsTable',
+    title: 'Tables/TransactionsTable',
     component: TransactionsTable,
-    args: {
-        networkId: networkIdArgType.options[0],
-        address: addressArgType.options[0],
-    },
-    argTypes: {
-        networkId: networkIdArgType,
-        address: addressArgType,
-    },
 } as ComponentMeta<typeof TransactionsTable>;
 
 const Template: ComponentStory<typeof TransactionsTable> = (args: any) => <TransactionsTable {...args} />;
 export const Main = Template.bind({});
+
+const DEF = {
+    txHash: '0xe7f8f22...',
+    method: 'Approve',
+    blockNumber: 14724278,
+    age: '3 days 22 hrs ago',
+    from: '0x35b0d11...',
+    to: 'USDC: USDC Token',
+    value: '0 Ether',
+    fee: '0.002669500796',
+};
+
+// @ts-ignore
+const mainArgs: Props = {
+    items: [DEF, DEF, DEF, DEF, DEF],
+};
+
+// @ts-ignore
+Main.args = mainArgs;

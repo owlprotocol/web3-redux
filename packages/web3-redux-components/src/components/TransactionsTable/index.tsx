@@ -1,53 +1,102 @@
-import { useTheme } from '@chakra-ui/react';
-import { Table as ReactstrapTable } from 'reactstrap';
-import { map } from 'lodash';
-import { Contract } from '@owlprotocol/web3-redux';
-import { Wrapper } from './styles';
-import TransactionRow from '../TransactionRow';
+import { useTheme, TableContainer, Table, Thead, Tbody, Tr, Td, Th, Badge } from '@chakra-ui/react';
+import styled from 'styled-components';
 
-export interface Props {
-    networkId: string;
-    address: string;
+const TableWrapper = styled.div`
+    table tr:nth-child(odd) {
+        background-color: #1c1c24;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #2c2c30;
+    }
+`;
+
+const THEAD_LABELS = ['txn hash', 'method', 'block', 'age', 'from', 'to', 'value', 'txn fee'];
+
+const ExternalLink = ({ to, children }: any) => (
+    <a href={to} target="_blank" rel="noreferrer">
+        {children}
+    </a>
+);
+
+export interface ItemProps {
+    txHash?: string;
+    method?: string;
+    blockNumber?: number;
+    age?: string;
+    from?: string;
+    to?: string;
+    value?: string;
+    fee?: string;
 }
-
-//const HEADER_LABELS = ['txn hash', 'method', 'block', 'age', 'from', 'to', 'value', 'txn fee'];
-//const INTERNAL_HEADER_LABELS = ['parent txn hash', 'block', 'age', 'from', 'to', 'value'];
-
-export const TransactionsTable = ({ networkId, address }: Props) => {
+export interface Props {
+    items?: ItemProps[];
+}
+export const TransactionTable = ({ items = [] }: Props) => {
     const { themes } = useTheme();
 
-    const transactions = Contract.useFetchTransactions(networkId, address);
-    const hashList = map(transactions, 'hash');
-
     return (
-        <Wrapper color8={themes.color8}>
-            <ReactstrapTable responsive>
-                <thead>
-                    <tr>
-                        <th>{'txn hash'}</th>
-                        <th>{'method'}</th>
-                        <th>{'block'}</th>
-                        {/*<th>{'age'}</th>*/}
-                        <th>{'from'}</th>
-                        <th>{'to'}</th>
-                        <th>{'value'}</th>
-                        <th>{'txn fee'}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {hashList.map((hash: string) => {
-                        return <TransactionRow networkId={networkId} hash={hash} key={hash} />;
-                    })}
-                </tbody>
+        <TableWrapper>
+            <TableContainer color={themes.color9}>
+                <Table variant="unstyled">
+                    <Thead>
+                        <Tr bg={themes.color5}>
+                            {THEAD_LABELS.map((header, key) => (
+                                <Th textTransform={'capitalize'} key={key}>
+                                    {header}
+                                </Th>
+                            ))}
+                        </Tr>
+                    </Thead>
+                    <br />
+                    <Tbody>
+                        {items.map((item) => {
+                            const { txHash, method, blockNumber, age, from, to, value, fee } = item;
 
-                {hashList.length == 0 && (
-                    <tr>
-                        <div style={{ padding: '20px' }}>No Data Available</div>
-                    </tr>
-                )}
-            </ReactstrapTable>
-        </Wrapper>
+                            return (
+                                <Tr key={txHash}>
+                                    <Th>
+                                        <Td p={0}>
+                                            <ExternalLink to={`/tx/${txHash}`}>{txHash}</ExternalLink>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>
+                                            <Badge textTransform={'capitalize'}>{method}</Badge>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>
+                                            <ExternalLink to={`/block/${blockNumber}`}>{blockNumber}</ExternalLink>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>{age}</Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>
+                                            <ExternalLink to={`/address/${from}`}>{from}</ExternalLink>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>
+                                            <ExternalLink to={`/address/${to}`}>{to}</ExternalLink>
+                                        </Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>{value}</Td>
+                                    </Th>
+                                    <Th>
+                                        <Td p={0}>{fee}</Td>
+                                    </Th>
+                                </Tr>
+                            );
+                        })}
+                    </Tbody>
+                </Table>
+            </TableContainer>
+        </TableWrapper>
     );
 };
 
-export default TransactionsTable;
+export default TransactionTable;

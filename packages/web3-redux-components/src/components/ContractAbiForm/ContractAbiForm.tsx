@@ -1,10 +1,9 @@
-import { useTheme } from '@chakra-ui/react';
 import { AbiType, StateMutabilityType } from 'web3-utils';
 import AbiForm from './AbiForm';
 interface AbiFormProps {
-    name: string,
+    name: string | undefined,
     inputs: {
-        name: string;
+        name: string | undefined;
         type: string;
     }[],
     type: AbiType,
@@ -21,10 +20,13 @@ const ContractAbiForm = ({
     address,
     abi
 }: Props) => {
+
+    const abiRead = abi.filter((a) => a.stateMutability === 'pure' || a.stateMutability === 'view')
+
     return (
         <div>
             <form>
-                {abi.map((fnAbi, key: number) => (
+                {abiRead.map((fnAbi, key: number) => (
                     <div key={key}>
                         <AbiForm networkId={networkId} address={address} namePrefix={`${key + 1}. `} {...fnAbi} />
                         <br />

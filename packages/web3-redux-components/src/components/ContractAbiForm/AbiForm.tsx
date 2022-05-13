@@ -6,6 +6,10 @@ import { Contract } from '@owlprotocol/web3-redux';
 import AbiEntityInput from './AbiEntityInput';
 import Button from '../Button';
 
+
+const web3 = new Web3()
+const coder = web3.eth.abi;
+
 //TODO
 //Formik integration
 //https://chakra-ui.com/docs/components/form/form-control#usage-with-form-libraries
@@ -15,7 +19,7 @@ interface Props {
     networkId: string;
     address: string;
     namePrefix: string,
-    name: string,
+    name: string | undefined,
     inputs: {
         name: string | undefined;
         type: string;
@@ -40,13 +44,13 @@ const AbiForm = ({
         const errCopy = [...errors];
         errCopy[idx] = err;
         setErrors(errCopy)
-    }, [])
+    }, [errors])
 
     const setArgAtIdx = useCallback((arg: any, idx: number) => {
         const argsCopy = [...args]
         argsCopy[idx] = arg;
         setArgs(argsCopy);
-    }, [])
+    }, [args])
 
     useEffect(() => {
         //Reset state
@@ -58,32 +62,14 @@ const AbiForm = ({
     const noErrors = errors.length > 0 ? errors.reduce((acc, curr) => acc && !curr, !errors[0]) : true;
     const validArgs = argsDefined && noErrors;
 
-    let contractCall;
-    [contractCall] = Contract.useContractCall(validArgs ? networkId : undefined, address, name, args, { sync: 'once' })
+    const [contractCall] = Contract.useContractCall(validArgs ? networkId : undefined, address, name, args, { sync: 'once' })
 
     const write = !(stateMutability === 'pure' || stateMutability == 'view');
 
-    const handleEntityChange = (value: string, idx: number) => {
-        const { type, name } = inputs[idx];
-        //TODO: Move abi item validation outside component
-        //TODO: boolean, number parsing
-        if (value.length == 0) {
-            setErrorAtIdx(undefined, idx)
-            setArgAtIdx(undefined, idx);
-        } else if (type === 'address') {
-            try {
-                const _value = Web3.utils.toChecksumAddress(value);
-                setErrorAtIdx(undefined, idx)
-                setArgAtIdx(_value, idx);
-            } catch (err) {
-                setErrorAtIdx('Not a valid Address', idx)
-                setArgAtIdx(value, idx);
-            }
-        } else {
-            setErrorAtIdx(undefined, idx)
-            setArgAtIdx(value, idx);
-        }
-    };
+    const onChange = useCallback((value: string | undefined, error: Error | undefined, idx: number) => {
+        setErrorAtIdx(error, idx)
+        setArgAtIdx(value, idx);
+    }, [setErrorAtIdx, setArgAtIdx]);
 
 
     return (
@@ -99,9 +85,8 @@ const AbiForm = ({
                         <AbiEntityInput
                             key={key}
                             type={type}
-                            name={inputs[key].name}
-                            errMsg={errors[key]}
-                            onChange={(val: string) => { handleEntityChange(val, key) }}
+                            name={name}
+                            onChange={(value, error) => { onChange(value, error, key) }}
                         />
                     );
                 })}

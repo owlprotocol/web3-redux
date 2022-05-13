@@ -16,12 +16,12 @@
     "build:web3-redux-components": "cd packages/web3-redux-components && npm run build-storybook",
     "build:web3-redux-docs": "cd packages/web3-redux-docs && npm run build",
     "clean": "npm-run-all -p clean:lib clean:node_modules",
-    "clean:lib": "rimraf packages/*/lib",
-    "clean:node_modules": "rimraf packages/*/node_modules",
+    "clean:lib": "rimraf packages/*/lib packages/*/dist",
+    "clean:node_modules": "rimraf node_modules packages/*/node_modules",
     "husky:install": "husky install",
     "test": "npm-run-all -p test:web3-redux test:web3-redux-components",
     "test:web3-redux": "cd packages/web3-redux && npm run test",
-    "test:web3-redux-components": "cd packages/web3-redux && npm run test",
+    "test:web3-redux-components": "cd packages/web3-redux-components && npm run test",
     "publish": "pnpm publish -r"
   },
   "dependencies": {

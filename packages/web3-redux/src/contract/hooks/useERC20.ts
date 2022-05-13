@@ -34,26 +34,26 @@ export function useERC20(
     const onTransferSync =
         networkId && address && balanceOfAddress
             ? createEventSync(networkId, [], address, 'Transfer', [
-                  { from: balanceOfAddress },
-                  { to: balanceOfAddress },
-              ])
+                { from: balanceOfAddress },
+                { to: balanceOfAddress },
+            ])
             : false;
     const balanceOfSync = sync?.balanceOf === 'onTransfer' ? onTransferSync : sync?.balanceOf ?? 'ifnull'; //Sync user balance
     const TransferEventsOptions = sync?.TransferEventsOptions ?? { sync: false, past: false }; //Sync token Transfer events, default just reads data
     const ApprovalEventsOptions = sync?.ApprovalEventsOptions ?? { sync: false, past: false }; //Sync token Approval events, default just reads data
 
     //Static values
-    const name = useContractCall(networkId, address, 'name', [], { sync: 'ifnull' });
-    const symbol = useContractCall(networkId, address, 'symbol', [], {
+    const [name] = useContractCall(networkId, address, 'name', [], { sync: 'ifnull' });
+    const [symbol] = useContractCall(networkId, address, 'symbol', [], {
         sync: 'ifnull',
     });
-    const decimals = useContractCall(networkId, address, 'decimals', [], {
+    const [decimals] = useContractCall(networkId, address, 'decimals', [], {
         sync: 'ifnull',
     });
-    const totalSupply = useContractCall(networkId, address, 'totalSupply', [], { sync: totalSupplySync });
+    const [totalSupply] = useContractCall(networkId, address, 'totalSupply', [], { sync: totalSupplySync });
 
     //if balanceOf is 'Transfer' we disable hook sync and dispatch our own custom solution
-    const balanceOf = useContractCall(networkId, address, 'balanceOf', [balanceOfAddress], {
+    const [balanceOf] = useContractCall(networkId, address, 'balanceOf', [balanceOfAddress], {
         sync: balanceOfSync,
     });
 

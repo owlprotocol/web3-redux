@@ -47,10 +47,10 @@ export function useERC1155(
 
     //Static values
     //const totalSupply = useContractCall(networkId, address, 'totalSupply', [balanceOfTokenId], { sync: totalSupplySync });
-    const uri = useContractCall(networkId, address, 'uri', [balanceOfTokenId]) as string | undefined;
+    const [uri] = useContractCall(networkId, address, 'uri', [balanceOfTokenId]) as [string | undefined, any];
     const uriParsed = uri && balanceOfTokenId ? uri.replace('{id}', balanceOfTokenId) : undefined;
     //if balanceOf is 'Transfer' we disable hook sync and dispatch our own custom solution
-    const balanceOf = useContractCall(networkId, address, 'balanceOf', [balanceOfAddress, balanceOfTokenId], {
+    const [balanceOf] = useContractCall(networkId, address, 'balanceOf', [balanceOfAddress, balanceOfTokenId], {
         sync: balanceOfSync,
     });
 

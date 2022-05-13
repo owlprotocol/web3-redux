@@ -12,7 +12,8 @@ export function useERC165(networkId: string | undefined, address: string | undef
     //Create abi in store if non-existant
     useContractWithAbi(networkId, address, IERC165.abi as any);
 
-    return useContractCall(networkId, address, 'supportsInterface', [interfaceId], { sync: 'once' });
+    const [value] = useContractCall(networkId, address, 'supportsInterface', [interfaceId], { sync: 'once' });
+    return value;
 }
 
 /**

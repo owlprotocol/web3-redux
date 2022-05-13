@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Await } from '../../types/promise.js';
@@ -7,7 +7,7 @@ import { remove as removeSync } from '../../sync/actions/index.js';
 import { GenericSync } from '../../sync/model/index.js';
 
 import { BaseWeb3Contract } from '../model/index.js';
-import { callSynced } from '../actions/index.js';
+import { callSynced, call } from '../actions/index.js';
 import selectSingle from '../selectors/selectByIdSingle.js';
 import selectContractCall from '../selectors/selectContractCallById.js';
 
@@ -29,7 +29,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     method: K | undefined,
     args?: Parameters<T['methods'][K]>,
     options?: UseContractCallOptions,
-): Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined {
+): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, () => void] {
     const sync = options?.sync ?? 'ifnull';
     const from = options?.from;
 
@@ -64,14 +64,26 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                         from,
                         sync,
                     });
+                } else if (!sync) {
+                    const callAction = call({
+                        networkId,
+                        address,
+                        method: method as string,
+                        args,
+                        from,
+                    });
+                    return { callAction, syncAction: undefined };
                 }
             }
         }, [networkId, address, method, argsHash, web3ContractExists, JSON.stringify(sync)]) ?? {};
 
     const callId = callAction?.payload.id;
-    useEffect(() => {
+    const dispatchCallAction = useCallback(() => {
         if (callAction) dispatch(callAction);
     }, [dispatch, callId]);
+    useEffect(() => {
+        dispatchCallAction();
+    }, [dispatchCallAction]);
 
     const syncId = syncAction?.payload.id;
     useEffect(() => {
@@ -81,7 +93,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         };
     }, [dispatch, syncId]);
 
-    return contractCall;
+    return [contractCall, dispatchCallAction];
 }
 
 /**
@@ -91,7 +103,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
 export function contractCallHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
->(method: K) {
+    >(method: K) {
     return (
         networkId: string | undefined,
         address: string | undefined,

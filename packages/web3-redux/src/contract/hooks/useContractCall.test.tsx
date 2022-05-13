@@ -70,9 +70,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current;
+            const currentCall = result.current[0];
             assert.equal(currentCall, '0', 'result.current');
-            const allCalls = result.all;
+            const allCalls = result.all.map((x) => (x as [any, any])[0]);
             assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -86,10 +86,21 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
-            const currentCall = result.current;
+            const currentCall = result.current[0];
+            const dispatchCallAction = result.current[1];
             assert.isUndefined(currentCall, 'result.current');
-            const allCalls = result.all;
+            const allCalls = result.all.map((x) => (x as [any, any])[0]);
             assert.deepEqual(allCalls, [undefined], 'result.all');
+
+            //Manual refresh
+            dispatchCallAction();
+            await waitForNextUpdate();
+
+            const currentCall2 = result.current[0];
+            assert.equal(currentCall2, '0', 'result.current');
+            const allCalls2 = result.all.map((x) => (x as [any, any])[0]);
+            assert.deepEqual(allCalls2, [undefined, '0'], 'result.all');
+
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -104,9 +115,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current;
+            const currentCall = result.current[0];
             assert.equal(currentCall, '0', 'result.current');
-            const allCalls = result.all;
+            const allCalls = result.all.map((x) => (x as [any, any])[0]);
             assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -133,9 +144,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
             await waitForNextUpdate();
 
-            const currentCall = result.current;
+            const currentCall = result.current[0];
             assert.equal(currentCall, '42', 'result.current');
-            const allCalls = result.all;
+            const allCalls = result.all.map((x) => (x as [any, any])[0]);
             assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -160,9 +171,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
             await waitForNextUpdate();
 
-            const currentCall = result.current;
+            const currentCall = result.current[0];
             assert.equal(currentCall, '42', 'result.current');
-            const allCalls = result.all;
+            const allCalls = result.all.map((x) => (x as [any, any])[0]);
             assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -193,9 +204,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
             await waitForNextUpdate();
 
-            const currentCall = result.current;
+            const currentCall = result.current[0];
             assert.equal(currentCall, '42', 'result.current');
-            const allCalls = result.all;
+            const allCalls = result.all.map((x) => (x as [any, any])[0]);
             assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');

@@ -9,6 +9,7 @@ import Button from '../Button';
 
 //Similar to AbiItem interface
 interface Props {
+    address: string;
     namePrefix: string,
     name: string,
     inputs: {

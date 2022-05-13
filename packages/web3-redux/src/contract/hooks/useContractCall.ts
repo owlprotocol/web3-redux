@@ -82,7 +82,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         if (callAction) dispatch(callAction);
     }, [dispatch, callId]);
     useEffect(() => {
-        dispatchCallAction();
+        if (!!sync) dispatchCallAction();
     }, [dispatchCallAction]);
 
     const syncId = syncAction?.payload.id;

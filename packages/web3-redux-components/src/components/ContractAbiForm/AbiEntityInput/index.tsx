@@ -2,9 +2,9 @@ import InputField from '../../InputField';
 
 export interface Props {
     type: string;
-    name: string;
-    onChange?: any;
+    name: string | undefined;
     errMsg?: string;
+    onChange?: (value: string) => void;
 }
 
 const AbiEntityInput = ({ type, name, onChange, errMsg }: Props) => {
@@ -16,7 +16,7 @@ const AbiEntityInput = ({ type, name, onChange, errMsg }: Props) => {
                 placeholder={placeholder}
                 errMsg={errMsg}
                 // @ts-ignore
-                onChange={({ target }: any) => onChange(name, target.value, type)}
+                onChange={({ target }: any) => onChange(target.value)}
             />
             <br />
         </div>

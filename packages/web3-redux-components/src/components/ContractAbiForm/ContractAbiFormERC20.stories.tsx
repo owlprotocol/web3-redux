@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Abi } from '@owlprotocol/web3-redux'
+import { Abi, TestData } from '@owlprotocol/web3-redux'
 import ContractAbiForm from './ContractAbiForm';
+import { AbiItem } from 'web3-utils';
 
 export default {
     title: 'ContractInteraction/ContractAbiForm',
@@ -10,8 +11,11 @@ export default {
 const Template: ComponentStory<typeof ContractAbiForm> = (args: any) => <ContractAbiForm {...args} />;
 export const ERC20 = Template.bind({});
 
-const abi = Abi.IERC20.abi;
+const address = TestData.WETH;
+const abi = Abi.IERC20.abi as AbiItem[];
 
 ERC20.args = {
-    contractEntities: abi
+    networkId: '1',
+    address,
+    abi
 };

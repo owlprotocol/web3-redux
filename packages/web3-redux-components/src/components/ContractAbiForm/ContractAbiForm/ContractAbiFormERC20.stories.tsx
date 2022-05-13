@@ -1,10 +1,10 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Abi, TestData } from '@owlprotocol/web3-redux'
-import ContractAbiForm from './ContractAbiForm';
+import ContractAbiForm from '.';
 import { AbiItem } from 'web3-utils';
 
 export default {
-    title: 'ContractInteraction/ContractAbiForm',
+    title: 'ContractAbi/ContractAbiForm',
     component: ContractAbiForm,
 } as ComponentMeta<typeof ContractAbiForm>;
 

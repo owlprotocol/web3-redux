@@ -1,14 +1,14 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Abi, TestData } from '@owlprotocol/web3-redux'
 import { AbiItem } from 'web3-utils';
-import AbiForm from './AbiForm';
+import AbiItemForm from '.';
 
 export default {
-    title: 'ContractInteraction/AbiForm',
-    component: AbiForm,
-} as ComponentMeta<typeof AbiForm>;
+    title: 'ContractAbi/AbiItemForm',
+    component: AbiItemForm,
+} as ComponentMeta<typeof AbiItemForm>;
 
-const Template: ComponentStory<typeof AbiForm> = (args: any) => <AbiForm {...args} />;
+const Template: ComponentStory<typeof AbiItemForm> = (args: any) => <AbiItemForm {...args} />;
 
 const address = TestData.WETH;
 

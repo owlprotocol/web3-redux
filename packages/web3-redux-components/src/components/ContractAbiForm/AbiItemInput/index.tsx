@@ -7,11 +7,11 @@ const coder = web3.eth.abi;
 
 export interface Props {
     type: string;
-    name: string | undefined;
+    name?: string | undefined;
     onChange: (value: string | undefined, error: Error | undefined) => void;
 }
 
-const AbiEntityInput = ({ type, name, onChange }: Props) => {
+const AbiItemInput = ({ type, name, onChange }: Props) => {
     const [error, setError] = useState<Error | undefined>();
 
     let placeholder: string;
@@ -62,4 +62,4 @@ const AbiEntityInput = ({ type, name, onChange }: Props) => {
     );
 };
 
-export default AbiEntityInput;
+export default AbiItemInput;

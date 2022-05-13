@@ -1,12 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AbiInput, { Props } from '.';
+import AbiItemInput, { Props } from '.';
 
 export default {
-    title: 'ContractInteraction/ContractAbiForm/AbiInput',
-    component: AbiInput,
-} as ComponentMeta<typeof AbiInput>;
+    title: 'ContractAbi/AbiItemInput',
+    component: AbiItemInput,
+} as ComponentMeta<typeof AbiItemInput>;
 
-const Template: ComponentStory<typeof AbiInput> = (args: Props) => <AbiInput {...args} />;
+const Template: ComponentStory<typeof AbiItemInput> = (args: Props) => <AbiItemInput {...args} />;
 export const Address = Template.bind({});
 Address.args = {
     name: 'account',

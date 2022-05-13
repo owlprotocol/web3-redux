@@ -6,13 +6,10 @@ import { Contract } from '@owlprotocol/web3-redux';
 import AbiEntityInput from './AbiEntityInput';
 import Button from '../Button';
 
-
-const web3 = new Web3()
-const coder = web3.eth.abi;
-
 //TODO
 //Formik integration
 //https://chakra-ui.com/docs/components/form/form-control#usage-with-form-libraries
+//Better error handling for reverts
 
 //Similar to AbiItem interface
 interface Props {
@@ -58,13 +55,13 @@ const AbiForm = ({
         setArgs(Array(inputs.length));
     }, [inputs.length])
 
+    const write = !(stateMutability === 'pure' || stateMutability == 'view');
+
     const argsDefined = args.length > 0 ? args.reduce((acc, curr) => acc && !!curr, !!args[0]) : true;
     const noErrors = errors.length > 0 ? errors.reduce((acc, curr) => acc && !curr, !errors[0]) : true;
-    const validArgs = argsDefined && noErrors;
 
-    const [contractCall] = Contract.useContractCall(validArgs ? networkId : undefined, address, name, args, { sync: 'once' })
-
-    const write = !(stateMutability === 'pure' || stateMutability == 'view');
+    const validCallArgs = !write && argsDefined && noErrors;
+    const [contractCall] = Contract.useContractCall(validCallArgs ? networkId : undefined, address, name, args, { sync: 'once' })
 
     const onChange = useCallback((value: string | undefined, error: Error | undefined, idx: number) => {
         setErrorAtIdx(error, idx)

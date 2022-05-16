@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import classnames from 'classnames';
 
 // Tokens

@@ -1,12 +1,13 @@
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core'
-import { ThemeProvider } from 'styled-components';
 import { getEnvironment } from '../src/environment';
 import {
     Network, Contract, TestData, store,
     Environment
 } from '@owlprotocol/web3-redux';
+
+// @ts-ignore
 Environment.setEnvironment(getEnvironment());
 
 import { THEME_COLORS } from '../src/constants';
@@ -54,19 +55,17 @@ export const decorators = [
             Contract.create(TestData.contractWETH),
         ]);
         return (
-            <ThemeProvider theme={THEME_COLORS.theme1}>
-                <Web3ReactProvider getLibrary={getLibrary}>
-                    <Web3ProviderWallet getLibrary={getLibrary}>
-                        <Router>
-                            <Provider store={store}>
-                                <ChakraProvider theme={theme}>
-                                    <StoryWithData />
-                                </ChakraProvider>
-                            </Provider>
-                        </Router>
-                    </Web3ProviderWallet>
-                </Web3ReactProvider>
-            </ThemeProvider>
+            <Web3ReactProvider getLibrary={getLibrary}>
+                <Web3ProviderWallet getLibrary={getLibrary}>
+                    <Router>
+                        <Provider store={store}>
+                            <ChakraProvider theme={theme}>
+                                <StoryWithData />
+                            </ChakraProvider>
+                        </Provider>
+                    </Router>
+                </Web3ProviderWallet>
+            </Web3ReactProvider>
         )
     }
 ];

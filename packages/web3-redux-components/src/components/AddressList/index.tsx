@@ -2,7 +2,7 @@ import { Box, Tag, CloseButton, useTheme } from '@chakra-ui/react';
 import { useState } from 'react';
 import _ from 'lodash';
 import Pagination from 'rc-pagination';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const CONTAINER_HEIGHT = '500px';
 const Wrapper = styled.div`

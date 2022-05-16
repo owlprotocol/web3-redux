@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Popover, PopoverContent, PopoverTrigger, PopoverBody, useTheme } from '@chakra-ui/react';
 import { ReactComponent as QRIcon } from './assets/qr.svg';
 import { ReactComponent as QRHoverIcon } from './assets/qr-hover.svg';

@@ -3,7 +3,6 @@ import { useTheme } from '@chakra-ui/react';
 import { Config, Contract } from '@owlprotocol/web3-redux';
 import { fromWei } from 'web3-utils';
 import composeHooks from 'react-hooks-compose';
-import { WrongNetwork, Wrapper, AccountBalance } from './styles';
 import Icon from '../Icon';
 import Button from '../Button';
 import { isSupportedNetworkId } from '../../constants/web3React';
@@ -56,16 +55,16 @@ export const WalletConnectPresenter = ({
     // replace the wallet connet component.
     if (networkId && !isSupportedNetworkId(networkId)) {
         return (
-            <WrongNetwork>
+            <div>
                 <Icon icon="broken-link" w="20px" h="20px" />
                 <span>Wrong Network</span>
-            </WrongNetwork>
+            </div>
         );
     }
 
     return (
-        <Wrapper>
-            {showBalance && balance && <AccountBalance>{balance} ETH</AccountBalance>}
+        <div>
+            {showBalance && balance && <span>{balance} ETH</span>}
             <Button
                 bg={themes.color6}
                 color={themes.color7}
@@ -74,7 +73,7 @@ export const WalletConnectPresenter = ({
                 borderRadius={12}
                 fontWeight={'bold'}
             />
-        </Wrapper>
+        </div>
     );
 };
 

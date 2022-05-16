@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTheme, Box } from '@chakra-ui/react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import copy from 'copy-to-clipboard';
 import QRCodePopover from '../QRCodePopover';
 import OwlButton from '../Button';

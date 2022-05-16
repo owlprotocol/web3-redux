@@ -1,5 +1,5 @@
 import { useTheme } from '@chakra-ui/react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import classNames from 'classnames';
 import { ReactComponent as VSignIcon } from './assets/flowvsign.svg';
 import { ReactComponent as ErrorIcon } from './assets/flowerrsign.svg';

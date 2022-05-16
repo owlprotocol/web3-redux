@@ -9,7 +9,7 @@ import {
     Button,
     useTheme,
 } from '@chakra-ui/react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { ReactComponent as CardIcon } from './assets/card.svg';
 import { ReactComponent as InProgressIcon } from './assets/inprog.svg';
 import { ReactComponent as ConfirmedIcon } from './assets/confirmed.svg';

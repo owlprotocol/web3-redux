@@ -1,6 +1,6 @@
 import { Contract } from '@owlprotocol/web3-redux';
 import composeHooks from 'react-hooks-compose';
-import { Wrapper } from './styles';
+import { Box, useTheme } from '@chakra-ui/react';
 
 export interface Props {
     networkId: string;
@@ -15,10 +15,12 @@ export interface PresenterProps {
     bytecode: string;
 }
 export const ContractCodePresenter = ({ bytecode }: PresenterProps) => {
+    const { themes } = useTheme();
+
     return (
-        <>
-            <Wrapper>{bytecode}</Wrapper>
-        </>
+        <Box border={'1px solid'} p={4} borderRadius={4} w={'100%'} color={themes.color9}>
+            {bytecode}
+        </Box>
     );
 };
 

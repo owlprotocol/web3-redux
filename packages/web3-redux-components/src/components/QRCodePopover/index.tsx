@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { Popover, PopoverContent, PopoverTrigger, PopoverBody, Box, useTheme } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { Popover, PopoverContent, PopoverTrigger, PopoverBody, useTheme } from '@chakra-ui/react';
 import { ReactComponent as QRIcon } from './assets/qr.svg';
 import { ReactComponent as QRHoverIcon } from './assets/qr-hover.svg';
 import { ReactComponent as QRSelectedIcon } from './assets/qr-selected.svg';
@@ -18,18 +18,6 @@ const QRbutton = styled.button`
     svg {
         font-size: 28px;
     }
-`;
-
-const QRPopup: any = styled.div`
-    background: ${(props: any) => props.color5};
-    border-radius: 8px;
-    padding: 12px;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 `;
 
 const QRCodePopover = ({ address }: Props) => {
@@ -50,12 +38,20 @@ const QRCodePopover = ({ address }: Props) => {
             </PopoverTrigger>
 
             {/* @ts-ignore */}
-            <PopoverContent w="240px" h="240px" _focus={false} border="1px" bg="transparent">
-                <QRPopup color5={themes.color5}>
+            <PopoverContent w="200px" h="200px" _focus={false} border={0} bg="transparent">
+                <Box
+                    bg={themes.color5}
+                    display={'flex'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    h={'100%'}
+                    w={'100%'}
+                    borderRadius={12}
+                >
                     <PopoverBody>
                         <Erc20QRGenerator address={address} />
                     </PopoverBody>
-                </QRPopup>
+                </Box>
             </PopoverContent>
         </Popover>
     );

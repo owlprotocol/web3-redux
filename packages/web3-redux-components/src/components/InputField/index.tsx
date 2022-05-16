@@ -1,38 +1,5 @@
-import { Input, useTheme } from '@chakra-ui/react';
-import styled from '@emotion/styled';
+import { useTheme, Input, FormControl, FormErrorMessage, Box } from '@chakra-ui/react';
 import Icon from '../Icon';
-
-const Wrapper: any = styled.div`
-    background: ${(props: any) => props.color6};
-    border-radius: 8px;
-    height: 52px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-
-    > .icon {
-        margin-right: 16px;
-    }
-
-    input {
-        background: transparent;
-        border: 0;
-        width: 100%;
-        color: #fff;
-
-        &:focus {
-            outline: none;
-            border: 0;
-        }
-    }
-`;
-
-const ValidationMsg = styled.div`
-    color: rgba(255, 4, 32, 0.64);
-    font-weight: 400;
-    font-size: 14px;
-    margin: 3px 0 0 3px;
-`;
 
 export interface Props {
     onChange: () => any;
@@ -45,22 +12,26 @@ const InputField = ({ icon, onChange, placeholder, errMsg }: Props) => {
     const { themes } = useTheme();
 
     return (
-        <>
-            <Wrapper color6={themes.color6}>
-                {icon && <Icon icon={icon} w={'20px'} h={'20px'} />}
-                <Input
-                    type="text"
-                    onChange={onChange}
-                    placeholder={placeholder}
-                    color={themes.color8}
-                    _placeholder={{ color: themes.color8 }}
-                    bg={themes.color6}
-                    w={'100%'}
-                    p={0}
-                />
-            </Wrapper>
-            {errMsg && <ValidationMsg>*{errMsg}</ValidationMsg>}
-        </>
+        <FormControl isInvalid={!!errMsg} pos={'relative'}>
+            {icon && (
+                <Box pos={'absolute'} zIndex={1} m={'9px'}>
+                    <Icon icon={icon} w={'20px'} h={'20px'} />
+                </Box>
+            )}
+            <Input
+                type="text"
+                onChange={onChange}
+                placeholder={placeholder}
+                color={themes.color8}
+                _placeholder={{ color: themes.color8 }}
+                bg={themes.color6}
+                border={0}
+                w={'100%'}
+                borderRadius={8}
+                p={icon ? '2px 38px' : 4}
+            />
+            {errMsg && <FormErrorMessage>*{errMsg}</FormErrorMessage>}
+        </FormControl>
     );
 };
 

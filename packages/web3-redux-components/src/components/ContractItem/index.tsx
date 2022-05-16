@@ -1,15 +1,6 @@
 import { Box, useTheme } from '@chakra-ui/react';
-import styled from '@emotion/styled';
 import AddressDisplay from '../AddressDisplay';
 import Icon from '../Icon';
-
-const Wrapper: any = styled.div`
-    display: flex;
-    align-items: center;
-    background-color: ${(props: any) => props.color5};
-    border-radius: 12px;
-    padding: 0 24px;
-`;
 
 export interface Props {
     icon: string;
@@ -24,18 +15,18 @@ const ContractItem = ({ icon, network, address, label = '', interfaces, isFavori
     const { themes } = useTheme();
 
     return (
-        <Wrapper color5={themes.color5}>
+        <Box bg={themes.color5} display={'flex'} alignItems={'center'} p={'0 20px'} borderRadius={12}>
             <Box display={'flex'} alignItems={'center'} mr={4} color={themes.color9}>
                 <Icon icon={icon} w="21px" h="21px" mr={2} />
                 {network}
             </Box>
-            <Box w={'60%'}>
+            <Box w={'65%'} flex={1}>
                 <AddressDisplay address={address} label={label} isFavorite={isFavorite} borderRadius={0} />
             </Box>
             <Box display={'flex'} alignItems={'center'} ml={6} color={themes.color1}>
                 <span>{interfaces?.join(', ')}</span>
             </Box>
-        </Wrapper>
+        </Box>
     );
 };
 

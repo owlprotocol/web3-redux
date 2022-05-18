@@ -70,10 +70,6 @@ describe(`${name}.sagas.call`, () => {
     });
 
     describe('call', () => {
-        it.skip('(): error abi encode', async () => {
-            //TODO
-        });
-
         it('(): error contract revert', async () => {
             //Error caused by contract revert
             store.dispatch(

@@ -8,7 +8,6 @@ import { GenericSync } from '../../sync/model/index.js';
 
 import { BaseWeb3Contract } from '../model/index.js';
 import { callSynced, call } from '../actions/index.js';
-import selectSingle from '../selectors/selectByIdSingle.js';
 import selectContractCall from '../selectors/selectContractCallById.js';
 import { selectByIdSingle as selectReduxError } from '../../error/selectors/index.js';
 
@@ -58,35 +57,33 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const argsHash = JSON.stringify(args);
     const { callAction, syncAction } =
         useMemo(() => {
-            if (networkId && address && method && web3ContractExists) {
-                if (sync === 'ifnull' && !returnValueExists) {
-                    return callSynced({
-                        networkId,
-                        address,
-                        method: method as string,
-                        args,
-                        from,
-                        sync: 'once',
-                    });
-                } else if (!!sync && sync != 'ifnull') {
-                    return callSynced({
-                        networkId,
-                        address,
-                        method: method as string,
-                        args,
-                        from,
-                        sync,
-                    });
-                } else if (!sync) {
-                    const callAction = call({
-                        networkId,
-                        address,
-                        method: method as string,
-                        args,
-                        from,
-                    });
-                    return { callAction, syncAction: undefined };
-                }
+            if (sync === 'ifnull' && !returnValueExists) {
+                return callSynced({
+                    networkId: networkId!,
+                    address: address!,
+                    method: method as string,
+                    args,
+                    from,
+                    sync: 'once',
+                });
+            } else if (!!sync && sync != 'ifnull') {
+                return callSynced({
+                    networkId: networkId!,
+                    address: address!,
+                    method: method as string,
+                    args,
+                    from,
+                    sync,
+                });
+            } else if (!sync) {
+                const callAction = call({
+                    networkId: networkId!,
+                    address: address!,
+                    method: method as string,
+                    args,
+                    from,
+                });
+                return { callAction, syncAction: undefined };
             }
         }, [networkId, address, method, argsHash, web3ContractExists, JSON.stringify(sync)]) ?? {};
 

@@ -14,6 +14,10 @@ export function* callSaga(action: CallAction) {
     try {
         const { payload } = action;
         const { networkId, address, from, defaultBlock } = payload;
+        //Make sure required parameters defined
+        if (!networkId) throw new Error('networkId undefined');
+        if (!address) throw new Error('address undefined');
+        if (!payload.method) throw new Error('method undefined');
 
         const network = yield* select(selectNetwork, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);

@@ -19,10 +19,6 @@ export interface UseContractCallOptions {
     sync?: 'ifnull' | GenericSync | false;
 }
 
-//TODO: Return errors
-/**
- * - EVM Revert
- */
 
 interface UseContractCallReturnOptions {
     error: Error | undefined;
@@ -47,8 +43,6 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const id = networkId && address ? { networkId, address } : undefined;
 
     //const contract = useSelector((state) => selectSingle<T>(state, id));
-    //TODO: Remove
-    const web3ContractExists = true; //!!contract?.web3Contract || !!contract?.web3SenderContract;
 
     const returnValue = useSelector((state) => selectContractCall(state, id, method, { args, from }));
     //const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
@@ -59,33 +53,33 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         useMemo(() => {
             if (sync === 'ifnull' && !returnValueExists) {
                 return callSynced({
-                    networkId: networkId!,
-                    address: address!,
-                    method: method as string,
+                    networkId,
+                    address,
+                    method: method as string | undefined,
                     args,
                     from,
                     sync: 'once',
                 });
             } else if (!!sync && sync != 'ifnull') {
                 return callSynced({
-                    networkId: networkId!,
-                    address: address!,
-                    method: method as string,
+                    networkId,
+                    address,
+                    method: method as string | undefined,
                     args,
                     from,
                     sync,
                 });
             } else if (!sync) {
                 const callAction = call({
-                    networkId: networkId!,
-                    address: address!,
-                    method: method as string,
+                    networkId,
+                    address,
+                    method: method as string | undefined,
                     args,
                     from,
                 });
                 return { callAction, syncAction: undefined };
             }
-        }, [networkId, address, method, argsHash, web3ContractExists, JSON.stringify(sync)]) ?? {};
+        }, [networkId, address, method, argsHash, JSON.stringify(sync)]) ?? {};
 
     const reduxError = useSelector((state) => selectReduxError(state, callAction?.meta.uuid));
     if (reduxError) error = reduxError.error;
@@ -105,9 +99,6 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
             if (syncId) dispatch(removeSync(syncId));
         };
     }, [dispatch, syncId]);
-
-    if (!web3ContractExists) error = new Error(`Missing contract! address: ${address} networkId: ${networkId}`);
-    //else if ()
 
     return [returnValue, { error, dispatchCallAction }];
 }

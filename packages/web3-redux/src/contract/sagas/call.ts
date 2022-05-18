@@ -35,7 +35,6 @@ export function* callSaga(action: CallAction) {
         if (!payload.args || payload.args.length == 0) tx = method();
         else tx = method(...payload.args);
         const data = tx.encodeABI();
-
         const ethCall = validateEthCall({
             networkId,
             from,

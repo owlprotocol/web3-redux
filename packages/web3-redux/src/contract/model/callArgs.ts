@@ -27,7 +27,7 @@ export function callArgsHash<P extends any[] = any[]>(callArgs?: CallArgsHash<P>
     return id;
 }
 
-export function callHash(networkId: string, address: string, method: string, callArgs?: CallArgsHash): string {
+export function callHash(networkId: string | undefined, address: string | undefined, method: string | undefined, callArgs?: CallArgsHash): string {
     const contractHash = getId({ networkId, address });
     const callArgsId = callArgsHash(callArgs);
 

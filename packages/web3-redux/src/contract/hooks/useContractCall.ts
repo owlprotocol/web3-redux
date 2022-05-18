@@ -9,7 +9,8 @@ import { GenericSync } from '../../sync/model/index.js';
 import { BaseWeb3Contract } from '../model/index.js';
 import { callSynced, call } from '../actions/index.js';
 import selectSingle from '../selectors/selectByIdSingle.js';
-import selectContractCall from '../selectors/selectContractCallById.js';
+import { selectEthCallById } from '../../ethcall/index.js';
+import selectEthCallId from '../selectors/selectEthCallId.js';
 
 //Contract Call
 /** @internal */
@@ -49,7 +50,12 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const contract = useSelector((state) => selectSingle<T>(state, id));
     const web3ContractExists = !!contract?.web3Contract || !!contract?.web3SenderContract;
 
-    const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
+    const contractCallId = useSelector((state) => selectEthCallId(state, id, method, { args, from }));
+    const contractCall = useSelector((state) => selectEthCallById(state, contractCallId));
+    const returnValue: Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined = contractCall?.returnValue;
+    error = contractCall?.error;
+
+    //const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
     const contractCallExists = contractCall != undefined;
 
     const argsHash = JSON.stringify(args);
@@ -106,7 +112,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     if (!web3ContractExists) error = new Error(`Missing contract! address: ${address} networkId: ${networkId}`);
     //else if ()
 
-    return [contractCall, { error, dispatchCallAction }];
+    return [returnValue, { error, dispatchCallAction }];
 }
 
 /**

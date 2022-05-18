@@ -71,28 +71,10 @@ describe(`${name}.sagas.call`, () => {
 
     describe('call', () => {
         it.skip('(): error abi encode', async () => {
-            //Error caused by invalid ABI encoding (eg. missing arguments)
-            store.dispatch(
-                callAction({
-                    networkId,
-                    address,
-                    method: 'getNumber',
-                }),
-            );
-            await sleep(300);
-
-            //Call an invalid function
-            const ethCallId = selectEthCallId(store.getState(), { networkId, address }, 'getNumber');
-            const ethCall = selectEthCallById(store.getState(), ethCallId)!;
-            const value = ethCall.returnValue;
-            const error = ethCall.error;
-
-            assert.isUndefined(value, 'getNumber');
-            assert.isDefined(error, 'error');
-            assert.equal(error?.message, 'revert Transaction reverted');
+            //TODO
         });
 
-        it('(): error contract revert, invalid function', async () => {
+        it('(): error contract revert', async () => {
             //Error caused by contract revert
             store.dispatch(
                 callAction({
@@ -111,6 +93,11 @@ describe(`${name}.sagas.call`, () => {
 
             assert.isUndefined(value, 'returnValue');
             assert.isDefined(error, 'error');
+            assert.equal(
+                error?.message,
+                'VM Exception while processing transaction: revert Transaction reverted',
+                'error.message',
+            );
         });
 
         it('(): success', async () => {

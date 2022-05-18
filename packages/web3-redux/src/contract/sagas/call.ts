@@ -13,7 +13,7 @@ const CALL_ERROR = `${CALL}/ERROR`;
 export function* callSaga(action: CallAction) {
     try {
         const { payload } = action;
-        const { networkId, address, from, defaultBlock } = payload;
+        const { networkId, address, args, from, defaultBlock } = payload;
         //Make sure required parameters defined
         if (!networkId) throw new Error('networkId undefined');
         if (!address) throw new Error('address undefined');
@@ -32,8 +32,8 @@ export function* callSaga(action: CallAction) {
         if (!method) throw new Error(`Contract ${getId(payload)} has no such method ${payload.method}`);
 
         let tx: any;
-        if (!payload.args || payload.args.length == 0) tx = method();
-        else tx = method(...payload.args);
+        if (!args || args.length == 0) tx = method();
+        else tx = method(...args);
         const data = tx.encodeABI();
         const ethCall = validateEthCall({
             networkId,

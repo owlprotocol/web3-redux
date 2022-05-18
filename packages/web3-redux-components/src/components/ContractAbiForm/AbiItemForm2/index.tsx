@@ -63,11 +63,11 @@ const AbiItemForm = ({
 
     const argsDefined = args.length > 0 ? args.reduce((acc, curr) => acc && !!curr, !!args[0]) : true;
     const noInputErrors = inputErrors.length > 0 ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0]) : true;
-    const validCallArgs = !write && argsDefined && noInputErrors;
+    const validArgs = argsDefined && noInputErrors;
 
-    const [returnValue, { error }] = Contract.useContractCall(networkId, address, name, args, { sync: validCallArgs ? 'once' : false })
+    const [returnValue, { error }] = Contract.useContractCall(networkId, address, name, args, { sync: !write && validArgs ? 'once' : false })
 
-    console.debug({ returnValue, error, inputErrors })
+    console.debug({ returnValue, error, inputErrors, validArgs, write, account })
 
     const onChange = useCallback((value: string | boolean | undefined, error: Error | undefined, idx: number) => {
         setErrorAtIdx(error, idx)
@@ -75,7 +75,7 @@ const AbiItemForm = ({
     }, [setErrorAtIdx, setArgAtIdx]);
 
     const sendTx = useCallback(() => {
-        if (validCallArgs && !!account) {
+        if (validArgs && write && !!account) {
             dispatch(Contract.send({
                 networkId,
                 address,
@@ -84,7 +84,7 @@ const AbiItemForm = ({
                 from: account
             }))
         }
-    }, [networkId, address, validCallArgs, account])
+    }, [networkId, address, name, validArgs, account, write])
 
     // EVM error
     const isError = !!error;

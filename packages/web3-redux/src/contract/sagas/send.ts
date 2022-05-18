@@ -1,13 +1,16 @@
 import { END, eventChannel, EventChannel, TakeableChannel } from 'redux-saga';
-import { put, call, take } from 'typed-redux-saga';
+import { put, call, take, select } from 'typed-redux-saga';
 import { PromiEvent, TransactionReceipt } from 'web3-core';
-import exists from './exists.js';
+
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { ContractSendStatus } from '../../contractsend/model/index.js';
 import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions/index.js';
 import { create as createTransaction } from '../../transaction/actions/index.js';
+import { create as createError } from '../../error/actions/index.js';
 import { SEND, SendAction } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
-import { Contract, getId } from '../model/index.js';
+import { getId } from '../model/index.js';
+
+import { selectByIdSingle } from '../selectors/index.js';
 
 const CONTRACT_SEND_HASH = `${SEND}/HASH`;
 const CONTRACT_SEND_RECEIPT = `${SEND}/RECEIPT`;
@@ -53,24 +56,32 @@ function sendChannel(tx: PromiEvent<TransactionReceipt>): EventChannel<ContractS
 export function* send(action: SendAction) {
     try {
         const { payload } = action;
-        const { networkId, address, method, args, from } = payload;
-        const id = getId({ networkId, address });
+        const { networkId, address, args, from } = payload;
+        //Make sure required parameters defined
+        if (!networkId) throw new Error('networkId undefined');
+        if (!address) throw new Error('address undefined');
+        if (!payload.method) throw new Error('method undefined');
 
-        //@ts-ignore
-        yield* call(networkExists, networkId);
-        const contract: Contract = yield* call(exists, { networkId, address });
+        const network = yield* select(selectNetwork, networkId);
+        if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        const web3Contract = contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3SenderContract`);
+        const contract = yield* select(selectByIdSingle, { networkId, address });
+        if (!contract) throw new Error(`Contract ${getId(payload)} undefined`);
+
+        const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
+        if (!web3Contract) throw new Error(`Contract ${getId(payload)} has no web3 contract`);
+
+        const method = web3Contract.methods[payload.method];
+        if (!method) throw new Error(`Contract ${getId(payload)} has no such method ${payload.method}`);
 
         const gasPrice = payload.gasPrice ?? 0;
         const value = payload.value ?? 0;
 
         let tx: any;
         if (!args || args.length == 0) {
-            tx = web3Contract.methods[method]();
+            tx = method();
         } else {
-            tx = web3Contract.methods[method](...args);
+            tx = method(...args);
         }
 
         //Before calling web3 estimateGas() and send(), first save the contractSend object to store any error messages
@@ -139,13 +150,23 @@ export function* send(action: SendAction) {
                     }),
                 );
 
-                console.error(error);
-                yield* put({ type: CONTRACT_SEND_ERROR, error, action });
+                yield* put(
+                    createError({
+                        id: action.meta.uuid,
+                        error: error as Error,
+                        type: CONTRACT_SEND_ERROR,
+                    }),
+                );
             }
         }
     } catch (error) {
-        console.error(error);
-        yield* put({ type: CONTRACT_SEND_ERROR, error, action });
+        yield* put(
+            createError({
+                id: action.meta.uuid,
+                error: error as Error,
+                type: CONTRACT_SEND_ERROR,
+            }),
+        );
     } finally {
         yield* put({ type: CONTRACT_SEND_DONE, action });
     }

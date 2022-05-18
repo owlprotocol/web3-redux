@@ -9,8 +9,8 @@ import { GenericSync } from '../../sync/model/index.js';
 import { BaseWeb3Contract } from '../model/index.js';
 import { callSynced, call } from '../actions/index.js';
 import selectSingle from '../selectors/selectByIdSingle.js';
-import { selectEthCallById } from '../../ethcall/index.js';
-import selectEthCallId from '../selectors/selectEthCallId.js';
+import selectContractCall from '../selectors/selectContractCallById.js';
+import { selectByIdSingle as selectReduxError } from '../../error/selectors/index.js';
 
 //Contract Call
 /** @internal */
@@ -47,22 +47,19 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const dispatch = useDispatch();
     const id = networkId && address ? { networkId, address } : undefined;
 
-    const contract = useSelector((state) => selectSingle<T>(state, id));
-    const web3ContractExists = !!contract?.web3Contract || !!contract?.web3SenderContract;
+    //const contract = useSelector((state) => selectSingle<T>(state, id));
+    //TODO: Remove
+    const web3ContractExists = true; //!!contract?.web3Contract || !!contract?.web3SenderContract;
 
-    const contractCallId = useSelector((state) => selectEthCallId(state, id, method, { args, from }));
-    const contractCall = useSelector((state) => selectEthCallById(state, contractCallId));
-    const returnValue: Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined = contractCall?.returnValue;
-    error = contractCall?.error;
-
+    const returnValue = useSelector((state) => selectContractCall(state, id, method, { args, from }));
     //const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
-    const contractCallExists = contractCall != undefined;
+    const returnValueExists = returnValue != undefined;
 
     const argsHash = JSON.stringify(args);
     const { callAction, syncAction } =
         useMemo(() => {
             if (networkId && address && method && web3ContractExists) {
-                if (sync === 'ifnull' && !contractCallExists) {
+                if (sync === 'ifnull' && !returnValueExists) {
                     return callSynced({
                         networkId,
                         address,
@@ -92,6 +89,9 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                 }
             }
         }, [networkId, address, method, argsHash, web3ContractExists, JSON.stringify(sync)]) ?? {};
+
+    const reduxError = useSelector((state) => selectReduxError(state, callAction?.meta.uuid));
+    if (reduxError) error = reduxError.error;
 
     const callId = callAction?.payload.id;
     const dispatchCallAction = useCallback(() => {

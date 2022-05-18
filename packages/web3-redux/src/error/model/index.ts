@@ -1,1 +1,1 @@
-export type { Error } from './interface.js';
+export type { ReduxError } from './interface.js';

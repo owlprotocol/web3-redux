@@ -87,7 +87,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
 
             const currentCall = result.current[0];
-            const dispatchCallAction = result.current[1];
+            const { dispatchCallAction } = result.current[1];
             assert.isUndefined(currentCall, 'result.current');
             const allCalls = result.all.map((x) => (x as [any, any])[0]);
             assert.deepEqual(allCalls, [undefined], 'result.all');

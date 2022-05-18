@@ -14,8 +14,9 @@ import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 import { create as createNetwork } from '../../network/index.js';
 
-import { selectContractCall } from '../selectors/index.js';
+import { selectContractCall, selectEthCallId } from '../selectors/index.js';
 import { create as createAction, call as callAction } from '../actions/index.js';
+import { selectEthCallById } from '../../ethcall/index.js';
 
 describe(`${name}.sagas.call`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -69,7 +70,50 @@ describe(`${name}.sagas.call`, () => {
     });
 
     describe('call', () => {
-        it('()', async () => {
+        it.skip('(): error abi encode', async () => {
+            //Error caused by invalid ABI encoding (eg. missing arguments)
+            store.dispatch(
+                callAction({
+                    networkId,
+                    address,
+                    method: 'getNumber',
+                }),
+            );
+            await sleep(300);
+
+            //Call an invalid function
+            const ethCallId = selectEthCallId(store.getState(), { networkId, address }, 'getNumber');
+            const ethCall = selectEthCallById(store.getState(), ethCallId)!;
+            const value = ethCall.returnValue;
+            const error = ethCall.error;
+
+            assert.isUndefined(value, 'getNumber');
+            assert.isDefined(error, 'error');
+            assert.equal(error?.message, 'revert Transaction reverted');
+        });
+
+        it('(): error contract revert, invalid function', async () => {
+            //Error caused by contract revert
+            store.dispatch(
+                callAction({
+                    networkId,
+                    address,
+                    method: 'revertTx',
+                }),
+            );
+            await sleep(300);
+
+            //Call an invalid function
+            const ethCallId = selectEthCallId(store.getState(), { networkId, address }, 'revertTx');
+            const ethCall = selectEthCallById(store.getState(), ethCallId)!;
+            const value = ethCall.returnValue;
+            const error = ethCall.error;
+
+            assert.isUndefined(value, 'returnValue');
+            assert.isDefined(error, 'error');
+        });
+
+        it('(): success', async () => {
             //const ethCallInitial = ethCall;
             //const rpcBatchInitial = rpcBatch;
 

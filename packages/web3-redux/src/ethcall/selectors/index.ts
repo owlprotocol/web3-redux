@@ -4,3 +4,4 @@ import selectByIdExists from './selectByIdExists.js';
 import selectByFilter from './selectByFilter.js';
 
 export { selectByIdMany, selectByIdSingle, selectByIdExists, selectByFilter };
+export { selectByIdSingle as selectEthCallById };

@@ -60,10 +60,22 @@ export function* callSaga(action: CallAction) {
         //Create base call
         yield* put(createEthCall(ethCall));
 
-        const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
-        //@ts-ignore
-        const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
-        yield* put(setEthCall({ id: getEthCallIdArgs(ethCall), key: 'returnValue', value: returnValue }));
+        try {
+            const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
+            //@ts-ignore
+            const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
+            yield* put(setEthCall({ id: getEthCallIdArgs(ethCall), key: 'returnValue', value: returnValue }));
+        } catch (error) {
+            //TODO: Handle log in error catching middleware
+            console.error(error);
+            //Set error
+            yield* put(setEthCall({ id: getEthCallIdArgs(ethCall), key: 'error', value: error }));
+            yield* put({
+                type: CALL_ERROR,
+                error,
+                action,
+            });
+        }
     } catch (error) {
         console.error(error);
         yield* put({

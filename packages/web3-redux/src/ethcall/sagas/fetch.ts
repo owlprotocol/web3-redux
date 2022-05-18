@@ -8,15 +8,14 @@ const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const FETCH_ERROR = `${FETCH}/ERROR`;
 
 export default function* fetch(action: FetchAction) {
+    const { payload } = action;
+    const { networkId, defaultBlock } = payload;
+    const network: Network = yield* call(networkExists, networkId);
+    if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
+    const web3 = network.web3;
+    yield* put(create(payload));
+
     try {
-        const { payload } = action;
-        const { networkId, defaultBlock } = payload;
-        const network: Network = yield* call(networkExists, networkId);
-        if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
-        const web3 = network.web3;
-
-        yield* put(create(payload));
-
         const gas = payload.gas ?? (yield* call(web3.eth.estimateGas, payload)); //default gas
 
         //@ts-ignore
@@ -27,9 +26,13 @@ export default function* fetch(action: FetchAction) {
             defaultBlock ?? 'latest',
         );
 
+        yield* put(set({ id: getIdArgs(payload), key: 'error', value: undefined }));
         yield* put(set({ id: getIdArgs(payload), key: 'returnValue', value: returnValue }));
     } catch (error) {
+        //TODO: Handle log in error catching middleware
         console.error(error);
+        //Set error
+        yield* put(set({ id: getIdArgs(payload), key: 'error', value: error }));
         yield* put({
             type: FETCH_ERROR,
             error,

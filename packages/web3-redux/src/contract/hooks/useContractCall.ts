@@ -19,6 +19,15 @@ export interface UseContractCallOptions {
     sync?: 'ifnull' | GenericSync | false;
 }
 
+//TODO: Return errors
+/**
+ * - EVM Revert
+ */
+
+interface UseContractCallReturnOptions {
+    error: Error | undefined;
+    dispatchCallAction: () => void;
+}
 /**
  * Create a contract call and return value.
  * @category Hooks
@@ -29,7 +38,8 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     method: K | undefined,
     args?: Parameters<T['methods'][K]>,
     options?: UseContractCallOptions,
-): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, () => void] {
+): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, UseContractCallReturnOptions] {
+    let error: Error | undefined;
     const sync = options?.sync ?? 'ifnull';
     const from = options?.from;
 
@@ -93,7 +103,10 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         };
     }, [dispatch, syncId]);
 
-    return [contractCall, dispatchCallAction];
+    if (!web3ContractExists) error = new Error(`Missing contract! address: ${address} networkId: ${networkId}`);
+    //else if ()
+
+    return [contractCall, { error, dispatchCallAction }];
 }
 
 /**

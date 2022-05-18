@@ -1,4 +1,4 @@
-import { toChecksumAddress } from '../../utils/web3-utils/index.js'
+import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { getId as getContractId } from '../../contract/model/interface.js';
 import { ModelWithId } from '../../types/model.js';
 
@@ -24,6 +24,8 @@ export interface EthCall extends EthCallId {
     readonly id?: string;
     /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
     readonly returnValue?: any;
+    /** Last known error */
+    readonly error?: Error;
 }
 
 /** @internal */

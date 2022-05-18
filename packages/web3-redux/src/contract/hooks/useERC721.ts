@@ -42,18 +42,18 @@ export function useERC721(
     const ApprovalEventsOptions = sync?.ApprovalEventsOptions ?? { sync: false, past: false }; //Sync token Approval events, default just reads data
 
     //Static values
-    const name = useContractCall(networkId, address, 'name', [], { sync: 'ifnull' });
-    const symbol = useContractCall(networkId, address, 'symbol', [], {
+    const [name] = useContractCall(networkId, address, 'name', [], { sync: 'ifnull' });
+    const [symbol] = useContractCall(networkId, address, 'symbol', [], {
         sync: 'ifnull',
     });
 
     //if ownerOf is 'Transfer' we disable hook sync and dispatch our own custom solution
-    const ownerOf = useContractCall(networkId, address, 'ownerOf', [tokenId], {
+    const [ownerOf] = useContractCall(networkId, address, 'ownerOf', [tokenId], {
         sync: ownerOfSync,
     });
-    const tokenURI = useContractCall(networkId, address, 'tokenURI', [tokenId], {
+    const [tokenURI] = useContractCall(networkId, address, 'tokenURI', [tokenId], {
         sync: tokenURISync,
-    }) as string | undefined;
+    }) as [string | undefined, any];
 
     const uri = tokenURI ? new URL(tokenURI) : undefined;
     //Check NFT Metadata

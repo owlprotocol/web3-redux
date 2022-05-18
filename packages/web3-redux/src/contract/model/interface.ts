@@ -1,7 +1,7 @@
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 import { filter, keyBy } from '../../utils/lodash/index.js';
-import { AbiItem, toChecksumAddress } from '../../utils/web3-utils/index.js';
+import { AbiItem, toChecksumAddress, isAddress } from '../../utils/web3-utils/index.js';
 import { ModelWithId } from '../../types/model.js';
 import { Transaction } from '../../transaction/model/interface.js';
 
@@ -54,9 +54,10 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
 
 const SEPARATOR = '-';
 /** @internal */
-export function getId(id: ContractId): string {
+export function getId(id: Partial<ContractId>): string {
     const { networkId, address } = id;
-    return [networkId, toChecksumAddress(address)].join(SEPARATOR);
+    if (address && isAddress(address)) return [networkId, toChecksumAddress(address)].join(SEPARATOR);
+    return [networkId, address].join(SEPARATOR);
 }
 /** @internal */
 export function getIdDeconstructed(id: string): ContractId {

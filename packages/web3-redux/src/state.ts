@@ -10,6 +10,7 @@ import { Config } from './config/model/interface.js';
 import { Ipfs } from './ipfs/model/interface.js';
 import { Sync } from './sync/model/index.js';
 import { _4ByteSignature } from './4byte/model/interface.js';
+import { ReduxError } from './error/model/interface.js';
 import { ModelWithId } from './types/model.js';
 
 export interface StateRoot {
@@ -132,6 +133,11 @@ export interface State {
                 [contractEventIndexId: string]: string[];
             };
         };
+    };
+    /** Errors for redux actions */
+    Error: {
+        items: string[];
+        itemsById: { [id: string]: ReduxError };
     };
 }
 

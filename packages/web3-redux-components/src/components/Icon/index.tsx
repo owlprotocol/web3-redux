@@ -13,21 +13,21 @@ import { ReactComponent as TRXIcon } from './tokens/TRXIcon.svg';
 import { ReactComponent as XRPIcon } from './tokens/XRPIcon.svg';
 
 // Coin Flip
-import { ReactComponent as Coin } from './assets/Coin.svg';
-import { ReactComponent as HeadIcon } from './assets/HeadIcon.svg';
-import { ReactComponent as TailsIcon } from './assets/TailsIcon.svg';
-import { ReactComponent as TailsSmall } from './assets/TailsSmall.svg';
-import { ReactComponent as HeadSmall } from './assets/HeadSmall.svg';
+import { ReactComponent as Coin } from './general/Coin.svg';
+import { ReactComponent as HeadIcon } from './general/HeadIcon.svg';
+import { ReactComponent as TailsIcon } from './general/TailsIcon.svg';
+import { ReactComponent as TailsSmall } from './general/TailsSmall.svg';
+import { ReactComponent as HeadSmall } from './general/HeadSmall.svg';
 
 // Game Actions
-import { ReactComponent as DoubleIcon } from './assets/DoubleIcon.svg';
-import { ReactComponent as SplitIcon } from './assets/SplitIcon.svg';
-import { ReactComponent as StandIcon } from './assets/StandIcon.svg';
-import { ReactComponent as HitIcon } from './assets/HitIcon.svg';
+import { ReactComponent as DoubleIcon } from './general/DoubleIcon.svg';
+import { ReactComponent as SplitIcon } from './general/SplitIcon.svg';
+import { ReactComponent as StandIcon } from './general/StandIcon.svg';
+import { ReactComponent as HitIcon } from './general/HitIcon.svg';
 
-import { ReactComponent as ChevronIcon } from './assets/ChevronIcon.svg';
-import { ReactComponent as DepositIcon } from './assets/DepositIcon.svg';
-import { ReactComponent as AccountIcon } from './assets/AccountIcon.svg';
+import { ReactComponent as ChevronIcon } from './general/ChevronIcon.svg';
+import { ReactComponent as DepositIcon } from './general/DepositIcon.svg';
+import { ReactComponent as AccountIcon } from './general/AccountIcon.svg';
 
 // Navigation Icons
 import { ReactComponent as MenuAllGames } from './nav/MenuAllGames.svg';
@@ -38,31 +38,39 @@ import { ReactComponent as MenuBlackjack } from './nav/MenuBlackjack.svg';
 import { ReactComponent as MenuGovernance } from './nav/MenuGovernance.svg';
 
 // Header Actions
-import { ReactComponent as ThreeDotsIcon } from './assets/ThreeDotsIcon.svg';
-import { ReactComponent as PalleteIcon } from './assets/PalleteIcon.svg';
-import { ReactComponent as NotificationsIcon } from './assets/NotificationsIcon.svg';
-import { ReactComponent as CurrenciesIcon } from './assets/CurrenciesIcon.svg';
+import { ReactComponent as ThreeDotsIcon } from './general/ThreeDotsIcon.svg';
+import { ReactComponent as PalleteIcon } from './general/PalleteIcon.svg';
+import { ReactComponent as NotificationsIcon } from './general/NotificationsIcon.svg';
+import { ReactComponent as CurrenciesIcon } from './general/CurrenciesIcon.svg';
 
-import { ReactComponent as Avatar } from './assets/Avatar.svg';
-import { ReactComponent as About } from './assets/About.svg';
-import { ReactComponent as Docs } from './assets/Docs.svg';
-import { ReactComponent as Discord } from './assets/Discord.svg';
-import { ReactComponent as VSign } from './assets/VSign.svg';
-import { ReactComponent as Lock } from './assets/Lock.svg';
-import { ReactComponent as GameTable } from './assets/GameTable.svg';
-import { ReactComponent as GameCoins } from './assets/GameCoins.svg';
-import { ReactComponent as InfoIcon } from './assets/InfoIcon.svg';
-import { ReactComponent as Loader } from './assets/Loader.svg';
-import { ReactComponent as BrokenLink } from './assets/BrokenLink.svg';
+// General Icons
+import { ReactComponent as Avatar } from './general/Avatar.svg';
+import { ReactComponent as About } from './general/About.svg';
+import { ReactComponent as Docs } from './general/Docs.svg';
+import { ReactComponent as Discord } from './general/Discord.svg';
+import { ReactComponent as VSign } from './general/VSign.svg';
+import { ReactComponent as Lock } from './general/Lock.svg';
+import { ReactComponent as GameTable } from './general/GameTable.svg';
+import { ReactComponent as GameCoins } from './general/GameCoins.svg';
+import { ReactComponent as InfoIcon } from './general/InfoIcon.svg';
+import { ReactComponent as Loader } from './general/Loader.svg';
+import { ReactComponent as BrokenLink } from './general/BrokenLink.svg';
+import { ReactComponent as ArrowPositive } from './general/ArrowPositive.svg';
+import { ReactComponent as ArrowNegative } from './general/ArrowNegative.svg';
+import { ReactComponent as QR } from './general/QR.svg';
+import { ReactComponent as QRHover } from './general/QR.hover.svg';
+import { ReactComponent as QRSelected } from './general/QR.selected.svg';
 
-import { ReactComponent as ArrowPositive } from './assets/ArrowPositive.svg';
-import { ReactComponent as ArrowNegative } from './assets/ArrowNegative.svg';
-
+// Functional Icons
 import { ReactComponent as Heart } from './functions/Heart.svg';
 import { ReactComponent as HeartActive } from './functions/Heart.active.svg';
 import { ReactComponent as Copy } from './functions/copy.svg';
 import { ReactComponent as Pencil } from './functions/pencil.svg';
 import { ReactComponent as Search } from './functions/search.svg';
+
+// Signs
+import { ReactComponent as ExclamationMark } from './signs/ExclamationMark.svg';
+import { ReactComponent as FlowCheckMark } from './signs/FlowCheckMark.svg';
 
 // @ts-ignore
 export const ICONS = {
@@ -115,17 +123,15 @@ export const ICONS = {
     copy: <Copy />,
     pencil: <Pencil />,
     search: <Search />,
+    ExclamationMark: <ExclamationMark />,
+    FlowCheckMark: <FlowCheckMark />,
+    QR: <QR />,
+    QRHover: <QRHover />,
+    QRSelected: <QRSelected />,
 };
 
 // @ts-ignore
 const IconSelect = (icon: string | undefined) => ICONS[icon || 'ETH'];
-
-const Wrapper: any = styled.div`
-    & > svg {
-        width: 100% !important;
-        height: 100% !important;
-    }
-`;
 
 export interface Props {
     icon: string | undefined;
@@ -136,11 +142,18 @@ export interface Props {
     transform?: string;
     mr?: number;
 }
-const Icon = ({ icon, style, className, w = 10, h = 10, transform = '', mr }: Props) => {
+const Icon = ({ icon, style, className, w = 23, h = 23, transform = '', mr }: Props) => {
+    const Wrapper: any = styled.div`
+        & > svg {
+            width: ${w}px;
+            height: ${h}px;
+        }
+    `;
+
     const classNames = classnames('icon', icon, className);
 
     return (
-        <Box className={classNames} width={w} height={h} transform={transform} mr={mr}>
+        <Box className={classNames} transform={transform} mr={mr}>
             <Wrapper style={style}>{IconSelect(icon)}</Wrapper>
         </Box>
     );

@@ -1,4 +1,4 @@
-import InputField from '../../InputField';
+import { useTheme, Input, FormControl, FormErrorMessage } from '@chakra-ui/react';
 
 export interface Props {
     type: string;
@@ -9,17 +9,24 @@ export interface Props {
 
 const AbiEntityInput = ({ type, name, onChange, errMsg }: Props) => {
     const placeholder = `${name} (${type})`;
+    const { themes } = useTheme();
 
     return (
-        <div data-type={type} data-name={name}>
-            <InputField
+        <FormControl isInvalid={!!errMsg} pos={'relative'} mb={3}>
+            <Input
+                type="text"
+                p={4}
+                border={0}
+                w={'100%'}
+                borderRadius={8}
+                bg={themes.color6}
+                color={themes.color8}
                 placeholder={placeholder}
-                errMsg={errMsg}
-                // @ts-ignore
+                _placeholder={{ color: themes.color8 }}
                 onChange={({ target }: any) => onChange(name, target.value, type)}
             />
-            <br />
-        </div>
+            {errMsg && <FormErrorMessage>*{errMsg}</FormErrorMessage>}
+        </FormControl>
     );
 };
 

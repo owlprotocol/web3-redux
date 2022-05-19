@@ -1,24 +1,11 @@
 import { useState } from 'react';
-import { Popover, PopoverContent, PopoverTrigger, PopoverBody, Box, useTheme } from '@chakra-ui/react';
-import styled from '@emotion/styled';
-import { ReactComponent as QRIcon } from './assets/qr.svg';
-import { ReactComponent as QRHoverIcon } from './assets/qr-hover.svg';
-import { ReactComponent as QRSelectedIcon } from './assets/qr-selected.svg';
+import { Popover, PopoverContent, PopoverTrigger, PopoverBody, Box, IconButton, useTheme } from '@chakra-ui/react';
 import Erc20QRGenerator from '../Erc20QRGenerator';
+import Icon from '../Icon';
 
 export interface Props {
     address: string;
 }
-
-const QRbutton = styled.button`
-    width: 28px;
-    height: 28px;
-    margin-right: 16px;
-
-    svg {
-        font-size: 28px;
-    }
-`;
 
 const QRCodePopover = ({ address }: Props) => {
     const { themes } = useTheme();
@@ -28,13 +15,23 @@ const QRCodePopover = ({ address }: Props) => {
     return (
         <Popover closeOnBlur={false} onClose={() => setSelected(false)} placement="bottom">
             <PopoverTrigger>
-                <QRbutton
+                <IconButton
+                    aria-label="a QR code"
+                    bg={'transparent'}
+                    _hover={{ bg: 'transparent' }}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                     onClick={() => setSelected(true)}
-                >
-                    {isSelected ? <QRSelectedIcon /> : isHovered ? <QRHoverIcon /> : <QRIcon />}
-                </QRbutton>
+                    icon={
+                        isSelected ? (
+                            <Icon icon="QRSelected" />
+                        ) : isHovered ? (
+                            <Icon icon="QRHover" />
+                        ) : (
+                            <Icon icon="QR" />
+                        )
+                    }
+                />
             </PopoverTrigger>
 
             {/* @ts-ignore */}

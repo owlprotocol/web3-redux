@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import { useTheme } from '@chakra-ui/react';
+import { useTheme, Button, Box } from '@chakra-ui/react';
 import { Config, Contract } from '@owlprotocol/web3-redux';
 import { fromWei } from 'web3-utils';
 import composeHooks from 'react-hooks-compose';
 import Icon from '../Icon';
-import Button from '../Button';
 import { isSupportedNetworkId } from '../../constants/web3React';
 import { shortenHash } from '../../utils';
 import useMetamask from '../../hooks/useMetamask';
@@ -56,7 +55,9 @@ export const WalletConnectPresenter = ({
     if (networkId && !isSupportedNetworkId(networkId)) {
         return (
             <div>
-                <Icon icon="broken-link" w="20px" h="20px" />
+                <Box w="20px" h="20px">
+                    <Icon icon="broken-link" />
+                </Box>
                 <span>Wrong Network</span>
             </div>
         );
@@ -69,10 +70,11 @@ export const WalletConnectPresenter = ({
                 bg={themes.color6}
                 color={themes.color7}
                 onClick={connectWallet}
-                text="Connect Wallet"
                 borderRadius={12}
                 fontWeight={'bold'}
-            />
+            >
+                Connect Wallet
+            </Button>
         </div>
     );
 };

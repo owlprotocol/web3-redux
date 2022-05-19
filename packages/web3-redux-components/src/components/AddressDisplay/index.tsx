@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useTheme, Box, Button, Input } from '@chakra-ui/react';
+import { useTheme, Box, Button, IconButton, Input } from '@chakra-ui/react';
 import copy from 'copy-to-clipboard';
+import Icon from '../Icon';
 import QRCodePopover from '../QRCodePopover';
-import OwlButton from '../Button';
 
 export interface Props {
     address: string;
@@ -42,7 +42,7 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12 }: Props
     };
 
     return (
-        <Box display={'flex'} alignItems={'center'} p={2} bg={themes.color6} borderRadius={borderRadius} h={'45px'}>
+        <Box display={'flex'} alignItems={'center'} p={2} bg={themes.color6} borderRadius={borderRadius} h={'60px'}>
             <QRCodePopover address={address} />
 
             {editLabel && (
@@ -85,9 +85,24 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12 }: Props
                 </Box>
             ) : (
                 <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-                    <OwlButton onClick={handleCopy} icon="copy" />
-                    <OwlButton onClick={handleFavorite} icon={_isFavorite ? 'heart.active' : 'heart'} />
-                    <OwlButton onClick={() => setEditLabel(true)} icon="pencil" />
+                    <IconButton
+                        bg={'transparent'}
+                        onClick={handleCopy}
+                        aria-label={'copy to clipboard'}
+                        icon={<Icon icon="copy" />}
+                    />
+                    <IconButton
+                        bg={'transparent'}
+                        onClick={handleFavorite}
+                        aria-label={'mark as favorite'}
+                        icon={<Icon icon={_isFavorite ? 'heart.active' : 'heart'} />}
+                    />
+                    <IconButton
+                        bg={'transparent'}
+                        onClick={() => setEditLabel(true)}
+                        aria-label={'click to edit'}
+                        icon={<Icon icon="pencil" />}
+                    />
                 </Box>
             )}
         </Box>

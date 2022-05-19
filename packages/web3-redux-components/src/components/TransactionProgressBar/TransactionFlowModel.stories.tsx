@@ -9,9 +9,9 @@ const Template: ComponentStory<typeof TransactionProgressBar> = (args: any) => (
 export const Main = Template.bind({});
 
 const Args: Props = {
-    stage: 1,
+    stage: 2,
     labels: ['Allow LINK spend', 'Receive allowance confirmation', 'Swap tokens', 'Confirmation'],
-    stageError: 1,
+    stageError: 2,
 };
 
 Main.args = Args;

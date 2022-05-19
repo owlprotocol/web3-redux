@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import _ from 'lodash';
-import { Textarea, Box, useTheme } from '@chakra-ui/react';
+import { Textarea, Box, Button, useTheme } from '@chakra-ui/react';
 import Web3 from 'web3';
 import AbiEntityInput from './AbiEntityInput';
 import { writeToContract } from './functions';
-import Button from '../Button';
 
 const TYPES_TO_INCLUDE = ['constructor', 'address', 'function', 'bool', 'string', 'uint8', 'uint256', 'byte'];
 
@@ -96,10 +95,13 @@ const AbiForm = () => {
                                             />
                                         );
                                     })}
-                                    <Button text="Write" onClick={() => handleSubmit(entity.name)} bg={themes.color1} />
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Button onClick={() => handleSubmit(entity.name)} bg={themes.color1}>
+                                        Write
+                                    </Button>
                                     {!_.isEmpty(results) && (
-                                        <Button text="Show Transaction" onClick={() => null} bg={themes.color2} />
+                                        <Button onClick={() => null} bg={themes.color2} ml={4}>
+                                            Show Transaction
+                                        </Button>
                                     )}
                                 </div>
                             )}

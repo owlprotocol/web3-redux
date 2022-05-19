@@ -18,13 +18,15 @@ export type GenericSync = EventSync | 'Block' | 'Transaction' | number | 'once';
  * @category Actions
  */
 export function createSyncForActions(
-    networkId: string,
+    networkId: string | undefined,
     actions: AnyAction[],
     sync: GenericSync,
-    address: string,
+    address: string | undefined,
 ): Sync | undefined {
     //Default sync
-    if (sync === 'once') {
+    if (!networkId || !address) {
+        return undefined;
+    } else if (sync === 'once') {
         return undefined;
     } else if (sync === 'Transaction') {
         return createTransactionSyncForAddress(networkId, actions, address);

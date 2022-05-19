@@ -33,7 +33,7 @@ export const useWalletConnect = () => {
         }
     }, [connectWallet, web3]);
 
-    return { networkId, balance: balanceFormatted, connectWallet, btnText };
+    return { networkId, balance: balanceFormatted, connectWallet, btnText, showBalance: !!balance };
 };
 
 export interface PresenterProps {
@@ -81,7 +81,7 @@ export const WalletConnectPresenter = ({
 
 const WalletConnect = composeHooks(() => ({
     useWalletConnect: () => useWalletConnect(),
-}))(WalletConnectPresenter) as ({}: any) => JSX.Element;
+}))(WalletConnectPresenter) as ({ }: any) => JSX.Element;
 
 //@ts-expect-error
 WalletConnect.displayName = 'WalletConnect';

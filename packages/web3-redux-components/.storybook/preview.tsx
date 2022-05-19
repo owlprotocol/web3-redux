@@ -6,8 +6,8 @@ import {
     Network, Contract, TestData, store,
     Environment
 } from '@owlprotocol/web3-redux';
+import { networkIdArgType, addressArgType, locationHashArgType, transactionHashArgType } from '../src/test/storybookArgs';
 
-// @ts-ignore
 Environment.setEnvironment(getEnvironment());
 
 import { THEME_COLORS } from '../src/constants';
@@ -53,6 +53,10 @@ export const decorators = [
             Network.create({ networkId: '137' }),   //Polygon
             Contract.create(TestData.contractVITALIK),
             Contract.create(TestData.contractWETH),
+            Contract.create(TestData.contractUSDC),
+            Contract.create(TestData.contractTETHER),
+            Contract.create(TestData.contractCHAINLINK),
+            Contract.create(TestData.contractVeeFriendsSeries2)
         ]);
         return (
             <Web3ReactProvider getLibrary={getLibrary}>

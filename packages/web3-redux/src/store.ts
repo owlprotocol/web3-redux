@@ -37,8 +37,11 @@ export const createStore = (options?: CreateStoreOptions) => {
 
     const reducer = persistStorage ? createRootReducer(createReducerWeb3ReduxWithPersist(persistStorage)) : rootReducer;
 
-    //Enable redux-devtools support
-    const composeEnhancers = isClient() ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?? compose : compose;
+    //Enable redux-devtools support, tracing
+    const reduxDevToolsExists = isClient() && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    const composeEnhancers = reduxDevToolsExists ?
+        (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 10 })
+        : compose;
     const sagaMiddleware = createSagaMiddleware();
     const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
     const store = createReduxStore(reducer, composeEnhancers(rootMiddleware));

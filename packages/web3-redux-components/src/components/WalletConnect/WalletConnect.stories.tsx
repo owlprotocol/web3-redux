@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { networkIdArgType } from '../../test/storybookArgs';
 import { WalletConnect, WalletConnectPresenter, PresenterProps } from './index';
 
 export default {
@@ -8,8 +9,11 @@ export default {
 
 const MainTemplate: ComponentStory<typeof WalletConnect> = (args) => <WalletConnect {...args} />;
 export const Main = MainTemplate.bind({});
+Main.argTypes = {
+    networkId: networkIdArgType
+}
 
-const PresenterTemplate: ComponentStory<typeof WalletConnect> = (args) => <WalletConnectPresenter {...args} />;
+const PresenterTemplate: ComponentStory<typeof WalletConnectPresenter> = (args) => <WalletConnectPresenter {...args} />;
 export const PresenterMain = PresenterTemplate.bind({});
 
 const args: PresenterProps = {
@@ -18,3 +22,6 @@ const args: PresenterProps = {
 };
 
 PresenterMain.args = args;
+PresenterMain.argTypes = {
+    networkId: networkIdArgType
+}

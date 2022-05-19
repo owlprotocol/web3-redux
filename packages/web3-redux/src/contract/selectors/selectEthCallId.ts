@@ -21,22 +21,25 @@ const selectEthCallIdSelector = createSelector(
         const method = web3Contract.methods[methodName]; //Get web3Contract method
         if (!method) return undefined;
 
-        let tx: any;
-        if (!args || args.length == 0) {
-            tx = method();
-        } else {
-            tx = method(...args);
+        try {
+            let tx: any;
+            if (!args || args.length == 0) {
+                tx = method();
+            } else {
+                tx = method(...args);
+            }
+            const data = tx.encodeABI();
+            const ethCallId = getEthCallId({
+                networkId: contract.networkId,
+                from,
+                to: contract.address,
+                defaultBlock,
+                data,
+            });
+            return ethCallId;
+        } catch (error) {
+            return undefined;
         }
-        const data = tx.encodeABI();
-        const ethCallId = getEthCallId({
-            networkId: contract.networkId,
-            from,
-            to: contract.address,
-            defaultBlock,
-            data,
-        });
-
-        return ethCallId;
     },
 );
 

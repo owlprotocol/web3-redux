@@ -1,13 +1,13 @@
 import { AbiType, StateMutabilityType } from 'web3-utils';
 import AbiItemForm from '../AbiItemForm';
 interface AbiFormProps {
-    name: string | undefined,
+    name: string | undefined;
     inputs: {
         name: string | undefined;
         type: string;
-    }[],
-    type: AbiType,
-    stateMutability: StateMutabilityType,
+    }[];
+    type: AbiType;
+    stateMutability: StateMutabilityType;
 }
 interface Props {
     networkId: string;
@@ -15,19 +15,14 @@ interface Props {
     abi: AbiFormProps[];
 }
 
-const ContractAbiForm = ({
-    networkId,
-    address,
-    abi
-}: Props) => {
-
-    const abiRead = abi
-        .filter((a) => a.type === 'function');
+const ContractAbiForm = ({ networkId, address, abi }: Props) => {
+    const abiRead = abi.filter((a) => a.type === 'function');
     //.filter((a) => a.stateMutability === 'pure' || a.stateMutability === 'view')
 
     return (
         <div>
-            {//<form>
+            {
+                //<form>
             }
             {abiRead.map((fnAbi, key: number) => (
                 <div key={key}>
@@ -35,7 +30,8 @@ const ContractAbiForm = ({
                     <br />
                 </div>
             ))}
-            {//</form>
+            {
+                //</form>
             }
         </div>
     );

@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import _ from 'lodash';
 import { Textarea, useTheme } from '@chakra-ui/react';
 import ContractAbiForm from '../ContractAbiForm';
 import AbiItemInput from '../AbiItemInput';
 
 interface Props {
-    networkId: string
+    networkId: string;
 }
 
 const ContractAbiPage = ({ networkId }: Props) => {
@@ -16,16 +15,16 @@ const ContractAbiPage = ({ networkId }: Props) => {
     //TODO: Add validation
     let abi;
     try {
-        console.debug(abiJSON)
+        console.debug(abiJSON);
         abi = abiJSON ? JSON.parse(abiJSON) : undefined;
     } catch (error) {
-
+        console.error(error);
     }
 
     return (
         <div>
             <div>
-                <AbiItemInput type="address" onChange={(value) => setAddress(address)} />
+                <AbiItemInput type="address" onChange={(value) => setAddress(value)} />
                 <Textarea
                     h="180px"
                     bg={themes.color4}
@@ -37,9 +36,7 @@ const ContractAbiPage = ({ networkId }: Props) => {
             </div>
             <br />
             <br />
-            {
-                address && <ContractAbiForm networkId={networkId} address={address} abi={abi} />
-            }
+            {address && <ContractAbiForm networkId={networkId} address={address} abi={abi} />}
         </div>
     );
 };

@@ -10,5 +10,5 @@ const Template: ComponentStory<typeof ContractAbiPage> = (args: any) => <Contrac
 export const Main = Template.bind({});
 
 Main.args = {
-    networkId: '1'
+    networkId: '1',
 };

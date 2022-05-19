@@ -81,7 +81,7 @@ export const WalletConnectPresenter = ({
 
 const WalletConnect = composeHooks(() => ({
     useWalletConnect: () => useWalletConnect(),
-}))(WalletConnectPresenter) as ({ }: any) => JSX.Element;
+}))(WalletConnectPresenter) as ({}: any) => JSX.Element;
 
 //@ts-expect-error
 WalletConnect.displayName = 'WalletConnect';

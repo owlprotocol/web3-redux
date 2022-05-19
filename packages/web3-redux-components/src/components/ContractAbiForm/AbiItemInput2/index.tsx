@@ -46,7 +46,7 @@ export interface Props {
     onChange?: (value: string | boolean | undefined, error: Error | undefined) => void;
 }
 
-const AbiItemInput = ({ type, name, onChange = () => { } }: Props) => {
+const AbiItemInput = ({ type, name, onChange = () => null }: Props) => {
     const [error, setError] = useState<Error | undefined>();
     const [value, setValue] = useState<string | boolean | undefined>();
 
@@ -95,7 +95,7 @@ const AbiItemInput = ({ type, name, onChange = () => { } }: Props) => {
                 return;
             }
         },
-        [onChange],
+        [onChange, type],
     );
 
     //Custom NumberInput Add-on to add unit selector
@@ -108,13 +108,13 @@ const AbiItemInput = ({ type, name, onChange = () => { } }: Props) => {
                             <Input
                                 placeholder={placeholder}
                                 value={value as string | undefined}
-                                onChange={({ target }) => onChangeValidate(target.value)}
+                                onChange={({ target }: any) => onChangeValidate(target.value)}
                             />
                         ),
                         boolean: (
                             <>
                                 <FormLabel>{placeholder}</FormLabel>
-                                <Checkbox onChange={({ target }) => onChangeValidate(target.checked)} />
+                                <Checkbox onChange={({ target }: any) => onChangeValidate(target.checked)} />
                             </>
                         ),
                         number: (

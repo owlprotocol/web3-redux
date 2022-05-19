@@ -10,7 +10,7 @@ export interface SendActionInput {
     address?: string;
     method?: string;
     args?: any[];
-    from: string;
+    from?: string;
     gasPrice?: string;
     gas?: string;
     value?: string;

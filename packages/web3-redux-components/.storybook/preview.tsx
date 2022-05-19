@@ -54,6 +54,9 @@ export const decorators = [
             Network.create({ networkId: '137' }),   //Polygon
             Contract.create(TestData.contractVITALIK),
             Contract.create(TestData.contractWETH),
+            Contract.create(TestData.contractUSDC),
+            Contract.create(TestData.contractTETHER),
+            Contract.create(TestData.contractCHAINLINK),
             Contract.create(TestData.contractVeeFriendsSeries2)
         ]);
         return (

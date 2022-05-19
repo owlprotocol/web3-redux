@@ -2,6 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Abi, TestData } from '@owlprotocol/web3-redux'
 import { AbiItem } from 'web3-utils';
 import AbiItemForm from '.';
+import { addressArgType, networkIdArgType } from '../../../test/storybookArgs';
 
 export default {
     title: 'ContractAbi/AbiItemForm2',
@@ -9,9 +10,8 @@ export default {
 } as ComponentMeta<typeof AbiItemForm>;
 
 const Template: ComponentStory<typeof AbiItemForm> = (args: any) => <AbiItemForm {...args} />;
-const address = TestData.WETH;
+const address = TestData.USDC;
 
-//0x08638ef1a205be6762a8b935f5da9b700cf7322c
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const totalSupplyAbi = Abi.IERC20.abi.find((a) => a.name === 'totalSupply')!;
 const { name: nameTotalSupply, inputs: inputsTotalSupply, type: typeTotalSupply, stateMutability: stateMutabilityTotalSupply } = totalSupplyAbi as AbiItem;
@@ -25,6 +25,10 @@ TotalSupply.args = {
     type: typeTotalSupply,
     stateMutability: stateMutabilityTotalSupply
 };
+TotalSupply.argTypes = {
+    networkId: networkIdArgType,
+    address: addressArgType
+}
 
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const balanceOfAbi = Abi.IERC20.abi.find((a) => a.name === 'balanceOf')!;
@@ -39,6 +43,10 @@ BalanceOf.args = {
     type: typeBalanceOf,
     stateMutability: stateMutabilityBalanceOf
 };
+BalanceOf.argTypes = {
+    networkId: networkIdArgType,
+    address: addressArgType
+}
 
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const transferAbi = Abi.IERC20.abi.find((a) => a.name === 'transfer')!;
@@ -53,6 +61,10 @@ Transfer.args = {
     type,
     stateMutability
 };
+Transfer.argTypes = {
+    networkId: networkIdArgType,
+    address: addressArgType
+}
 
 export const UndefinedNetwork = Template.bind({});
 UndefinedNetwork.args = {
@@ -75,6 +87,11 @@ NonExistentNetwork.args = {
     type: typeTotalSupply,
     stateMutability: stateMutabilityTotalSupply
 };
+NonExistentNetwork.argTypes = {
+    networkId: networkIdArgType,
+    address: addressArgType
+}
+
 
 export const UndefinedContract = Template.bind({});
 UndefinedContract.args = {
@@ -86,6 +103,9 @@ UndefinedContract.args = {
     type: typeTotalSupply,
     stateMutability: stateMutabilityTotalSupply
 };
+UndefinedContract.argTypes = {
+    networkId: networkIdArgType,
+}
 
 export const NonExistentContract = Template.bind({});
 NonExistentContract.args = {
@@ -97,3 +117,10 @@ NonExistentContract.args = {
     type: typeTotalSupply,
     stateMutability: stateMutabilityTotalSupply
 };
+NonExistentContract.argTypes = {
+    networkId: networkIdArgType,
+    address: {
+        options: ['0x0'],
+        control: { type: 'select' }
+    }
+}

@@ -1,5 +1,5 @@
 import { TestData } from '@owlprotocol/web3-redux';
-const { ADDRESS_0, VITALIK, WETH } = TestData;
+const { ADDRESS_0, VITALIK, WETH, USDC, TETHER, CHAINLINK } = TestData;
 
 export const networkIdArgType = {
     options: ['1', '10', '137', '200'],
@@ -9,6 +9,9 @@ export const networkIdArgType = {
 const addressLabels = {
     [ADDRESS_0]: `ZERO - ${ADDRESS_0}`,
     [WETH]: `WETH - ${WETH}`,
+    [USDC]: `USDC - ${USDC}`,
+    [TETHER]: `TETHER - ${TETHER}`,
+    [CHAINLINK]: `LINK - ${CHAINLINK}`,
     [VITALIK]: `VITALIK ${VITALIK}`,
 };
 export const addressArgType = {

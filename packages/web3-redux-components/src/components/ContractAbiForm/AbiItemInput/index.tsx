@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
+import { useTheme, Input, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import Web3 from 'web3';
-import InputField from '../../InputField';
 
 const web3 = new Web3();
 const coder = web3.eth.abi;
@@ -12,6 +12,7 @@ export interface Props {
 }
 
 const AbiItemInput = ({ type, name, onChange }: Props) => {
+    const { themes } = useTheme();
     const [error, setError] = useState<Error | undefined>();
 
     let placeholder: string;
@@ -49,19 +50,25 @@ const AbiItemInput = ({ type, name, onChange }: Props) => {
             setError(undefined);
             onChange(value, undefined);
         },
-        [type, onChange],
+        [onChange, type],
     );
 
     return (
-        <div data-type={type} data-name={name}>
-            <InputField
+        <FormControl isInvalid={!!error} pos={'relative'} mb={3}>
+            <Input
+                type="text"
+                p={4}
+                border={0}
+                w={'100%'}
+                borderRadius={8}
+                bg={themes.color6}
+                color={themes.color8}
                 placeholder={placeholder}
-                errMsg={error ? error.message : undefined}
-                // @ts-ignore
+                _placeholder={{ color: themes.color8 }}
                 onChange={({ target }: any) => onChangeValidate(target.value)}
             />
-            <br />
-        </div>
+            {error && <FormErrorMessage>*{error.message}</FormErrorMessage>}
+        </FormControl>
     );
 };
 

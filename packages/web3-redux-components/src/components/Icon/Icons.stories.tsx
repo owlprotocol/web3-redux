@@ -12,9 +12,9 @@ export const Main = Template.bind({});
 
 const args: Props = {
     icon: 'ETH',
-    w: 20,
-    h: 20,
-    transform: 'rotate(20deg)',
+    w: 65,
+    h: 65,
+    transform: 'rotate(0deg)',
 };
 Main.args = args;
 

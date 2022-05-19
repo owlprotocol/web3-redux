@@ -1,7 +1,7 @@
-import { Box, Select, CloseButton, useTheme } from '@chakra-ui/react';
+import { Box, Select, IconButton, CloseButton, useTheme } from '@chakra-ui/react';
 import { useState } from 'react';
 import copy from 'copy-to-clipboard';
-import OwlButton from '../Button';
+import Icon from '../Icon';
 
 export interface Props {
     address: string[];
@@ -44,7 +44,11 @@ const AddressDropdown = ({ address = [] }: Props) => {
                 ))}
             </Select>
             <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} pr={1}>
-                <OwlButton onClick={() => handleCopy(selectedAddress)} icon="copy" text="" />
+                <IconButton
+                    aria-label="click to copy address"
+                    onClick={() => handleCopy(selectedAddress)}
+                    icon={<Icon icon="copy" />}
+                />
                 <CloseButton onClick={handleReset} />
             </Box>
         </Box>

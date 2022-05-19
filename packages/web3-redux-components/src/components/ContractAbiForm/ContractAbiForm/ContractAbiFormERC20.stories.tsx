@@ -17,6 +17,7 @@ ERC20Read.args = {
 };
 
 const VEE_FRIENDS_2 = '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18';
+
 export const ERC721Read = Template.bind({});
 ERC721Read.args = {
     networkId: '1',

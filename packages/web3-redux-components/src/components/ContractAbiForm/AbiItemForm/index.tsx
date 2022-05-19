@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Box, useTheme } from '@chakra-ui/react';
+import { Box, Button, useTheme } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { AbiType, StateMutabilityType } from 'web3-utils';
 import { Contract } from '@owlprotocol/web3-redux';
 import AbiItemInput from '../AbiItemInput';
-import Button from '../../Button';
 
 //TODO
 //Formik integration
@@ -15,7 +14,7 @@ import Button from '../../Button';
 interface Props {
     networkId: string;
     address: string;
-    account: string | undefined;
+    account?: string;
     namePrefix: string;
     name: string; //| undefined; TODO: handle fallback method
     inputs: {
@@ -100,7 +99,7 @@ const AbiItemForm = ({
                 }),
             );
         }
-    }, [networkId, address, name, args, account, validCallArgs, dispatch]);
+    }, [networkId, address, validCallArgs, account, args, dispatch, name]);
 
     return (
         <Box borderRadius="md" bg={themes.color3} color="white" p={3}>
@@ -122,9 +121,16 @@ const AbiItemForm = ({
                         />
                     );
                 })}
-                {write && <Button text="Send" onClick={sendTx} bg={themes.color1} />}
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                {write && <Button text="Show Transaction" onClick={() => null} bg={themes.color2} />}
+                {write && (
+                    <Button onClick={sendTx} bg={themes.color1}>
+                        Write
+                    </Button>
+                )}
+                {write && (
+                    <Button onClick={() => null} bg={themes.color2} ml={4}>
+                        Show Transaction
+                    </Button>
+                )}
                 {contractCall}
             </div>
         </Box>

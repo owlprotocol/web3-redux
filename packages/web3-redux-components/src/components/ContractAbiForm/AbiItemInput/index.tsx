@@ -1,74 +1,160 @@
 import { useCallback, useState } from 'react';
-import { useTheme, Input, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import Web3 from 'web3';
+import {
+    useTheme,
+    HStack,
+    Input,
+    NumberInput,
+    Checkbox,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInputField,
+    NumberInputStepper,
+    FormErrorMessage,
+    FormControl,
+    FormLabel,
+} from '@chakra-ui/react';
 
 const web3 = new Web3();
 const coder = web3.eth.abi;
 
+type AbiItemInputType =
+    | 'string'
+    | 'address'
+    | 'boolean'
+    | 'bytes'
+    | 'bytes32'
+    | 'byte16'
+    | 'bytes8'
+    | 'bytes4'
+    | 'uint256'
+    | 'uint128'
+    | 'uint64'
+    | 'uint32'
+    | 'uint16'
+    | 'uint8'
+    | 'uint4'
+    | 'int256'
+    | 'int128'
+    | 'int64'
+    | 'int32'
+    | 'int16'
+    | 'int8'
+    | 'int4';
+
 export interface Props {
-    type: string;
+    type: AbiItemInputType;
     name?: string | undefined;
-    onChange: (value: string | undefined, error: Error | undefined) => void;
+    onChange?: (value: string | boolean | undefined, error: Error | undefined) => void;
 }
 
-const AbiItemInput = ({ type, name, onChange }: Props) => {
+//eslint-disable-next-line @typescript-eslint/no-empty-function
+const AbiItemInput = ({ type, name, onChange = () => {} }: Props) => {
     const { themes } = useTheme();
+
     const [error, setError] = useState<Error | undefined>();
+    const [value, setValue] = useState<string | boolean | undefined>();
 
     let placeholder: string;
     if (!name) placeholder = `${type}`;
     else placeholder = `${name} (${type})`;
 
+    let inputType: 'string' | 'number' | 'boolean' = 'string';
+    if (type.startsWith('uint') || type.startsWith('int')) inputType = 'number';
+    else if (type === 'boolean') inputType = 'boolean';
+
     const onChangeValidate = useCallback(
-        (_value: string) => {
-            let value = _value;
+        (_value: string | boolean) => {
+            if (typeof _value == 'boolean') {
+                setError(undefined);
+                setValue(_value);
+                onChange(_value, undefined);
+                return;
+            }
 
             //Empty
-            if (value.length == 0) {
+            if (_value.length == 0) {
                 setError(undefined);
+                setValue(undefined);
                 onChange(undefined, undefined);
                 return;
             }
 
             //Address
             //TODO: Update input field value
-            if (type === 'address' && Web3.utils.isAddress(value.toLowerCase())) {
-                value = Web3.utils.toChecksumAddress(value);
-                console.debug({ value, _value });
+            if (type === 'address' && Web3.utils.isAddress(_value.toLowerCase())) {
+                _value = Web3.utils.toChecksumAddress(_value);
             }
 
             //Validate
             try {
-                coder.encodeParameter(type, value);
-            } catch (error: any) {
-                setError(error);
-                onChange(value, error);
+                coder.encodeParameter(type, _value);
+                //Format is valid
+                setError(undefined);
+                setValue(_value);
+                onChange(_value, undefined);
+            } catch (_error: any) {
+                setError(_error);
+                setValue(_value);
+                onChange(_value, _error);
                 return;
             }
-
-            //Format address if valid
-            setError(undefined);
-            onChange(value, undefined);
         },
         [onChange, type],
     );
 
+    //Custom NumberInput Add-on to add unit selector
     return (
-        <FormControl isInvalid={!!error} pos={'relative'} mb={3}>
-            <Input
-                type="text"
-                p={4}
-                border={0}
-                w={'100%'}
-                borderRadius={8}
-                bg={themes.color6}
-                color={themes.color8}
-                placeholder={placeholder}
-                _placeholder={{ color: themes.color8 }}
-                onChange={({ target }: any) => onChangeValidate(target.value)}
-            />
-            {error && <FormErrorMessage>*{error.message}</FormErrorMessage>}
-        </FormControl>
+        <>
+            <FormControl isInvalid={!!error}>
+                {
+                    {
+                        string: (
+                            <Input
+                                type="text"
+                                p={4}
+                                border={0}
+                                w={'100%'}
+                                borderRadius={8}
+                                bg={themes.color6}
+                                color={themes.color8}
+                                placeholder={placeholder}
+                                _placeholder={{ color: themes.color8 }}
+                                onChange={({ target }: any) => onChangeValidate(target.value)}
+                                value={value as string | undefined}
+                            />
+                        ),
+                        boolean: (
+                            <HStack alignItems={'center'}>
+                                <Checkbox
+                                    bg={themes.color6}
+                                    onChange={({ target }: any) => onChangeValidate(target.checked)}
+                                />
+                                <FormLabel color={themes.color8} m={0}>{placeholder}</FormLabel>
+                            </HStack>
+                        ),
+                        number: (
+                            <NumberInput
+                                border={0}
+                                w={'100%'}
+                                borderRadius={8}
+                                bg={themes.color6}
+                                color={themes.color8}
+                                placeholder={placeholder}
+                                onChange={onChangeValidate}
+                            >
+                                <NumberInputField placeholder={placeholder} />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                            </NumberInput>
+                        ),
+                    }[inputType]
+                }
+                <FormErrorMessage>{error?.message}</FormErrorMessage>
+            </FormControl>
+        </>
     );
 };
 

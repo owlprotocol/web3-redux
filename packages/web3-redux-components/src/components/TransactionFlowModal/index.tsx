@@ -9,19 +9,10 @@ import {
     Button,
     useTheme,
 } from '@chakra-ui/react';
-import styled from 'styled-components';
 import { ReactComponent as CardIcon } from './assets/card.svg';
 import { ReactComponent as InProgressIcon } from './assets/inprog.svg';
 import { ReactComponent as ConfirmedIcon } from './assets/confirmed.svg';
 import TransactionProgressBar from '../TransactionProgressBar';
-
-const TransactionProgressBarWrapper = styled.div`
-    width: 100%;
-    max-width: 550px;
-    margin: 12px auto 86px;
-    height: 100px;
-    border-radius: 8px;
-`;
 
 export interface Props {
     isOpen: boolean;
@@ -61,9 +52,9 @@ const TransactionFlowModal = ({ isOpen, tokenName, stage, actionHandler }: Props
                 <ModalOverlay />
                 <ModalContent bg={themes.color5} borderRadius={'8px'}>
                     <ModalBody>
-                        <TransactionProgressBarWrapper>
+                        <Box w={'100%'} maxW={550} h={100} m="12px auto 86px" borderRadius={'8px'}>
                             <TransactionProgressBar stage={stage} labels={TXFlowLabels} />
-                        </TransactionProgressBarWrapper>
+                        </Box>
                         <Box w="96px" h="72px" margin={'0 auto 24px'}>
                             <StatusIcon icon={stage} />
                         </Box>

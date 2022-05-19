@@ -1,17 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { withThemeProvider } from '../../hoc';
 import SingleNFTInstance from '.';
-
-const Wrapper = withThemeProvider((props: any) => {
-    return <SingleNFTInstance {...props} />;
-});
 
 export default {
     title: 'NFT/SingleNFTInstance',
     component: SingleNFTInstance,
 } as ComponentMeta<typeof SingleNFTInstance>;
 
-const Template: ComponentStory<typeof SingleNFTInstance> = (args: any) => <Wrapper {...args} />;
+const Template: ComponentStory<typeof SingleNFTInstance> = (args: any) => <SingleNFTInstance {...args} />;
 
 export const Main = Template.bind({});
 

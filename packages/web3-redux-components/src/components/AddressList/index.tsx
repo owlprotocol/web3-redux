@@ -2,10 +2,11 @@ import { Box, Tag, CloseButton, useTheme } from '@chakra-ui/react';
 import { useState } from 'react';
 import _ from 'lodash';
 import Pagination from 'rc-pagination';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const CONTAINER_HEIGHT = '500px';
-const Wrapper = styled.div`
+
+const RCPaginationStyles = styled.div`
     .page-controls {
         list-style-type: none;
         display: flex;
@@ -46,7 +47,7 @@ const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: Props) 
     const visibleItems = _.chunk(items, pageSize);
 
     return (
-        <Wrapper>
+        <RCPaginationStyles>
             <Box borderRadius={'12px'} bg={themes.color6} p={'16px'}>
                 <Box mb={8} height={CONTAINER_HEIGHT} overflowY={'auto'}>
                     <Box flexWrap={'wrap'} flexDir={'row'}>
@@ -92,7 +93,7 @@ const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: Props) 
                     </div>
                 </Box>
             </Box>
-        </Wrapper>
+        </RCPaginationStyles>
     );
 };
 

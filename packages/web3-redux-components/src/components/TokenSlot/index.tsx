@@ -1,57 +1,5 @@
-import { useTheme, Badge } from '@chakra-ui/react';
-import styled from 'styled-components';
+import { useTheme, HStack, Box, Badge } from '@chakra-ui/react';
 import Icon from '../Icon';
-
-const Wrapper: any = styled.div`
-    background: ${(props: any) => props.color5};
-    border-radius: 12px;
-    width: 264px;
-    padding: 16px;
-    box-shadow: inset 0px 1px 4px 0px rgb(95 99 109 / 57%);
-    border: ${(props: any) => props.isSelected && '1px solid rgba(68, 71, 226, 1)'};
-`;
-
-const Flex: any = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: ${(props: any) => props.centered && 'space-between'};
-`;
-
-const BoxWrapper: any = styled.div`
-    background-color: #1c1c24;
-    box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.25);
-    border: 6px solid;
-    border-color: ${(props: any) => props.color6};
-    padding: 7px 12px;
-    border-radius: 12px;
-`;
-
-const Name = styled.div`
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 20px;
-    text-align: center;
-    padding: 6px;
-    border: 2px solid #2d2d3a;
-    box-sizing: border-box;
-    border-radius: 12px;
-    margin-bottom: 16px;
-`;
-
-const Value: any = styled.div`
-    color: ${(props: any) => props.color9};
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 24px;
-`;
-
-const Price: any = styled.div`
-    color: ${(props: any) => props.color9};
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 24px;
-`;
 
 export interface Props {
     token: string;
@@ -64,23 +12,54 @@ const TokenSlot = ({ token, value, dollarValue, isSelected }: Props) => {
     const { themes } = useTheme();
 
     return (
-        // @ts-ignore
-        <Wrapper isSelected={isSelected} color5={themes.color5}>
-            <Name>{token}</Name>
-            <BoxWrapper color6={themes.color6}>
-                <Flex centered>
-                    <Value color9={themes.color9}>{value}</Value>
-                    <Flex>
+        <Box
+            bg={themes.color5}
+            w={'100%'}
+            maxW={246}
+            p={'16px'}
+            borderRadius={12}
+            borderColor={isSelected ? themes.color1 : themes.color5}
+            boxShadow={'md'}
+        >
+            <Box
+                color={themes.color7}
+                p={'6px'}
+                marginBottom={'16px'}
+                border="2px solid"
+                borderColor={themes.color6}
+                borderRadius={16}
+                w={'100%'}
+                textAlign="center"
+                fontWeight={700}
+                fontSize={14}
+            >
+                {token}
+            </Box>
+
+            <Box
+                bg={themes.color5}
+                p="7px 12px"
+                border="6px solid"
+                borderColor={themes.color6}
+                borderRadius={12}
+                boxShadow={'md'}
+            >
+                <HStack justifyContent={'space-between'}>
+                    <Box color={themes.color9} fontWeight={600} fontSize={18}>
+                        {value}
+                    </Box>
+                    <HStack>
                         <Icon icon="ETH" w="20px" h="20px" />
-                        &nbsp;&nbsp;
                         <Badge>{token}</Badge>
-                    </Flex>
-                </Flex>
-                <Flex>
-                    <Price color9={themes.color9}>{dollarValue}$</Price>
-                </Flex>
-            </BoxWrapper>
-        </Wrapper>
+                    </HStack>
+                </HStack>
+                <HStack>
+                    <Box color={themes.color9} fontWeight={600} fontSize={14}>
+                        {dollarValue}$
+                    </Box>
+                </HStack>
+            </Box>
+        </Box>
     );
 };
 

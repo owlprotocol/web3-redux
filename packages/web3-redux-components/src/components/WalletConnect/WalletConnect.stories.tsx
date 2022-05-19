@@ -10,8 +10,8 @@ export default {
 const MainTemplate: ComponentStory<typeof WalletConnect> = (args) => <WalletConnect {...args} />;
 export const Main = MainTemplate.bind({});
 Main.argTypes = {
-    networkId: networkIdArgType
-}
+    networkId: networkIdArgType,
+};
 
 const PresenterTemplate: ComponentStory<typeof WalletConnectPresenter> = (args) => <WalletConnectPresenter {...args} />;
 export const PresenterMain = PresenterTemplate.bind({});
@@ -23,5 +23,5 @@ const args: PresenterProps = {
 
 PresenterMain.args = args;
 PresenterMain.argTypes = {
-    networkId: networkIdArgType
-}
+    networkId: networkIdArgType,
+};

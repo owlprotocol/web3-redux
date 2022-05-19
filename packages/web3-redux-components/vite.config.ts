@@ -56,7 +56,6 @@ export default defineConfig({
                 'react-hooks-compose',
                 'react-redux',
                 'react-router-dom',
-                'styled-components',
                 'web3',
             ],
             output: {
@@ -70,7 +69,6 @@ export default defineConfig({
                     'react-hooks-compose': 'ReactHooksCompose',
                     'react-redux': 'ReactRedux',
                     'react-router-dom': 'ReactRouterDOM',
-                    'styled-components': 'StyledComponents',
                     web3: 'Web3',
                 },
             },

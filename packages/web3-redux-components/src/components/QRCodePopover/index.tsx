@@ -1,36 +1,11 @@
 import { useState } from 'react';
-import styled from 'styled-components';
-import { Popover, PopoverContent, PopoverTrigger, PopoverBody, useTheme } from '@chakra-ui/react';
-import { ReactComponent as QRIcon } from './assets/qr.svg';
-import { ReactComponent as QRHoverIcon } from './assets/qr-hover.svg';
-import { ReactComponent as QRSelectedIcon } from './assets/qr-selected.svg';
+import { Popover, PopoverContent, PopoverTrigger, PopoverBody, Box, IconButton, useTheme } from '@chakra-ui/react';
 import Erc20QRGenerator from '../Erc20QRGenerator';
+import Icon from '../Icon';
 
 export interface Props {
     address: string;
 }
-
-const QRbutton = styled.button`
-    width: 28px;
-    height: 28px;
-    margin-right: 16px;
-
-    svg {
-        font-size: 28px;
-    }
-`;
-
-const QRPopup: any = styled.div`
-    background: ${(props: any) => props.color5};
-    border-radius: 8px;
-    padding: 12px;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
 
 const QRCodePopover = ({ address }: Props) => {
     const { themes } = useTheme();
@@ -40,22 +15,40 @@ const QRCodePopover = ({ address }: Props) => {
     return (
         <Popover closeOnBlur={false} onClose={() => setSelected(false)} placement="bottom">
             <PopoverTrigger>
-                <QRbutton
+                <IconButton
+                    aria-label="a QR code"
+                    bg={'transparent'}
+                    _hover={{ bg: 'transparent' }}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                     onClick={() => setSelected(true)}
-                >
-                    {isSelected ? <QRSelectedIcon /> : isHovered ? <QRHoverIcon /> : <QRIcon />}
-                </QRbutton>
+                    icon={
+                        isSelected ? (
+                            <Icon icon="QRSelected" />
+                        ) : isHovered ? (
+                            <Icon icon="QRHover" />
+                        ) : (
+                            <Icon icon="QR" />
+                        )
+                    }
+                />
             </PopoverTrigger>
 
             {/* @ts-ignore */}
-            <PopoverContent w="240px" h="240px" _focus={false} border="1px" bg="transparent">
-                <QRPopup color5={themes.color5}>
+            <PopoverContent w="200px" h="200px" _focus={false} border={0} bg="transparent">
+                <Box
+                    bg={themes.color5}
+                    display={'flex'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    h={'100%'}
+                    w={'100%'}
+                    borderRadius={12}
+                >
                     <PopoverBody>
                         <Erc20QRGenerator address={address} />
                     </PopoverBody>
-                </QRPopup>
+                </Box>
             </PopoverContent>
         </Popover>
     );

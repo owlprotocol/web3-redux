@@ -17,7 +17,7 @@ const Dropdown = ({ options, placeholder = 'Select an item', isDisabled, onChang
             color={themes.color8}
             border={0}
             isDisabled={isDisabled}
-            onChange={({ target }) => onChange(target.value)}
+            onChange={({ target }: any) => onChange(target.value)}
             textTransform={'capitalize'}
         >
             {options.map((opt, key) => (

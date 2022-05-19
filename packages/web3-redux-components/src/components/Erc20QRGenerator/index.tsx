@@ -1,23 +1,14 @@
 import { useEffect } from 'react';
-import styled from 'styled-components';
+import { Box, useTheme } from '@chakra-ui/react';
 import EthereumQRPlugin from 'ethereum-qr-code';
 
 export interface Props {
     address: string;
 }
 
-const Wrapper = styled.div`
-    background: #fff;
-    box-sizing: border-box;
-    border-radius: 8px;
-    width: 190px;
-    height: 190px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
 const Erc20QRGenerator = ({ address }: Props) => {
+    const { themes } = useTheme();
+
     useEffect(() => {
         const config = {
             to: address,
@@ -31,7 +22,18 @@ const Erc20QRGenerator = ({ address }: Props) => {
         }
     });
 
-    return <Wrapper id="qr-code" />;
+    return (
+        <Box
+            id="qr-code"
+            bg={themes.color7}
+            borderRadius={8}
+            w={'180px'}
+            h={'180px'}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'center'}
+        />
+    );
 };
 
 export default Erc20QRGenerator;

@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Abi, TestData } from '@owlprotocol/web3-redux'
+import { Abi, TestData } from '@owlprotocol/web3-redux';
 import { AbiItem } from 'web3-utils';
 import AbiItemForm from '.';
 
@@ -15,7 +15,12 @@ const address = TestData.WETH;
 //0x08638ef1a205be6762a8b935f5da9b700cf7322c
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const totalSupplyAbi = Abi.IERC20.abi.find((a) => a.name === 'totalSupply')!;
-const { name: nameTotalSupply, inputs: inputsTotalSupply, type: typeTotalSupply, stateMutability: stateMutabilityTotalSupply } = totalSupplyAbi as AbiItem;
+const {
+    name: nameTotalSupply,
+    inputs: inputsTotalSupply,
+    type: typeTotalSupply,
+    stateMutability: stateMutabilityTotalSupply,
+} = totalSupplyAbi as AbiItem;
 export const TotalSupply = Template.bind({});
 TotalSupply.args = {
     networkId: '1',
@@ -24,12 +29,17 @@ TotalSupply.args = {
     name: nameTotalSupply,
     inputs: inputsTotalSupply,
     type: typeTotalSupply,
-    stateMutability: stateMutabilityTotalSupply
+    stateMutability: stateMutabilityTotalSupply,
 };
 
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const balanceOfAbi = Abi.IERC20.abi.find((a) => a.name === 'balanceOf')!;
-const { name: nameBalanceOf, inputs: inputsBalanceOf, type: typeBalanceOf, stateMutability: stateMutabilityBalanceOf } = balanceOfAbi as AbiItem;
+const {
+    name: nameBalanceOf,
+    inputs: inputsBalanceOf,
+    type: typeBalanceOf,
+    stateMutability: stateMutabilityBalanceOf,
+} = balanceOfAbi as AbiItem;
 export const BalanceOf = Template.bind({});
 BalanceOf.args = {
     networkId: '1',
@@ -38,7 +48,7 @@ BalanceOf.args = {
     name: nameBalanceOf,
     inputs: inputsBalanceOf,
     type: typeBalanceOf,
-    stateMutability: stateMutabilityBalanceOf
+    stateMutability: stateMutabilityBalanceOf,
 };
 
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -52,5 +62,5 @@ Transfer.args = {
     name,
     inputs,
     type,
-    stateMutability
+    stateMutability,
 };

@@ -1,5 +1,5 @@
 import { useTheme, TableContainer, Table, Thead, Tbody, Tr, Td, Th, Badge } from '@chakra-ui/react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const TableWrapper = styled.div`
     table tr:nth-child(odd) {

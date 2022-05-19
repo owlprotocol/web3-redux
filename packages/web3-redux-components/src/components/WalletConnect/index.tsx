@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
-import { useTheme } from '@chakra-ui/react';
+import { useTheme, Button, Box } from '@chakra-ui/react';
 import { Config, Contract } from '@owlprotocol/web3-redux';
 import { fromWei } from 'web3-utils';
 import composeHooks from 'react-hooks-compose';
-import { WrongNetwork, Wrapper, AccountBalance } from './styles';
 import Icon from '../Icon';
-import Button from '../Button';
 import { isSupportedNetworkId } from '../../constants/web3React';
 import { shortenHash } from '../../utils';
 import useMetamask from '../../hooks/useMetamask';
@@ -56,31 +54,34 @@ export const WalletConnectPresenter = ({
     // replace the wallet connet component.
     if (networkId && !isSupportedNetworkId(networkId)) {
         return (
-            <WrongNetwork>
-                <Icon icon="broken-link" w="20px" h="20px" />
+            <div>
+                <Box w="20px" h="20px">
+                    <Icon icon="broken-link" />
+                </Box>
                 <span>Wrong Network</span>
-            </WrongNetwork>
+            </div>
         );
     }
 
     return (
-        <Wrapper>
-            {showBalance && balance && <AccountBalance>{balance} ETH</AccountBalance>}
+        <div>
+            {showBalance && balance && <span>{balance} ETH</span>}
             <Button
                 bg={themes.color6}
                 color={themes.color7}
                 onClick={connectWallet}
-                text="Connect Wallet"
                 borderRadius={12}
                 fontWeight={'bold'}
-            />
-        </Wrapper>
+            >
+                Connect Wallet
+            </Button>
+        </div>
     );
 };
 
 const WalletConnect = composeHooks(() => ({
     useWalletConnect: () => useWalletConnect(),
-}))(WalletConnectPresenter) as ({ }: any) => JSX.Element;
+}))(WalletConnectPresenter) as ({}: any) => JSX.Element;
 
 //@ts-expect-error
 WalletConnect.displayName = 'WalletConnect';

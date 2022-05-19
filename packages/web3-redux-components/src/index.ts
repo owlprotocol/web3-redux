@@ -13,7 +13,7 @@ export { default as TransactionFlowModal } from './components/TransactionFlowMod
 export { default as ERC20DropDown } from './components/ERC20DropDown';
 export { default as NetworkIcon } from './components/NetworkIcon';
 export { default as TransactionProgressBar } from './components/TransactionProgressBar';
-export { default as ContractAbiForm } from './components/ContractAbiForm';
+export { default as ContractAbiForm } from './components/ContractAbiForm/ContractAbiForm';
 export { default as Erc20QRGenerator } from './components/Erc20QRGenerator';
 export { default as QRCodePopover } from './components/QRCodePopover';
 export { default as TransactionsTable } from './components/TransactionsTable';

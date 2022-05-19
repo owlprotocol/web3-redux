@@ -14,9 +14,9 @@ import AbiItemInput from '../AbiItemInput';
 interface Props {
     networkId: string;
     address: string;
-    account?: string | undefined;
+    account?: string;
     namePrefix: string;
-    name: string | undefined;
+    name: string; //| undefined; TODO: handle fallback method
     inputs: {
         name: string | undefined;
         type: string;

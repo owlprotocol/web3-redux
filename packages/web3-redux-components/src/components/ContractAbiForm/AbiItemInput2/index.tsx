@@ -46,7 +46,8 @@ export interface Props {
     onChange?: (value: string | boolean | undefined, error: Error | undefined) => void;
 }
 
-const AbiItemInput = ({ type, name, onChange = () => null }: Props) => {
+//eslint-disable-next-line @typescript-eslint/no-empty-function
+const AbiItemInput = ({ type, name, onChange = () => {} }: Props) => {
     const [error, setError] = useState<Error | undefined>();
     const [value, setValue] = useState<string | boolean | undefined>();
 

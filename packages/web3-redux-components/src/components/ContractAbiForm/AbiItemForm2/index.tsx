@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Box, useTheme, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
-// import { useDispatch } from 'react-redux';
 import { AbiType, StateMutabilityType } from 'web3-utils';
 import { Config, Contract } from '@owlprotocol/web3-redux';
 import AbiItemInput from '../AbiItemInput2';

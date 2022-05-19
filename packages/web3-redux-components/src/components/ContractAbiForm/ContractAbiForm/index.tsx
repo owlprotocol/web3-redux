@@ -1,5 +1,5 @@
 import { AbiType, StateMutabilityType } from 'web3-utils';
-import AbiItemForm from '../AbiItemForm';
+import AbiItemForm from '../AbiItemForm2';
 interface AbiFormProps {
     name: string | undefined;
     inputs: {
@@ -16,23 +16,16 @@ interface Props {
 }
 
 const ContractAbiForm = ({ networkId, address, abi }: Props) => {
-    const abiRead = abi.filter((a) => a.type === 'function');
-    //.filter((a) => a.stateMutability === 'pure' || a.stateMutability === 'view')
+    const abiFunctions = abi.filter((a) => a.type === 'function');
 
     return (
         <div>
-            {
-                //<form>
-            }
-            {abiRead.map((fnAbi, key: number) => (
+            {abiFunctions.map((fnAbi, key: number) => (
                 <div key={key}>
                     <AbiItemForm networkId={networkId} address={address} namePrefix={`${key + 1}. `} {...fnAbi} />
                     <br />
                 </div>
             ))}
-            {
-                //</form>
-            }
         </div>
     );
 };

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Box, useTheme, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { AbiType, StateMutabilityType } from 'web3-utils';
-import { Contract } from '@owlprotocol/web3-redux';
+import { Config, Contract } from '@owlprotocol/web3-redux';
 import AbiItemInput from '../AbiItemInput2';
 
 //TODO
@@ -14,7 +14,7 @@ import AbiItemInput from '../AbiItemInput2';
 interface Props {
     networkId: string;
     address: string;
-    account: string | undefined;
+    account?: string;
     namePrefix: string,
     name: string | undefined,
     inputs: {
@@ -35,7 +35,12 @@ const AbiItemForm = ({
     type = 'function',
     stateMutability = 'view' }: Props) => {
     const { themes } = useTheme();
-    const dispatch = useDispatch()
+    //const dispatch = useDispatch();
+
+    const [configAccount] = Config.useAccount()
+    const [configNetworkId] = Config.useNetworkId();
+    account = account ?? configAccount;
+    networkId = networkId ?? configNetworkId;
 
     //Errors caused by user input
     const [inputErrors, setInputErrors] = useState(new Array(inputs.length));
@@ -65,15 +70,17 @@ const AbiItemForm = ({
     const noInputErrors = inputErrors.length > 0 ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0]) : true;
     const validArgs = argsDefined && noInputErrors;
 
-    const [returnValue, { error }] = Contract.useContractCall(networkId, address, name, args, { sync: !write && validArgs ? 'once' : false })
+    const [returnValue, { error: callError }] = Contract.useContractCall(networkId, address, name, args, { sync: !write && validArgs ? 'once' : false })
 
-    console.debug({ returnValue, error, inputErrors, validArgs, write, account })
+    console.debug({ returnValue, callError, inputErrors, validArgs, write, account })
 
     const onChange = useCallback((value: string | boolean | undefined, error: Error | undefined, idx: number) => {
         setErrorAtIdx(error, idx)
         setArgAtIdx(value, idx);
     }, [setErrorAtIdx, setArgAtIdx]);
 
+    const [sendTx, { error: sendError }] = Contract.useContractSend(networkId, address, name, args, { from: account })
+    /*
     const sendTx = useCallback(() => {
         if (validArgs && write && !!account) {
             dispatch(Contract.send({
@@ -85,8 +92,10 @@ const AbiItemForm = ({
             }))
         }
     }, [networkId, address, name, validArgs, account, write])
+    */
 
     // EVM error
+    const error = callError ?? sendError;
     const isError = !!error;
     return (
         <Box borderRadius="md" bg={themes.color3} color="white" p={3}>
@@ -108,7 +117,7 @@ const AbiItemForm = ({
                         );
                     })}
                     {
-                        write && <Button onClick={sendTx} bg={themes.color1}>
+                        write && <Button isDisabled={!validArgs} onClick={sendTx} bg={themes.color1}>
                             Send
                         </Button>
                     }

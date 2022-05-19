@@ -11,6 +11,7 @@ import { SEND, SendAction } from '../actions/index.js';
 import { getId } from '../model/index.js';
 
 import { selectByIdSingle } from '../selectors/index.js';
+import { selectAccount } from '../../config/index.js';
 
 const CONTRACT_SEND_HASH = `${SEND}/HASH`;
 const CONTRACT_SEND_RECEIPT = `${SEND}/RECEIPT`;
@@ -56,11 +57,15 @@ function sendChannel(tx: PromiEvent<TransactionReceipt>): EventChannel<ContractS
 export function* send(action: SendAction) {
     try {
         const { payload } = action;
-        const { networkId, address, args, from } = payload;
+        const { networkId, address, args } = payload;
         //Make sure required parameters defined
         if (!networkId) throw new Error('networkId undefined');
         if (!address) throw new Error('address undefined');
         if (!payload.method) throw new Error('method undefined');
+
+        const defaultFrom = yield* select(selectAccount)
+        const from = payload.from ?? defaultFrom;
+        if (!from) throw new Error('from undefined')
 
         const network = yield* select(selectNetwork, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
@@ -68,7 +73,7 @@ export function* send(action: SendAction) {
         const contract = yield* select(selectByIdSingle, { networkId, address });
         if (!contract) throw new Error(`Contract ${getId(payload)} undefined`);
 
-        const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
+        const web3Contract = contract.web3SenderContract;
         if (!web3Contract) throw new Error(`Contract ${getId(payload)} has no web3 contract`);
 
         const method = web3Contract.methods[payload.method];
@@ -88,7 +93,7 @@ export function* send(action: SendAction) {
         const baseContractSend = {
             networkId,
             address,
-            methodName: method,
+            methodName: payload.method,
             args,
             from,
             value,
@@ -101,7 +106,9 @@ export function* send(action: SendAction) {
             }),
         );
 
+        console.log(tx)
         const gas = payload.gas ?? (yield* call(tx.estimateGas, { from, value }));
+        console.log({ gas })
         const txPromiEvent: PromiEvent<TransactionReceipt> = tx.send({ from, gas, gasPrice, value });
 
         const channel: TakeableChannel<ContractSendChannelMessage> = yield* call(sendChannel, txPromiEvent);
@@ -140,6 +147,7 @@ export function* send(action: SendAction) {
                     );
                 }
             } else if (type === CONTRACT_SEND_ERROR) {
+                console.error(message)
                 const { error } = message;
                 //handle metamask reject or other errors
                 yield* put(
@@ -160,6 +168,7 @@ export function* send(action: SendAction) {
             }
         }
     } catch (error) {
+        console.error(error)
         yield* put(
             createError({
                 id: action.meta.uuid,

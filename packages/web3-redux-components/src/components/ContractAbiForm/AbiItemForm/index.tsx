@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Button, useTheme } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
+import { Box, useTheme, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { AbiType, StateMutabilityType } from 'web3-utils';
-import { Contract } from '@owlprotocol/web3-redux';
+import { Config, Contract } from '@owlprotocol/web3-redux';
 import AbiItemInput from '../AbiItemInput';
 
 //TODO
@@ -16,7 +15,7 @@ interface Props {
     address: string;
     account?: string;
     namePrefix: string;
-    name: string; //| undefined; TODO: handle fallback method
+    name: string | undefined;
     inputs: {
         name: string | undefined;
         type: string;
@@ -36,18 +35,24 @@ const AbiItemForm = ({
     stateMutability = 'view',
 }: Props) => {
     const { themes } = useTheme();
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
 
-    const [errors, setErrors] = useState(new Array(inputs.length));
+    const [configAccount] = Config.useAccount();
+    const [configNetworkId] = Config.useNetworkId();
+    account = account ?? configAccount;
+    networkId = networkId ?? configNetworkId;
+
+    //Errors caused by user input
+    const [inputErrors, setInputErrors] = useState(new Array(inputs.length));
     const [args, setArgs] = useState(new Array(inputs.length));
 
     const setErrorAtIdx = useCallback(
         (err: any, idx: number) => {
-            const errCopy = [...errors];
+            const errCopy = [...inputErrors];
             errCopy[idx] = err;
-            setErrors(errCopy);
+            setInputErrors(errCopy);
         },
-        [errors],
+        [inputErrors],
     );
 
     const setArgAtIdx = useCallback(
@@ -61,78 +66,78 @@ const AbiItemForm = ({
 
     useEffect(() => {
         //Reset state
-        setErrors(Array(inputs.length));
+        setInputErrors(Array(inputs.length));
         setArgs(Array(inputs.length));
     }, [inputs.length]);
 
     const write = !(stateMutability === 'pure' || stateMutability == 'view');
 
     const argsDefined = args.length > 0 ? args.reduce((acc, curr) => acc && !!curr, !!args[0]) : true;
-    const noErrors = errors.length > 0 ? errors.reduce((acc, curr) => acc && !curr, !errors[0]) : true;
+    const noInputErrors =
+        inputErrors.length > 0 ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0]) : true;
+    const validArgs = argsDefined && noInputErrors;
 
-    const validCallArgs = argsDefined && noErrors;
-    const [contractCall] = Contract.useContractCall(
-        !write && validCallArgs ? networkId : undefined,
-        address,
-        name,
-        args,
-        { sync: 'once' },
-    );
+    const [returnValue, { error: callError }] = Contract.useContractCall(networkId, address, name, args, {
+        sync: !write && validArgs ? 'once' : false,
+    });
+
+    console.debug({ returnValue, callError, inputErrors, validArgs, write, account });
 
     const onChange = useCallback(
-        (value: string | undefined, error: Error | undefined, idx: number) => {
+        (value: string | boolean | undefined, error: Error | undefined, idx: number) => {
             setErrorAtIdx(error, idx);
             setArgAtIdx(value, idx);
         },
         [setErrorAtIdx, setArgAtIdx],
     );
 
+    const [sendTx, { error: sendError }] = Contract.useContractSend(networkId, address, name, args, { from: account });
+    /*
     const sendTx = useCallback(() => {
-        if (validCallArgs && !!account) {
-            dispatch(
-                Contract.send({
-                    networkId,
-                    address,
-                    method: name,
-                    args,
-                    from: account,
-                }),
-            );
+        if (validArgs && write && !!account) {
+            dispatch(Contract.send({
+                networkId,
+                address,
+                method: name,
+                args,
+                from: account
+            }))
         }
-    }, [networkId, address, validCallArgs, account, args, dispatch, name]);
+    }, [networkId, address, name, validArgs, account, write])
+    */
 
+    // EVM error
+    const error = callError ?? sendError;
+    const isError = !!error;
     return (
         <Box borderRadius="md" bg={themes.color3} color="white" p={3}>
-            <span>{namePrefix}</span>
-            <b>{name}</b>&nbsp;
-            <i>{type}</i>
-            <br />
-            <br />
-            <div>
+            <Box mb={6}>
+                <span>{namePrefix}</span>
+                <b>{name}</b>&nbsp;
+                <i>{type}</i>
+            </Box>
+            <FormControl isInvalid={isError}>
                 {inputs.map(({ name, type }: any, key: number) => {
                     return (
-                        <AbiItemInput
-                            key={key}
-                            type={type}
-                            name={name}
-                            onChange={(value, error) => {
-                                onChange(value, error, key);
-                            }}
-                        />
+                        <Box mb={3} key={key}>
+                            <AbiItemInput
+                                type={type}
+                                name={name}
+                                onChange={(value, error) => {
+                                    onChange(value, error, key);
+                                }}
+                            />
+                        </Box>
                     );
                 })}
                 {write && (
-                    <Button onClick={sendTx} bg={themes.color1}>
-                        Write
+                    <Button isDisabled={!validArgs} onClick={sendTx} bg={themes.color1}>
+                        Send
                     </Button>
                 )}
-                {write && (
-                    <Button onClick={() => null} bg={themes.color2} ml={4}>
-                        Show Transaction
-                    </Button>
-                )}
-                {contractCall}
-            </div>
+                {returnValue}
+                {isError && <FormErrorMessage>Error: {error?.message}</FormErrorMessage>}
+            </FormControl>
         </Box>
     );
 };

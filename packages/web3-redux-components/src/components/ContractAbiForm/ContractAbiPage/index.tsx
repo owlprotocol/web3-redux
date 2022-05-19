@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Textarea, useTheme } from '@chakra-ui/react';
+import { Box, Textarea, useTheme } from '@chakra-ui/react';
 import ContractAbiForm from '../ContractAbiForm';
 import AbiItemInput from '../AbiItemInput';
 
@@ -22,22 +22,20 @@ const ContractAbiPage = ({ networkId }: Props) => {
     }
 
     return (
-        <div>
+        <Box>
             <div>
-                <AbiItemInput type="address" onChange={(value) => setAddress(value)} />
+                <AbiItemInput type="address" onChange={(value: any) => setAddress(value)} />
+                <br />
                 <Textarea
                     h="180px"
                     bg={themes.color4}
                     placeholder="Place ABI JSON Here"
                     value={abiJSON}
-                    // @ts-ignore
-                    onChange={(e) => setABIJSON(e.target.value)}
+                    onChange={(e: any) => setABIJSON(e.target.value)}
                 />
             </div>
-            <br />
-            <br />
             {address && <ContractAbiForm networkId={networkId} address={address} abi={abi} />}
-        </div>
+        </Box>
     );
 };
 

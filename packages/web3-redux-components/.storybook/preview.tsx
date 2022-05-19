@@ -7,6 +7,8 @@ import {
     Network, Contract, TestData, store,
     Environment
 } from '@owlprotocol/web3-redux';
+import { networkIdArgType, addressArgType, locationHashArgType, transactionHashArgType } from '../src/test/storybookArgs';
+
 Environment.setEnvironment(getEnvironment());
 
 import { THEME_COLORS } from '../src/constants';

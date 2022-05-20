@@ -23,7 +23,7 @@ module.exports = {
     addons: [
         "@storybook/addon-links",
         "@storybook/addon-essentials",
-        "@storybook/addon-interactions",
+        //"@storybook/addon-interactions",
     ],
     core: {
         builder: "@storybook/builder-vite"
@@ -97,8 +97,8 @@ module.exports = {
             }
         }
 
-        console.debug(config)
-        console.debug(overrideConfig)
+        //console.debug(config)
+        //console.debug(overrideConfig)
         const newConfig = mergeConfig(config, overrideConfig)
         return newConfig;
     }

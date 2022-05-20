@@ -180,6 +180,7 @@ importers:
       fast-memoize: ^2.5.2
       ganache-core: 2.13.2
       glob: ^7.2.0
+      iso-url: ^1.2.1
       lint-staged: ^11.1.2
       lodash: ^4.17.21
       mocha: ^9.0.3
@@ -218,6 +219,7 @@ importers:
       ethereum-ens: 0.8.0
       events: 3.3.0
       fast-memoize: 2.5.2
+      iso-url: 1.2.1
       lodash: 4.17.21
       re-reselect: 4.0.0_reselect@4.1.5
       redux: 4.1.2
@@ -348,6 +350,7 @@ importers:
       react: ^17.0.2
       react-dom: ^17.0.2
       react-hooks-compose: ^2.0.16
+      react-redux: ^7.2.6
       react-router-dom: ^6.2.2
       rollup: ^2.72.1
       rollup-plugin-node-polyfills: ^0.2.1
@@ -375,6 +378,7 @@ importers:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hooks-compose: 2.0.18_react@17.0.2
+      react-redux: 7.2.8_sfoxds7t5ydpegc3knd667wn6m
       react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
       web3: 1.7.3
     devDependencies:
@@ -6691,7 +6695,6 @@ packages:
     dependencies:
       '@types/react': 17.0.45
       hoist-non-react-statics: 3.3.2
-    dev: true
 
   /@types/html-minifier-terser/5.1.2:
     resolution: {integrity: sha512-h4lTMgMJctJybDp8CQrxTUiiYmedihHWkjnF/8Pxseu2S6Nlfcy8kwboQ8yejh456rP2yWoEVm1sS/FVsfM48w==}
@@ -6870,7 +6873,6 @@ packages:
       '@types/react': 17.0.45
       hoist-non-react-statics: 3.3.2
       redux: 4.1.2
-    dev: true
 
   /@types/react-router-config/5.0.6:
     resolution: {integrity: sha512-db1mx37a1EJDf1XeX8jJN7R3PZABmJQXR8r28yUjVMFSjkmnQo6X6pOEEmNl+Tp2gYQOGPdYbFIipBtdElZ3Yg==}
@@ -14608,6 +14610,11 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=}
 
+  /iso-url/1.2.1:
+    resolution: {integrity: sha512-9JPDgCN4B7QPkLtYAAOrEuAWvP9rWvR5offAr0/SeF046wIkglqH3VXgYYP6NcsKslH80UIVgmPqNe3j7tG2ng==}
+    engines: {node: '>=12'}
+    dev: false
+
   /isobject/2.1.0:
     resolution: {integrity: sha1-8GVWEJaj8dou9GJy+BXIQNh+DIk=}
     engines: {node: '>=0.10.0'}
@@ -18195,7 +18202,6 @@ packages:
 
   /react-is/17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
-    dev: true
 
   /react-json-view/1.21.3_k2mvpji5i2ojml6m4ftklg47pa:
     resolution: {integrity: sha512-13p8IREj9/x/Ye4WI/JpjhoIwuzEgUAtgJZNBJckfzJt1qyh24BdTm6UQNGnyTq9dapQdrqvquZTo3dz1X6Cjw==}
@@ -18277,7 +18283,6 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-is: 17.0.2
-    dev: true
 
   /react-refresh/0.11.0:
     resolution: {integrity: sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==}

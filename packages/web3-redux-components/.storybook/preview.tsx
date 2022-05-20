@@ -8,6 +8,7 @@ import {
     Environment
 } from '@owlprotocol/web3-redux';
 
+//@ts-ignore
 Environment.setEnvironment(getEnvironment());
 
 import { THEME_COLORS } from '../src/constants';
@@ -58,7 +59,9 @@ export const withMockData = (WrappedComponent: any) => {
         useEffect(() => { if (!networkOptimism) dispatch(Network.create({ networkId: '10' })) }, [networkOptimism])
         useEffect(() => { if (!networkPolygon) dispatch(Network.create({ networkId: '137' })) }, [networkPolygon])
 
-        const [contractVITALIK, contractWETH, contractUSDC, contractTETHER, contractCHAINLINK, contractVeeFriendsSeries2] =
+        const [contractVITALIK,
+            contractWETH, contractUSDC, contractTETHER, contractCHAINLINK,
+            contractVeeFriendsSeries2, contractOZTeam] =
             useSelector((state) =>
                 Contract.selectByIdMany(state, [
                     { networkId: '1', address: TestData.VITALIK },
@@ -66,7 +69,8 @@ export const withMockData = (WrappedComponent: any) => {
                     { networkId: '1', address: TestData.USDC },
                     { networkId: '1', address: TestData.TETHER },
                     { networkId: '1', address: TestData.CHAINLINK },
-                    { networkId: '1', address: TestData.VEE_FRIENDS_SERIES2 }
+                    { networkId: '1', address: TestData.VEE_FRIENDS_SERIES2 },
+                    { networkId: '1', address: TestData.OZ_TEAM }
                 ])
             )
         useEffect(() => { if (!contractVITALIK) dispatch(Contract.create(TestData.contractVITALIK)) }, [contractVITALIK])
@@ -75,6 +79,7 @@ export const withMockData = (WrappedComponent: any) => {
         useEffect(() => { if (!contractTETHER) dispatch(Contract.create(TestData.contractTETHER)) }, [contractTETHER])
         useEffect(() => { if (!contractCHAINLINK) dispatch(Contract.create(TestData.contractCHAINLINK)) }, [contractCHAINLINK])
         useEffect(() => { if (!contractVeeFriendsSeries2) dispatch(Contract.create(TestData.contractVeeFriendsSeries2)) }, [contractVeeFriendsSeries2])
+        useEffect(() => { if (!contractOZTeam) dispatch(Contract.create(TestData.contractOZTeam)) }, [contractOZTeam])
         console.debug({ contractVITALIK, id: TestData.contractVITALIK.id })
 
         return <WrappedComponent {...props} />;

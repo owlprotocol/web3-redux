@@ -64,7 +64,7 @@ https://reactstrap.github.io/
 ## Netlify
 https://www.seancdavis.com/posts/use-pnpm-with-netlify/
 https://answers.netlify.com/t/using-pnpm-and-pnpm-workspaces/2759
-
+https://answers.netlify.com/t/using-pnpm-and-pnpm-workspaces/2759/15
 ## Other
 https://github.com/microsoft/TypeScript/pull/35148
 https://github.com/igoradamenko/esbuild-plugin-alias#readme

@@ -1,8 +1,7 @@
 [build]
-  command = "npx pnpm i --store=node_modules/.pnpm-store && npx pnpm run build"
+  command = "npx pnpm i -r --store=node_modules/.pnpm-store && npx pnpm run build"
   publish = "packages/web3-redux-components/storybook-static"
 [build.environment]
   NODE_VERSION = "16"
   NODE_ENV = "development"
-  #https://www.seancdavis.com/posts/use-pnpm-with-netlify/
-  NPM_FLAGS="--prefix=/dev/null"
+  NPM_FLAGS="--prefix=/"

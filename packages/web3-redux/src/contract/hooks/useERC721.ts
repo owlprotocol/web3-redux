@@ -1,6 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
-import { URL } from 'iso-url';
+import { useMemo } from 'react';
 import { useContractWithAbi } from './useContractWithAbi.js';
 import { useContractCall } from './useContractCall.js';
 import { useEvents, UseEventsOptions } from './useEvents.js';
@@ -9,7 +7,7 @@ import { IERC721Metadata } from '../../abis/index.js';
 import { GenericSync } from '../../sync/model/index.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
 
-import { useIpfs } from '../../ipfs/hooks/useIpfs.js';
+import { useURI } from '../../ipfs/hooks/useURI.js';
 
 /**
  * Contract hook for ERC721 interface.
@@ -55,30 +53,7 @@ export function useERC721(
         sync: tokenURISync,
     }) as [string | undefined, any];
 
-    const uri = tokenURI ? new URL(tokenURI) : undefined;
-    //Check NFT Metadata
-    //If IPFS
-    const isIpfsURI = uri?.protocol === 'ipfs:';
-    const ipfsPath = isIpfsURI ? tokenURI?.replace('ipfs://', '') : undefined;
-    const { data: ipfsContent, contentId } = useIpfs(ipfsPath, sync?.metadata);
-
-    //console.debug({ uri, tokenURI, protocol: uri?.protocol })
-    //If HTTP(S)
-    //TODO: cache for http content
-    const isHttpURI = uri?.protocol === 'http:' || uri?.protocol === 'https:';
-    const [httpContent, sethttpContent] = useState(undefined as any);
-    useEffect(() => {
-        //Get http api content
-        if (tokenURI && isHttpURI && sync?.metadata) {
-            axios.get(tokenURI).then((response) => {
-                sethttpContent(response.data);
-            });
-        } else {
-            sethttpContent(undefined);
-        }
-    }, [isHttpURI, tokenURI, sync?.metadata]);
-
-    const metadata = ipfsContent ?? httpContent;
+    const [metadata, { contentId }] = useURI(tokenURI, sync?.metadata);
 
     //Events
     const Transfer = useEvents(networkId, address, 'Transfer', { tokenId }, TransferEventsOptions);

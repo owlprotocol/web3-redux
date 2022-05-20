@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { URL } from 'url';
+import { URL } from 'iso-url';
 import { useContractWithAbi } from './useContractWithAbi.js';
 import { useContractCall } from './useContractCall.js';
 import { useEvents, UseEventsOptions } from './useEvents.js';

@@ -9,7 +9,7 @@ import { validateContract } from '../contract/index.js';
 import { validateContractEvent } from '../contractevent/index.js';
 import { validateEthCall } from '../ethcall/index.js';
 import { validateTransaction } from '../transaction/index.js';
-import { BlockNumber, IERC20, IERC721Metadata as IERC721 } from '../abis/index.js';
+import { BlockNumber, IERC20, IERC721Metadata as IERC721, IERC1155MetadataURI as IERC1155 } from '../abis/index.js';
 
 export const networkId = '1336';
 
@@ -42,9 +42,11 @@ export const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 export const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 export const TETHER = '0xdac17f958d2ee523a2206206994597c13d831ec7';
 export const CHAINLINK = '0x514910771af9ca656af840dff83e8264ecf986ca';
-//Popular nfts
+//ERC721
 export const VEE_FRIENDS_SERIES2 = '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18';
-export const OZ_TEAM = '0x67ed2e5dd3d01ca342db045037be054dc6d8482a'
+export const OZ_TEAM = '0x67ed2e5dd3d01ca342db045037be054dc6d8482a';
+//ERC1155
+export const KITH_FRIENDS = '0x130cfab3817467f532c179d4e6502f5a7e7d44c7';
 //Popular addresses
 export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
 
@@ -93,7 +95,7 @@ export const contractCHAINLINK = validateContract({
     abi: cloneDeep(IERC20.abi) as any,
 });
 
-//Popular NFTs
+//ERC721
 export const contractVeeFriendsSeries2 = validateContract({
     networkId: '1',
     address: VEE_FRIENDS_SERIES2,
@@ -103,6 +105,13 @@ export const contractOZTeam = validateContract({
     networkId: '1',
     address: OZ_TEAM,
     abi: cloneDeep(IERC721.abi) as any,
+});
+
+//ERC1155
+export const contractKithFriends = validateContract({
+    networkId: '1',
+    address: KITH_FRIENDS,
+    abi: cloneDeep(IERC1155.abi) as any,
 });
 
 //Popular Addresses

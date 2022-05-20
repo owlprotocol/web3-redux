@@ -61,7 +61,7 @@ export const withMockData = (WrappedComponent: any) => {
 
         const [contractVITALIK,
             contractWETH, contractUSDC, contractTETHER, contractCHAINLINK,
-            contractVeeFriendsSeries2, contractOZTeam] =
+            contractVeeFriendsSeries2, contractOZTeam, contractKithFriends] =
             useSelector((state) =>
                 Contract.selectByIdMany(state, [
                     { networkId: '1', address: TestData.VITALIK },
@@ -70,7 +70,8 @@ export const withMockData = (WrappedComponent: any) => {
                     { networkId: '1', address: TestData.TETHER },
                     { networkId: '1', address: TestData.CHAINLINK },
                     { networkId: '1', address: TestData.VEE_FRIENDS_SERIES2 },
-                    { networkId: '1', address: TestData.OZ_TEAM }
+                    { networkId: '1', address: TestData.OZ_TEAM },
+                    { networkId: '1', address: TestData.KITH_FRIENDS }
                 ])
             )
         useEffect(() => { if (!contractVITALIK) dispatch(Contract.create(TestData.contractVITALIK)) }, [contractVITALIK])
@@ -80,6 +81,7 @@ export const withMockData = (WrappedComponent: any) => {
         useEffect(() => { if (!contractCHAINLINK) dispatch(Contract.create(TestData.contractCHAINLINK)) }, [contractCHAINLINK])
         useEffect(() => { if (!contractVeeFriendsSeries2) dispatch(Contract.create(TestData.contractVeeFriendsSeries2)) }, [contractVeeFriendsSeries2])
         useEffect(() => { if (!contractOZTeam) dispatch(Contract.create(TestData.contractOZTeam)) }, [contractOZTeam])
+        useEffect(() => { if (!contractKithFriends) dispatch(Contract.create(TestData.contractKithFriends)) }, [contractKithFriends])
 
         return <WrappedComponent {...props} />;
     };

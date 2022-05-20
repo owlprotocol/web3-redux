@@ -3,6 +3,7 @@ import { Contract } from '@owlprotocol/web3-redux';
 import composeHooks from 'react-hooks-compose';
 import Icon from '../Icon';
 import { shortenHash } from '../../utils';
+import NetworkIcon from '../NetworkIcon';
 
 
 export interface HookProps {
@@ -11,18 +12,22 @@ export interface HookProps {
     tokenId: string;
 }
 export const useSingleNFTInstance = ({ networkId, address, tokenId }: HookProps) => {
-    const { name, symbol, ownerOf, tokenURI, metadata, contentId } = Contract.useERC721(networkId, address, tokenId)
-    console.debug({ name })
+    const { name, ownerOf, tokenURI, metadata } = Contract.useERC721(networkId, address, tokenId, {
+        metadata: true
+    })
+    console.debug({ name, ownerOf, tokenURI, metadata })
+    const { image, } = metadata ?? {};
     return {
-        name, symbol, ownerOf, tokenURI, metadata, contentId
+        networkId, ownerOf, imageSrc: image, itemName: metadata?.name
     }
 }
 
 export interface PresenterProps {
+    networkId: string;
     itemName: string;
     price: string;
     isSelected: boolean;
-    token: string;
+    //token: string;
     handleFavorite: any;
     imageSrc?: string;
     imageAlt?: string;
@@ -35,8 +40,11 @@ export interface PresenterProps {
 }
 
 export const SingleNFTInstancePresenter = ({
-    itemName, ownerOf, price, isSelected, token, handleFavorite,
-    imageSrc = 'https://bit.ly/dan-abramov',
+    networkId,
+    itemName = 'Placeholder',
+    ownerOf, price, isSelected,
+    handleFavorite,
+    imageSrc = 'http://placehold.jp/228x196.png',
     imageAlt = 'Placeholder' }: PresenterProps) => {
     const { themes } = useTheme();
 
@@ -74,7 +82,8 @@ export const SingleNFTInstancePresenter = ({
                     {shortenHash(ownerOf ?? '')}
                 </Box>
                 <HStack>
-                    {!price && <Icon icon={token} w="20px" h="20px" />}
+                    { /** NFT Network */}
+                    <NetworkIcon networkId={networkId} />
                     <IconButton
                         onClick={handleFavorite}
                         icon={<Icon icon="heart" w="18" />}
@@ -89,7 +98,9 @@ export const SingleNFTInstancePresenter = ({
                     <Box color={themes.color9} fontWeight={600} fontSize={14}>
                         {price} ETH
                     </Box>
-                    <Icon icon="ETH" w="20px" h="20px" />
+                    { /** TODO: Price currency Icon
+                    <NetworkIcon networkId={networkId} />
+                     */}
                 </HStack>
             )}
         </Box>

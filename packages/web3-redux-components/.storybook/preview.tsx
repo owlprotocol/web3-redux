@@ -80,7 +80,6 @@ export const withMockData = (WrappedComponent: any) => {
         useEffect(() => { if (!contractCHAINLINK) dispatch(Contract.create(TestData.contractCHAINLINK)) }, [contractCHAINLINK])
         useEffect(() => { if (!contractVeeFriendsSeries2) dispatch(Contract.create(TestData.contractVeeFriendsSeries2)) }, [contractVeeFriendsSeries2])
         useEffect(() => { if (!contractOZTeam) dispatch(Contract.create(TestData.contractOZTeam)) }, [contractOZTeam])
-        console.debug({ contractVITALIK, id: TestData.contractVITALIK.id })
 
         return <WrappedComponent {...props} />;
     };

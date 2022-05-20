@@ -130,7 +130,9 @@ const AbiItemInput = ({ type, name, onChange = () => {} }: Props) => {
                                     bg={themes.color6}
                                     onChange={({ target }: any) => onChangeValidate(target.checked)}
                                 />
-                                <FormLabel color={themes.color8} m={0}>{placeholder}</FormLabel>
+                                <FormLabel color={themes.color8} m={0}>
+                                    {placeholder}
+                                </FormLabel>
                             </HStack>
                         ),
                         number: (

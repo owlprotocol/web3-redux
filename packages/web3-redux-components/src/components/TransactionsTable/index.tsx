@@ -32,7 +32,7 @@ export interface ItemProps {
 export interface Props {
     items?: ItemProps[];
 }
-export const TransactionTable = ({ items = [] }: Props) => {
+export const TransactionsTable = ({ items = [] }: Props) => {
     const { themes } = useTheme();
 
     return (
@@ -99,4 +99,4 @@ export const TransactionTable = ({ items = [] }: Props) => {
     );
 };
 
-export default TransactionTable;
+export default TransactionsTable;

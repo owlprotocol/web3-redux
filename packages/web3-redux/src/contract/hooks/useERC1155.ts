@@ -8,6 +8,7 @@ import { IERC1155MetadataURI } from '../../abis/index.js';
 
 import { GenericSync } from '../../sync/model/index.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
+import { useURI } from '../../ipfs/hooks/useURI.js';
 
 /**
  * Contract hook for ERC1155 interface.
@@ -23,13 +24,14 @@ export function useERC1155(
     sync?: {
         //totalSupply?: 'ifnull' | GenericSync | false;
         balanceOf?: 'ifnull' | GenericSync | false | 'onTransfer'; //Update call on Transfer event
+        metadata?: boolean;
         TransferEventsOptions?: UseEventsOptions;
     },
 ) {
     //Create abi in store if non-existant
     useContractWithAbi(networkId, address, IERC1155MetadataURI.abi as any);
     if (address) invariant(isAddress(address), `${address} invalid contract address!`);
-    if (balanceOfAddress) invariant(isAddress(balanceOfAddress), `${balanceOfAddress} invalid contract address!`);
+    if (balanceOfAddress) invariant(isAddress(balanceOfAddress), `${balanceOfAddress} invalid balanceOf address!`);
 
     //Default sync params
     //const totalSupplySync = sync?.totalSupply ?? 'ifnull'; //Some tokens might have dynamic supply
@@ -49,6 +51,8 @@ export function useERC1155(
     //const totalSupply = useContractCall(networkId, address, 'totalSupply', [balanceOfTokenId], { sync: totalSupplySync });
     const [uri] = useContractCall(networkId, address, 'uri', [balanceOfTokenId]) as [string | undefined, any];
     const uriParsed = uri && balanceOfTokenId ? uri.replace('{id}', balanceOfTokenId) : undefined;
+    const [metadata, { contentId }] = useURI(uriParsed, sync?.metadata);
+
     //if balanceOf is 'Transfer' we disable hook sync and dispatch our own custom solution
     const [balanceOf] = useContractCall(networkId, address, 'balanceOf', [balanceOfAddress, balanceOfTokenId], {
         sync: balanceOfSync,
@@ -75,10 +79,12 @@ export function useERC1155(
             //totalSupply,
             uri: uriParsed,
             balanceOf,
+            metadata,
+            contentId,
             TransferFrom,
             TransferTo,
         };
-    }, [, /*totalSupply*/ uri, balanceOf, TransferFrom, TransferTo]);
+    }, [, /*totalSupply*/ uri, balanceOf, metadata, contentId, TransferFrom, TransferTo]);
 
     return values;
 }

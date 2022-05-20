@@ -1,26 +1,7 @@
-import { useTheme, Box, IconButton, HStack, Avatar, Image } from '@chakra-ui/react';
-import { Contract } from '@owlprotocol/web3-redux';
-import composeHooks from 'react-hooks-compose';
+import { useTheme, Box, IconButton, HStack, Image } from '@chakra-ui/react';
 import Icon from '../Icon';
 import { shortenHash } from '../../utils';
 import NetworkIcon from '../NetworkIcon';
-
-
-export interface HookProps {
-    networkId: string;
-    address: string;
-    tokenId: string;
-}
-export const useSingleNFTInstance = ({ networkId, address, tokenId }: HookProps) => {
-    const { name, ownerOf, tokenURI, metadata } = Contract.useERC721(networkId, address, tokenId, {
-        metadata: true
-    })
-    console.debug({ name, ownerOf, tokenURI, metadata })
-    const { image, } = metadata ?? {};
-    return {
-        networkId, ownerOf, imageSrc: image, itemName: metadata?.name
-    }
-}
 
 export interface PresenterProps {
     networkId: string;
@@ -39,7 +20,7 @@ export interface PresenterProps {
     contentId: string | undefined
 }
 
-export const SingleNFTInstancePresenter = ({
+export const NFTInstancePresenter = ({
     networkId,
     itemName = 'Placeholder',
     ownerOf, price, isSelected,
@@ -77,10 +58,11 @@ export const SingleNFTInstancePresenter = ({
                 {itemName}
             </Box>
             <HStack justifyContent="space-between">
-                <Box color={themes.color9} fontWeight={400} fontSize={14}>
-                    <Avatar size="2xs" mr={2} />
-                    {shortenHash(ownerOf ?? '')}
+                {ownerOf && <Box color={themes.color9} fontWeight={400} fontSize={14}>
+                    { /*<Avatar size="2xs" mr={2} />*/}
+                    {shortenHash(ownerOf)}
                 </Box>
+                }
                 <HStack>
                     { /** NFT Network */}
                     <NetworkIcon networkId={networkId} />
@@ -107,12 +89,4 @@ export const SingleNFTInstancePresenter = ({
     );
 };
 
-const SingleNFTInstance = composeHooks((props: HookProps) => ({
-    useSingleNFTInstance: () => useSingleNFTInstance(props),
-}))(SingleNFTInstancePresenter) as (props: HookProps) => JSX.Element;
-
-//@ts-expect-error
-SingleNFTInstance.displayName = 'SingleNFTInstance';
-
-export { SingleNFTInstance };
-export default SingleNFTInstance;
+export default NFTInstancePresenter;

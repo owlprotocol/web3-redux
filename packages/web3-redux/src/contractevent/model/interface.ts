@@ -29,6 +29,9 @@ export interface ContractEvent<T extends ReturnValues = ReturnValues> extends Co
     /** redux-orm id of contract `${networkId}-{address}` */
     readonly contractId?: string;
 
+    /** Block number */
+    readonly blockNumber?: number;
+
     /** Address of contract that emitted event */
     readonly address: string;
 

@@ -14,7 +14,7 @@ import { name } from '../common.js';
 import { validateEthCall } from '../../ethcall/model/index.js';
 import { StateRoot } from '../../state.js';
 import { ModelWithId } from '../../types/model.js';
-import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall } from './index.js';
+import { selectByIdSingle, selectByIdMany, selectByFilter, selectContractCall, selectContractEvents } from './index.js';
 
 describe(`${name}.selectors`, () => {
     const web3 = new Web3('https://localhost:8545');
@@ -59,6 +59,11 @@ describe(`${name}.selectors`, () => {
         state[REDUX_ROOT]['ContractEvent'].itemsById[event1.id!] = event1;
         state[REDUX_ROOT]['ContractEvent'].items.push(event2.id);
         state[REDUX_ROOT]['ContractEvent'].itemsById[event2.id!] = event2;
+
+        //Set Event Index
+        state[REDUX_ROOT]['ContractEventIndex'].items.push(event2.id);
+        state[REDUX_ROOT]['ContractEventIndex'].itemsById[event2.id!] = event2;
+
 
         //Set Transactions
         state[REDUX_ROOT]['Transaction'].items.push(transaction1.id);
@@ -129,4 +134,24 @@ describe(`${name}.selectors`, () => {
             assert.deepEqual(selectContractCall(state, id, method), ethCall.returnValue);
         });
     });
+
+    describe('selectContractEvents', () => {
+        it.skip('memoization: no filter', () => {
+            const select1 = selectContractEvents(state, id, 'NewValue');
+            const select2 = selectContractEvents(state, id, 'NewValue');
+
+            assert.deepEqual(select1, [event1, event2], 'select1 = expected')
+            assert.deepEqual(select1, select2, 'select2 = expected');
+            assert.equal(select1, select2, 'select1 === select2');
+        })
+
+        it.skip('memoization: filter', () => {
+            const select1 = selectContractEvents(state, id, 'NewValue', { val: 42 });
+            const select2 = selectContractEvents(state, id, 'NewValue', { val: 42 });
+
+            assert.deepEqual(select1, [event1], 'select1 = expected')
+            assert.deepEqual(select1, select2, 'select2 = expected');
+            assert.equal(select1, select2, 'select1 === select2');
+        })
+    })
 });

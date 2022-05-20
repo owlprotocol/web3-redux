@@ -6,6 +6,7 @@ import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions/index
 import { EventGetPastActionInput } from '../actions/eventGetPast.js';
 import selectSingle from '../selectors/selectByIdSingle.js';
 import selectEvents from '../selectors/selectContractEventsById.js';
+import { isAddress, toChecksumAddress } from '../../utils/web3-utils/index.js';
 
 //Contract Events
 /** @internal */
@@ -24,16 +25,17 @@ export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
->(
-    networkId: string | undefined,
-    address: string | undefined,
-    eventName: K | undefined,
-    filter?: { [key: string]: any },
-    options?: UseEventsOptions,
+    >(
+        networkId: string | undefined,
+        address: string | undefined,
+        eventName: K | undefined,
+        filter?: { [key: string]: any },
+        options?: UseEventsOptions,
 ) {
     const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
 
-    const id = networkId && address ? { networkId, address } : undefined;
+    const addressChecksum = address && isAddress(address) ? toChecksumAddress(address) : undefined;
+    const id = networkId && addressChecksum ? { networkId, address: addressChecksum } : undefined;
     const contract = useSelector((state) => selectSingle(state, id));
     const contractExists = !!contract;
 
@@ -43,10 +45,10 @@ export function useEvents<
     const filterHash = filter ? JSON.stringify(filter) : '';
 
     const getPastAction = useMemo(() => {
-        if (networkId && address && eventName && contractExists && past) {
+        if (networkId && addressChecksum && eventName && contractExists && past) {
             return eventGetPast({
                 networkId,
-                address,
+                address: addressChecksum,
                 eventName: eventName as string,
                 filter,
                 fromBlock,
@@ -54,29 +56,29 @@ export function useEvents<
                 blockBatch,
             });
         }
-    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blockBatch, contractExists, past]);
+    }, [networkId, addressChecksum, eventName, filterHash, fromBlock, toBlock, blockBatch, contractExists, past]);
 
     const subscribeAction = useMemo(() => {
-        if (networkId && address && eventName && contractExists && sync) {
+        if (networkId && addressChecksum && eventName && contractExists && sync) {
             return eventSubscribe({
                 networkId,
-                address,
+                address: addressChecksum,
                 eventName: eventName as string,
                 filter,
             });
         }
-    }, [networkId, address, eventName, filterHash, contractExists, sync]);
+    }, [networkId, addressChecksum, eventName, filterHash, contractExists, sync]);
 
     const unsubscribeAction = useMemo(() => {
-        if (networkId && address && contractExists && sync) {
+        if (networkId && addressChecksum && contractExists && sync) {
             return eventUnsubscribe({
                 networkId,
-                address,
+                address: addressChecksum,
                 eventName: eventName as string,
                 filter,
             });
         }
-    }, [networkId, address, eventName, filterHash, contractExists, sync]);
+    }, [networkId, addressChecksum, eventName, filterHash, contractExists, sync]);
 
     //Send getPast action
     useEffect(() => {
@@ -98,7 +100,7 @@ export function contractEventsHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends ReturnValues = ReturnValues,
->(eventName: K) {
+    >(eventName: K) {
     return (
         networkId: string | undefined,
         address: string | undefined,

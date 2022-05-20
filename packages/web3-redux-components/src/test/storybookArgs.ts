@@ -50,7 +50,7 @@ const addressERC721Labels = {
     [OZ_TEAM]: `${OZ_TEAM} - OpenZeppelin Team`
 }
 export const addressERC721ArgType = {
-    options: Object.keys(addressLabels),
+    options: Object.keys(addressERC721Labels),
     control: {
         type: 'select',
         labels: addressERC721Labels,

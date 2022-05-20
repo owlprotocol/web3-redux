@@ -13,7 +13,7 @@ export default function* fetch(action: FetchAction) {
     const network: Network = yield* call(networkExists, networkId);
     if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
     const web3 = network.web3;
-    yield* put(create(payload));
+    yield* put(create({ ...payload, status: 'LOADING' }));
 
     try {
         const gas = payload.gas ?? (yield* call(web3.eth.estimateGas, payload)); //default gas

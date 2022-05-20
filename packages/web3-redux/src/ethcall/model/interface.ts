@@ -26,6 +26,10 @@ export interface EthCall extends EthCallId {
     readonly returnValue?: any;
     /** Last known error */
     readonly error?: Error;
+    /** Last updated UTC timestamp */
+    readonly lastUpdated?: number
+    /** Status */
+    readonly status?: 'LOADING' | 'SUCCESS' | 'ERROR'
 }
 
 /** @internal */

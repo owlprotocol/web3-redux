@@ -1,7 +1,7 @@
 export { default as AddressDisplay } from './components/AddressDisplay';
 export { default as ContractCode } from './components/ContractCode';
 export { default as Icon } from './components/Icon';
-export { default as SingleNFTInstance } from './components/SingleNFTInstance';
+export { default as SingleNFTInstancePresenter } from './components/SingleNFTInstance';
 export { default as WalletConnect } from './components/WalletConnect';
 export { default as AddressDropdown } from './components/AddressDropdown';
 export { default as ContractItem } from './components/ContractItem';

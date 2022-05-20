@@ -54,6 +54,7 @@ export function* callSaga(action: CallAction) {
             createError({
                 id: action.meta.uuid,
                 error: error as Error,
+                errorMessage: (error as Error).message,
                 type: CALL_ERROR,
             }),
         );

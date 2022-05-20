@@ -9,7 +9,7 @@ import { validateContract } from '../contract/index.js';
 import { validateContractEvent } from '../contractevent/index.js';
 import { validateEthCall } from '../ethcall/index.js';
 import { validateTransaction } from '../transaction/index.js';
-import { BlockNumber, IERC20, IERC721 } from '../abis/index.js';
+import { BlockNumber, IERC20, IERC721Metadata as IERC721 } from '../abis/index.js';
 
 export const networkId = '1336';
 
@@ -44,6 +44,7 @@ export const TETHER = '0xdac17f958d2ee523a2206206994597c13d831ec7';
 export const CHAINLINK = '0x514910771af9ca656af840dff83e8264ecf986ca';
 //Popular nfts
 export const VEE_FRIENDS_SERIES2 = '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18';
+export const OZ_TEAM = '0x67ed2e5dd3d01ca342db045037be054dc6d8482a'
 //Popular addresses
 export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
 
@@ -96,6 +97,11 @@ export const contractCHAINLINK = validateContract({
 export const contractVeeFriendsSeries2 = validateContract({
     networkId: '1',
     address: VEE_FRIENDS_SERIES2,
+    abi: cloneDeep(IERC721.abi) as any,
+});
+export const contractOZTeam = validateContract({
+    networkId: '1',
+    address: OZ_TEAM,
     abi: cloneDeep(IERC721.abi) as any,
 });
 

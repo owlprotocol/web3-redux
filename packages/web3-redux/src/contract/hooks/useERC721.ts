@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { URL } from 'url';
+import { URL } from 'iso-url';
 import { useContractWithAbi } from './useContractWithAbi.js';
 import { useContractCall } from './useContractCall.js';
 import { useEvents, UseEventsOptions } from './useEvents.js';
@@ -62,6 +62,7 @@ export function useERC721(
     const ipfsPath = isIpfsURI ? tokenURI?.replace('ipfs://', '') : undefined;
     const { data: ipfsContent, contentId } = useIpfs(ipfsPath, sync?.metadata);
 
+    //console.debug({ uri, tokenURI, protocol: uri?.protocol })
     //If HTTP(S)
     //TODO: cache for http content
     const isHttpURI = uri?.protocol === 'http:' || uri?.protocol === 'https:';

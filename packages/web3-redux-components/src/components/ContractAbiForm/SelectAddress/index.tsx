@@ -28,14 +28,14 @@ export const SelectAddress = ({
     onChangeHandler = (value) => console.log(`SelectAddress.onChange(${value})`),
 }: Props) => {
     const [error, setError] = useState<Error | undefined>();
-    const [value, setValue] = useState<string | undefined>();
+    const [, setValue] = useState<string | undefined>();
 
     const indexList = useSelector((state) => ContractIndex.selectByIdMany(state, indexFilter)) ?? [];
     const contractsByIndexList = useSelector((state) => ContractIndex.selectContractsMany(state, indexFilter)) ?? [];
 
     const options = indexList.map((contractIdx, idx) => {
         return {
-            label: contractIdx!.id,
+            label: contractIdx?.id ?? 'Other',
             options: contractsByIndexList[idx]
                 ?.filter((c) => c.networkId === networkId)
                 .map((c) => {
@@ -114,6 +114,7 @@ export const SelectAddress = ({
                     <CreatableSelect
                         ref={ref}
                         placeholder="Select address"
+                        //@ts-ignore
                         options={options}
                         //@ts-ignore
                         onChange={(data) => onChangeValidate(data?.value)}

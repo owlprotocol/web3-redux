@@ -91,27 +91,30 @@ const AbiItemForm = ({
         [setErrorAtIdx, setArgAtIdx],
     );
 
-    const [sendTx, { error: sendError, contractSend }] = Contract.useContractSend(networkId, address, name, args, { from: account });
-    const { status, transactionHash, receipt, confirmations } = contractSend ?? {}
+    const [sendTx, { error: sendError, contractSend }] = Contract.useContractSend(networkId, address, name, args, {
+        from: account,
+    });
+    const { status, transactionHash, receipt, confirmations } = contractSend ?? {};
 
     // EVM error
     const error = callError ?? sendError;
     const isError = !!error;
 
-    const isPendingSig = status == ContractSend.ContractSendStatus.PENDING_SIGNATURE
-    const isPendingConf = status == ContractSend.ContractSendStatus.PENDING_CONFIRMATION
+    const isPendingSig = status == ContractSend.ContractSendStatus.PENDING_SIGNATURE;
+    const isPendingConf = status == ContractSend.ContractSendStatus.PENDING_CONFIRMATION;
     const isPending = isPendingSig || isPendingConf;
 
     let isPendingText: string | undefined;
     if (isPendingSig) isPendingText = 'Waiting for signature...';
     else if (isPendingConf) isPendingText = 'Waiting for confirmation...';
 
-    const isDisabled = !validArgs || isPending
+    const isDisabled = !validArgs || isPending;
 
     let resultText: string | undefined;
-    if (!write && returnValue) resultText = `Return value: ${returnValue}`
+    if (!write && returnValue) resultText = `Return value: ${returnValue}`;
     else if (write && transactionHash && !confirmations) resultText = `Transaction hash: ${transactionHash}`;
-    else if (write && transactionHash && confirmations && receipt.blockNumber) resultText = `Transaction hash: ${transactionHash} Confirmed at block:${receipt.blockNumber}`;
+    else if (write && transactionHash && confirmations && receipt.blockNumber)
+        resultText = `Transaction hash: ${transactionHash} Confirmed at block:${receipt.blockNumber}`;
 
     return (
         <Box borderRadius="md" bg={themes.color3} color="white" p={3}>
@@ -136,9 +139,16 @@ const AbiItemForm = ({
                 })}
                 {write && (
                     <>
-                        <Button isDisabled={isDisabled} isLoading={isPending} loadingText={isPendingText} onClick={sendTx} bg={themes.color1}>
+                        <Button
+                            isDisabled={isDisabled}
+                            isLoading={isPending}
+                            loadingText={isPendingText}
+                            onClick={sendTx}
+                            bg={themes.color1}
+                        >
                             Send
-                        </Button><br />
+                        </Button>
+                        <br />
                     </>
                 )}
                 {resultText}

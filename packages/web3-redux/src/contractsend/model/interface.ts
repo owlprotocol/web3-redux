@@ -1,26 +1,9 @@
+import { v4 as uuidv4 } from 'uuid';
 import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { getId as getContractId } from '../../contract/model/interface.js';
 import { getTransactionId } from '../../transaction/model/index.js';
-import { ModelWithId } from '../../types/model.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
-
-/** ContractSend id components */
-export interface ContractSendId {
-    /** Blockchain network id.
-     * See [chainlist](https://chainlist.org/) for a list of networks. */
-    readonly networkId: string;
-    /** Contract ethereum address */
-    readonly address: string;
-    /** Contract method name */
-    readonly methodName: string;
-    /** Contract method parameters */
-    readonly args?: any[];
-    /** Send address */
-    readonly from: string;
-    /** Value sent in wei */
-    readonly value?: any;
-}
 
 /**
  * @enum
@@ -35,9 +18,22 @@ export enum ContractSendStatus {
     /** Transaction confirmations > 0. */
     CONFIRMED = 'CONFIRMED',
 }
-export interface ContractSend extends ContractSendId {
-    /** Used to index send data in redux-orm. Computed as `${networkId}-${address}-{methodName}-{[args]}-{options}` */
-    readonly id?: string;
+export interface ContractSend {
+    /** unique uuid identifying send action */
+    readonly uuid: string;
+    /** Blockchain network id.
+     * See [chainlist](https://chainlist.org/) for a list of networks. */
+    readonly networkId: string;
+    /** Contract ethereum address */
+    readonly address: string;
+    /** Contract method name */
+    readonly methodName: string;
+    /** Contract method parameters */
+    readonly args?: any[];
+    /** Send address */
+    readonly from: string;
+    /** Value sent in wei */
+    readonly value?: any;
     /** redux-orm id of contract send `${networkId}-{address}` */
     readonly contractId?: string;
     /** Transaction hash. Generated once data is signed.` */
@@ -77,25 +73,10 @@ export function getOptionsId(from: string | undefined, value: string | undefined
     return JSON.stringify(value);
 }
 
-/** @internal */
-const SEPARATOR = '-';
-/** @internal */
-export function getId(id: ContractSendId): string {
-    if (typeof id === 'string') return id;
-
-    const contractId = getContractId({ networkId: id.networkId, address: id.address });
-    const argsId = getArgsId(id.args);
-    const optionsId = getOptionsId(id.from, id.value);
-
-    let idStr = [contractId, id.methodName, argsId].join(SEPARATOR);
-    if (optionsId) idStr = [idStr, optionsId].join(SEPARATOR);
-
-    return idStr;
-}
 
 /** @internal */
-export function validate(item: ContractSend): ModelWithId<ContractSend> {
-    const id = getId(item);
+export function validate(item: ContractSend): ContractSend {
+    const uuid = item.uuid ?? uuidv4();
     const addressChecksum = toChecksumAddress(item.address);
     const fromCheckSum = toChecksumAddress(item.from);
     const contractId = getContractId(item);
@@ -104,7 +85,7 @@ export function validate(item: ContractSend): ModelWithId<ContractSend> {
         : undefined;
     return {
         ...item,
-        id,
+        uuid,
         address: addressChecksum,
         from: fromCheckSum,
         contractId,

@@ -1,11 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 import { name } from '../common.js';
-import { ContractSendId } from '../model/interface.js';
 
 /** @internal */
 export const REMOVE = `${name}/DELETE`;
 /** @category Actions */
-export const remove = createAction<ContractSendId>(REMOVE);
+export const remove = createAction<string>(REMOVE);
 
 /** @internal */
 export type RemoveAction = ReturnType<typeof remove>;

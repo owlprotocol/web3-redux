@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BaseWeb3Contract } from '../model/index.js';
-import { send } from '../actions/index.js';
+import { send, SendAction } from '../actions/index.js';
 import { selectByIdSingle as selectReduxError } from '../../error/selectors/index.js';
 
 /**
@@ -24,7 +24,10 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
     method: K | undefined,
     args?: Parameters<T['methods'][K]>,
     options?: UseContractSendOptions
-): [() => void, { error: Error | undefined }] {
+): [() => void, {
+    sendAction: SendAction,
+    error: Error | undefined
+}] {
     let error: Error | undefined;
     const { value, from } = options ?? {};
     const dispatch = useDispatch();
@@ -52,7 +55,7 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const reduxError = useSelector((state) => selectReduxError(state, sendAction?.meta.uuid));
     if (reduxError) error = reduxError.error;
 
-    return [sendCallback, { error }];
+    return [sendCallback, { error, sendAction }];
 }
 
 /** @category Hooks */

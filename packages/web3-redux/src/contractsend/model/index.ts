@@ -1,3 +1,3 @@
-export type { ContractSend, ContractSendId } from './interface.js';
+export type { ContractSend } from './interface.js';
 export { ContractSendStatus } from './interface.js';
-export { getId, getId as getContractSendId, validate, validate as validateContractSend } from './interface.js';
+export { validate, validate as validateContractSend } from './interface.js';

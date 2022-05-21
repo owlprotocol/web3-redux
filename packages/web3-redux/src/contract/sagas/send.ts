@@ -74,7 +74,7 @@ export function* send(action: SendAction) {
         if (!contract) throw new Error(`Contract ${getId(payload)} undefined`);
 
         const web3Contract = contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${getId(payload)} has no web3 contract`);
+        if (!web3Contract) throw new Error(`Contract ${getId(payload)} has no web3Sender contract`);
 
         const method = web3Contract.methods[payload.method];
         if (!method) throw new Error(`Contract ${getId(payload)} has no such method ${payload.method}`);
@@ -97,6 +97,7 @@ export function* send(action: SendAction) {
             args,
             from,
             value,
+            uuid: action.meta.uuid
         };
 
         yield* put(

@@ -1,6 +1,8 @@
-import { fromWei, toBN, unitMap } from 'web3-utils';
+import Web3 from 'web3';
 import { invert } from 'lodash';
 import { Contract } from '@owlprotocol/web3-redux';
+
+const { fromWei, toBN, unitMap } = Web3.utils;
 
 const reverseUnitMap = invert(unitMap);
 export interface TokenDropDownOptionProps {

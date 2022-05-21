@@ -1,4 +1,4 @@
-import { AbiType, StateMutabilityType } from 'web3-utils';
+import type { AbiType, StateMutabilityType } from 'web3-utils';
 import AbiItemForm from '../AbiItemForm';
 interface AbiFormProps {
     name: string | undefined;
@@ -9,13 +9,13 @@ interface AbiFormProps {
     type: AbiType;
     stateMutability: StateMutabilityType;
 }
-interface Props {
+export interface Props {
     networkId: string;
     address: string;
     abi: AbiFormProps[];
 }
 
-const ContractAbiForm = ({ networkId, address, abi }: Props) => {
+export const ContractAbiForm = ({ networkId, address, abi }: Props) => {
     const abiFunctions = abi.filter((a) => a.type === 'function');
 
     return (

@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import Web3 from 'web3';
-import { toHex } from 'web3-utils';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
@@ -9,6 +8,8 @@ import { isMetaMaskInstalled } from '../utils/isMetamaskInstalled';
 import { DEFAULT_CHAIN_ID, WalletContext } from '../constants/web3React';
 import { getLibrary } from '../utils/getLibrary';
 import { SUPPORTED_WALLETS } from '../constants/web3ReactConnectors';
+
+const { toHex } = Web3.utils;
 
 const useMetamask = () => {
     const { connector, activate, library } = useWeb3React(WalletContext);

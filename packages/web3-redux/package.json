@@ -18,13 +18,6 @@
   "main": "./dist/web3-redux-lib.cjs.js",
   "module": "./dist/web3-redux-lib.es.js",
   "types": "./types/index.d.ts",
-  "files": [
-    "dist/*",
-    "lib/*",
-    "src/*",
-    "LICENSE",
-    "README.md"
-  ],
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
@@ -32,6 +25,13 @@
       "import": "./dist/web3-redux-lib.es.js"
     }
   },
+  "files": [
+    "dist/*",
+    "lib/*",
+    "src/*",
+    "LICENSE",
+    "README.md"
+  ],
   "engines": {
     "node": ">=16.0.0"
   },

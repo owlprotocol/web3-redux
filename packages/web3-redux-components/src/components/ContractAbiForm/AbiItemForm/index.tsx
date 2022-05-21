@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Box, useTheme, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
-import { AbiType, StateMutabilityType } from 'web3-utils';
+import type { AbiType, StateMutabilityType } from 'web3-utils';
 import { Config, Contract, ContractSend } from '@owlprotocol/web3-redux';
 import AbiItemInput from '../AbiItemInput';
 
@@ -10,7 +10,7 @@ import AbiItemInput from '../AbiItemInput';
 //Better error handling for reverts
 
 //Similar to AbiItem interface
-interface Props {
+export interface Props {
     networkId: string;
     address: string;
     account?: string;
@@ -24,7 +24,7 @@ interface Props {
     stateMutability: StateMutabilityType;
 }
 
-const AbiItemForm = ({
+export const AbiItemForm = ({
     networkId,
     address,
     account,

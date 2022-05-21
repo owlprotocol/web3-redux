@@ -132,7 +132,7 @@ export const contractSkyWeaver = validateContract({
 export const contractVITALIK = validateContract({
     networkId: '1',
     address: VITALIK,
-    indexIds: ['favorite'],
+    indexIds: ['Favorites'],
 });
 
 export const contract1Id = { networkId, address: ADDRESS_1 };

@@ -8,7 +8,7 @@ import { ContractIndex } from '../contractindex/model/interface.js';
 export function reducer(sess: any, action: ReducerAction) {
     const Network: ORMModel<Network> = sess.Network;
     const Contract: ORMModel<ModelWithId<Contract>> = sess.Contract;
-    const Index: ORMModel<ModelWithId<ContractIndex>> = sess.ContracIndex;
+    const Index: ORMModel<ModelWithId<ContractIndex>> = sess.ContractIndex;
 
     if (isCreateAction(action)) {
         const { payload } = action;

@@ -1,7 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Abi, TestData } from '@owlprotocol/web3-redux';
+import {
+    addressERC1155ArgType,
+    addressERC20ArgType,
+    addressERC721ArgType,
+    networkIdArgType,
+} from '../../../test/storybookArgs';
 import ContractAbiForm from '.';
-import { addressERC1155ArgType, addressERC20ArgType, addressERC721ArgType, networkIdArgType } from '../../../test/storybookArgs';
 
 export default {
     title: 'ContractAbi/ContractAbiForm',
@@ -18,8 +23,8 @@ ERC20.args = {
 };
 ERC20.argTypes = {
     networkId: networkIdArgType,
-    address: addressERC20ArgType
-}
+    address: addressERC20ArgType,
+};
 
 export const ERC721 = Template.bind({});
 ERC721.args = {
@@ -29,8 +34,8 @@ ERC721.args = {
 };
 ERC721.argTypes = {
     networkId: networkIdArgType,
-    address: addressERC721ArgType
-}
+    address: addressERC721ArgType,
+};
 
 export const ERC1155 = Template.bind({});
 ERC1155.args = {
@@ -40,5 +45,5 @@ ERC1155.args = {
 };
 ERC1155.argTypes = {
     networkId: networkIdArgType,
-    address: addressERC1155ArgType
-}
+    address: addressERC1155ArgType,
+};

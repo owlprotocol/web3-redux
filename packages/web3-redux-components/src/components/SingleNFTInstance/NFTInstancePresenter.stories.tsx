@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import NFTInstancePresenter from '.';
 import { networkIdArgType } from '../../test/storybookArgs';
+import NFTInstancePresenter from '.';
 
 export default {
     title: 'NFT/NFTInstancePresenter',

@@ -12,21 +12,24 @@ export interface PresenterProps {
     handleFavorite: any;
     imageSrc?: string;
     imageAlt?: string;
-    name: string | undefined,
-    symbol: string | undefined,
-    ownerOf: string | undefined,
-    tokenURI: string | undefined,
-    metadata: any | undefined,
-    contentId: string | undefined
+    name: string | undefined;
+    symbol: string | undefined;
+    ownerOf: string | undefined;
+    tokenURI: string | undefined;
+    metadata: any | undefined;
+    contentId: string | undefined;
 }
 
 export const NFTInstancePresenter = ({
     networkId,
     itemName = 'Placeholder',
-    ownerOf, price, isSelected,
+    ownerOf,
+    price,
+    isSelected,
     handleFavorite,
     imageSrc = 'http://placehold.jp/228x196.png',
-    imageAlt = 'Placeholder' }: PresenterProps) => {
+    imageAlt = 'Placeholder',
+}: PresenterProps) => {
     const { themes } = useTheme();
 
     return (
@@ -58,13 +61,14 @@ export const NFTInstancePresenter = ({
                 {itemName}
             </Box>
             <HStack justifyContent="space-between">
-                {ownerOf && <Box color={themes.color9} fontWeight={400} fontSize={14}>
-                    { /*<Avatar size="2xs" mr={2} />*/}
-                    {shortenHash(ownerOf)}
-                </Box>
-                }
+                {ownerOf && (
+                    <Box color={themes.color9} fontWeight={400} fontSize={14}>
+                        {/*<Avatar size="2xs" mr={2} />*/}
+                        {shortenHash(ownerOf)}
+                    </Box>
+                )}
                 <HStack>
-                    { /** NFT Network */}
+                    {/** NFT Network */}
                     <NetworkIcon networkId={networkId} />
                     <IconButton
                         onClick={handleFavorite}
@@ -80,7 +84,7 @@ export const NFTInstancePresenter = ({
                     <Box color={themes.color9} fontWeight={600} fontSize={14}>
                         {price} ETH
                     </Box>
-                    { /** TODO: Price currency Icon
+                    {/** TODO: Price currency Icon
                     <NetworkIcon networkId={networkId} />
                      */}
                 </HStack>

@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { TestData } from '@owlprotocol/web3-redux';
-import ERC1155Instance from '.';
 import { addressERC1155ArgType, networkIdArgType } from '../../../test/storybookArgs';
+import ERC1155Instance from '.';
 
 export default {
     title: 'NFT/ERC1155Instance',
@@ -15,9 +15,9 @@ export const Main = Template.bind({});
 Main.args = {
     networkId: '137',
     address: TestData.SKYWEAVER,
-    tokenId: '1'
+    tokenId: '1',
 };
 Main.argTypes = {
     networkId: networkIdArgType,
-    address: addressERC1155ArgType
-}
+    address: addressERC1155ArgType,
+};

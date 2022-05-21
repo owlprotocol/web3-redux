@@ -2,12 +2,12 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core'
 import { useEffect } from 'react';
-import { getEnvironment } from '../src/environment';
+import { ChakraProvider } from '@chakra-ui/react';
 import {
     Network, Contract, TestData, store,
     Environment
 } from '@owlprotocol/web3-redux';
-
+import { getEnvironment } from '../src/environment';
 //@ts-ignore
 Environment.setEnvironment(getEnvironment());
 
@@ -15,7 +15,6 @@ import { THEME_COLORS } from '../src/constants';
 import { WalletContext } from '../src/constants/web3React'
 import { getLibrary } from '../src/utils/getLibrary'
 
-import { ChakraProvider } from '@chakra-ui/react';
 import theme from '../src/theme';
 import getDisplayName from '../src/hoc/getDisplayName';
 

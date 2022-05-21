@@ -1,13 +1,14 @@
 import { TestData } from '@owlprotocol/web3-redux';
-const { ADDRESS_0, VITALIK, WETH, USDC, TETHER, CHAINLINK, KITH_FRIENDS, OZ_TEAM, SKYWEAVER, VEE_FRIENDS_SERIES2 } = TestData;
+const { ADDRESS_0, VITALIK, WETH, USDC, TETHER, CHAINLINK, KITH_FRIENDS, OZ_TEAM, SKYWEAVER, VEE_FRIENDS_SERIES2 } =
+    TestData;
 
 const networkLabels = {
     [1]: '1 - Ethereum',
     [10]: '10 - Optimism',
     [137]: '137 - Polygon',
     [42161]: '42161 - Arbitrum',
-    [1337]: '1337 - Ganache'
-}
+    [1337]: '1337 - Ganache',
+};
 export const networkIdArgType = {
     options: Object.keys(networkLabels),
     control: {
@@ -48,8 +49,8 @@ export const addressERC20ArgType = {
 
 const addressERC721Labels = {
     [VEE_FRIENDS_SERIES2]: `${VEE_FRIENDS_SERIES2} - Vee Friends Series 2`,
-    [OZ_TEAM]: `${OZ_TEAM} - OpenZeppelin Team`
-}
+    [OZ_TEAM]: `${OZ_TEAM} - OpenZeppelin Team`,
+};
 export const addressERC721ArgType = {
     options: Object.keys(addressERC721Labels),
     control: {
@@ -60,8 +61,8 @@ export const addressERC721ArgType = {
 
 const addressERC1155Labels = {
     [KITH_FRIENDS]: `${KITH_FRIENDS} - Kith Friends`,
-    [SKYWEAVER]: `${SKYWEAVER} - SkyWeaver (Polygon)`
-}
+    [SKYWEAVER]: `${SKYWEAVER} - SkyWeaver (Polygon)`,
+};
 export const addressERC1155ArgType = {
     options: Object.keys(addressERC1155Labels),
     control: {

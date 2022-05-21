@@ -79,21 +79,25 @@ export const contractWETH = validateContract({
     networkId: '1',
     address: WETH,
     abi: cloneDeep(IERC20.abi) as any,
+    indexIds: ['ERC20'],
 });
 export const contractUSDC = validateContract({
     networkId: '1',
     address: USDC,
     abi: cloneDeep(IERC20.abi) as any,
+    indexIds: ['ERC20'],
 });
 export const contractTETHER = validateContract({
     networkId: '1',
     address: TETHER,
     abi: cloneDeep(IERC20.abi) as any,
+    indexIds: ['ERC20'],
 });
 export const contractCHAINLINK = validateContract({
     networkId: '1',
     address: CHAINLINK,
     abi: cloneDeep(IERC20.abi) as any,
+    indexIds: ['ERC20'],
 });
 
 //ERC721
@@ -101,11 +105,13 @@ export const contractVeeFriendsSeries2 = validateContract({
     networkId: '1',
     address: VEE_FRIENDS_SERIES2,
     abi: cloneDeep(IERC721.abi) as any,
+    indexIds: ['ERC721'],
 });
 export const contractOZTeam = validateContract({
     networkId: '1',
     address: OZ_TEAM,
     abi: cloneDeep(IERC721.abi) as any,
+    indexIds: ['ERC721'],
 });
 
 //ERC1155
@@ -113,17 +119,20 @@ export const contractKithFriends = validateContract({
     networkId: '1',
     address: KITH_FRIENDS,
     abi: cloneDeep(IERC1155.abi) as any,
+    indexIds: ['ERC1155'],
 });
 export const contractSkyWeaver = validateContract({
     networkId: '137',
     address: SKYWEAVER,
     abi: cloneDeep(IERC1155.abi) as any,
+    indexIds: ['ERC1155'],
 });
 
 //Popular Addresses
 export const contractVITALIK = validateContract({
     networkId: '1',
     address: VITALIK,
+    indexIds: ['favorite'],
 });
 
 export const contract1Id = { networkId, address: ADDRESS_1 };

@@ -85,7 +85,7 @@ export const contractUSDC = validateContract({
     networkId: '1',
     address: USDC,
     abi: cloneDeep(IERC20.abi) as any,
-    indexIds: ['ERC20'],
+    indexIds: ['Favorites', 'ERC20'],
 });
 export const contractTETHER = validateContract({
     networkId: '1',
@@ -132,7 +132,7 @@ export const contractSkyWeaver = validateContract({
 export const contractVITALIK = validateContract({
     networkId: '1',
     address: VITALIK,
-    indexIds: ['Favorites'],
+    indexIds: [],
 });
 
 export const contract1Id = { networkId, address: ADDRESS_1 };

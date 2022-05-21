@@ -2,6 +2,7 @@ import { Select } from 'chakra-react-select';
 import { useSelector } from 'react-redux';
 import { Contract, ContractIndex } from '@owlprotocol/web3-redux';
 import { useForm, useController } from 'react-hook-form';
+import { intersection } from 'lodash';
 
 //https://codesandbox.io/s/648uv
 //https://codesandbox.io/s/chakra-react-select-react-hook-form-usecontroller-single-select-typescript-v3-3hvkm
@@ -13,11 +14,11 @@ export interface Props {
 }
 export const SelectAddress = ({
     networkId,
-    //labelsFilter,
+    indexFilter,
     onChangeHandler = (value) => console.log(`SelectAddress.onChange(${value})`),
 }: Props) => {
-    const indexList = useSelector((state) => ContractIndex.selectByIdMany(state)) ?? [];
-    const contractsByIndexList = useSelector((state) => ContractIndex.selectContractsMany(state)) ?? [];
+    const indexList = useSelector((state) => ContractIndex.selectByIdMany(state, indexFilter)) ?? [];
+    const contractsByIndexList = useSelector((state) => ContractIndex.selectContractsMany(state, indexFilter)) ?? [];
 
     const options = indexList.map((contractIdx, idx) => {
         return {
@@ -34,7 +35,12 @@ export const SelectAddress = ({
     const contractsAllList = useSelector((state) => Contract.selectByFilter(state, { networkId })) ?? [];
     ///TODO: Replace with label filter check
     const contractsUnLabelled = contractsAllList
-        .filter((c) => !c.indexIds || c.indexIds?.length == 0)
+        .filter((c) => {
+            if (!c.indexIds) return true;
+            //Not in filter
+            const intersect = intersection(c.indexIds, indexFilter);
+            return intersect.length == 0;
+        })
         .map((c) => {
             return { label: c.address, value: c.address };
         });

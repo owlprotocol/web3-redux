@@ -11,7 +11,19 @@ const Template: ComponentStory<typeof SelectAddress> = (args: Props) => <SelectA
 export const Main = Template.bind({});
 Main.args = {
     networkId: '1',
+    indexFilter: undefined,
 };
+
 Main.argTypes = {
     networkId: networkIdArgType,
+    indexFilter: {
+        options: ['All', 'Favorites'],
+        mapping: {
+            All: undefined,
+            Favorites: ['Favorites'],
+        },
+        control: {
+            type: 'select',
+        },
+    },
 };

@@ -13,6 +13,7 @@ Main.args = {
     networkId: '1',
     indexFilter: undefined,
     showOtherAddresses: false,
+    creatable: false,
 };
 
 Main.argTypes = {

@@ -1,4 +1,4 @@
-import { Select } from 'chakra-react-select';
+import { Select, CreatableSelect } from 'chakra-react-select';
 import { useSelector } from 'react-redux';
 import { Contract, ContractIndex } from '@owlprotocol/web3-redux';
 import { useForm, useController } from 'react-hook-form';
@@ -11,12 +11,14 @@ export interface Props {
     networkId: string | undefined;
     indexFilter: string[] | undefined;
     showOtherAddresses?: boolean;
+    creatable?: boolean;
     onChangeHandler?: (value: string | undefined | any) => void;
 }
 export const SelectAddress = ({
     networkId,
     indexFilter,
     showOtherAddresses = false,
+    creatable = false,
     onChangeHandler = (value) => console.log(`SelectAddress.onChange(${value})`),
 }: Props) => {
     const indexList = useSelector((state) => ContractIndex.selectByIdMany(state, indexFilter)) ?? [];
@@ -57,13 +59,25 @@ export const SelectAddress = ({
     } = useController<{ address: string | undefined }>({ name: 'address', control });
 
     return (
-        <Select
-            ref={ref}
-            placeholder="Select address"
-            options={options}
-            //@ts-ignore
-            onChange={(data) => onChangeHandler(data?.value)}
-        />
+        <>
+            {creatable ? (
+                <CreatableSelect
+                    ref={ref}
+                    placeholder="Select address"
+                    options={options}
+                    //@ts-ignore
+                    onChange={(data) => onChangeHandler(data?.value)}
+                />
+            ) : (
+                <Select
+                    ref={ref}
+                    placeholder="Select address"
+                    options={options}
+                    //@ts-ignore
+                    onChange={(data) => onChangeHandler(data?.value)}
+                />
+            )}
+        </>
     );
 };
 

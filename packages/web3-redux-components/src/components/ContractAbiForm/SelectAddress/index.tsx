@@ -1,8 +1,14 @@
+import { FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { Select, CreatableSelect } from 'chakra-react-select';
 import { useSelector } from 'react-redux';
 import { Contract, ContractIndex } from '@owlprotocol/web3-redux';
 import { useForm, useController } from 'react-hook-form';
 import { intersection } from 'lodash';
+import Web3 from 'web3';
+import { useCallback, useState } from 'react';
+
+const web3 = new Web3();
+const coder = web3.eth.abi;
 
 //https://codesandbox.io/s/648uv
 //https://codesandbox.io/s/chakra-react-select-react-hook-form-usecontroller-single-select-typescript-v3-3hvkm
@@ -12,7 +18,7 @@ export interface Props {
     indexFilter: string[] | undefined;
     showOtherAddresses?: boolean;
     creatable?: boolean;
-    onChangeHandler?: (value: string | undefined | any) => void;
+    onChangeHandler?: (value: string | boolean | undefined, error: Error | undefined) => void;
 }
 export const SelectAddress = ({
     networkId,
@@ -21,6 +27,9 @@ export const SelectAddress = ({
     creatable = false,
     onChangeHandler = (value) => console.log(`SelectAddress.onChange(${value})`),
 }: Props) => {
+    const [error, setError] = useState<Error | undefined>();
+    const [value, setValue] = useState<string | undefined>();
+
     const indexList = useSelector((state) => ContractIndex.selectByIdMany(state, indexFilter)) ?? [];
     const contractsByIndexList = useSelector((state) => ContractIndex.selectContractsMany(state, indexFilter)) ?? [];
 
@@ -58,25 +67,68 @@ export const SelectAddress = ({
         field: { ref },
     } = useController<{ address: string | undefined }>({ name: 'address', control });
 
+    const onChangeValidate = useCallback(
+        (_value: string) => {
+            if (typeof _value == 'boolean') {
+                setError(undefined);
+                setValue(_value);
+                onChangeHandler(_value, undefined);
+                return;
+            }
+
+            //Empty
+            if (_value.length == 0) {
+                setError(undefined);
+                setValue(undefined);
+                onChangeHandler(undefined, undefined);
+                return;
+            }
+
+            //Address
+            //TODO: Update input field value
+            if (Web3.utils.isAddress(_value.toLowerCase())) {
+                _value = Web3.utils.toChecksumAddress(_value);
+            }
+
+            //Validate
+            try {
+                coder.encodeParameter('address', _value);
+                //Format is valid
+                setError(undefined);
+                setValue(_value);
+                onChangeHandler(_value, undefined);
+            } catch (_error: any) {
+                setError(_error);
+                setValue(_value);
+                onChangeHandler(_value, _error);
+                return;
+            }
+        },
+        [onChangeHandler],
+    );
+
     return (
         <>
-            {creatable ? (
-                <CreatableSelect
-                    ref={ref}
-                    placeholder="Select address"
-                    options={options}
-                    //@ts-ignore
-                    onChange={(data) => onChangeHandler(data?.value)}
-                />
-            ) : (
-                <Select
-                    ref={ref}
-                    placeholder="Select address"
-                    options={options}
-                    //@ts-ignore
-                    onChange={(data) => onChangeHandler(data?.value)}
-                />
-            )}
+            <FormControl isInvalid={!!error}>
+                {creatable ? (
+                    <CreatableSelect
+                        ref={ref}
+                        placeholder="Select address"
+                        options={options}
+                        //@ts-ignore
+                        onChange={(data) => onChangeValidate(data?.value)}
+                    />
+                ) : (
+                    <Select
+                        ref={ref}
+                        placeholder="Select address"
+                        options={options}
+                        //@ts-ignore
+                        onChange={(data) => onChangeValidate(data?.value)}
+                    />
+                )}
+                <FormErrorMessage>{error?.message}</FormErrorMessage>
+            </FormControl>
         </>
     );
 };

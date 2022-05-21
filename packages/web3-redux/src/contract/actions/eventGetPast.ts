@@ -12,6 +12,7 @@ export interface EventGetPastActionInput {
     fromBlock?: number | 'earliest';
     toBlock?: number | 'latest';
     blockBatch?: number;
+    max?: number;
 }
 /** @category Actions */
 export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput) => {
@@ -29,9 +30,10 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
         toBlock = payload.toBlock;
     }
 
-    const blockBatch = payload.blockBatch ?? 100;
+    const blockBatch = payload.blockBatch ?? 100; //100 block batch
+    const max = payload.max ?? 100; //100 events max
 
-    return { payload: { ...payload, fromBlock, toBlock, blockBatch } };
+    return { payload: { ...payload, fromBlock, toBlock, blockBatch, max } };
 });
 /** @internal */
 export type EventGetPastAction = ReturnType<typeof eventGetPast>;

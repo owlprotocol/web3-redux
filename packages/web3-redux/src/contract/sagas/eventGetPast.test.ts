@@ -9,7 +9,7 @@ import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
-import { sleep } from '../../utils/index.js';
+import { mineBlocks, sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
 import { create as createNetwork } from '../../network/index.js';
@@ -75,6 +75,36 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
 
             await sleep(1000);
 
+            const events1 = selectContractEvents(store.getState(), { networkId, address }, 'NewValue');
+            assert.deepEqual(events1, expectedEvents);
+        });
+
+        it('(networkId,address,eventName,max:1)', async () => {
+            let expectedEvents: any[] = [];
+            web3Contract.events['NewValue']().on('data', (event: any) => {
+                expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
+            });
+
+            await mineBlocks(web3, 5);
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+            await mineBlocks(web3, 5);
+            await web3Contract.methods.setValue(69).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+
+            store.dispatch(
+                eventGetPastAction({
+                    networkId,
+                    address,
+                    eventName: 'NewValue',
+                    max: 1,
+                    blockBatch: 1
+                }),
+            );
+
+            await sleep(1000);
+
+            assert.equal(expectedEvents.length, 2);
+            //only last emitted event, selected
+            expectedEvents = [expectedEvents[expectedEvents.length - 1]]
             const events1 = selectContractEvents(store.getState(), { networkId, address }, 'NewValue');
             assert.deepEqual(events1, expectedEvents);
         });

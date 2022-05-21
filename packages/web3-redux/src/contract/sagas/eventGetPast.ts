@@ -32,21 +32,55 @@ function* eventGetPastInRange(networkId: string, address: string, name: string, 
 export function* eventGetPast(action: EventGetPastAction) {
     try {
         const { payload } = action;
-        const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch } = payload;
+        const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch, max } = payload;
         const id = getId({ networkId, address });
 
         const network = yield* call(networkExists, networkId);
         if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
         const contract = yield* call(exists, { networkId, address });
 
+        //Contract
+        const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
+        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+
         //Ranged queries
-        let rangeLastBlock;
+        let eventCount = 0;
+        let currToBlock;
         if (!toBlock || toBlock === 'latest') {
-            rangeLastBlock = yield* call(network.web3.eth.getBlockNumber);
+            currToBlock = yield* call(network.web3.eth.getBlockNumber);
         } else {
-            rangeLastBlock = toBlock;
+            currToBlock = toBlock;
         }
 
+        let currFromBlock = Math.max(currToBlock - blockBatch - 1, 0); //lower-bound fromBlock=0
+
+        while (currFromBlock >= 0 && (eventCount < max || !max)) {
+            //blocking call, choose batch size accordingly
+            //@ts-ignore
+            const events: EventData[] = yield* call([web3Contract, web3Contract.getPastEvents], eventName, { ...filter, fromBlock: currFromBlock, toBlock: currToBlock });
+            //create events
+            if (events.length > 0) {
+                const actions = events.map((event: any) => {
+                    return createEvent({
+                        ...event,
+                        networkId,
+                        address,
+                        name: eventName,
+                    });
+                });
+                const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
+
+                yield* put(batch);
+            }
+
+            //Update loop
+            eventCount += events.length;
+            currToBlock = currToBlock - blockBatch
+            currFromBlock = currToBlock - blockBatch - 1
+        }
+
+        /*
+        //TODO: use a generator
         //Use a multiple calls to get incremental batches of updates, starting from latest
         const ranges = [];
         for (let i = rangeLastBlock; i > fromBlock; i -= blockBatch) {
@@ -60,9 +94,6 @@ export function* eventGetPast(action: EventGetPastAction) {
         //Override fromBlock to get correct range for last range
         ranges[ranges.length - 1].fromBlock = fromBlock;
 
-        const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
-
         const eventsPromises = ranges.map((r) => {
             const options: any = { ...r };
             if (filter) options.filter = filter;
@@ -75,6 +106,7 @@ export function* eventGetPast(action: EventGetPastAction) {
             //@ts-ignore
             yield* fork(eventGetPastInRange, networkId, address, eventName, task);
         }
+        */
     } catch (error) {
         console.error(error);
         yield* put({

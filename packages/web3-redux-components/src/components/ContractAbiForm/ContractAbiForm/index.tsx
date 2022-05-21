@@ -1,4 +1,4 @@
-import { AbiType, StateMutabilityType } from 'web3-utils';
+import type { AbiType, StateMutabilityType } from 'web3-utils';
 import AbiItemForm from '../AbiItemForm';
 interface AbiFormProps {
     name: string | undefined;

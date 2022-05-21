@@ -2,10 +2,12 @@
   "name": "@owlprotocol/web3-redux-components",
   "private": true,
   "version": "1.0.0-beta.2",
-  "main": "dist/web3-redux-components-lib.umd.js",
-  "module": "dist/web3-redux-components-lib.es.js",
+  "main": "./dist/web3-redux-components-lib.umd.js",
+  "module": "./dist/web3-redux-components-lib.es.js",
+  "types": "./dist/web3-redux-components-lib.umd.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/web3-redux-components-lib.umd.d.ts",
       "require": "./dist/web3-redux-components-lib.umd.js",
       "import": "./dist/web3-redux-components-lib.es.js"
     }

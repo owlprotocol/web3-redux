@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import { useTheme, Button, Box } from '@chakra-ui/react';
 import { Config, Contract } from '@owlprotocol/web3-redux';
-import { fromWei } from 'web3-utils';
+import Web3 from 'web3';
 import composeHooks from 'react-hooks-compose';
 import Icon from '../Icon';
 import { isSupportedNetworkId } from '../../constants/web3React';
 import { shortenHash } from '../../utils';
 import useMetamask from '../../hooks/useMetamask';
 import useConfigureFromWeb3React from '../../hooks/useConfigureFromWeb3React';
+
+const { fromWei } = Web3.utils;
 
 export const useWalletConnect = () => {
     useConfigureFromWeb3React(); //Update web3-redux config

@@ -1,9 +1,10 @@
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { InjectedConnector } from '@web3-react/injected-connector';
-import { isHex, hexToNumberString } from 'web3-utils';
+import Web3 from 'web3';
 
 import { SUPPORTED_CHAIN_IDS } from './web3React';
 
+const { isHex, hexToNumberString } = Web3.utils;
 //Browser injected connector (Metamask)
 export const injected = new InjectedConnector({
     supportedChainIds: SUPPORTED_CHAIN_IDS.map((x) => parseInt(x)),

@@ -12,6 +12,7 @@ export const Main = Template.bind({});
 Main.args = {
     networkId: '1',
     indexFilter: undefined,
+    showOtherAddresses: false,
 };
 
 Main.argTypes = {

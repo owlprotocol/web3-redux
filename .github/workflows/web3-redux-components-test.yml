@@ -31,4 +31,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}
       # Install
       - run: pnpm i
-      - run: pnpm run test:web3-redux-components
+      # Test Build
+      - run: pnpm run build
+      #- run: pnpm run test:web3-redux-components

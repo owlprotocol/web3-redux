@@ -3,13 +3,13 @@ import { name } from '../common.js';
 
 export default class Model extends ORMModel {
     static options = {
-        idAttribute: 'id',
+        idAttribute: 'uuid',
     };
 
     static modelName = name;
 
     static fields = {
-        id: attr(),
+        uuid: attr(),
         address: attr(),
         methodName: attr(),
         args: attr(),

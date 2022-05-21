@@ -1,17 +1,17 @@
 import { name } from '../common.js';
-import { ContractSend, getId, ContractSendId } from '../model/interface.js';
+import { ContractSend } from '../model/interface.js';
 
 /** @internal */
 export const SET = (key: keyof ContractSend) => `${name}/SET/${key.toUpperCase()}`;
 /** @internal */
 export interface SetActionInput {
-    id: ContractSendId;
+    id: string;
     key: keyof ContractSend;
     value: any;
 }
 /** @category Actions */
 export const set = (payload: SetActionInput) => {
-    const id = getId(payload.id);
+    const id = payload.id;
     const key = payload.key;
     const value = payload.value;
     return { type: SET(key), payload: { id, key, value } };

@@ -1,7 +1,7 @@
 import { put, call, select } from 'typed-redux-saga';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { validateEthCall, getEthCallIdArgs } from '../../ethcall/model/index.js';
-import { create as createEthCall, set as setEthCall } from '../../ethcall/actions/index.js';
+import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 
 import { getId } from '../model/index.js';
@@ -43,13 +43,30 @@ export function* callSaga(action: CallAction) {
             data,
         });
 
-        //Create base call
-        yield* put(createEthCall(ethCall));
-        const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
-        //@ts-ignore
-        const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
-        yield* put(setEthCall({ id: getEthCallIdArgs(ethCall), key: 'returnValue', value: returnValue }));
+        try {
+            //Tx Encodable, any errors are execution related
+            //Create base call
+            yield* put(createEthCall({ ...ethCall, status: 'LOADING' }));
+            const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
+            //@ts-ignore
+            const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
+            const timestamp = Date.now();
+            yield* put(updateEthCall({ ...ethCall, error: undefined, returnValue, status: 'SUCCESS', lastUpdated: timestamp }));
+        } catch (error) {
+            const timestamp = Date.now();
+            yield* put(updateEthCall({ ...ethCall, error: error as Error, status: 'ERROR', lastUpdated: timestamp }));
+            yield* put(
+                createError({
+                    id: action.meta.uuid,
+                    error: error as Error,
+                    errorMessage: (error as Error).message,
+                    type: CALL_ERROR,
+                }),
+            );
+        }
+
     } catch (error) {
+        //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
         yield* put(
             createError({
                 id: action.meta.uuid,

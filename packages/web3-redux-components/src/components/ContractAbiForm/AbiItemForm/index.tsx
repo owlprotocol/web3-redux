@@ -10,7 +10,7 @@ import AbiItemInput from '../AbiItemInput';
 //Better error handling for reverts
 
 //Similar to AbiItem interface
-interface Props {
+export interface Props {
     networkId: string;
     address: string;
     account?: string;
@@ -24,7 +24,7 @@ interface Props {
     stateMutability: StateMutabilityType;
 }
 
-const AbiItemForm = ({
+export const AbiItemForm = ({
     networkId,
     address,
     account,

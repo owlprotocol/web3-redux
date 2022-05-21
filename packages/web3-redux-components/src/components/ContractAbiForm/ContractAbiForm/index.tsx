@@ -9,13 +9,13 @@ interface AbiFormProps {
     type: AbiType;
     stateMutability: StateMutabilityType;
 }
-interface Props {
+export interface Props {
     networkId: string;
     address: string;
     abi: AbiFormProps[];
 }
 
-const ContractAbiForm = ({ networkId, address, abi }: Props) => {
+export const ContractAbiForm = ({ networkId, address, abi }: Props) => {
     const abiFunctions = abi.filter((a) => a.type === 'function');
 
     return (

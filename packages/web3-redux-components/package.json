@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "build": "vite build",
+    "build:watch": "vite build --watch",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "lint": "eslint --ext .ts,.tsx src",

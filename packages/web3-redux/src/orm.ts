@@ -3,6 +3,7 @@ import NetworkModel from './network/model/orm.js';
 import BlockModel from './block/model/orm.js';
 import TransactionModel from './transaction/model/orm.js';
 import ContractModel from './contract/model/orm.js';
+import ContractIndexModel from './contractindex/model/orm.js';
 import ContractEventModel from './contractevent/model/orm.js';
 import ContractEventIndexModel from './contracteventindex/model/orm.js';
 import ContractSendModel from './contractsend/model/orm.js';
@@ -27,6 +28,7 @@ export function getOrm(): any {
     orm.register(BlockModel);
     orm.register(TransactionModel);
     orm.register(ContractModel);
+    orm.register(ContractIndexModel);
     orm.register(ContractEventModel);
     orm.register(ContractEventIndexModel);
     orm.register(ContractSendModel);

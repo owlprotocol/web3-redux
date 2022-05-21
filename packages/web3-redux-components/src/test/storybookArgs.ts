@@ -5,7 +5,8 @@ const networkLabels = {
     [1]: '1 - Ethereum',
     [10]: '10 - Optimism',
     [137]: '137 - Polygon',
-    [42161]: '42161 - Arbitrum'
+    [42161]: '42161 - Arbitrum',
+    [1337]: '1337 - Ganache'
 }
 export const networkIdArgType = {
     options: Object.keys(networkLabels),

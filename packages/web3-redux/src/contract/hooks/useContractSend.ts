@@ -1,8 +1,10 @@
-import { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useState } from 'react';
+import { useDispatch, } from 'react-redux';
 import { BaseWeb3Contract } from '../model/index.js';
 import { send, SendAction } from '../actions/index.js';
-import { selectByIdSingle as selectReduxError } from '../../error/selectors/index.js';
+import { useReduxError } from '../../error/hooks/index.js';
+import { useContractSend as useContractSendData } from '../../contractsend/hooks/index.js'
+import { ContractSend } from '../../contractsend/model/interface.js';
 
 /**
  * useContractSend options
@@ -25,37 +27,39 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
     args?: Parameters<T['methods'][K]>,
     options?: UseContractSendOptions
 ): [() => void, {
-    sendAction: SendAction,
-    error: Error | undefined
+    sendAction: SendAction | undefined,
+    error: Error | undefined,
+    contractSend: ContractSend | undefined
 }] {
     let error: Error | undefined;
     const { value, from } = options ?? {};
     const dispatch = useDispatch();
-
-    const sendAction = useMemo(() => {
-        return send({
-            networkId,
-            address,
-            method: method as string,
-            args,
-            value,
-            from,
-        })
-    }, [networkId, address, method, JSON.stringify(args), value, args])
+    const [sendAction, setSendAction] = useState<SendAction | undefined>()
 
     const sendCallback = useCallback(
         () => {
+            const sendAction = send({
+                networkId,
+                address,
+                method: method as string,
+                args,
+                value,
+                from,
+            })
+            setSendAction(sendAction);
             dispatch(
                 sendAction
             );
         },
-        [sendAction, dispatch],
+        [networkId, address, method, JSON.stringify(args), value, args, dispatch],
     );
 
-    const reduxError = useSelector((state) => selectReduxError(state, sendAction?.meta.uuid));
+    const reduxError = useReduxError(sendAction?.meta.uuid);
     if (reduxError) error = reduxError.error;
 
-    return [sendCallback, { error, sendAction }];
+    const contractSend = useContractSendData(sendAction?.meta.uuid)
+
+    return [sendCallback, { error, sendAction, contractSend }];
 }
 
 /** @category Hooks */

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Box, useTheme, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { AbiType, StateMutabilityType } from 'web3-utils';
-import { Config, Contract } from '@owlprotocol/web3-redux';
+import { Config, Contract, ContractSend } from '@owlprotocol/web3-redux';
 import AbiItemInput from '../AbiItemInput';
 
 //TODO
@@ -91,24 +91,28 @@ const AbiItemForm = ({
         [setErrorAtIdx, setArgAtIdx],
     );
 
-    const [sendTx, { error: sendError }] = Contract.useContractSend(networkId, address, name, args, { from: account });
-    /*
-    const sendTx = useCallback(() => {
-        if (validArgs && write && !!account) {
-            dispatch(Contract.send({
-                networkId,
-                address,
-                method: name,
-                args,
-                from: account
-            }))
-        }
-    }, [networkId, address, name, validArgs, account, write])
-    */
+    const [sendTx, { error: sendError, contractSend }] = Contract.useContractSend(networkId, address, name, args, { from: account });
+    const { status, transactionHash, receipt, confirmations } = contractSend ?? {}
 
     // EVM error
     const error = callError ?? sendError;
     const isError = !!error;
+
+    const isPendingSig = status == ContractSend.ContractSendStatus.PENDING_SIGNATURE
+    const isPendingConf = status == ContractSend.ContractSendStatus.PENDING_CONFIRMATION
+    const isPending = isPendingSig || isPendingConf;
+
+    let isPendingText: string | undefined;
+    if (isPendingSig) isPendingText = 'Waiting for signature...';
+    else if (isPendingConf) isPendingText = 'Waiting for confirmation...';
+
+    const isDisabled = !validArgs || isPending
+
+    let resultText: string | undefined;
+    if (!write && returnValue) resultText = `Return value: ${returnValue}`
+    else if (write && transactionHash && !confirmations) resultText = `Transaction hash: ${transactionHash}`;
+    else if (write && transactionHash && confirmations && receipt.blockNumber) resultText = `Transaction hash: ${transactionHash} Confirmed at block:${receipt.blockNumber}`;
+
     return (
         <Box borderRadius="md" bg={themes.color3} color="white" p={3}>
             <Box mb={6}>
@@ -131,11 +135,13 @@ const AbiItemForm = ({
                     );
                 })}
                 {write && (
-                    <Button isDisabled={!validArgs} onClick={sendTx} bg={themes.color1}>
-                        Send
-                    </Button>
+                    <>
+                        <Button isDisabled={isDisabled} isLoading={isPending} loadingText={isPendingText} onClick={sendTx} bg={themes.color1}>
+                            Send
+                        </Button><br />
+                    </>
                 )}
-                {returnValue}
+                {resultText}
                 {isError && <FormErrorMessage>Error: {error?.message}</FormErrorMessage>}
             </FormControl>
         </Box>

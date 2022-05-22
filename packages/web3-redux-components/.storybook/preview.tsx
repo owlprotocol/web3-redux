@@ -1,22 +1,14 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core'
-import { useEffect } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import {
-    Network, Contract, TestData, store,
-    Environment
-} from '@owlprotocol/web3-redux';
-import { getEnvironment } from '../src/environment';
-//@ts-ignore
-Environment.setEnvironment(getEnvironment());
-
+import { store } from '@owlprotocol/web3-redux';
+import { withMockData } from '../src/hoc/withMockData';
 import { THEME_COLORS } from '../src/constants';
 import { WalletContext } from '../src/constants/web3React'
 import { getLibrary } from '../src/utils/getLibrary'
 
 import theme from '../src/theme';
-import getDisplayName from '../src/hoc/getDisplayName';
 
 export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },
@@ -43,64 +35,6 @@ export const parameters = {
 
 //Browser wallet context provider
 const Web3ProviderWallet = createWeb3ReactRoot(WalletContext)
-
-export const withMockData = (WrappedComponent: any) => {
-    const Component = (props: any) => {
-        const dispatch = useDispatch();
-
-        const [networkMainnet, networkArbitrum, networkOptimism, networkPolygon, networkGanache] = useSelector((state) =>
-            Network.selectByIdMany(state, [
-                '1', '42161', '10', '137', '1337'
-            ])
-        )
-        useEffect(() => { if (!networkMainnet) dispatch(Network.create({ networkId: '1' })) }, [networkMainnet])
-        useEffect(() => { if (!networkArbitrum) dispatch(Network.create({ networkId: '42161' })) }, [networkArbitrum])
-        useEffect(() => { if (!networkOptimism) dispatch(Network.create({ networkId: '10' })) }, [networkOptimism])
-        useEffect(() => { if (!networkPolygon) dispatch(Network.create({ networkId: '137' })) }, [networkPolygon])
-        useEffect(() => { if (!networkGanache) dispatch(Network.create({ networkId: '1337', web3Rpc: 'ws://localhost:8545' })) }, [networkGanache])
-
-        const [contractVITALIK,
-            contractWETH, contractUSDC, contractTETHER, contractCHAINLINK,
-            contractVeeFriendsSeries2, contractOZTeam, contractKithFriends, contractSkyweaver, contractUSDCGanache] =
-            useSelector((state) =>
-                Contract.selectByIdMany(state, [
-                    { networkId: '1', address: TestData.VITALIK },
-                    { networkId: '1', address: TestData.WETH },
-                    { networkId: '1', address: TestData.USDC },
-                    { networkId: '1', address: TestData.TETHER },
-                    { networkId: '1', address: TestData.CHAINLINK },
-                    { networkId: '1', address: TestData.VEE_FRIENDS_SERIES2 },
-                    { networkId: '1', address: TestData.OZ_TEAM },
-                    { networkId: '1', address: TestData.KITH_FRIENDS },
-                    { networkId: '137', address: TestData.SKYWEAVER },
-                    { networkId: '1337', address: TestData.USDC },
-                ])
-            )
-        useEffect(() => { if (!contractVITALIK) dispatch(Contract.create(TestData.contractVITALIK)) }, [contractVITALIK])
-        useEffect(() => { if (!contractWETH) dispatch(Contract.create(TestData.contractWETH)) }, [contractWETH])
-        useEffect(() => { if (!contractUSDC) dispatch(Contract.create(TestData.contractUSDC)) }, [contractUSDC])
-        useEffect(() => { if (!contractTETHER) dispatch(Contract.create(TestData.contractTETHER)) }, [contractTETHER])
-        useEffect(() => { if (!contractCHAINLINK) dispatch(Contract.create(TestData.contractCHAINLINK)) }, [contractCHAINLINK])
-        useEffect(() => { if (!contractVeeFriendsSeries2) dispatch(Contract.create(TestData.contractVeeFriendsSeries2)) }, [contractVeeFriendsSeries2])
-        useEffect(() => { if (!contractOZTeam) dispatch(Contract.create(TestData.contractOZTeam)) }, [contractOZTeam])
-        useEffect(() => { if (!contractKithFriends) dispatch(Contract.create(TestData.contractKithFriends)) }, [contractKithFriends])
-        useEffect(() => { if (!contractSkyweaver) dispatch(Contract.create(TestData.contractSkyWeaver)) }, [contractSkyweaver])
-        useEffect(() => { if (!contractUSDCGanache) dispatch(Contract.create({ ...TestData.contractUSDC, networkId: '1337' })) }, [contractUSDCGanache])
-
-
-        const networks = [networkMainnet, networkArbitrum, networkOptimism, networkPolygon]
-        const contracts = [contractVITALIK,
-            contractWETH, contractUSDC, contractTETHER, contractCHAINLINK,
-            contractVeeFriendsSeries2, contractOZTeam, contractKithFriends, contractSkyweaver]
-        const all = [...networks, ...contracts]
-        const allDefined = all.reduce((acc, val) => acc && !!val, true)
-
-        if (!allDefined) return <>Loading React State...</>
-        else return <WrappedComponent {...props} />;
-    };
-    Component.displayName = `withMockData(${getDisplayName(WrappedComponent)})`;
-    return Component;
-};
 
 export const decorators = [
     (Story) => {

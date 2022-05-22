@@ -82,7 +82,7 @@ module.exports = {
                     web3: 'web3/dist/web3.min.js',
                     //'ipfs-http-client': 'ipfs-http-client/index.min.js'
                     //'@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/web3-redux-lib.es.min.js'
-                }
+                },
             },
             build: {
                 commonjsOptions: {

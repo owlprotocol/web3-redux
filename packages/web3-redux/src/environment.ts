@@ -130,6 +130,6 @@ export const INFURA_IPFS_PROJECT_ID = () => getEnvVar('INFURA_IPFS_PROJECT_ID');
 /** Infura Basic Auth for IPFS */
 export const INFURA_IPFS_PROJECT_SECRET = () => getEnvVar('INFURA_IPFS_PROJECT_SECRET');
 /** IPFS RPC */
-export const IPFS_URL = () => getEnvVar('IPFS_URL') ?? 'https://ipfs.infura.io:5001';
+export const IPFS_URL = () => getEnvVar('IPFS_URL') ?? 'http://localhost:5001';
 /** 4byte.directory API */
 export const _4BYTE_URL = () => getEnvVar('_4BYTE_URL') ?? 'https://www.4byte.directory/api/v1';

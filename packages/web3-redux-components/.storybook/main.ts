@@ -38,9 +38,6 @@ module.exports = {
                 include: [],
                 exclude: [],
                 esbuildOptions: {
-                    define: {
-                        global: 'globalThis',
-                    },
                     plugins: [
                         /*
                         NodeGlobalsPolyfillPlugin({
@@ -80,7 +77,7 @@ module.exports = {
                     buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
                     web3: 'web3/dist/web3.min.js',
                     //'@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/web3-redux-lib.es.min.js'
-                }
+                },
             },
             build: {
                 commonjsOptions: {

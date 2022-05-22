@@ -12,9 +12,9 @@ export function* putCBOR(action: PutCBORAction) {
 
     try {
         const cid = yield* call(IPFSSingleton.putCBOR, payload, { pin: true });
-        console.debug({ cid });
+        console.debug({ cid: cid.toString() });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 

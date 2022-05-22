@@ -299,6 +299,8 @@ importers:
       '@emotion/styled': ^11
       '@esbuild-plugins/node-globals-polyfill': ^0.1.1
       '@esbuild-plugins/node-modules-polyfill': ^0.1.4
+      '@ipld/dag-cbor': ^7.0.1
+      '@ipld/dag-pb': ^2.1.16
       '@mdx-js/react': ^2.0.0
       '@owlprotocol/web3-redux': ../web3-redux
       '@rollup/plugin-alias': ^3.1.9
@@ -350,6 +352,7 @@ importers:
       ethereum-qr-code: ^0.3.0
       framer-motion: ^6.0.0
       global: ^4.4.0
+      ipfs-http-client: 56.0.3
       lodash: ^4.17.21
       prettier: ^2.5.1
       rc: ^1.2.8
@@ -374,6 +377,8 @@ importers:
       '@chakra-ui/react': 1.8.8_qaq3qtwi74meo7khtwcm3ybelq
       '@emotion/react': 11.9.0_tovnxza3ewbqrne2boekua65yu
       '@emotion/styled': 11.8.1_h6jhz2syqun76iafryt4i7puoy
+      '@ipld/dag-cbor': 7.0.1
+      '@ipld/dag-pb': 2.1.16
       '@owlprotocol/web3-redux': link:../web3-redux
       '@web3-react/abstract-connector': 6.0.7
       '@web3-react/core': 6.1.9_react@17.0.2
@@ -383,6 +388,7 @@ importers:
       copy-to-clipboard: 3.3.1
       ethereum-qr-code: 0.3.0
       framer-motion: 6.3.3_sfoxds7t5ydpegc3knd667wn6m
+      ipfs-http-client: 56.0.3
       lodash: 4.17.21
       rc-pagination: 3.1.16_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2

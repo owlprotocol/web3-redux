@@ -55,6 +55,9 @@ https://github.com/evanw/esbuild/issues/1343#issuecomment-854275822
 https://storybook.js.org/blog/storybook-for-vite/
 https://nirtamir.com/blog/vite-in-production
 
+### Storybook
+* `Failed to fetch dynamically imported module: http://localhost:6006/.storybook/preview.tsx`: The preview.tsx file is crashing before it can even load and log proper errors. Go through it line by line, comment out the erroring lines (usually library imports) to get a proper load. Then uncomment them to get a more useful error log.
+
 ## ESLint
 https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/extensions.md
 

@@ -34,6 +34,10 @@ module.exports = {
     },
     async viteFinal(config: any) {
         const overrideConfig = {
+            define: {
+                //patch ipfs utils
+                'globalThis.process.env.NODE_ENV': JSON.stringify('development')
+            },
             optimizeDeps: {
                 include: [],
                 exclude: [],

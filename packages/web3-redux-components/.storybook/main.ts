@@ -21,8 +21,8 @@ module.exports = {
         '../src/**/*.stories.@(js|jsx|ts|tsx)'
     ],
     addons: [
-        //"@storybook/addon-links",
-        //"@storybook/addon-essentials",
+        "@storybook/addon-links",
+        "@storybook/addon-essentials",
         //"@storybook/addon-interactions",
     ],
     core: {
@@ -78,8 +78,7 @@ module.exports = {
                     web3: 'web3/dist/web3.min.js',
                     //'ipfs-http-client': 'ipfs-http-client/index.min.js'
                     //'@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/web3-redux-lib.es.min.js'
-                },
-                preserveSymlinks: true,
+                }
             },
             build: {
                 commonjsOptions: {
@@ -96,7 +95,7 @@ module.exports = {
             }
         }
 
-        //console.debug(config.resolve)
+        //console.debug(config)
         //console.debug(overrideConfig)
         const newConfig = mergeConfig(config, overrideConfig)
         return newConfig;

@@ -5,6 +5,7 @@ import { SET, set, SetAction, isSetAction } from './set.js';
 import { FETCH_IPFS, fetchIpfs, FetchIpfsAction, isFetchIpfsAction } from './fetchIpfs.js';
 import { OBJECT_GET, objectGet, ObjectGetAction, isObjectGetAction } from './objectGet.js';
 import { CAT, cat, CatAction, isCatAction } from './cat.js';
+import { PUT_CBOR, putCBOR, PutCBORAction, isPutCBORAction } from './putCBOR.js';
 
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
 
@@ -15,7 +16,7 @@ export function isReducerAction(action: { type: string }): action is ReducerActi
 export type SagaAction = FetchIpfsAction | ObjectGetAction | CatAction;
 /** @internal */
 export function isSagaAction(action: { type: string }): action is SagaAction {
-    return isFetchIpfsAction(action) || isObjectGetAction(action) || isCatAction(action);
+    return isFetchIpfsAction(action) || isObjectGetAction(action) || isCatAction(action) || isPutCBORAction(action);
 }
 
 /** @internal */
@@ -25,7 +26,16 @@ export function isAction(action: { type: string }): action is Action {
     return isReducerAction(action) || isSagaAction(action);
 }
 
-export type { CreateAction, RemoveAction, UpdateAction, SetAction, FetchIpfsAction, ObjectGetAction, CatAction };
+export type {
+    CreateAction,
+    RemoveAction,
+    UpdateAction,
+    SetAction,
+    FetchIpfsAction,
+    ObjectGetAction,
+    CatAction,
+    PutCBORAction,
+};
 
 export {
     CREATE,
@@ -49,4 +59,7 @@ export {
     CAT,
     cat,
     isCatAction,
+    PUT_CBOR,
+    putCBOR,
+    isPutCBORAction,
 };

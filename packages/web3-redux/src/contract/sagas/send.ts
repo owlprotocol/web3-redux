@@ -63,9 +63,9 @@ export function* send(action: SendAction) {
         if (!address) throw new Error('address undefined');
         if (!payload.method) throw new Error('method undefined');
 
-        const defaultFrom = yield* select(selectAccount)
+        const defaultFrom = yield* select(selectAccount);
         const from = payload.from ?? defaultFrom;
-        if (!from) throw new Error('from undefined')
+        if (!from) throw new Error('from undefined');
 
         const network = yield* select(selectNetwork, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
@@ -97,7 +97,7 @@ export function* send(action: SendAction) {
             args,
             from,
             value,
-            uuid: action.meta.uuid
+            uuid: action.meta.uuid,
         };
 
         yield* put(
@@ -107,9 +107,9 @@ export function* send(action: SendAction) {
             }),
         );
 
-        console.log(tx)
+        //console.log(tx)
         const gas = payload.gas ?? (yield* call(tx.estimateGas, { from, value }));
-        console.log({ gas })
+        //console.log({ gas })
         const txPromiEvent: PromiEvent<TransactionReceipt> = tx.send({ from, gas, gasPrice, value });
 
         const channel: TakeableChannel<ContractSendChannelMessage> = yield* call(sendChannel, txPromiEvent);
@@ -148,7 +148,7 @@ export function* send(action: SendAction) {
                     );
                 }
             } else if (type === CONTRACT_SEND_ERROR) {
-                console.error(message)
+                console.error(message);
                 const { error } = message;
                 //handle metamask reject or other errors
                 yield* put(
@@ -169,7 +169,7 @@ export function* send(action: SendAction) {
             }
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
         yield* put(
             createError({
                 id: action.meta.uuid,

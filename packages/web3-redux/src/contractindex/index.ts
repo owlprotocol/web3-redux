@@ -1,6 +1,6 @@
 /**
- * Secondary index of ContractEvent model
- * @module ContractEventIndex
+ * Secondary index of Contract model
+ * @module ContractIndex
  */
 
 export * from './model/index.js';

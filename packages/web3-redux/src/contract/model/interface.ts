@@ -50,6 +50,8 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
     /** ORM Relational */
     readonly fromTransactions?: Transaction[];
     readonly toTransactions?: Transaction[];
+    /** ContractIndex redux-orm ids. Used for efficient filtering. */
+    readonly indexIds?: string[];
 }
 
 const SEPARATOR = '-';

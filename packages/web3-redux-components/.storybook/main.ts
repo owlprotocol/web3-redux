@@ -21,8 +21,8 @@ module.exports = {
         '../src/**/*.stories.@(js|jsx|ts|tsx)'
     ],
     addons: [
-        "@storybook/addon-links",
-        "@storybook/addon-essentials",
+        //"@storybook/addon-links",
+        //"@storybook/addon-essentials",
         //"@storybook/addon-interactions",
     ],
     core: {
@@ -38,9 +38,6 @@ module.exports = {
                 include: [],
                 exclude: [],
                 esbuildOptions: {
-                    define: {
-                        global: 'globalThis',
-                    },
                     plugins: [
                         /*
                         NodeGlobalsPolyfillPlugin({
@@ -79,8 +76,10 @@ module.exports = {
                     https: 'rollup-plugin-node-polyfills/polyfills/http',
                     buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
                     web3: 'web3/dist/web3.min.js',
+                    //'ipfs-http-client': 'ipfs-http-client/index.min.js'
                     //'@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/web3-redux-lib.es.min.js'
-                }
+                },
+                preserveSymlinks: true,
             },
             build: {
                 commonjsOptions: {
@@ -97,7 +96,7 @@ module.exports = {
             }
         }
 
-        //console.debug(config)
+        //console.debug(config.resolve)
         //console.debug(overrideConfig)
         const newConfig = mergeConfig(config, overrideConfig)
         return newConfig;

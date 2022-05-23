@@ -9,9 +9,10 @@ export interface Props {
     label: string;
     isFavorite: boolean;
     borderRadius?: number;
+    bg?: string;
 }
 
-const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12 }: Props) => {
+const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: Props) => {
     const { themes } = useTheme();
 
     const [editLabel, setEditLabel] = useState(false);
@@ -42,7 +43,14 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12 }: Props
     };
 
     return (
-        <Box display={'flex'} alignItems={'center'} p={2} bg={themes.color6} borderRadius={borderRadius} h={'60px'}>
+        <Box
+            display={'flex'}
+            alignItems={'center'}
+            p={2}
+            bg={bg || themes.color6}
+            borderRadius={borderRadius}
+            h={'60px'}
+        >
             <QRCodePopover address={address} />
 
             {editLabel && (

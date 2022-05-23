@@ -11,7 +11,7 @@ import { SUPPORTED_WALLETS } from '../constants/web3ReactConnectors';
 
 const { toHex } = Web3.utils;
 
-const useMetamask = () => {
+export const useMetamask = () => {
     const { connector, activate, library } = useWeb3React(WalletContext);
     const web3 = library as Web3 | undefined;
 

@@ -1,3 +1,5 @@
 export { withActions } from './withActions';
-export { withStoreProvider } from './withStoreProvider';
 export { withMockData } from './withMockData';
+export { withStoreProvider } from './withStoreProvider';
+export { withWeb3ReactProvider } from './withWeb3ReactProvider';
+export { getDisplayName } from './getDisplayName';

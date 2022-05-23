@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Config, Network } from '@owlprotocol/web3-redux';
 import { WalletContext } from '../constants/web3React';
 
-function useConfigureFromWeb3React() {
+export function useConfigureFromWeb3React() {
     const dispatch = useDispatch();
 
     //Web3React data

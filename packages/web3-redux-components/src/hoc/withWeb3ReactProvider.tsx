@@ -6,7 +6,7 @@ import { WalletContext } from '../constants/web3React';
 //Browser wallet context provider
 const Web3ProviderWallet = createWeb3ReactRoot(WalletContext);
 // eslint-disable-next-line react/display-name
-const withWeb3ReactProvider = (WrappedComponent: any) => {
+export const withWeb3ReactProvider = (WrappedComponent: any) => {
     const component = (props: any) => {
         return (
             <Web3ReactProvider getLibrary={getLibrary}>

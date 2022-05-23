@@ -17,3 +17,5 @@ export { default as Erc20QRGenerator } from './components/Erc20QRGenerator';
 export { default as QRCodePopover } from './components/QRCodePopover';
 export { default as TransactionsTable } from './components/TransactionsTable';
 export { AbiItemForm, AbiItemInput, ContractAbiForm, ContractAbiPage } from './components/ContractAbiForm';
+export * as Hooks from './hooks';
+export * as HOC from './hoc';

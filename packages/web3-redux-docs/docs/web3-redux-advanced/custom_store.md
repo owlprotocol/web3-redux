@@ -1,5 +1,6 @@
 ---
 sidebar_position: 0
+label: 'Custom Redux Store'
 ---
 
 # Custom Redux Store
@@ -10,7 +11,7 @@ sidebar_position: 0
 
 ## Persistence
 
-In most situations, you will want to add web3-redux to your existing redux store. The web3Reducer MUST be stored at the `web3Redux` key in your store.
+In most situations, you will want to add `web3-redux` to your existing redux store. The web3Reducer **MUST** be stored at the `web3Redux` key in your store.
 
 ```typescript
 //store.ts
@@ -29,7 +30,7 @@ sagaMiddleware.run(web3Saga);
 export default store;
 ```
 
-Then follow the standard `react-redux` configuration [guide](https://redux.js.org/usage/configuring-your-store) to add a `Provider` component to wrap your entire React app in the redux context.
+Then follow the standard `react-redux` configuration [guide](https://redux.js.org/usage/configuring-your-store) to add a `Provider` component to wrap your entire React app within the redux context.
 
 ```typescript
 //index.tsx

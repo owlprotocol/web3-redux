@@ -23,4 +23,4 @@ Now that you've completed this initial quickstart, consider the following topics
 -   Multi-network: Understand the Web3-Redux Architecture and fetch data concurrently from multiple blockchains.
 -   Metamask: Integrate Metamask to enable sending transactions that writes data on the blockchain.
 -   Persistence: Enable local storage persistence using [redux-persist](https://github.com/rt2zz/redux-persist) to immediately populate your app with cached data when users re-open a tab
--   Sync Optimization: Learn how to optimize the RPC requests made by your app by only refreshing data when needed by efficiently combining event subscriptions with contract calls.
+-   Sync Optimization: Learn how to optimize the RPC requests made by your app by only refreshing data when needed by combining event subscriptions with contract calls.

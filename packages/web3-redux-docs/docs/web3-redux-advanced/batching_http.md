@@ -1,3 +1,6 @@
+---
+label: 'Batching with HTTP'
+---
 # Batching with HTTP
 
 :::warning

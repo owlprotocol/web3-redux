@@ -11,10 +11,10 @@ Under the hood, Web3-Redux uses the [web3.eth.Contract.methods.myMethod.call](ht
 
 ## React Hook
 
-The easiest way make a contract is using the `useContractCall` hook. This combines dispatching a redux action and using a selector to return the updated result.
+The easiest way make a contract is using the `useContractCall` hook. This combines dispatching a redux [action](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow#actions) and using a [selector](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow#selectors) to return the updated result.
 
 ```tsx
-import { Contract } from '@leovigna/web3-redux';
+import { Contract } from '@owlprotocol/web3-redux';
 const ERC20Component = ({ networkId, address, account }) => {
     //Make contract call
     const balanceOf = Contract.useContractCall(networkId, address, 'balanceOf', [account]);
@@ -29,7 +29,7 @@ For more info on complex sync strategies, see the [Advanced/Contract Call Sync](
 
 ## Plain Redux
 
-Under the hood, the [useContractCall](../web3-redux-reference/namespaces/Contract.md#usecontractcall) hook is mainly composed by dispatching a [call](../web3-redux-reference/namespaces/Contract.md#call) action and then using the [selectContractCall](../web3-redux-reference/namespaces/Contract.md#selectcontractcall) selector to read the result from the state.
+Under the hood, the [useContractCall](../web3-redux-reference/namespaces/Contract.md#usecontractcall) hook is made by dispatching a [call](../web3-redux-reference/namespaces/Contract.md#call) action, then using the [selectContractCall](../web3-redux-reference/namespaces/Contract.md#selectcontractcall) selector to read the result from the state.
 
 ```typescript
 //Make contract call

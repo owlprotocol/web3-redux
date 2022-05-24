@@ -6,8 +6,8 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 //https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
 //Use the hacky way to hid the default file input
 export interface Props {
-    accept: 'application/json' | 'image/*' | string | undefined;
-    onFileDataChange: (data: string | null) => void;
+    accept?: 'application/json' | 'image/*' | string | undefined;
+    onFileDataChange?: (data: string | null) => void;
 }
 export const FileUploadButton = ({
     accept = 'application/json',
@@ -45,7 +45,7 @@ export const FileUploadButton = ({
     }, []);
 
     const fileExists = !!file;
-    const buttonTitle = fileExists ? file.name : 'Upload';
+    const buttonTitle = fileExists ? file.name : 'Select File';
     const leftIcon = fileExists ? <></> : <FontAwesomeIcon icon={faUpload} />;
 
     return (

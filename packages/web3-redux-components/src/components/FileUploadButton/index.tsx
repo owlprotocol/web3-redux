@@ -7,19 +7,29 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 //Use the hacky way to hid the default file input
 export interface Props {
     accept: 'application/json' | 'image/*' | string | undefined;
+    onFileDataChange: (data: string | null) => void;
 }
-export const FileUploadButton = ({ accept = 'application/json' }: Props) => {
+export const FileUploadButton = ({
+    accept = 'application/json',
+    onFileDataChange = (data) => console.log(data),
+}: Props) => {
     const fileInputRef = useRef<any>();
 
     const fileReader = useMemo(() => new FileReader(), []);
     const [file, setFile] = useState<File | undefined>();
-    const [fileData, setFileData] = useState<string | null>();
+    const [fileData, setFileData] = useState<any>(null);
     //Add event listener
     useEffect(() => {
         fileReader.addEventListener('load', (event) => {
-            setFileData(event.target?.result as string | null);
+            const data = event.target?.result as string | null;
+            if (data && accept === 'application/json') setFileData(JSON.parse(data));
+            else setFileData(data);
         });
-    }, [fileReader]);
+    }, [accept, fileReader]);
+
+    useEffect(() => {
+        onFileDataChange(fileData);
+    }, [fileData, onFileDataChange]);
 
     const onFileChange = useCallback(
         (event) => {
@@ -33,8 +43,6 @@ export const FileUploadButton = ({ accept = 'application/json' }: Props) => {
     const onButtonClick = useCallback(() => {
         fileInputRef.current?.click();
     }, []);
-
-    console.debug(fileData);
 
     const fileExists = !!file;
     const buttonTitle = fileExists ? file.name : 'Upload';

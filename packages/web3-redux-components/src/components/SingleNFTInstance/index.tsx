@@ -9,6 +9,7 @@ export interface PresenterProps {
     price: string;
     isSelected: boolean;
     //token: string;
+    isFavorite: boolean;
     handleFavorite: any;
     imageSrc?: string;
     imageAlt?: string;
@@ -26,6 +27,7 @@ export const NFTInstancePresenter = ({
     ownerOf,
     price,
     isSelected,
+    isFavorite,
     handleFavorite,
     imageSrc = 'http://placehold.jp/228x196.png',
     imageAlt = 'Placeholder',
@@ -72,7 +74,7 @@ export const NFTInstancePresenter = ({
                     <NetworkIcon networkId={networkId} />
                     <IconButton
                         onClick={handleFavorite}
-                        icon={<Icon icon="heart" w="18" />}
+                        icon={isFavorite ? <Icon icon="heart.active" w="18" /> : <Icon icon="heart" w="18" />}
                         bg={'transparent'}
                         aria-label="mark as favorite"
                         mr={'-12px'}

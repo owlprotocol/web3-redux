@@ -1,17 +1,20 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AddressDisplay, { Props } from '.';
+import AddressDisplay, { Props } from './AddressDisplay';
+import { addressArgType, networkIdArgType } from '../../test/storybookArgs';
 
 const Template: ComponentStory<typeof AddressDisplay> = (args: any) => <AddressDisplay {...args} />;
 export const Main = Template.bind({});
 
 const Args: Props = {
-    address: '0xf6AEfc54843FDA83437D67A2DbEc7A9BB834ff4E',
-    label: 'Main',
-    isFavorite: false,
+    networkId: networkIdArgType.options[0],
+    address: addressArgType.options[0],
 };
 
 Main.args = Args;
-Main.argTypes = {};
+Main.argTypes = {
+    networkId: networkIdArgType,
+    address: addressArgType,
+};
 
 export default {
     title: 'Address/AddressDisplay',

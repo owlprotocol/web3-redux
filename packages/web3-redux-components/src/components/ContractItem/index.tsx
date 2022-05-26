@@ -1,5 +1,5 @@
 import { Box, useTheme } from '@chakra-ui/react';
-import AddressDisplay from '../AddressDisplay';
+import { AddressDisplayPresenter as AddressDisplay } from '../AddressDisplay';
 import Icon from '../Icon';
 
 export interface Props {

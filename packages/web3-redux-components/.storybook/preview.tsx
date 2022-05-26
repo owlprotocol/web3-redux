@@ -23,11 +23,11 @@ export const parameters = {
         values: [
             {
                 name: 'owl',
-                value: THEME_COLORS['theme1'].storyBG,
+                value: THEME_COLORS.theme1.storyBG,
             },
             {
                 name: 'white',
-                value: THEME_COLORS['theme1'].color7,
+                value: THEME_COLORS.theme1.color7,
             },
         ],
     },

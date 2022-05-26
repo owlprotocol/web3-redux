@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Box, useTheme } from '@chakra-ui/react';
-import Dropdown from '../Dropdown';
+import { Box, Select, useTheme } from '@chakra-ui/react';
 import NetworkIcon from '../NetworkIcon';
 
 const DEFAULT_CHAINS = ['ethereum', 'arbitrum', 'optimism', 'polygon', 'BNB Chain'];
@@ -12,20 +11,30 @@ export interface Props {
 export const NetworkDropdown = ({ options = [], handleChange }: Props) => {
     const { themes } = useTheme();
     const [selectedNetwork, setSelectedNetwork] = useState('1');
-    const _options = [...DEFAULT_CHAINS, options];
+    const _options = [...DEFAULT_CHAINS, ...options];
 
-    const _onChange = (value: string) => {
+    const _onChange = (value: any) => {
         setSelectedNetwork(value);
         handleChange(value, 'networkId');
     };
 
     return (
         <Box display={'flex'} alignItems={'center'} borderRadius={12} bg={themes.color6} color={themes.color8}>
-            <Box p={2} w={'20px'} h={'20px'}>
+            <Box p={2}>
                 <NetworkIcon networkId={selectedNetwork} />
             </Box>
-            {/* @ts-ignore */}
-            <Dropdown placeholder="Select a network" options={_options} onChange={_onChange} />
+            <Select
+                bg={themes.color6}
+                color={themes.color8}
+                border={0}
+                placeholder="Select a network"
+                onChange={({ target }: any) => _onChange(target.value)}
+                textTransform={'capitalize'}
+            >
+                {_options.map((item, key) => (
+                    <option key={key}>{item}</option>
+                ))}
+            </Select>
         </Box>
     );
 };

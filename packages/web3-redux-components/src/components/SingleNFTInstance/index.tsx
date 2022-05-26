@@ -46,7 +46,7 @@ export const NFTInstancePresenter = ({
             boxShadow={'md'}
         >
             <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'}>
-                <Image src={imageSrc} borderRadius={16} w={'100%'} h={'196px'} alt={imageAlt} />
+                <Image src={imageSrc} borderRadius={16} w={'100%'} h={'196px'} alt={imageAlt} objectFit={'contain'} />
             </Box>
             <Box
                 color={themes.color7}
@@ -71,13 +71,12 @@ export const NFTInstancePresenter = ({
                 )}
                 <HStack>
                     {/** NFT Network */}
-                    <NetworkIcon networkId={networkId} />
+                    <NetworkIcon networkId={networkId} size={18} />
                     <IconButton
                         onClick={handleFavorite}
-                        icon={isFavorite ? <Icon icon="heart.active" w="18" /> : <Icon icon="heart" w="18" />}
+                        icon={isFavorite ? <Icon icon="heart.active" size={18} /> : <Icon icon="heart" size={18} />}
                         bg={'transparent'}
                         aria-label="mark as favorite"
-                        mr={'-12px'}
                     />
                 </HStack>
             </HStack>

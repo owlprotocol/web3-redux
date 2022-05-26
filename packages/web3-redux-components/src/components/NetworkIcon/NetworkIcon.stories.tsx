@@ -5,7 +5,7 @@ import NetworkIcon from '.';
 export default {
     title: 'Graphics/NetworkIcon',
     component: NetworkIcon,
-    args: { networkId: networkIdArgType.options[0] },
+    args: { networkId: networkIdArgType.options[0], size: 62 },
     argTypes: {
         networkId: networkIdArgType,
     },

@@ -47,7 +47,8 @@ const AddressDropdown = ({ address = [] }: Props) => {
                 <IconButton
                     aria-label="click to copy address"
                     onClick={() => handleCopy(selectedAddress)}
-                    icon={<Icon icon="copy" />}
+                    icon={<Icon icon="copy" size={20} />}
+                    bg={'transparent'}
                 />
                 <CloseButton onClick={handleReset} />
             </Box>

@@ -62,7 +62,9 @@ module.exports = {
                 //EnvironmentPlugin('all', { prefix: 'VITE_' }),
                 SVGRPlugin({
                     svgrOptions: {
-                        icon: true,
+                        // This attr replaces SVG size to be 1em,
+                        // Icon size better determined by its container.
+                        icon: '100%',
                     },
                 }),
                 CheckerPlugin({

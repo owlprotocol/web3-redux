@@ -17,7 +17,13 @@ export default defineConfig({
         rollupInject({
             Buffer: ['buffer', 'Buffer'],
         }),
-        SVGRPlugin(),
+        SVGRPlugin({
+            svgrOptions: {
+                // This attr replaces SVG size to be 1em,
+                // Icon size better determined by its container.
+                icon: '100%',
+            },
+        }),
         CheckerPlugin({
             typescript: true,
             overlay: true,

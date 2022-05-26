@@ -1,5 +1,4 @@
 import { Box } from '@chakra-ui/react';
-import styled from '@emotion/styled';
 import classnames from 'classnames';
 
 // Tokens
@@ -135,26 +134,17 @@ const IconSelect = (icon: string | undefined) => ICONS[icon || 'ETH'];
 
 export interface Props {
     icon: string | undefined;
-    style?: string;
+    size?: number | undefined;
     className?: string;
-    w?: number | string;
-    h?: number | string;
     transform?: string;
     mr?: number;
 }
-const Icon = ({ icon, style, className, w = 23, h = 23, transform = '', mr }: Props) => {
-    const Wrapper: any = styled.div`
-        & > svg {
-            width: ${w}px;
-            height: ${h}px;
-        }
-    `;
-
+const Icon = ({ icon, size = 23, className, transform = '', mr }: Props) => {
     const classNames = classnames('icon', icon, className);
 
     return (
-        <Box className={classNames} transform={transform} mr={mr}>
-            <Wrapper style={style}>{IconSelect(icon)}</Wrapper>
+        <Box boxSize={`${size}px`} className={classNames} transform={transform} mr={mr}>
+            {IconSelect(icon)}
         </Box>
     );
 };

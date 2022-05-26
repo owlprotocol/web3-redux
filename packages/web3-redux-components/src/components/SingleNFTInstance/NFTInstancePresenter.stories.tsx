@@ -27,3 +27,12 @@ Secondary.args = {
     ownerOf: '0xf6AEfc54843FDA83437D67A2DbEc7A9BB834ff4E',
     isSelected: false,
 };
+
+export const Editable = Template.bind({});
+
+Editable.args = {
+    networkId: networkIdArgType.options[0],
+    itemName: 'NFT Name',
+    price: '10',
+    editable: true,
+};

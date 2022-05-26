@@ -7,18 +7,18 @@ export interface PresenterProps {
     networkId: string;
     itemName: string;
     price: string;
-    isSelected: boolean;
-    //token: string;
-    isFavorite: boolean;
-    handleFavorite: any;
+    isSelected?: boolean;
+    isFavorite?: boolean;
+    handleFavorite?: any;
     imageSrc?: string;
     imageAlt?: string;
-    name: string | undefined;
-    symbol: string | undefined;
-    ownerOf: string | undefined;
-    tokenURI: string | undefined;
-    metadata: any | undefined;
-    contentId: string | undefined;
+    name?: string | undefined;
+    symbol?: string | undefined;
+    ownerOf?: string | undefined;
+    tokenURI?: string | undefined;
+    metadata?: any | undefined;
+    contentId?: string | undefined;
+    editable?: boolean | undefined;
 }
 
 export const NFTInstancePresenter = ({
@@ -31,8 +31,10 @@ export const NFTInstancePresenter = ({
     handleFavorite,
     imageSrc = 'http://placehold.jp/228x196.png',
     imageAlt = 'Placeholder',
+    editable = false,
 }: PresenterProps) => {
     const { themes } = useTheme();
+    console.log(editable);
 
     return (
         <Box
@@ -62,32 +64,34 @@ export const NFTInstancePresenter = ({
             >
                 {itemName}
             </Box>
-            <HStack justifyContent="space-between">
-                {ownerOf && (
-                    <Box color={themes.color9} fontWeight={400} fontSize={14}>
-                        {/*<Avatar size="2xs" mr={2} />*/}
-                        {shortenHash(ownerOf)}
-                    </Box>
-                )}
-                <HStack>
-                    {/** NFT Network */}
-                    <NetworkIcon networkId={networkId} size={18} />
-                    <IconButton
-                        onClick={handleFavorite}
-                        icon={isFavorite ? <Icon icon="heart.active" size={18} /> : <Icon icon="heart" size={18} />}
-                        bg={'transparent'}
-                        aria-label="mark as favorite"
-                    />
+            {!editable && (
+                <HStack justifyContent="space-between">
+                    {ownerOf && (
+                        <Box color={themes.color9} fontWeight={400} fontSize={14}>
+                            {/*<Avatar size="2xs" mr={2} />*/}
+                            {shortenHash(ownerOf)}
+                        </Box>
+                    )}
+
+                    <HStack>
+                        {/** NFT Network */}
+                        <NetworkIcon networkId={networkId} size={18} />
+                        <IconButton
+                            onClick={handleFavorite}
+                            icon={isFavorite ? <Icon icon="heart.active" size={18} /> : <Icon icon="heart" size={18} />}
+                            bg={'transparent'}
+                            aria-label="mark as favorite"
+                        />
+                    </HStack>
                 </HStack>
-            </HStack>
+            )}
+
             {price && (
                 <HStack justifyContent="space-between">
                     <Box color={themes.color9} fontWeight={600} fontSize={14}>
                         {price} ETH
                     </Box>
-                    {/** TODO: Price currency Icon
-                    <NetworkIcon networkId={networkId} />
-                     */}
+                    {editable && <NetworkIcon networkId={networkId} size={18} />}
                 </HStack>
             )}
         </Box>

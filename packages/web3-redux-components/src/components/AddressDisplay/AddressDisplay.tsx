@@ -45,7 +45,7 @@ export interface Props {
 }
 const AddressDisplay = composeHooks((props: HookProps) => ({
     useAddressDisplay: () => useAddressDisplay(props),
-}))(AddressDisplayPresenter) as (props: HookProps) => JSX.Element;
+}))(AddressDisplayPresenter) as (props: Props) => JSX.Element;
 
 //@ts-expect-error
 AddressDisplay.displayName = 'AddressDisplay';

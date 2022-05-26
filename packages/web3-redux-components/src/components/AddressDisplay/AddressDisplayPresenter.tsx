@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTheme, Box, Button, IconButton, Input } from '@chakra-ui/react';
 import copy from 'copy-to-clipboard';
 import Icon from '../Icon';
@@ -6,42 +6,65 @@ import QRCodePopover from '../QRCodePopover';
 
 export interface Props {
     address: string;
-    label: string;
+    label?: string;
     isFavorite: boolean;
     borderRadius?: number;
     bg?: string;
+    setFavorite?: (v: boolean) => void;
+    setLabel?: (v: string) => void;
 }
 
-const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: Props) => {
+const AddressDisplayPresenter = ({
+    address,
+    label,
+    isFavorite,
+    borderRadius = 12,
+    bg,
+    setFavorite = (v) => console.log(`setFavorite(${v})`),
+    setLabel = (v) => console.log(`setLabel(${v})`),
+}: Props) => {
     const theme = useTheme();
     const themes = theme.themes ?? {};
 
+    const [editLabelText, setEditLabelText] = useState('');
     const [editLabel, setEditLabel] = useState(false);
-    const [_label, setLabel] = useState('');
-    const [_isFavorite, setFavorite] = useState(false);
 
+    //Default edit input text
     useEffect(() => {
-        setLabel(label);
-        setFavorite(isFavorite);
-    }, [label, isFavorite]);
+        setEditLabelText(label ?? '');
+    }, [label]);
 
-    const handleInputKeyDown = (e: any) => {
-        if (e.key === 'Enter') {
-            handleSave();
-        }
-    };
-
-    const handleSave = () => {
+    const handleSave = useCallback(() => {
+        setLabel(editLabelText);
         setEditLabel(false);
-    };
+    }, [setLabel, editLabelText]);
 
-    const handleFavorite = () => {
-        setFavorite(!_isFavorite);
-    };
+    const handleInputKeyDown = useCallback(
+        (e: any) => {
+            if (e.key === 'Enter') handleSave();
+        },
+        [handleSave],
+    );
 
-    const handleCopy = () => {
+    const handleEditOnClick = useCallback(() => {
+        setEditLabel(true);
+    }, [setEditLabel]);
+
+    const handleEditOnChange = useCallback(({ target }: any) => {
+        setEditLabelText(target.value);
+    }, []);
+
+    const handleCancelOnClick = useCallback(() => {
+        setEditLabel(false);
+    }, [setEditLabel]);
+
+    const handleFavorite = useCallback(() => {
+        setFavorite(!isFavorite);
+    }, [setFavorite, isFavorite]);
+
+    const handleCopy = useCallback(() => {
         copy(address);
-    };
+    }, [address]);
 
     return (
         <Box
@@ -64,8 +87,8 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: P
                         borderBottom={'1px solid'}
                         type="text"
                         placeholder="Label"
-                        value={_label}
-                        onChange={({ target }: any) => setLabel(target.value)}
+                        value={editLabelText}
+                        onChange={handleEditOnChange}
                         onKeyDown={handleInputKeyDown}
                     />
                 </Box>
@@ -73,9 +96,9 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: P
 
             {!editLabel && (
                 <Box color={themes.color9} textAlign={'left'} flex={'1'}>
-                    {_label ? (
+                    {label ? (
                         <div>
-                            {_label} &lt; {address} &gt;
+                            {label} &lt; {address} &gt;
                         </div>
                     ) : (
                         <div>{address}</div>
@@ -88,7 +111,7 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: P
                     <Button onClick={handleSave} bg={'transparent'} h={'35px'}>
                         Save
                     </Button>
-                    <Button onClick={() => setEditLabel(false)} color={themes.color9} bg={'transparent'} h={'35px'}>
+                    <Button onClick={handleCancelOnClick} color={themes.color9} bg={'transparent'} h={'35px'}>
                         Cancel
                     </Button>
                 </Box>
@@ -104,11 +127,11 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: P
                         bg={'transparent'}
                         onClick={handleFavorite}
                         aria-label={'mark as favorite'}
-                        icon={<Icon icon={_isFavorite ? 'heart.active' : 'heart'} />}
+                        icon={<Icon icon={isFavorite ? 'heart.active' : 'heart'} />}
                     />
                     <IconButton
                         bg={'transparent'}
-                        onClick={() => setEditLabel(true)}
+                        onClick={handleEditOnClick}
                         aria-label={'click to edit'}
                         icon={<Icon icon="pencil" />}
                     />
@@ -118,4 +141,4 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: P
     );
 };
 
-export default AddressDisplay;
+export default AddressDisplayPresenter;

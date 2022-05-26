@@ -19,3 +19,5 @@ export { default as TransactionsTable } from './components/TransactionsTable';
 export { AbiItemForm, AbiItemInput, ContractAbiForm, ContractAbiPage } from './components/ContractAbiForm';
 export * as Hooks from './hooks';
 export * as HOC from './hoc';
+export * as Constants from './constants';
+export { default as Theme } from './theme';

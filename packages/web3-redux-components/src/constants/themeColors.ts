@@ -1,6 +1,7 @@
 export const THEME_COLORS = {
     theme1: {
         storyBG: '#131419',
+        background: '#131419',
         color1: '#4447E2',
         color2: '#2B2D7D',
         color3: '#1D1E41',

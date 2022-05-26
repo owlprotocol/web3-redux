@@ -13,7 +13,8 @@ export interface Props {
 }
 
 const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: Props) => {
-    const { themes } = useTheme();
+    const theme = useTheme() ?? {};
+    console.debug({ theme });
 
     const [editLabel, setEditLabel] = useState(false);
     const [_label, setLabel] = useState('');
@@ -47,14 +48,14 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: P
             display={'flex'}
             alignItems={'center'}
             p={2}
-            bg={bg || themes.color6}
+            bg={bg || theme.color6}
             borderRadius={borderRadius}
             h={'60px'}
         >
             <QRCodePopover address={address} />
 
             {editLabel && (
-                <Box color={themes.color9} textAlign={'left'} flex={'1'}>
+                <Box color={theme.color9} textAlign={'left'} flex={'1'}>
                     <Input
                         h={'30px'}
                         border={0}
@@ -71,7 +72,7 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: P
             )}
 
             {!editLabel && (
-                <Box color={themes.color9} textAlign={'left'} flex={'1'}>
+                <Box color={theme.color9} textAlign={'left'} flex={'1'}>
                     {_label ? (
                         <div>
                             {_label} &lt; {address} &gt;
@@ -87,7 +88,7 @@ const AddressDisplay = ({ address, label, isFavorite, borderRadius = 12, bg }: P
                     <Button onClick={handleSave} bg={'transparent'} h={'35px'}>
                         Save
                     </Button>
-                    <Button onClick={() => setEditLabel(false)} color={themes.color9} bg={'transparent'} h={'35px'}>
+                    <Button onClick={() => setEditLabel(false)} color={theme.color9} bg={'transparent'} h={'35px'}>
                         Cancel
                     </Button>
                 </Box>

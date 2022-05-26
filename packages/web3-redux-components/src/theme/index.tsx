@@ -8,14 +8,23 @@ const components = {
             color: '#fff',
         },
     },
+    a: {
+        hover: {
+            color: 'red',
+        },
+    },
 };
 
 const themeOverrides = {
     styles: {
         global: {
             'html, body': {
-                color: 'gray.600',
+                color: THEME_COLORS.theme1.color4,
                 lineHeight: '1.2',
+                backgroundColor: THEME_COLORS.theme1.background,
+            },
+            a: {
+                color: THEME_COLORS.theme1.color4,
             },
         },
     },
@@ -28,7 +37,7 @@ const themeOverrides = {
         },
     },
     components,
-    themes: THEME_COLORS['theme1'],
+    themes: THEME_COLORS.theme1,
 };
 
 // @ts-ignore

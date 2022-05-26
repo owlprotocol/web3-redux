@@ -1,6 +1,5 @@
 import { TestData } from '@owlprotocol/web3-redux';
-const { ADDRESS_0, VITALIK, WETH, USDC, TETHER, CHAINLINK, KITH_FRIENDS, OZ_TEAM, SKYWEAVER, VEE_FRIENDS_SERIES2 } =
-    TestData;
+const { VITALIK, WETH, USDC, TETHER, CHAINLINK, KITH_FRIENDS, OZ_TEAM, SKYWEAVER, VEE_FRIENDS_SERIES2 } = TestData;
 
 const networkLabels = {
     [1]: '1 - Ethereum',
@@ -18,7 +17,7 @@ export const networkIdArgType = {
 };
 
 const addressLabels = {
-    [ADDRESS_0]: `ZERO - ${ADDRESS_0}`,
+    //[ADDRESS_0]: `ZERO - ${ADDRESS_0}`,
     [WETH]: `WETH - ${WETH}`,
     [USDC]: `USDC - ${USDC}`,
     [TETHER]: `TETHER - ${TETHER}`,

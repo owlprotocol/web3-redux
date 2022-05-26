@@ -1,4 +1,4 @@
-export { default as AddressDisplay } from './components/AddressDisplay';
+export * from './components/AddressDisplay';
 export { default as ContractCode } from './components/ContractCode';
 export { default as Icon } from './components/Icon';
 export { default as SingleNFTInstancePresenter } from './components/SingleNFTInstance';

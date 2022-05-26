@@ -1,7 +1,7 @@
 import composeHooks from 'react-hooks-compose';
 import { useSelector, useDispatch } from 'react-redux';
 import { Contract } from '@owlprotocol/web3-redux';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import AddressDisplayPresenter from './AddressDisplayPresenter';
 
 export interface HookProps {
@@ -13,10 +13,19 @@ const useAddressDisplay = ({ networkId, address }: HookProps) => {
     const dispatch = useDispatch();
     const contract = useSelector((state) => Contract.selectByIdSingle(state, { networkId, address }));
     const label = contract?.label;
-    //const favoirte =
-    const setFavorite = useCallback((v) => {
-        console.log(v);
-    }, []);
+    const indexIds: string[] = useMemo(() => contract?.indexIds ?? [], [contract]);
+    const isFavorite = indexIds.find((v) => v === 'Favorites');
+
+    const setFavorite = useCallback(
+        (v) => {
+            //Remove Favorites label
+            const newIds = indexIds.filter((v) => v !== 'Favorites');
+            //Add favorites
+            if (v) newIds.push('Favorites');
+            dispatch(Contract.set({ id: { networkId, address }, key: 'indexIds', value: newIds }));
+        },
+        [networkId, address, dispatch, indexIds],
+    );
 
     const setLabel = useCallback(
         (v) => {
@@ -25,7 +34,7 @@ const useAddressDisplay = ({ networkId, address }: HookProps) => {
         [dispatch, address, networkId],
     );
 
-    return { label, setFavorite, setLabel };
+    return { label, isFavorite, setFavorite, setLabel };
 };
 
 export interface Props {

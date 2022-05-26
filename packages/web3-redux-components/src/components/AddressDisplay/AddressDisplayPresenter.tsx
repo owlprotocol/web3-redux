@@ -14,7 +14,7 @@ export interface Props {
     setLabel?: (v: string) => void;
 }
 
-const AddressDisplayPresenter = ({
+export const AddressDisplayPresenter = ({
     address,
     label,
     isFavorite,

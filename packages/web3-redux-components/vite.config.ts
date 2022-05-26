@@ -19,8 +19,6 @@ export default defineConfig({
         }),
         SVGRPlugin({
             svgrOptions: {
-                // This attr replaces SVG size to be 1em,
-                // Icon size better determined by its container.
                 icon: '100%',
             },
         }),

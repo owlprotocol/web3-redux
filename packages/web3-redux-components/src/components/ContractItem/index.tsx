@@ -1,9 +1,8 @@
 import { Box, useTheme } from '@chakra-ui/react';
 import { AddressDisplayPresenter as AddressDisplay } from '../AddressDisplay';
-import Icon from '../Icon';
+import NetworkIcon from '../NetworkIcon';
 
 export interface Props {
-    icon: string;
     network: string;
     address: string;
     label?: string;
@@ -11,13 +10,15 @@ export interface Props {
     isFavorite?: boolean;
 }
 
-const ContractItem = ({ icon, network, address, label = '', interfaces, isFavorite = false }: Props) => {
+const ContractItem = ({ network, address, label = '', interfaces, isFavorite = false }: Props) => {
     const { themes } = useTheme();
 
     return (
         <Box bg={themes.color5} display={'flex'} alignItems={'center'} p={'0 20px'} borderRadius={12}>
             <Box display={'flex'} alignItems={'center'} mr={4} color={themes.color9}>
-                <Icon icon={icon} size={24} mr={2} />
+                <Box mr={3}>
+                    <NetworkIcon networkId={network} size={24} />
+                </Box>
                 {network}
             </Box>
             <Box w={'65%'} flex={1}>

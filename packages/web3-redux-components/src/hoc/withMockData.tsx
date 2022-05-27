@@ -97,7 +97,13 @@ export const withMockData = (WrappedComponent: any) => {
             contractKithFriends,
             contractSkyweaver,
         ];
-        const all = [...networks, ...contracts];
+        const contractERC20Implementation = Contract.useContract(
+            TestData.contractERC20Implementation.networkId,
+            TestData.contractERC20Implementation.address,
+            TestData.contractERC20Implementation,
+        );
+
+        const all = [...networks, ...contracts, contractERC20Implementation];
         const allDefined = all.reduce((acc, val) => acc && !!val, true);
 
         if (!allDefined) return <>Loading React State...</>;

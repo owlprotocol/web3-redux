@@ -15,10 +15,10 @@ const coder = web3.eth.abi;
 //https://github.com/csandman/chakra-react-select/tree/v3#react-hook-form
 export interface Props {
     networkId: string | undefined;
-    indexFilter: string[] | undefined;
+    indexFilter?: string[] | undefined;
     showOtherAddresses?: boolean;
     creatable?: boolean;
-    onChangeHandler?: (value: string | boolean | undefined, error: Error | undefined) => void;
+    onChangeHandler?: (value: string | undefined, error: Error | undefined) => void;
 }
 export const SelectAddress = ({
     networkId,
@@ -45,7 +45,6 @@ export const SelectAddress = ({
                 }),
         };
     });
-    console.debug({ indexList, contractsByIndexList });
 
     const contractsAllList = useSelector((state) => Contract.selectByFilter(state, { networkId })) ?? [];
     if (showOtherAddresses) {
@@ -61,8 +60,6 @@ export const SelectAddress = ({
             });
         options.push({ label: 'Other', options: contractsUnLabelled });
     }
-
-    console.debug({ options });
 
     const { control } = useForm<{ address: string | undefined }>({});
     const {

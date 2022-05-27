@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@chakra-ui/react';
 import { useDropzone } from 'react-dropzone';
-import { ReactComponent as RoundedPlusIcon } from '../../assets/icon-rounded-plus.svg';
-import { ReactComponent as RoundedXIcon } from '../../assets/rounded-x.svg';
+//import { ReactComponent as RoundedPlusIcon } from '../../assets/icon-rounded-plus.svg';
+//import { ReactComponent as RoundedXIcon } from '../../assets/rounded-x.svg';
 
 // const Wrapper = styled.div`
 //     width: 160px;
@@ -117,9 +117,7 @@ const FileDropzone = ({ previewURL }: Props) => {
     return (
         <Box w={'100%'} h={'196px'}>
             <div {...getRootProps({ className: 'file-dropzone' })}>
-                <Box w={10}>
-                    <RoundedPlusIcon />
-                </Box>
+                <Box w={10}>{/*<RoundedPlusIcon /> */}</Box>
                 <Box>Upload file</Box>
                 <input {...getInputProps()} />
             </div>
@@ -128,9 +126,7 @@ const FileDropzone = ({ previewURL }: Props) => {
                 <Box>
                     <img src={files[0]?.preview} />
                     <button onClick={handleReset}>
-                        <Box w={10}>
-                            <RoundedXIcon />
-                        </Box>
+                        <Box w={10}>{/*<RoundedXIcon />*/}</Box>
                     </button>
                 </Box>
             )}

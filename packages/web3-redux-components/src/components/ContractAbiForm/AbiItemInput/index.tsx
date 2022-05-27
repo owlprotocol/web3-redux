@@ -49,7 +49,7 @@ export interface Props {
 }
 
 //eslint-disable-next-line @typescript-eslint/no-empty-function
-export const AbiItemInput = ({ type, name, onChange = () => {} }: Props) => {
+export const AbiItemInput = ({ type, name, onChange = (value, error) => console.log({ value, error }) }: Props) => {
     const { themes } = useTheme();
 
     const [error, setError] = useState<Error | undefined>();

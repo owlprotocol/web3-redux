@@ -145,10 +145,10 @@ export const AbiItemForm = ({
                             loadingText={isPendingText}
                             onClick={sendTx}
                             bg={themes.color1}
+                            mb={3}
                         >
                             Send
                         </Button>
-                        <br />
                     </>
                 )}
                 {resultText}

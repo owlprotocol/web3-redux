@@ -49,7 +49,7 @@ const TokenSlot = ({ token, value, dollarValue, isSelected }: Props) => {
                         {value}
                     </Box>
                     <HStack>
-                        <Icon icon="ETH" w="20px" h="20px" />
+                        <Icon icon="ETH" size={20} />
                         <Badge>{token}</Badge>
                     </HStack>
                 </HStack>

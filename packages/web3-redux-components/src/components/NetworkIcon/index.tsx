@@ -1,12 +1,14 @@
+import { Box } from '@chakra-ui/react';
 import { ReactComponent as EthereumIcon } from './icons/eth.svg';
 import { ReactComponent as OptimismIcon } from './icons/optimism.svg';
 import { ReactComponent as ArbitrumIcon } from './icons/arbitrum.svg';
-import { ReactComponent as MaticIcon } from './icons/matic.svg';
+import { ReactComponent as PolygonIcon } from './icons/polygon.svg';
 
 export interface Props {
     networkId?: number | string | undefined;
+    size?: number | string | undefined;
 }
-export const NetworkIcon = ({ networkId = '1' }: Props) => {
+export const NetworkIcon = ({ networkId = '1', size = 30 }: Props) => {
     const IconSelect = (icon: number | string) => {
         switch (icon) {
             case '1':
@@ -20,11 +22,11 @@ export const NetworkIcon = ({ networkId = '1' }: Props) => {
                 return <ArbitrumIcon />;
             case '137':
             case 'polygon':
-                return <MaticIcon />;
+                return <PolygonIcon />;
         }
     };
 
-    return <>{IconSelect(String(networkId).toLowerCase())}</>;
+    return <Box boxSize={`${size}px`}>{IconSelect(String(networkId).toLowerCase())}</Box>;
 };
 
 export default NetworkIcon;

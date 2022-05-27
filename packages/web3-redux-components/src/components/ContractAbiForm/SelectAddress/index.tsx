@@ -1,4 +1,4 @@
-import { FormControl, FormErrorMessage } from '@chakra-ui/react';
+import { useTheme, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { Select, CreatableSelect } from 'chakra-react-select';
 import { useSelector } from 'react-redux';
 import { Contract, ContractIndex } from '@owlprotocol/web3-redux';
@@ -27,6 +27,8 @@ export const SelectAddress = ({
     creatable = false,
     onChangeHandler = (value) => console.log(`SelectAddress.onChange(${value})`),
 }: Props) => {
+    const { themes } = useTheme();
+
     const [error, setError] = useState<Error | undefined>();
     const [, setValue] = useState<string | undefined>();
 
@@ -118,6 +120,37 @@ export const SelectAddress = ({
                         options={options}
                         //@ts-ignore
                         onChange={(data) => onChangeValidate(data?.value)}
+                        chakraStyles={{
+                            container: (provided) => ({
+                                ...provided,
+                                bg: themes.color6,
+                                color: themes.color8,
+                                border: 0,
+                                borderColor: themes.color6,
+                                borderRadius: '8px',
+                                p: '6px 4px',
+                            }),
+                            downChevron: (provided) => ({
+                                ...provided,
+                                color: themes.color8,
+                                w: 24,
+                                h: 24,
+                            }),
+                            placeholder: (provided) => ({
+                                ...provided,
+                                color: themes.color8,
+                                fontWeight: 600,
+                                fontSize: 16,
+                            }),
+                            dropdownIndicator: (provided) => ({
+                                ...provided,
+                                bg: themes.color6,
+                            }),
+                            indicatorSeparator: (provided) => ({
+                                ...provided,
+                                display: 'none',
+                            }),
+                        }}
                     />
                 ) : (
                     <Select
@@ -126,6 +159,37 @@ export const SelectAddress = ({
                         options={options}
                         //@ts-ignore
                         onChange={(data) => onChangeValidate(data?.value)}
+                        chakraStyles={{
+                            container: (provided) => ({
+                                ...provided,
+                                bg: themes.color6,
+                                color: themes.color8,
+                                border: 0,
+                                borderColor: themes.color6,
+                                borderRadius: '8px',
+                                p: '6px 4px',
+                            }),
+                            downChevron: (provided) => ({
+                                ...provided,
+                                color: themes.color8,
+                                w: 24,
+                                h: 24,
+                            }),
+                            placeholder: (provided) => ({
+                                ...provided,
+                                color: themes.color8,
+                                fontWeight: 600,
+                                fontSize: 16,
+                            }),
+                            dropdownIndicator: (provided) => ({
+                                ...provided,
+                                bg: themes.color6,
+                            }),
+                            indicatorSeparator: (provided) => ({
+                                ...provided,
+                                display: 'none',
+                            }),
+                        }}
                     />
                 )}
                 <FormErrorMessage>{error?.message}</FormErrorMessage>

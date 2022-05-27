@@ -2,6 +2,7 @@ import { useTheme, Box, IconButton, HStack, Image } from '@chakra-ui/react';
 import Icon from '../Icon';
 import { shortenHash } from '../../utils';
 import NetworkIcon from '../NetworkIcon';
+// import FileDropzone from '../FileDropzone';
 
 export interface PresenterProps {
     networkId: string;
@@ -34,7 +35,6 @@ export const NFTInstancePresenter = ({
     editable = false,
 }: PresenterProps) => {
     const { themes } = useTheme();
-    console.log(editable);
 
     return (
         <Box
@@ -48,7 +48,19 @@ export const NFTInstancePresenter = ({
             boxShadow={'md'}
         >
             <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'}>
-                <Image src={imageSrc} borderRadius={16} w={'100%'} h={'196px'} alt={imageAlt} objectFit={'contain'} />
+                {editable ? (
+                    <></>
+                ) : (
+                    // <FileDropzone />
+                    <Image
+                        src={imageSrc}
+                        borderRadius={16}
+                        w={'100%'}
+                        h={'196px'}
+                        alt={imageAlt}
+                        objectFit={'contain'}
+                    />
+                )}
             </Box>
             <Box
                 color={themes.color7}

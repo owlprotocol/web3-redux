@@ -30,7 +30,7 @@ export function selectByIdMany<T extends BaseWeb3Contract = BaseWeb3Contract>(
 
     const idsStr = ids.map((id) => getId(id));
     const result = selectMany(state, idsStr) as (Contract<T> | undefined)[];
-    console.debug(result);
+    //console.debug(result);
     return result;
     //return memoizeArrayByRef(result);
 }

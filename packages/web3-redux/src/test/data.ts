@@ -74,6 +74,22 @@ export const contract2 = validateContract({
     nonce: 1,
 });
 
+//Implementation Contracts
+export const contractERC20Implementation = validateContract({
+    networkId: '1',
+    address: ADDRESS_3,
+    abi: cloneDeep(IERC20.abi) as any,
+    indexIds: ['ERC20Implementation'],
+    label: 'ERC20Implementation',
+});
+export const contractERC721Implementation = validateContract({
+    networkId: '1',
+    address: ADDRESS_4,
+    abi: cloneDeep(IERC721.abi) as any,
+    indexIds: ['ERC721Implementation'],
+    label: 'ERC721Implementation',
+});
+
 //Token Contracts
 export const contractWETH = validateContract({
     networkId: '1',

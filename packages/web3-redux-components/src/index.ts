@@ -7,7 +7,6 @@ export { default as AddressDropdown } from './components/AddressDropdown';
 export { default as ContractItem } from './components/ContractItem';
 export { default as TokenSlot } from './components/TokenSlot';
 export { default as AddressList } from './components/AddressList';
-export { default as Dropdown } from './components/Dropdown';
 export { default as NetworkDropdown } from './components/NetworkDropdown';
 export { default as TransactionFlowModal } from './components/TransactionFlowModal';
 export { default as ERC20DropDown } from './components/ERC20DropDown';

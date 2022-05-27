@@ -18,7 +18,7 @@ export const ContractCodePresenter = ({ bytecode }: PresenterProps) => {
     const { themes } = useTheme();
 
     return (
-        <Box border={'1px solid'} p={4} borderRadius={4} w={'100%'} color={themes.color9}>
+        <Box border={0} p={4} borderRadius={4} w={'100%'} color={themes.color9} bg={themes.color4}>
             {bytecode}
         </Box>
     );

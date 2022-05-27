@@ -17,7 +17,11 @@ export default defineConfig({
         rollupInject({
             Buffer: ['buffer', 'Buffer'],
         }),
-        SVGRPlugin(),
+        SVGRPlugin({
+            svgrOptions: {
+                icon: '100%',
+            },
+        }),
         CheckerPlugin({
             typescript: true,
             overlay: true,

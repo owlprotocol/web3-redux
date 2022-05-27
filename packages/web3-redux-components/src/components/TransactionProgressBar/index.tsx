@@ -33,11 +33,11 @@ const TransactionProgressBar = ({ stage, labels = DEFAULT_LABELS, stageError }: 
                                 borderColor={hasErrors ? themes.color10 : isAltColor ? themes.color6 : themes.color1}
                             >
                                 {hasErrors ? (
-                                    <Icon icon="ExclamationMark" h="16" />
+                                    <Icon icon="ExclamationMark" size={16} />
                                 ) : isAltColor ? (
                                     idx + 1
                                 ) : (
-                                    <Icon icon="FlowCheckMark" w="15" />
+                                    <Icon icon="FlowCheckMark" size={15} />
                                 )}
                             </VStack>
                             <Box

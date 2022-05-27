@@ -10,7 +10,6 @@ const Template: ComponentStory<typeof ContractItem> = (args: any) => <ContractIt
 export const Main = Template.bind({});
 
 Main.args = {
-    icon: 'ETH',
     network: 'Ethereum',
     address: '0x008C4072055eE146a94256e9f7C63602f17D9066',
     label: 'Owl Minter',

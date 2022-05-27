@@ -2,22 +2,24 @@ import { useTheme, Box, IconButton, HStack, Image } from '@chakra-ui/react';
 import Icon from '../Icon';
 import { shortenHash } from '../../utils';
 import NetworkIcon from '../NetworkIcon';
+// import FileDropzone from '../FileDropzone';
 
 export interface PresenterProps {
     networkId: string;
     itemName: string;
     price: string;
-    isSelected: boolean;
-    //token: string;
-    handleFavorite: any;
+    isSelected?: boolean;
+    isFavorite?: boolean;
+    handleFavorite?: any;
     imageSrc?: string;
     imageAlt?: string;
-    name: string | undefined;
-    symbol: string | undefined;
-    ownerOf: string | undefined;
-    tokenURI: string | undefined;
-    metadata: any | undefined;
-    contentId: string | undefined;
+    name?: string | undefined;
+    symbol?: string | undefined;
+    ownerOf?: string | undefined;
+    tokenURI?: string | undefined;
+    metadata?: any | undefined;
+    contentId?: string | undefined;
+    editable?: boolean | undefined;
 }
 
 export const NFTInstancePresenter = ({
@@ -26,9 +28,11 @@ export const NFTInstancePresenter = ({
     ownerOf,
     price,
     isSelected,
+    isFavorite,
     handleFavorite,
     imageSrc = 'http://placehold.jp/228x196.png',
     imageAlt = 'Placeholder',
+    editable = false,
 }: PresenterProps) => {
     const { themes } = useTheme();
 
@@ -44,7 +48,19 @@ export const NFTInstancePresenter = ({
             boxShadow={'md'}
         >
             <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'}>
-                <Image src={imageSrc} borderRadius={16} w={'100%'} h={'196px'} alt={imageAlt} />
+                {editable ? (
+                    <></>
+                ) : (
+                    // <FileDropzone />
+                    <Image
+                        src={imageSrc}
+                        borderRadius={16}
+                        w={'100%'}
+                        h={'196px'}
+                        alt={imageAlt}
+                        objectFit={'contain'}
+                    />
+                )}
             </Box>
             <Box
                 color={themes.color7}
@@ -60,33 +76,34 @@ export const NFTInstancePresenter = ({
             >
                 {itemName}
             </Box>
-            <HStack justifyContent="space-between">
-                {ownerOf && (
-                    <Box color={themes.color9} fontWeight={400} fontSize={14}>
-                        {/*<Avatar size="2xs" mr={2} />*/}
-                        {shortenHash(ownerOf)}
-                    </Box>
-                )}
-                <HStack>
-                    {/** NFT Network */}
-                    <NetworkIcon networkId={networkId} />
-                    <IconButton
-                        onClick={handleFavorite}
-                        icon={<Icon icon="heart" w="18" />}
-                        bg={'transparent'}
-                        aria-label="mark as favorite"
-                        mr={'-12px'}
-                    />
+            {!editable && (
+                <HStack justifyContent="space-between">
+                    {ownerOf && (
+                        <Box color={themes.color9} fontWeight={400} fontSize={14}>
+                            {/*<Avatar size="2xs" mr={2} />*/}
+                            {shortenHash(ownerOf)}
+                        </Box>
+                    )}
+
+                    <HStack>
+                        {/** NFT Network */}
+                        <NetworkIcon networkId={networkId} size={18} />
+                        <IconButton
+                            onClick={handleFavorite}
+                            icon={isFavorite ? <Icon icon="heart.active" size={18} /> : <Icon icon="heart" size={18} />}
+                            bg={'transparent'}
+                            aria-label="mark as favorite"
+                        />
+                    </HStack>
                 </HStack>
-            </HStack>
+            )}
+
             {price && (
                 <HStack justifyContent="space-between">
                     <Box color={themes.color9} fontWeight={600} fontSize={14}>
                         {price} ETH
                     </Box>
-                    {/** TODO: Price currency Icon
-                    <NetworkIcon networkId={networkId} />
-                     */}
+                    {editable && <NetworkIcon networkId={networkId} size={18} />}
                 </HStack>
             )}
         </Box>

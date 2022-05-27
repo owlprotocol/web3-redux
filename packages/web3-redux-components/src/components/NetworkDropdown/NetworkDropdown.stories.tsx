@@ -10,7 +10,7 @@ const Template: ComponentStory<typeof NetworkDropdown> = (args) => <NetworkDropd
 export const Main = Template.bind({});
 
 const args: Props = {
-    options: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'BNB Chain'],
+    options: [],
 };
 
 Main.args = args;

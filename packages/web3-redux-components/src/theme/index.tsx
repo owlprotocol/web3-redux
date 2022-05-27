@@ -1,11 +1,17 @@
 import { extendTheme } from '@chakra-ui/react';
 import { THEME_COLORS } from '../constants';
 
+const CURRENT_THEME = 'theme1';
+
 const components = {
     Button: {
         baseStyle: {
             fontWeight: 'bold',
             color: '#fff',
+            backgroundColor: 'transparent',
+            _hover: {
+                color: THEME_COLORS[CURRENT_THEME].color1,
+            },
         },
     },
     a: {
@@ -19,12 +25,12 @@ const themeOverrides = {
     styles: {
         global: {
             'html, body': {
-                color: THEME_COLORS.theme1.color4,
+                color: THEME_COLORS[CURRENT_THEME].color4,
                 lineHeight: '1.2',
-                backgroundColor: THEME_COLORS.theme1.background,
+                backgroundColor: THEME_COLORS[CURRENT_THEME].background,
             },
             a: {
-                color: THEME_COLORS.theme1.color4,
+                color: THEME_COLORS[CURRENT_THEME].color4,
             },
         },
     },
@@ -37,7 +43,7 @@ const themeOverrides = {
         },
     },
     components,
-    themes: THEME_COLORS.theme1,
+    themes: THEME_COLORS[CURRENT_THEME],
 };
 
 // @ts-ignore

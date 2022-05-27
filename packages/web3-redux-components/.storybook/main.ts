@@ -62,7 +62,7 @@ module.exports = {
                 //EnvironmentPlugin('all', { prefix: 'VITE_' }),
                 SVGRPlugin({
                     svgrOptions: {
-                        icon: true,
+                        icon: '100%',
                     },
                 }),
                 CheckerPlugin({

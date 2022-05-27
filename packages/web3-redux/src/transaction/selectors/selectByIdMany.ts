@@ -8,7 +8,8 @@ export function selectByIdMany(state: any, ids?: TransactionId[]): (Transaction 
 
     const idsStr = ids.map((id) => getId(id));
     const result = select(state, idsStr);
-    return memoizeArrayByRef(result);
+    return result;
+    //return memoizeArrayByRef(result);
 }
 
 export default selectByIdMany;

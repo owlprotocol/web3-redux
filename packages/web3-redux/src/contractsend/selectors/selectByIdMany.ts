@@ -7,7 +7,8 @@ function selectByIdMany(state: any, ids?: string[]): (ContractSend | null)[] {
     if (!ids) return select(state); //Return all
 
     const result = select(state, ids);
-    return memoizeArrayByRef(result);
+    return result;
+    //return memoizeArrayByRef(result);
 }
 
 export default selectByIdMany;

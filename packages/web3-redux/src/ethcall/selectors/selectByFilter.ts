@@ -15,7 +15,8 @@ const selectByFilter: selectByFilterType = createSelector(
         if (!!filter) query = query.filter(filter);
 
         const result = query.toRefArray();
-        return memoizeArrayByRef(result);
+        return result;
+        //return memoizeArrayByRef(result);
     },
 );
 

@@ -8,7 +8,8 @@ function selectByIdMany(state: any, ids?: EthCallId[]): (EthCall | null)[] {
 
     const idsStr = ids.map((id) => getId(id));
     const result = select(state, idsStr);
-    return memoizeArrayByRef(result);
+    return result;
+    //return memoizeArrayByRef(result);
 }
 
 export default selectByIdMany;

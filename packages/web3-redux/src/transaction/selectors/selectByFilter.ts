@@ -23,6 +23,7 @@ export const selectByFilter: selectByFilterType = createSelector(
 
         const result = query.toRefArray();
         return result;
+        //return result;
         //return memoizeArrayByRef(result);
     },
 );

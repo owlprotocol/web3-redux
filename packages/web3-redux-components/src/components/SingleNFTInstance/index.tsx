@@ -2,7 +2,7 @@ import { useTheme, Box, IconButton, HStack, Image } from '@chakra-ui/react';
 import Icon from '../Icon';
 import { shortenHash } from '../../utils';
 import NetworkIcon from '../NetworkIcon';
-// import FileDropzone from '../FileDropzone';
+import FileUploadButton from '../FileUploadButton';
 
 export interface PresenterProps {
     networkId: string;
@@ -47,11 +47,10 @@ export const NFTInstancePresenter = ({
             borderColor={isSelected ? themes.color1 : themes.color5}
             boxShadow={'md'}
         >
-            <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'}>
+            <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'} overflow={'hidden'}>
                 {editable ? (
-                    <></>
+                    <FileUploadButton accept={'image/*'} buttonStyle={{ bg: 'transparent' }} />
                 ) : (
-                    // <FileDropzone />
                     <Image
                         src={imageSrc}
                         borderRadius={16}

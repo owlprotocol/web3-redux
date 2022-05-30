@@ -1,4 +1,4 @@
-import { Box, Button, Input, Image } from '@chakra-ui/react';
+import { Box, Button, Input, Image, StyleProps } from '@chakra-ui/react';
 import { useCallback, useRef, useState, useMemo, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +8,7 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 export interface Props {
     accept?: 'application/json' | 'image/*' | string | undefined;
     onFileDataChange?: (data: string | null) => void;
-    buttonStyle?: any;
+    buttonStyle?: StyleProps;
 }
 export const FileUploadButton = ({
     accept = 'application/json',

@@ -58,7 +58,7 @@ export const FileUploadButton = ({
     return (
         <>
             <Input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={onFileChange} accept={accept} />
-            <Button onClick={onButtonClick} leftIcon={leftIcon} {...buttonStyle} w={'100%'} borderRadius={0}>
+            <Button onClick={onButtonClick} leftIcon={leftIcon} {...buttonStyle}>
                 {buttonTitle}
             </Button>
             {isImage && previewUrl && (

@@ -49,7 +49,10 @@ export const NFTInstancePresenter = ({
         >
             <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'} overflow={'hidden'}>
                 {editable ? (
-                    <FileUploadButton accept={'image/*'} buttonStyle={{ bg: 'transparent' }} />
+                    <FileUploadButton
+                        accept={'image/*'}
+                        buttonStyle={{ bg: 'transparent', w: '100%', borderRadius: 0 }}
+                    />
                 ) : (
                     <Image
                         src={imageSrc}

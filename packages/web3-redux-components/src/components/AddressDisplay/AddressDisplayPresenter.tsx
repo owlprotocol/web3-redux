@@ -1,17 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useTheme, Box, Button, IconButton, Input } from '@chakra-ui/react';
+import { useTheme, Box, Button, IconButton, Input, StyleProps } from '@chakra-ui/react';
 import copy from 'copy-to-clipboard';
 import Icon from '../Icon';
+import NetworkIcon from '../NetworkIcon';
 import QRCodePopover from '../QRCodePopover';
 
 export interface Props {
     address: string;
     label?: string;
-    isFavorite: boolean;
+    isFavorite?: boolean;
     borderRadius?: number;
     bg?: string;
     setFavorite?: (v: boolean) => void;
     setLabel?: (v: string) => void;
+    controls?: string[];
+    containerStyles?: StyleProps;
+    networkId?: string;
 }
 
 export const AddressDisplayPresenter = ({
@@ -22,6 +26,9 @@ export const AddressDisplayPresenter = ({
     bg,
     setFavorite = (v) => console.log(`setFavorite(${v})`),
     setLabel = (v) => console.log(`setLabel(${v})`),
+    controls = ['qr', 'copy', 'favorite', 'edit'],
+    containerStyles,
+    networkId,
 }: Props) => {
     const theme = useTheme();
     const themes = theme.themes ?? {};
@@ -74,8 +81,10 @@ export const AddressDisplayPresenter = ({
             bg={bg || themes.color6}
             borderRadius={borderRadius}
             h={'60px'}
+            {...containerStyles}
         >
-            <QRCodePopover address={address} />
+            {controls.includes('qr') && <QRCodePopover address={address} />}
+            {controls.includes('icon') && <NetworkIcon networkId={networkId} size={20} />}
 
             {editLabel && (
                 <Box color={themes.color9} textAlign={'left'} flex={'1'}>
@@ -101,7 +110,9 @@ export const AddressDisplayPresenter = ({
                             {label} &lt; {address} &gt;
                         </div>
                     ) : (
-                        <div>{address}</div>
+                        <Box fontSize={12} fontWeight={400} ml={2}>
+                            {address}
+                        </Box>
                     )}
                 </Box>
             )}
@@ -117,24 +128,30 @@ export const AddressDisplayPresenter = ({
                 </Box>
             ) : (
                 <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-                    <IconButton
-                        bg={'transparent'}
-                        onClick={handleCopy}
-                        aria-label={'copy to clipboard'}
-                        icon={<Icon icon="copy" />}
-                    />
-                    <IconButton
-                        bg={'transparent'}
-                        onClick={handleFavorite}
-                        aria-label={'mark as favorite'}
-                        icon={<Icon icon={isFavorite ? 'heart.active' : 'heart'} />}
-                    />
-                    <IconButton
-                        bg={'transparent'}
-                        onClick={handleEditOnClick}
-                        aria-label={'click to edit'}
-                        icon={<Icon icon="pencil" />}
-                    />
+                    {controls.includes('copy') && (
+                        <IconButton
+                            bg={'transparent'}
+                            onClick={handleCopy}
+                            aria-label={'copy to clipboard'}
+                            icon={<Icon icon="copy" />}
+                        />
+                    )}
+                    {controls.includes('favorite') && (
+                        <IconButton
+                            bg={'transparent'}
+                            onClick={handleFavorite}
+                            aria-label={'mark as favorite'}
+                            icon={<Icon icon={isFavorite ? 'heart.active' : 'heart'} />}
+                        />
+                    )}
+                    {controls.includes('edit') && (
+                        <IconButton
+                            bg={'transparent'}
+                            onClick={handleEditOnClick}
+                            aria-label={'click to edit'}
+                            icon={<Icon icon="pencil" />}
+                        />
+                    )}
                 </Box>
             )}
         </Box>

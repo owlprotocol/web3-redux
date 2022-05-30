@@ -5,9 +5,6 @@ import Icon from '../Icon';
 import NetworkIcon from '../NetworkIcon';
 import QRCodePopover from '../QRCodePopover';
 
-// export interface ControlsOptions {
-
-// }
 export interface Props {
     address: string;
     label?: string;

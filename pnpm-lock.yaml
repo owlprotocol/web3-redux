@@ -363,7 +363,6 @@ importers:
       rc-pagination: ^3.1.16
       react: ^17.0.2
       react-dom: ^17.0.2
-      react-dropzone: ^14.2.1
       react-hook-form: ^7.31.2
       react-hooks-compose: ^2.0.16
       react-redux: ^7.2.6
@@ -401,7 +400,6 @@ importers:
       rc-pagination: 3.1.16_react-dom@17.0.2+react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-dropzone: 14.2.1_react@17.0.2
       react-hook-form: 7.31.2_react@17.0.2
       react-hooks-compose: 2.0.18_react@17.0.2
       react-redux: 7.2.8_react-dom@17.0.2+react@17.0.2
@@ -8644,11 +8642,6 @@ packages:
     engines: {node: '>=8.0.0'}
     dev: true
 
-  /attr-accept/2.2.2:
-    resolution: {integrity: sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==}
-    engines: {node: '>=4'}
-    dev: false
-
   /autoprefixer/10.4.7_postcss@8.4.14:
     resolution: {integrity: sha512-ypHju4Y2Oav95SipEcCcI5J7CGPuvz8oat7sUtYj3ClK44bldfvtvcxK6IEK++7rqB7YchDGzweZIBG+SD0ZAA==}
     engines: {node: ^10 || ^12 || >=14}
@@ -13418,13 +13411,6 @@ packages:
       loader-utils: 2.0.2
       schema-utils: 3.1.1
       webpack: 5.72.1
-    dev: false
-
-  /file-selector/0.6.0:
-    resolution: {integrity: sha512-QlZ5yJC0VxHxQQsQhXvBaC7VRJ2uaxTf+Tfpu4Z/OcVQJVpZO+DGU0rkoVW5ce2SccxugvpBJoMvUs59iILYdw==}
-    engines: {node: '>= 12'}
-    dependencies:
-      tslib: 2.4.0
     dev: false
 
   /file-system-cache/1.1.0:
@@ -20623,18 +20609,6 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
-
-  /react-dropzone/14.2.1_react@17.0.2:
-    resolution: {integrity: sha512-jzX6wDtAjlfwZ+Fbg+G17EszWUkQVxhMTWMfAC9qSUq7II2pKglHA8aarbFKl0mLpRPDaNUcy+HD/Sf4gkf76Q==}
-    engines: {node: '>= 10.13'}
-    peerDependencies:
-      react: '>= 16.8 || 18.0.0'
-    dependencies:
-      attr-accept: 2.2.2
-      file-selector: 0.6.0
-      prop-types: 15.8.1
-      react: 17.0.2
-    dev: false
 
   /react-element-to-jsx-string/14.3.4_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-t4ZwvV6vwNxzujDQ+37bspnLwA4JlgUPWhLjBJWsNIDceAf6ZKUTCjdm08cN6WeZ5pTMKiCJkmAYnpmR4Bm+dg==}

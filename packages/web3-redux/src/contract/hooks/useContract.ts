@@ -9,7 +9,7 @@ import { create } from '../actions/index.js';
 import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced.js';
 import { GetNonceSyncedActionInput } from '../actions/getNonceSynced.js';
 import { selectByIdSingle } from '../selectors/index.js';
-import { BaseWeb3Contract } from '../model/index.js';
+import { BaseWeb3Contract, Contract } from '../model/index.js';
 
 /**
  * Creates a contract/EOA if it doesn't exist.
@@ -21,7 +21,7 @@ import { BaseWeb3Contract } from '../model/index.js';
 export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     networkId: string | undefined,
     address: string | undefined,
-    abi?: AbiItem[] | undefined,
+    createData: Partial<Contract> = {},
     sync?: {
         getBalance?: 'ifnull' | GetBalanceSyncedActionInput['sync'] | false;
         getNonce?: 'ifnull' | GetNonceSyncedActionInput['sync'] | false;
@@ -43,8 +43,8 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 
     //Create contract if inexistant
     useEffect(() => {
-        if (id && !contractExists) dispatch(create({ ...id, abi }));
-    }, [dispatch, id, abi, contractExists]);
+        if (id && !contractExists) dispatch(create({ ...id, ...createData }));
+    }, [dispatch, id, JSON.stringify(createData), contractExists]);
 
     useGetBalance(networkId, address, getBalance);
     useGetNonce(networkId, address, getNonce);
@@ -55,9 +55,9 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 }
 
 /** @category Hooks */
-export function contractHookFactory<T extends BaseWeb3Contract = BaseWeb3Contract>(abi: AbiItem[]) {
+export function contractHookFactory<T extends BaseWeb3Contract = BaseWeb3Contract>(createData: Partial<Contract> = {}) {
     return (networkId: string | undefined, address: string | undefined) => {
-        return useContract<T>(networkId, address, abi);
+        return useContract<T>(networkId, address, createData);
     };
 }
 

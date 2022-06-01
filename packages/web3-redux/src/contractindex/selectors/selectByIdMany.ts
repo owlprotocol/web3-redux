@@ -12,7 +12,8 @@ export function selectByIdMany(state: any, ids?: string[]): (ContractIndex | und
     if (!ids) return select(state) as (ContractIndex | undefined)[]; //Return all
 
     const result = select(state, ids as string & string[]) as (ContractIndex | undefined)[];
-    return memoizeArrayByRef(result);
+    return result;
+    //return memoizeArrayByRef(result);
 }
 
 export default selectByIdMany;

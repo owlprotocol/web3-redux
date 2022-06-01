@@ -9,7 +9,8 @@ export function selectByIdMany(state: any, ids?: string[]): (Ipfs | null)[] {
     ids.forEach((id) => isCIDGuard(id));
 
     const result = select(state, ids);
-    return memoizeArrayByRef(result);
+    return result;
+    //return memoizeArrayByRef(result);
 }
 
 export default selectByIdMany;

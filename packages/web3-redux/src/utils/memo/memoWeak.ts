@@ -69,6 +69,7 @@ export function memoizeWeak(fn: (...args: any[]) => any, options?: memoizeWeakOp
                     },
                     set([...params]: any[], value: any) {
                         const k = serialize(params);
+                        //console.debug({ k, params });
                         cache.set(k, value);
                     },
                 };

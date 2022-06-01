@@ -12,9 +12,9 @@ import AbiItemInput from '../AbiItemInput';
 //Similar to AbiItem interface
 export interface Props {
     networkId: string;
-    address: string;
+    address: string | undefined;
     account?: string;
-    namePrefix: string;
+    namePrefix?: string;
     name: string | undefined;
     inputs: {
         name: string | undefined;

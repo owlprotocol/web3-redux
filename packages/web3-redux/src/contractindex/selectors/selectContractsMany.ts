@@ -10,7 +10,8 @@ export function selectContractsMany(state: any, ids?: string[]): (Contract[] | u
     if (!ids) return selector(state) as (Contract[] | undefined)[]; //Return all
 
     const result = selector(state, ids as string & string[]) as (Contract[] | undefined)[];
-    return memoizeArrayByRef(result);
+    return result;
+    //return memoizeArrayByRef(result);
 }
 
 export default selectContractsMany;

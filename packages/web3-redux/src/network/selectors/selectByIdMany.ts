@@ -8,6 +8,7 @@ function selectByIdMany(state: any, ids?: string[]): (Network | null)[] {
 
     const result = select(state, ids);
     return result;
+    //return result;
     //return memoizeArrayByRef(result);
 }
 

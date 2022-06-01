@@ -1,6 +1,5 @@
 import { Box, Button, FormControl, FormErrorMessage, useTheme } from '@chakra-ui/react';
 import { Contract, Config, ContractSend } from '@owlprotocol/web3-redux';
-import { isError } from 'lodash';
 import { useCallback, useState } from 'react';
 import Web3 from 'web3';
 import AbiItemForm from '../../ContractAbiForm/AbiItemForm2';

@@ -29,6 +29,18 @@ export const withMockData = (WrappedComponent: any) => {
             if (!networkGanache) dispatch(Network.create({ networkId: '1337', web3Rpc: 'ws://localhost:8545' }));
         }, [dispatch, networkGanache]);
 
+        /*
+        useEffect(() => {
+            if (!networkOwl) dispatch(Network.create({ networkId: '1337', web3Rpc: import.meta.env.VITE_OWL_RPC }));
+        }, [dispatch, networkOwl]);
+
+        const config = Config.useConfig();
+        useEffect(() => {
+            if (config.ipfsUrl != import.meta.env.VITE_IPFS_URL)
+                dispatch(Config.set({ id: '0', key: 'ipfsUrl', value: import.meta.env.VITE_IPFS_URL }));
+        }, [dispatch, config]);
+        */
+
         const [
             contractVITALIK,
             contractWETH,

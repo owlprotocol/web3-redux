@@ -55,8 +55,8 @@
     "publish": "pnpm publish --no-git-checks --access public"
   },
   "dependencies": {
-    "@ipld/dag-pb": "^2.1.16",
     "@ipld/dag-cbor": "^7.0.1",
+    "@ipld/dag-pb": "^2.1.16",
     "@reduxjs/toolkit": "^1.6.2",
     "axios": "0.25.0",
     "ethereum-ens": "^0.8.0",
@@ -65,6 +65,7 @@
     "ipfs-http-client": "56.0.3",
     "iso-url": "^1.2.1",
     "lodash": "^4.17.21",
+    "multiformats": "^9.6.5",
     "re-reselect": "^4.0.0",
     "redux": "4.1.2",
     "redux-batched-actions": "^0.5.0",

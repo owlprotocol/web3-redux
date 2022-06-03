@@ -163,6 +163,7 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.14.0
       '@typescript-eslint/parser': ^5.14.0
       axios: 0.25.0
+      blockstore-core: ^1.0.5
       chai: ^4.3.4
       cross-env: ^7.0.3
       dotenv: ^10.0.0
@@ -183,12 +184,16 @@ importers:
       glob: ^7.2.0
       ipfs: 0.62.3
       ipfs-http-client: 56.0.3
+      ipfs-unixfs: ^6.0.9
+      ipfs-unixfs-exporter: ^7.0.11
+      ipfs-unixfs-importer: ^9.0.10
       iso-url: ^1.2.1
       lint-staged: ^11.1.2
       lodash: ^4.17.21
       mocha: ^9.0.3
       mocha-jsdom: ^2.0.0
       moxios: ^0.4.0
+      multiformats: ^9.6.5
       npm-run-all: ^4.1.5
       prettier: ^2.5.1
       re-reselect: ^4.0.0
@@ -221,12 +226,17 @@ importers:
       '@ipld/dag-pb': 2.1.16
       '@reduxjs/toolkit': 1.8.1_bjryulbxll5jujtwpu5a2wm2cy
       axios: 0.25.0
+      blockstore-core: 1.0.5
       ethereum-ens: 0.8.0
       events: 3.3.0
       fast-memoize: 2.5.2
       ipfs-http-client: 56.0.3
+      ipfs-unixfs: 6.0.9
+      ipfs-unixfs-exporter: 7.0.11
+      ipfs-unixfs-importer: 9.0.10
       iso-url: 1.2.1
       lodash: 4.17.21
+      multiformats: 9.6.5
       re-reselect: 4.0.0_reselect@4.1.5
       redux: 4.1.2
       redux-batched-actions: 0.5.0_redux@4.1.2
@@ -621,7 +631,6 @@ packages:
 
   /@assemblyscript/loader/0.9.4:
     resolution: {integrity: sha512-HazVq9zwTVwGmqdwYzu7WyQ6FQVZ7SwET0KKQuKm55jD0IfUpZgN0OPIiZG3zV1iSrVYcN0bdwLRXI/VNCYsUA==}
-    dev: true
 
   /@babel/code-frame/7.16.7:
     resolution: {integrity: sha512-iAXqUn8IIeBTNd72xsFlgaXHkMBMt6y4HJp1tIaK465CWLT/fG1aqB7ykr95gHHmlBdGbFeWWfyB4NJJ0nmeIg==}
@@ -4567,6 +4576,12 @@ packages:
       cborg: 1.9.3
       multiformats: 9.6.5
 
+  /@ipld/dag-cbor/7.0.2:
+    resolution: {integrity: sha512-V9EhJVWXqzjjRs0kiZfUXOaq8y6R2C4AAmfGoMeszqGOBgfACr5tFAgAwZY0e8z/OpmJWpCrZhzPRTZV0c/gjA==}
+    dependencies:
+      cborg: 1.9.3
+      multiformats: 9.6.5
+
   /@ipld/dag-json/8.0.9:
     resolution: {integrity: sha512-NNKHmgHxc2zOEaB8qOUpAb2UK1vcEE/rBeh018Da/RzXE7N8GwiTJLRZ3Fe/G4fsiis67G0sagRz/YNQcANRsQ==}
     dependencies:
@@ -4797,7 +4812,6 @@ packages:
     dependencies:
       multiformats: 9.6.5
       murmurhash3js-revisited: 3.0.0
-    dev: true
 
   /@noble/ed25519/1.6.0:
     resolution: {integrity: sha512-UKju89WV37IUALIMfKhKW3psO8AqmrE/GvH6QbPKjzolQ98zM7WmGUeY+xdIgSf5tqPFf75ZCYMgym6E9Jsw3Q==}
@@ -9480,7 +9494,6 @@ packages:
       buffer: 6.0.3
       inherits: 2.0.4
       readable-stream: 3.6.0
-    dev: true
 
   /blakejs/1.2.1:
     resolution: {integrity: sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==}
@@ -9501,7 +9514,6 @@ packages:
       it-filter: 1.0.3
       it-take: 1.0.2
       multiformats: 9.6.5
-    dev: true
 
   /blockstore-datastore-adapter/2.0.3:
     resolution: {integrity: sha512-s6j6ay+qLu7sOx5DanHJlg2dBX61B9Yrbg6qo8oP3oiWnj6ZFCad4CKVb8do1f4u/Q4r2XPuSM4JYCe684USrQ==}
@@ -14533,7 +14545,6 @@ packages:
     dependencies:
       sparse-array: 1.3.2
       uint8arrays: 3.0.0
-    dev: true
 
   /handle-thing/2.0.1:
     resolution: {integrity: sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==}
@@ -15184,24 +15195,11 @@ packages:
   /inline-style-parser/0.1.1:
     resolution: {integrity: sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==}
 
-  /interface-blockstore/1.0.2:
-    resolution: {integrity: sha512-e8rHqaBSOsBPpSaB+wwVa9mR5ntU+t1yzXpOFC16cSKCNsV+h6n8SjekPQcdODVBN2h8t45CsOqRAnUfm1guEw==}
-    dependencies:
-      err-code: 3.0.1
-      interface-store: 1.0.2
-      it-all: 1.0.6
-      it-drain: 1.0.5
-      it-filter: 1.0.3
-      it-take: 1.0.2
-      multiformats: 9.6.5
-    dev: true
-
   /interface-blockstore/2.0.3:
     resolution: {integrity: sha512-OwVUnlNcx7H5HloK0Myv6c/C1q9cNG11HX6afdeU6q6kbuNj8jKCwVnmJHhC94LZaJ+9hvVOk4IUstb3Esg81w==}
     dependencies:
       interface-store: 2.0.2
       multiformats: 9.6.5
-    dev: true
 
   /interface-datastore/6.1.0:
     resolution: {integrity: sha512-oNHdsrWBsI/kDwUtEgt+aaZtQFKtQYN0TGZzc3SGiIA6m+plZ6malhmsygtbmDpfpIsNNC7ce9Gyaj+Tki+gVw==}
@@ -15209,10 +15207,6 @@ packages:
       interface-store: 2.0.2
       nanoid: 3.3.4
       uint8arrays: 3.0.0
-
-  /interface-store/1.0.2:
-    resolution: {integrity: sha512-rUBLYsgoWwxuUpnQoSUr+DR/3dH3reVeIu5aOHFZK31lAexmb++kR6ZECNRgrx6WvoaM3Akdo0A7TDrqgCzZaQ==}
-    dev: true
 
   /interface-store/2.0.2:
     resolution: {integrity: sha512-rScRlhDcz6k199EkHqT8NpM87ebN89ICOzILoBHgaG36/WX50N32BnU/kpZgCGPLhARRAWUUX5/cyaIjt7Kipg==}
@@ -15378,7 +15372,7 @@ packages:
     dependencies:
       '@ipld/dag-pb': 2.1.16
       interface-datastore: 6.1.0
-      ipfs-unixfs: 6.0.7
+      ipfs-unixfs: 6.0.9
       multiaddr: 10.0.1
       multiformats: 9.6.5
     transitivePeerDependencies:
@@ -15394,7 +15388,7 @@ packages:
       debug: 4.3.4
       err-code: 3.0.1
       ipfs-core-types: 0.10.3
-      ipfs-unixfs: 6.0.7
+      ipfs-unixfs: 6.0.9
       ipfs-utils: 9.0.6
       it-all: 1.0.6
       it-map: 1.0.6
@@ -15441,9 +15435,9 @@ packages:
       ipfs-core-utils: 0.14.3
       ipfs-http-client: 56.0.3
       ipfs-repo: 14.0.1
-      ipfs-unixfs: 6.0.7
-      ipfs-unixfs-exporter: 7.0.8
-      ipfs-unixfs-importer: 9.0.8
+      ipfs-unixfs: 6.0.9
+      ipfs-unixfs-exporter: 7.0.11
+      ipfs-unixfs-importer: 9.0.10
       ipfs-utils: 9.0.6
       ipns: 0.16.0
       is-domain-name: 1.0.1
@@ -15622,7 +15616,7 @@ packages:
       ipfs-core-types: 0.10.3
       ipfs-core-utils: 0.14.3
       ipfs-http-gateway: 0.9.3
-      ipfs-unixfs: 6.0.7
+      ipfs-unixfs: 6.0.9
       it-all: 1.0.6
       it-drain: 1.0.5
       it-filter: 1.0.3
@@ -15705,24 +15699,23 @@ packages:
       - supports-color
     dev: true
 
-  /ipfs-unixfs-exporter/7.0.8:
-    resolution: {integrity: sha512-DhOfrOEYlo8jivjIz1RaSCTDbmkgbSXbIhLauL8O2TeLWhPoIpw7TuH+TSaAuu7FsjoHgGUj1O/1TADVjO+WTw==}
+  /ipfs-unixfs-exporter/7.0.11:
+    resolution: {integrity: sha512-qTYa69J7HbI2EIYNUddKPg9Y3rHkYZV0bNdmzZKA5+ZbwRVoUEuBW/cguEqTp22zHygh3sMnzYZFm0naVIdMgQ==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
-      '@ipld/dag-cbor': 6.0.15
+      '@ipld/dag-cbor': 7.0.2
       '@ipld/dag-pb': 2.1.16
       '@multiformats/murmur3': 1.1.3
       err-code: 3.0.1
       hamt-sharding: 2.0.1
-      interface-blockstore: 1.0.2
-      ipfs-unixfs: 6.0.7
+      interface-blockstore: 2.0.3
+      ipfs-unixfs: 6.0.9
       it-last: 1.0.6
       multiformats: 9.6.5
       uint8arrays: 3.0.0
-    dev: true
 
-  /ipfs-unixfs-importer/9.0.8:
-    resolution: {integrity: sha512-Vye6kLDz9zTFDbuSeggm/dUUW85im+JTs7vYK0Kk9xXmJzzIqOMZCv4fY6kVnWlQOk6z4IVntJWW6LnmjD6dkw==}
+  /ipfs-unixfs-importer/9.0.10:
+    resolution: {integrity: sha512-W+tQTVcSmXtFh7FWYWwPBGXJ1xDgREbIyI1E5JzDcimZLIyT5gGMfxR3oKPxxWj+GKMpP5ilvMQrbsPzWcm3Fw==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
       '@ipld/dag-pb': 2.1.16
@@ -15730,8 +15723,8 @@ packages:
       bl: 5.0.0
       err-code: 3.0.1
       hamt-sharding: 2.0.1
-      interface-blockstore: 1.0.2
-      ipfs-unixfs: 6.0.7
+      interface-blockstore: 2.0.3
+      ipfs-unixfs: 6.0.9
       it-all: 1.0.6
       it-batch: 1.0.9
       it-first: 1.0.7
@@ -15743,10 +15736,9 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
-    dev: true
 
-  /ipfs-unixfs/6.0.7:
-    resolution: {integrity: sha512-5mKbQgvux6n5lQ+upGWWPKcoswXahdOcyGQ2SbIIRV6eBJMzxLprzKsyb0GMsg80tHX2wnNOxBKSCiSGjb+54A==}
+  /ipfs-unixfs/6.0.9:
+    resolution: {integrity: sha512-0DQ7p0/9dRB6XCb0mVCTli33GzIzSVx5udpJuVM47tGcD+W+Bl4LsnoLswd3ggNnNEakMv1FdoFITiEnchXDqQ==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
       err-code: 3.0.1
@@ -16354,7 +16346,6 @@ packages:
 
   /it-batch/1.0.9:
     resolution: {integrity: sha512-7Q7HXewMhNFltTsAMdSz6luNhyhkhEtGGbYek/8Xb/GiqYMtwUmopE1ocPSiJKKp3rM4Dt045sNFoUu+KZGNyA==}
-    dev: true
 
   /it-buffer/0.1.3:
     resolution: {integrity: sha512-9a2/9SYVwG7bcn3tpRDR4bXbtuMLXnDK48KVC+GXiQg97ZOOdWz2nIITBsOQ19b+gj01Rw8RNwtiLDLI8P8oiQ==}
@@ -16371,11 +16362,9 @@ packages:
 
   /it-drain/1.0.5:
     resolution: {integrity: sha512-r/GjkiW1bZswC04TNmUnLxa6uovme7KKwPhc+cb1hHU65E3AByypHH6Pm91WHuvqfFsm+9ws0kPtDBV3/8vmIg==}
-    dev: true
 
   /it-filter/1.0.3:
     resolution: {integrity: sha512-EI3HpzUrKjTH01miLHWmhNWy3Xpbx4OXMXltgrNprL5lDpF3giVpHIouFpr5l+evXw6aOfxhnt01BIB+4VQA+w==}
-    dev: true
 
   /it-first/1.0.7:
     resolution: {integrity: sha512-nvJKZoBpZD/6Rtde6FXqwDqDZGF1sCADmr2Zoc0hZsIvnE449gRFnGctxDf09Bzc/FWnHXAdaHVIetY6lrE0/g==}
@@ -16439,7 +16428,6 @@ packages:
     resolution: {integrity: sha512-3+4gW15xdf/BOx9zij0QVnB1bDGSLOTABlaVm7ebHH1S9gDUgd5aLNb0WsFXPTfKe104iC6lxdzfbMGh1B07rg==}
     dependencies:
       it-batch: 1.0.9
-    dev: true
 
   /it-parallel/2.0.1:
     resolution: {integrity: sha512-VnHs9UJXSr8jmPnquS76qhLU+tE3WvLJqBUKMjAD2/Z1O5JsjpHMqq8yvVByyuwuFnh1OG9faJVGc5c9t+T6Kg==}
@@ -16491,7 +16479,6 @@ packages:
 
   /it-take/1.0.2:
     resolution: {integrity: sha512-u7I6qhhxH7pSevcYNaMECtkvZW365ARqAIt9K+xjdK1B2WUDEjQSfETkOCT8bxFq/59LqrN3cMLUtTgmDBaygw==}
-    dev: true
 
   /it-tar/4.0.0:
     resolution: {integrity: sha512-t7NJKNVs0p3aJT2cyycs8FkXkvLTKOVtcEuYEdZDrfxHGEIW8gHJt2zbDOILt5erywEPRRws2oz0FqH3LiDGtA==}
@@ -17034,7 +17021,7 @@ packages:
     dependencies:
       inherits: 2.0.4
       level-errors: 1.0.5
-      readable-stream: 1.0.34
+      readable-stream: 1.1.14
       xtend: 4.0.2
     dev: true
 
@@ -18610,7 +18597,6 @@ packages:
   /murmurhash3js-revisited/3.0.0:
     resolution: {integrity: sha512-/sF3ee6zvScXMb1XFJ8gDsSnY+X8PbOyjIuBhtgis10W2Jx4ZjIhikUCIF9c4gpJxVnQIsPAFrSwTCuAjicP6g==}
     engines: {node: '>=8.0.0'}
-    dev: true
 
   /mutable-proxy/1.0.0:
     resolution: {integrity: sha512-4OvNRr1DJpy2QuDUV74m+BWZ//n4gG4bmd21MzDSPqHEidIDWqwyOjcadU1LBMO3vXYGurVKjfBrxrSQIHFu9A==}
@@ -20674,7 +20660,6 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
-    dev: true
 
   /ramda/0.26.1:
     resolution: {integrity: sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==}
@@ -21303,7 +21288,6 @@ packages:
       isarray: 0.0.1
       string_decoder: 0.10.31
     dev: true
-    optional: true
 
   /readable-stream/2.3.7:
     resolution: {integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==}
@@ -22636,7 +22620,6 @@ packages:
 
   /sparse-array/1.3.2:
     resolution: {integrity: sha512-ZT711fePGn3+kQyLuv1fpd3rNSkNF8vd5Kv2D+qnOANeyKs3fx6bUMGWRPvgTTcYV64QMqZKZwcuaQSP3AZ0tg==}
-    dev: true
 
   /spawndamnit/2.0.0:
     resolution: {integrity: sha512-j4JKEcncSjFlqIwU5L/rp2N5SIPsdxaRsIv678+TZxZ0SRDJTm8JrxJMjE/XuiEZNEir3S8l0Fa3Ke339WI4qA==}

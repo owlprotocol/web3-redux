@@ -28,6 +28,7 @@ export function* getCBOR(action: GetCBORAction) {
             createError({
                 id: action.meta.uuid,
                 error: error as Error,
+                errorMessage: (error as Error).message,
                 type: GET_CBOR_ERROR,
             }),
         );

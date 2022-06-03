@@ -43,6 +43,7 @@ export function* get(action: GetAction) {
             createError({
                 id: action.meta.uuid,
                 error: error as Error,
+                errorMessage: (error as Error).message,
                 type: GET_ERROR,
             }),
         );

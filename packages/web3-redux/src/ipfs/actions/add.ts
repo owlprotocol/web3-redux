@@ -5,7 +5,7 @@ import { name } from '../common.js';
 
 interface Payload {
     file: Parameters<IPFS['add']>[0];
-    options: Parameters<IPFS['add']>[1];
+    options?: Parameters<IPFS['add']>[1];
 }
 
 /** @internal */

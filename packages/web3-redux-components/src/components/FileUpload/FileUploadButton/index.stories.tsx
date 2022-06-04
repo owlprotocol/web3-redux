@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { mimeTypeArgType } from '../../../test/storybookArgs';
 import FileUploadButton from '.';
 
 export default {
@@ -10,4 +11,6 @@ const Template: ComponentStory<typeof FileUploadButton> = (args: any) => <FileUp
 export const Main = Template.bind({});
 Main.args = {};
 
-Main.argTypes = {};
+Main.argTypes = {
+    accept: mimeTypeArgType,
+};

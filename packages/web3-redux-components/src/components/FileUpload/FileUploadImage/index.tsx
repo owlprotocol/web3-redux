@@ -32,7 +32,7 @@ export const FileUploadImage = ({ accept = 'image/*', buttonStyle, onFileChange,
                 onFileDataChange={onFileDataChange}
             />
             <Box w={'100%'} h={'200px'} mt={'-40px'}>
-                <Image src={previewUrl} objectFit={'cover'} h={'100%'} w={'100%'} />
+                {previewUrl && <Image src={previewUrl} objectFit={'cover'} h={'100%'} w={'100%'} />}
             </Box>
         </>
     );

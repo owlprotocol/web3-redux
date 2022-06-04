@@ -13,6 +13,14 @@ import { BlockNumber, IERC20, IERC721Metadata as IERC721, IERC1155MetadataURI as
 
 export const networkId = '1336';
 
+//IPFS
+export const QM_BAYC_PNG = 'QmNwbd7ctEhGpVkP8nZvBBQfiNeFKRdxftJAxxEdkUKLcQ';
+export const QM_SQUARE_BLUE_PNG = 'QmcQNviCJWugAkrijvs1KFsabEXtrVQULGoXKy2PZBa5or';
+export const QM_SQUARE_BLUE_SVG = 'QmNkp2s46DAeNMNdFYftfwtk1jH8jr5mSbJT65zgxF16ev';
+export const QM_SQUARE_BLUE_JPG = 'QmUPQig42Rfo3q94EwbTM9fWLrovCErYgXBdsVGvwXQXuZ';
+export const QM_SQUARE_BLUE_PDF = 'Qmd87rQWcGTHExKZQ7Zkh58BTWMeYwU98Bhkrz3iseTftd';
+export const QM_SQUARE_GIF = 'QmPxoHKChAe44y3PkeyZxaVYUixPwywUCyAV3qYzfk43vt';
+
 //Addresses
 export const addressList = [
     '0x0000000000000000000000000000000000000000',

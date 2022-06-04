@@ -15,6 +15,7 @@ const {
     QM_SQUARE_BLUE_PNG,
     QM_SQUARE_BLUE_SVG,
     QM_SQUARE_GIF,
+    QM_HELLO_JSON,
 } = TestData;
 
 const ipfsHashLabels = {
@@ -24,6 +25,7 @@ const ipfsHashLabels = {
     [QM_SQUARE_BLUE_SVG]: 'blue-square.svg',
     [QM_SQUARE_BLUE_PDF]: 'blue-square.pdf',
     [QM_SQUARE_GIF]: 'square.gif',
+    [QM_HELLO_JSON]: 'hello.json',
 };
 export const ipfsHashdArgType = {
     options: Object.keys(ipfsHashLabels),

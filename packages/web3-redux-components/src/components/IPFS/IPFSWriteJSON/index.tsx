@@ -9,11 +9,14 @@ export const IPFSWriteJSON = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const dispatch = useDispatch();
 
-    const [fileData, setFileData] = useState<FileData>();
+    const [fileJson, setFileData] = useState<FileData>();
 
     const onClickIPFS = useCallback(() => {
-        dispatch(Ipfs.putCBOR(fileData));
-    }, [dispatch, fileData]);
+        if (fileJson) {
+            const fileData = JSON.stringify(fileJson);
+            dispatch(Ipfs.add({ file: fileData }));
+        }
+    }, [dispatch, fileJson]);
 
     return (
         <>

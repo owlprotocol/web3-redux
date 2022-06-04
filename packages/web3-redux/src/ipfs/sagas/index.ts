@@ -3,11 +3,26 @@ import { objectGet } from './objectGet.js';
 import { cat } from './cat.js';
 import { fetchIpfs } from './fetchIpfs.js';
 import putCBOR from './putCBOR.js';
+//Core IPFS API - Root
 import add from './add.js';
 import addAll from './addAll.js';
 import cat2 from './cat2.js';
 import get from './get.js';
-import { OBJECT_GET, CAT, FETCH_IPFS, PUT_CBOR, ADD, ADD_ALL, CAT2, GET } from '../actions/index.js';
+//Core IPFS API - Block
+import blockGet from './blockGet.js';
+import blockPut from './blockPut.js';
+import {
+    OBJECT_GET,
+    CAT,
+    FETCH_IPFS,
+    PUT_CBOR,
+    ADD,
+    ADD_ALL,
+    CAT2,
+    GET,
+    BLOCK_GET,
+    BLOCK_PUT,
+} from '../actions/index.js';
 
 /** @internal */
 export function* saga() {
@@ -20,6 +35,8 @@ export function* saga() {
         takeEvery(ADD_ALL, addAll),
         takeEvery(CAT2, cat2),
         takeEvery(GET, get),
+        takeEvery(BLOCK_GET, blockGet),
+        takeEvery(BLOCK_PUT, blockPut),
     ]);
 }
 

@@ -3,7 +3,7 @@ import { useCallback, useRef, useState, useMemo, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
-export type FileData = string | ArrayBuffer | null | undefined;
+export type FileData = string | ArrayBuffer | Record<string, any> | null | undefined;
 
 //https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
 //Use the hacky way to hid the default file input

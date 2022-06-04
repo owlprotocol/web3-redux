@@ -16,10 +16,11 @@ export function* blockGet(action: BlockPutAction) {
 
     try {
         const cid = yield* call([ipfs, ipfs.block.put], block, options);
+        const type = options?.format === 'dag-cbor' ? IPFSDataType.DAG_CBOR : IPFSDataType.Raw;
         //Redux Cache
         const content = yield* select(selectByIdSingle, cid.toString());
-        if (!content) yield* put(create({ contentId: cid.toString(), data: block, type: IPFSDataType.Raw }));
-        else if (!content?.data) yield* put(update({ contentId: cid.toString(), data: block, type: IPFSDataType.Raw }));
+        if (!content) yield* put(create({ contentId: cid.toString(), data: block, type }));
+        else if (!content?.data) yield* put(update({ contentId: cid.toString(), data: block, type }));
     } catch (error) {
         yield* put(
             createError({

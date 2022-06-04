@@ -20,6 +20,7 @@ export const QM_SQUARE_BLUE_SVG = 'QmNkp2s46DAeNMNdFYftfwtk1jH8jr5mSbJT65zgxF16e
 export const QM_SQUARE_BLUE_JPG = 'QmUPQig42Rfo3q94EwbTM9fWLrovCErYgXBdsVGvwXQXuZ';
 export const QM_SQUARE_BLUE_PDF = 'Qmd87rQWcGTHExKZQ7Zkh58BTWMeYwU98Bhkrz3iseTftd';
 export const QM_SQUARE_GIF = 'QmPxoHKChAe44y3PkeyZxaVYUixPwywUCyAV3qYzfk43vt';
+export const QM_HELLO_JSON = 'QmZfZGkfiJfkvM2tc7YbmeFRDaSwTPCfGe6E3xYPAjBnUe';
 
 //Addresses
 export const addressList = [

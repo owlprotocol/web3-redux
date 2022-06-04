@@ -9,7 +9,7 @@ interface Payload {
 }
 
 /** @internal */
-export const BLOCK_GET = `${name}/blockGet`;
+export const BLOCK_GET = `${name}/BLOCK/GET`;
 /** @category Actions */
 export const blockGet = createAction(BLOCK_GET, (payload: Payload) => {
     return {

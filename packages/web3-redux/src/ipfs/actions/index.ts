@@ -15,7 +15,7 @@ import { GET, get, GetAction, isGetAction } from './get.js';
 import { LS, ls, LsAction, isLsAction } from './ls.js';
 //Core IPFS API - Block
 import { BLOCK_GET, blockGet, BlockGetAction, isBlockGetAction } from './blockGet.js';
-import { BLOCK_PUT, blockPut, BlockPutAction, isBlockPutAction } from './blockPut';
+import { BLOCK_PUT, blockPut, blockPutCBOR, BlockPutAction, isBlockPutAction } from './blockPut.js';
 
 export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
 
@@ -116,5 +116,6 @@ export {
     isBlockGetAction,
     BLOCK_PUT,
     blockPut,
+    blockPutCBOR,
     isBlockPutAction,
 };

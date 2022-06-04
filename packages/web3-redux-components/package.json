@@ -94,6 +94,7 @@
     "@typescript-eslint/parser": "^5.13.0",
     "@vitejs/plugin-react": "^1.0.7",
     "babel-loader": "^8.2.3",
+    "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
     "esbuild": "^0.14.25",
     "eslint": "^8.10.0",

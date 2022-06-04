@@ -2,7 +2,7 @@ import { useTheme, Box, IconButton, HStack, Image } from '@chakra-ui/react';
 import Icon from '../Icon';
 import { shortenHash } from '../../utils';
 import NetworkIcon from '../NetworkIcon';
-import FileUploadButton from '../FileUploadButton';
+import FileUploadButton from '../FileUpload/FileUploadButton';
 
 export interface PresenterProps {
     networkId: string;

@@ -1,5 +1,46 @@
 import { TestData } from '@owlprotocol/web3-redux';
-const { VITALIK, WETH, USDC, TETHER, CHAINLINK, KITH_FRIENDS, OZ_TEAM, SKYWEAVER, VEE_FRIENDS_SERIES2 } = TestData;
+const {
+    VITALIK,
+    WETH,
+    USDC,
+    TETHER,
+    CHAINLINK,
+    KITH_FRIENDS,
+    OZ_TEAM,
+    SKYWEAVER,
+    VEE_FRIENDS_SERIES2,
+    QM_BAYC_PNG,
+    QM_SQUARE_BLUE_JPG,
+    QM_SQUARE_BLUE_PDF,
+    QM_SQUARE_BLUE_PNG,
+    QM_SQUARE_BLUE_SVG,
+    QM_SQUARE_GIF,
+    QM_HELLO_JSON,
+} = TestData;
+
+const ipfsHashLabels = {
+    [QM_BAYC_PNG]: 'bayc.png',
+    [QM_SQUARE_BLUE_PNG]: 'blue-square.png',
+    [QM_SQUARE_BLUE_JPG]: 'blue-square.jpg',
+    [QM_SQUARE_BLUE_SVG]: 'blue-square.svg',
+    [QM_SQUARE_BLUE_PDF]: 'blue-square.pdf',
+    [QM_SQUARE_GIF]: 'square.gif',
+    [QM_HELLO_JSON]: 'hello.json',
+};
+export const ipfsHashdArgType = {
+    options: Object.keys(ipfsHashLabels),
+    control: {
+        type: 'select',
+        labels: ipfsHashLabels,
+    },
+};
+
+export const mimeTypeArgType = {
+    options: ['image/png', 'image/jpeg', 'image/svg+xml', 'image/gif', 'application/pdf'],
+    control: {
+        type: 'select',
+    },
+};
 
 const networkLabels = {
     [1]: '1 - Ethereum',

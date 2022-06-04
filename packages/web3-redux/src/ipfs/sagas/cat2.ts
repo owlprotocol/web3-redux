@@ -2,9 +2,8 @@ import { call, put, select } from 'typed-redux-saga';
 import { importer } from 'ipfs-unixfs-importer';
 import { CID } from 'multiformats';
 import { UnixFS } from 'ipfs-unixfs-exporter';
-//import { Buffer } from 'buffer';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { Cat2Action, CAT2, update } from '../actions/index.js';
+import { Cat2Action, CAT2, create, update } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { selectByIdSingle, selectPathHash } from '../selectors/index.js';
 import { blockstore } from '../blockstore.js';
@@ -42,14 +41,23 @@ export function* cat2(action: Cat2Action) {
                 const { cid, unixfs } = entries[i];
 
                 if (unixfs?.data) {
-                    const buffer = unixfs.data.toString(); // Buffer.from(unixfs.data);
-                    yield* put(
-                        update({
-                            contentId: cid.toString(),
-                            data: buffer, //.toString('base64'),
-                            type: IPFSDataType.File,
-                        }),
-                    );
+                    if (!content) {
+                        yield* put(
+                            create({
+                                contentId: cid.toString(),
+                                data: unixfs.data,
+                                type: IPFSDataType.File,
+                            }),
+                        );
+                    } else {
+                        yield* put(
+                            update({
+                                contentId: cid.toString(),
+                                data: unixfs.data,
+                                type: IPFSDataType.File,
+                            }),
+                        );
+                    }
                 }
             }
         }

@@ -33,10 +33,12 @@ export function* get(action: GetAction) {
         for (let i = 0; i < entries.length; i++) {
             const { cid, unixfs } = entries[i];
             const content = yield* select(selectByIdSingle, cid.toString());
-            if (!content)
-                yield* put(create({ contentId: cid.toString(), data: unixfs?.data, type: IPFSDataType.File }));
-            else if (!content?.data)
-                yield* put(update({ contentId: cid.toString(), data: unixfs?.data, type: IPFSDataType.File }));
+            if (unixfs?.data) {
+                if (!content)
+                    yield* put(create({ contentId: cid.toString(), data: unixfs.data, type: IPFSDataType.File }));
+                else if (!content?.data)
+                    yield* put(update({ contentId: cid.toString(), data: unixfs.data, type: IPFSDataType.File }));
+            }
         }
     } catch (error) {
         yield* put(

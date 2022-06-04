@@ -21,7 +21,7 @@ export interface Ipfs extends IpfsId {
     /** Links by Name */
     readonly linksByName?: { [k: string]: Partial<PBLink> };
     /** Decoded data */
-    readonly data?: any;
+    readonly data?: Uint8Array | any;
     /** Type of data */
     readonly type?: IPFSDataType;
 }

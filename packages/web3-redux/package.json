@@ -68,6 +68,7 @@
     "ipfs-unixfs-exporter": "^7.0.11",
     "ipfs-unixfs-importer": "^9.0.10",
     "iso-url": "^1.2.1",
+    "js-base64": "^3.7.2",
     "lodash": "^4.17.21",
     "multiformats": "^9.6.5",
     "re-reselect": "^4.0.0",

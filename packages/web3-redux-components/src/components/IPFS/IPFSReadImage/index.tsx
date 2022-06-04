@@ -1,0 +1,31 @@
+import { Image } from '@chakra-ui/react';
+import { Ipfs } from '@owlprotocol/web3-redux';
+import { useMemo } from 'react';
+import { Base64 } from 'js-base64';
+
+export interface Props {
+    cid: string | undefined;
+    mimeType?: 'image/png';
+    alt?: string;
+}
+
+export const IPFSReadImage = ({ cid, mimeType = 'image/png', alt = 'Loading...' }: Props) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { data } = Ipfs.useCat(cid);
+    const dataUrl = useMemo(() => {
+        if (data) {
+            const data64 = Base64.fromUint8Array(data);
+            const url = `data:${mimeType};base64,${data64}`;
+
+            return url;
+        }
+    }, [data, mimeType]);
+
+    return (
+        <>
+            <Image src={dataUrl} alt={alt} />
+        </>
+    );
+};
+
+export default IPFSReadImage;

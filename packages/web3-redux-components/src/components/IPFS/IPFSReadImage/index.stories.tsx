@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ipfsHashdArgType, mimeTypeArgType } from '../../../test/storybookArgs';
 import IPFSReadImage from '.';
 
 export default {
@@ -9,6 +10,10 @@ export default {
 const Template: ComponentStory<typeof IPFSReadImage> = (args: any) => <IPFSReadImage {...args} />;
 export const Main = Template.bind({});
 Main.args = {
-    cid: 'QmNwbd7ctEhGpVkP8nZvBBQfiNeFKRdxftJAxxEdkUKLcQ',
+    cid: ipfsHashdArgType.options[0],
+    mimeType: mimeTypeArgType.options[0],
 };
-Main.argTypes = {};
+Main.argTypes = {
+    cid: ipfsHashdArgType,
+    mimeType: mimeTypeArgType,
+};

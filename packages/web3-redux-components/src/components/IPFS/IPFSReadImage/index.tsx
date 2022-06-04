@@ -3,9 +3,10 @@ import { Ipfs } from '@owlprotocol/web3-redux';
 import { useMemo } from 'react';
 import { Base64 } from 'js-base64';
 
+//https://www.iana.org/assignments/media-types/media-types.xhtml#image
 export interface Props {
     cid: string | undefined;
-    mimeType?: 'image/png';
+    mimeType?: 'image/png' | 'image/jpeg' | 'image/svg+xml' | 'image/gif' | string;
     alt?: string;
 }
 

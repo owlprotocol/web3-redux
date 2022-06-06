@@ -7,7 +7,12 @@ export interface Props {
     assetPreviewSrc?: string;
 }
 
-const NFTItemCard = ({ itemName, tokenName, generateTime = 1, assetPreviewSrc }: Props) => {
+const NFTItemCard = ({
+    itemName,
+    tokenName,
+    generateTime = 1,
+    assetPreviewSrc = 'http://placehold.jp/228x196.png',
+}: Props) => {
     const { themes } = useTheme();
 
     return (

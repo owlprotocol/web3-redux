@@ -1,5 +1,5 @@
 import { useTheme, Box, Image, Flex } from '@chakra-ui/react';
-import { Icon } from '@owlprotocol/web3-redux-components';
+import Icon from '../Icon';
 export interface Props {
     itemName?: string;
     tokenName?: string;

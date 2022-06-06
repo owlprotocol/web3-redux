@@ -68,6 +68,7 @@ import { ReactComponent as HeartActive } from './functions/Heart.active.svg';
 import { ReactComponent as Copy } from './functions/copy.svg';
 import { ReactComponent as Pencil } from './functions/pencil.svg';
 import { ReactComponent as Search } from './functions/search.svg';
+import { ReactComponent as AddRounded } from './functions/add-rounded.svg';
 
 // Signs
 import { ReactComponent as ExclamationMark } from './signs/ExclamationMark.svg';
@@ -131,6 +132,7 @@ export const ICONS = {
     QRSelected: <QRSelected />,
     Clock: <Clock />,
     DNA: <DNA />,
+    AddRounded: <AddRounded />,
 };
 
 // @ts-ignore

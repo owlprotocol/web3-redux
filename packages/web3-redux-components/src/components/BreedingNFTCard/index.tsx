@@ -1,23 +1,53 @@
-import { useTheme, Box, HStack } from '@chakra-ui/react';
-import { FileUploadImage } from '../FileUpload';
+import { useTheme, Box, Flex, HStack, Image, CloseButton } from '@chakra-ui/react';
 import Icon from '../Icon';
 
 export interface PresenterProps {
     itemName?: string;
     generation?: string;
     generateTime?: number;
+    addAssetHandler?: any;
+    assetPreviewSrc?: string | undefined;
+    removeAssetHandler?: any;
 }
 
-export const BreedingNFTCard = ({ itemName = 'NFT Name', generation, generateTime = 1 }: PresenterProps) => {
+export const BreedingNFTCard = ({
+    itemName = 'NFT Name',
+    generation,
+    generateTime = 1,
+    addAssetHandler,
+    assetPreviewSrc,
+    removeAssetHandler,
+}: PresenterProps) => {
     const { themes } = useTheme();
 
     return (
         <Box bg={themes.color5} p={'16px 16px 12px 16px'} borderRadius={12} w={'100%'} maxW={264} boxShadow={'md'}>
             <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'} overflow={'hidden'}>
-                <FileUploadImage
-                    accept={'image/*'}
-                    buttonStyle={{ bg: 'transparent', w: '100%', borderRadius: 0, fontSize: 14 }}
-                />
+                {assetPreviewSrc ? (
+                    <Box position={'relative'}>
+                        <CloseButton
+                            position={'absolute'}
+                            zIndex={2}
+                            right={0}
+                            m={2}
+                            bg={themes.color6}
+                            borderRadius={50}
+                            boxSize={7}
+                            onClick={removeAssetHandler}
+                        />
+                        <Image src={assetPreviewSrc} w={'100%'} />
+                    </Box>
+                ) : (
+                    <Flex
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                        h={'100%'}
+                        onClick={addAssetHandler}
+                        cursor={'pointer'}
+                    >
+                        <Icon icon="AddRounded" size={40} />
+                    </Flex>
+                )}
             </Box>
             <Box
                 color={themes.color7}

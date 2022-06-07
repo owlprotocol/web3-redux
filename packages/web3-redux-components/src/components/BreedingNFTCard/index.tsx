@@ -13,7 +13,7 @@ export interface PresenterProps {
 export const BreedingNFTCard = ({
     itemName = 'NFT Name',
     generation,
-    generateTime = 1,
+    generateTime,
     addAssetHandler,
     assetPreviewSrc,
     removeAssetHandler,
@@ -25,16 +25,18 @@ export const BreedingNFTCard = ({
             <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'} overflow={'hidden'}>
                 {assetPreviewSrc ? (
                     <Box position={'relative'}>
-                        <CloseButton
-                            position={'absolute'}
-                            zIndex={2}
-                            right={0}
-                            m={2}
-                            bg={themes.color6}
-                            borderRadius={50}
-                            boxSize={7}
-                            onClick={removeAssetHandler}
-                        />
+                        {removeAssetHandler && (
+                            <CloseButton
+                                position={'absolute'}
+                                zIndex={2}
+                                right={0}
+                                m={2}
+                                bg={themes.color6}
+                                borderRadius={50}
+                                boxSize={7}
+                                onClick={removeAssetHandler}
+                            />
+                        )}
                         <Image src={assetPreviewSrc} w={'100%'} />
                     </Box>
                 ) : (
@@ -65,10 +67,18 @@ export const BreedingNFTCard = ({
             </Box>
 
             <HStack justifyContent="center" fontSize={12} color={themes.color9}>
-                <Icon icon="DNA" size={18} />
-                <Box>Gen {generation}</Box>
-                <Icon icon="Clock" size={18} />
-                <Box>Very quick ({Math.floor(generateTime / 60)})m</Box>
+                {generation && (
+                    <>
+                        <Icon icon="DNA" size={18} />
+                        <Box>Gen {generation}</Box>
+                    </>
+                )}
+                {generateTime && (
+                    <>
+                        <Icon icon="Clock" size={18} />
+                        <Box>Very quick ({Math.floor(generateTime / 60)})m</Box>
+                    </>
+                )}
             </HStack>
         </Box>
     );

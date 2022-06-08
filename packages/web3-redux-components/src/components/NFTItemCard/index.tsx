@@ -1,18 +1,18 @@
 import { useTheme, Box, Image, Flex } from '@chakra-ui/react';
 import Icon from '../Icon';
-export interface Props {
+export interface NFTItemCardProps {
     itemName?: string;
     tokenName?: string;
     generateTime?: number;
     assetPreviewSrc?: string;
 }
 
-const NFTItemCard = ({
+export const NFTItemCard = ({
     itemName,
     tokenName,
     generateTime = 1,
     assetPreviewSrc = 'http://placehold.jp/228x196.png',
-}: Props) => {
+}: NFTItemCardProps) => {
     const { themes } = useTheme();
 
     return (

@@ -60,7 +60,7 @@ export const NFTInstancePresenter = ({
                         w={'100%'}
                         h={'196px'}
                         alt={imageAlt}
-                        objectFit={'contain'}
+                        objectFit={'scale-down'}
                     />
                 )}
             </Box>

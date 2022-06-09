@@ -37,7 +37,7 @@ export const BreedingNFTCard = ({
                                 onClick={removeAssetHandler}
                             />
                         )}
-                        <Image src={assetPreviewSrc} w={'100%'} />
+                        <Image src={assetPreviewSrc} w={'100%'} objectFit={'scale-down'} />
                     </Box>
                 ) : (
                     <Flex

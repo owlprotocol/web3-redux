@@ -25,3 +25,7 @@ export * as HOC from './hoc';
 export * as Constants from './constants';
 export { default as Theme } from './theme';
 export * as StorybookArgs from './test/storybookArgs';
+export { default as ERC1155Instance } from './components/SingleNFTInstance/ERC1155Instance';
+export { default as ERC721Instance } from './components/SingleNFTInstance/ERC1155Instance';
+export { default as ERC721ItemCard } from './components/SingleNFTInstance/ERC721ItemCard';
+export { default as ERC1155ItemCard } from './components/SingleNFTInstance/ERC1155ItemCard';

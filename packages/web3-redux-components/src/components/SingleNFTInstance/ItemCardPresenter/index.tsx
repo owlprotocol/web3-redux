@@ -1,5 +1,4 @@
 import { useTheme, Box, Image, Flex } from '@chakra-ui/react';
-import Icon from '../../Icon';
 export interface NFTItemCardProps {
     itemName?: string;
     tokenName?: string;

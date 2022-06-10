@@ -10,11 +10,11 @@ export interface HookProps {
     assetPreviewSrc: string;
 }
 export const useERC721ItemCard = ({ networkId, address, tokenId }: HookProps) => {
-    const { ownerOf, metadata } = Contract.useERC721(networkId, address, tokenId, {
+    const { metadata } = Contract.useERC721(networkId, address, tokenId, {
         metadata: true,
     });
     return {
-        itemName: metadata?.name, 
+        itemName: metadata?.name,
         assetPreviewSrc: metadata?.image,
     };
 };
@@ -28,4 +28,3 @@ ERC721ItemCard.displayName = 'ERC721ItemCard';
 
 export { ERC721ItemCard };
 export default ERC721ItemCard;
-

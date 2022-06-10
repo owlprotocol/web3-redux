@@ -15,7 +15,7 @@ export const useERC1155ItemCard = ({ networkId, address, tokenId }: HookProps) =
         metadata: true,
     });
     return {
-        itemName: metadata?.name, 
+        itemName: metadata?.name,
         assetPreviewSrc: metadata?.image,
     };
 };

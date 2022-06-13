@@ -1,10 +1,10 @@
 import { useTheme, Box, IconButton, HStack, Image } from '@chakra-ui/react';
-import Icon from '../Icon';
-import { shortenHash } from '../../utils';
-import NetworkIcon from '../NetworkIcon';
-import { FileUploadImage } from '../FileUpload';
+import Icon from '../../Icon';
+import { shortenHash } from '../../../utils';
+import NetworkIcon from '../../NetworkIcon';
+import { FileUploadImage } from '../../FileUpload';
 
-export interface PresenterProps {
+export interface Props {
     networkId: string;
     itemName: string;
     price: string;
@@ -22,7 +22,7 @@ export interface PresenterProps {
     editable?: boolean | undefined;
 }
 
-export const NFTInstancePresenter = ({
+export const InstancePresenter = ({
     networkId,
     itemName = 'Placeholder',
     ownerOf,
@@ -33,7 +33,7 @@ export const NFTInstancePresenter = ({
     imageSrc = 'http://placehold.jp/228x196.png',
     imageAlt = 'Placeholder',
     editable = false,
-}: PresenterProps) => {
+}: Props) => {
     const { themes } = useTheme();
 
     return (
@@ -112,4 +112,4 @@ export const NFTInstancePresenter = ({
     );
 };
 
-export default NFTInstancePresenter;
+export default InstancePresenter;

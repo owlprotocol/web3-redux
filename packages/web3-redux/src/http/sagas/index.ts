@@ -1,10 +1,9 @@
-import { all, takeEvery } from 'typed-redux-saga';
-import { httpGet } from './httpGet.js';
-import { HTTP_GET } from '../actions/index.js';
+import { all, spawn } from 'typed-redux-saga';
+import { watchHttpGetSaga } from './httpGet.js';
 
 /** @internal */
 export function* saga() {
-    yield* all([takeEvery(HTTP_GET, httpGet)]);
+    yield* all([spawn(watchHttpGetSaga)]);
 }
 
 export default saga;

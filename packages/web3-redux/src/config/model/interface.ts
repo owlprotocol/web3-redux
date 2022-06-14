@@ -24,6 +24,8 @@ export interface Config {
     readonly _4byteClient?: Axios;
     /* CORS Proxy */
     readonly corsProxy?: string;
+    /* HTTP Client */
+    readonly httpClient?: Axios;
     /* Arbitrary config values */
     readonly [key: string]: any;
 }

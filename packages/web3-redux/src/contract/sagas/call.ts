@@ -1,4 +1,4 @@
-import { put, call, select, actionChannel, take } from 'typed-redux-saga';
+import { put, call, select } from 'typed-redux-saga';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { validateEthCall } from '../../ethcall/model/index.js';
 import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions/index.js';
@@ -81,16 +81,6 @@ export function* callSaga(action: CallAction) {
 }
 
 export function* watchCallSaga() {
-    // 1- Create a channel for request actions
-    /*
-    const requestChan = yield actionChannel(CALL);
-    while (true) {
-        // 2- take from the channel
-        const action = (yield take(requestChan)) as unknown as CallAction;
-        // 3- Note that we're using a blocking call
-        yield call(callSaga, action);
-    }
-    */
     yield takeEveryBuffered(CALL, callSaga, {
         bufferSize: 10,
         bufferBatchTimeout: 200,

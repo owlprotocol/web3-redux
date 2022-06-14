@@ -127,10 +127,10 @@ export interface State {
         itemsById: { [id: string]: any };
         indexes: {
             fromContractEventId: {
-                [contractEventId: string]: string[];
+                [contractEventId: string]: number[];
             };
             toContractEventIndexId: {
-                [contractEventIndexId: string]: string[];
+                [contractEventIndexId: string]: number[];
             };
         };
     };

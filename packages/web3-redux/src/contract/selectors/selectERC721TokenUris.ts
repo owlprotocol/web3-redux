@@ -13,24 +13,30 @@ export const selectERC721TokenUris = (state: any, networkId: string | undefined,
     if (tokenIds.length == 0) return [];
 
     //Programmatic method - baseURI + tokenId
-    const tokenId0 = tokenIds[0];
-    const tokenUri0 = selectContractCall(state, { networkId, address: addressChecksum }, 'tokenURI', {
-        args: [tokenId0],
-    }) as string | undefined;
+    //Find first tokenId with defined uri
+    let tokenId0: string;
+    let tokenUri0: string | undefined;
+    for (const tokenId of tokenIds) {
+        tokenId0 = tokenId;
+        tokenUri0 = selectContractCall(state, { networkId, address: addressChecksum }, 'tokenURI', {
+            args: [tokenId0],
+        }) as string | undefined;
+        if (tokenUri0) break;
+    }
 
     if (tokenUri0) {
         //{id} substring
         if (tokenUri0.search('{id}') >= 0) {
-            return tokenIds.map((tokenId) => tokenUri0.replaceAll('{id}', tokenId));
+            return tokenIds.map((tokenId) => tokenUri0!.replaceAll('{id}', tokenId));
         }
 
         //pattern match url splitting
         const tokenUri0Split = tokenUri0.split('/');
         const tokenUri0BaseUri = tokenUri0Split.slice(0, tokenUri0Split.length - 1).join('/');
         const tokenUri0EndPath = tokenUri0Split[tokenUri0Split.length - 1];
-        if (tokenUri0EndPath === `${tokenId0}`) {
+        if (tokenUri0EndPath === `${tokenId0!}`) {
             return tokenIds.map((tokenId) => `${tokenUri0BaseUri}/${tokenId}`);
-        } else if (tokenUri0EndPath === `${tokenId0}.json`) {
+        } else if (tokenUri0EndPath === `${tokenId0!}.json`) {
             return tokenIds.map((tokenId) => `${tokenUri0BaseUri}/${tokenId}.json`);
         }
     }

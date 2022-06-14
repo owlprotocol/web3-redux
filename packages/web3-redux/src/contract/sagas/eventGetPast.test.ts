@@ -91,6 +91,9 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
                 return { ...e, indexIds: [e.indexIds![1], e.indexIds![2]] };
             });
             assert.deepEqual(events1Cleaned, expectedEvents);
+            console.debug(store.getState().web3Redux.ContractEventIndex);
+            console.debug(store.getState().web3Redux.ContractEventIndexIds);
+            console.debug(store.getState().web3Redux.ContractEventIndexIds.indexes);
         });
 
         it('(networkId,address,eventName,max:1)', async () => {

@@ -7,6 +7,7 @@ import { create as createError } from '../../error/actions/index.js';
 import { getId } from '../model/index.js';
 import { CallAction, CALL } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
+import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 
@@ -79,12 +80,9 @@ export function* callSaga(action: CallAction) {
     }
 }
 
-//https://redux-saga.js.org/docs/advanced/Channels/
-const batch = 5;
-//TODO: Batch requests, currently all sequential
 export function* watchCallSaga() {
     // 1- Create a channel for request actions
-    //@ts-expect-error
+    /*
     const requestChan = yield actionChannel(CALL);
     while (true) {
         // 2- take from the channel
@@ -92,6 +90,12 @@ export function* watchCallSaga() {
         // 3- Note that we're using a blocking call
         yield call(callSaga, action);
     }
+    */
+    yield takeEveryBuffered(CALL, callSaga, {
+        bufferSize: 10,
+        bufferBatchTimeout: 200,
+        bufferCompletionTimeout: 1000,
+    });
 }
 
 export default watchCallSaga;

@@ -16,7 +16,11 @@ import { create as createNetwork } from '../../network/index.js';
 import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
 
 import { selectContractEvents } from '../selectors/index.js';
-import { create as createAction, eventGetPast as eventGetPastAction } from '../actions/index.js';
+import {
+    create as createAction,
+    eventGetPast as eventGetPastAction,
+    eventGetPastRaw as eventGetPastRawAction,
+} from '../actions/index.js';
 
 describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -60,7 +64,14 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
         it('(networkId,address,eventName)', async () => {
             const expectedEvents: any[] = [];
             web3Contract.events['NewValue']().on('data', (event: any) => {
-                expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
+                expectedEvents.push(
+                    validatedContractEvent({
+                        networkId,
+                        address,
+                        name: 'NewValue',
+                        ...event,
+                    }),
+                );
             });
 
             await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
@@ -76,13 +87,23 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
             await sleep(1000);
 
             const events1 = selectContractEvents(store.getState(), { networkId, address }, 'NewValue');
-            assert.deepEqual(events1, expectedEvents);
+            const events1Cleaned = events1?.map((e) => {
+                return { ...e, indexIds: [e.indexIds![1], e.indexIds![2]] };
+            });
+            assert.deepEqual(events1Cleaned, expectedEvents);
         });
 
         it('(networkId,address,eventName,max:1)', async () => {
             let expectedEvents: any[] = [];
             web3Contract.events['NewValue']().on('data', (event: any) => {
-                expectedEvents.push(validatedContractEvent({ networkId, address, name: 'NewValue', ...event }));
+                expectedEvents.push(
+                    validatedContractEvent({
+                        networkId,
+                        address,
+                        name: 'NewValue',
+                        ...event,
+                    }),
+                );
             });
 
             await mineBlocks(web3, 5);
@@ -96,7 +117,7 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
                     address,
                     eventName: 'NewValue',
                     max: 1,
-                    blockBatch: 1
+                    blockBatch: 1,
                 }),
             );
 
@@ -104,9 +125,55 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
 
             assert.equal(expectedEvents.length, 2);
             //only last emitted event, selected
-            expectedEvents = [expectedEvents[expectedEvents.length - 1]]
+            expectedEvents = [expectedEvents[expectedEvents.length - 1]];
             const events1 = selectContractEvents(store.getState(), { networkId, address }, 'NewValue');
-            assert.deepEqual(events1, expectedEvents);
+            const events1Cleaned = events1?.map((e) => {
+                return { ...e, indexIds: [e.indexIds![1], e.indexIds![2]] };
+            });
+            assert.deepEqual(events1Cleaned, expectedEvents);
+        });
+
+        it('(networkId,address,eventName) - cache error', async () => {
+            const expectedEvents: any[] = [];
+            web3Contract.events['NewValue']().on('data', (event: any) => {
+                expectedEvents.push(
+                    validatedContractEvent({
+                        networkId,
+                        address,
+                        name: 'NewValue',
+                        indexIds: [],
+                        ...event,
+                    }),
+                );
+            });
+
+            await web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+
+            store.dispatch(
+                eventGetPastAction({
+                    networkId,
+                    address,
+                    eventName: 'NewValue',
+                }),
+            );
+
+            await sleep(1000);
+
+            store.dispatch(
+                eventGetPastAction({
+                    networkId,
+                    address,
+                    eventName: 'NewValue',
+                }),
+            );
+
+            await sleep(1000);
+
+            const events1 = selectContractEvents(store.getState(), { networkId, address }, 'NewValue');
+            const events1Cleaned = events1?.map((e) => {
+                return { ...e, indexIds: [e.indexIds![1], e.indexIds![2]] };
+            });
+            assert.deepEqual(events1Cleaned, expectedEvents);
         });
     });
 });

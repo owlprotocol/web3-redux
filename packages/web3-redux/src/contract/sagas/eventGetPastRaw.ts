@@ -9,14 +9,15 @@ import { getId } from '../model/index.js';
 import { EventGetPastRawAction, EVENT_GET_PAST_RAW } from '../actions/eventGetPastRaw.js';
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 import selectContractEvents from '../selectors/selectContractEventsById.js';
+import selectEventsByIndex from '../../contracteventindex/selectors/selectEvents.js';
 
 const EVENT_GET_PAST_RAW_ERROR = `${EVENT_GET_PAST_RAW}/ERROR`;
 
 export function* eventGetPastRaw(action: EventGetPastRawAction) {
     try {
         const { payload } = action;
-        const { networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
-        const id = getId({ networkId, address });
+        const { id, networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
+        const contractId = getId({ networkId, address });
 
         const network = yield* call(networkExists, networkId);
         if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
@@ -24,10 +25,19 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
 
         //Contract
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+        if (!web3Contract) throw new Error(`Contract ${contractId} has no web3 contract`);
 
+        const indexedEvents = (yield* select(selectEventsByIndex, id)) ?? [];
         const existingEvents = (yield* select(selectContractEvents, { networkId, address }, eventName, filter)) ?? [];
-        if (existingEvents.length < max) {
+        if (indexedEvents.length > 0) {
+            throw new Error(`Cached ${id} reached! indexedEvents.length >= 0`);
+        } else if (existingEvents.length >= max) {
+            throw new Error(
+                `Max ${networkId}-${address} ${eventName} ${JSON.stringify(
+                    filter,
+                )} reached! existingEvents.length >= ${max}`,
+            );
+        } else {
             //blocking call, choose batch size accordingly
             //@ts-ignore
             const events: EventData[] = yield* call([web3Contract, web3Contract.getPastEvents], eventName, {
@@ -43,13 +53,12 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
                         networkId,
                         address,
                         name: eventName,
+                        indexIds: [id],
                     });
                 });
                 const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
                 yield* put(batch);
             }
-        } else {
-            throw new Error(`Max ${networkId}-${address} ${eventName} reached! existingEvents.length >= ${max}`);
         }
     } catch (error) {
         yield* put({

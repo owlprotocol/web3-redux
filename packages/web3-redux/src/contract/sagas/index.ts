@@ -1,5 +1,5 @@
 import { takeEvery, all, spawn } from 'typed-redux-saga';
-import { watchCallSaga } from './call.js';
+import watchCallSaga from './call.js';
 import { callBatched } from './callBatched.js';
 import { eventGetPast } from './eventGetPast.js';
 import { eventSubscribeLoop } from './eventSubscribe.js';
@@ -10,8 +10,8 @@ import { getNonce } from './getNonce.js';
 import { fetchTransactions } from './fetchTransactions.js';
 import { getCode } from './getCode.js';
 import { getEns } from './getEns.js';
+import watchEventGetPastRaw from './eventGetPastRaw.js';
 import {
-    CALL,
     CALL_BATCHED,
     SEND,
     EVENT_GET_PAST,
@@ -28,9 +28,10 @@ import {
 export function* saga() {
     yield* all([
         spawn(watchCallSaga),
+        takeEvery(EVENT_GET_PAST, eventGetPast),
+        spawn(watchEventGetPastRaw),
         takeEvery(CALL_BATCHED, callBatched),
         takeEvery(SEND, send),
-        takeEvery(EVENT_GET_PAST, eventGetPast),
         spawn(eventSubscribeLoop),
         takeEvery(FETCH_ABI, fetchAbi),
         takeEvery(GET_BALANCE, getBalance),

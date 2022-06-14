@@ -6,6 +6,12 @@ import { CALL, call, CallAction, isCallAction } from './call.js';
 import { CALL_BATCHED, callBatched, CallBatchedAction, isCallBatchedAction } from './callBatched.js';
 import { SEND, send, SendAction, isSendAction } from './send.js';
 import { EVENT_GET_PAST, eventGetPast, EventGetPastAction, isEventGetPastAction } from './eventGetPast.js';
+import {
+    EVENT_GET_PAST_RAW,
+    eventGetPastRaw,
+    EventGetPastRawAction,
+    isEventGetPastRawAction,
+} from './eventGetPastRaw.js';
 import { EVENT_SUBSCRIBE, eventSubscribe, EventSubscribeAction, isEventSubscribeAction } from './eventSubscribe.js';
 import {
     EVENT_UNSUBSCRIBE,
@@ -43,6 +49,7 @@ export type SagaAction =
     | CallBatchedAction
     | SendAction
     | EventGetPastAction
+    | EventGetPastRawAction
     | EventSubscribeAction
     | EventUnsubscribeAction
     | FetchAbiAction
@@ -60,6 +67,7 @@ export function isSagaAction(action: { type: string }): action is SagaAction {
         isCallBatchedAction(action) ||
         isSendAction(action) ||
         isEventGetPastAction(action) ||
+        isEventGetPastRawAction(action) ||
         isEventSubscribeAction(action) ||
         isEventUnsubscribeAction(action) ||
         isFetchAbiAction(action) ||
@@ -88,6 +96,7 @@ export type {
     CallBatchedAction,
     SendAction,
     EventGetPastAction,
+    EventGetPastRawAction,
     EventSubscribeAction,
     EventUnsubscribeAction,
     FetchAbiAction,
@@ -123,6 +132,9 @@ export {
     EVENT_GET_PAST,
     eventGetPast,
     isEventGetPastAction,
+    EVENT_GET_PAST_RAW,
+    eventGetPastRaw,
+    isEventGetPastRawAction,
     EVENT_SUBSCRIBE,
     eventSubscribe,
     isEventSubscribeAction,

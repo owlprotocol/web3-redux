@@ -39,7 +39,7 @@ export const getPastLogs = createAction(GET_PAST_LOGS, (payload: GetPastLogsActi
         if (Array.isArray(payload.address)) {
             address = map(payload.address, toChecksumAddress);
         } else {
-            address = toChecksumAddress(payload.address);
+            address = toChecksumAddress(payload.address.slice());
         }
     }
 

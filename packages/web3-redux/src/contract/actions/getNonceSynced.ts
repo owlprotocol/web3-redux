@@ -14,7 +14,7 @@ export interface GetNonceSyncedActionInput extends ContractId {
  */
 export const getNonceSynced = (payload: GetNonceSyncedActionInput) => {
     const { networkId } = payload;
-    const address = toChecksumAddress(payload.address);
+    const address = toChecksumAddress(payload.address.slice());
     const getNonceAction = getNonce({ networkId, address });
 
     const sync = createSyncForActions(networkId, [getNonceAction], payload.sync, address);

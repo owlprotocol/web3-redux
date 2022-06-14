@@ -67,18 +67,17 @@ export function getOptionsId(from: string | undefined, value: string | undefined
     if ((!from || from == ADDRESS_0) && (!value || value == '0')) return undefined;
 
     const options: any = {};
-    if (from) options.from = toChecksumAddress(from);
+    if (from) options.from = toChecksumAddress(from.slice());
     if (value) options.value = value;
 
     return JSON.stringify(value);
 }
 
-
 /** @internal */
 export function validate(item: ContractSend): ContractSend {
     const uuid = item.uuid ?? uuidv4();
-    const addressChecksum = toChecksumAddress(item.address);
-    const fromCheckSum = toChecksumAddress(item.from);
+    const addressChecksum = toChecksumAddress(item.address.slice());
+    const fromCheckSum = toChecksumAddress(item.from.slice());
     const contractId = getContractId(item);
     const transactionId = item.transactionHash
         ? getTransactionId({ hash: item.transactionHash, networkId: item.networkId })

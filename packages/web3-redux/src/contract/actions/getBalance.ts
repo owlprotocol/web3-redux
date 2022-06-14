@@ -7,7 +7,7 @@ import { ContractId } from '../model/interface.js';
 export const GET_BALANCE = `${name}/GET_BALANCE`;
 /** @category Actions */
 export const getBalance = createAction(GET_BALANCE, (payload: ContractId) => {
-    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
+    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address.slice()) } };
 });
 /** @internal */
 export type GetBalanceAction = ReturnType<typeof getBalance>;

@@ -1,6 +1,6 @@
 import { Contract } from '@owlprotocol/web3-redux';
 import composeHooks from 'react-hooks-compose';
-import NFTPresenter from '../index';
+import InstancePresenter from '../InstancePresenter';
 
 export interface HookProps {
     networkId: string;
@@ -12,7 +12,6 @@ export const useERC721Instance = ({ networkId, address, tokenId }: HookProps) =>
         metadata: true,
     });
     return {
-        networkId,
         ownerOf,
         imageSrc: metadata?.image,
         itemName: metadata?.name,
@@ -21,7 +20,7 @@ export const useERC721Instance = ({ networkId, address, tokenId }: HookProps) =>
 
 const ERC721Instance = composeHooks((props: HookProps) => ({
     useERC721Instance: () => useERC721Instance(props),
-}))(NFTPresenter) as (props: HookProps) => JSX.Element;
+}))(InstancePresenter) as (props: HookProps) => JSX.Element;
 
 //@ts-expect-error
 ERC721Instance.displayName = 'ERC721Instance';

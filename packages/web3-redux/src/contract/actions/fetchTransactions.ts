@@ -19,7 +19,7 @@ export interface FetchTransactionsPayload extends FetchTransactionOptions {
 export const FETCH_TRANSACTIONS = `${name}/FETCH_TRANSACTIONS`;
 /** @category Actions */
 export const fetchTransactions = createAction(FETCH_TRANSACTIONS, (payload: FetchTransactionsPayload) => {
-    return { payload: { ...payload, address: toChecksumAddress(payload.address) } };
+    return { payload: { ...payload, address: toChecksumAddress(payload.address.slice()) } };
 });
 /** @internal */
 export type FetchTransactionsAction = ReturnType<typeof fetchTransactions>;

@@ -7,7 +7,7 @@ import { ContractId } from '../model/interface.js';
 export const GET_NONCE = `${name}/GET_NONCE`;
 /** @category Actions */
 export const getNonce = createAction(GET_NONCE, (payload: ContractId) => {
-    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
+    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address.slice()) } };
 });
 /** @internal */
 export type GetNonceAction = ReturnType<typeof getNonce>;

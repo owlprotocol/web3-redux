@@ -1,13 +1,13 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { networkIdArgType } from '../../test/storybookArgs';
-import NFTInstancePresenter from '.';
+import { networkIdArgType } from '../../../test/storybookArgs';
+import InstancePresenter from '.';
 
 export default {
     title: 'NFT/NFTInstancePresenter',
-    component: NFTInstancePresenter,
-} as ComponentMeta<typeof NFTInstancePresenter>;
+    component: InstancePresenter,
+} as ComponentMeta<typeof InstancePresenter>;
 
-const Template: ComponentStory<typeof NFTInstancePresenter> = (args: any) => <NFTInstancePresenter {...args} />;
+const Template: ComponentStory<typeof InstancePresenter> = (args: any) => <InstancePresenter {...args} />;
 
 export const Main = Template.bind({});
 

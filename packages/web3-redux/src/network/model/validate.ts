@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { Network } from './interface.js';
 import { defaultNetworks } from '../defaults.js';
+import { fromRpc } from '../../utils/web3/index.js';
 /**
  * Validate network with default values.
  * @param network
@@ -18,12 +19,7 @@ export function validate(network: Network): Network {
 
     let web3 = network.web3;
     if (!web3 && web3Rpc) {
-        web3 = new Web3(web3Rpc);
-        //Silence ENS Error
-        //@ts-ignore
-        web3.eth.ens._lastSyncCheck = Number.MAX_SAFE_INTEGER;
-        //@ts-ignore
-        web3.eth.ens.registryAddress = '0x0000000000000000000000000000000000000000';
+        web3 = fromRpc(web3Rpc);
     }
 
     const validatedNetwork = { ...network };

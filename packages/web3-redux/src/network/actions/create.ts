@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import Web3 from 'web3';
+import { fromRpc } from '../../utils/web3/index.js';
 import { name } from '../common.js';
 import { Network, validate } from '../model/index.js';
 
@@ -8,7 +8,7 @@ export const CREATE = `${name}/CREATE`;
 /** @category Actions */
 export const create = createAction(CREATE, (payload: Network) => {
     const copy = { ...payload };
-    if (payload.web3Rpc && !payload.web3) copy.web3 = new Web3(payload.web3Rpc); //Overwrite web3
+    if (payload.web3Rpc && !payload.web3) copy.web3 = fromRpc(payload.web3Rpc); //Overwrite web3
 
     return { payload: validate(copy) };
 });

@@ -7,7 +7,7 @@ import { ContractId } from '../model/interface.js';
 export const FETCH_ABI = `${name}/FETCH_ABI`;
 /** @category Actions */
 export const fetchAbi = createAction(FETCH_ABI, (payload: ContractId) => {
-    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
+    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address.slice()) } };
 });
 /** @internal */
 export type FetchAbiAction = ReturnType<typeof fetchAbi>;

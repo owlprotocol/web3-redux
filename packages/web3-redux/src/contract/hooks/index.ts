@@ -12,3 +12,5 @@ export { useERC165, useSupportsInterface } from './useSupportsInterface.js';
 export { useERC20, useToken } from './useERC20.js';
 export { useERC721, useNFT } from './useERC721.js';
 export { useERC1155, useMultiToken } from './useERC1155.js';
+export { useERC721TokenIds } from './useERC721TokenIds.js';
+export { useERC1155TokenIds } from './useERC1155TokenIds.js';

@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js'
+import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { name } from '../common.js';
 import { EthCallId } from '../model/interface.js';
 
@@ -10,8 +10,8 @@ export const remove = createAction(REMOVE, (payload: EthCallId) => {
     return {
         payload: {
             ...payload,
-            to: toChecksumAddress(payload.to),
-            from: payload.from ? toChecksumAddress(payload.from) : undefined,
+            to: toChecksumAddress(payload.to.slice()),
+            from: payload.from ? toChecksumAddress(payload.from.slice()) : undefined,
         },
     };
 });

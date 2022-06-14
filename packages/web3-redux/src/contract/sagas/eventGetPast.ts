@@ -52,31 +52,48 @@ export function* eventGetPast(action: EventGetPastAction) {
             currToBlock = toBlock;
         }
 
-        let currFromBlock = Math.max(currToBlock - blockBatch - 1, 0); //lower-bound fromBlock=0
+        let currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock); //lower-bound fromBlock=0
 
-        while (currFromBlock >= 0 && (eventCount < max || !max)) {
-            //blocking call, choose batch size accordingly
-            //@ts-ignore
-            const events: EventData[] = yield* call([web3Contract, web3Contract.getPastEvents], eventName, { ...filter, fromBlock: currFromBlock, toBlock: currToBlock });
-            //create events
-            if (events.length > 0) {
-                const actions = events.map((event: any) => {
-                    return createEvent({
-                        ...event,
-                        networkId,
-                        address,
-                        name: eventName,
-                    });
+        while (currFromBlock >= fromBlock && (eventCount < max || !max)) {
+            console.debug(
+                `${networkId}-${address}.${eventName} ${currFromBlock}-${currToBlock} ${JSON.stringify(filter)}`,
+            );
+            try {
+                //blocking call, choose batch size accordingly
+                //@ts-ignore
+                const events: EventData[] = yield* call([web3Contract, web3Contract.getPastEvents], eventName, {
+                    ...filter,
+                    fromBlock: currFromBlock,
+                    toBlock: currToBlock,
                 });
-                const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
+                //create events
+                if (events.length > 0) {
+                    const actions = events.map((event: any) => {
+                        return createEvent({
+                            ...event,
+                            networkId,
+                            address,
+                            name: eventName,
+                        });
+                    });
+                    const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
 
-                yield* put(batch);
+                    yield* put(batch);
+                }
+
+                //Update loop
+                eventCount += events.length;
+                currToBlock = Math.max(currToBlock - blockBatch, currFromBlock);
+                currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock);
+                if (currToBlock === currFromBlock) break;
+            } catch (error) {
+                yield* put({
+                    id: action.meta.uuid,
+                    error: error as Error,
+                    errorMessage: (error as Error).message,
+                    type: EVENT_GET_PAST_ERROR,
+                });
             }
-
-            //Update loop
-            eventCount += events.length;
-            currToBlock = currToBlock - blockBatch
-            currFromBlock = currToBlock - blockBatch - 1
         }
 
         /*
@@ -108,11 +125,11 @@ export function* eventGetPast(action: EventGetPastAction) {
         }
         */
     } catch (error) {
-        console.error(error);
         yield* put({
+            id: action.meta.uuid,
+            error: error as Error,
+            errorMessage: (error as Error).message,
             type: EVENT_GET_PAST_ERROR,
-            error,
-            action,
         });
     }
 }

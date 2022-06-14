@@ -7,7 +7,7 @@ import { ContractId } from '../model/interface.js';
 export const GET_ENS = `${name}/GET_ENS`;
 /** @category Actions */
 export const getEns = createAction(GET_ENS, (payload: ContractId) => {
-    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
+    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address.slice()) } };
 });
 /** @internal */
 export type GetEnsAction = ReturnType<typeof getEns>;

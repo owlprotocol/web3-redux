@@ -1,4 +1,4 @@
-import { toChecksumAddress } from '../../utils/web3-utils/index.js'
+import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { getId as getContractId } from '../../contract/model/interface.js';
 import { combinationAll } from '../../utils/combination.js';
 import { ModelWithId } from '../../types/model.js';
@@ -81,7 +81,7 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     const name = item.name ?? item.event;
     const id = getId(item);
     const networkId = item.networkId;
-    const address = toChecksumAddress(item.address);
+    const address = toChecksumAddress(item.address.slice());
     const contractId = getContractId(item);
 
     //Default we only index named keys, but user can also pass (0,1,2) as argument

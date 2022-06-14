@@ -12,6 +12,7 @@ import { Sync } from './sync/model/index.js';
 import { _4ByteSignature } from './4byte/model/interface.js';
 import { ReduxError } from './error/model/interface.js';
 import { ModelWithId } from './types/model.js';
+import { Http } from './http/model/interface.js';
 
 export interface StateRoot {
     web3Redux: State;
@@ -120,6 +121,11 @@ export interface State {
     Ipfs: {
         items: string[];
         itemsById: { [id: string]: Ipfs };
+    };
+    /** Http Request cache */
+    Http: {
+        items: string[];
+        itemsById: { [id: string]: Http };
     };
     /** Join table for events and indices */
     ContractEventIndexIds: {

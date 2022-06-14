@@ -13,6 +13,7 @@ import IpfsModel from './ipfs/model/orm.js';
 import SyncModel from './sync/model/orm.js';
 import _4ByteModel from './4byte/model/orm.js';
 import ReduxErrorModel from './error/model/orm.js';
+import HttpModel from './http/model/orm.js';
 import { CORS_PROXY, IPFS_URL, _4BYTE_URL } from './environment.js';
 
 //Fix undefined import issue
@@ -38,6 +39,7 @@ export function getOrm(): any {
     orm.register(SyncModel);
     orm.register(_4ByteModel);
     orm.register(ReduxErrorModel);
+    orm.register(HttpModel);
 
     return orm;
 }

@@ -21,6 +21,7 @@ import { Action as IpfsAction, isReducerAction as isIpfsAction } from './ipfs/ac
 import { Action as _4ByteAction, isReducerAction as is4ByteAction } from './4byte/actions/index.js';
 import { Action as SyncAction, isReducerAction as isSyncAction } from './sync/actions/index.js';
 import { Action as ErrorAction, isReducerAction as isErrorAction } from './error/actions/index.js';
+import { Action as HttpAction, isReducerAction as isHttpAction } from './http/actions/index.js';
 
 import networkReducer from './network/reducer.js';
 import blockReducer from './block/reducer.js';
@@ -34,6 +35,7 @@ import ipfsReducer from './ipfs/reducer.js';
 import syncReducer from './sync/reducer.js';
 import _4ByteReducer from './4byte/reducer.js';
 import errorReducer from './error/reducer.js';
+import httpReducer from './http/reducer.js';
 
 import { getOrm, initializeState } from './orm.js';
 import { REDUX_ROOT } from './common.js';
@@ -50,7 +52,8 @@ export type Action =
     | IpfsAction
     | SyncAction
     | _4ByteAction
-    | ErrorAction;
+    | ErrorAction
+    | HttpAction;
 export type Reducer = (state: any, action: any) => any;
 
 export const reducerWeb3ReduxWithOrm = (state: any, action: Action) => {
@@ -68,7 +71,7 @@ export const reducerWeb3ReduxWithOrm = (state: any, action: Action) => {
     else if (isSyncAction(action)) syncReducer(sess, action);
     else if (is4ByteAction(action)) _4ByteReducer(sess, action);
     else if (isErrorAction(action)) errorReducer(sess, action);
-
+    else if (isHttpAction(action)) httpReducer(sess, action);
     return sess.state;
 };
 

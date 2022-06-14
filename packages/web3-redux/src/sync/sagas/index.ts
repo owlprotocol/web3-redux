@@ -2,7 +2,7 @@ import { all } from 'typed-redux-saga';
 import blockSync from './blockSync.js';
 import eventSync from './eventSync.js';
 import transactionSync from './transactionSync.js';
-import takeEveryBatched from '../../utils/takeEveryBatched.js';
+import takeEveryBatched from '../../sagas/takeEveryBatched.js';
 import { CREATE as CREATE_BLOCK, UPDATE as UPDATE_BLOCK } from '../../block/actions/index.js';
 import { CREATE as CREATE_TRANSACTION } from '../../transaction/actions/index.js';
 import { CREATE as CREATE_EVENT } from '../../contractevent/actions/index.js';

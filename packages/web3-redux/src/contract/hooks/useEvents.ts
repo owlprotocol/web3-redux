@@ -16,6 +16,7 @@ export interface UseEventsOptions {
     past?: boolean; //Send event get past action
     sync?: boolean; //Send event subscribe action
     blockBatch?: number;
+    max?: number; //Max events to fetch
 }
 /**
  * Fetch and sync contract events. Return list of events with optional filter.
@@ -32,7 +33,7 @@ export function useEvents<
         filter?: { [key: string]: any },
         options?: UseEventsOptions,
 ) {
-    const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
+    const { fromBlock, toBlock, blockBatch, max, past, sync } = options ?? {};
 
     const addressChecksum = address && isAddress(address) ? toChecksumAddress(address.slice()) : undefined;
     const id = networkId && addressChecksum ? { networkId, address: addressChecksum } : undefined;
@@ -54,6 +55,7 @@ export function useEvents<
                 fromBlock,
                 toBlock,
                 blockBatch,
+                max,
             });
         }
     }, [networkId, addressChecksum, eventName, filterHash, fromBlock, toBlock, blockBatch, contractExists, past]);

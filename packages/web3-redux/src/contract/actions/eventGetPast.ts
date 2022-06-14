@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 
 /** @internal */
@@ -33,7 +34,12 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
     const blockBatch = payload.blockBatch ?? 100; //100 block batch
     const max = payload.max ?? 100; //100 events max
 
-    return { payload: { ...payload, fromBlock, toBlock, blockBatch, max } };
+    return {
+        payload: { ...payload, fromBlock, toBlock, blockBatch, max },
+        meta: {
+            uuid: uuidv4(),
+        },
+    };
 });
 /** @internal */
 export type EventGetPastAction = ReturnType<typeof eventGetPast>;

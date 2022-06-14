@@ -1,6 +1,6 @@
-import { put, call, select } from 'typed-redux-saga';
+import { put, call, select, actionChannel, take } from 'typed-redux-saga';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { validateEthCall, getEthCallIdArgs } from '../../ethcall/model/index.js';
+import { validateEthCall } from '../../ethcall/model/index.js';
 import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 
@@ -51,7 +51,9 @@ export function* callSaga(action: CallAction) {
             //@ts-ignore
             const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
             const timestamp = Date.now();
-            yield* put(updateEthCall({ ...ethCall, error: undefined, returnValue, status: 'SUCCESS', lastUpdated: timestamp }));
+            yield* put(
+                updateEthCall({ ...ethCall, error: undefined, returnValue, status: 'SUCCESS', lastUpdated: timestamp }),
+            );
         } catch (error) {
             const timestamp = Date.now();
             yield* put(updateEthCall({ ...ethCall, error: error as Error, status: 'ERROR', lastUpdated: timestamp }));
@@ -64,7 +66,6 @@ export function* callSaga(action: CallAction) {
                 }),
             );
         }
-
     } catch (error) {
         //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
         yield* put(
@@ -78,4 +79,19 @@ export function* callSaga(action: CallAction) {
     }
 }
 
-export default callSaga;
+//https://redux-saga.js.org/docs/advanced/Channels/
+const batch = 5;
+//TODO: Batch requests, currently all sequential
+export function* watchCallSaga() {
+    // 1- Create a channel for request actions
+    //@ts-expect-error
+    const requestChan = yield actionChannel(CALL);
+    while (true) {
+        // 2- take from the channel
+        const action = (yield take(requestChan)) as unknown as CallAction;
+        // 3- Note that we're using a blocking call
+        yield call(callSaga, action);
+    }
+}
+
+export default watchCallSaga;

@@ -89,9 +89,9 @@ export function getId(id: TransactionId): string {
 /** @internal */
 export function validate(item: Transaction): ModelWithId<Transaction> {
     const id = getId(item);
-    const to = item.to ? toChecksumAddress(item.to) : undefined;
-    const from = item.from ? toChecksumAddress(item.from) : undefined;
-    const contractAddress = item.contractAddress ? toChecksumAddress(item.contractAddress) : undefined;
+    const to = item.to ? toChecksumAddress(item.to.slice()) : undefined;
+    const from = item.from ? toChecksumAddress(item.from.slice()) : undefined;
+    const contractAddress = item.contractAddress ? toChecksumAddress(item.contractAddress.slice()) : undefined;
     const gasPriceNumber = item.gasPrice
         ? isHexStrict(item.gasPrice)
             ? hexToNumberString(item.gasPrice)

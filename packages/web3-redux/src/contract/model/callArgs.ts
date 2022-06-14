@@ -1,5 +1,5 @@
-import { toChecksumAddress } from '../../utils/web3-utils/index.js'
 import { getId } from './interface.js';
+import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 export interface CallArgsHash<P extends any[] = any[]> {
@@ -11,7 +11,7 @@ export function callArgsHash<P extends any[] = any[]>(callArgs?: CallArgsHash<P>
     if (!callArgs) return '()';
 
     const { args, from, defaultBlock } = callArgs!;
-    const fromCheckSum = from ? toChecksumAddress(from) : undefined;
+    const fromCheckSum = from ? toChecksumAddress(from.slice()) : undefined;
 
     let id = '';
 
@@ -27,7 +27,12 @@ export function callArgsHash<P extends any[] = any[]>(callArgs?: CallArgsHash<P>
     return id;
 }
 
-export function callHash(networkId: string | undefined, address: string | undefined, method: string | undefined, callArgs?: CallArgsHash): string {
+export function callHash(
+    networkId: string | undefined,
+    address: string | undefined,
+    method: string | undefined,
+    callArgs?: CallArgsHash,
+): string {
     const contractHash = getId({ networkId, address });
     const callArgsId = callArgsHash(callArgs);
 

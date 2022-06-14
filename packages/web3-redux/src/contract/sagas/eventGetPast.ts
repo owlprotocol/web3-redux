@@ -52,12 +52,19 @@ export function* eventGetPast(action: EventGetPastAction) {
             currToBlock = toBlock;
         }
 
-        let currFromBlock = Math.max(currToBlock - blockBatch - 1, 0); //lower-bound fromBlock=0
+        let currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock); //lower-bound fromBlock=0
 
-        while (currFromBlock >= 0 && (eventCount < max || !max)) {
+        while (currFromBlock >= fromBlock && (eventCount < max || !max)) {
+            console.debug(
+                `${networkId}-${address}.${eventName} ${currFromBlock}-${currToBlock} ${JSON.stringify(filter)}`,
+            );
             //blocking call, choose batch size accordingly
             //@ts-ignore
-            const events: EventData[] = yield* call([web3Contract, web3Contract.getPastEvents], eventName, { ...filter, fromBlock: currFromBlock, toBlock: currToBlock });
+            const events: EventData[] = yield* call([web3Contract, web3Contract.getPastEvents], eventName, {
+                ...filter,
+                fromBlock: currFromBlock,
+                toBlock: currToBlock,
+            });
             //create events
             if (events.length > 0) {
                 const actions = events.map((event: any) => {
@@ -75,8 +82,9 @@ export function* eventGetPast(action: EventGetPastAction) {
 
             //Update loop
             eventCount += events.length;
-            currToBlock = currToBlock - blockBatch
-            currFromBlock = currToBlock - blockBatch - 1
+            currToBlock = Math.max(currToBlock - blockBatch, currFromBlock);
+            currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock);
+            if (currToBlock === currFromBlock) break;
         }
 
         /*

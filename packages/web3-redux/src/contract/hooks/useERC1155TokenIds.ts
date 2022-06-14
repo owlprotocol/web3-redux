@@ -24,9 +24,7 @@ export function useERC1155TokenIds(
     //Default fetch past actions
     const past = options?.past ?? true;
     //Mint Transfers
-    const TransferSingle = useEvents(networkId, address, 'TransferSingle', { from: ADDRESS_0 }, { ...options, past });
-    const TransferBatch = useEvents(networkId, address, 'TransferBatch', { from: ADDRESS_0 }, { ...options, past });
-    const tokenIds = useSelector((state: any) => selectERC1155TokenIds(state, networkId, address));
-
-    return [tokenIds, { TransferSingle, TransferBatch }];
+    useEvents(networkId, address, 'TransferSingle', { from: ADDRESS_0 }, { ...options, past });
+    useEvents(networkId, address, 'TransferBatch', { from: ADDRESS_0 }, { ...options, past });
+    return useSelector((state: any) => selectERC1155TokenIds(state, networkId, address));
 }

@@ -34,7 +34,7 @@ export function useEvents<
 ) {
     const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
 
-    const addressChecksum = address && isAddress(address) ? toChecksumAddress(address) : undefined;
+    const addressChecksum = address && isAddress(address) ? toChecksumAddress(address.slice()) : undefined;
     const id = networkId && addressChecksum ? { networkId, address: addressChecksum } : undefined;
     const contract = useSelector((state) => selectSingle(state, id));
     const contractExists = !!contract;

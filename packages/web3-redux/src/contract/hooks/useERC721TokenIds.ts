@@ -23,8 +23,6 @@ export function useERC721TokenIds(
     //Default fetch past actions
     const past = options?.past ?? true;
     //Mint Transfers
-    const Transfer = useEvents(networkId, address, 'Transfer', { from: ADDRESS_0 }, { ...options, past });
-    const tokenIds = useSelector((state: any) => selectERC721TokenIds(state, networkId, address));
-
-    return [tokenIds, { Transfer }];
+    useEvents(networkId, address, 'Transfer', { from: ADDRESS_0 }, { ...options, past });
+    return useSelector((state: any) => selectERC721TokenIds(state, networkId, address));
 }

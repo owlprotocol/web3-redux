@@ -17,7 +17,7 @@ export interface GetAssetsActionInput {
  * interfaces but simply implement one of event signatures.
  */
 export const getAssets = createAction(GET_ASSETS, (payload: GetAssetsActionInput) => {
-    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address) } };
+    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address.slice()) } };
 });
 /** @internal */
 export type GetAssetsAction = ReturnType<typeof getAssets>;

@@ -58,7 +58,7 @@ describe('contract/hooks/useERC1155TokenIds.test.tsx', () => {
         assert.equal(result.all.length, 2, 'result.all.length');
         await waitForNextUpdate();
 
-        const value = result.current;
+        const value = result.current!;
         const tokenIds = value[0];
         assert.deepEqual(tokenIds, ['0'], 'tokenIds != [0]');
 

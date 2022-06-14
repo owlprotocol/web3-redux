@@ -14,7 +14,7 @@ export interface GetBalanceSyncedActionInput extends ContractId {
  */
 export const getBalanceSynced = (payload: GetBalanceSyncedActionInput) => {
     const { networkId } = payload;
-    const address = toChecksumAddress(payload.address);
+    const address = toChecksumAddress(payload.address.slice());
     const getBalanceAction = getBalance({ networkId, address });
     const sync = createSyncForActions(networkId, [getBalanceAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${getId({ networkId, address })}-getBalance`;

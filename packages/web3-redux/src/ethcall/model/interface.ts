@@ -27,9 +27,9 @@ export interface EthCall extends EthCallId {
     /** Last known error */
     readonly error?: Error;
     /** Last returnValue updated UTC timestamp */
-    readonly lastUpdated?: number
+    readonly lastUpdated?: number;
     /** Status */
-    readonly status?: 'LOADING' | 'SUCCESS' | 'ERROR'
+    readonly status?: 'LOADING' | 'SUCCESS' | 'ERROR';
 }
 
 /** @internal */
@@ -37,7 +37,7 @@ export function getOptionsId(from: EthCallId['from'], block: EthCallId['defaultB
     if ((!from || from == ADDRESS_0) && (block == undefined || block == 'latest') && gas == undefined) return undefined;
 
     const options: any = {};
-    if (from) options.from = toChecksumAddress(from);
+    if (from) options.from = toChecksumAddress(from.slice());
     if (block) options.block = block;
     if (gas) options.gas = gas;
 
@@ -74,8 +74,8 @@ export function getId(id: EthCallId): string {
 /** @internal */
 export function validate(item: EthCall): ModelWithId<EthCall> {
     const id = getId(item);
-    const toChecksum = toChecksumAddress(item.to);
-    const fromCheckSum = item.from ? toChecksumAddress(item.from) : undefined;
+    const toChecksum = toChecksumAddress(item.to.slice());
+    const fromCheckSum = item.from ? toChecksumAddress(item.from.slice()) : undefined;
 
     return {
         ...item,

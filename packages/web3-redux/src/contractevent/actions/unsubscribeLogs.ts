@@ -18,7 +18,7 @@ export const unsubscribeLogs = createAction(UNSUBSCRIBE_LOGS, (payload: LogsSubs
         if (Array.isArray(payload.address)) {
             address = map(payload.address, toChecksumAddress);
         } else {
-            address = toChecksumAddress(payload.address);
+            address = toChecksumAddress(payload.address.slice());
         }
     }
 

@@ -58,13 +58,13 @@ const SEPARATOR = '-';
 /** @internal */
 export function getId(id: Partial<ContractId>): string {
     const { networkId, address } = id;
-    if (address && isAddress(address)) return [networkId, toChecksumAddress(address)].join(SEPARATOR);
+    if (address && isAddress(address)) return [networkId, toChecksumAddress(address.slice())].join(SEPARATOR);
     return [networkId, address].join(SEPARATOR);
 }
 /** @internal */
 export function getIdDeconstructed(id: string): ContractId {
     const [networkId, address] = id.split(SEPARATOR); //Assumes separator not messed up
-    return { networkId, address: toChecksumAddress(address) };
+    return { networkId, address: toChecksumAddress(address.slice()) };
 }
 
 /** @internal */
@@ -77,7 +77,7 @@ export function validate(contract: Contract): ModelWithId<Contract> {
     const result = {
         ...contract,
         id,
-        address: toChecksumAddress(address),
+        address: toChecksumAddress(address.slice()),
     };
     if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;
 

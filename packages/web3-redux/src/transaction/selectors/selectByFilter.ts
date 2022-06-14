@@ -15,9 +15,10 @@ export const selectByFilter: selectByFilterType = createSelector(
         let query = model.all();
         if (filter) {
             const newFilter = { ...filter };
-            if (newFilter.from) newFilter.from = toChecksumAddress(newFilter.from);
-            if (newFilter.to) newFilter.to = toChecksumAddress(newFilter.to);
-            if (newFilter.contractAddress) newFilter.contractAddress = toChecksumAddress(newFilter.contractAddress);
+            if (newFilter.from) newFilter.from = toChecksumAddress(newFilter.from.slice());
+            if (newFilter.to) newFilter.to = toChecksumAddress(newFilter.to.slice());
+            if (newFilter.contractAddress)
+                newFilter.contractAddress = toChecksumAddress(newFilter.contractAddress.slice());
             query = query.filter(newFilter);
         }
 

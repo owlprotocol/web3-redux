@@ -2,6 +2,7 @@ import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { getId as getContractId } from '../../contract/model/interface.js';
 import { combinationAll } from '../../utils/combination.js';
 import { ModelWithId } from '../../types/model.js';
+import { uniq } from '../../utils/lodash/index.js';
 
 export interface ContractEventId {
     /** Blockchain network id.
@@ -83,6 +84,7 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     const networkId = item.networkId;
     const address = toChecksumAddress(item.address.slice());
     const contractId = getContractId(item);
+    const extraIndices = item.indexIds ?? [];
 
     //Default we only index named keys, but user can also pass (0,1,2) as argument
     const returnValuesKeys = Object.keys(item.returnValues ?? {}).filter((k: string) => isNaN(parseInt(k)));
@@ -110,7 +112,8 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     if (name) indices.push(eventIndex);
     indices.push(...returnValuesIndexes);
 
-    const indexIds: string[] = indices.map((v) => JSON.stringify(v));
+    //Combine passed indices with default indices
+    const indexIds: string[] = uniq([...extraIndices, ...indices.map((v) => JSON.stringify(v))]);
     return {
         ...item,
         name,

@@ -16,6 +16,7 @@ const defaultOptions: TakeEveryBufferedOptions = {
     bufferBatchTimeout: 200,
     bufferCompletionTimeout: 1000,
 };
+//TODO: takeEveryBatchedBuffered counterpart that combines logic from takeEveryBatched & takeEveryBufferred
 /** Similar to takeEvery but yields action buffers */
 export function* takeEveryBuffered(action: string, saga: any, options?: TakeEveryBufferedOptions) {
     const { bufferSize, bufferBatchTimeout, bufferCompletionTimeout } = { ...defaultOptions, ...options };

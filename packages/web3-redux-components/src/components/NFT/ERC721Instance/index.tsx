@@ -12,7 +12,6 @@ export const useERC721Instance = ({ networkId, address, tokenId }: HookProps) =>
         metadata: true,
     });
     return {
-        networkId,
         ownerOf,
         imageSrc: metadata?.image,
         itemName: metadata?.name,

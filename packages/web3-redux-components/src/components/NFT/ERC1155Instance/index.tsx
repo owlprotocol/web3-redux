@@ -13,7 +13,6 @@ export const useERC1155Instance = ({ networkId, address, tokenId }: HookProps) =
         metadata: true,
     });
     return {
-        networkId,
         imageSrc: metadata?.image,
         itemName: metadata?.name,
     };

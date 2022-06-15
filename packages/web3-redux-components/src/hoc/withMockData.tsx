@@ -10,9 +10,8 @@ export const withMockData = (WrappedComponent: any) => {
     const Component = (props: any) => {
         const dispatch = useDispatch();
 
-        const [networkMainnet, networkArbitrum, networkOptimism, networkPolygon, networkGanache] = useSelector(
-            (state) => Network.selectByIdMany(state, ['1', '42161', '10', '137', '1337']),
-        );
+        const [networkMainnet, networkArbitrum, networkOptimism, networkPolygon, networkGanache, networkRinkeby] =
+            useSelector((state) => Network.selectByIdMany(state, ['1', '42161', '10', '137', '1337']));
         useEffect(() => {
             if (!networkMainnet) dispatch(Network.create({ networkId: '1' }));
         }, [dispatch, networkMainnet]);
@@ -28,6 +27,9 @@ export const withMockData = (WrappedComponent: any) => {
         useEffect(() => {
             if (!networkGanache) dispatch(Network.create({ networkId: '1337', web3Rpc: 'ws://localhost:8545' }));
         }, [dispatch, networkGanache]);
+        useEffect(() => {
+            if (!networkRinkeby) dispatch(Network.create({ networkId: '4' }));
+        }, [dispatch, networkRinkeby]);
 
         /*
         useEffect(() => {
@@ -52,6 +54,8 @@ export const withMockData = (WrappedComponent: any) => {
             contractKithFriends,
             contractSkyweaver,
             contractUSDCGanache,
+            contractCRYPTO_OWLS,
+            contractOWL_PARTS,
         ] = useSelector((state) =>
             Contract.selectByIdMany(state, [
                 { networkId: '1', address: TestData.VITALIK },
@@ -64,6 +68,8 @@ export const withMockData = (WrappedComponent: any) => {
                 { networkId: '1', address: TestData.KITH_FRIENDS },
                 { networkId: '137', address: TestData.SKYWEAVER },
                 { networkId: '1337', address: TestData.USDC },
+                { networkId: '4', address: TestData.CRYPTO_OWLS },
+                { networkId: '4', address: TestData.OWL_PARTS },
             ]),
         );
         useEffect(() => {
@@ -96,8 +102,14 @@ export const withMockData = (WrappedComponent: any) => {
         useEffect(() => {
             if (!contractUSDCGanache) dispatch(Contract.create({ ...TestData.contractUSDC, networkId: '1337' }));
         }, [contractUSDCGanache, dispatch]);
+        useEffect(() => {
+            if (!contractCRYPTO_OWLS) dispatch(Contract.create(TestData.contractCRYPTO_OWLS));
+        }, [contractCRYPTO_OWLS, dispatch]);
+        useEffect(() => {
+            if (!contractOWL_PARTS) dispatch(Contract.create(TestData.contractOWL_PARTS));
+        }, [contractOWL_PARTS, dispatch]);
 
-        const networks = [networkMainnet, networkArbitrum, networkOptimism, networkPolygon];
+        const networks = [networkMainnet, networkArbitrum, networkOptimism, networkPolygon, networkRinkeby];
         const contracts = [
             contractVITALIK,
             contractWETH,
@@ -108,6 +120,8 @@ export const withMockData = (WrappedComponent: any) => {
             contractOZTeam,
             contractKithFriends,
             contractSkyweaver,
+            contractCRYPTO_OWLS,
+            contractOWL_PARTS,
         ];
         const contractERC20Implementation = Contract.useContract(
             TestData.contractERC20Implementation.networkId,

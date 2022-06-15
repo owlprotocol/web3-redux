@@ -25,7 +25,7 @@ export const NFTItemCard = ({
             boxShadow={'inset 0px 4px 4px rgba(0, 0, 0, 0.25)'}
         >
             <Box marginBottom={2} w={'100%'} h={'108px'} overflow={'hidden'} borderRadius={4}>
-                <Image src={assetPreviewSrc} w={'100%'} objectFit={'scale-down'} />
+                <Image src={assetPreviewSrc} w={'100%'} h={'100%'} objectFit={'scale-down'} />
             </Box>
 
             <Box color={themes.color7} marginBottom={1} w={'100%'} fontWeight={700} fontSize={14}>

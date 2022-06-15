@@ -13,7 +13,8 @@ import IpfsModel from './ipfs/model/orm.js';
 import SyncModel from './sync/model/orm.js';
 import _4ByteModel from './4byte/model/orm.js';
 import ReduxErrorModel from './error/model/orm.js';
-import { IPFS_URL, _4BYTE_URL } from './environment.js';
+import HttpModel from './http/model/orm.js';
+import { CORS_PROXY, IPFS_URL, _4BYTE_URL } from './environment.js';
 
 //Fix undefined import issue
 let orm: any;
@@ -38,6 +39,7 @@ export function getOrm(): any {
     orm.register(SyncModel);
     orm.register(_4ByteModel);
     orm.register(ReduxErrorModel);
+    orm.register(HttpModel);
 
     return orm;
 }
@@ -49,7 +51,7 @@ export const initializeState = (orm: any) => {
 
     //TODO: Merge initial state redux-persist??
     const { Config } = orm.mutableSession(state);
-    Config.create({ id: 0, networkId: '1', ipfsUrl: IPFS_URL, _4byteUrl: _4BYTE_URL });
+    Config.create({ id: 0, networkId: '1', ipfsUrl: IPFS_URL, _4byteUrl: _4BYTE_URL, corsProxy: CORS_PROXY });
 
     return state;
 };

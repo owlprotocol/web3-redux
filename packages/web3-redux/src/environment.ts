@@ -48,6 +48,8 @@ export function getEnvVar(name: string): string | undefined {
     }
 }
 
+/** CORS Proxy Endpoint */
+export const CORS_PROXY = () => getEnvVar('CORS_PROXY');
 /**
  * Infura API Project Id.
  * Used to defive default Infura connection uri. */

@@ -11,6 +11,8 @@ import * as Config from './config/index.js';
 import * as Ipfs from './ipfs/index.js';
 import * as Sync from './sync/index.js';
 import * as _4Byte from './4byte/index.js';
+import * as Http from './http/index.js';
+
 import { getOrm } from './orm.js';
 import { createStore } from './store.js';
 import { REDUX_ROOT } from './common.js';
@@ -40,4 +42,5 @@ export {
     Ipfs,
     Sync,
     _4Byte,
+    Http,
 };

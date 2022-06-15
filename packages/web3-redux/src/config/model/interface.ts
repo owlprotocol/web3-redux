@@ -22,6 +22,10 @@ export interface Config {
     readonly ipfsClient?: Axios;
     /* 4byte.directory Client */
     readonly _4byteClient?: Axios;
+    /* CORS Proxy */
+    readonly corsProxy?: string;
+    /* HTTP Client */
+    readonly httpClient?: Axios;
     /* Arbitrary config values */
     readonly [key: string]: any;
 }

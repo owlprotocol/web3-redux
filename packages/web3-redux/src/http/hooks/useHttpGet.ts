@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle } from '../selectors';
+import { selectByIdSingle } from '../selectors/index.js';
 import { httpGet as httpGetAction } from '../actions/index.js';
 
 /**

@@ -5,6 +5,8 @@ export interface Http {
     readonly url?: string;
     /** Response data */
     readonly data?: any;
+    /** Used CORS Proxyy */
+    readonly corsProxied?: boolean;
 }
 
 export default Http;

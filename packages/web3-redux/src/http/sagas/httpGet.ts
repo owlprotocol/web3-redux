@@ -16,13 +16,26 @@ export function* httpGet(action: HttpGetAction) {
     const { url } = payload;
     try {
         invariant(url, 'url undefined!');
-        const client = (yield* select(selectConfig)).httpClient;
-        invariant(client, 'Http client undefined!');
+        const config = yield* select(selectConfig);
+        const { httpClient, corsProxy } = config;
+        invariant(httpClient, 'Http client undefined!');
 
         const httpCache = yield* select(selectByIdSingle, url);
         if (!httpCache?.data) {
-            const response = (yield* call(client.get, url)) as AxiosResponse;
-            yield* put(create({ id: url, url, data: response.data }));
+            try {
+                const response = (yield* call(httpClient.get, url)) as AxiosResponse;
+                yield* put(create({ id: url, url, data: response.data }));
+            } catch (error) {
+                if (corsProxy) {
+                    //TODO: Handle search params
+                    //Try with CORS Proxy
+                    const urlProxied = `${corsProxy}/${url}`;
+                    const response = (yield* call(httpClient.get, urlProxied)) as AxiosResponse;
+                    yield* put(create({ id: url, url, data: response.data, corsProxied: true }));
+                } else {
+                    throw error;
+                }
+            }
         } else {
             throw new Error(`Http ${url} cached!`);
         }

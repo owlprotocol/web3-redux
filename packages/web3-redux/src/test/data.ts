@@ -60,6 +60,10 @@ export const SKYWEAVER = '0x631998e91476da5b870d741192fc5cbc55f5a52e';
 //Popular addresses
 export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
 
+//Crypto Owls demo collection
+export const CRYPTO_OWLS = '0xebd50f74350C2FDc576509c72b1Fdb931517c84A'; //ERC721
+export const OWL_PARTS = '0x7717744b7415984bd593628c389524F03b52D756'; //ERC1155
+
 //Network
 export const network1 = { networkId };
 
@@ -144,6 +148,13 @@ export const contractOZTeam = validateContract({
     indexIds: ['ERC721'],
     label: 'OZ Team NFT',
 });
+export const contractCRYPTO_OWLS = validateContract({
+    networkId: '4',
+    address: CRYPTO_OWLS,
+    abi: cloneDeep(IERC721.abi) as any,
+    indexIds: ['ERC721'],
+    label: 'CRYPTO OWLS',
+});
 
 //ERC1155
 export const contractKithFriends = validateContract({
@@ -159,6 +170,13 @@ export const contractSkyWeaver = validateContract({
     abi: cloneDeep(IERC1155.abi) as any,
     indexIds: ['ERC1155'],
     label: 'Sky Weaver',
+});
+export const contractOWL_PARTS = validateContract({
+    networkId: '4',
+    address: OWL_PARTS,
+    abi: cloneDeep(IERC1155.abi) as any,
+    indexIds: ['ERC1155'],
+    label: 'OWL PARTS',
 });
 
 //Popular Addresses

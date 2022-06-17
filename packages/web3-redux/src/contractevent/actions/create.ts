@@ -1,12 +1,18 @@
 import { createAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 import { ContractEvent, validate } from '../model/interface.js';
 
 /** @internal */
 export const CREATE = `${name}/CREATE`;
 /** @category Actions */
-export const create = createAction(CREATE, (payload: ContractEvent) => {
-    return { payload: validate(payload) };
+export const create = createAction(CREATE, (payload: ContractEvent, uuid?: string) => {
+    return {
+        payload: validate(payload),
+        meta: {
+            uuid: uuid ?? uuidv4(),
+        },
+    };
 });
 /** @internal */
 export type CreateAction = ReturnType<typeof create>;

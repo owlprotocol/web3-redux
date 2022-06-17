@@ -19,9 +19,10 @@ describe(`${name}.actions`, () => {
         const expected: CreateAction = {
             type: CREATE,
             payload: { id: getId(item), ...item },
+            meta: { uuid: '' },
         };
         assert.isTrue(isCreateAction(expected));
-        assert.deepEqual(create(item), expected);
+        assert.deepEqual(create(item, ''), expected);
     });
 
     it('update', () => {

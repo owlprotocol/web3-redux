@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-import { cloneDeep } from '../../utils/lodash/index.js';
 import { create, CREATE, CreateAction, isCreateAction } from './create.js';
 import { update, UPDATE, UpdateAction, isUpdateAction } from './update.js';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove.js';
+import { cloneDeep } from '../../utils/lodash/index.js';
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
 import { name } from '../common.js';
@@ -42,9 +42,10 @@ describe(`${name}.actions`, () => {
         const expected: CreateAction = {
             type: CREATE,
             payload: itemWithId,
+            meta: { uuid: '' },
         };
         assert.isTrue(isCreateAction(expected));
-        assert.deepEqual(create(item), expected);
+        assert.deepEqual(create(item, ''), expected);
     });
 
     it('update', () => {

@@ -4,7 +4,7 @@ import * as moxios from 'moxios';
 
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 import { selectByIdMany } from '../../transaction/selectors/index.js';
 import { fetchTransactions } from '../actions/index.js';
 import { sleep } from '../../utils/index.js';

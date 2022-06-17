@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import { Persistor, getStoredState } from 'redux-persist';
 import { mapValues, omit } from './utils/lodash/index.js';
-import { create as createTransaction } from './transaction/actions/index.js';
-import { create as createNetwork } from './network/actions/index.js';
+import { createAction as createTransaction } from './transaction/actions/index.js';
+import { createAction as createNetwork } from './network/actions/index.js';
 import { selectByIdSingle as selectNetwork } from './network/selectors/index.js';
 
 import { createStore, StoreType } from './store.js';

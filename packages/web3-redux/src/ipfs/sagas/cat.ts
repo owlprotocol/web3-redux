@@ -2,7 +2,7 @@ import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
 
-import { set, create, CatAction, CAT } from '../actions/index.js';
+import { set, createAction, CatAction, CAT } from '../actions/index.js';
 
 import { selectConfig } from '../../config/selectors/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
@@ -17,7 +17,7 @@ export function* cat(action: CatAction) {
         const contentId = action.payload;
         //Check if contentId exists
         const content = yield* select(selectByIdSingle, contentId);
-        if (!content) yield* put(create({ contentId }));
+        if (!content) yield* put(createAction({ contentId }));
 
         //https://docs.ipfs.io/reference/http/api/
         //https://docs.ipfs.io/reference/http/api/#api-v0-cat

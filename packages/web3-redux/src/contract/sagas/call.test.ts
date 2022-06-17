@@ -12,10 +12,10 @@ import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 import { networkId } from '../../test/data.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+import { createAction as createNetwork } from '../../network/index.js';
 
 import { selectContractCall, selectEthCallId } from '../selectors/index.js';
-import { create as createAction, call as callAction } from '../actions/index.js';
+import { createAction, call as callAction } from '../actions/index.js';
 import { selectEthCallById } from '../../ethcall/index.js';
 
 describe(`${name}.sagas.call`, () => {

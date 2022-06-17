@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import jsdom from 'mocha-jsdom';
 
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 
 import { name } from '../common.js';
 import { networkId, block1 } from '../../test/data.js';

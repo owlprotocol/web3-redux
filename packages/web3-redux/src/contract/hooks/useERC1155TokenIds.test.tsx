@@ -12,7 +12,7 @@ import { networkId } from '../../test/data.js';
 
 import { ERC1155PresetMinterPauser } from '../../abis/index.js';
 
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 import { createStore, StoreType } from '../../store.js';
 
 describe('contract/hooks/useERC1155TokenIds.test.tsx', () => {

@@ -7,7 +7,7 @@ import { WETH } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 import { networkId, WETH as WETH_ADDRESS } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+import { createAction as createNetwork } from '../../network/index.js';
 import { selectByIdSingle as selectContract } from '../selectors/index.js';
 import { fetchAbi as fetchAbiAction } from '../actions/index.js';
 

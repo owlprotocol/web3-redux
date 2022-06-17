@@ -6,7 +6,7 @@ import type { Log } from 'web3-core';
 
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import {
-    create as createEvent,
+    createAction as createEvent,
     SubscribeLogsAction,
     SUBSCRIBE_LOGS,
     isSubscribeLogsAction,

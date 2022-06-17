@@ -4,7 +4,9 @@ import {
     isCreateAction,
     isCreateBatchedAction,
     isRemoveAction,
+    isRemoveBatchedAction,
     isUpdateAction,
+    isUpdateBatchedAction,
     isSetAction,
 } from './actions/index.js';
 import { Http } from './model/interface.js';
@@ -21,8 +23,17 @@ export function reducer(sess: any, action: ReducerAction) {
         });
     } else if (isRemoveAction(action)) {
         Model.withId(action.payload)?.delete();
+    } else if (isRemoveBatchedAction(action)) {
+        action.payload.forEach((item) => {
+            Model.withId(item)?.delete();
+        });
     } else if (isUpdateAction(action)) {
-        Model.update(action.payload);
+        const { payload } = action;
+        Model.update(payload);
+    } else if (isUpdateBatchedAction(action)) {
+        action.payload.forEach((item) => {
+            Model.update(item);
+        });
     } else if (isSetAction(action)) {
         Model.withId(action.payload.id)?.set(action.payload.key, action.payload.value);
     }

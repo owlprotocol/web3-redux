@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+
 import { name } from '../common.js';
 
 /** @internal */
@@ -19,7 +19,7 @@ export interface EventGetPastRawActionInput {
 /** @category Actions */
 export const eventGetPastRaw = createAction(EVENT_GET_PAST_RAW, (payload: EventGetPastRawActionInput) => {
     const { networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
-    const addressChecksum = toChecksumAddress(address.slice());
+    const addressChecksum = address.toLowerCase();
 
     //cache id for eventGetPast action
     const eventIndex = { networkId, address: addressChecksum, name: eventName, filter, fromBlock, toBlock };

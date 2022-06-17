@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AbiItem } from '../../utils/web3-utils/index.js';
-import { create } from '../actions/index.js';
+import { createAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
 /**
@@ -23,7 +23,7 @@ export function useContractWithAbi(
     const contractExists = !!contract;
     //Create contract if inexistant
     useEffect(() => {
-        if (networkId && address && !contractExists) dispatch(create({ networkId, address, abi }));
+        if (networkId && address && !contractExists) dispatch(createAction({ networkId, address, abi }));
     }, [dispatch, networkId, address, contractExists]);
 
     return contract;

@@ -4,21 +4,20 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import jsdom from 'mocha-jsdom';
 import { useERC20 } from './useERC20.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
 import { ERC20PresetMinterPauser } from '../../abis/index.js';
 
-import { create as createNetwork } from '../../network/actions/index.js';
-import { create as createTransaction } from '../../transaction/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
+import { createAction as createTransaction } from '../../transaction/actions/index.js';
 import { createAction as createBlock } from '../../block/actions/index.js';
-import { create as createEvent } from '../../contractevent/actions/index.js';
+import { createAction as createEvent } from '../../contractevent/actions/index.js';
 
 import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-
-import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useERC20.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

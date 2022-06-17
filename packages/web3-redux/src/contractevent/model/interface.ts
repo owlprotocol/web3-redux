@@ -1,4 +1,3 @@
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { getId as getContractId } from '../../contract/model/interface.js';
 import { combinationAll } from '../../utils/combination.js';
 import { ModelWithId } from '../../types/model.js';
@@ -82,7 +81,7 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
     const name = item.name ?? item.event;
     const id = getId(item);
     const networkId = item.networkId;
-    const address = toChecksumAddress(item.address.slice());
+    const address = item.address.toLowerCase();
     const contractId = getContractId(item);
     const extraIndices = item.indexIds ?? [];
 

@@ -12,12 +12,12 @@ import { networkId } from '../../test/data.js';
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+import { createAction as createNetwork } from '../../network/index.js';
 import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
 
 import { ContractId } from '../model/index.js';
 import { selectContractEvents } from '../selectors/index.js';
-import { create as createAction, eventSubscribe as eventSubscribeAction } from '../actions/index.js';
+import { createAction, eventSubscribe as eventSubscribeAction } from '../actions/index.js';
 
 describe(`${name}.sagas.eventSubscribe`, () => {
     let web3: Web3; //Web3 loaded from store

@@ -5,7 +5,7 @@ import { selectConfig } from '../../config/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 
-import { create, HttpGetAction, HTTP_GET } from '../actions/index.js';
+import { createAction, HttpGetAction, HTTP_GET } from '../actions/index.js';
 import selectByIdSingle from '../selectors/selectByIdSingle.js';
 
 const HTTP_GET_ERROR = `${HTTP_GET}/ERROR`;
@@ -24,14 +24,14 @@ export function* httpGet(action: HttpGetAction) {
         if (!httpCache?.data) {
             try {
                 const response = (yield* call(httpClient.get, url)) as AxiosResponse;
-                yield* put(create({ id: url, url, data: response.data }));
+                yield* put(createAction({ id: url, url, data: response.data }));
             } catch (error) {
                 if (corsProxy) {
                     //TODO: Handle search params
                     //Try with CORS Proxy
                     const urlProxied = `${corsProxy}/${url}`;
                     const response = (yield* call(httpClient.get, urlProxied)) as AxiosResponse;
-                    yield* put(create({ id: url, url, data: response.data, corsProxied: true }));
+                    yield* put(createAction({ id: url, url, data: response.data, corsProxied: true }));
                 } else {
                     throw error;
                 }

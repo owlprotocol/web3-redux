@@ -3,20 +3,19 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import jsdom from 'mocha-jsdom';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
 import { ERC165 } from '../../abis/index.js';
 
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create } from '../actions/index.js';
+import { createAction } from '../actions/index.js';
 
 import { useSupportsInterface } from '../hooks/useSupportsInterface.js';
-
-import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -48,7 +47,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
         store.dispatch(
-            create({
+            createAction({
                 networkId,
                 address,
                 abi: ERC165.abi as any,

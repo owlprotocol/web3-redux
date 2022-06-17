@@ -1,7 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import axios from 'axios';
 import { httpGet } from './httpGet.js';
-import { create as createAction, httpGet as httpGetAction, HTTP_GET } from '../actions/index.js';
+import { createAction, httpGet as httpGetAction, HTTP_GET } from '../actions/index.js';
 import { selectConfig } from '../../config/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { create as createError } from '../../error/actions/index.js';

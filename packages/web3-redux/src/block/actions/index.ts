@@ -129,10 +129,9 @@ export type {
     UpdateBatchedAction,
     UpdateDBAction,
     UpdateDBBatchedAction,
-    LoadDBAllAction,
-    SetAction,
-    FetchAction,
 };
+
+export type { LoadDBAllAction, SetAction, FetchAction };
 
 export {
     CREATE,

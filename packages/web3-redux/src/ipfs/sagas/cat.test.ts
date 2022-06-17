@@ -10,7 +10,7 @@ import { createStore, StoreType } from '../../store.js';
 import { update as updateConfig } from '../../config/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { selectConfig } from '../../config/selectors/index.js';
-import { create as createAction, set as setAction, cat as catAction } from '../actions/index.js';
+import { createAction, set as setAction, cat as catAction } from '../actions/index.js';
 
 describe('ipfs/sagas/cat.test.ts', () => {
     before(() => moxios.install(axios));

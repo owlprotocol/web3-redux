@@ -1,6 +1,6 @@
 import { put, call, select } from 'typed-redux-saga';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { create as createTransaction, update as updateTransaction, FetchAction } from '../actions/index.js';
+import { createAction as createTransaction, updateAction as updateTransaction, FetchAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
 function* fetch(action: FetchAction) {

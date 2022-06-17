@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock, sleep } from '../../utils/index.js';
 
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 import { createStore, StoreType } from '../../store.js';
 import { BlockHeader, BlockTransaction, validate } from '../model/index.js';
 

@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-orm';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+
 import { name } from '../common.js';
 import { getOrm } from '../../orm.js';
 import { Transaction } from '../model/interface.js';
@@ -15,10 +15,9 @@ export const selectByFilter: selectByFilterType = createSelector(
         let query = model.all();
         if (filter) {
             const newFilter = { ...filter };
-            if (newFilter.from) newFilter.from = toChecksumAddress(newFilter.from.slice());
-            if (newFilter.to) newFilter.to = toChecksumAddress(newFilter.to.slice());
-            if (newFilter.contractAddress)
-                newFilter.contractAddress = toChecksumAddress(newFilter.contractAddress.slice());
+            if (newFilter.from) newFilter.from = newFilter.from.toLowerCase();
+            if (newFilter.to) newFilter.to = newFilter.to.toLowerCase();
+            if (newFilter.contractAddress) newFilter.contractAddress = newFilter.contractAddress.toLowerCase();
             query = query.filter(newFilter);
         }
 

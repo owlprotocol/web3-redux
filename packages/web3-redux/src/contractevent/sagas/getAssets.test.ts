@@ -14,7 +14,7 @@ import {
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+import { createAction as createNetwork } from '../../network/index.js';
 import { selectByIdMany as selectContracts } from '../../contract/selectors/index.js';
 
 import { getAssets as getAssetsAction } from '../actions/index.js';

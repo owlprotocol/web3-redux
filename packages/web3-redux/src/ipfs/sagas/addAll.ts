@@ -1,7 +1,7 @@
 import { call, put, select } from 'typed-redux-saga';
 import { CID } from 'multiformats';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { create, AddAllAction, ADD_ALL, update } from '../actions/index.js';
+import { createAction, AddAllAction, ADD_ALL, updateAction } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import asyncGeneratorToArray from '../../utils/asyncGeneratorToArray.js';
@@ -27,9 +27,9 @@ export function* addAll(action: AddAllAction) {
             const { cid } = entries[i];
 
             const content = yield* select(selectByIdSingle, cid.toString());
-            if (!content) yield* put(create({ contentId: cid.toString(), data: file, type: IPFSDataType.File }));
+            if (!content) yield* put(createAction({ contentId: cid.toString(), data: file, type: IPFSDataType.File }));
             else if (!content?.data)
-                yield* put(update({ contentId: cid.toString(), data: file, type: IPFSDataType.File }));
+                yield* put(updateAction({ contentId: cid.toString(), data: file, type: IPFSDataType.File }));
         }
     } catch (error) {
         yield* put(

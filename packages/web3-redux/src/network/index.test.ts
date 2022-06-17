@@ -4,7 +4,7 @@ import { createAction as createBlock, validateBlock } from '../block/index.js';
 import { createStore, StoreType } from '../store.js';
 
 import { networkId } from '../test/data.js';
-import { create, selectByIdSingle, selectLatestBlock, selectLatestBlockNumber } from './index.js';
+import { createAction, selectByIdSingle, selectLatestBlock, selectLatestBlockNumber } from './index.js';
 
 describe(`${name}.integration`, () => {
     const item = {
@@ -24,14 +24,14 @@ describe(`${name}.integration`, () => {
 
     describe('selectors', () => {
         it('selectByIdSingle', () => {
-            store.dispatch(create(item));
+            store.dispatch(createAction(item));
             const selected = selectByIdSingle(store.getState(), id);
             assert.deepEqual(selected, item);
         });
 
         it('selectLatestBlock', async () => {
             const blockValidated1 = validateBlock(block1);
-            store.dispatch(create(item));
+            store.dispatch(createAction(item));
 
             //Middleware updates latestBlockNumber
             store.dispatch(createBlock(block1));
@@ -42,7 +42,7 @@ describe(`${name}.integration`, () => {
         });
 
         it('selectLatestBlockNumber', async () => {
-            store.dispatch(create(item));
+            store.dispatch(createAction(item));
 
             const selected0 = selectLatestBlockNumber(store.getState(), id);
             assert.isUndefined(selected0);

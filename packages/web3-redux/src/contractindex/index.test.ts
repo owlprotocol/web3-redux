@@ -3,8 +3,7 @@ import { name } from './common.js';
 import { selectContracts } from './selectors/index.js';
 import { createStore, StoreType } from '../store.js';
 import { networkId, contract1, contract2 } from '../test/data.js';
-import { create as createContract } from '../contract/actions/index.js';
-import { validateContractEvent } from '../contractevent/index.js';
+import { createAction as createContract } from '../contract/actions/index.js';
 
 describe(`${name}.integration`, () => {
     const ADDRESS_1 = '0x0000000000000000000000000000000000000001';

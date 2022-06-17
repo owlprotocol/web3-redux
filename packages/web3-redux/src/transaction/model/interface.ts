@@ -1,5 +1,5 @@
 import type { TransactionReceipt } from 'web3-core';
-import { toChecksumAddress, isHexStrict, hexToNumberString } from '../../utils/web3-utils/index.js';
+import { isHexStrict, hexToNumberString } from '../../utils/web3-utils/index.js';
 import { getId as getBlockId } from '../../block/model/id.js';
 import { ModelWithId } from '../../types/model.js';
 
@@ -89,9 +89,9 @@ export function getId(id: TransactionId): string {
 /** @internal */
 export function validate(item: Transaction): ModelWithId<Transaction> {
     const id = getId(item);
-    const to = item.to ? toChecksumAddress(item.to.slice()) : undefined;
-    const from = item.from ? toChecksumAddress(item.from.slice()) : undefined;
-    const contractAddress = item.contractAddress ? toChecksumAddress(item.contractAddress.slice()) : undefined;
+    const to = item.to ? item.to.toLowerCase() : undefined;
+    const from = item.from ? item.from.toLowerCase() : undefined;
+    const contractAddress = item.contractAddress ? item.contractAddress.toLowerCase() : undefined;
     const gasPriceNumber = item.gasPrice
         ? isHexStrict(item.gasPrice)
             ? hexToNumberString(item.gasPrice)

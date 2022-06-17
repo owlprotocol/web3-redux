@@ -3,22 +3,21 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
+import jsdom from 'mocha-jsdom';
 import { cloneDeep } from '../../utils/lodash/index.js';
 import { getWeb3Provider } from '../../test/index.js';
 
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 import { validateContractEvent } from '../../contractevent/index.js';
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create } from '../actions/index.js';
+import { createAction } from '../actions/index.js';
 
 import { useEvents } from '../hooks/useEvents.js';
-
-import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useEvents.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -49,7 +48,7 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
         store.dispatch(
-            create({
+            createAction({
                 networkId,
                 address,
                 abi: cloneDeep(BlockNumberArtifact.abi) as any,

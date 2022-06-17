@@ -13,7 +13,7 @@ import { NFT_COLLECTION_QMHASH } from '../../test/ipfs.js';
 
 import { ERC721PresetMinterPauserAutoId } from '../../abis/index.js';
 
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 import { createStore, StoreType } from '../../store.js';
 
 describe('contract/hooks/useERC721TokenIds.test.tsx', () => {

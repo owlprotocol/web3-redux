@@ -1,8 +1,5 @@
 import { assert } from 'chai';
 
-import { createAction, CREATE, CreateAction, isCreateAction } from './create/create.js';
-import { updateAction, UPDATE, UpdateAction, isUpdateAction } from './update/update.js';
-import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove.js';
 import { set, SET, SetAction, isSetAction } from './set.js';
 import { FETCH, fetch, FetchAction, isFetchAction } from './fetch.js';
 import { SUBSCRIBE, subscribe, SubscribeAction, isSubscribeAction } from './subscribe.js';
@@ -11,6 +8,20 @@ import { BlockHeader } from '../model/BlockHeader.js';
 import { getId } from '../model/id.js';
 import { networkId } from '../../test/data.js';
 import { name } from '../common.js';
+import {
+    createAction,
+    CREATE,
+    CreateAction,
+    isCreateAction,
+    updateAction,
+    UPDATE,
+    UpdateAction,
+    isUpdateAction,
+    removeAction,
+    REMOVE,
+    RemoveAction,
+    isRemoveAction,
+} from './index.js';
 
 describe(`${name}.actions`, () => {
     const item: BlockHeader = { networkId, number: 0 };
@@ -39,9 +50,10 @@ describe(`${name}.actions`, () => {
         const expected: RemoveAction = {
             type: REMOVE,
             payload: { ...item },
+            meta: { uuid: '' },
         };
         assert.isTrue(isRemoveAction(expected));
-        assert.deepEqual(remove(item), expected);
+        assert.deepEqual(removeAction(item, ''), expected);
     });
 
     it('set', () => {

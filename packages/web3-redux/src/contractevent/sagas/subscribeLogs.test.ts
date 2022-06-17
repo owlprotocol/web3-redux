@@ -9,7 +9,7 @@ import { ERC20PresetMinterPauser } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+import { createAction as createNetwork } from '../../network/index.js';
 
 import { selectByIdMany } from '../selectors/index.js';
 import { subscribeLogs as subscribeLogsAction } from '../actions/index.js';

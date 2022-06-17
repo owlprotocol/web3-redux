@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { name } from './common.js';
 import { createStore, StoreType } from '../store.js';
 import { addressList } from '../test/data.js';
-import { getIdArgs, validate, create, selectByIdSingle } from './index.js';
+import { getIdArgs, validate, createAction, selectByIdSingle } from './index.js';
 
 describe(`${name}.integration`, () => {
     const networkId = '1337';
@@ -23,7 +23,7 @@ describe(`${name}.integration`, () => {
 
     describe('selectors', () => {
         it('selectByIdSingle', () => {
-            store.dispatch(create(item));
+            store.dispatch(createAction(item));
             const selected = selectByIdSingle(store.getState(), id);
             assert.deepEqual(selected, itemWithId);
         });

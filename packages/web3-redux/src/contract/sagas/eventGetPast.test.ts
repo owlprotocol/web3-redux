@@ -12,11 +12,11 @@ import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 import { mineBlocks, sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+import { createAction as createNetwork } from '../../network/index.js';
 import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
 
 import { selectContractEvents } from '../selectors/index.js';
-import { create as createAction, eventGetPast as eventGetPastAction } from '../actions/index.js';
+import { createAction, eventGetPast as eventGetPastAction } from '../actions/index.js';
 
 describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store

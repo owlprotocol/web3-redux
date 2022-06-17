@@ -2,7 +2,7 @@ import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 
-import { create, set as setAction, FetchAbiAction } from '../actions/index.js';
+import { createAction, set as setAction, FetchAbiAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 
@@ -12,7 +12,7 @@ export function* fetchAbi(action: FetchAbiAction) {
     const { networkId, address } = payload;
 
     const account = yield* select(selectByIdSingle, { networkId, address });
-    if (!account) yield* put(create({ networkId, address }));
+    if (!account) yield* put(createAction({ networkId, address }));
 
     const network = yield* select(selectNetwork, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);

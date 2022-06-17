@@ -8,7 +8,7 @@ import getDB from '../../db.js';
 
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock } from '../../utils/index.js';
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 
 import { createStore, StoreType } from '../../store.js';

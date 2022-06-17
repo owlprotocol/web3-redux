@@ -7,7 +7,7 @@ import { coder } from '../../utils/web3-eth-abi/index.js';
 import { flatten, compact, map, uniq } from '../../utils/lodash/index.js';
 import { IERC20, IERC721, IERC1155 } from '../../abis/index.js';
 
-import { create as createContract } from '../../contract/actions/index.js';
+import { createAction as createContract } from '../../contract/actions/index.js';
 import { GetAssetsAction, GET_ASSETS, getPastLogs as getPastLogsAction } from '../actions/index.js';
 
 const GET_ASSETS_ERROR = `${GET_ASSETS}/ERROR`;

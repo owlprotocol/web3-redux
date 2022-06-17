@@ -5,7 +5,7 @@ import { useGetNonce } from './useGetNonce.js';
 import { useGetCode } from './useGetCode.js';
 import { useFetchAbi } from './useFetchAbi.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
-import { create } from '../actions/index.js';
+import { createAction } from '../actions/index.js';
 import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced.js';
 import { GetNonceSyncedActionInput } from '../actions/getNonceSynced.js';
 import { selectByIdSingle } from '../selectors/index.js';
@@ -43,7 +43,7 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 
     //Create contract if inexistant
     useEffect(() => {
-        if (id && !contractExists) dispatch(create({ ...id, ...createData }));
+        if (id && !contractExists) dispatch(createAction({ ...id, ...createData }));
     }, [dispatch, id, JSON.stringify(createData), contractExists]);
 
     useGetBalance(networkId, address, getBalance);

@@ -3,14 +3,13 @@ import { assert } from 'chai';
 import axios from 'axios';
 import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
+import jsdom from 'mocha-jsdom';
 import { useFetchAbi } from './useFetchAbi.js';
-import { create as createNetwork } from '../../network/actions/index.js';
-import { create } from '../actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
+import { createAction } from '../actions/index.js';
 import { WETH } from '../../abis/index.js';
 import { WETH as WETH_ADDRESS, networkId } from '../../test/data.js';
 import { StoreType, createStore } from '../../store.js';
-
-import jsdom from 'mocha-jsdom';
 
 describe('contract/hooks/useFetchAbi.test.tsx', () => {
     jsdom({ url: 'http://localhost' });
@@ -38,7 +37,7 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
                 explorerApiClient: client,
             }),
         );
-        store.dispatch(create({ networkId, address }));
+        store.dispatch(createAction({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

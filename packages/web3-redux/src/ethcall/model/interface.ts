@@ -1,4 +1,3 @@
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 import { getId as getContractId } from '../../contract/model/interface.js';
 import { ModelWithId } from '../../types/model.js';
 
@@ -37,7 +36,7 @@ export function getOptionsId(from: EthCallId['from'], block: EthCallId['defaultB
     if ((!from || from == ADDRESS_0) && (block == undefined || block == 'latest') && gas == undefined) return undefined;
 
     const options: any = {};
-    if (from) options.from = toChecksumAddress(from.slice());
+    if (from) options.from = from.toLowerCase();
     if (block) options.block = block;
     if (gas) options.gas = gas;
 
@@ -74,8 +73,8 @@ export function getId(id: EthCallId): string {
 /** @internal */
 export function validate(item: EthCall): ModelWithId<EthCall> {
     const id = getId(item);
-    const toChecksum = toChecksumAddress(item.to.slice());
-    const fromCheckSum = item.from ? toChecksumAddress(item.from.slice()) : undefined;
+    const toChecksum = item.to.toLowerCase();
+    const fromCheckSum = item.from ? item.from.toLowerCase() : undefined;
 
     return {
         ...item,

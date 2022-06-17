@@ -1,8 +1,8 @@
 import { put, all, select } from 'typed-redux-saga';
 import { validate as validatedEthCall } from '../../ethcall/model/index.js';
-import { create as createEthCall } from '../../ethcall/actions/index.js';
+import { createAction as createEthCall } from '../../ethcall/actions/index.js';
 import { Contract } from '../model/index.js';
-import { create, CallBatchedAction, CALL_BATCHED } from '../actions/index.js';
+import { createAction, CallBatchedAction, CALL_BATCHED } from '../actions/index.js';
 import { selectByIdMany } from '../selectors/selectByIdMany.js';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 
@@ -62,7 +62,7 @@ export function* callBatched(action: CallBatchedAction) {
         //All update eth call
         yield* all(preCallTasks.map((x) => x.putEthCallTask));
         //All update contract
-        yield* all(contracts.map((c) => put(create(c))));
+        yield* all(contracts.map((c) => put(createAction(c))));
 
         //If not Multicall, or from/defaultBlock specified
         const regularCallTasks = preCallTasks.filter((t) => {

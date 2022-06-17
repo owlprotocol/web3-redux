@@ -3,7 +3,7 @@ import { code as codeCBOR, encode as encodeCBOR } from '@ipld/dag-cbor';
 import { CID } from 'multiformats';
 import { sha256 } from 'multiformats/hashes/sha2';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { create, PutCBORAction, PUT_CBOR, set } from '../actions/index.js';
+import { createAction, PutCBORAction, PUT_CBOR, set } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
@@ -21,7 +21,7 @@ export function* putCBOR(action: PutCBORAction) {
 
         //Check if contentId exists
         const content = yield* select(selectByIdSingle, cid.toString());
-        if (!content) yield* put(create({ contentId: cid.toString(), data: payload }));
+        if (!content) yield* put(createAction({ contentId: cid.toString(), data: payload }));
         else if (!content?.data) yield* put(set({ contentId: cid.toString(), key: 'data', value: payload }));
 
         yield* call(IPFSSingleton.putCBOR, payload, { pin: true });

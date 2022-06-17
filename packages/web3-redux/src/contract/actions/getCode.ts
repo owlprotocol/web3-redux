@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+
 import { name } from '../common.js';
 import { ContractId } from '../model/interface.js';
 
@@ -7,7 +7,7 @@ import { ContractId } from '../model/interface.js';
 export const GET_CODE = `${name}/GET_CODE`;
 /** @category Actions */
 export const getCode = createAction(GET_CODE, (payload: ContractId) => {
-    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address.slice()) } };
+    return { payload: { networkId: payload.networkId, address: payload.address.toLowerCase() } };
 });
 /** @internal */
 export type GetCodeAction = ReturnType<typeof getCode>;

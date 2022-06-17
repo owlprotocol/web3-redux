@@ -1,6 +1,6 @@
 import { call, put, select } from 'typed-redux-saga';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { create, AddAction, ADD, update } from '../actions/index.js';
+import { createAction, AddAction, ADD, updateAction } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { IPFSDataType } from '../model/interface.js';
@@ -18,8 +18,9 @@ export function* add(action: AddAction) {
         const { cid } = yield* call([ipfs, ipfs.add], file, options);
         //Redux Cache
         const content = yield* select(selectByIdSingle, cid.toString());
-        if (!content) yield* put(create({ contentId: cid.toString(), data: file, type: IPFSDataType.File }));
-        else if (!content?.data) yield* put(update({ contentId: cid.toString(), data: file, type: IPFSDataType.File }));
+        if (!content) yield* put(createAction({ contentId: cid.toString(), data: file, type: IPFSDataType.File }));
+        else if (!content?.data)
+            yield* put(updateAction({ contentId: cid.toString(), data: file, type: IPFSDataType.File }));
     } catch (error) {
         yield* put(
             createError({

@@ -6,7 +6,7 @@ import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions/index
 import { EventGetPastActionInput } from '../actions/eventGetPast.js';
 import selectSingle from '../selectors/selectByIdSingle.js';
 import selectEvents from '../selectors/selectContractEventsById.js';
-import { isAddress, toChecksumAddress } from '../../utils/web3-utils/index.js';
+import { isAddress } from '../../utils/web3-utils/index.js';
 
 //Contract Events
 /** @internal */
@@ -35,7 +35,7 @@ export function useEvents<
 ) {
     const { fromBlock, toBlock, blockBatch, max, past, sync } = options ?? {};
 
-    const addressChecksum = address && isAddress(address) ? toChecksumAddress(address.slice()) : undefined;
+    const addressChecksum = address && isAddress(address) ? address.toLowerCase() : undefined;
     const id = networkId && addressChecksum ? { networkId, address: addressChecksum } : undefined;
     const contract = useSelector((state) => selectSingle(state, id));
     const contractExists = !!contract;

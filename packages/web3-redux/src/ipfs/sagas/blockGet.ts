@@ -1,6 +1,6 @@
 import { call, put, select } from 'typed-redux-saga';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { BlockGetAction, BLOCK_GET, update } from '../actions/index.js';
+import { BlockGetAction, BLOCK_GET, updateAction } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { IPFSDataType } from '../model/interface.js';
@@ -21,7 +21,7 @@ export function* blockGet(action: BlockGetAction) {
         if (!content?.data) {
             //Get block data
             const data = yield* call([ipfs, ipfs.block.get], cid, options);
-            yield* put(update({ contentId: cid.toString(), data, type: IPFSDataType.Raw }));
+            yield* put(updateAction({ contentId: cid.toString(), data, type: IPFSDataType.Raw }));
         }
     } catch (error) {
         yield* put(

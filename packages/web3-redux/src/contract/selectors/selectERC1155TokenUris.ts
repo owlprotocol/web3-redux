@@ -1,7 +1,7 @@
 import invariant from 'tiny-invariant';
 import selectERC1155TokenIds from './selectERC1155TokenIds.js';
 import selectContractCall from './selectContractCallById.js';
-import { isAddress, toChecksumAddress } from '../../utils/web3-utils/index.js';
+import { isAddress } from '../../utils/web3-utils/index.js';
 
 export const selectERC1155TokenUris = (
     state: any,
@@ -11,7 +11,7 @@ export const selectERC1155TokenUris = (
 ) => {
     if (!networkId || !address) return undefined;
     if (address) invariant(isAddress(address), `${address} invalid contract address!`);
-    const addressChecksum = toChecksumAddress(address.slice());
+    const addressChecksum = address.toLowerCase();
 
     //Programmatic method - baseURI + tokenId
     //Find first tokenId with defined uri

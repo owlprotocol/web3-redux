@@ -3,16 +3,15 @@ import axios from 'axios';
 import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
+import jsdom from 'mocha-jsdom';
 import { useFetchTransactions } from './useFetchTransactions.js';
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 
 import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create } from '../actions/index.js';
+import { createAction } from '../actions/index.js';
 
 import { expectThrowsAsync } from '../../test/index.js';
-
-import jsdom from 'mocha-jsdom';
 
 describe('contract/hooks/useFetchTransactions.test.tsx', () => {
     jsdom({ url: 'http://localhost' });
@@ -40,7 +39,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
                 explorerApiClient: client,
             }),
         );
-        store.dispatch(create({ networkId, address }));
+        store.dispatch(createAction({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

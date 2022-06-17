@@ -3,7 +3,7 @@ import { name } from './common.js';
 import { selectEvents } from './selectors/index.js';
 import { createStore, StoreType } from '../store.js';
 import { networkId } from '../test/data.js';
-import { create as createEvent } from '../contractevent/actions/index.js';
+import { createAction as createEvent } from '../contractevent/actions/index.js';
 import { validateContractEvent } from '../contractevent/index.js';
 
 describe(`${name}.integration`, () => {

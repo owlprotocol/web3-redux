@@ -4,11 +4,10 @@ import {
     isCreateAction,
     isCreateBatchedAction,
     isRemoveAction,
-    isSetAction,
+    isRemoveBatchedAction,
     isUpdateAction,
-    RemoveAction,
-    SetAction,
-    UpdateAction,
+    isUpdateBatchedAction,
+    isSetAction,
 } from './actions/index.js';
 import { Ipfs } from './model/interface.js';
 import { ORMModel } from '../types/model.js';
@@ -23,14 +22,20 @@ export function reducer(sess: any, action: ReducerAction) {
             Model.upsert(item);
         });
     } else if (isRemoveAction(action)) {
-        Model.withId((action as RemoveAction).payload.contentId)?.delete();
+        Model.withId(action.payload.contentId)?.delete();
+    } else if (isRemoveBatchedAction(action)) {
+        action.payload.forEach((item) => {
+            Model.withId(item.contentId)?.delete();
+        });
     } else if (isUpdateAction(action)) {
-        Model.update((action as UpdateAction).payload);
+        const { payload } = action;
+        Model.update(payload);
+    } else if (isUpdateBatchedAction(action)) {
+        action.payload.forEach((item) => {
+            Model.update(item);
+        });
     } else if (isSetAction(action)) {
-        Model.withId((action as SetAction).payload.contentId)?.set(
-            (action as SetAction).payload.key,
-            (action as SetAction).payload.value,
-        );
+        Model.withId(action.payload.contentId)?.set(action.payload.key, action.payload.value);
     }
 
     return sess;

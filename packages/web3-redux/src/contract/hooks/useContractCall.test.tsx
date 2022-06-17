@@ -8,15 +8,15 @@ import { cloneDeep } from '../../utils/lodash/index.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
-import { create as createNetwork } from '../../network/actions/index.js';
-import { create as createTransaction } from '../../transaction/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
+import { createAction as createTransaction } from '../../transaction/actions/index.js';
 import { createAction as createBlock } from '../../block/actions/index.js';
-import { create as createEvent } from '../../contractevent/actions/index.js';
+import { createAction as createEvent } from '../../contractevent/actions/index.js';
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create } from '../actions/index.js';
+import { createAction } from '../actions/index.js';
 
 import { useContractCall } from '../hooks/useContractCall.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
@@ -58,7 +58,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
-            assert.equal(currentCallError?.message, `networkId undefined`, 'error.message');
+            assert.equal(currentCallError?.message, 'networkId undefined', 'error.message');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -75,7 +75,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
-            assert.equal(currentCallError?.message, `address undefined`, 'error.message');
+            assert.equal(currentCallError?.message, 'address undefined', 'error.message');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -92,7 +92,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
-            assert.equal(currentCallError?.message, `method undefined`, 'error.message');
+            assert.equal(currentCallError?.message, 'method undefined', 'error.message');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -136,7 +136,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
         it('Contract {id} has no web3 contract', async () => {
             store.dispatch(createNetwork({ networkId }));
             store.dispatch(
-                create({
+                createAction({
                     networkId,
                     address: ZERO_ADDRESS,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,
@@ -172,7 +172,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address;
             store.dispatch(
-                create({
+                createAction({
                     networkId,
                     address,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,
@@ -212,7 +212,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address;
             store.dispatch(
-                create({
+                createAction({
                     networkId,
                     address,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,

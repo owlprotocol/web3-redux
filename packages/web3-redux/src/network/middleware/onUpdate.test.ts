@@ -15,8 +15,8 @@ describe('onNetworkUpdate', () => {
     });
 
     it('createNetwork', () => {
-        store.dispatch(Contract.create(contract1));
-        store.dispatch(Network.create({ ...network1, web3, web3Sender }));
+        store.dispatch(Contract.createAction(contract1));
+        store.dispatch(Network.createAction({ ...network1, web3, web3Sender }));
 
         const selected1 = Contract.selectByIdSingle(store.getState(), contract1Id)!;
         assert.isDefined(selected1.web3Contract, 'web3Contract');
@@ -24,9 +24,9 @@ describe('onNetworkUpdate', () => {
     });
 
     it('updateNetwork', () => {
-        store.dispatch(Contract.create(contract1));
-        store.dispatch(Network.create({ ...network1 }));
-        store.dispatch(Network.update({ networkId: network1.networkId, web3, web3Sender }));
+        store.dispatch(Contract.createAction(contract1));
+        store.dispatch(Network.createAction({ ...network1 }));
+        store.dispatch(Network.updateAction({ networkId: network1.networkId, web3, web3Sender }));
 
         const selected1 = Contract.selectByIdSingle(store.getState(), contract1Id)!;
         assert.isDefined(selected1.web3Contract, 'web3Contract');
@@ -34,8 +34,8 @@ describe('onNetworkUpdate', () => {
     });
 
     it('setNetwork(key:web3)', () => {
-        store.dispatch(Contract.create(contract1));
-        store.dispatch(Network.create({ ...network1 }));
+        store.dispatch(Contract.createAction(contract1));
+        store.dispatch(Network.createAction({ ...network1 }));
         store.dispatch(Network.set({ id: network1.networkId, key: 'web3', value: web3 }));
 
         const selected1 = Contract.selectByIdSingle(store.getState(), contract1Id)!;
@@ -44,8 +44,8 @@ describe('onNetworkUpdate', () => {
     });
 
     it('setNetwork(key:web3Sender)', () => {
-        store.dispatch(Contract.create(contract1));
-        store.dispatch(Network.create({ ...network1 }));
+        store.dispatch(Contract.createAction(contract1));
+        store.dispatch(Network.createAction({ ...network1 }));
         store.dispatch(Network.set({ id: network1.networkId, key: 'web3Sender', value: web3Sender }));
 
         const selected1 = Contract.selectByIdSingle(store.getState(), contract1Id)!;

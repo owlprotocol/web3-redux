@@ -1,7 +1,7 @@
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 import { filter, keyBy } from '../../utils/lodash/index.js';
-import { AbiItem, toChecksumAddress, isAddress } from '../../utils/web3-utils/index.js';
+import { AbiItem, isAddress } from '../../utils/web3-utils/index.js';
 import { ModelWithId } from '../../types/model.js';
 import { Transaction } from '../../transaction/model/interface.js';
 
@@ -58,13 +58,13 @@ const SEPARATOR = '-';
 /** @internal */
 export function getId(id: Partial<ContractId>): string {
     const { networkId, address } = id;
-    if (address && isAddress(address)) return [networkId, toChecksumAddress(address.slice())].join(SEPARATOR);
+    if (address && isAddress(address)) return [networkId, address.toLowerCase()].join(SEPARATOR);
     return [networkId, address].join(SEPARATOR);
 }
 /** @internal */
 export function getIdDeconstructed(id: string): ContractId {
     const [networkId, address] = id.split(SEPARATOR); //Assumes separator not messed up
-    return { networkId, address: toChecksumAddress(address.slice()) };
+    return { networkId, address: address.toLowerCase() };
 }
 
 /** @internal */
@@ -77,7 +77,7 @@ export function validate(contract: Contract): ModelWithId<Contract> {
     const result = {
         ...contract,
         id,
-        address: toChecksumAddress(address.slice()),
+        address: address.toLowerCase(),
     };
     if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;
 

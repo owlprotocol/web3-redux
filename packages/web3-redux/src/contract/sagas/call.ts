@@ -1,7 +1,7 @@
 import { put, call, select } from 'typed-redux-saga';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { validateEthCall } from '../../ethcall/model/index.js';
-import { create as createEthCall, update as updateEthCall } from '../../ethcall/actions/index.js';
+import { createAction as createEthCall, updateAction as updateEthCall } from '../../ethcall/actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 
 import { getId } from '../model/index.js';

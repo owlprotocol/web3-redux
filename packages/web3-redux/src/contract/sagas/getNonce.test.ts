@@ -4,11 +4,11 @@ import { getWeb3Provider } from '../../test/index.js';
 
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 import { Contract } from '../model/interface.js';
 import { name } from '../common.js';
 import { selectByIdSingle } from '../selectors/index.js';
-import { create as createAction, getNonce as getNonceAction } from '../actions/index.js';
+import { createAction, getNonce as getNonceAction } from '../actions/index.js';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;

@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+
 import { name } from '../common.js';
 
 /** @internal */
@@ -17,7 +17,7 @@ export interface GetAssetsActionInput {
  * interfaces but simply implement one of event signatures.
  */
 export const getAssets = createAction(GET_ASSETS, (payload: GetAssetsActionInput) => {
-    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address.slice()) } };
+    return { payload: { networkId: payload.networkId, address: payload.address.toLowerCase() } };
 });
 /** @internal */
 export type GetAssetsAction = ReturnType<typeof getAssets>;

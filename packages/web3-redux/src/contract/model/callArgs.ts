@@ -1,5 +1,4 @@
 import { getId } from './interface.js';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 export interface CallArgsHash<P extends any[] = any[]> {
@@ -11,7 +10,7 @@ export function callArgsHash<P extends any[] = any[]>(callArgs?: CallArgsHash<P>
     if (!callArgs) return '()';
 
     const { args, from, defaultBlock } = callArgs!;
-    const fromCheckSum = from ? toChecksumAddress(from.slice()) : undefined;
+    const fromCheckSum = from ? from.toLowerCase() : undefined;
 
     let id = '';
 

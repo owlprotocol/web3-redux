@@ -12,11 +12,11 @@ import { networkId } from '../../test/data.js';
 import { BlockNumber as BlockNumberArtifact, Multicall } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+import { createAction as createNetwork } from '../../network/index.js';
 
 import { ContractId } from '../model/index.js';
 import { selectContractCall } from '../selectors/index.js';
-import { create as createAction, callBatched as callBatchedAction } from '../actions/index.js';
+import { createAction, callBatched as callBatchedAction } from '../actions/index.js';
 
 describe(`${name}.sagas.callBatched`, () => {
     let web3: Web3; //Web3 loaded from store

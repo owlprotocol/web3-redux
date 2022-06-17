@@ -5,7 +5,7 @@ import { PromiEvent, TransactionReceipt } from 'web3-core';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { ContractSendStatus } from '../../contractsend/model/index.js';
 import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions/index.js';
-import { create as createTransaction } from '../../transaction/actions/index.js';
+import { createAction as createTransaction } from '../../transaction/actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { SEND, SendAction } from '../actions/index.js';
 import { getId } from '../model/index.js';

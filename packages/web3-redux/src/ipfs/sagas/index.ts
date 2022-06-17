@@ -11,8 +11,9 @@ import get from './get.js';
 //Core IPFS API - Block
 import blockGet from './blockGet.js';
 import blockPut from './blockPut.js';
-import watchCreateDBSaga from './createDB.js';
-import watchCreateDBBatchedSaga from './createDBBatched.js';
+import { watchCreateDBSaga, watchCreateDBBatchedSaga } from './create/index.js';
+import { watchRemoveDBSaga, watchRemoveDBBatchedSaga } from './remove/index.js';
+import { watchUpdateDBSaga, watchUpdateDBBatchedSaga } from './update/index.js';
 import watchLoadDBSaga from './loadDBAll.js';
 import {
     OBJECT_GET,
@@ -30,6 +31,12 @@ import {
 /** @internal */
 export function* saga() {
     yield* all([
+        spawn(watchCreateDBSaga),
+        spawn(watchCreateDBBatchedSaga),
+        spawn(watchRemoveDBSaga),
+        spawn(watchRemoveDBBatchedSaga),
+        spawn(watchUpdateDBSaga),
+        spawn(watchUpdateDBBatchedSaga),
         takeEvery(OBJECT_GET, objectGet),
         takeEvery(CAT, cat),
         takeEvery(FETCH_IPFS, fetchIpfs),
@@ -40,8 +47,6 @@ export function* saga() {
         takeEvery(GET, get),
         takeEvery(BLOCK_GET, blockGet),
         takeEvery(BLOCK_PUT, blockPut),
-        spawn(watchCreateDBSaga),
-        spawn(watchCreateDBBatchedSaga),
         spawn(watchLoadDBSaga),
     ]);
 }

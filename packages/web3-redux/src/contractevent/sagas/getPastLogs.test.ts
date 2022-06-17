@@ -11,8 +11,8 @@ import { ERC20PresetMinterPauser, IERC20 } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
-import { create as createContract } from '../../contract/index.js';
+import { createAction as createNetwork } from '../../network/index.js';
+import { createAction as createContract } from '../../contract/index.js';
 
 import { selectByIdMany } from '../selectors/index.js';
 import { getPastLogs as getPastLogsAction } from '../actions/index.js';

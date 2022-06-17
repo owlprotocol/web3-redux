@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { map } from '../../utils/lodash/index.js';
 import invariant from 'tiny-invariant';
-import { toChecksumAddress, isHexStrict } from '../../utils/web3-utils/index.js';
+import { map } from '../../utils/lodash/index.js';
+import { isHexStrict } from '../../utils/web3-utils/index.js';
 import { name } from '../common.js';
 
 /** @internal */
@@ -37,9 +37,9 @@ export const getPastLogs = createAction(GET_PAST_LOGS, (payload: GetPastLogsActi
     let address: string | string[] | undefined;
     if (payload.address) {
         if (Array.isArray(payload.address)) {
-            address = map(payload.address, toChecksumAddress);
+            address = payload.address.map((a) => a.toLowerCase());
         } else {
-            address = toChecksumAddress(payload.address.slice());
+            address = payload.address.toLowerCase();
         }
     }
 

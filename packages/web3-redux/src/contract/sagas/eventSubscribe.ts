@@ -4,7 +4,7 @@ import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import type { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';
 import { selectByIdSingle as selectNetwork } from '../../network/index.js';
-import { create as createEvent } from '../../contractevent/actions/index.js';
+import { createAction as createEvent } from '../../contractevent/actions/index.js';
 import { eventSubscriptionHash, getId } from '../model/index.js';
 import {
     EventSubscribeAction,

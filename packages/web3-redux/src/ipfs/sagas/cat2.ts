@@ -3,7 +3,7 @@ import { importer } from 'ipfs-unixfs-importer';
 import { CID } from 'multiformats';
 import { UnixFS } from 'ipfs-unixfs-exporter';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { Cat2Action, CAT2, create, update } from '../actions/index.js';
+import { Cat2Action, CAT2, createAction, updateAction } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { selectByIdSingle, selectPathHash } from '../selectors/index.js';
 import { blockstore } from '../blockstore.js';
@@ -43,7 +43,7 @@ export function* cat2(action: Cat2Action) {
                 if (unixfs?.data) {
                     if (!content) {
                         yield* put(
-                            create({
+                            createAction({
                                 contentId: cid.toString(),
                                 data: unixfs.data,
                                 type: IPFSDataType.File,
@@ -51,7 +51,7 @@ export function* cat2(action: Cat2Action) {
                         );
                     } else {
                         yield* put(
-                            update({
+                            updateAction({
                                 contentId: cid.toString(),
                                 data: unixfs.data,
                                 type: IPFSDataType.File,

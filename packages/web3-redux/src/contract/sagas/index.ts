@@ -11,8 +11,9 @@ import { fetchTransactions } from './fetchTransactions.js';
 import { getCode } from './getCode.js';
 import { getEns } from './getEns.js';
 import watchEventGetPastRaw from './eventGetPastRaw.js';
-import watchCreateDBSaga from './createDB.js';
-import watchCreateDBBatchedSaga from './createDBBatched.js';
+import { watchCreateDBSaga, watchCreateDBBatchedSaga } from './create/index.js';
+import { watchRemoveDBSaga, watchRemoveDBBatchedSaga } from './remove/index.js';
+import { watchUpdateDBSaga, watchUpdateDBBatchedSaga } from './update/index.js';
 import watchLoadDBSaga from './loadDBAll.js';
 import {
     CALL_BATCHED,
@@ -30,6 +31,12 @@ import {
 /** @internal */
 export function* saga() {
     yield* all([
+        spawn(watchCreateDBSaga),
+        spawn(watchCreateDBBatchedSaga),
+        spawn(watchRemoveDBSaga),
+        spawn(watchRemoveDBBatchedSaga),
+        spawn(watchUpdateDBSaga),
+        spawn(watchUpdateDBBatchedSaga),
         spawn(watchCallSaga),
         takeEvery(EVENT_GET_PAST, eventGetPast),
         spawn(watchEventGetPastRaw),
@@ -42,40 +49,8 @@ export function* saga() {
         takeEvery(GET_CODE, getCode),
         takeEvery(FETCH_TRANSACTIONS, fetchTransactions),
         takeEvery(GET_ENS, getEns),
-        spawn(watchCreateDBSaga),
-        spawn(watchCreateDBBatchedSaga),
         spawn(watchLoadDBSaga),
     ]);
 }
 
 export default saga;
-
-/*
-//https://typed-redux-saga.js.org/docs/advanced/RootSaga/#keeping-everything-alive
-export function* saga() {
-    const sagas = [
-        takeEvery(CALL, contractCall),
-        takeEvery(CALL_BATCHED, contractCallBatched),
-        takeEvery(CALL_SYNCED, contractCallSynced),
-        takeEvery(SEND, contractSend),
-        takeEvery(EVENT_GET_PAST, contractEventGetPast),
-        //contractEventSubscribe(),
-    ];
-
-    yield all(
-        sagas.map((saga) =>
-            spawn(function* () {
-                while (true) {
-                    try {
-                        //@ts-ignore
-                        yield call(saga);
-                        break;
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-            }),
-        ),
-    );
-}
-*/

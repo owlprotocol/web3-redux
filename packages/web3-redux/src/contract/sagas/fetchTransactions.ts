@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { createBatchedAction as createTransactionBatched } from '../../transaction/actions/index.js';
-import { create, FetchTransactionsAction } from '../actions/index.js';
+import { createAction, FetchTransactionsAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
 interface EtherscanTx {
@@ -33,7 +33,7 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     const { networkId, address, startblock, endblock, page, offset, sort } = payload;
 
     const account = yield* select(selectByIdSingle, { networkId, address });
-    if (!account) yield* put(create({ networkId, address }));
+    if (!account) yield* put(createAction({ networkId, address }));
 
     const network = yield* select(selectNetwork, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);

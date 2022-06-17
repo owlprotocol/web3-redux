@@ -2,18 +2,17 @@ import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import { map } from '../../utils/lodash/index.js';
+import jsdom from 'mocha-jsdom';
 import { useContract } from './useContract.js';
+import { map } from '../../utils/lodash/index.js';
 import { getWeb3Provider } from '../../test/index.js';
 
-import { create as createNetwork } from '../../network/actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create } from '../actions/index.js';
-
-import jsdom from 'mocha-jsdom';
+import { createAction } from '../actions/index.js';
 
 describe(`${name}/hooks/useContract.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -35,7 +34,7 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
     beforeEach(() => {
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
-        store.dispatch(create({ networkId, address }));
+        store.dispatch(createAction({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

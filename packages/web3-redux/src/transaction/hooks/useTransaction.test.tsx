@@ -5,8 +5,8 @@ import { renderHook } from '@testing-library/react-hooks';
 import { getWeb3Provider } from '../../test/index.js';
 
 import { networkId, transaction1 } from '../../test/data.js';
-import { create as createNetwork } from '../../network/actions/index.js';
-import { create as createTransaction } from '../actions/index.js';
+import { createAction as createNetwork } from '../../network/actions/index.js';
+import { createAction as createTransaction } from '../actions/index.js';
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';

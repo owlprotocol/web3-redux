@@ -3,7 +3,7 @@ import { importer } from 'ipfs-unixfs-importer';
 import { CID } from 'multiformats';
 import { UnixFS } from 'ipfs-unixfs-exporter';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { create, GetAction, update } from '../actions/index.js';
+import { createAction, GetAction, updateAction } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { blockstore } from '../blockstore.js';
@@ -35,9 +35,9 @@ export function* get(action: GetAction) {
             const content = yield* select(selectByIdSingle, cid.toString());
             if (unixfs?.data) {
                 if (!content)
-                    yield* put(create({ contentId: cid.toString(), data: unixfs.data, type: IPFSDataType.File }));
+                    yield* put(createAction({ contentId: cid.toString(), data: unixfs.data, type: IPFSDataType.File }));
                 else if (!content?.data)
-                    yield* put(update({ contentId: cid.toString(), data: unixfs.data, type: IPFSDataType.File }));
+                    yield* put(updateAction({ contentId: cid.toString(), data: unixfs.data, type: IPFSDataType.File }));
             }
         }
     } catch (error) {

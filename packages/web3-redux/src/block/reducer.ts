@@ -22,7 +22,7 @@ export function reducer(sess: any, action: ReducerAction) {
         Model.upsert(omit(payload, ['transactions']));
     } else if (isCreateBatchedAction(action)) {
         action.payload.forEach((item) => {
-            Model.upsert(item);
+            Model.upsert(omit(item, ['transactions']));
         });
     } else if (isRemoveAction(action)) {
         Model.withId(getId(action.payload))?.delete();
@@ -35,7 +35,7 @@ export function reducer(sess: any, action: ReducerAction) {
         Model.update(omit(payload, ['transactions']));
     } else if (isUpdateBatchedAction(action)) {
         action.payload.forEach((item) => {
-            Model.update(omit(item));
+            Model.update(omit(item, ['transactions']));
         });
     } else if (isSetAction(action)) {
         Model.withId(getId(action.payload.id))?.set(action.payload.key, action.payload.value);

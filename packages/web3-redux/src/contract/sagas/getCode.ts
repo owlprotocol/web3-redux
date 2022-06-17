@@ -1,6 +1,6 @@
 import { select, put, call } from 'typed-redux-saga';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { set, create, GetCodeAction } from '../actions/index.js';
+import { set, createAction, GetCodeAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
 /** @category Sagas */
@@ -9,7 +9,7 @@ export function* getCode(action: GetCodeAction) {
     const { networkId, address } = payload;
 
     const account = yield* select(selectByIdSingle, { networkId, address });
-    if (!account) yield* put(create({ networkId, address }));
+    if (!account) yield* put(createAction({ networkId, address }));
 
     const network = yield* select(selectNetwork, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);

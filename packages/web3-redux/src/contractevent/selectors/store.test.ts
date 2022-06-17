@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { create as createEvent } from './../actions/index.js';
+import { createAction as createEvent } from './../actions/index.js';
 import { createStore, StoreType } from '../../store.js';
 
 import { validateContractEvent } from '../model/index.js';

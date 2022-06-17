@@ -1,6 +1,6 @@
 import { put, call, select } from 'typed-redux-saga';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { create, FetchAction, FETCH, update } from '../actions/index.js';
+import { createAction, FetchAction, FETCH, updateAction } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
@@ -16,7 +16,7 @@ export default function* fetch(action: FetchAction) {
     if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
     const web3 = network.web3 ?? network.web3Sender!;
 
-    yield* put(create({ ...payload, status: 'LOADING' }));
+    yield* put(createAction({ ...payload, status: 'LOADING' }));
 
     try {
         const gas = payload.gas ?? (yield* call(web3.eth.estimateGas, payload)); //default gas
@@ -30,10 +30,12 @@ export default function* fetch(action: FetchAction) {
         );
 
         const timestamp = Date.now();
-        yield* put(update({ ...payload, error: undefined, returnValue, status: 'SUCCESS', lastUpdated: timestamp }));
+        yield* put(
+            updateAction({ ...payload, error: undefined, returnValue, status: 'SUCCESS', lastUpdated: timestamp }),
+        );
     } catch (error) {
         const timestamp = Date.now();
-        yield* put(update({ ...payload, error: error as Error, status: 'ERROR', lastUpdated: timestamp }));
+        yield* put(updateAction({ ...payload, error: error as Error, status: 'ERROR', lastUpdated: timestamp }));
         yield* put(
             createError({
                 id: action.meta.uuid,

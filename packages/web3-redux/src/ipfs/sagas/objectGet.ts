@@ -2,7 +2,7 @@ import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
 import { keyBy } from '../../utils/lodash/index.js';
-import { update, create, createBatchedAction, ObjectGetAction, OBJECT_GET } from '../actions/index.js';
+import { updateAction, createAction, createBatchedAction, ObjectGetAction, OBJECT_GET } from '../actions/index.js';
 
 import { selectConfig } from '../../config/selectors/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
@@ -17,14 +17,14 @@ export function* objectGet(action: ObjectGetAction) {
         const contentId = action.payload;
         //Check if contentId exists
         const content = yield* select(selectByIdSingle, contentId);
-        if (!content) yield* put(create({ contentId }));
+        if (!content) yield* put(createAction({ contentId }));
 
         //https://github.com/ipfs/js-ipfs/blob/master/docs/core-api/BLOCK.md#ipfsblockgetcid-options
         //https://docs.ipfs.io/reference/http/api/#api-v0-object-get
         const response = (yield* call(client.post, '/api/v0/object/get', { arg: contentId })) as AxiosResponse;
         const pbNode = response.data as { Links?: { Name: string }[] };
         const linksByName = keyBy(pbNode.Links, 'Name');
-        yield* put(update({ contentId, pbNode: pbNode as any, linksByName }));
+        yield* put(updateAction({ contentId, pbNode: pbNode as any, linksByName }));
 
         //TODO Add pbNode type
         const entries =

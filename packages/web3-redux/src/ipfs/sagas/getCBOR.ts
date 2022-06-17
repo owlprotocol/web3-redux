@@ -1,7 +1,7 @@
 import { call, put, select } from 'typed-redux-saga';
 import { CID } from 'multiformats/cid';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { GET_CBOR, GetCBORAction, set, create } from '../actions/index.js';
+import { GET_CBOR, GetCBORAction, set, createAction } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
@@ -18,7 +18,7 @@ export function* getCBOR(action: GetCBORAction) {
 
         //Check if contentId exists
         const content = yield* select(selectByIdSingle, cid.toString());
-        if (!content) yield* put(create({ contentId: cid.toString() }));
+        if (!content) yield* put(createAction({ contentId: cid.toString() }));
         if (!content?.data) {
             const data = yield* call(IPFSSingleton.getCBOR, cid as CID);
             yield* put(set({ contentId: cid.toString(), key: 'data', value: data }));

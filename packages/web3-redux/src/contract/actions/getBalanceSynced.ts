@@ -1,5 +1,5 @@
 import { getBalance } from './getBalance.js';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+
 import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
 import { create as createSyncAction } from '../../sync/actions/index.js';
 import { ContractId, getId } from '../model/interface.js';
@@ -14,7 +14,7 @@ export interface GetBalanceSyncedActionInput extends ContractId {
  */
 export const getBalanceSynced = (payload: GetBalanceSyncedActionInput) => {
     const { networkId } = payload;
-    const address = toChecksumAddress(payload.address.slice());
+    const address = payload.address.toLowerCase();
     const getBalanceAction = getBalance({ networkId, address });
     const sync = createSyncForActions(networkId, [getBalanceAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${getId({ networkId, address })}-getBalance`;

@@ -1,5 +1,5 @@
 import { put, call } from 'typed-redux-saga';
-import { create as createAction, GetChainIdAction } from '../actions/index.js';
+import { createAction, GetChainIdAction } from '../actions/index.js';
 
 function* getChainId(action: GetChainIdAction) {
     const { payload } = action;

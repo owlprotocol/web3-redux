@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+
 import { getId as getContractId } from '../../contract/model/interface.js';
 import { getTransactionId } from '../../transaction/model/index.js';
 
@@ -67,7 +67,7 @@ export function getOptionsId(from: string | undefined, value: string | undefined
     if ((!from || from == ADDRESS_0) && (!value || value == '0')) return undefined;
 
     const options: any = {};
-    if (from) options.from = toChecksumAddress(from.slice());
+    if (from) options.from = from.toLowerCase();
     if (value) options.value = value;
 
     return JSON.stringify(value);
@@ -76,8 +76,8 @@ export function getOptionsId(from: string | undefined, value: string | undefined
 /** @internal */
 export function validate(item: ContractSend): ContractSend {
     const uuid = item.uuid ?? uuidv4();
-    const addressChecksum = toChecksumAddress(item.address.slice());
-    const fromCheckSum = toChecksumAddress(item.from.slice());
+    const addressChecksum = item.address.toLowerCase();
+    const fromCheckSum = item.from.toLowerCase();
     const contractId = getContractId(item);
     const transactionId = item.transactionHash
         ? getTransactionId({ hash: item.transactionHash, networkId: item.networkId })

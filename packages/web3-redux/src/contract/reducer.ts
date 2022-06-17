@@ -1,4 +1,11 @@
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
+import {
+    ReducerAction,
+    isCreateAction,
+    isCreateBatchedAction,
+    isRemoveAction,
+    isUpdateAction,
+    isSetAction,
+} from './actions/index.js';
 import { getId, Contract } from './model/index.js';
 import { Network } from '../network/model/index.js';
 import { ORMModel, ModelWithId } from '../types/model.js';
@@ -26,6 +33,10 @@ export function reducer(sess: any, action: ReducerAction) {
         Contract.upsert(insertData);
         action.payload.indexIds?.forEach((id) => {
             if (!Index.withId(id)) Index.create({ id });
+        });
+    } else if (isCreateBatchedAction(action)) {
+        action.payload.forEach((item) => {
+            Network.upsert(item);
         });
     } else if (isRemoveAction(action)) {
         if (typeof action.payload === 'string') {

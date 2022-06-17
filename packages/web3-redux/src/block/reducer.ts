@@ -1,5 +1,12 @@
 import { name } from './common.js';
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
+import {
+    ReducerAction,
+    isCreateAction,
+    isCreateBatchedAction,
+    isRemoveAction,
+    isUpdateAction,
+    isSetAction,
+} from './actions/index.js';
 import { BlockHeader, getId } from './model/index.js';
 import { omit } from '../utils/lodash/index.js';
 import { ORMModel, ModelWithId } from '../types/model.js';
@@ -11,6 +18,10 @@ export function reducer(sess: any, action: ReducerAction) {
         const { payload } = action;
         //transactions created in saga middleware
         Model.upsert(omit(payload, ['transactions']));
+    } else if (isCreateBatchedAction(action)) {
+        action.payload.forEach((item) => {
+            Model.upsert(item);
+        });
     } else if (isRemoveAction(action)) {
         Model.withId(getId(action.payload))?.delete();
     } else if (isUpdateAction(action)) {

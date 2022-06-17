@@ -1,5 +1,12 @@
 import { name } from './common.js';
-import { ReducerAction, isCreateAction, isRemoveAction, isUpdateAction, isSetAction } from './actions/index.js';
+import {
+    ReducerAction,
+    isCreateAction,
+    isCreateBatchedAction,
+    isRemoveAction,
+    isUpdateAction,
+    isSetAction,
+} from './actions/index.js';
 import { ContractEvent, getId } from './model/interface.js';
 import { ContractEventIndex } from '../contracteventindex/model/interface.js';
 import { ORMModel, ModelWithId } from '../types/model.js';
@@ -12,6 +19,10 @@ export function reducer(sess: any, action: ReducerAction) {
         Model.upsert(action.payload);
         action.payload.indexIds?.forEach((id) => {
             if (!Index.withId(id)) Index.create({ id });
+        });
+    } else if (isCreateBatchedAction(action)) {
+        action.payload.forEach((item) => {
+            Model.upsert(item);
         });
     } else if (isRemoveAction(action)) {
         Model.withId(getId(action.payload))?.delete();

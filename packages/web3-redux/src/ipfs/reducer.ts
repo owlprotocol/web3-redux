@@ -2,6 +2,7 @@ import { name } from './common.js';
 import {
     ReducerAction,
     isCreateAction,
+    isCreateBatchedAction,
     isRemoveAction,
     isSetAction,
     isUpdateAction,
@@ -17,6 +18,10 @@ export function reducer(sess: any, action: ReducerAction) {
     const Model: ORMModel<Ipfs> = sess[name];
     if (isCreateAction(action)) {
         Model.upsert(action.payload);
+    } else if (isCreateBatchedAction(action)) {
+        action.payload.forEach((item) => {
+            Model.upsert(item);
+        });
     } else if (isRemoveAction(action)) {
         Model.withId((action as RemoveAction).payload.contentId)?.delete();
     } else if (isUpdateAction(action)) {

@@ -1,14 +1,13 @@
 import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
-import { batchActions } from 'redux-batched-actions';
 import { AxiosResponse } from 'axios';
 import { keyBy } from '../../utils/lodash/index.js';
-import { update, create, ObjectGetAction, OBJECT_GET } from '../actions/index.js';
+import { update, createBatchedAction, ObjectGetAction, OBJECT_GET } from '../actions/index.js';
 
 import { selectConfig } from '../../config/selectors/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
-const objectGet_ERROR = `${OBJECT_GET}/ERROR`;
+const OBJECT_GET_ERROR = `${OBJECT_GET}/ERROR`;
 /** @objectGetegory Sagas */
 export function* objectGet(action: ObjectGetAction) {
     try {
@@ -28,18 +27,18 @@ export function* objectGet(action: ObjectGetAction) {
         yield* put(update({ contentId, pbNode: pbNode as any, linksByName }));
 
         //TODO Add pbNode type
-        const actions =
+        const entries =
             pbNode.Links?.map((l: any) => {
-                return create({ contentId: l.Hash.toString() });
+                return { contentId: l.Hash.toString() };
             }) ?? [];
-        if (actions.length > 0) {
-            const batchCreate = batchActions(actions, `${create.type}/${actions.length}`);
-            yield* put(batchCreate);
+        if (entries.length > 0) {
+            const action = createBatchedAction(entries);
+            yield* put(action);
         }
     } catch (error) {
         console.error(error);
         yield* put({
-            type: objectGet_ERROR,
+            type: OBJECT_GET_ERROR,
             error,
             errorMessage: (error as Error).message,
             action,

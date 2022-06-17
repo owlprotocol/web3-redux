@@ -1,8 +1,7 @@
 import { put, call, select } from 'typed-redux-saga';
-import { batchActions } from 'redux-batched-actions';
 import { EventData } from 'web3-eth-contract';
 import exists from './exists.js';
-import { create as createEvent } from '../../contractevent/actions/index.js';
+import { createBatchedAction as createEventBatched } from '../../contractevent/actions/index.js';
 import networkExists from '../../network/sagas/exists.js';
 
 import { getId } from '../model/index.js';
@@ -47,17 +46,18 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
             });
 
             if (events.length > 0) {
-                const actions = events.map((event: any) => {
-                    return createEvent({
-                        ...event,
-                        networkId,
-                        address,
-                        name: eventName,
-                        indexIds: [id],
-                    });
-                });
-                const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
-                yield* put(batch);
+                const action = createEventBatched(
+                    events.map((event: any) => {
+                        return {
+                            ...event,
+                            networkId,
+                            address,
+                            name: eventName,
+                            indexIds: [id],
+                        };
+                    }),
+                );
+                yield* put(action);
             }
         }
     } catch (error) {

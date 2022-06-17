@@ -1,9 +1,8 @@
 import { select, put, call } from 'typed-redux-saga';
-import { batchActions } from 'redux-batched-actions';
 import { AxiosResponse } from 'axios';
 
 import networkExists from '../../network/sagas/exists.js';
-import { create as createTransaction } from '../../transaction/actions/index.js';
+import { createBatchedAction as createTransactionBatched } from '../../transaction/actions/index.js';
 import { create, FetchTransactionsAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
@@ -55,28 +54,25 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
 
     const response = (yield* call(apiClient.get as any, '/', options)) as AxiosResponse;
     const transactions = response.data?.result as EtherscanTx[];
-    if (transactions) {
-        const transactionsCreate = transactions.map((t) =>
-            createTransaction({
-                ...t,
-                networkId,
-                blockNumber: t.blockNumber ? parseInt(t.blockNumber) : undefined,
-                nonce: t.nonce ? parseInt(t.nonce) : undefined,
-                transactionIndex: t.transactionIndex ? parseInt(t.transactionIndex) : undefined,
-                gas: t.gas ? parseInt(t.gas) : undefined,
-                gasUsed: t.gasUsed ? parseInt(t.gasUsed) : undefined,
-                cumulativeGasUsed: t.cumulativeGasUsed ? parseInt(t.cumulativeGasUsed) : undefined,
-                confirmations: t.confirmations ? parseInt(t.confirmations) : undefined,
-                timeStamp: t.timeStamp ? parseInt(t.timeStamp) : undefined,
+    if (transactions && transactions.length > 0) {
+        const action = createTransactionBatched(
+            transactions.map((t) => {
+                return {
+                    ...t,
+                    networkId,
+                    blockNumber: t.blockNumber ? parseInt(t.blockNumber) : undefined,
+                    nonce: t.nonce ? parseInt(t.nonce) : undefined,
+                    transactionIndex: t.transactionIndex ? parseInt(t.transactionIndex) : undefined,
+                    gas: t.gas ? parseInt(t.gas) : undefined,
+                    gasUsed: t.gasUsed ? parseInt(t.gasUsed) : undefined,
+                    cumulativeGasUsed: t.cumulativeGasUsed ? parseInt(t.cumulativeGasUsed) : undefined,
+                    confirmations: t.confirmations ? parseInt(t.confirmations) : undefined,
+                    timeStamp: t.timeStamp ? parseInt(t.timeStamp) : undefined,
+                };
             }),
         );
 
-        const transactionsCreateBatch = batchActions(
-            transactionsCreate,
-            `${createTransaction.type}/${transactions.length}`,
-        );
-
-        yield* put(transactionsCreateBatch);
+        yield* put(action);
     } else {
         throw new Error('Etherscan fetchTransactions response.data.result undefined');
     }

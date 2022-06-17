@@ -1,9 +1,8 @@
 import { AnyAction, Store } from 'redux';
-import { batchActions } from 'redux-batched-actions';
 import { selectLatestBlockNumber } from '../../network/selectors/index.js';
 import { set as setNetwork } from '../../network/actions/index.js';
 import { Transaction } from '../../transaction/model/interface.js';
-import { create as createTransaction } from '../../transaction/actions/index.js';
+import { createBatchedAction as createTransactionBatchedAction } from '../../transaction/actions/index.js';
 import { getTransactionId } from '../../transaction/model/index.js';
 
 import { isCreateAction, isUpdateAction, isSetAction } from '../actions/index.js';
@@ -48,31 +47,31 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
             }
 
             //Create transactions
-            if (transactions && isStrings(transactions)) {
-                const actions = transactions.map((hash: string) => {
-                    return createTransaction({
-                        hash,
-                        networkId: networkId!,
-                        blockNumber,
-                        blockId: getBlockId({ networkId: networkId!, number: blockNumber! }),
-                        id: getTransactionId({ hash, networkId: networkId! }),
-                    });
-                });
-
-                if (actions.length > 0)
-                    postActions.push(batchActions(actions, `${createTransaction.type}/${actions.length}`));
-            } else if (transactions) {
-                const actions = transactions.map((tx: Transaction) => {
-                    return createTransaction({
-                        ...tx,
-                        networkId: networkId!,
-                        blockId: getBlockId({ networkId: networkId!, number: blockNumber! })!,
-                        id: getTransactionId({ hash: tx.hash, networkId: networkId! }),
-                    });
-                });
-
-                if (actions.length > 0)
-                    postActions.push(batchActions(actions, `${createTransaction.type}/${actions.length}`));
+            if (transactions && transactions.length > 0 && isStrings(transactions)) {
+                const action = createTransactionBatchedAction(
+                    transactions.map((hash: string) => {
+                        return {
+                            hash,
+                            networkId: networkId!,
+                            blockNumber,
+                            blockId: getBlockId({ networkId: networkId!, number: blockNumber! }),
+                            id: getTransactionId({ hash, networkId: networkId! }),
+                        };
+                    }),
+                );
+                postActions.push(action);
+            } else if (transactions && transactions.length > 0 && !isStrings(transactions)) {
+                const action = createTransactionBatchedAction(
+                    transactions.map((tx: Transaction) => {
+                        return {
+                            ...tx,
+                            networkId: networkId!,
+                            blockId: getBlockId({ networkId: networkId!, number: blockNumber! })!,
+                            id: getTransactionId({ hash: tx.hash, networkId: networkId! }),
+                        };
+                    }),
+                );
+                postActions.push(action);
             }
         }
     }

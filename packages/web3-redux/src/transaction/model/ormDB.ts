@@ -13,83 +13,83 @@ export const settings = {
     columns: [
         {
             name: 'networkId',
-            index: [],
+            index: 'networkId',
         },
         {
             name: 'hash',
-            index: [],
+            index: 'hash',
         },
         {
             name: 'nonce',
-            index: [],
+            index: 'nonce',
         },
         {
             name: 'blockHash',
-            index: [],
+            index: 'blockHash',
         },
         {
             name: 'blockNumber',
-            index: [],
+            index: 'blockNumber',
         },
         {
             name: 'transactionIndex',
-            index: [],
+            index: 'transactionIndex',
         },
         {
             name: 'from',
-            index: [],
+            index: 'from',
         },
         {
             name: 'to',
-            index: [],
+            index: 'to',
         },
         {
             name: 'value',
-            index: [],
+            index: 'value',
         },
         {
             name: 'gasPrice',
-            index: [],
+            index: 'gasPrice',
         },
         {
             name: 'gas',
-            index: [],
+            index: 'gas',
         },
         {
             name: 'gasUsed',
-            index: [],
+            index: 'gasUsed',
         },
         {
             name: 'cumulativeGasUsed',
-            index: [],
+            index: 'cumulativeGasUsed',
         },
         {
-            name: 'effectiveGasPRice',
-            index: [],
+            name: 'effectiveGasPrice',
+            index: 'effectiveGasPrice',
         },
         {
             name: 'input',
-            index: [],
+            index: 'input',
         },
         {
             name: 'receipt',
-            index: [],
+            index: 'receipt',
         },
         {
             name: 'confirmations',
-            index: [],
+            index: 'confirmations',
         },
         {
             name: 'contractAddress',
-            index: [],
+            index: 'contractAddress',
         },
         {
             name: 'timeStamp',
-            index: [],
+            index: 'timeStamp',
         },
         {
             name: 'blockId',
-            index: [],
+            index: 'blockId',
         },
     ],
 };

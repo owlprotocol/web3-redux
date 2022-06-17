@@ -13,43 +13,43 @@ export const settings = {
     columns: [
         {
             name: 'networkId',
-            index: [],
+            index: 'networkId',
         },
         {
             name: 'to',
-            index: [],
+            index: 'to',
         },
         {
             name: 'data',
-            index: [],
+            index: 'data',
         },
         {
             name: 'defaultBlock',
-            index: [],
+            index: 'defaultBlock',
         },
         {
             name: 'from',
-            index: [],
+            index: 'from',
         },
         {
             name: 'gas',
-            index: [],
+            index: 'gas',
         },
         {
             name: 'returnValue',
-            index: [],
+            index: 'returnValue',
         },
         {
             name: 'error',
-            index: [],
+            index: 'error',
         },
         {
             name: 'lastUpdated',
-            index: [],
+            index: 'lastUpdated',
         },
         {
             name: 'status',
-            index: [],
+            index: 'status',
         },
     ],
 };

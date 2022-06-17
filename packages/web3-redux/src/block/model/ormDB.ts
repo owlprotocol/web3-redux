@@ -7,18 +7,25 @@ export class BlockDBModel extends Model {
 }
 
 export const settings = {
-    name, //name of table
-    primary: 'id', //auto increment field (default id)
+    name,
+    primary: 'id',
     ormClass: BlockDBModel,
     columns: [
-        {
-            name: 'number', //other indexes in the database
-            index: [],
-        },
-        {
-            name: 'networkId',
-            index: [],
-        },
+        { name: 'number', index: 'number' },
+        { name: 'networkId', index: 'networkId' },
+        { name: 'hash', index: 'hash' },
+        { name: 'parentHash', index: 'parentHash' },
+        { name: 'nonce', index: 'nonce' },
+        { name: 'sha3Uncles', index: 'sha3Uncles' },
+        { name: 'logsBloom', index: 'logsBloom' },
+        { name: 'transactionRoot', index: 'transactionRoot' },
+        { name: 'stateRoot', index: 'stateRoot' },
+        { name: 'receiptRoot', index: 'receiptRoot' },
+        { name: 'miner', index: 'miner' },
+        { name: 'extraData', index: 'extraData' },
+        { name: 'gasLimit', index: 'gasLimit' },
+        { name: 'gasUsed', index: 'gasUsed' },
+        { name: 'timestamp', index: 'timestamp' },
     ],
 };
 

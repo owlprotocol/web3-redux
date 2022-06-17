@@ -24,7 +24,7 @@ export * as Environment from './environment.js';
 export * as TestData from './test/data.js';
 export * as Abi from './abis/index.js';
 export { store } from './store.js';
-export { db } from './db.js';
+export { getDB } from './db.js';
 
 export {
     getOrm,

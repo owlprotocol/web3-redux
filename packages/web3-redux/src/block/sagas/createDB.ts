@@ -1,12 +1,13 @@
 import { put, call, all, takeEvery } from 'typed-redux-saga';
 import { createDBAction, CreateAction, CreateDBAction, CREATE, CREATE_DB } from '../actions/index.js';
-import db from '../../db.js';
+import getDB from '../../db.js';
 import { name } from '../common.js';
 
 /** Handle async db action */
 export function* createDBSaga(action: CreateDBAction) {
     const { payload } = action;
 
+    const db = yield* call(getDB);
     const models = yield* call([db, db.connect]);
     yield* call([models[name], models[name].create], payload);
 }

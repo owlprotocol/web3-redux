@@ -13,15 +13,15 @@ export const settings = {
     columns: [
         {
             name: 'url',
-            index: [],
+            index: 'url',
         },
         {
             name: 'data',
-            index: [],
+            index: 'data',
         },
         {
             name: 'corsProxied',
-            index: [],
+            index: 'corsProxied',
         },
     ],
 };

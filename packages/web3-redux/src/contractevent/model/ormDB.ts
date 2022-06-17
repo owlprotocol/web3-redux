@@ -13,51 +13,51 @@ export const settings = {
     columns: [
         {
             name: 'networkId', //other indexes in the database
-            index: [],
+            index: 'networkId',
         },
         {
             name: 'blockHash',
-            index: [],
+            index: 'blockHash',
         },
         {
             name: 'logIndex',
-            index: [],
+            index: 'logIndex',
         },
         {
             name: 'blockNumber',
-            index: [],
+            index: 'blockNumber',
         },
         {
             name: 'address',
-            index: [],
+            index: 'address',
         },
         {
             name: 'name',
-            index: [],
+            index: 'name',
         },
         {
             name: 'data',
-            index: [],
+            index: 'data',
         },
         {
             name: 'topics',
-            index: [],
+            index: 'topics',
         },
         {
             name: 'returnValues',
-            index: [],
+            index: 'returnValues',
         },
         {
             name: 'returnValuesIndexKeys',
-            index: [],
+            index: 'returnValuesIndexKeys',
         },
         {
             name: 'indexIds',
-            index: [],
+            index: 'indexIds',
         },
         {
             name: 'contractId',
-            index: [],
+            index: 'contractId',
         },
     ],
 };

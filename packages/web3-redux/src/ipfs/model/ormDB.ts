@@ -13,11 +13,11 @@ export const settings = {
     columns: [
         {
             name: 'data',
-            index: [],
+            index: 'data',
         },
         {
             name: 'type',
-            index: [],
+            index: 'type',
         },
     ],
 };

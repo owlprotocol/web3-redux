@@ -13,19 +13,19 @@ export const settings = {
     columns: [
         {
             name: 'address', //other indexes in the database
-            index: [],
+            index: 'address',
         },
         {
             name: 'networkId',
-            index: [],
+            index: 'networkId',
         },
         {
             name: 'abi',
-            index: [],
+            index: 'abi',
         },
         {
             name: 'indexIds',
-            index: [],
+            index: 'indexIds',
         },
     ],
 };

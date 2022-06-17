@@ -13,43 +13,43 @@ export const settings = {
     columns: [
         {
             name: 'name',
-            index: [],
+            index: 'name',
         },
         {
             name: 'currency',
-            index: [],
+            index: 'currency',
         },
         {
             name: 'web3Rpc',
-            index: [],
+            index: 'web3Rpc',
         },
         {
             name: 'multicallAddress',
-            index: [],
+            index: 'multicallAddress',
         },
         {
             name: 'multicallContract',
-            index: [],
+            index: 'multicallContract',
         },
         {
             name: 'gasLimit',
-            index: [],
+            index: 'gasLimit',
         },
         {
             name: 'latestBlockNumber',
-            index: [],
+            index: 'latestBlockNumber',
         },
         {
             name: 'explorerUrl',
-            index: [],
+            index: 'explorerUrl',
         },
         {
             name: 'explorerApiUrl',
-            index: [],
+            index: 'explorerApiUrl',
         },
         {
             name: 'explorerApiKey',
-            index: [],
+            index: 'explorerApiKey',
         },
     ],
 };

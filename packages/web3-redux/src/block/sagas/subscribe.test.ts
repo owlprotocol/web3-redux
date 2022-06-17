@@ -12,6 +12,9 @@ import { networkId } from '../../test/data.js';
 import { subscribe as subscribeAction, unsubscribe as unsubscribeAction } from '../actions/index.js';
 import { selectByIdMany } from '../selectors/index.js';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
+const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
+
 describe(`${name}.subscribe`, () => {
     let accounts: string[];
     let web3: Web3; //Web3 loaded from store
@@ -25,6 +28,7 @@ describe(`${name}.subscribe`, () => {
     });
 
     beforeEach(async () => {
+        indexedDB = new FDBFactory();
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
     });

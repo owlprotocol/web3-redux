@@ -1,5 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import getDB from '../../db.js';
 
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock } from '../../utils/index.js';
@@ -12,6 +14,9 @@ import { networkId } from '../../test/data.js';
 import fetchAction from '../actions/fetch.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
+const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
+
 describe(`${name}.fetch`, () => {
     let web3: Web3; //Web3 loaded from store
     let store: StoreType;
@@ -23,6 +28,7 @@ describe(`${name}.fetch`, () => {
     });
 
     beforeEach(async () => {
+        indexedDB = new FDBFactory();
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
     });
@@ -75,6 +81,7 @@ describe(`${name}.fetch.rpccalls`, () => {
     });
 
     beforeEach(async () => {
+        indexedDB = new FDBFactory();
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
     });

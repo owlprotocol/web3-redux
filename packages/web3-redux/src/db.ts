@@ -9,6 +9,7 @@ import { settings as EthCallSettings } from './ethcall/model/ormDB.js';
 import { settings as HttpSettings } from './http/model/ormDB.js';
 import { settings as IPFSSettings } from './ipfs/model/ormDB.js';
 import { settings as NetworkSettings } from './network/model/ormDB.js';
+import { settings as TransactionSettings } from './transaction/model/ormDB.js';
 
 if (!isClient()) {
     require('fake-indexeddb/auto');
@@ -17,7 +18,7 @@ if (!isClient()) {
 
 const settings = {
     name: REDUX_ROOT,
-    version: 1, //version of database
+    version: 1,
     tables: [
         BlockSettings,
         ContractSettings,
@@ -26,9 +27,21 @@ const settings = {
         HttpSettings,
         IPFSSettings,
         NetworkSettings,
+        TransactionSettings,
     ],
 };
 
-export const db = new Connector(settings);
+let db: Connector;
+export async function getDB() {
+    if (db) return db;
 
-export default db;
+    if (!isClient()) {
+        require('fake-indexeddb/auto');
+        console.debug('Running in NodeJS Context. Setting up fake-indexeddb');
+    }
+
+    db = new Connector(settings);
+    return db;
+}
+
+export default getDB;

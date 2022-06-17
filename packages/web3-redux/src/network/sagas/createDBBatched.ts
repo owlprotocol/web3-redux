@@ -6,13 +6,14 @@ import {
     CREATE_BATCHED,
     CREATE_DB_BATCHED,
 } from '../actions/index.js';
-import db from '../../db.js';
+import getDB from '../../db.js';
 import { name } from '../common.js';
 
 /** Handle async db action */
 export function* createDBBatchedSaga(action: CreateDBBatchedAction) {
     const { payload } = action;
 
+    const db = yield* call(getDB);
     const models = yield* call([db, db.connect]);
     yield* call([models[name], models[name].createMultiple], payload);
 }

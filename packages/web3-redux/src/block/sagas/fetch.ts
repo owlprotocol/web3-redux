@@ -1,8 +1,6 @@
 import { select, put, call } from 'typed-redux-saga';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { Eth } from 'web3-eth';
 import { isHexStrict } from '../../utils/web3-utils/index.js';
-import { create, update, FetchAction } from '../actions/index.js';
+import { createAction, updateAction, FetchAction } from '../actions/index.js';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
@@ -21,7 +19,7 @@ export function* fetchSaga(action: FetchAction) {
         const block = yield* select(selectByIdSingle, { networkId, number: paramAsNumber });
         if (!block) {
             yield* put(
-                create(
+                createAction(
                     {
                         networkId,
                         number: paramAsNumber,
@@ -43,10 +41,10 @@ export function* fetchSaga(action: FetchAction) {
         returnTransactionObjects ?? false, //default to false
     );
     if (blockExists) {
-        yield* put(update({ ...result, networkId }, action.meta.uuid));
+        yield* put(updateAction({ ...result, networkId }, action.meta.uuid));
     } else {
         //User passed blockHash as arg so we create the block only once data is passed
-        yield* put(create({ ...result, networkId }, action.meta.uuid));
+        yield* put(createAction({ ...result, networkId }, action.meta.uuid));
     }
 }
 

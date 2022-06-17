@@ -7,9 +7,11 @@ function* getBlockNumber(action: GetBlockNumberAction) {
     const networkId = payload;
 
     const network = yield* select(selectByIdSingle, networkId);
-    if (!network?.web3) throw new Error(`Network ${networkId} missing web3`);
+    if (!network) throw new Error(`Network ${networkId} undefined`);
 
-    const web3 = network.web3;
+    if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+    const web3 = network.web3 ?? network.web3Sender!;
+
     const latestBlockNumber = yield* call(web3.eth.getBlockNumber);
     yield* put(setAction({ id: networkId, key: 'latestBlockNumber', value: latestBlockNumber }));
 }

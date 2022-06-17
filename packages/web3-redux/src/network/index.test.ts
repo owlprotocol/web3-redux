@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { name } from './common.js';
-import { create as createBlock, validateBlock } from '../block/index.js';
+import { createAction as createBlock, validateBlock } from '../block/index.js';
 import { createStore, StoreType } from '../store.js';
 
 import { networkId } from '../test/data.js';

@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 
-import { create, CREATE, CreateAction, isCreateAction } from './create.js';
-import { update, UPDATE, UpdateAction, isUpdateAction } from './update.js';
+import { createAction, CREATE, CreateAction, isCreateAction } from './create/create.js';
+import { updateAction, UPDATE, UpdateAction, isUpdateAction } from './update/update.js';
 import { remove, REMOVE, RemoveAction, isRemoveAction } from './remove.js';
 import { set, SET, SetAction, isSetAction } from './set.js';
 import { FETCH, fetch, FetchAction, isFetchAction } from './fetch.js';
@@ -22,7 +22,7 @@ describe(`${name}.actions`, () => {
             meta: { uuid: '' },
         };
         assert.isTrue(isCreateAction(expected));
-        assert.deepEqual(create(item, ''), expected);
+        assert.deepEqual(createAction(item, ''), expected);
     });
 
     it('update', () => {
@@ -32,7 +32,7 @@ describe(`${name}.actions`, () => {
             meta: { uuid: '' },
         };
         assert.isTrue(isUpdateAction(expected));
-        assert.deepEqual(update(item, ''), expected);
+        assert.deepEqual(updateAction(item, ''), expected);
     });
 
     it('remove', () => {

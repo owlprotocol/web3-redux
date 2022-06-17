@@ -1,20 +1,21 @@
 import { testSaga, expectSaga } from 'redux-saga-test-plan';
 import { assert } from 'chai';
+// eslint-disable-next-line import/no-unresolved
 import { Connector } from 'indexeddb-orm';
-import { putCreateDBSAga, createDBSaga, watchCreateDBSaga } from './createDB.js';
-import getDB from '../../db.js';
+import { putCreateDBSaga, createDBSaga, watchCreateDBSaga } from './createDB.js';
+import getDB from '../../../db.js';
 
-import createAction from '../actions/create.js';
-import createDBAction from '../actions/createDB.js';
-import { BlockHeader, validate } from '../model/index.js';
-import { networkId } from '../../test/data.js';
-import { name } from '../common.js';
+import { createAction, createDBAction } from '../../actions/index.js';
+import { BlockHeader, validate } from '../../model/index.js';
+import { networkId } from '../../../test/data.js';
+import { name } from '../../common.js';
+import { createStore, StoreType } from '../../../store.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
 
 describe(`${name}/sagas/createDB.ts`, () => {
-    const item: BlockHeader = validate({ networkId, number: 0 });
+    const item: BlockHeader = validate({ networkId, number: 1 });
     let db: Connector;
 
     beforeEach(async () => {
@@ -23,12 +24,12 @@ describe(`${name}/sagas/createDB.ts`, () => {
     });
 
     describe('unit', () => {
-        it('putCreate', async () => {
-            const create = createAction(item);
-            testSaga(putCreateDBSAga, create).next().put(createDBAction(item, create.meta.uuid)).next().isDone();
+        it('putCreateDBSaga', async () => {
+            const action = createAction(item);
+            testSaga(putCreateDBSaga, action).next().put(createDBAction(item, action.meta.uuid)).next().isDone();
         });
 
-        it('createDB', async () => {
+        it('createDBSaga', async () => {
             const models = await db.connect();
             testSaga(createDBSaga, createDBAction(item))
                 .next()
@@ -43,7 +44,7 @@ describe(`${name}/sagas/createDB.ts`, () => {
     });
 
     describe('integration', () => {
-        it('createDB', async () => {
+        it('createDBSaga', async () => {
             await expectSaga(createDBSaga, createDBAction(item)).run();
 
             //DB State
@@ -55,6 +56,24 @@ describe(`${name}/sagas/createDB.ts`, () => {
 
         it('watchCreateDBSaga', async () => {
             await expectSaga(watchCreateDBSaga).dispatch(createDBAction(item)).run();
+
+            //DB State
+            const models = await db.connect();
+            const record = await models[name].find(item.id);
+            assert.isDefined(record);
+            assert.deepEqual(record, item);
+        });
+    });
+
+    describe('store', () => {
+        let store: StoreType;
+
+        beforeEach(async () => {
+            ({ store } = createStore());
+        });
+
+        it('createDBAction', async () => {
+            store.dispatch(createDBAction(item));
 
             //DB State
             const models = await db.connect();

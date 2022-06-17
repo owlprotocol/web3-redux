@@ -4,7 +4,7 @@ import Web3 from 'web3';
 
 import blockFetch from './fetch.js';
 import { BlockHeader } from '../model/BlockHeader.js';
-import { create, fetch as fetchAction, SUBSCRIBE } from '../actions/index.js';
+import { createAction, fetch as fetchAction, SUBSCRIBE } from '../actions/index.js';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { SubscribeAction } from '../actions/subscribe.js';
 
@@ -60,7 +60,7 @@ function* subscribe(action: SubscribeAction) {
                 const { type, block, error } = message;
                 if (type === SUBSCRIBE_DATA) {
                     const newBlock = { ...block!, networkId };
-                    yield* put(create(newBlock));
+                    yield* put(createAction(newBlock));
                     if (payload.returnTransactionObjects ?? true) {
                         yield* fork(
                             //@ts-expect-error
@@ -75,7 +75,7 @@ function* subscribe(action: SubscribeAction) {
                     }
                 } else if (type === SUBSCRIBE_CHANGED) {
                     const newBlock = { ...block!, networkId };
-                    yield* put(create(newBlock));
+                    yield* put(createAction(newBlock));
                     if (payload.returnTransactionObjects) {
                         yield* fork(
                             //@ts-expect-error

@@ -11,7 +11,7 @@ import { ERC1155PresetMinterPauser } from '../../abis/index.js';
 
 import { create as createNetwork } from '../../network/actions/index.js';
 import { create as createTransaction } from '../../transaction/actions/index.js';
-import { create as createBlock } from '../../block/actions/index.js';
+import { createAction as createBlock } from '../../block/actions/index.js';
 import { create as createEvent } from '../../contractevent/actions/index.js';
 
 import { name } from '../common.js';

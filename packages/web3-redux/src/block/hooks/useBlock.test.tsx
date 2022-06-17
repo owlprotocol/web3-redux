@@ -10,7 +10,7 @@ import { name } from '../common.js';
 import { networkId, block1 } from '../../test/data.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create } from '../actions/index.js';
+import { createAction } from '../actions/index.js';
 import { BlockTransaction, validate } from '../model/index.js';
 import { getWeb3Provider } from '../../test/index.js';
 import { useBlock } from './index.js';
@@ -28,7 +28,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
     beforeEach(() => {
         ({ store } = createStore());
-        store.dispatch(create(item));
+        store.dispatch(createAction(item));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
@@ -68,7 +68,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
         });
 
         it('(networkId, number, false)', async () => {
-            store.dispatch(create(block1));
+            store.dispatch(createAction(block1));
 
             const { result } = renderHook(() => useBlock(networkId, block1.number, true), {
                 wrapper,
@@ -90,7 +90,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
         });
 
         it('(networkId, number, ifnull): defined', async () => {
-            store.dispatch(create(block1));
+            store.dispatch(createAction(block1));
 
             const { result } = renderHook(() => useBlock(networkId, block1.number, 'ifnull'), {
                 wrapper,

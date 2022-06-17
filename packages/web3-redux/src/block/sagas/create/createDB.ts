@@ -1,9 +1,8 @@
 import { put, call, all, takeEvery } from 'typed-redux-saga';
-import { createDBAction, CreateAction, CreateDBAction, CREATE, CREATE_DB } from '../actions/index.js';
-import getDB from '../../db.js';
-import { name } from '../common.js';
-import { create as createError } from '../../error/actions/index.js';
-import { omit } from '../../utils/lodash/index.js';
+import { createDBAction, CreateAction, CreateDBAction, CREATE, CREATE_DB } from '../../actions/index.js';
+import getDB from '../../../db.js';
+import { name } from '../../common.js';
+import { create as createError } from '../../../error/actions/index.js';
 
 const CREATE_DB_ERROR = `${CREATE_DB}/ERROR`;
 /** Handle async db action */
@@ -13,10 +12,7 @@ export function* createDBSaga(action: CreateDBAction) {
 
         const db = yield* call(getDB);
         const models = yield* call([db, db.connect]);
-        yield* call(
-            [models[name], models[name].create],
-            omit(payload, ['web3', 'web3Sender', 'multicallContract', 'explorerApiClient']),
-        );
+        yield* call([models[name], models[name].create], payload);
     } catch (error) {
         //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
         yield* put(
@@ -31,12 +27,12 @@ export function* createDBSaga(action: CreateDBAction) {
 }
 
 /** Put async db action */
-export function* putCreateDBSAga(action: CreateAction) {
+export function* putCreateDBSaga(action: CreateAction) {
     yield* put(createDBAction(action.payload, action.meta.uuid));
 }
 
 export function* watchCreateDBSaga() {
-    yield* all([takeEvery(CREATE, putCreateDBSAga), takeEvery(CREATE_DB, createDBSaga)]);
+    yield* all([takeEvery(CREATE, putCreateDBSaga), takeEvery(CREATE_DB, createDBSaga)]);
 }
 
 export default watchCreateDBSaga;

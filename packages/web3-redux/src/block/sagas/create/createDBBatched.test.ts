@@ -1,13 +1,14 @@
 import { testSaga, expectSaga } from 'redux-saga-test-plan';
 import { assert } from 'chai';
+// eslint-disable-next-line import/no-unresolved
 import { Connector } from 'indexeddb-orm';
 import { putCreateDBBatchedSaga, createDBBatchedSaga, watchCreateDBBatchedSaga } from './createDBBatched.js';
-import { createBatchedAction, createDBBatchedAction } from '../actions/index.js';
-import getDB from '../../db.js';
-import { name } from '../common.js';
+import { createBatchedAction, createDBBatchedAction } from '../../actions/index.js';
+import getDB from '../../../db.js';
+import { name } from '../../common.js';
 
-import { BlockHeader, validate } from '../model/index.js';
-import { networkId } from '../../test/data.js';
+import { BlockHeader, validate } from '../../model/index.js';
+import { networkId } from '../../../test/data.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
@@ -22,7 +23,7 @@ describe(`${name}/sagas/createDB.ts`, () => {
     });
 
     describe('unit', () => {
-        it('putCreate', async () => {
+        it('putCreateDBBatchedAction', async () => {
             const action = createBatchedAction([item]);
             testSaga(putCreateDBBatchedSaga, action)
                 .next()
@@ -31,7 +32,7 @@ describe(`${name}/sagas/createDB.ts`, () => {
                 .isDone();
         });
 
-        it('createDB', async () => {
+        it('createDBBatchedSaga', async () => {
             const models = await db.connect();
             testSaga(createDBBatchedSaga, createDBBatchedAction([item]))
                 .next()
@@ -46,7 +47,7 @@ describe(`${name}/sagas/createDB.ts`, () => {
     });
 
     describe('integration', () => {
-        it('createDB', async () => {
+        it('createDBBatchedSaga', async () => {
             await expectSaga(createDBBatchedSaga, createDBBatchedAction([item])).run();
 
             //DB State
@@ -56,7 +57,7 @@ describe(`${name}/sagas/createDB.ts`, () => {
             assert.deepEqual(record, item);
         });
 
-        it('watchCreateDBSaga', async () => {
+        it('watchCreateDBBatchedSaga', async () => {
             await expectSaga(watchCreateDBBatchedSaga)
                 .dispatch(createDBBatchedAction([item]))
                 .run();

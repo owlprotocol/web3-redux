@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { name } from '../common.js';
-import { BlockHeader, validate } from '../model/index.js';
+import { name } from '../../common.js';
+import { BlockHeader, validate } from '../../model/index.js';
 
 export const CREATE_DB_BATCHED = `${name}/CREATE_DB_BATCHED`;
 export const createDBBatchedAction = createAction(CREATE_DB_BATCHED, (payload: BlockHeader[], uuid?: string) => {

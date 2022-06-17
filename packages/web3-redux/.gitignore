@@ -16,6 +16,7 @@ yarn.lock
 /build
 /lib
 /dist
+/ipfs
 #/types
 
 # misc

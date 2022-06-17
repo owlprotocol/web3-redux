@@ -11,6 +11,9 @@ import { fetchTransactions } from './fetchTransactions.js';
 import { getCode } from './getCode.js';
 import { getEns } from './getEns.js';
 import watchEventGetPastRaw from './eventGetPastRaw.js';
+import watchCreateDBSaga from './createDB.js';
+import watchCreateDBBatchedSaga from './createDBBatched.js';
+import watchLoadDBSaga from './loadDBAll.js';
 import {
     CALL_BATCHED,
     SEND,
@@ -39,6 +42,9 @@ export function* saga() {
         takeEvery(GET_CODE, getCode),
         takeEvery(FETCH_TRANSACTIONS, fetchTransactions),
         takeEvery(GET_ENS, getEns),
+        spawn(watchCreateDBSaga),
+        spawn(watchCreateDBBatchedSaga),
+        spawn(watchLoadDBSaga),
     ]);
 }
 

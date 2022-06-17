@@ -1,4 +1,4 @@
-import { all, takeEvery } from 'typed-redux-saga';
+import { all, takeEvery, spawn } from 'typed-redux-saga';
 import { objectGet } from './objectGet.js';
 import { cat } from './cat.js';
 import { fetchIpfs } from './fetchIpfs.js';
@@ -11,6 +11,9 @@ import get from './get.js';
 //Core IPFS API - Block
 import blockGet from './blockGet.js';
 import blockPut from './blockPut.js';
+import watchCreateDBSaga from './createDB.js';
+import watchCreateDBBatchedSaga from './createDBBatched.js';
+import watchLoadDBSaga from './loadDBAll.js';
 import {
     OBJECT_GET,
     CAT,
@@ -37,6 +40,9 @@ export function* saga() {
         takeEvery(GET, get),
         takeEvery(BLOCK_GET, blockGet),
         takeEvery(BLOCK_PUT, blockPut),
+        spawn(watchCreateDBSaga),
+        spawn(watchCreateDBBatchedSaga),
+        spawn(watchLoadDBSaga),
     ]);
 }
 

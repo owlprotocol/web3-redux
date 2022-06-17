@@ -1,14 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { Network, Contract, TestData, Environment } from '@owlprotocol/web3-redux';
+import { Config, Network, Contract, TestData, Environment } from '@owlprotocol/web3-redux';
 import getDisplayName from './getDisplayName';
 import { getEnvironment } from '../environment';
-//@ts-ignore
-Environment.setEnvironment(getEnvironment());
+
+Environment.setEnvironment(getEnvironment() as any);
 
 export const withMockData = (WrappedComponent: any) => {
     const Component = (props: any) => {
         const dispatch = useDispatch();
+
+        const config = useSelector((state) => Config.selectConfig(state));
+        useEffect(() => {
+            const corsProxy = getEnvironment().VITE_CORS_PROXY;
+            if (config.corsProxy != corsProxy) dispatch(Config.set({ id: '0', key: 'corsProxy', value: corsProxy }));
+        }, [dispatch, config]);
 
         const [networkMainnet, networkArbitrum, networkOptimism, networkPolygon, networkGanache] = useSelector(
             (state) => Network.selectByIdMany(state, ['1', '42161', '10', '137', '1337']),

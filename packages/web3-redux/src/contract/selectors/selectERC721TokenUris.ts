@@ -3,20 +3,23 @@ import selectERC721TokenIds from './selectERC721TokenIds.js';
 import selectContractCall from './selectContractCallById.js';
 import { isAddress, toChecksumAddress } from '../../utils/web3-utils/index.js';
 
-export const selectERC721TokenUris = (state: any, networkId: string | undefined, address: string | undefined) => {
+export const selectERC721TokenUris = (
+    state: any,
+    networkId: string | undefined,
+    address: string | undefined,
+    tokenIds?: string[],
+) => {
     if (!networkId || !address) return undefined;
     if (address) invariant(isAddress(address), `${address} invalid contract address!`);
     const addressChecksum = toChecksumAddress(address.slice());
 
-    const tokendIdData = selectERC721TokenIds(state, networkId, addressChecksum);
-    const tokenIds = tokendIdData ? tokendIdData[0] : [];
-    if (tokenIds.length == 0) return [];
-
     //Programmatic method - baseURI + tokenId
     //Find first tokenId with defined uri
+    const tokendIdData = selectERC721TokenIds(state, networkId, addressChecksum);
+    const tokenIdsAll = tokendIdData ? tokendIdData[0] : [];
     let tokenId0: string;
     let tokenUri0: string | undefined;
-    for (const tokenId of tokenIds) {
+    for (const tokenId of tokenIdsAll) {
         tokenId0 = tokenId;
         tokenUri0 = selectContractCall(state, { networkId, address: addressChecksum }, 'tokenURI', {
             args: [tokenId0],
@@ -24,6 +27,7 @@ export const selectERC721TokenUris = (state: any, networkId: string | undefined,
         if (tokenUri0) break;
     }
 
+    if (!tokenIds) tokenIds = tokenIdsAll;
     if (tokenUri0) {
         //{id} substring
         if (tokenUri0.search('{id}') >= 0) {

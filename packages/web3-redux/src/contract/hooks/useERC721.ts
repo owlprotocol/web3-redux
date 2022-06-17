@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { useContractWithAbi } from './useContractWithAbi.js';
 import { useContractCall } from './useContractCall.js';
 import { useEvents, UseEventsOptions } from './useEvents.js';
@@ -8,6 +9,7 @@ import { GenericSync } from '../../sync/model/index.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
 
 import { useURI } from '../../ipfs/hooks/useURI.js';
+import selectERC721TokenUris from '../selectors/selectERC721TokenUris.js';
 
 /**
  * Contract hook for ERC721 interface.
@@ -49,11 +51,17 @@ export function useERC721(
     const [ownerOf] = useContractCall(networkId, address, 'ownerOf', [tokenId], {
         sync: ownerOfSync,
     });
-    const [tokenURI] = useContractCall(networkId, address, 'tokenURI', [tokenId], {
-        sync: tokenURISync,
+
+    const tokenURIList = useSelector((state) => selectERC721TokenUris(state, networkId, address, [tokenId!]));
+    const tokenURI = tokenURIList ? tokenURIList[0] : undefined;
+
+    //If tokenURI computable & sync == ifnull, bypass by setting sync to fasle
+    const tokenURISyncIfNull = tokenURI ? false : 'ifnull';
+    useContractCall(networkId, address, 'tokenURI', [tokenId], {
+        sync: tokenURISync === 'ifnull' ? tokenURISyncIfNull : tokenURISync,
     }) as [string | undefined, any];
 
-    const [metadata, { contentId }] = useURI(tokenURI, sync?.metadata);
+    const [metadata, { contentId }] = useURI(sync?.metadata ? tokenURI : undefined);
 
     //Events
     const Transfer = useEvents(networkId, address, 'Transfer', { tokenId }, TransferEventsOptions);

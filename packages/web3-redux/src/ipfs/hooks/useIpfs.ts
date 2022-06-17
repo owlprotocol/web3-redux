@@ -7,7 +7,7 @@ import { fetchIpfs as fetchIpfsAction } from '../actions/index.js';
  * Reads IPFS content from store and makes a call to fetch content.
  * @category Hooks
  * */
-export const useIpfs = (path: string | undefined, fetch = 'ifnull' as 'ifnull' | true | false) => {
+export const useIpfs = (path: string | undefined) => {
     const dispatch = useDispatch();
 
     const pathHash = useSelector((state) => selectPathHash(state, path));
@@ -15,9 +15,7 @@ export const useIpfs = (path: string | undefined, fetch = 'ifnull' as 'ifnull' |
 
     const dataExists = content?.data || false;
     const action = useMemo(() => {
-        if (path && ((fetch === 'ifnull' && !dataExists) || fetch === true)) {
-            return fetchIpfsAction(path);
-        }
+        if (path && !dataExists) return fetchIpfsAction(path);
     }, [path, fetch, dataExists]);
 
     useEffect(() => {

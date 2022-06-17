@@ -50,8 +50,6 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
-        ///'@jambit/typed-redux-saga/use-typed-effects': ['error', 'macro'],
-        //'@jambit/typed-redux-saga/delegate-effects': 'error',
     },
     settings: {
         'import/resolver': {
@@ -65,5 +63,5 @@ module.exports = {
         {
             files: ['**/*.ts', '**/*.tsx'],
         },
-    ]
+    ],
 };

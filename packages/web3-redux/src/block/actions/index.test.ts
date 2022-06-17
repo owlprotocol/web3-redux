@@ -29,9 +29,10 @@ describe(`${name}.actions`, () => {
         const expected: UpdateAction = {
             type: UPDATE,
             payload: { id: getId(item), ...item },
+            meta: { uuid: '' },
         };
         assert.isTrue(isUpdateAction(expected));
-        assert.deepEqual(update(item), expected);
+        assert.deepEqual(update(item, ''), expected);
     });
 
     it('remove', () => {
@@ -56,9 +57,10 @@ describe(`${name}.actions`, () => {
         const expected: FetchAction = {
             type: FETCH,
             payload: { networkId, blockHashOrBlockNumber: 0 },
+            meta: { uuid: '' },
         };
         assert.isTrue(isFetchAction(expected));
-        assert.deepEqual(fetch({ networkId, blockHashOrBlockNumber: 0 }), expected);
+        assert.deepEqual(fetch({ networkId, blockHashOrBlockNumber: 0 }, ''), expected);
     });
 
     it('subscribe', () => {

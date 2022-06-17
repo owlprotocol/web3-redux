@@ -1,14 +1,14 @@
 import { put, call, select } from 'typed-redux-saga';
 import { EventData } from 'web3-eth-contract';
-import exists from './exists.js';
 import { createBatchedAction as createEventBatched } from '../../contractevent/actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
 
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { getId } from '../model/index.js';
 import { EventGetPastRawAction, EVENT_GET_PAST_RAW } from '../actions/eventGetPastRaw.js';
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 import selectContractEvents from '../selectors/selectContractEventsById.js';
 import selectEventsByIndex from '../../contracteventindex/selectors/selectEvents.js';
+import { selectByIdSingle } from '../selectors/index.js';
 
 const EVENT_GET_PAST_RAW_ERROR = `${EVENT_GET_PAST_RAW}/ERROR`;
 
@@ -18,11 +18,12 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
         const { id, networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
         const contractId = getId({ networkId, address });
 
-        const network = yield* call(networkExists, networkId);
-        if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
-        const contract = yield* call(exists, { networkId, address });
+        const network = yield* select(selectNetwork, networkId);
+        if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        //Contract
+        const contract = yield* select(selectByIdSingle, { networkId, address });
+        if (!contract) throw new Error(`Contract ${contractId} undefined`);
+
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
         if (!web3Contract) throw new Error(`Contract ${contractId} has no web3 contract`);
 

@@ -32,6 +32,8 @@ describe(`${name}/sagas/createDB.ts`, () => {
             const models = await db.connect();
             testSaga(createDBSaga, createDBAction(item))
                 .next()
+                .call(getDB)
+                .next(db)
                 .call([db, db.connect])
                 .next(models)
                 .call([models[name], models[name].create], item)

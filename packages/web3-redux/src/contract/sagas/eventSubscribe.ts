@@ -1,9 +1,9 @@
 import { Action } from 'redux';
-import { put, call, cancel, take, fork } from 'typed-redux-saga';
+import { put, call, cancel, take, fork, select } from 'typed-redux-saga';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import type { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';
-import exists from './exists.js';
+import { selectByIdSingle as selectNetwork } from '../../network/index.js';
 import { create as createEvent } from '../../contractevent/actions/index.js';
 import { eventSubscriptionHash, getId } from '../model/index.js';
 import {
@@ -13,7 +13,7 @@ import {
     isEventSubscribeAction,
     isEventUnsubscribeAction,
 } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
+import selectByIdSingle from '../selectors/selectByIdSingle.js';
 
 const SUBSCRIBE_DATA = `${EVENT_SUBSCRIBE}/DATA`;
 const SUBSCRIBE_ERROR = `${EVENT_SUBSCRIBE}/ERROR`;
@@ -51,8 +51,11 @@ function* eventSubscribe(action: EventSubscribeAction) {
         const { networkId, address, eventName } = payload;
         const id = getId({ networkId, address });
 
-        yield* call(networkExists, networkId);
-        const contract = yield* call(exists, { networkId, address });
+        const network = yield* select(selectNetwork, networkId);
+        if (!network) throw new Error(`Network ${networkId} undefined`);
+
+        const contract = yield* select(selectByIdSingle, { networkId, address });
+        if (!contract) throw new Error(`Contract ${id} undefined`);
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
         if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);

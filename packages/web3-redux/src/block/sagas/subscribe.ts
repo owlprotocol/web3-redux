@@ -1,12 +1,11 @@
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
-import { put, call, fork, take } from 'typed-redux-saga';
+import { put, call, fork, take, select } from 'typed-redux-saga';
 import Web3 from 'web3';
 
 import blockFetch from './fetch.js';
 import { BlockHeader } from '../model/BlockHeader.js';
 import { create, fetch as fetchAction, SUBSCRIBE } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
-import { Network } from '../../network/model/index.js';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { SubscribeAction } from '../actions/subscribe.js';
 
 const SUBSCRIBE_CONNECTED = `${SUBSCRIBE}/CONNECTED`;
@@ -48,8 +47,8 @@ function* subscribe(action: SubscribeAction) {
     const { payload } = action;
     const { networkId } = payload;
 
-    const network: Network = yield* call(networkExists, networkId);
-    if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
+    const network = yield* select(selectNetwork, networkId);
+    if (!network?.web3) throw new Error(`Network ${networkId} missing web3`);
     const web3 = network.web3;
 
     while (true) {

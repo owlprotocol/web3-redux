@@ -1,5 +1,5 @@
 import { select, put, call } from 'typed-redux-saga';
-import networkExists from '../../network/sagas/exists.js';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { set, create, GetCodeAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
@@ -11,7 +11,9 @@ export function* getCode(action: GetCodeAction) {
     const account = yield* select(selectByIdSingle, { networkId, address });
     if (!account) yield* put(create({ networkId, address }));
 
-    const network = yield* call(networkExists, networkId);
+    const network = yield* select(selectNetwork, networkId);
+    if (!network) throw new Error(`Network ${networkId} undefined`);
+
     const web3 = network.web3;
     const web3Sender = network.web3Sender;
     if (!web3 && !web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);

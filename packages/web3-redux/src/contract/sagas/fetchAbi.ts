@@ -2,9 +2,9 @@ import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 
-import networkExists from '../../network/sagas/exists.js';
 import { create, set as setAction, FetchAbiAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 
 /** @category Sagas */
 export function* fetchAbi(action: FetchAbiAction) {
@@ -14,8 +14,10 @@ export function* fetchAbi(action: FetchAbiAction) {
     const account = yield* select(selectByIdSingle, { networkId, address });
     if (!account) yield* put(create({ networkId, address }));
 
-    const network = yield* call(networkExists, networkId);
-    const apiClient = network.explorerApiClient;
+    const network = yield* select(selectNetwork, networkId);
+    if (!network) throw new Error(`Network ${networkId} undefined`);
+
+    const apiClient = network?.explorerApiClient;
     if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
 
     const options = {

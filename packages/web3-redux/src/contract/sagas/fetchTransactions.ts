@@ -1,7 +1,7 @@
 import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
 
-import networkExists from '../../network/sagas/exists.js';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { createBatchedAction as createTransactionBatched } from '../../transaction/actions/index.js';
 import { create, FetchTransactionsAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
@@ -35,7 +35,9 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     const account = yield* select(selectByIdSingle, { networkId, address });
     if (!account) yield* put(create({ networkId, address }));
 
-    const network = yield* call(networkExists, networkId);
+    const network = yield* select(selectNetwork, networkId);
+    if (!network) throw new Error(`Network ${networkId} undefined`);
+
     const apiClient = network.explorerApiClient;
     if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
 

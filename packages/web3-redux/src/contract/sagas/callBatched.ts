@@ -1,11 +1,10 @@
-import { put, all, select, call } from 'typed-redux-saga';
+import { put, all, select } from 'typed-redux-saga';
 import { validate as validatedEthCall } from '../../ethcall/model/index.js';
 import { create as createEthCall } from '../../ethcall/actions/index.js';
 import { Contract } from '../model/index.js';
 import { create, CallBatchedAction, CALL_BATCHED } from '../actions/index.js';
 import { selectByIdMany } from '../selectors/selectByIdMany.js';
-import networkExists from '../../network/sagas/exists.js';
-import { Network } from '../../network/model/index.js';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
@@ -14,8 +13,8 @@ export function* callBatched(action: CallBatchedAction) {
     try {
         const { payload } = action;
         const { requests, networkId } = payload;
-        const network: Network = yield* call(networkExists, networkId);
-        if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
+        const network = yield* select(selectNetwork, networkId);
+        if (!network?.web3) throw new Error(`Network ${networkId} missing web3`);
 
         const web3 = network.web3;
         const multicallContract = network.multicallContract;

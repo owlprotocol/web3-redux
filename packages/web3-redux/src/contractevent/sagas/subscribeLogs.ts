@@ -1,10 +1,10 @@
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
-import { put, call, cancel, take, fork } from 'typed-redux-saga';
+import { put, call, cancel, take, fork, select } from 'typed-redux-saga';
 import { Action } from 'redux';
-import invariant from 'tiny-invariant';
 import type { Subscription } from 'web3-core-subscriptions';
 import type { Log } from 'web3-core';
 
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import {
     create as createEvent,
     SubscribeLogsAction,
@@ -12,7 +12,6 @@ import {
     isSubscribeLogsAction,
     isUnsubscribeLogsAction,
 } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
 import { UnsubscribeLogsAction } from '../actions/unsubscribeLogs.js';
 import { getLogsSubscriptionId } from '../model/logsSubscription.js';
 
@@ -51,9 +50,11 @@ function* subscribeLogs(action: SubscribeLogsAction) {
         const { payload } = action;
         const { networkId, address, topics } = payload;
 
-        const network = yield* call(networkExists, networkId);
-        const web3 = network.web3 ?? network.web3Sender;
-        invariant(web3, `Network ${networkId} missing web3`);
+        const network = yield* select(selectNetwork, networkId);
+        if (!network) throw new Error(`Network ${networkId} undefined`);
+
+        if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+        const web3 = network.web3 ?? network.web3Sender!;
 
         const subscription = web3.eth.subscribe('logs', { address, topics });
         const channel: TakeableChannel<SubscribeLogsChannelMessage> = yield* call(subscribeLogsChannel, subscription);

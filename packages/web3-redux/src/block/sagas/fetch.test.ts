@@ -1,25 +1,30 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { testSaga } from 'redux-saga-test-plan';
+// eslint-disable-next-line import/no-unresolved
+import { Connector } from 'indexeddb-orm';
+import { fetchSaga } from './fetch.js';
 import getDB from '../../db.js';
 
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock } from '../../utils/index.js';
 import { create as createNetwork } from '../../network/actions/index.js';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
+
 import { createStore, StoreType } from '../../store.js';
 import { validate } from '../model/index.js';
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
-import fetchAction from '../actions/fetch.js';
+import { fetch as fetchAction, create as createAction, update as updateAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
 
-describe(`${name}.fetch`, () => {
+describe(`${name}/sagas/fetch.ts`, () => {
     let web3: Web3; //Web3 loaded from store
-    let store: StoreType;
+    let db: Connector;
 
     before(() => {
         const provider = getWeb3Provider();
@@ -29,27 +34,56 @@ describe(`${name}.fetch`, () => {
 
     beforeEach(async () => {
         indexedDB = new FDBFactory();
-        ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        db = await getDB();
     });
 
-    describe('fetch', () => {
-        it('({returnTransactionObjects:true})', async () => {
-            store.dispatch(
-                fetchAction({ networkId, blockHashOrBlockNumber: 'latest', returnTransactionObjects: true }),
-            );
-            const expected = validate({ ...(await web3.eth.getBlock('latest')), networkId });
-            const selected = selectByIdSingle(store.getState(), { networkId, number: expected.number });
-            assert.deepEqual({ ...selected, transactions: [] }, expected as any);
+    describe('unit', () => {
+        it('new block - by number', async () => {
+            const item = { networkId, blockHashOrBlockNumber: 1, returnTransactionObjects: true };
+            const action = fetchAction(item);
+            console.debug({ uuid: action.meta.uuid });
+            testSaga(fetchSaga, action)
+                .next()
+                .select(selectByIdSingle, { networkId, number: 1 })
+                .next(undefined)
+                .put(createAction({ networkId, number: 1 }, action.meta.uuid))
+                .next()
+                .select(selectNetwork, networkId)
+                .next({ networkId, web3 })
+                .call(web3.eth.getBlock, 1, false)
+                .next({ networkId, number: 1, hash: '0x1' })
+                .put(updateAction({ networkId, number: 1, hash: '0x1' }, action.meta.uuid))
+                .next()
+                .isDone();
+        });
+    });
+
+    describe('integration', () => {
+        let store: StoreType;
+
+        beforeEach(async () => {
+            ({ store } = createStore());
+            store.dispatch(createNetwork({ networkId, web3 }));
         });
 
-        it('({returnTransactionObjects:false})', async () => {
-            store.dispatch(
-                fetchAction({ networkId, blockHashOrBlockNumber: 'latest', returnTransactionObjects: false }),
-            );
-            const expected = validate({ ...(await web3.eth.getBlock('latest')), networkId });
-            const selected = selectByIdSingle(store.getState(), { networkId, number: expected.number });
-            assert.deepEqual({ ...selected, transactions: [] }, expected as any);
+        describe('fetch', () => {
+            it('({returnTransactionObjects:true})', async () => {
+                store.dispatch(
+                    fetchAction({ networkId, blockHashOrBlockNumber: 'latest', returnTransactionObjects: true }),
+                );
+                const expected = validate({ ...(await web3.eth.getBlock('latest')), networkId });
+                const selected = selectByIdSingle(store.getState(), { networkId, number: expected.number });
+                assert.deepEqual({ ...selected, transactions: [] }, expected as any);
+            });
+
+            it('({returnTransactionObjects:false})', async () => {
+                store.dispatch(
+                    fetchAction({ networkId, blockHashOrBlockNumber: 'latest', returnTransactionObjects: false }),
+                );
+                const expected = validate({ ...(await web3.eth.getBlock('latest')), networkId });
+                const selected = selectByIdSingle(store.getState(), { networkId, number: expected.number });
+                assert.deepEqual({ ...selected, transactions: [] }, expected as any);
+            });
         });
     });
 });

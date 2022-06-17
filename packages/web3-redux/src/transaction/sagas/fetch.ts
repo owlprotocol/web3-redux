@@ -1,6 +1,6 @@
 import { put, call, select } from 'typed-redux-saga';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { create as createTransaction, update as updateTransaction, FetchAction } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
 function* fetch(action: FetchAction) {
@@ -10,9 +10,11 @@ function* fetch(action: FetchAction) {
     const tx = yield* select(selectByIdSingle, { networkId, hash });
     if (!tx) yield* put(createTransaction({ networkId, hash }));
 
-    const network = yield* call(networkExists, networkId);
-    const web3 = network.web3;
-    if (!web3) throw new Error(`Network ${networkId} missing web3`);
+    const network = yield* select(selectNetwork, networkId);
+    if (!network) throw new Error(`Network ${networkId} undefined`);
+
+    if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+    const web3 = network.web3 ?? network.web3Sender!;
 
     const transaction = yield* call(web3.eth.getTransaction, hash);
     const newTransaction = { ...transaction, networkId };

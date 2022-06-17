@@ -1,7 +1,6 @@
-import { put, call } from 'typed-redux-saga';
+import { put, call, select } from 'typed-redux-saga';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { create, FetchAction, FETCH, update } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
-import { Network } from '../../network/model/index.js';
 import { create as createError } from '../../error/actions/index.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
@@ -10,9 +9,13 @@ const FETCH_ERROR = `${FETCH}/ERROR`;
 export default function* fetch(action: FetchAction) {
     const { payload } = action;
     const { networkId, defaultBlock } = payload;
-    const network: Network = yield* call(networkExists, networkId);
-    if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
-    const web3 = network.web3;
+
+    const network = yield* select(selectNetwork, networkId);
+    if (!network) throw new Error(`Network ${networkId} undefined`);
+
+    if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+    const web3 = network.web3 ?? network.web3Sender!;
+
     yield* put(create({ ...payload, status: 'LOADING' }));
 
     try {

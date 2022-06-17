@@ -1,7 +1,6 @@
-import { put, call } from 'typed-redux-saga';
-import invariant from 'tiny-invariant';
+import { put, call, select } from 'typed-redux-saga';
+import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { createBatchedAction, GetPastLogsAction, GET_PAST_LOGS } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
 
 const GET_PAST_LOGS_ERROR = `${GET_PAST_LOGS}/ERROR`;
 
@@ -10,9 +9,11 @@ function* getPastLogs(action: GetPastLogsAction) {
         const { payload } = action;
         const { networkId, address, topics, fromBlock, toBlock } = payload;
 
-        const network = yield* call(networkExists, networkId);
-        const web3 = network.web3 ?? network.web3Sender;
-        invariant(web3, `Network ${networkId} missing web3`);
+        const network = yield* select(selectNetwork, networkId);
+        if (!network) throw new Error(`Network ${networkId} undefined`);
+
+        if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+        const web3 = network.web3 ?? network.web3Sender!;
 
         const options = { address, topics, fromBlock, toBlock };
         const result = yield* call(web3.eth.getPastLogs, options);

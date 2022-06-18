@@ -10,6 +10,7 @@ import syncSaga from './sync/sagas/index.js';
 import ipfsSaga from './ipfs/sagas/index.js';
 import _4ByteSaga from './4byte/sagas/index.js';
 import HttpSaga from './http/sagas/index.js';
+import Web3ReduxSaga from './web3Redux/sagas/index.js';
 
 //https://typed-redux-saga.js.org/docs/advanced/RootSaga.html
 export function* rootSaga() {
@@ -24,5 +25,6 @@ export function* rootSaga() {
         spawn(ipfsSaga),
         spawn(_4ByteSaga),
         spawn(HttpSaga),
+        spawn(Web3ReduxSaga),
     ]);
 }

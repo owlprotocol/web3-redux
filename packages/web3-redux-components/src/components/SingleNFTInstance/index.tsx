@@ -1,13 +1,13 @@
-import { useTheme, Box, IconButton, HStack, Image } from '@chakra-ui/react';
+import { useTheme, Box, IconButton, HStack, Image, Skeleton } from '@chakra-ui/react';
 import Icon from '../Icon';
 import { shortenHash } from '../../utils';
 import NetworkIcon from '../NetworkIcon';
 import { FileUploadImage } from '../FileUpload';
 
 export interface PresenterProps {
-    networkId: string;
     itemName: string;
-    price: string;
+    networkId?: string;
+    price?: string;
     isSelected?: boolean;
     isFavorite?: boolean;
     handleFavorite?: any;
@@ -23,15 +23,15 @@ export interface PresenterProps {
 }
 
 export const NFTInstancePresenter = ({
+    itemName = '',
     networkId,
-    itemName = 'Placeholder',
     ownerOf,
     price,
     isSelected,
     isFavorite,
     handleFavorite,
-    imageSrc = 'http://placehold.jp/228x196.png',
-    imageAlt = 'Placeholder',
+    imageSrc,
+    imageAlt = '',
     editable = false,
 }: PresenterProps) => {
     const { themes } = useTheme();
@@ -53,7 +53,7 @@ export const NFTInstancePresenter = ({
                         accept={'image/*'}
                         buttonStyle={{ bg: 'transparent', w: '100%', borderRadius: 0, fontSize: 14 }}
                     />
-                ) : (
+                ) : imageSrc ? (
                     <Image
                         src={imageSrc}
                         borderRadius={16}
@@ -62,6 +62,8 @@ export const NFTInstancePresenter = ({
                         alt={imageAlt}
                         objectFit={'scale-down'}
                     />
+                ) : (
+                    <Skeleton h={'100%'} speed={1} />
                 )}
             </Box>
             <Box
@@ -89,13 +91,21 @@ export const NFTInstancePresenter = ({
 
                     <HStack>
                         {/** NFT Network */}
-                        <NetworkIcon networkId={networkId} size={18} />
-                        <IconButton
-                            onClick={handleFavorite}
-                            icon={isFavorite ? <Icon icon="heart.active" size={18} /> : <Icon icon="heart" size={18} />}
-                            bg={'transparent'}
-                            aria-label="mark as favorite"
-                        />
+                        {networkId && <NetworkIcon networkId={networkId} size={18} />}
+                        {handleFavorite && (
+                            <IconButton
+                                onClick={handleFavorite}
+                                icon={
+                                    isFavorite ? (
+                                        <Icon icon="heart.active" size={18} />
+                                    ) : (
+                                        <Icon icon="heart" size={18} />
+                                    )
+                                }
+                                bg={'transparent'}
+                                aria-label="mark as favorite"
+                            />
+                        )}
                     </HStack>
                 </HStack>
             )}

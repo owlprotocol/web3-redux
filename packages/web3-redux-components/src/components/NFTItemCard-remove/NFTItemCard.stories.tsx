@@ -6,7 +6,7 @@ const Wrapper = (props: any) => {
 };
 
 export default {
-    title: 'NFT/NFTItemCard',
+    title: 'REMOVE-ME',
     component: NFTItemCard,
 } as ComponentMeta<typeof NFTItemCard>;
 
@@ -18,5 +18,5 @@ Main.args = {
     itemName: '8250',
     tokenName: 'ERC721',
     generateTime: 600,
-    assetPreviewSrc: 'http://placehold.jp/168x168.png',
+    assetPreviewSrc: '',
 };

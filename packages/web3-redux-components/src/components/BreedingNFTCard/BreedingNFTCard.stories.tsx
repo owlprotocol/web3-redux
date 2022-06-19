@@ -14,5 +14,5 @@ Main.args = {
     itemName: 'NFT Name',
     generation: '3',
     generateTime: 600,
-    assetPreviewSrc: 'http://placehold.jp/228x196.png',
+    assetPreviewSrc: '',
 };

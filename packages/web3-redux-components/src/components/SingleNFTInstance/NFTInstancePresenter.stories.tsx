@@ -36,3 +36,9 @@ Editable.args = {
     price: '10',
     editable: true,
 };
+
+export const Preview = Template.bind({});
+
+Preview.args = {
+    itemName: 'NFT Name',
+};

@@ -3,6 +3,8 @@ import { ReactComponent as EthereumIcon } from './icons/eth.svg';
 import { ReactComponent as OptimismIcon } from './icons/optimism.svg';
 import { ReactComponent as ArbitrumIcon } from './icons/arbitrum.svg';
 import { ReactComponent as PolygonIcon } from './icons/polygon.svg';
+import { ReactComponent as MoonbeamIcon } from './icons/moonbeam.svg';
+import { ReactComponent as MoonriverIcon } from './icons/moonriver.svg';
 
 export interface Props {
     networkId?: number | string | undefined;
@@ -23,6 +25,10 @@ export const NetworkIcon = ({ networkId = '1', size = 30 }: Props) => {
             case '137':
             case 'polygon':
                 return <PolygonIcon />;
+            case 'moonbeam':
+                return <MoonbeamIcon />;
+            case 'moonriver':
+                return <MoonriverIcon />;
         }
     };
 

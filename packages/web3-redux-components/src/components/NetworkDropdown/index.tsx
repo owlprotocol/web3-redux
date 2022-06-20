@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box, Select, useTheme } from '@chakra-ui/react';
 import NetworkIcon from '../NetworkIcon';
 
-const DEFAULT_CHAINS = ['ethereum', 'arbitrum', 'optimism', 'polygon', 'BNB Chain'];
+const DEFAULT_CHAINS = ['ethereum', 'arbitrum', 'optimism', 'polygon', 'BNB Chain', 'moonbeam', 'moonriver'];
 
 export interface Props {
     options?: string[];

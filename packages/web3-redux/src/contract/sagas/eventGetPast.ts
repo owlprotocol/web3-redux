@@ -17,8 +17,8 @@ export function* eventGetPast(action: EventGetPastAction) {
         const network = yield* select(selectNetwork, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
-        const web3 = network.web3 ?? network.web3Sender!;
+        const web3 = network.web3 ?? network.web3Sender;
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
         const contract = yield* select(selectByIdSingle, { networkId, address });
         if (!contract) throw new Error(`Contract ${id} undefined`);
@@ -41,15 +41,18 @@ export function* eventGetPast(action: EventGetPastAction) {
             try {
                 //blocking call, choose batch size accordingly
                 yield* put(
-                    eventGetPastRawAction({
-                        networkId,
-                        address,
-                        eventName,
-                        filter,
-                        fromBlock: currFromBlock,
-                        toBlock: currToBlock,
-                        max,
-                    }),
+                    eventGetPastRawAction(
+                        {
+                            networkId,
+                            address,
+                            eventName,
+                            filter,
+                            fromBlock: currFromBlock,
+                            toBlock: currToBlock,
+                            max,
+                        },
+                        action.meta.uuid,
+                    ),
                 );
                 currToBlock = Math.max(currToBlock - blockBatch, currFromBlock);
                 currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock);

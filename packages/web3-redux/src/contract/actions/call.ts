@@ -7,9 +7,9 @@ import { callHash } from '../model/callArgs.js';
 export const CALL = `${name}/CALL`;
 /** @internal */
 export interface CallActionInput {
-    networkId?: string;
-    address?: string;
-    method?: string;
+    networkId: string;
+    address: string;
+    method: string;
     args?: any[];
     from?: string;
     defaultBlock?: number | 'latest';

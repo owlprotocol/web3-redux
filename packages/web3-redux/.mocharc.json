@@ -1,7 +1,7 @@
 {
-    "parallel": true,
-    "jobs": 8,
-    "timeout": 20000,
-    "colors": true,
-    "recursive": true
+  "parallel": true,
+  "jobs": 8,
+  "timeout": 20000,
+  "colors": true,
+  "recursive": false
 }

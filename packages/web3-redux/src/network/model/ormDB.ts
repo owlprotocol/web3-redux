@@ -7,10 +7,14 @@ export class NetworkDBModel extends Model {
 }
 
 export const settings = {
-    name, //name of table
-    primary: 'networkId', //auto increment field (default id)
+    name,
+    primary: 'networkId',
     ormClass: NetworkDBModel,
     columns: [
+        {
+            name: 'networkId',
+            index: 'networkId',
+        },
         {
             name: 'name',
             index: 'name',
@@ -26,10 +30,6 @@ export const settings = {
         {
             name: 'multicallAddress',
             index: 'multicallAddress',
-        },
-        {
-            name: 'multicallContract',
-            index: 'multicallContract',
         },
         {
             name: 'gasLimit',

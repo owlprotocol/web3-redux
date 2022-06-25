@@ -1,12 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { omit } from '../../../utils/lodash/index.js';
 import { name } from '../../common.js';
 import { Contract, validate } from '../../model/index.js';
 
 export const CREATE_DB = `${name}/CREATE_DB`;
 export const createDBAction = createAction(CREATE_DB, (payload: Contract, uuid?: string) => {
     return {
-        payload: validate(payload),
+        payload: omit(validate(payload), ['web3Contract', 'web3SenderContract']),
         meta: {
             uuid: uuid ?? uuidv4(),
         },

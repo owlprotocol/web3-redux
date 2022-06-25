@@ -16,7 +16,7 @@ export interface EventGetPastActionInput {
     max?: number;
 }
 /** @category Actions */
-export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput) => {
+export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput, uuid?: string) => {
     let fromBlock: number;
     if (!payload.fromBlock || payload.fromBlock == 'earliest') {
         fromBlock = 0;
@@ -37,7 +37,7 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
     return {
         payload: { ...payload, fromBlock, toBlock, blockBatch, max },
         meta: {
-            uuid: uuidv4(),
+            uuid: uuid ?? uuidv4(),
         },
     };
 });

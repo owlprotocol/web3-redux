@@ -27,11 +27,14 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
         if (!web3Contract) throw new Error(`Contract ${contractId} has no web3 contract`);
 
-        const indexedEvents = (yield* select(selectEventsByIndex, id)) ?? [];
+        //const indexedEvents = (yield* select(selectEventsByIndex, id)) ?? [];
         const existingEvents = (yield* select(selectContractEvents, { networkId, address }, eventName, filter)) ?? [];
+        /*
         if (indexedEvents.length > 0) {
             throw new Error(`Cached ${id} reached! indexedEvents.length >= 0`);
-        } else if (max && existingEvents.length >= max) {
+        } else
+        */
+        if (max && existingEvents.length >= max) {
             throw new Error(
                 `Max ${networkId}-${address} ${eventName} ${JSON.stringify(
                     filter,

@@ -47,17 +47,25 @@ export function* callSaga(action: CallAction) {
         try {
             //Tx Encodable, any errors are execution related
             //Create base call
-            yield* put(createEthCall({ ...ethCall, status: 'LOADING' }));
+            yield* put(createEthCall({ ...ethCall, status: 'LOADING' }, action.meta.uuid));
             const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
             //@ts-ignore
             const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
             const timestamp = Date.now();
             yield* put(
-                updateEthCall({ ...ethCall, error: undefined, returnValue, status: 'SUCCESS', lastUpdated: timestamp }),
+                updateEthCall(
+                    { ...ethCall, error: undefined, returnValue, status: 'SUCCESS', lastUpdated: timestamp },
+                    action.meta.uuid,
+                ),
             );
         } catch (error) {
             const timestamp = Date.now();
-            yield* put(updateEthCall({ ...ethCall, error: error as Error, status: 'ERROR', lastUpdated: timestamp }));
+            yield* put(
+                updateEthCall(
+                    { ...ethCall, error: error as Error, status: 'ERROR', lastUpdated: timestamp },
+                    action.meta.uuid,
+                ),
+            );
             yield* put(
                 createError({
                     id: action.meta.uuid,

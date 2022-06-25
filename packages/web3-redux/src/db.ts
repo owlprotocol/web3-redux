@@ -11,11 +11,6 @@ import { settings as IPFSSettings } from './ipfs/model/ormDB.js';
 import { settings as NetworkSettings } from './network/model/ormDB.js';
 import { settings as TransactionSettings } from './transaction/model/ormDB.js';
 
-if (!isClient()) {
-    require('fake-indexeddb/auto');
-    console.debug('Running in NodeJS Context. Setting up fake-indexeddb');
-}
-
 const settings = {
     name: REDUX_ROOT,
     version: 1,

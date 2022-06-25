@@ -11,7 +11,7 @@ import { sleep } from '../../utils/index.js';
 
 describe('contract/sagas/fetchTransactions.test.ts', () => {
     let store: StoreType;
-    const address = '0xddBd2B932c763bA5b1b7AE3B362eac3e8d40121A'; //Etherscan example
+    const address = '0xddBd2B932c763bA5b1b7AE3B362eac3e8d40121A'.toLowerCase(); //Etherscan example
     const client = axios.create({ baseURL: 'https://api.etherscan.io/api' });
 
     before(async () => {

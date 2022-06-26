@@ -19,7 +19,6 @@ export interface UseContractCallOptions {
     sync?: 'ifnull' | GenericSync | false;
 }
 
-
 interface UseContractCallReturnOptions {
     error: Error | undefined;
     dispatchCallAction: () => void;
@@ -51,29 +50,29 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     const argsHash = JSON.stringify(args);
     const { callAction, syncAction } =
         useMemo(() => {
-            if (sync === 'ifnull' && !returnValueExists) {
+            if (networkId && address && method && sync === 'ifnull' && !returnValueExists) {
                 return callSynced({
                     networkId,
                     address,
-                    method: method as string | undefined,
+                    method: method as string,
                     args,
                     from,
                     sync: 'once',
                 });
-            } else if (!!sync && sync != 'ifnull') {
+            } else if (networkId && address && method && !!sync && sync != 'ifnull') {
                 return callSynced({
                     networkId,
                     address,
-                    method: method as string | undefined,
+                    method: method as string,
                     args,
                     from,
                     sync,
                 });
-            } else if (!sync) {
+            } else if (networkId && address && method && !sync) {
                 const callAction = call({
                     networkId,
                     address,
-                    method: method as string | undefined,
+                    method: method as string,
                     args,
                     from,
                 });

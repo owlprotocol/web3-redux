@@ -27,7 +27,7 @@ describe(`${name}.selectors`, () => {
             const selected = selectByIdSingle(state, contentId);
             assert.deepEqual(selected, itemWithId);
         });
-        it('memoization', () => {
+        it.skip('memoization', () => {
             const select1 = selectByIdSingle(state, contentId);
             const select2 = selectByIdSingle(state, contentId);
             assert.deepEqual(select1, select2);
@@ -42,7 +42,7 @@ describe(`${name}.selectors`, () => {
         it('([contentId])', () => {
             assert.deepEqual(selectByIdMany(state), [itemWithId]);
         });
-        it('memoization', () => {
+        it.skip('memoization', () => {
             const select1 = selectByIdMany(state, [contentId]);
             const select2 = selectByIdMany(state, [contentId]);
             assert.deepEqual(select1, select2);

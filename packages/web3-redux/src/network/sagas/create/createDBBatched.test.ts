@@ -16,6 +16,7 @@ import getWeb3Provider from '../../../test/getWeb3Provider.js';
 const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
 
 describe(`${name}/sagas/createDB.ts`, () => {
+    //@ts-expect-error
     const item: Network = validate({ networkId, web3: new Web3(getWeb3Provider()) });
     let db: Connector;
 

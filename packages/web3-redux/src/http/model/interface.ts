@@ -9,4 +9,6 @@ export interface Http {
     readonly corsProxied?: boolean;
 }
 
+export const HttpIndex = 'id';
+
 export default Http;

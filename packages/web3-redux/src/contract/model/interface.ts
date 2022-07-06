@@ -2,7 +2,6 @@ import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 import { filter, keyBy } from '../../utils/lodash/index.js';
 import { AbiItem, isAddress } from '../../utils/web3-utils/index.js';
-import { ModelWithId } from '../../types/model.js';
 import { Transaction } from '../../transaction/model/interface.js';
 
 /**
@@ -26,8 +25,6 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
  * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Web3.js contract interface.
  */
 export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends ContractId {
-    /** Used to index contracts in redux-orm. Computed as `${networkId}-${address}` */
-    readonly id?: string;
     /** Contract ABI */
     readonly abi?: AbiItem[];
     /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance */
@@ -44,39 +41,26 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
     readonly ens?: string;
     /** Custom label set by user for address */
     readonly label?: string;
+    /** Custom tags set to index address */
+    readonly tags?: string[];
     /** Event abis indexed by signature */
     readonly eventAbiBySignature?: { [k: string]: AbiItem };
 
     /** ORM Relational */
     readonly fromTransactions?: Transaction[];
     readonly toTransactions?: Transaction[];
-    /** ContractIndex redux-orm ids. Used for efficient filtering. */
-    readonly indexIds?: string[];
 }
 
-const SEPARATOR = '-';
-/** @internal */
-export function getId(id: Partial<ContractId>): string {
-    const { networkId, address } = id;
-    if (address && isAddress(address)) return [networkId, address.toLowerCase()].join(SEPARATOR);
-    return [networkId, address].join(SEPARATOR);
-}
-/** @internal */
-export function getIdDeconstructed(id: string): ContractId {
-    const [networkId, address] = id.split(SEPARATOR); //Assumes separator not messed up
-    return { networkId, address: address.toLowerCase() };
-}
+export const ContractIndex = '[networkId+address], networkId, label, *tags';
 
 /** @internal */
-export function validate(contract: Contract): ModelWithId<Contract> {
-    const { networkId, address, abi } = contract;
-    const id = getId({ networkId, address });
+export function validate(contract: Contract): Contract {
+    const { address, abi } = contract;
     const eventAbis = filter(abi, (x) => x.type === 'event');
     const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
 
     const result = {
         ...contract,
-        id,
         address: address.toLowerCase(),
     };
     if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;

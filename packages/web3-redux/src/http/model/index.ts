@@ -1,3 +1,1 @@
-import { Http } from './interface.js';
-
-export type { Http };
+export * from './interface.js';

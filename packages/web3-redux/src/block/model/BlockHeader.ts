@@ -7,8 +7,6 @@ import { BlockId } from './id.js';
  *
  */
 interface BlockHeader extends BlockId {
-    /** Used to index in redux-orm. Computed as `${networkId}-${number}` */
-    readonly id?: string;
     /** 32 bytes. Hash of the block. null if a pending block */
     readonly hash?: string;
     /** 32 bytes. Hash of the parent block */

@@ -1,19 +1,19 @@
 import { put, call, all, takeEvery } from 'typed-redux-saga';
-import { removeDBAction, RemoveAction, RemoveDBAction, REMOVE, REMOVE_DB } from '../../actions/index.js';
+import { RemoveAction, REMOVE } from '../../actions/index.js';
 import getDB from '../../../db.js';
-import { name } from '../../common.js';
 import { create as createError } from '../../../error/actions/index.js';
-import { getId } from '../../model/index.js';
 
-const REMOVE_DB_ERROR = `${REMOVE_DB}/ERROR`;
+const REMOVE_DB_ERROR = `${REMOVE}/ERROR`;
 /** Handle async db action */
-export function* removeDBSaga(action: RemoveDBAction) {
+export function* removeDBSaga(action: RemoveAction) {
     try {
         const { payload } = action;
 
-        const db = yield* call(getDB);
-        const models = yield* call([db, db.connect]);
-        yield* call([models[name], models[name].delete], getId(payload)); //deep-merge
+        const db = getDB();
+        yield* call(
+            [db.contractEvents, db.contractEvents.delete],
+            [payload.networkId, payload.blockHash, payload.logIndex],
+        );
     } catch (error) {
         //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
         yield* put(
@@ -27,13 +27,8 @@ export function* removeDBSaga(action: RemoveDBAction) {
     }
 }
 
-/** Put async db action */
-export function* putRemoveDBSAga(action: RemoveAction) {
-    yield* put(removeDBAction(action.payload, action.meta.uuid));
-}
-
 export function* watchRemoveDBSaga() {
-    yield* all([takeEvery(REMOVE, putRemoveDBSAga), takeEvery(REMOVE_DB, removeDBSaga)]);
+    yield* all([takeEvery(REMOVE, removeDBSaga)]);
 }
 
 export default watchRemoveDBSaga;

@@ -26,4 +26,6 @@ export interface Ipfs extends IpfsId {
     readonly type?: IPFSDataType;
 }
 
+export const IpfsIndex = 'contentId';
+
 export default Ipfs;

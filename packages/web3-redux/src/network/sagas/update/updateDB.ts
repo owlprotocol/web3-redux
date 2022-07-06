@@ -1,18 +1,16 @@
 import { put, call, all, takeEvery } from 'typed-redux-saga';
-import { updateDBAction, UpdateAction, UpdateDBAction, UPDATE, UPDATE_DB } from '../../actions/index.js';
+import { UpdateAction, UPDATE } from '../../actions/index.js';
 import getDB from '../../../db.js';
-import { name } from '../../common.js';
 import { create as createError } from '../../../error/actions/index.js';
 
-const UPDATE_DB_ERROR = `${UPDATE_DB}/ERROR`;
+const UPDATE_DB_ERROR = `${UPDATE}/ERROR`;
 /** Handle async db action */
-export function* updateDBSaga(action: UpdateDBAction) {
+export function* updateDBSaga(action: UpdateAction) {
     try {
         const { payload } = action;
 
-        const db = yield* call(getDB);
-        const models = yield* call([db, db.connect]);
-        yield* call([models[name], models[name].save], payload.networkId, payload, true); //deep-merge
+        const db = getDB();
+        yield* call([db.networks, db.networks.put], payload);
     } catch (error) {
         //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
         yield* put(
@@ -26,13 +24,8 @@ export function* updateDBSaga(action: UpdateDBAction) {
     }
 }
 
-/** Put async db action */
-export function* putUpdateDBSaga(action: UpdateAction) {
-    yield* put(updateDBAction(action.payload, action.meta.uuid));
-}
-
 export function* watchUpdateDBSaga() {
-    yield* all([takeEvery(UPDATE, putUpdateDBSaga), takeEvery(UPDATE_DB, updateDBSaga)]);
+    yield* all([takeEvery(UPDATE, updateDBSaga)]);
 }
 
 export default watchUpdateDBSaga;

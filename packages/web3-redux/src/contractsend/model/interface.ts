@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { getId as getContractId } from '../../contract/model/interface.js';
-import { getTransactionId } from '../../transaction/model/index.js';
-
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 
 /**
@@ -34,12 +31,8 @@ export interface ContractSend {
     readonly from: string;
     /** Value sent in wei */
     readonly value?: any;
-    /** redux-orm id of contract send `${networkId}-{address}` */
-    readonly contractId?: string;
     /** Transaction hash. Generated once data is signed.` */
     readonly transactionHash?: string;
-    /** redux-orm id of transaction `${networkId}-{transactionHash}` */
-    readonly transactionId?: string;
     /** Track status of send transaction */
     readonly status: ContractSendStatus;
     /** Error */
@@ -53,6 +46,8 @@ export interface ContractSend {
     /** First confirmed block hash */
     readonly blockHash?: string;
 }
+
+export const ContractSendIndex = 'uuid, [networkId+address+from]';
 
 /** @internal */
 export function getArgsId(args?: any[]) {
@@ -78,17 +73,11 @@ export function validate(item: ContractSend): ContractSend {
     const uuid = item.uuid ?? uuidv4();
     const addressChecksum = item.address.toLowerCase();
     const fromCheckSum = item.from.toLowerCase();
-    const contractId = getContractId(item);
-    const transactionId = item.transactionHash
-        ? getTransactionId({ hash: item.transactionHash, networkId: item.networkId })
-        : undefined;
     return {
         ...item,
         uuid,
         address: addressChecksum,
         from: fromCheckSum,
-        contractId,
-        transactionId,
     };
 }
 

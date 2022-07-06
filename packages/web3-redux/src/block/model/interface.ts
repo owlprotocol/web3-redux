@@ -1,12 +1,11 @@
-import { getId } from './id.js';
 import { BlockTransaction } from './BlockTransaction.js';
 import { isStrings } from '../../utils/index.js';
 import { validate as validateTransaction } from '../../transaction/model/interface.js';
-import { ModelWithId } from '../../types/model.js';
+
+export const BlockIndex = '[networkId+number], networkId, hash, timestamp';
 
 /** @internal */
-export function validate(item: BlockTransaction): ModelWithId<BlockTransaction> {
-    const id = getId(item);
+export function validate(item: BlockTransaction): BlockTransaction {
     let transactions = item.transactions;
     if (transactions) {
         if (!isStrings(transactions))
@@ -17,7 +16,6 @@ export function validate(item: BlockTransaction): ModelWithId<BlockTransaction> 
 
     const result = {
         ...item,
-        id,
     };
     if (transactions) result.transactions = transactions;
 

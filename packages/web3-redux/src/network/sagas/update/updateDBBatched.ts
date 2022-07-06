@@ -1,36 +1,17 @@
 import { put, call, all, takeEvery } from 'typed-redux-saga';
-// eslint-disable-next-line import/no-unresolved
-import { TransactionModes } from 'indexeddb-orm';
-import {
-    updateDBBatchedAction,
-    UpdateBatchedAction,
-    UpdateDBBatchedAction,
-    UPDATE_BATCHED,
-    UPDATE_DB_BATCHED,
-} from '../../actions/index.js';
+import { UpdateBatchedAction, UPDATE_BATCHED } from '../../actions/index.js';
 import getDB from '../../../db.js';
-import { name } from '../../common.js';
 import { create as createError } from '../../../error/actions/index.js';
 
-const UPDATE_DB_BATCHED_ERROR = `${UPDATE_DB_BATCHED}/ERROR`;
+const UPDATE_DB_BATCHED_ERROR = `${UPDATE_BATCHED}/ERROR`;
 
 /** Handle async db action */
-export function* updateDBBatchedSaga(action: UpdateDBBatchedAction) {
+export function* updateDBBatchedSaga(action: UpdateBatchedAction) {
     try {
         const { payload } = action;
 
-        const db = yield* call(getDB);
-        const models = yield* call([db, db.connect]);
-        const { models: transactionModels } = yield* call(
-            [models[name], models[name].openTransaction],
-            TransactionModes.Write,
-        );
-
-        const tasks = payload.map((t) => {
-            return call([transactionModels[name], transactionModels[name].save], t.networkId, t, true); //deep-merge
-        });
-
-        yield* all(tasks); //Wait for all updates to complete
+        const db = getDB();
+        yield* call([db.networks, db.networks.bulkPut], payload);
     } catch (error) {
         //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
         yield* put(
@@ -44,13 +25,8 @@ export function* updateDBBatchedSaga(action: UpdateDBBatchedAction) {
     }
 }
 
-/** Put async db action */
-export function* putUpdateDBBatchedSaga(action: UpdateBatchedAction) {
-    yield* put(updateDBBatchedAction(action.payload, action.meta.uuid));
-}
-
 export function* watchUpdateDBBatchedSaga() {
-    yield* all([takeEvery(UPDATE_BATCHED, putUpdateDBBatchedSaga), takeEvery(UPDATE_DB_BATCHED, updateDBBatchedSaga)]);
+    yield* all([takeEvery(UPDATE_BATCHED, updateDBBatchedSaga)]);
 }
 
 export default watchUpdateDBBatchedSaga;

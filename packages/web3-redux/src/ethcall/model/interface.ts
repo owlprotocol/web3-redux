@@ -1,6 +1,3 @@
-import { getId as getContractId } from '../../contract/model/interface.js';
-import { ModelWithId } from '../../types/model.js';
-
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 /** EthCall id components */
 export interface EthCallId {
@@ -31,6 +28,8 @@ export interface EthCall extends EthCallId {
     readonly status?: 'LOADING' | 'SUCCESS' | 'ERROR';
 }
 
+export const EthCallIndex = '[networkId+to+data+defaultBlock+from+gas]';
+
 /** @internal */
 export function getOptionsId(from: EthCallId['from'], block: EthCallId['defaultBlock'], gas: EthCallId['gas']) {
     if ((!from || from == ADDRESS_0) && (block == undefined || block == 'latest') && gas == undefined) return undefined;
@@ -58,27 +57,13 @@ export function getIdArgs(id: EthCallId): EthCallId {
     return val;
 }
 
-const SEPARATOR = '-';
 /** @internal */
-export function getId(id: EthCallId): string {
-    const contractId = getContractId({ networkId: id.networkId, address: id.to });
-    const optionsId = getOptionsId(id.from, id.defaultBlock, id.gas);
-
-    let idStr = `${contractId}(${id.data})`;
-    if (optionsId) idStr = [idStr, optionsId].join(SEPARATOR);
-
-    return idStr;
-}
-
-/** @internal */
-export function validate(item: EthCall): ModelWithId<EthCall> {
-    const id = getId(item);
+export function validate(item: EthCall): EthCall {
     const toChecksum = item.to.toLowerCase();
     const fromCheckSum = item.from ? item.from.toLowerCase() : undefined;
 
     return {
         ...item,
-        id,
         to: toChecksum,
         from: fromCheckSum,
     };

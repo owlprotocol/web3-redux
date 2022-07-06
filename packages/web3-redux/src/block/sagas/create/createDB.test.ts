@@ -1,11 +1,9 @@
 import { testSaga, expectSaga } from 'redux-saga-test-plan';
 import { assert } from 'chai';
-// eslint-disable-next-line import/no-unresolved
-import { Connector } from 'indexeddb-orm';
-import { putCreateDBSaga, createDBSaga, watchCreateDBSaga } from './createDB.js';
-import getDB from '../../../db.js';
+import { createDBSaga, watchCreateDBSaga } from './createDB.js';
+import { getDB, Web3ReduxDexie } from '../../../db.js';
 
-import { createAction, createDBAction } from '../../actions/index.js';
+import { createAction } from '../../actions/index.js';
 import { BlockHeader, validate } from '../../model/index.js';
 import { networkId } from '../../../test/data.js';
 import { name } from '../../common.js';
@@ -16,50 +14,34 @@ const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
 
 describe(`${name}/sagas/createDB.ts`, () => {
     const item: BlockHeader = validate({ networkId, number: 1 });
-    let db: Connector;
+    let db: Web3ReduxDexie;
 
     beforeEach(async () => {
         indexedDB = new FDBFactory();
-        db = await getDB();
+        db = getDB();
     });
 
     describe('unit', () => {
-        it('putCreateDBSaga', async () => {
-            const action = createAction(item);
-            testSaga(putCreateDBSaga, action).next().put(createDBAction(item, action.meta.uuid)).next().isDone();
-        });
-
         it('createDBSaga', async () => {
-            const models = await db.connect();
-            testSaga(createDBSaga, createDBAction(item))
-                .next()
-                .call(getDB)
-                .next(db)
-                .call([db, db.connect])
-                .next(models)
-                .call([models[name], models[name].create], item)
-                .next()
-                .isDone();
+            testSaga(createDBSaga, createAction(item)).next().call([db.blocks, db.blocks.add], item).next().isDone();
         });
     });
 
     describe('integration', () => {
         it('createDBSaga', async () => {
-            await expectSaga(createDBSaga, createDBAction(item)).run();
+            await expectSaga(createDBSaga, createAction(item)).run();
 
             //DB State
-            const models = await db.connect();
-            const record = await models[name].find(item.id);
+            const record = await db.blocks.get([item.networkId, item.number]);
             assert.isDefined(record);
             assert.deepEqual(record, item);
         });
 
         it('watchCreateDBSaga', async () => {
-            await expectSaga(watchCreateDBSaga).dispatch(createDBAction(item)).run();
+            await expectSaga(watchCreateDBSaga).dispatch(createAction(item)).run();
 
             //DB State
-            const models = await db.connect();
-            const record = await models[name].find(item.id);
+            const record = await db.blocks.get([item.networkId, item.number]);
             assert.isDefined(record);
             assert.deepEqual(record, item);
         });
@@ -73,11 +55,10 @@ describe(`${name}/sagas/createDB.ts`, () => {
         });
 
         it('createDBAction', async () => {
-            store.dispatch(createDBAction(item));
+            store.dispatch(createAction(item));
 
             //DB State
-            const models = await db.connect();
-            const record = await models[name].find(item.id);
+            const record = await db.blocks.get([item.networkId, item.number]);
             assert.isDefined(record);
             assert.deepEqual(record, item);
         });

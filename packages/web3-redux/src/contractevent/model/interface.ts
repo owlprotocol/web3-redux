@@ -1,7 +1,4 @@
-import { getId as getContractId } from '../../contract/model/interface.js';
 import { combinationAll } from '../../utils/combination.js';
-import { ModelWithId } from '../../types/model.js';
-import { uniq } from '../../utils/lodash/index.js';
 
 export interface ContractEventId {
     /** Blockchain network id.
@@ -24,14 +21,8 @@ export interface ReturnValues {
  * @typeParam T optional type for return values. Defaults to `any` object.
  */
 export interface ContractEvent<T extends ReturnValues = ReturnValues> extends ContractEventId {
-    /** Used to index contract events in redux-orm. Computed as `${networkId}-${blockHash}-{logIndex}` */
-    readonly id?: string;
-    /** redux-orm id of contract `${networkId}-{address}` */
-    readonly contractId?: string;
-
     /** Block number */
     readonly blockNumber?: number;
-
     /** Address of contract that emitted event */
     readonly address: string;
 
@@ -39,11 +30,8 @@ export interface ContractEvent<T extends ReturnValues = ReturnValues> extends Co
     /** Event name */
     readonly name?: string;
     /** Return values of event */
+    /** TODO: Index returnValues? */
     readonly returnValues?: T['returnValues'];
-    /** Keys of `returnValues` to index event on */
-    readonly returnValuesIndexKeys?: string[] | boolean;
-    /** ContractEventIndex redux-orm ids. Used for efficient filtering. */
-    readonly indexIds?: string[];
 
     /** Raw Log */
     /** Raw non-indexed log data */
@@ -52,20 +40,11 @@ export interface ContractEvent<T extends ReturnValues = ReturnValues> extends Co
     readonly topics?: string[];
 }
 
-const SEPARATOR = '-';
-/** @internal */
-export function getId(id: ContractEventId): string {
-    const { networkId, blockHash, logIndex } = id;
-
-    return [networkId, blockHash, logIndex].join(SEPARATOR);
-}
-/** @internal */
-export function getIdDeconstructed(id: string): ContractEventId {
-    const [networkId, blockHash, logIndex] = id.split(SEPARATOR); //Assumes separator not messed up
-    return { networkId, blockHash, logIndex: parseInt(logIndex) };
-}
+export const ContractEventIndex =
+    '[networkId+blockHash+logIndex], [networkId+blockNumber], [networkId+address+name], [networkId+name], name';
 
 //Separate integer indexing from named indexing (eg. {0: val, value: val})
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function returnValueKeyCombinations(keys: string[]) {
     const integerKeys = keys.filter((k: string) => !isNaN(parseInt(k)));
     const namedKeys = keys.filter((k: string) => isNaN(parseInt(k)));
@@ -76,13 +55,11 @@ function returnValueKeyCombinations(keys: string[]) {
 }
 
 /** @internal */
-export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
+export function validate(item: ContractEvent): ContractEvent {
     //@ts-ignore
     const name = item.name ?? item.event;
-    const id = getId(item);
-    const networkId = item.networkId;
     const address = item.address.toLowerCase();
-    const contractId = getContractId(item);
+    /*
     const extraIndices = item.indexIds ?? [];
 
     //Default we only index named keys, but user can also pass (0,1,2) as argument
@@ -113,14 +90,11 @@ export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
 
     //Combine passed indices with default indices
     const indexIds: string[] = uniq([...extraIndices, ...indices.map((v) => JSON.stringify(v))]);
+    */
     return {
         ...item,
         name,
-        id,
         address,
-        contractId,
-        returnValuesIndexKeys,
-        indexIds,
     };
 }
 

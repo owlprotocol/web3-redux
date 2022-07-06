@@ -4,7 +4,6 @@ import subscribeLoop from './subscribeLoop.js';
 import { watchCreateDBSaga, watchCreateDBBatchedSaga } from './create/index.js';
 import { watchRemoveDBSaga, watchRemoveDBBatchedSaga } from './remove/index.js';
 import { watchUpdateDBSaga, watchUpdateDBBatchedSaga } from './update/index.js';
-import watchLoadDBSaga from './loadDBAll.js';
 import { FETCH } from '../actions/index.js';
 
 /** @internal */
@@ -18,7 +17,6 @@ export function* saga() {
         spawn(watchUpdateDBBatchedSaga),
         takeEvery(FETCH, fetchSaga),
         spawn(subscribeLoop),
-        spawn(watchLoadDBSaga),
     ]);
 }
 

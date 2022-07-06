@@ -49,4 +49,6 @@ export interface Network extends NetworkId {
     readonly ens?: string;
 }
 
+export const NetworkIndex = 'networkId';
+
 export default Network;

@@ -9,4 +9,6 @@ export interface ReduxError {
     readonly type?: string;
 }
 
+export const ReduxErrorIndex = 'id';
+
 export default ReduxError;

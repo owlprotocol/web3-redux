@@ -130,10 +130,13 @@ export const withMockData = (WrappedComponent: any) => {
         );
 
         const all = [...networks, ...contracts, contractERC20Implementation];
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const allDefined = all.reduce((acc, val) => acc && !!val, true);
 
-        if (!allDefined) return <>Loading React State...</>;
-        else return <WrappedComponent {...props} />;
+        //TODO: Fix loading component
+        //if (!allDefined) return <>Loading React State...</>;
+        //else return <WrappedComponent {...props} />;
+        return <WrappedComponent {...props} />;
     };
     Component.displayName = `withMockData(${getDisplayName(WrappedComponent)})`;
     return Component;

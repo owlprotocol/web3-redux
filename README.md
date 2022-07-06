@@ -43,6 +43,9 @@ pnpm run storybook # Runs storybook with Vite
 #### Research
 See [RESEARCH.md](./RESEARCH.md) for known issues and challenges.
 
+## Storybook
+We use StorybookJS for implementing components in an isolated environment. Check out [STORYBOOK.md](./STORYBOOK.md) for more info on how to get setup.
+
 ## License
 2021 Owl Protocol
 MIT License.

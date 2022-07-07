@@ -12,9 +12,9 @@ import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
 import { update as updateConfig } from '../../contractevent/config/actions/index.js';
 
 //Actions
-import createAction from '../actions/create.js';
 import fetchEventSignatureAction from '../actions/fetchEventSignature.js';
 import setAction from '../actions/set.js';
+import _4ByteCRUD from '../crud.js';
 
 //Sagas
 
@@ -59,7 +59,7 @@ describe('4byte/sagas/fetchEventSignature.test.ts', () => {
             .next({ _4byteClient: client })
             .select(selectByIdSingle, eventItem.signatureHash) //Check if exists
             .next(undefined)
-            .put(createAction({ signatureHash: eventItem.signatureHash })) //Create with signatureHash
+            .put(_4ByteCRUD.actions.create({ signatureHash: eventItem.signatureHash })) //Create with signatureHash
             .next()
             .call(client.get, requestUrl)
             .next({ data: expectedResponse })

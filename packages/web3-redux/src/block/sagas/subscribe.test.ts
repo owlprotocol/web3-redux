@@ -3,14 +3,12 @@ import Web3 from 'web3';
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock, sleep } from '../../utils/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
 import { createStore, StoreType } from '../../store.js';
 import { BlockHeader, BlockTransaction, validate } from '../model/index.js';
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { subscribe as subscribeAction, unsubscribe as unsubscribeAction } from '../actions/index.js';
-import { selectByIdMany } from '../selectors/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const FDBFactory = require('fake-indexeddb/lib/FDBFactory');

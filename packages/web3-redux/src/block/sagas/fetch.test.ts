@@ -8,7 +8,6 @@ import getDB from '../../db.js';
 
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock } from '../../utils/index.js';
-import { createAction as createNetwork } from '../../network/actions/index.js';
 import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 
 import { createStore, StoreType } from '../../store.js';
@@ -16,8 +15,8 @@ import { validate } from '../model/index.js';
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
-import { fetch as fetchAction, createAction, updateAction } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import { fetch as fetchAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
@@ -45,13 +44,13 @@ describe(`${name}/sagas/fetch.ts`, () => {
                 .next()
                 .select(selectByIdSingle, { networkId, number: 1 })
                 .next(undefined)
-                .put(createAction({ networkId, number: 1 }, action.meta.uuid))
+                .put(BlockCRUD.actions.create({ networkId, number: 1 }, action.meta.uuid))
                 .next()
                 .select(selectNetwork, networkId)
                 .next({ networkId, web3 })
                 .call(web3.eth.getBlock, 1, false)
                 .next({ networkId, number: 1, hash: '0x1' })
-                .put(updateAction({ networkId, number: 1, hash: '0x1' }, action.meta.uuid))
+                .put(BlockCRUD.actions.update({ networkId, number: 1, hash: '0x1' }, action.meta.uuid))
                 .next()
                 .isDone();
         });
@@ -65,7 +64,7 @@ describe(`${name}/sagas/fetch.ts`, () => {
                 .next({ networkId, web3 })
                 .call(web3.eth.getBlock, '0x1', false)
                 .next({ networkId, number: 1, hash: '0x1' })
-                .put(createAction({ networkId, number: 1, hash: '0x1' }, action.meta.uuid))
+                .put(BlockCRUD.actions.create({ networkId, number: 1, hash: '0x1' }, action.meta.uuid))
                 .next()
                 .isDone();
         });
@@ -76,7 +75,7 @@ describe(`${name}/sagas/fetch.ts`, () => {
 
         beforeEach(async () => {
             ({ store } = createStore());
-            store.dispatch(createNetwork({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         });
 
         describe('fetch', () => {
@@ -129,7 +128,7 @@ describe(`${name}.fetch.rpccalls`, () => {
     beforeEach(async () => {
         indexedDB = new FDBFactory();
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
     it.skip('rpc calls', async () => {

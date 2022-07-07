@@ -4,9 +4,9 @@ import Web3 from 'web3';
 
 import blockFetch from './fetch.js';
 import { BlockHeader } from '../model/BlockHeader.js';
-import { createAction, fetch as fetchAction, SUBSCRIBE } from '../actions/index.js';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
+import { fetch as fetchAction, SUBSCRIBE } from '../actions/index.js';
 import { SubscribeAction } from '../actions/subscribe.js';
+import BlockCRUD from '../crud.js';
 
 const SUBSCRIBE_CONNECTED = `${SUBSCRIBE}/CONNECTED`;
 const SUBSCRIBE_DATA = `${SUBSCRIBE}/DATA`;
@@ -47,6 +47,8 @@ function* subscribe(action: SubscribeAction) {
     const { payload } = action;
     const { networkId } = payload;
 
+    const db = getDB();
+    const block = yield* call([db.Network, db.Block.get], validateId({ networkId, number: paramAsNumber }));
     const network = yield* select(selectNetwork, networkId);
     if (!network?.web3) throw new Error(`Network ${networkId} missing web3`);
     const web3 = network.web3;
@@ -60,7 +62,7 @@ function* subscribe(action: SubscribeAction) {
                 const { type, block, error } = message;
                 if (type === SUBSCRIBE_DATA) {
                     const newBlock = { ...block!, networkId };
-                    yield* put(createAction(newBlock));
+                    yield* put(BlockCRUD.actions.create(newBlock));
                     if (payload.returnTransactionObjects ?? true) {
                         yield* fork(
                             //@ts-expect-error
@@ -75,7 +77,7 @@ function* subscribe(action: SubscribeAction) {
                     }
                 } else if (type === SUBSCRIBE_CHANGED) {
                     const newBlock = { ...block!, networkId };
-                    yield* put(createAction(newBlock));
+                    yield* put(BlockCRUD.actions.create(newBlock));
                     if (payload.returnTransactionObjects) {
                         yield* fork(
                             //@ts-expect-error

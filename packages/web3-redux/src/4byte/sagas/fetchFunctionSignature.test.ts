@@ -9,12 +9,12 @@ import { sleep } from '../../utils/index.js';
 import { createStore, StoreType } from '../../store.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
-import { update as updateConfig } from '../../contractevent/config/actions/index.js';
 
 //Actions
-import createAction from '../actions/create.js';
 import fetchFunctionSignatureAction from '../actions/fetchFunctionSignature.js';
 import setAction from '../actions/set.js';
+import _4ByteCRUD from '../crud.js';
+import ConfigCRUD from '../../contractevent/config/crud.js';
 
 //Sagas
 
@@ -66,7 +66,7 @@ describe('4byte/sagas/fetchFunctionSignature.test.ts', () => {
             .next({ _4byteClient: client })
             .select(selectByIdSingle, eventItem.signatureHash) //Check if exists
             .next(undefined)
-            .put(createAction({ signatureHash: eventItem.signatureHash })) //Create with signatureHash
+            .put(_4ByteCRUD.actions.create({ signatureHash: eventItem.signatureHash })) //Create with signatureHash
             .next()
             .call(client.get, requestUrl)
             .next({ data: expectedResponse })
@@ -79,7 +79,7 @@ describe('4byte/sagas/fetchFunctionSignature.test.ts', () => {
 
         beforeEach(() => {
             ({ store } = createStore());
-            store.dispatch(updateConfig({ id: '0', _4byteClient: client }));
+            store.dispatch(ConfigCRUD.actions.update({ id: '0', _4byteClient: client }));
         });
 
         it('fetchFunctionSignature()', async () => {

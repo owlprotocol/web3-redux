@@ -1,8 +1,9 @@
 import { select, put, call } from 'typed-redux-saga';
+import getDB from '../../db.js';
 import { isHexStrict } from '../../utils/web3-utils/index.js';
-import { createAction, updateAction, FetchAction } from '../actions/index.js';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import { FetchAction } from '../actions/index.js';
+import BlockCRUD from '../crud.js';
+import { validateId } from '../model/interface.js';
 
 /** @category Sagas */
 export function* fetchSaga(action: FetchAction) {
@@ -16,10 +17,11 @@ export function* fetchSaga(action: FetchAction) {
         const paramAsNumber =
             typeof blockHashOrBlockNumber === 'number' ? blockHashOrBlockNumber : parseInt(blockHashOrBlockNumber);
         //Check if block exists
-        const block = yield* select(selectByIdSingle, { networkId, number: paramAsNumber });
+        const db = getDB();
+        const block = yield* call([db.Block, db.Block.get], validateId({ networkId, number: paramAsNumber }));
         if (!block) {
             yield* put(
-                createAction(
+                BlockCRUD.actions.create(
                     {
                         networkId,
                         number: paramAsNumber,
@@ -41,10 +43,10 @@ export function* fetchSaga(action: FetchAction) {
         returnTransactionObjects ?? false, //default to false
     );
     if (blockExists) {
-        yield* put(updateAction({ ...result, networkId }, action.meta.uuid));
+        yield* put(BlockCRUD.actions.update({ ...result, networkId }, action.meta.uuid));
     } else {
         //User passed blockHash as arg so we create the block only once data is passed
-        yield* put(createAction({ ...result, networkId }, action.meta.uuid));
+        yield* put(BlockCRUD.actions.create({ ...result, networkId }, action.meta.uuid));
     }
 }
 

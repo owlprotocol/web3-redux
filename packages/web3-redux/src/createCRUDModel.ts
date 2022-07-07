@@ -256,7 +256,7 @@ function createCRUDModel<T_ID extends Record<string, any>, T extends T_ID, U ext
         useWhere,
     };
 
-    return { name, actions, sagas, hooks };
+    return { name, actionTypes, actions, sagas, hooks };
 }
 
 export default createCRUDModel;

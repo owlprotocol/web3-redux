@@ -15,8 +15,9 @@ export const useTransaction = (
 ) => {
     const dispatch = useDispatch();
 
-    const network = NetworkCRUD.hooks.useGet({ networkId });
+    const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
     const transaction = TransactionCRUD.hooks.useGet({ networkId, hash });
+
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 
     const action = useMemo(() => {

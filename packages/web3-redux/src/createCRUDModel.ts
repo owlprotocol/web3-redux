@@ -4,6 +4,7 @@ import { put, call, all, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { IndexableType } from 'dexie';
 import { createSelector } from 'redux-orm';
+import { useSelector } from 'react-redux';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
@@ -32,9 +33,9 @@ function createCRUDModel<
     T_Hydrated extends T = T,
     >(
         name: U,
-        validateId: (id: T_ID) => IndexableType = (id: T_ID) => Object.values(id),
-        validate: (item: T) => T = (item: T) => item,
-        hydrate: (item: T, sess?: any) => T_Hydrated = (item: T) => item as T_Hydrated,
+        validateId: (id: Partial<T_ID>) => IndexableType = (id: Partial<T_ID>) => Object.values(id),
+        validate: (item: Partial<T>) => T = (item: Partial<T>) => item as T,
+        hydrate: (item: Partial<T>, sess?: any) => T_Hydrated = (item: Partial<T>) => item as T_Hydrated,
 ) {
     /** Actions */
     const CREATE = `${name}/CREATE`;
@@ -297,10 +298,9 @@ function createCRUDModel<
     };
 
     /** Hooks */
-    //https://stackoverflow.com/questions/51435783/pick-and-flatten-a-type-signature-in-typescript
     const useGet = (id: Partial<T_ID>) => {
         const db = getDB();
-        return useLiveQuery(() => db[name as keyof typeof db].get(id)) as T | undefined;
+        return useLiveQuery(() => db[name as keyof typeof db].get(validateId(id))) as T | undefined;
     };
     const useGetBulk = (id: Partial<T_ID>[]) => {
         const db = getDB();
@@ -310,11 +310,19 @@ function createCRUDModel<
         const db = getDB();
         return useLiveQuery(() => db[name as keyof typeof db].where(filter)) as T[];
     };
+    const useSelectByIdSingle = (id: T_ID | undefined) => {
+        return useSelector((state) => selectByIdSingle(state, id));
+    };
+    const useSelectByIdMany = (id?: T_ID[]) => {
+        return useSelector((state) => selectByIdMany(state, id));
+    };
 
     const hooks = {
         useGet,
         useGetBulk,
         useWhere,
+        useSelectByIdSingle,
+        useSelectByIdMany,
     };
 
     return { name, actions, actionTypes, isAction, reducer, selectors, sagas, hooks, validate, validateId, hydrate };

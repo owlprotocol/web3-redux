@@ -3,17 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Await } from '../../types/promise.js';
 
-import { remove as removeSync } from '../../sync/actions/index.js';
 import { GenericSync } from '../../sync/model/index.js';
 
 import { BaseWeb3Contract } from '../model/index.js';
 import { callSynced, call } from '../actions/index.js';
+import EthCallCRUD from '../../ethcall/crud.js';
+import ContractCRUD from '../crud.js';
+import SyncCRUD from '../../sync/crud.js';
 
 //Contract Call
 /** @internal */
 export interface UseContractCallOptions {
     from?: string;
-    gas?: string;
+    gas?: number;
     sync?: 'ifnull' | GenericSync | false;
 }
 
@@ -35,11 +37,34 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     let error: Error | undefined;
     const sync = options?.sync ?? 'ifnull';
     const from = options?.from;
+    const gas = options?.gas;
 
     const dispatch = useDispatch();
     const id = networkId && address ? { networkId, address } : undefined;
 
-    const returnValue = useSelector((state) => selectContractCall(state, id, method, { args, from }));
+    const contract = ContractCRUD.hooks.useSelectByIdSingle(id);
+    const web3Contract = contract?.web3Contract ?? contract?.web3SenderContract;
+    const web3ContractMethod = web3Contract?.methods[method];
+
+    const data = useMemo(() => {
+        if (web3ContractMethod) {
+            let tx: any;
+            if (!args || args.length == 0) tx = web3ContractMethod();
+            else tx = web3ContractMethod(...args);
+
+            const data = tx.encodeABI();
+            return data;
+        }
+    }, [web3ContractMethod]);
+
+    const ethCall = EthCallCRUD.hooks.useGet({
+        networkId,
+        to: address,
+        data,
+        from,
+        gas,
+    });
+    const returnValue = ethCall?.returnValue;
     //const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
     const returnValueExists = returnValue != undefined;
 
@@ -91,7 +116,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
     useEffect(() => {
         if (syncAction) dispatch(syncAction);
         return () => {
-            if (syncId) dispatch(removeSync(syncId));
+            if (syncId) dispatch(SyncCRUD.actions.delete(syncId));
         };
     }, [dispatch, syncId]);
 

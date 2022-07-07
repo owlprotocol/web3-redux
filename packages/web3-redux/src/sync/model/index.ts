@@ -42,8 +42,14 @@ export function createSyncForActions(
 }
 
 /** @internal */
-export function validate(item: Sync): Sync {
-    return item;
+export function validateId(item: Partial<Sync>) {
+    if (!item.id) throw new Error('id undefined');
+    return item.id;
+}
+
+/** @internal */
+export function validate(item: Partial<Sync>): Sync {
+    return item as Sync;
 }
 
 export default Sync;

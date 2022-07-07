@@ -17,7 +17,7 @@ export interface BaseSync extends BaseSyncId {
 }
 
 /** @internal */
-export function validateId(item: BaseSyncId) {
+export function validateId(item: Partial<BaseSyncId>) {
     return item.id;
 }
 

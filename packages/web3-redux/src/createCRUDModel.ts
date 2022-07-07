@@ -78,6 +78,15 @@ function createCRUDModel<T_ID extends Record<string, any>, T extends T_ID, U ext
         };
     });
 
+    const actionTypes = {
+        CREATE,
+        CREATE_BATCHED,
+        UPDATE,
+        UPDATE_BATCHED,
+        DELETE,
+        DELETE_BATCHED,
+    };
+
     const actions = {
         create: createAction,
         createBatched: createBatchedAction,

@@ -13,6 +13,7 @@ import * as Hooks from './hooks/index.js';
 
 const model = {
     name: CRUDModel.name,
+    actionTypes: CRUDModel.actionTypes,
     actions: {
         ...CRUDModel.actions,
         getBlockNumber: Actions.getBlockNumber,

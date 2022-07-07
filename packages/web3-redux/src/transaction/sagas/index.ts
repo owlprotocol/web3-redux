@@ -1,19 +1,9 @@
 import { all, takeEvery, spawn } from 'typed-redux-saga';
 import fetch from './fetch.js';
-import { watchCreateDBSaga, watchCreateDBBatchedSaga } from './create/index.js';
-import { watchRemoveDBSaga, watchRemoveDBBatchedSaga } from './remove/index.js';
-import { watchUpdateDBSaga, watchUpdateDBBatchedSaga } from './update/index.js';
 import { FETCH } from '../actions/index.js';
+import TransactionCRUD from '../crud.js';
 
 /** @internal */
 export default function* saga() {
-    yield* all([
-        spawn(watchCreateDBSaga),
-        spawn(watchCreateDBBatchedSaga),
-        spawn(watchRemoveDBSaga),
-        spawn(watchRemoveDBBatchedSaga),
-        spawn(watchUpdateDBSaga),
-        spawn(watchUpdateDBBatchedSaga),
-        takeEvery(FETCH, fetch),
-    ]);
+    yield* all([spawn(TransactionCRUD.sagas.crudRootSaga), takeEvery(FETCH, fetch)]);
 }

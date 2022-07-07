@@ -13,6 +13,7 @@ import rootSaga from './sagas/index.js';
 
 const model = {
     name: CRUDModel.name,
+    actionTypes: CRUDModel.actionTypes,
     actions: {
         ...CRUDModel.actions,
         fetch: Actions.fetch,

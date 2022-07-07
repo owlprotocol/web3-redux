@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+export * from './BaseSync.js';
 import { BlockSync, createBlockSyncEveryBlock } from './BlockSync.js';
 import { EventSync } from './EventSync.js';
 import { TransactionSync, createTransactionSyncForAddress } from './TransactionSync.js';
@@ -39,4 +40,10 @@ export function createSyncForActions(
         return sync;
     }
 }
+
+/** @internal */
+export function validate(item: Sync): Sync {
+    return item;
+}
+
 export default Sync;

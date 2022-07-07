@@ -1,5 +1,5 @@
 import { BlockHeader } from './BlockHeader.js';
-import { Transaction } from '../../transaction/model/index.js';
+//import { Transaction } from '../../transaction/model/index.js';
 
 /**
  * Block object with additional data. Typically returned by individual Web3 getBlock request.
@@ -16,7 +16,7 @@ interface BlockTransaction extends BlockHeader {
     /** Array of uncle hashes */
     readonly uncles?: string[];
     /** Transaction objects or ids */
-    readonly transactions?: Transaction[] | string[];
+    //readonly transactions?: Transaction[] | string[];
 }
 
 export type { BlockTransaction };

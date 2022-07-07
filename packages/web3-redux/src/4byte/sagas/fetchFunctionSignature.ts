@@ -2,9 +2,10 @@ import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
 
-import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
-import { set, create, FetchFunctionSignatureAction } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import { create as createError } from '../../error/actions/create.js';
+import { FetchFunctionSignatureAction, FETCH_FUNCTION_SIGNATURE } from '../actions/index.js';
+import _4ByteCRUD from '../crud.js';
+import ConfigCRUD from '../../config/crud.js';
 
 interface _4ByteResponseItem {
     id: number;
@@ -14,29 +15,44 @@ interface _4ByteResponseItem {
     bytes_signature: string;
 }
 
+const FETCH_FUNCTION_SIGNATURE_ERROR = `${FETCH_FUNCTION_SIGNATURE}/ERROR`;
+
 /** @category Sagas */
 export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
-    const { payload } = action;
-    const { signatureHash } = payload;
+    try {
+        const { payload } = action;
+        const { signatureHash } = payload;
 
-    const client = (yield* select(selectConfig))._4byteClient;
-    invariant(client, '4byte client undefined!');
+        const config = yield* select(ConfigCRUD.selectors.selectByIdSingle, { id: '0' });
+        const client = config?._4byteClient;
+        invariant(client, '4byte client undefined!');
 
-    //Check if preImage exists
-    const preImage = yield* select(selectByIdSingle, signatureHash);
-    if (!preImage) yield* put(create({ signatureHash }));
+        //Check if preImage exists
+        const preImage = yield* select(_4ByteCRUD.selectors.selectByIdSingle, { signatureHash });
+        if (!preImage) yield* put(_4ByteCRUD.actions.create({ signatureHash, signatureType: 'Function' }));
 
-    const functionSigRes = yield* call(client.get, `/signatures/?hex_signature=${signatureHash}`);
-    const functionSigResArr: _4ByteResponseItem[] | undefined = (functionSigRes as AxiosResponse).data?.results;
+        const functionSigRes = yield* call(client.get, `/signatures/?hex_signature=${signatureHash}`);
+        const functionSigResArr: _4ByteResponseItem[] | undefined = (functionSigRes as AxiosResponse).data?.results;
 
-    if (functionSigResArr === undefined) throw new Error('This function signature was not found in the 4Byte database');
+        if (functionSigResArr === undefined)
+            throw new Error('This function signature was not found in the 4Byte database');
 
-    //get functionSig with lowest id
-    const functionSig: string | undefined = functionSigResArr?.reduce((prev, curr) =>
-        prev.id < curr.id ? prev : curr,
-    ).text_signature;
+        //get functionSig with lowest id
+        const functionSig: string | undefined = functionSigResArr?.reduce((prev, curr) =>
+            prev.id < curr.id ? prev : curr,
+        ).text_signature;
 
-    yield* put(set({ id: { signatureHash }, key: 'preImage', value: functionSig }));
+        yield* put(_4ByteCRUD.actions.update({ signatureHash, signatureType: 'Function', preImage: functionSig }));
+    } catch (error) {
+        yield* put(
+            createError({
+                id: action.meta.uuid,
+                error: error as Error,
+                errorMessage: (error as Error).message,
+                type: FETCH_FUNCTION_SIGNATURE_ERROR,
+            }),
+        );
+    }
 }
 
 export default fetchFunctionSignature;

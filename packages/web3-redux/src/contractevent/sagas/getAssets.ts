@@ -1,14 +1,13 @@
 import { put, call, all, select } from 'typed-redux-saga';
-import { batchActions } from 'redux-batched-actions';
 import getPastLogs from './getPastLogs.js';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 
 import { flatten, compact, map, uniq } from '../../utils/lodash/index.js';
 import { IERC20, IERC721, IERC1155 } from '../../abis/index.js';
 
-import { createAction as createContract } from '../../contract/actions/index.js';
 import { GetAssetsAction, GET_ASSETS, getPastLogs as getPastLogsAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../../contract/crud.js';
 
 const GET_ASSETS_ERROR = `${GET_ASSETS}/ERROR`;
 
@@ -27,11 +26,11 @@ function* getAssets(action: GetAssetsAction) {
         const { payload } = action;
         const { networkId, address } = payload;
 
-        const network = yield* select(selectNetwork, networkId);
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
-        const web3 = network.web3 ?? network.web3Sender!;
+        const web3 = network.web3 ?? network.web3Sender;
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
         const addressTopic = coder.encodeParameter('address', address);
 
@@ -68,19 +67,18 @@ function* getAssets(action: GetAssetsAction) {
         //console.debug({ ERC20Address, ERC721Address, ERC1155Address })
 
         //Dispatch Contract create actions
-        const ERC20CreateAction = ERC20Address.map((a) =>
-            createContract({ networkId, address: a, abi: IERC20.abi as any }),
-        );
-        const ERC721CreateAction = ERC721Address.map((a) =>
-            createContract({ networkId, address: a, abi: IERC721.abi as any }),
-        );
-        const ERC1155CreateAction = ERC1155Address.map((a) =>
-            createContract({ networkId, address: a, abi: IERC1155.abi as any }),
-        );
-        const actions = [...ERC20CreateAction, ...ERC721CreateAction, ...ERC1155CreateAction];
-        if (actions.length > 0) {
-            const batchAction = batchActions(actions, `${createContract.type}/${actions.length}`);
-            yield* put(batchAction);
+        const ERC20CreateAction = ERC20Address.map((a) => {
+            return { networkId, address: a, abi: IERC20.abi as any };
+        });
+        const ERC721CreateAction = ERC721Address.map((a) => {
+            return { networkId, address: a, abi: IERC721.abi as any };
+        });
+        const ERC1155CreateAction = ERC1155Address.map((a) => {
+            return { networkId, address: a, abi: IERC1155.abi as any };
+        });
+        const contracts = [...ERC20CreateAction, ...ERC721CreateAction, ...ERC1155CreateAction];
+        if (contracts.length > 0) {
+            yield* put(ContractCRUD.actions.createBatched(contracts));
         }
 
         return { ERC20Address, ERC721Address, ERC1155Address };

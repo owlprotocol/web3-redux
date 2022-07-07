@@ -317,7 +317,7 @@ function createCRUDModel<
         useWhere,
     };
 
-    return { name, actions, actionTypes, isAction, reducer, selectors, sagas, hooks };
+    return { name, actions, actionTypes, isAction, reducer, selectors, sagas, hooks, validate, validateId, hydrate };
 }
 
 export default createCRUDModel;

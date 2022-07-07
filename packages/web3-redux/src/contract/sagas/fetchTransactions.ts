@@ -1,10 +1,9 @@
 import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
-
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { createBatchedAction as createTransactionBatched } from '../../transaction/actions/index.js';
-import { createAction, FetchTransactionsAction } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import { FetchTransactionsAction } from '../actions/index.js';
+import TransactionCRUD from '../../transaction/crud.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 interface EtherscanTx {
     blockNumber: string;
@@ -32,14 +31,14 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     const { payload } = action;
     const { networkId, address, startblock, endblock, page, offset, sort } = payload;
 
-    const account = yield* select(selectByIdSingle, { networkId, address });
-    if (!account) yield* put(createAction({ networkId, address }));
-
-    const network = yield* select(selectNetwork, networkId);
+    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
-    const apiClient = network.explorerApiClient;
+    const apiClient = network?.explorerApiClient;
     if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
+
+    const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+    if (!contract) yield* put(ContractCRUD.actions.create({ networkId, address }));
 
     const options = {
         params: {
@@ -57,7 +56,7 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     const response = (yield* call(apiClient.get as any, '/', options)) as AxiosResponse;
     const transactions = response.data?.result as EtherscanTx[];
     if (transactions && transactions.length > 0) {
-        const action = createTransactionBatched(
+        const action = TransactionCRUD.actions.createBatched(
             transactions.map((t) => {
                 return {
                     ...t,

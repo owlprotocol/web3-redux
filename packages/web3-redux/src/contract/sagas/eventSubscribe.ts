@@ -3,9 +3,7 @@ import { put, call, cancel, take, fork, select } from 'typed-redux-saga';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import type { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';
-import { selectByIdSingle as selectNetwork } from '../../network/index.js';
-import { createAction as createEvent } from '../../contractevent/actions/index.js';
-import { eventSubscriptionHash, getId } from '../model/index.js';
+import { eventSubscriptionHash } from '../model/index.js';
 import {
     EventSubscribeAction,
     EventUnsubscribeAction,
@@ -13,7 +11,8 @@ import {
     isEventSubscribeAction,
     isEventUnsubscribeAction,
 } from '../actions/index.js';
-import selectByIdSingle from '../selectors/selectByIdSingle.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 const SUBSCRIBE_DATA = `${EVENT_SUBSCRIBE}/DATA`;
 const SUBSCRIBE_ERROR = `${EVENT_SUBSCRIBE}/ERROR`;
@@ -49,16 +48,19 @@ function* eventSubscribe(action: EventSubscribeAction) {
     try {
         const { payload } = action;
         const { networkId, address, eventName } = payload;
-        const id = getId({ networkId, address });
 
-        const network = yield* select(selectNetwork, networkId);
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        const contract = yield* select(selectByIdSingle, { networkId, address });
-        if (!contract) throw new Error(`Contract ${id} undefined`);
+        const web3 = network.web3 ?? network.web3Sender;
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+
+        const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+        if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+        if (!web3Contract)
+            throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
 
         const filter = payload.filter ?? {};
         const subscription = web3Contract.events[eventName]({ filter });

@@ -1,5 +1,6 @@
 import { select, put, call } from 'typed-redux-saga';
 import getDB from '../../db.js';
+import NetworkCRUD from '../../network/crud.js';
 import { isHexStrict } from '../../utils/web3-utils/index.js';
 import { FetchAction } from '../actions/index.js';
 import BlockCRUD from '../crud.js';
@@ -33,7 +34,7 @@ export function* fetchSaga(action: FetchAction) {
         blockExists = true;
     }
 
-    const network = yield* select(selectNetwork, networkId);
+    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
     const web3 = network?.web3 ?? network?.web3Sender;
     if (!web3) throw new Error(`Network ${networkId} missing web3`);
 

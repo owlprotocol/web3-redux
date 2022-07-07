@@ -1,12 +1,14 @@
 import { AxiosResponse } from 'axios';
 import invariant from 'tiny-invariant';
 import { put, call, select } from 'typed-redux-saga';
-import { selectConfig } from '../../contractevent/config/index.js';
+import ConfigCRUD from '../../config/crud.js';
+import getDB from '../../db.js';
 import { create as createError } from '../../error/actions/index.js';
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 
-import { createAction, HttpGetAction, HTTP_GET } from '../actions/index.js';
-import selectByIdSingle from '../selectors/selectByIdSingle.js';
+import { HttpGetAction, HTTP_GET } from '../actions/index.js';
+import HTTPCacheCRUD from '../crud.js';
+import Http from '../model/interface.js';
 
 const HTTP_GET_ERROR = `${HTTP_GET}/ERROR`;
 
@@ -16,22 +18,25 @@ export function* httpGet(action: HttpGetAction) {
     const { url } = payload;
     try {
         invariant(url, 'url undefined!');
-        const config = yield* select(selectConfig);
-        const { httpClient, corsProxy } = config;
+        const config = yield* select(ConfigCRUD.selectors.selectByIdSingle, { id: '0' });
+        const { httpClient, corsProxy } = config ?? {};
         invariant(httpClient, 'Http client undefined!');
 
-        const httpCache = yield* select(selectByIdSingle, url);
+        const db = getDB();
+        const httpCache = (yield* call([db.HTTPCache, db.HTTPCache.get], HTTPCacheCRUD.validateId({ id: url }))) as
+            | Http
+            | undefined;
         if (!httpCache?.data) {
             try {
                 const response = (yield* call(httpClient.get, url)) as AxiosResponse;
-                yield* put(createAction({ id: url, url, data: response.data }));
+                yield* put(HTTPCacheCRUD.actions.create({ id: url, url, data: response.data }));
             } catch (error) {
                 if (corsProxy) {
                     //TODO: Handle search params
                     //Try with CORS Proxy
                     const urlProxied = `${corsProxy}/${url}`;
                     const response = (yield* call(httpClient.get, urlProxied)) as AxiosResponse;
-                    yield* put(createAction({ id: url, url, data: response.data, corsProxied: true }));
+                    yield* put(HTTPCacheCRUD.actions.create({ id: url, url, data: response.data, corsProxied: true }));
                 } else {
                     throw error;
                 }

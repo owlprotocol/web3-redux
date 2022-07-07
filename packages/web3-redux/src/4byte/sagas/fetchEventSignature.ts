@@ -1,29 +1,43 @@
 import { put, call, select } from 'typed-redux-saga';
-import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
+import { create as createError } from '../../error/actions/create.js';
+import { FetchEventSignatureAction, FETCH_EVENT_SIGNATURE } from '../actions/index.js';
 
-import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
-import { set, create, FetchEventSignatureAction } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import ConfigCRUD from '../../config/crud.js';
+import _4ByteCRUD from '../crud.js';
+
+const FETCH_EVENT_SIGNATURE_ERROR = `${FETCH_EVENT_SIGNATURE}/ERROR`;
 
 /** @category Sagas */
 export function* fetchEventSignature(action: FetchEventSignatureAction) {
-    const { payload } = action;
-    const { signatureHash } = payload;
+    try {
+        const { payload } = action;
+        const { signatureHash } = payload;
 
-    const client = (yield* select(selectConfig))._4byteClient;
-    invariant(client, '4byte client undefined!');
+        const config = yield* select(ConfigCRUD.selectors.selectByIdSingle, { id: '0' });
+        const client = config?._4byteClient;
+        if (!client) throw new Error('4byte client undefined!');
 
-    //Check if preImage exists
-    const preImage = yield* select(selectByIdSingle, signatureHash);
-    if (!preImage) yield* put(create({ signatureHash }));
+        //Check if preImage exists
+        const preImage = yield* select(_4ByteCRUD.selectors.selectByIdSingle, { signatureHash });
+        if (!preImage) yield* put(_4ByteCRUD.actions.create({ signatureHash, signatureType: 'Event' }));
 
-    const eventSigRes = yield* call(client.get, `/event-signatures/?hex_signature=${signatureHash}`);
-    const eventSig: string | undefined = (eventSigRes as AxiosResponse).data?.results[0]?.text_signature;
+        const eventSigRes = yield* call(client.get, `/event-signatures/?hex_signature=${signatureHash}`);
+        const eventSig: string | undefined = (eventSigRes as AxiosResponse).data?.results[0]?.text_signature;
 
-    if (eventSig === undefined) throw new Error('This event signature was not found in the 4Byte database');
+        if (eventSig === undefined) throw new Error('This event signature was not found in the 4Byte database');
 
-    yield* put(set({ id: { signatureHash }, key: 'preImage', value: eventSig }));
+        yield* put(_4ByteCRUD.actions.update({ signatureHash, signatureType: 'Event', preImage: eventSig }));
+    } catch (error) {
+        yield* put(
+            createError({
+                id: action.meta.uuid,
+                error: error as Error,
+                errorMessage: (error as Error).message,
+                type: FETCH_EVENT_SIGNATURE_ERROR,
+            }),
+        );
+    }
 }
 
 export default fetchEventSignature;

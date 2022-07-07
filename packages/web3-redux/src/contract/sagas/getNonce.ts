@@ -1,25 +1,25 @@
 import { select, put, call } from 'typed-redux-saga';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { set, createAction, GetNonceAction } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import { GetNonceAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 /** @category Sagas */
 export function* getNonce(action: GetNonceAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
-    const account = yield* select(selectByIdSingle, { networkId, address });
-    if (!account) yield* put(createAction({ networkId, address }));
-
-    const network = yield* select(selectNetwork, networkId);
+    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
-    if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
-    const web3 = network.web3 ?? network.web3Sender!;
+    const web3 = network.web3 ?? network.web3Sender;
+    if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+
+    const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+    if (!contract) yield* put(ContractCRUD.actions.create({ networkId, address }));
 
     //@ts-expect-error
-    const nonce: string = yield* call((web3 ?? web3Sender).eth.getTransactionCount, address);
-    yield* put(set({ id: { networkId, address }, key: 'nonce', value: nonce }));
+    const nonce: string = yield* call(web3.eth.getTransactionCount, address);
+    yield* put(ContractCRUD.actions.update({ networkId, address, nonce: parseInt(nonce) }));
 }
 
 export default getNonce;

@@ -1,10 +1,9 @@
-import { put, all, select } from 'typed-redux-saga';
-import { validate as validatedEthCall } from '../../ethcall/model/index.js';
-import { createAction as createEthCall } from '../../ethcall/actions/index.js';
+import { put, select, all } from 'typed-redux-saga';
 import { Contract } from '../model/index.js';
-import { createAction, CallBatchedAction, CALL_BATCHED } from '../actions/index.js';
-import { selectByIdMany } from '../selectors/selectByIdMany.js';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
+import { CallBatchedAction, CALL_BATCHED } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import EthCallCRUD from '../../ethcall/crud.js';
+import ContractCRUD from '../crud.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
@@ -13,7 +12,7 @@ export function* callBatched(action: CallBatchedAction) {
     try {
         const { payload } = action;
         const { requests, networkId } = payload;
-        const network = yield* select(selectNetwork, networkId);
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
         if (!network?.web3) throw new Error(`Network ${networkId} missing web3`);
 
         const web3 = network.web3;
@@ -22,7 +21,10 @@ export function* callBatched(action: CallBatchedAction) {
         const contractIds = Array.from(new Set(requests.map((f) => f.address))).map((address) => {
             return { networkId, address };
         });
-        const selectResult: ReturnType<typeof selectByIdMany> = yield* select(selectByIdMany, contractIds);
+        const selectResult: ReturnType<typeof NetworkCRUD.selectors.selectByIdMany> = yield* select(
+            NetworkCRUD.selectors.selectByIdMany,
+            contractIds,
+        );
         const contracts = selectResult.filter((c) => !!c) as Contract[];
         const contractsByAddress: { [key: string]: Contract } = {};
         contracts.filter((c) => c != null).forEach((c) => (contractsByAddress[c.address] = c));
@@ -43,7 +45,7 @@ export function* callBatched(action: CallBatchedAction) {
             }
 
             const data = tx.encodeABI();
-            const ethCall = validatedEthCall({
+            const ethCall = EthCallCRUD.validate({
                 networkId: network.networkId,
                 to: f.address,
                 data,
@@ -51,7 +53,7 @@ export function* callBatched(action: CallBatchedAction) {
             });
 
             //Create base call
-            const putEthCallTask = put(createEthCall(ethCall));
+            const putEthCallTask = put(EthCallCRUD.actions.create(ethCall));
             //Output decoder for multicall
             const methodAbi = contract.abi!.find((m) => m.name === f.method)!;
             const methodAbiOutput = methodAbi.outputs;
@@ -59,10 +61,11 @@ export function* callBatched(action: CallBatchedAction) {
             return { tx, ethCall, putEthCallTask, methodAbiOutput };
         });
 
+        /**TODO: Fix here */
         //All update eth call
-        yield* all(preCallTasks.map((x) => x.putEthCallTask));
+        yield* put(EthCallCRUD.actions.updateBatched(preCallTasks));
         //All update contract
-        yield* all(contracts.map((c) => put(createAction(c))));
+        yield* put(ContractCRUD.actions.updateBatched(contracts));
 
         //If not Multicall, or from/defaultBlock specified
         const regularCallTasks = preCallTasks.filter((t) => {

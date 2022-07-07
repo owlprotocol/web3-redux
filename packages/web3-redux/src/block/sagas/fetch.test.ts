@@ -8,8 +8,7 @@ import getDB from '../../db.js';
 
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock } from '../../utils/index.js';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-
+const network = yield * select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
 import { createStore, StoreType } from '../../store.js';
 import { validate } from '../model/index.js';
 

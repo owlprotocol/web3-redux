@@ -4,9 +4,7 @@ import { Action } from 'redux';
 import type { Subscription } from 'web3-core-subscriptions';
 import type { Log } from 'web3-core';
 
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
 import {
-    createAction as createEvent,
     SubscribeLogsAction,
     SUBSCRIBE_LOGS,
     isSubscribeLogsAction,
@@ -14,6 +12,8 @@ import {
 } from '../actions/index.js';
 import { UnsubscribeLogsAction } from '../actions/unsubscribeLogs.js';
 import { getLogsSubscriptionId } from '../model/logsSubscription.js';
+import ContractEventCRUD from '../crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 const SUBSCRIBE_DATA = `${SUBSCRIBE_LOGS}/DATA`;
 const SUBSCRIBE_ERROR = `${SUBSCRIBE_LOGS}/ERROR`;
@@ -50,11 +50,11 @@ function* subscribeLogs(action: SubscribeLogsAction) {
         const { payload } = action;
         const { networkId, address, topics } = payload;
 
-        const network = yield* select(selectNetwork, networkId);
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        if (!network.web3 && !network.web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
-        const web3 = network.web3 ?? network.web3Sender!;
+        const web3 = network.web3 ?? network.web3Sender;
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
         const subscription = web3.eth.subscribe('logs', { address, topics });
         const channel: TakeableChannel<SubscribeLogsChannelMessage> = yield* call(subscribeLogsChannel, subscription);
@@ -64,7 +64,7 @@ function* subscribeLogs(action: SubscribeLogsAction) {
             const { type, log, error } = message;
             if (type === SUBSCRIBE_DATA && log) {
                 yield* put(
-                    createEvent({
+                    ContractEventCRUD.actions.create({
                         ...log,
                         networkId,
                     }),
@@ -73,7 +73,7 @@ function* subscribeLogs(action: SubscribeLogsAction) {
                 yield* put({ type: SUBSCRIBE_ERROR, error });
             } else if (type === SUBSCRIBE_CHANGED && log) {
                 yield* put(
-                    createEvent({
+                    ContractEventCRUD.actions.update({
                         ...log,
                         networkId,
                     }),

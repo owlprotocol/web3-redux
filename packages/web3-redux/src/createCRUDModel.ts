@@ -3,8 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { put, call, all, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { IndexableType } from 'dexie';
+import { createSelector } from 'redux-orm';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
+import { getOrm } from './orm.js';
 
 /* Compound indices are joined with separator */
 const SEPARATOR = '-';
@@ -140,6 +142,26 @@ function createCRUDModel<
             action.payload.forEach((p) => Model.withId(toReduxOrmId(p))?.delete());
         }
         return sess;
+    };
+
+    /** Redux ORM Selectors */
+    const select = createSelector(getOrm()[name]);
+    const selectByIdSingle = (state: any, id: T_ID | undefined) => {
+        if (!id) return undefined;
+        return select(state, toReduxOrmId(id)) as T_Hydrated | undefined;
+    };
+    const selectByIdMany = (state: any, ids?: T_ID[]): (T_Hydrated | null)[] => {
+        if (!ids) return select(state); //Return all
+        const result = select(
+            state,
+            ids.map((id) => toReduxOrmId(id)),
+        );
+        return result;
+    };
+    const selectors = {
+        select,
+        selectByIdSingle,
+        selectByIdMany,
     };
 
     /** Dexie Sagas */
@@ -295,7 +317,7 @@ function createCRUDModel<
         useWhere,
     };
 
-    return { name, actions, actionTypes, isAction, reducer, sagas, hooks };
+    return { name, actions, actionTypes, isAction, reducer, selectors, sagas, hooks };
 }
 
 export default createCRUDModel;

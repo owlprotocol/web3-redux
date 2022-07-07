@@ -1,8 +1,14 @@
 import axios from 'axios';
 
-import { Network } from './interface.js';
+import { Network, NetworkId } from './interface.js';
 import { defaultNetworks } from '../defaults.js';
 import { fromRpc } from '../../utils/web3/index.js';
+
+/** @internal */
+export function validateId(item: NetworkId) {
+    return item.networkId;
+}
+
 /**
  * Validate network with default values.
  * @param network

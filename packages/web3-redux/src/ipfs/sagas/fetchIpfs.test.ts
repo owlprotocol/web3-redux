@@ -14,7 +14,7 @@ import {
 } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { update as updateConfig } from '../../config/actions/index.js';
+import { update as updateConfig } from '../../contractevent/config/actions/index.js';
 import { selectByIdSingle, selectPathHash } from '../selectors/index.js';
 import { fetchIpfs as fetchIpfsAction, objectGet as objectGetAction, cat as catAction } from '../actions/index.js';
 

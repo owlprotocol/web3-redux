@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 
-interface HttpGetInput {
+export interface HttpGetInput {
     url: string;
 }
 /** @internal */

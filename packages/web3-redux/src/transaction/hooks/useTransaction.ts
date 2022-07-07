@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { selectByIdSingle as selectTransaction } from '../selectors/index.js';
+import { useDispatch } from 'react-redux';
+import NetworkCRUD from '../../network/crud.js';
 import { fetch as fetchAction } from '../actions/index.js';
+import TransactionCRUD from '../crud.js';
 
 /**
  * Reads transaction from store and makes a call to fetch transaction.
@@ -15,9 +15,8 @@ export const useTransaction = (
 ) => {
     const dispatch = useDispatch();
 
-    const network = useSelector((state) => selectNetwork(state, networkId));
-    const id = networkId && hash ? { networkId, hash } : undefined;
-    const transaction = useSelector((state) => selectTransaction(state, id));
+    const network = NetworkCRUD.hooks.useGet({ networkId });
+    const transaction = TransactionCRUD.hooks.useGet({ networkId, hash });
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 
     const action = useMemo(() => {

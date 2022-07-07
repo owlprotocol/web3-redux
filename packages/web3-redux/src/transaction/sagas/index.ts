@@ -3,7 +3,6 @@ import fetch from './fetch.js';
 import { watchCreateDBSaga, watchCreateDBBatchedSaga } from './create/index.js';
 import { watchRemoveDBSaga, watchRemoveDBBatchedSaga } from './remove/index.js';
 import { watchUpdateDBSaga, watchUpdateDBBatchedSaga } from './update/index.js';
-import watchLoadDBSaga from './loadDBAll.js';
 import { FETCH } from '../actions/index.js';
 
 /** @internal */
@@ -16,6 +15,5 @@ export default function* saga() {
         spawn(watchUpdateDBSaga),
         spawn(watchUpdateDBBatchedSaga),
         takeEvery(FETCH, fetch),
-        spawn(watchLoadDBSaga),
     ]);
 }

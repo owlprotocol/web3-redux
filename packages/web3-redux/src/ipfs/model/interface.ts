@@ -28,4 +28,14 @@ export interface Ipfs extends IpfsId {
 
 export const IpfsIndex = 'contentId';
 
+/** @internal */
+export function validateId(item: IpfsId) {
+    return item.contentId;
+}
+
+/** @internal */
+export function validate(item: Ipfs): Ipfs {
+    return item;
+}
+
 export default Ipfs;

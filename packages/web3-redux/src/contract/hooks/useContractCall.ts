@@ -8,8 +8,6 @@ import { GenericSync } from '../../sync/model/index.js';
 
 import { BaseWeb3Contract } from '../model/index.js';
 import { callSynced, call } from '../actions/index.js';
-import selectContractCall from '../selectors/selectContractCallById.js';
-import { selectByIdSingle as selectReduxError } from '../../error/selectors/index.js';
 
 //Contract Call
 /** @internal */
@@ -40,8 +38,6 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
 
     const dispatch = useDispatch();
     const id = networkId && address ? { networkId, address } : undefined;
-
-    //const contract = useSelector((state) => selectSingle<T>(state, id));
 
     const returnValue = useSelector((state) => selectContractCall(state, id, method, { args, from }));
     //const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));

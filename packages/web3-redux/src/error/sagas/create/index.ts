@@ -1,2 +1,1 @@
-export * from './createDB.js';
-export * from './createDBBatched.js';
+export * from './create.js';

@@ -55,6 +55,11 @@ function returnValueKeyCombinations(keys: string[]) {
 }
 
 /** @internal */
+export function validateId(item: ContractEventId) {
+    return [item.networkId, item.blockHash, item.logIndex];
+}
+
+/** @internal */
 export function validate(item: ContractEvent): ContractEvent {
     //@ts-ignore
     const name = item.name ?? item.event;

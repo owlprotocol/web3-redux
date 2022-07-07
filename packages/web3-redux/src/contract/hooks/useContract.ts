@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useGetBalance } from './useGetBalance.js';
 import { useGetNonce } from './useGetNonce.js';
 import { useGetCode } from './useGetCode.js';
 import { useFetchAbi } from './useFetchAbi.js';
-import { AbiItem } from '../../utils/web3-utils/index.js';
-import { createAction } from '../actions/index.js';
 import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced.js';
 import { GetNonceSyncedActionInput } from '../actions/getNonceSynced.js';
-import { selectByIdSingle } from '../selectors/index.js';
 import { BaseWeb3Contract, Contract } from '../model/index.js';
+import ContractCRUD from '../crud.js';
 
 /**
  * Creates a contract/EOA if it doesn't exist.
@@ -30,9 +28,8 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     },
 ) {
     const dispatch = useDispatch();
-    const id = networkId && address ? { networkId, address } : undefined;
 
-    const contract = useSelector((state) => selectByIdSingle<T>(state, id));
+    const contract = ContractCRUD.hooks.useGet({ networkId, address }) as Contract<T> | undefined;
     const contractExists = !!contract;
 
     //Default sync params
@@ -43,8 +40,10 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 
     //Create contract if inexistant
     useEffect(() => {
-        if (id && !contractExists) dispatch(createAction({ ...id, ...createData }));
-    }, [dispatch, id, JSON.stringify(createData), contractExists]);
+        if (!networkId && !address && !contractExists) {
+            dispatch(ContractCRUD.actions.create({ networkId: networkId!, address: address!, ...createData }));
+        }
+    }, [dispatch, networkId, address, JSON.stringify(createData), contractExists]);
 
     useGetBalance(networkId, address, getBalance);
     useGetNonce(networkId, address, getNonce);

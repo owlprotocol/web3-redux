@@ -7,11 +7,11 @@ import { objectGet } from './objectGet.js';
 import { HELLO_WORLD_QMHASH, moxiosIPFS } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { update as updateConfig } from '../../config/actions/index.js';
+import { update as updateConfig } from '../../contractevent/config/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { createAction, objectGet as objectGetAction } from '../actions/index.js';
 
-import { selectConfig } from '../../config/selectors/index.js';
+import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
 
 describe('ipfs/sagas/objectGet.test.ts', () => {
     before(() => moxios.install(axios));

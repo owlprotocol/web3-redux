@@ -3,7 +3,6 @@ import { watchHttpGetSaga } from './httpGet.js';
 import { watchCreateDBSaga, watchCreateDBBatchedSaga } from './create/index.js';
 import { watchRemoveDBSaga, watchRemoveDBBatchedSaga } from './remove/index.js';
 import { watchUpdateDBSaga, watchUpdateDBBatchedSaga } from './update/index.js';
-import watchLoadDBSaga from './loadDBAll.js';
 
 /** @internal */
 export function* saga() {
@@ -15,7 +14,6 @@ export function* saga() {
         spawn(watchUpdateDBSaga),
         spawn(watchUpdateDBBatchedSaga),
         spawn(watchHttpGetSaga),
-        spawn(watchLoadDBSaga),
     ]);
 }
 

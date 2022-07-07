@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
-import { selectByIdSingle as selectBlock } from '../selectors/index.js';
+import { useDispatch } from 'react-redux';
 import { fetch as fetchAction } from '../actions/index.js';
+import BlockCRUD from '../crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 /**
  * Reads block from store and makes a call to fetch block.
@@ -16,9 +16,9 @@ export const useBlock = (
 ) => {
     const dispatch = useDispatch();
 
-    const network = useSelector((state) => selectNetwork(state, networkId));
-    const id = networkId && number ? { networkId, number } : undefined;
-    const block = useSelector((state) => selectBlock(state, id));
+    //TODO: useNetwork
+    const network = NetworkCRUD.hooks.useGet({ networkId });
+    const block = BlockCRUD.hooks.useGet({ networkId, number });
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 
     const action = useMemo(() => {

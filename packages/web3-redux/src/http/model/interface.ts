@@ -1,6 +1,7 @@
-export interface Http {
-    /** ORM id */
-    readonly id?: string;
+export interface HTTPCacheId {
+    readonly id: string;
+}
+export interface Http extends HTTPCacheId {
     /** HTTP url */
     readonly url?: string;
     /** Response data */
@@ -10,5 +11,15 @@ export interface Http {
 }
 
 export const HttpIndex = 'id';
+
+/** @internal */
+export function validateId(item: HTTPCacheId) {
+    return item.id;
+}
+
+/** @internal */
+export function validate(item: Http): Http {
+    return item;
+}
 
 export default Http;

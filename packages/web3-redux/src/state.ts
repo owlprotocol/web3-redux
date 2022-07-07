@@ -6,7 +6,7 @@ import { ContractEvent } from './contractevent/model/interface.js';
 import { ContractEventIndex } from './contracteventindex/model/interface.js';
 import { ContractSend } from './contractsend/model/interface.js';
 import { EthCall } from './ethcall/model/interface.js';
-import { Config } from './config/model/interface.js';
+import { Config } from './contractevent/config/model/interface.js';
 import { Ipfs } from './ipfs/model/interface.js';
 import { Sync } from './sync/model/index.js';
 import { _4ByteSignature } from './4byte/model/interface.js';

@@ -7,9 +7,9 @@ import { cat } from './cat.js';
 import { HELLO_WORLD_QMHASH, HELLO_WORLD, NFT_0_QMHASH, moxiosIPFS, NFT_0 } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { update as updateConfig } from '../../config/actions/index.js';
+import { update as updateConfig } from '../../contractevent/config/actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
-import { selectConfig } from '../../config/selectors/index.js';
+import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
 import { createAction, set as setAction, cat as catAction } from '../actions/index.js';
 
 describe('ipfs/sagas/cat.test.ts', () => {

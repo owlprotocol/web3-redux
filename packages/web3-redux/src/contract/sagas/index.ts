@@ -11,10 +11,6 @@ import { fetchTransactions } from './fetchTransactions.js';
 import { getCode } from './getCode.js';
 import { getEns } from './getEns.js';
 import watchEventGetPastRaw from './eventGetPastRaw.js';
-import { watchCreateDBSaga, watchCreateDBBatchedSaga } from './create/index.js';
-import { watchRemoveDBSaga, watchRemoveDBBatchedSaga } from './remove/index.js';
-import { watchUpdateDBSaga, watchUpdateDBBatchedSaga } from './update/index.js';
-import watchLoadDBSaga from './loadDBAll.js';
 import {
     CALL_BATCHED,
     SEND,
@@ -26,17 +22,13 @@ import {
     GET_BALANCE,
     GET_NONCE,
 } from '../actions/index.js';
+import ContractCRUD from '../crud.js';
 
 //https://typed-redux-saga.js.org/docs/advanced/RootSaga
 /** @internal */
 export function* saga() {
     yield* all([
-        spawn(watchCreateDBSaga),
-        spawn(watchCreateDBBatchedSaga),
-        spawn(watchRemoveDBSaga),
-        spawn(watchRemoveDBBatchedSaga),
-        spawn(watchUpdateDBSaga),
-        spawn(watchUpdateDBBatchedSaga),
+        spawn(ContractCRUD.sagas.crudRootSaga),
         spawn(watchCallSaga),
         takeEvery(EVENT_GET_PAST, eventGetPast),
         spawn(watchEventGetPastRaw),
@@ -49,7 +41,6 @@ export function* saga() {
         takeEvery(GET_CODE, getCode),
         takeEvery(FETCH_TRANSACTIONS, fetchTransactions),
         takeEvery(GET_ENS, getEns),
-        spawn(watchLoadDBSaga),
     ]);
 }
 

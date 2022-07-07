@@ -15,9 +15,12 @@ export enum ContractSendStatus {
     /** Transaction confirmations > 0. */
     CONFIRMED = 'CONFIRMED',
 }
-export interface ContractSend {
+
+export interface ContractSendId {
     /** unique uuid identifying send action */
     readonly uuid: string;
+}
+export interface ContractSend extends ContractSendId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
@@ -66,6 +69,11 @@ export function getOptionsId(from: string | undefined, value: string | undefined
     if (value) options.value = value;
 
     return JSON.stringify(value);
+}
+
+/** @internal */
+export function validateId(item: ContractSendId) {
+    return item.uuid;
 }
 
 /** @internal */

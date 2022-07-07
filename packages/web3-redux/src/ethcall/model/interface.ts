@@ -58,6 +58,11 @@ export function getIdArgs(id: EthCallId): EthCallId {
 }
 
 /** @internal */
+export function validateId(item: EthCallId) {
+    return [item.networkId, item.to, item.data, item.defaultBlock ?? 'latest', item.from ?? ADDRESS_0, item.gas ?? 0];
+}
+
+/** @internal */
 export function validate(item: EthCall): EthCall {
     const toChecksum = item.to.toLowerCase();
     const fromCheckSum = item.from ? item.from.toLowerCase() : undefined;

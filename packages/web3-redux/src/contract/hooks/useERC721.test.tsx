@@ -21,7 +21,7 @@ import { createAction as createBlock } from '../../block/actions/index.js';
 import { createAction as createEvent } from '../../contractevent/actions/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { update as updateConfig } from '../../config/actions/index.js';
+import { update as updateConfig } from '../../contractevent/config/actions/index.js';
 
 describe('contract/hooks/useERC721.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

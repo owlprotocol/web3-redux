@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import invariant from 'tiny-invariant';
 import { put, call, select } from 'typed-redux-saga';
-import { selectConfig } from '../../config/index.js';
+import { selectConfig } from '../../contractevent/config/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 

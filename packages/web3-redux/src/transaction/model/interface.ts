@@ -63,6 +63,11 @@ export const TransactionIndex =
     '[networkId+hash], [networkId+blockNumber], [networkId+blockHash], [networkId+from+to], [networkId+to]';
 
 /** @internal */
+export function validateId(item: TransactionId) {
+    return [item.networkId, item.hash];
+}
+
+/** @internal */
 export function validate(item: Transaction): Transaction {
     const to = item.to ? item.to.toLowerCase() : undefined;
     const from = item.from ? item.from.toLowerCase() : undefined;

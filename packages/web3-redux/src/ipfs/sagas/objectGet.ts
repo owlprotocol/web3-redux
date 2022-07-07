@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import { keyBy } from '../../utils/lodash/index.js';
 import { updateAction, createAction, createBatchedAction, ObjectGetAction, OBJECT_GET } from '../actions/index.js';
 
-import { selectConfig } from '../../config/selectors/index.js';
+import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
 const OBJECT_GET_ERROR = `${OBJECT_GET}/ERROR`;

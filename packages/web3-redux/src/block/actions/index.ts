@@ -1,4 +1,3 @@
-export * from './indexCRUD.js';
 import { FETCH, fetch, FetchAction, isFetchAction } from './fetch.js';
 import { SUBSCRIBE, subscribe, SubscribeAction, isSubscribeAction } from './subscribe.js';
 import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from './unsubscribe.js';

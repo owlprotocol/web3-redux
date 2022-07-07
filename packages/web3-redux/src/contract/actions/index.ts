@@ -1,4 +1,3 @@
-export * from './indexCRUD.js';
 import { CALL, call, CallAction, isCallAction } from './call.js';
 import { CALL_BATCHED, callBatched, CallBatchedAction, isCallBatchedAction } from './callBatched.js';
 import { SEND, send, SendAction, isSendAction } from './send.js';

@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 
 import { set, createAction, CatAction, CAT } from '../actions/index.js';
 
-import { selectConfig } from '../../config/selectors/index.js';
+import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
 import { selectByIdSingle } from '../selectors/index.js';
 
 const CAT_ERROR = `${CAT}/ERROR`;

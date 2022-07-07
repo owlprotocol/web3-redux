@@ -3,6 +3,25 @@
  */
 
 export * from './model/index.js';
-export * from './actions/index.js';
-export * from './reducer.js';
-export * from './sagas/index.js';
+
+import * as Actions from './actions/index.js';
+import CRUDModel from './crud.js';
+import rootSaga from './sagas/index.js';
+
+const model = {
+    name: CRUDModel.name,
+    actions: {
+        ...CRUDModel.actions,
+        fetchEventSignature: Actions.fetchEventSignature,
+        fetchFunctionSignature: Actions.fetchFunctionSignature,
+    },
+    sagas: {
+        ...CRUDModel.sagas,
+        rootSaga,
+    },
+    hooks: {
+        ...CRUDModel.hooks,
+    },
+};
+
+export default model;

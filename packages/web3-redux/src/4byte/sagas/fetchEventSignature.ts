@@ -2,7 +2,7 @@ import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
 
-import { selectConfig } from '../../config/selectors/index.js';
+import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
 import { set, create, FetchEventSignatureAction } from '../actions/index.js';
 import { selectByIdSingle } from '../selectors/index.js';
 

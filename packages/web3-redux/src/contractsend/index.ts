@@ -4,7 +4,22 @@
  */
 
 export * from './model/index.js';
-export * from './actions/index.js';
-export * from './selectors/index.js';
-export * from './reducer.js';
-export * from './hooks/index.js'
+
+import CRUDModel from './crud.js';
+import rootSaga from './sagas/index.js';
+
+const model = {
+    name: CRUDModel.name,
+    actions: {
+        ...CRUDModel.actions,
+    },
+    sagas: {
+        ...CRUDModel.sagas,
+        rootSaga,
+    },
+    hooks: {
+        ...CRUDModel.hooks,
+    },
+};
+
+export default model;

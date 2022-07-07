@@ -54,6 +54,11 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
 export const ContractIndex = '[networkId+address], networkId, label, *tags';
 
 /** @internal */
+export function validateId(item: ContractId) {
+    return [item.networkId, item.address.toLowerCase()];
+}
+
+/** @internal */
 export function validate(contract: Contract): Contract {
     const { address, abi } = contract;
     const eventAbis = filter(abi, (x) => x.type === 'event');

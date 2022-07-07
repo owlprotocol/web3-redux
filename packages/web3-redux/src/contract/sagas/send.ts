@@ -11,7 +11,7 @@ import { SEND, SendAction } from '../actions/index.js';
 import { getId } from '../model/index.js';
 
 import { selectByIdSingle } from '../selectors/index.js';
-import { selectAccount } from '../../config/index.js';
+import { selectAccount } from '../../contractevent/config/index.js';
 
 const CONTRACT_SEND_HASH = `${SEND}/HASH`;
 const CONTRACT_SEND_RECEIPT = `${SEND}/RECEIPT`;

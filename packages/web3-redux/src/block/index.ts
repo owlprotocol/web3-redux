@@ -4,6 +4,29 @@
  */
 
 export * from './model/index.js';
-export * from './actions/index.js';
-export * from './sagas/index.js';
-export * from './hooks/index.js';
+
+import * as Actions from './actions/index.js';
+import CRUDModel from './crud.js';
+import rootSaga from './sagas/index.js';
+import * as Hooks from './hooks/index.js';
+
+const model = {
+    name: CRUDModel.name,
+    actions: {
+        ...CRUDModel.actions,
+        fetch: Actions.fetch,
+        subscribe: Actions.subscribe,
+        unsubscribe: Actions.unsubscribe,
+    },
+    sagas: {
+        ...CRUDModel.sagas,
+        rootSaga,
+    },
+    hooks: {
+        ...CRUDModel.hooks,
+        useBlock: Hooks.useBlock,
+        useBlockSync: Hooks.useBlockSync,
+    },
+};
+
+export default model;

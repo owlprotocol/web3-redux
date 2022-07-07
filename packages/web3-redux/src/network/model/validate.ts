@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 
-import { Network, NetworkId } from './interface.js';
+import { Network, NetworkId, NetworkWithObjects } from './interface.js';
 import { defaultNetworks } from '../defaults.js';
 import { fromRpc } from '../../utils/web3/index.js';
 
@@ -22,28 +22,35 @@ export function validate(network: Network): Network {
     const explorerApiKey = network.explorerApiKey ?? defaultNetworkForId?.explorerApiKey;
     const web3Rpc = network.web3Rpc ?? defaultNetworkForId?.web3Rpc;
 
-    let web3 = network.web3;
-    if (!web3 && web3Rpc) {
-        web3 = fromRpc(web3Rpc);
-    }
+    return {
+        ...network,
+        name,
+        explorerUrl,
+        explorerApiUrl,
+        explorerApiKey,
+        web3Rpc,
+    };
+}
 
-    const validatedNetwork = { ...network };
-    if (name) validatedNetwork.name = name;
-    if (explorerUrl) validatedNetwork.explorerUrl = explorerUrl;
-    if (explorerApiUrl) validatedNetwork.explorerApiUrl = explorerApiUrl;
-    if (explorerApiKey) validatedNetwork.explorerApiKey = explorerApiKey;
-    if (web3Rpc) validatedNetwork.web3Rpc = web3Rpc;
-    if (web3) validatedNetwork.web3 = web3;
+/**
+ * Hydrate network with objects.
+ * @param network
+ */
+export function hydrate(network: Network): NetworkWithObjects {
+    const { web3Rpc, explorerApiUrl, explorerApiKey } = network;
 
-    let explorerApiClient = network.explorerApiClient;
-    if (!explorerApiClient && explorerApiUrl) {
-        if (explorerApiKey)
-            explorerApiClient = axios.create({ baseURL: explorerApiUrl, params: { apikey: explorerApiKey } });
-        else explorerApiClient = axios.create({ baseURL: explorerApiUrl });
-    }
-    if (explorerApiClient) validatedNetwork.explorerApiClient = explorerApiClient;
+    const web3 = web3Rpc ? fromRpc(web3Rpc) : undefined;
 
-    return validatedNetwork;
+    let explorerApiClient: Axios | undefined = undefined;
+    if (explorerApiUrl && explorerApiKey)
+        explorerApiClient = axios.create({ baseURL: explorerApiUrl, params: { apikey: explorerApiKey } });
+    else if (explorerApiUrl) explorerApiClient = axios.create({ baseURL: explorerApiUrl });
+
+    return {
+        ...network,
+        web3,
+        explorerApiClient,
+    };
 }
 
 export default validate;

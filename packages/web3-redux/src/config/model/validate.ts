@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Config, ConfigId } from './interface.js';
+import { Config, ConfigId, ConfigWithObjects } from './interface.js';
 
 export function validateId(config: ConfigId) {
     return config.id;
@@ -11,17 +11,24 @@ export function validateId(config: ConfigId) {
  * @param config
  */
 export function validate(config: Config): Config {
-    const ipfsClient = config.ipfsClient ?? (config.ipfsUrl ? axios.create({ baseURL: config.ipfsUrl }) : undefined);
-    const _4byteClient =
-        config._4byteClient ?? (config._4byteUrl ? axios.create({ baseURL: config._4byteUrl }) : undefined);
-    const httpClient = config.httpClient ?? axios.create();
+    return config;
+}
 
-    const validatedConfig = { ...config };
-    if (ipfsClient) validatedConfig.ipfsClient = ipfsClient;
-    if (_4byteClient) validatedConfig._4byteClient = _4byteClient;
-    if (httpClient) validatedConfig.httpClient = httpClient;
+/**
+ * Hydrate config with objects.
+ * @param config
+ */
+export function hydrate(config: Config): ConfigWithObjects {
+    const ipfsClient = config.ipfsUrl ? axios.create({ baseURL: config.ipfsUrl }) : undefined;
+    const _4byteClient = config._4byteUrl ? axios.create({ baseURL: config._4byteUrl }) : undefined;
+    const httpClient = axios.create();
 
-    return validatedConfig;
+    return {
+        ...config,
+        ipfsClient,
+        _4byteClient,
+        httpClient,
+    };
 }
 
 export default validate;

@@ -6,6 +6,13 @@ import { IndexableType } from 'dexie';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 
+/* Compound indices are joined with separator */
+const SEPARATOR = '-';
+function toReduxOrmId(id: IndexableType) {
+    if (typeof id === 'string') return id;
+    return id.join(SEPARATOR);
+}
+
 /**
  *
  * Creates common CRUD actions for a Redux/Dexie model including relevant action creators & sagas.
@@ -16,10 +23,16 @@ import getDB from './db.js';
  * @param validate Validate item that will be inserted, defaults to identity function.
  * @returns
  */
-function createCRUDModel<T_ID extends Record<string, any>, T extends T_ID, U extends string>(
-    name: U,
-    validateId: (id: T_ID) => IndexableType = (id: T_ID) => Object.values(id),
-    validate: (item: T) => T = (item: T) => item,
+function createCRUDModel<
+    U extends string,
+    T_ID extends Record<string, any> = Record<string, any>,
+    T extends T_ID = T_ID,
+    T_Hydrated extends T = T,
+    >(
+        name: U,
+        validateId: (id: T_ID) => IndexableType = (id: T_ID) => Object.values(id),
+        validate: (item: T) => T = (item: T) => item,
+        hydrate: (item: T, sess?: any) => T_Hydrated = (item: T) => item as T_Hydrated,
 ) {
     /** Actions */
     const CREATE = `${name}/CREATE`;
@@ -113,17 +126,18 @@ function createCRUDModel<T_ID extends Record<string, any>, T extends T_ID, U ext
             deleteBatchedAction.match(action)
         );
     };
+
     /** Redux ORM Reducer */
     const reducer = (sess: any, action: Action) => {
         const Model = sess[name];
         if (createAction.match(action) || updateAction.match(action)) {
-            Model.upsert(action.payload);
+            Model.upsert(hydrate(action.payload));
         } else if (createBatchedAction.match(action) || updateBatchedAction.match(action)) {
-            action.payload.forEach((p) => Model.upsert(p));
+            action.payload.forEach((p) => Model.upsert(hydrate(p)));
         } else if (deleteAction.match(action)) {
-            Model.withId(action.payload)?.delete();
+            Model.withId(toReduxOrmId(action.payload))?.delete();
         } else if (deleteBatchedAction.match(action)) {
-            action.payload.forEach((p) => Model.withId(p)?.delete());
+            action.payload.forEach((p) => Model.withId(toReduxOrmId(p))?.delete());
         }
         return sess;
     };

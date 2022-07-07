@@ -1,7 +1,7 @@
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 import { filter, keyBy } from '../../utils/lodash/index.js';
-import { AbiItem, isAddress } from '../../utils/web3-utils/index.js';
+import { AbiItem } from '../../utils/web3-utils/index.js';
 import { Transaction } from '../../transaction/model/interface.js';
 
 /**
@@ -24,13 +24,9 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
  * @typeParam T
  * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Web3.js contract interface.
  */
-export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends ContractId {
+export interface Contract extends ContractId {
     /** Contract ABI */
     readonly abi?: AbiItem[];
-    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance */
-    readonly web3Contract?: T;
-    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance used for send transactions */
-    readonly web3SenderContract?: T;
     /** Account balance in wei */
     readonly balance?: string;
     /** Account nonce aka number of transactions sent. */
@@ -45,10 +41,13 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
     readonly tags?: string[];
     /** Event abis indexed by signature */
     readonly eventAbiBySignature?: { [k: string]: AbiItem };
+}
 
-    /** ORM Relational */
-    readonly fromTransactions?: Transaction[];
-    readonly toTransactions?: Transaction[];
+export interface ContractWithObjects<T extends BaseWeb3Contract = BaseWeb3Contract> extends Contract {
+    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance */
+    readonly web3Contract?: T;
+    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance used for send transactions */
+    readonly web3SenderContract?: T;
 }
 
 export const ContractIndex = '[networkId+address], networkId, label, *tags';
@@ -71,6 +70,25 @@ export function validate(contract: Contract): Contract {
     if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;
 
     return result;
+}
+
+/**
+ * Hydrate contract with objects.
+ * @param contract
+ */
+export function hydrate(contract: Contract, sess: any): ContractWithObjects {
+    const { networkId, abi, address } = contract;
+    const network: Network = sess.Network.withId(networkId);
+    const { web3, web3Sender } = network ?? {};
+
+    const web3Contract = web3 && abi ? new web3.eth.Contract(abi, address) : undefined;
+    const web3SenderContract = web3Sender && abi ? new web3Sender.eth.Contract(abi, address) : undefined;
+
+    return {
+        ...contract,
+        web3Contract,
+        web3SenderContract,
+    };
 }
 
 export default Contract;

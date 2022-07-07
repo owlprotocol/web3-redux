@@ -20,7 +20,11 @@ export interface Config extends ConfigId {
     readonly ipfsUrl?: string | undefined;
     /* 4byte.directory Url */
     readonly _4byteUrl?: string | undefined;
-    /* API Clients */
+    /* Arbitrary config values */
+    //readonly [key: string]: any;
+}
+
+export interface ConfigWithObjects extends Config {
     /* IPFS Client */
     readonly ipfsClient?: Axios;
     /* 4byte.directory Client */
@@ -29,8 +33,6 @@ export interface Config extends ConfigId {
     readonly corsProxy?: string;
     /* HTTP Client */
     readonly httpClient?: Axios;
-    /* Arbitrary config values */
-    readonly [key: string]: any;
 }
 
 export default Config;

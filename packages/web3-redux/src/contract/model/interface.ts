@@ -2,7 +2,7 @@ import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 import { filter, keyBy } from '../../utils/lodash/index.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
-import { Transaction } from '../../transaction/model/interface.js';
+import { NetworkWithObjects } from '../../network/model/interface.js';
 
 /**
  * Contract Id object.
@@ -78,7 +78,7 @@ export function validate(contract: Contract): Contract {
  */
 export function hydrate(contract: Contract, sess: any): ContractWithObjects {
     const { networkId, abi, address } = contract;
-    const network: Network = sess.Network.withId(networkId);
+    const network: NetworkWithObjects | undefined = sess.Network.withId(networkId);
     const { web3, web3Sender } = network ?? {};
 
     const web3Contract = web3 && abi ? new web3.eth.Contract(abi, address) : undefined;

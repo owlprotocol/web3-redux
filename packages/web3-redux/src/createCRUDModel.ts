@@ -131,9 +131,9 @@ function createCRUDModel<
     const reducer = (sess: any, action: Action) => {
         const Model = sess[name];
         if (createAction.match(action) || updateAction.match(action)) {
-            Model.upsert(hydrate(action.payload));
+            Model.upsert(hydrate(action.payload, sess));
         } else if (createBatchedAction.match(action) || updateBatchedAction.match(action)) {
-            action.payload.forEach((p) => Model.upsert(hydrate(p)));
+            action.payload.forEach((p) => Model.upsert(hydrate(p, sess)));
         } else if (deleteAction.match(action)) {
             Model.withId(toReduxOrmId(action.payload))?.delete();
         } else if (deleteBatchedAction.match(action)) {

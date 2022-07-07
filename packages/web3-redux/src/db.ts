@@ -16,30 +16,30 @@ import { Transaction, TransactionIndex } from './transaction/model/index.js';
 import isClient from './utils/isClient.js';
 
 export class Web3ReduxDexie extends Dexie {
-    blocks!: Table<BlockTransaction>;
-    contracts!: Table<Contract>;
-    contractEvents!: Table<ContractEvent>;
-    contractSends!: Table<ContractSend>;
-    errors!: Table<ReduxError>;
-    ethCalls!: Table<EthCall>;
-    httpCache!: Table<Http>;
-    ipfsCache!: Table<Ipfs>;
-    networks!: Table<Network>;
-    transactions!: Table<Transaction>;
+    Block!: Table<BlockTransaction>;
+    Contract!: Table<Contract>;
+    ContractEvent!: Table<ContractEvent>;
+    ContractSend!: Table<ContractSend>;
+    ReduxError!: Table<ReduxError>;
+    EthCall!: Table<EthCall>;
+    HTTPCache!: Table<Http>;
+    IPFSCache!: Table<Ipfs>;
+    Network!: Table<Network>;
+    Transaction!: Table<Transaction>;
 
     constructor() {
         super('Web3Redux');
         this.version(1).stores({
-            blocks: BlockIndex,
-            contracts: ContractIndex,
-            contractEvents: ContractEventIndex,
-            contractSends: ContractSendIndex,
-            errors: ReduxErrorIndex,
-            ethCalls: EthCallIndex,
-            httpCache: HttpIndex,
-            ipfsCache: IpfsIndex,
-            networks: NetworkIndex,
-            transactions: TransactionIndex,
+            Block: BlockIndex,
+            Contract: ContractIndex,
+            ContractEvent: ContractEventIndex,
+            ContractSend: ContractSendIndex,
+            ReduxError: ReduxErrorIndex,
+            EthCall: EthCallIndex,
+            HTTPCache: HttpIndex,
+            IPFSCache: IpfsIndex,
+            Network: NetworkIndex,
+            Transaction: TransactionIndex,
         });
     }
 }

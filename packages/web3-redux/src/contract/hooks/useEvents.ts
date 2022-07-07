@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ReturnValues } from '../../contractevent/model/interface.js';
 import { BaseWeb3Contract } from '../model/index.js';
 import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions/index.js';
 import { EventGetPastActionInput } from '../actions/eventGetPast.js';
-import selectSingle from '../selectors/selectByIdSingle.js';
-import selectEvents from '../selectors/selectContractEventsById.js';
 import { isAddress } from '../../utils/web3-utils/index.js';
+import ContractCRUD from '../crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 //Contract Events
 /** @internal */
@@ -36,13 +36,17 @@ export function useEvents<
     const { fromBlock, toBlock, blockBatch, max, past, sync } = options ?? {};
 
     const addressChecksum = address && isAddress(address) ? address.toLowerCase() : undefined;
-    const id = networkId && addressChecksum ? { networkId, address: addressChecksum } : undefined;
-    const contract = useSelector((state) => selectSingle(state, id));
+    const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
     const contractExists = !!contract;
 
     const dispatch = useDispatch();
 
-    const events = useSelector((state) => selectEvents<T, K, U>(state, id, eventName, filter));
+    //TODO: handle filter
+    const events = ContractEventCRUD.hooks.useWhere({
+        networkId,
+        address: addressChecksum,
+        name: eventName as string | undefined,
+    });
     const filterHash = filter ? JSON.stringify(filter) : '';
 
     const getPastAction = useMemo(() => {

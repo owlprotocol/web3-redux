@@ -16,7 +16,7 @@ import { createAction as createEvent } from '../../contractevent/actions/index.j
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { createAction } from '../actions/index.js';
+
 
 import { useContractCall } from '../hooks/useContractCall.js';
 import { createEventSync } from '../../sync/model/EventSync.js';

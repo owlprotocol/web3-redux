@@ -15,7 +15,7 @@ import { validateContractEvent } from '../../contractevent/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { createAction } from '../actions/index.js';
+
 
 import { useEvents } from '../hooks/useEvents.js';
 

@@ -1,10 +1,12 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import NetworkCRUD from '../../network/crud.js';
 import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors/index.js';
 import { remove as removeSync } from '../../sync/actions/index.js';
+import SyncCRUD from '../../sync/crud.js';
 import { GenericSync } from '../../sync/model/index.js';
 import { getNonceSynced } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import ContractCRUD from '../crud.js';
 
 /**
  * Get Contract bytecode
@@ -17,10 +19,9 @@ export function useGetNonce(
     sync = 'ifnull' as 'ifnull' | GenericSync | false,
 ) {
     const dispatch = useDispatch();
-    const id = networkId && address ? { networkId, address } : undefined;
 
-    const contract = useSelector((state) => selectByIdSingle(state, id));
-    const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
+    const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
+    const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
     const nonceExists = contract?.nonce != undefined;
 
@@ -44,7 +45,7 @@ export function useGetNonce(
     useEffect(() => {
         if (syncAction) dispatch(syncAction);
         return () => {
-            if (syncId) dispatch(removeSync(syncId));
+            if (syncId) dispatch(SyncCRUD.actions.delete(syncId));
         };
     }, [dispatch, syncId]);
 

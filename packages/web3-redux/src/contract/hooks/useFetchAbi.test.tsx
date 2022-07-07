@@ -6,7 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import jsdom from 'mocha-jsdom';
 import { useFetchAbi } from './useFetchAbi.js';
 import { createAction as createNetwork } from '../../network/actions/index.js';
-import { createAction } from '../actions/index.js';
+
 import { WETH } from '../../abis/index.js';
 import { WETH as WETH_ADDRESS, networkId } from '../../test/data.js';
 import { StoreType, createStore } from '../../store.js';
@@ -37,7 +37,7 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
                 explorerApiClient: client,
             }),
         );
-        store.dispatch(createAction({ networkId, address }));
+        store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

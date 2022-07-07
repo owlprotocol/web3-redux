@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors/index.js';
+import { useDispatch } from 'react-redux';
+import NetworkCRUD from '../../network/crud.js';
 import { fetchAbi } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import ContractCRUD from '../crud.js';
 
 /**
  * Fetch Contract ABI
@@ -15,20 +15,25 @@ export function useFetchAbi(
     fetch = 'ifnull' as 'ifnull' | true | false,
 ) {
     const dispatch = useDispatch();
-    const id = networkId && address ? { networkId, address } : undefined;
 
-    const contract = useSelector((state) => selectByIdSingle(state, id));
-    const network = useSelector((state) => selectNetworkByIdSingle(state, networkId));
+    const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
+    const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
     const contractExists = !!contract;
     const explorerApiExists = !!network?.explorerApiClient;
     const abiExists = !!contract?.abi;
 
     //Fetch abi (Etherscan)
     const fetchAbiAction = useMemo(() => {
-        if (id && explorerApiExists && contractExists && ((fetch === 'ifnull' && !abiExists) || fetch === true)) {
-            return fetchAbi({ ...id });
+        if (
+            networkId &&
+            address &&
+            explorerApiExists &&
+            contractExists &&
+            ((fetch === 'ifnull' && !abiExists) || fetch === true)
+        ) {
+            return fetchAbi({ networkId, address });
         }
-    }, [id, contractExists, explorerApiExists, fetch]);
+    }, [networkId, address, contractExists, explorerApiExists, fetch]);
 
     useEffect(() => {
         if (fetchAbiAction) dispatch(fetchAbiAction);

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Await } from '../../types/promise.js';
 
@@ -10,6 +10,7 @@ import { callSynced, call } from '../actions/index.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import ContractCRUD from '../crud.js';
 import SyncCRUD from '../../sync/crud.js';
+import ErrorCRUD from '../../error/crud.js';
 
 //Contract Call
 /** @internal */
@@ -101,7 +102,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
             }
         }, [networkId, address, method, argsHash, JSON.stringify(sync)]) ?? {};
 
-    const reduxError = useSelector((state) => selectReduxError(state, callAction?.meta.uuid));
+    const reduxError = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
     if (reduxError) error = reduxError.error;
 
     const callId = callAction?.payload.id;

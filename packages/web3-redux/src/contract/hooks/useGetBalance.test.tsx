@@ -13,7 +13,7 @@ import { createAction as createBlock } from '../../block/actions/index.js';
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
-import { createAction } from '../actions/index.js';
+
 
 describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -35,7 +35,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
     beforeEach(() => {
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
-        store.dispatch(createAction({ networkId, address }));
+        store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

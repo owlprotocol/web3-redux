@@ -13,7 +13,7 @@ import { createAction as createNetwork } from '../../network/actions/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { createAction } from '../actions/index.js';
+
 
 import { useSupportsInterface } from '../hooks/useSupportsInterface.js';
 

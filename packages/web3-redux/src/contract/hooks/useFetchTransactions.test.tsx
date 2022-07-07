@@ -9,7 +9,7 @@ import { createAction as createNetwork } from '../../network/actions/index.js';
 
 import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { createAction } from '../actions/index.js';
+
 
 import { expectThrowsAsync } from '../../test/index.js';
 
@@ -39,7 +39,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
                 explorerApiClient: client,
             }),
         );
-        store.dispatch(createAction({ networkId, address }));
+        store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

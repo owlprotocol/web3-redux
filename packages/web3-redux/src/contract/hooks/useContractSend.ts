@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
-import { useDispatch, } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { BaseWeb3Contract } from '../model/index.js';
 import { send, SendAction } from '../actions/index.js';
-import { useReduxError } from '../../error/hooks/index.js';
-import { useContractSend as useContractSendData } from '../../contractsend/hooks/index.js'
 import { ContractSend } from '../../contractsend/model/interface.js';
+import ErrorCRUD from '../../error/crud.js';
+import ContractSendCRUD from '../../contractsend/crud.js';
 
 /**
  * useContractSend options
@@ -15,7 +15,6 @@ export interface UseContractSendOptions {
     from?: string;
 }
 
-
 /**
  * Create a contract send transaction callback method.
  * @category Hooks
@@ -25,39 +24,37 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
     address: string | undefined,
     method: K | undefined,
     args?: Parameters<T['methods'][K]>,
-    options?: UseContractSendOptions
-): [() => void, {
-    sendAction: SendAction | undefined,
-    error: Error | undefined,
-    contractSend: ContractSend | undefined
-}] {
+    options?: UseContractSendOptions,
+): [
+        () => void,
+        {
+            sendAction: SendAction | undefined;
+            error: Error | undefined;
+            contractSend: ContractSend | undefined;
+        },
+    ] {
     let error: Error | undefined;
     const { value, from } = options ?? {};
     const dispatch = useDispatch();
-    const [sendAction, setSendAction] = useState<SendAction | undefined>()
+    const [sendAction, setSendAction] = useState<SendAction | undefined>();
 
-    const sendCallback = useCallback(
-        () => {
-            const sendAction = send({
-                networkId,
-                address,
-                method: method as string,
-                args,
-                value,
-                from,
-            })
-            setSendAction(sendAction);
-            dispatch(
-                sendAction
-            );
-        },
-        [networkId, address, method, JSON.stringify(args), value, args, dispatch],
-    );
+    const sendCallback = useCallback(() => {
+        const sendAction = send({
+            networkId,
+            address,
+            method: method as string,
+            args,
+            value,
+            from,
+        });
+        setSendAction(sendAction);
+        dispatch(sendAction);
+    }, [networkId, address, method, JSON.stringify(args), value, args, dispatch]);
 
-    const reduxError = useReduxError(sendAction?.meta.uuid);
+    const reduxError = ErrorCRUD.hooks.useGet(sendAction?.meta.uuid);
     if (reduxError) error = reduxError.error;
 
-    const contractSend = useContractSendData(sendAction?.meta.uuid)
+    const contractSend = ContractSendCRUD.hooks.useGet(sendAction?.meta.uuid);
 
     return [sendCallback, { error, sendAction, contractSend }];
 }

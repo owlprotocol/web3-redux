@@ -12,7 +12,7 @@ import { createStore, StoreType } from '../../store.js';
 import { createAction as createNetwork } from '../../network/actions/index.js';
 import { Contract } from '../model/interface.js';
 import { name } from '../common.js';
-import { selectByIdSingle } from '../selectors/index.js';
+
 import { createAction, getCode as getCodeAction } from '../actions/index.js';
 
 describe(`${name}.integration`, () => {
@@ -33,7 +33,7 @@ describe(`${name}.integration`, () => {
     beforeEach(() => {
         ({ store } = createStore());
         store.dispatch(createNetwork({ networkId, web3 }));
-        store.dispatch(createAction(item));
+        store.dispatch(ContractCRUD.actions.create(item));
     });
 
     describe('getCode', () => {

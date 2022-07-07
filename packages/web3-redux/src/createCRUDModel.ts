@@ -147,11 +147,22 @@ function createCRUDModel<
 
     /** Redux ORM Selectors */
     const select = createSelector(getOrm()[name]);
-    const selectByIdSingle = (state: any, id: T_ID | undefined) => {
+    const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined) => {
         if (!id) return undefined;
-        return select(state, toReduxOrmId(id)) as T_Hydrated | undefined;
+        if (typeof id != 'string') {
+            //Compound index
+            if (Object.values(id).includes(undefined)) {
+                //Missing index key, return undefined
+                return undefined;
+            }
+            //Validate id & convert to redux orm string id
+            return select(state, toReduxOrmId(validateId(id))) as T_Hydrated | undefined;
+        } else {
+            //redux orm string id
+            return select(state, id) as T_Hydrated | undefined;
+        }
     };
-    const selectByIdMany = (state: any, ids?: T_ID[]): (T_Hydrated | null)[] => {
+    const selectByIdMany = (state: any, ids?: (T_ID | string)[]): (T_Hydrated | null)[] => {
         if (!ids) return select(state); //Return all
         const result = select(
             state,
@@ -298,10 +309,19 @@ function createCRUDModel<
     };
 
     /** Hooks */
-    const useGet = (id: Partial<T_ID>) => {
+    const useGet = (id: Partial<T_ID> | string | undefined) => {
+        if (!id) return undefined;
         const db = getDB();
-        return useLiveQuery(() => db[name as keyof typeof db].get(validateId(id))) as T | undefined;
+        if (typeof id != 'string') {
+            if (Object.values(id).includes(undefined)) {
+                return undefined;
+            }
+        }
+
+        const id2 = typeof id === 'string' ? id : validateId(id);
+        return useLiveQuery(() => db[name as keyof typeof db].get(id2)) as T | undefined;
     };
+    //TODO: string array id
     const useGetBulk = (id: Partial<T_ID>[]) => {
         const db = getDB();
         return useLiveQuery(() => db[name as keyof typeof db].getBulk(id)) as T[] | undefined;
@@ -310,10 +330,10 @@ function createCRUDModel<
         const db = getDB();
         return useLiveQuery(() => db[name as keyof typeof db].where(filter)) as T[];
     };
-    const useSelectByIdSingle = (id: T_ID | undefined) => {
+    const useSelectByIdSingle = (id: Partial<T_ID> | string | undefined) => {
         return useSelector((state) => selectByIdSingle(state, id));
     };
-    const useSelectByIdMany = (id?: T_ID[]) => {
+    const useSelectByIdMany = (id?: (T_ID | string)[]) => {
         return useSelector((state) => selectByIdMany(state, id));
     };
 

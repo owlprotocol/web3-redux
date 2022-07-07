@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AbiItem } from '../../utils/web3-utils/index.js';
-import { createAction } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import ContractCRUD from '../crud.js';
 
 /**
  * Creates a contract/EOA if it doesn't exist.
@@ -17,13 +16,11 @@ export function useContractWithAbi(
     abi?: AbiItem[] | undefined,
 ) {
     const dispatch = useDispatch();
-    const contract = useSelector((state) =>
-        selectByIdSingle(state, networkId && address ? { networkId, address } : undefined),
-    );
+    const contract = useSelector((state) => ContractCRUD.selectors.selectByIdSingle(state, { networkId, address }));
     const contractExists = !!contract;
     //Create contract if inexistant
     useEffect(() => {
-        if (networkId && address && !contractExists) dispatch(createAction({ networkId, address, abi }));
+        if (networkId && address && !contractExists) dispatch(ContractCRUD.actions.create({ networkId, address, abi }));
     }, [dispatch, networkId, address, contractExists]);
 
     return contract;

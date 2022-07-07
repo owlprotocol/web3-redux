@@ -1,4 +1,4 @@
-import { createAction as createReduxAction } from '@reduxjs/toolkit';
+import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { put, call, all, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -103,7 +103,32 @@ function createCRUDModel<T_ID extends Record<string, any>, T extends T_ID, U ext
     type DeleteAction = ReturnType<typeof actions.delete>;
     type DeleteBatchedAction = ReturnType<typeof actions.deleteBatched>;
 
-    /** Sagas */
+    const isAction = (action: Action) => {
+        return (
+            createAction.match(action) ||
+            createBatchedAction.match(action) ||
+            updateAction.match(action) ||
+            updateBatchedAction.match(action) ||
+            deleteAction.match(action) ||
+            deleteBatchedAction.match(action)
+        );
+    };
+    /** Redux ORM Reducer */
+    const reducer = (sess: any, action: Action) => {
+        const Model = sess[name];
+        if (createAction.match(action) || updateAction.match(action)) {
+            Model.upsert(action.payload);
+        } else if (createBatchedAction.match(action) || updateBatchedAction.match(action)) {
+            action.payload.forEach((p) => Model.upsert(p));
+        } else if (deleteAction.match(action)) {
+            Model.withId(action.payload)?.delete();
+        } else if (deleteBatchedAction.match(action)) {
+            action.payload.forEach((p) => Model.withId(p)?.delete());
+        }
+        return sess;
+    };
+
+    /** Dexie Sagas */
     const CREATE_ERROR = `${CREATE}/ERROR`;
     const CREATE_BATCHED_ERROR = `${CREATE_BATCHED}/ERROR`;
     const UPDATE_ERROR = `${UPDATE}/ERROR`;
@@ -256,7 +281,7 @@ function createCRUDModel<T_ID extends Record<string, any>, T extends T_ID, U ext
         useWhere,
     };
 
-    return { name, actionTypes, actions, sagas, hooks };
+    return { name, actions, actionTypes, isAction, reducer, sagas, hooks };
 }
 
 export default createCRUDModel;

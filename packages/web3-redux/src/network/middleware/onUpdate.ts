@@ -1,6 +1,6 @@
 import { AnyAction, Store } from 'redux';
 import Web3 from 'web3';
-import { batchActions } from 'redux-batched-actions';
+
 import * as Network from '../index.js';
 import ContractCRUD from '../../contract/crud.js';
 

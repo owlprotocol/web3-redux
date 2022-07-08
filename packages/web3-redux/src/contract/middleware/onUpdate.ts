@@ -1,5 +1,5 @@
 import { AnyAction, Store } from 'redux';
-import { batchActions } from 'redux-batched-actions';
+
 import { coder } from '../../utils/web3-eth-abi/index.js';
 import { set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '../../contractevent/actions/index.js';
 

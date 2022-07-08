@@ -18,7 +18,7 @@ function* fetch(action: FetchAction) {
     if (!tx) yield* put(TransactionCRUD.actions.create({ networkId, hash }));
 
     const transaction = yield* call(web3.eth.getTransaction, hash);
-    const newTransaction = { ...transaction, networkId };
+    const newTransaction = { ...transaction, networkId } as Transaction;
     yield* put(TransactionCRUD.actions.update(newTransaction));
 }
 

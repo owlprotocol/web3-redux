@@ -1,6 +1,6 @@
 import axios from 'axios';
-
 import { Config, ConfigId, ConfigWithObjects } from './interface.js';
+import { omit } from '../../utils/lodash/index.js';
 
 export function validateId(config: ConfigId) {
     return config.id;
@@ -29,6 +29,14 @@ export function hydrate(config: Config): ConfigWithObjects {
         _4byteClient,
         httpClient,
     };
+}
+
+/**
+ * Encode config
+ * @param config
+ */
+export function encode(config: ConfigWithObjects): Config {
+    return omit(config, ['ipfsClient', '_4byteClient', 'httpClient']);
 }
 
 export default validate;

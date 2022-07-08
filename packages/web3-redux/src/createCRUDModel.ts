@@ -2,9 +2,10 @@ import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { put as putSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { IndexableType } from 'dexie';
+import { IndexableType, IndexableTypeArray } from 'dexie';
 import { createSelector } from 'redux-orm';
 import { useSelector } from 'react-redux';
+import { filter } from './utils/lodash/index.js';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
@@ -12,7 +13,7 @@ import isStrings from './utils/isStrings.js';
 
 /* Compound indices are joined with separator */
 const SEPARATOR = '-';
-export function toReduxOrmId(id: IndexableType) {
+export function toReduxOrmId(id: string | IndexableTypeArray) {
     if (typeof id === 'string') return id;
     return id.join(SEPARATOR);
 }
@@ -23,20 +24,23 @@ export function toReduxOrmId(id: IndexableType) {
  * Automatically infers types.
  *
  * @param name
- * @param validateId Validate id to Dexie-supported format, defaults to calling object values.
- * @param validate Validate item that will be inserted, defaults to identity function.
+ * @param validateId Validate id to Dexie-supported format. Defaults to calling object values.
+ * @param validate Validate item that will be inserted computing any default values. Defaults to identity function.
+ * @param hydrate Instantiate objects that are not encoded in Dexie.
+ * @param encode Encode an hydrated object to be inserted stripping out objects.
  * @returns
  */
 function createCRUDModel<
     U extends string,
     T_ID extends Record<string, any> = Record<string, any>,
-    T extends T_ID = T_ID,
-    T_Hydrated extends T = T,
+    T_Encoded extends T_ID = T_ID,
+    T extends T_Encoded = T_Encoded,
     >(
         name: U,
-        validateId: (id: Partial<T_ID>) => IndexableType = (id: Partial<T_ID>) => Object.values(id),
-        validate: (item: Partial<T>) => T = (item: Partial<T>) => item as T,
-        hydrate: (item: Partial<T>, sess?: any) => T_Hydrated = (item: Partial<T>) => item as T_Hydrated,
+        validateId: (id: T_ID) => string | IndexableTypeArray = (id: T_ID) => Object.values(id),
+        validate: (item: T) => T = (item: T) => item as T,
+        hydrate: (item: T, sess?: any) => T = (item: T) => item as T,
+        encode: (item: T) => T_Encoded = (item: T) => item as T_Encoded,
 ) {
     /** Actions */
     const CREATE = `${name}/CREATE`;
@@ -157,31 +161,42 @@ function createCRUDModel<
                 return undefined;
             }
             //Validate id & convert to redux orm string id
-            return select(state, toReduxOrmId(validateId(id))) as T_Hydrated | undefined;
+            return select(state, toReduxOrmId(validateId(id))) as T | undefined;
         } else {
             //redux orm string id
-            return select(state, id) as T_Hydrated | undefined;
+            return select(state, id) as T | undefined;
         }
     };
-    const selectByIdMany = (state: any, ids?: (T_ID | string)[]): (T_Hydrated | null)[] => {
+
+    const selectByIdMany = (state: any, ids?: (T_ID | string)[]): (T | null)[] => {
         if (!ids) return select(state); //Return all
-        const result = select(
-            state,
-            ids.map((id) => toReduxOrmId(id)),
-        );
-        return result;
+        if (isStrings(ids)) {
+            return select(state, ids);
+        } else {
+            return select(
+                state,
+                ids.map((id) => toReduxOrmId(validateId(id as T_ID))),
+            );
+        }
     };
+
+    const selectWhere = (state: any, f: Partial<T_Encoded>) => {
+        const all = selectByIdMany(state);
+        return filter(all, f) as T_Encoded[];
+    };
+
     const selectors = {
         select,
         selectByIdSingle,
         selectByIdMany,
+        selectWhere,
     };
 
     /** Dexie Getters */
     const get = (id: Partial<T_ID> | string | undefined) => {
         if (!id) return undefined;
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
         if (typeof id != 'string') {
             if (Object.values(id).includes(undefined)) {
                 return undefined;
@@ -194,7 +209,7 @@ function createCRUDModel<
     const bulkGet = (id: T_ID[] | string[] | undefined) => {
         if (!id) return undefined;
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
         if (isStrings(id)) {
             return table.bulkGet(id);
         } else {
@@ -204,72 +219,73 @@ function createCRUDModel<
 
     const all = () => {
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
         return table.toArray();
+    };
+
+    const where = (filter: Partial<T_Encoded>) => {
+        const db = getDB();
+        const table = db.table<T_Encoded>(name);
+        return table.where(filter).toArray();
     };
 
     const add = (item: T) => {
         const db = getDB();
-        const table = db.table<T>(name);
-        return table.add(item);
+        const table = db.table<T_Encoded>(name);
+        return table.add(encode(item));
     };
 
     const bulkAdd = (items: T[]) => {
         const db = getDB();
-        const table = db.table<T>(name);
-        return table.bulkAdd(items);
+        const table = db.table<T_Encoded>(name);
+        return table.bulkAdd(items.map(encode));
     };
 
     const put = (item: T) => {
         const db = getDB();
-        const table = db.table<T>(name);
-        return table.put(item);
+        const table = db.table<T_Encoded>(name);
+        return table.put(encode(item));
     };
 
     const bulkPut = (items: T[]) => {
         const db = getDB();
-        const table = db.table<T>(name);
-        return table.bulkPut(items);
+        const table = db.table<T_Encoded>(name);
+        return table.bulkPut(items.map(encode));
     };
 
-    const update = (item: Partial<T>) => {
+    const update = (item: T) => {
         const db = getDB();
-        const table = db.table<T>(name);
-        return table.update(validateId(item), item);
+        const table = db.table<T_Encoded>(name);
+        return table.update(validateId(item), encode(item));
     };
 
-    const bulkUpdate = (items: Partial<T>[]) => {
+    const bulkUpdate = (items: T[]) => {
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
 
         return db.transaction('rw', table, async () => {
-            const promises = items.map((t) => table.update(validateId(t), t));
+            const promises = items.map((t) => table.update(validateId(t), encode(t)));
             return Promise.all(promises);
         });
     };
 
     const deleteDB = (id: IndexableType) => {
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
         return table.delete(id);
     };
 
     const bulkDelete = (ids: IndexableType[]) => {
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
         return table.bulkDelete(ids);
-    };
-
-    const where = (filter: Partial<T>) => {
-        const db = getDB();
-        const table = db.table<T>(name);
-        return table.where(filter).toArray();
     };
 
     const db = {
         get,
         bulkGet,
         all,
+        where,
         add,
         bulkAdd,
         put,
@@ -278,7 +294,6 @@ function createCRUDModel<
         bulkUpdate,
         delete: deleteDB,
         bulkDelete,
-        where,
     };
 
     /** Dexie Sagas */
@@ -410,7 +425,7 @@ function createCRUDModel<
     const useGet = (id: Partial<T_ID> | string | undefined) => {
         if (!id) return undefined;
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
         if (typeof id != 'string') {
             if (Object.values(id).includes(undefined)) {
                 return undefined;
@@ -423,12 +438,12 @@ function createCRUDModel<
     //TODO: string array id
     const useGetBulk = (ids: Partial<T_ID>[]) => {
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
         return useLiveQuery(() => table.bulkGet(ids.map(validateId)));
     };
-    const useWhere = (filter: Partial<T>) => {
+    const useWhere = (filter: Partial<T_Encoded>) => {
         const db = getDB();
-        const table = db.table<T>(name);
+        const table = db.table<T_Encoded>(name);
         return useLiveQuery(() => table.where(filter).toArray());
     };
     const useSelectByIdSingle = (id: Partial<T_ID> | string | undefined) => {

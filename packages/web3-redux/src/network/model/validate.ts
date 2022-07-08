@@ -3,6 +3,7 @@ import axios, { Axios } from 'axios';
 import { Network, NetworkId, NetworkWithObjects } from './interface.js';
 import { defaultNetworks } from '../defaults.js';
 import { fromRpc } from '../../utils/web3/index.js';
+import { omit } from '../../utils/lodash/index.js';
 
 /** @internal */
 export function validateId(item: NetworkId) {
@@ -51,6 +52,14 @@ export function hydrate(network: Network): NetworkWithObjects {
         web3,
         explorerApiClient,
     };
+}
+
+/**
+ * Encode network
+ * @param network
+ */
+export function encode(network: NetworkWithObjects): Network {
+    return omit(network, ['web3', 'web3Sender']);
 }
 
 export default validate;

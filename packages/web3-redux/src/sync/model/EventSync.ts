@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { BaseSync } from './BaseSync.js';
 
 /**
@@ -16,8 +17,10 @@ export function createEventSync(
     matchAddress: string,
     matchName: string,
     matchReturnValues: EventSync['matchReturnValues'],
+    uuid?: string,
 ): EventSync {
     return {
+        id: uuid ?? uuidv4(),
         type: 'Event',
         networkId,
         actions,

@@ -1,6 +1,6 @@
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
-import { filter, keyBy } from '../../utils/lodash/index.js';
+import { filter, keyBy, omit } from '../../utils/lodash/index.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { NetworkWithObjects } from '../../network/model/interface.js';
 
@@ -53,7 +53,10 @@ export interface ContractWithObjects<T extends BaseWeb3Contract = BaseWeb3Contra
 export const ContractIndex = '[networkId+address], networkId, label, *tags';
 
 /** @internal */
-export function validateId(item: ContractId) {
+export function validateId(item: Partial<ContractId>) {
+    if (!item.networkId) throw new Error('networkId undefined');
+    if (!item.address) throw new Error('address undefined');
+
     return [item.networkId, item.address.toLowerCase()];
 }
 
@@ -89,6 +92,14 @@ export function hydrate(contract: Contract, sess: any): ContractWithObjects {
         web3Contract,
         web3SenderContract,
     };
+}
+
+/**
+ * Encode contract
+ * @param contract
+ */
+export function encode(contract: ContractWithObjects): Contract {
+    return omit(contract, ['web3Contract', 'web3SenderContract']);
 }
 
 export default Contract;

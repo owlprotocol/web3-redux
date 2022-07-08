@@ -4,7 +4,7 @@ import { getWeb3Provider } from '../../test/index.js';
 
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 import { Contract } from '../model/interface.js';
 import { name } from '../common.js';
 
@@ -26,7 +26,7 @@ describe(`${name}.integration`, () => {
 
     beforeEach(() => {
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(ContractCRUD.actions.create(item));
     });
 

@@ -1,8 +1,7 @@
-import { all } from 'typed-redux-saga';
+import { all, takeEvery } from 'typed-redux-saga';
 import blockSync from './blockSync.js';
 import eventSync from './eventSync.js';
 import transactionSync from './transactionSync.js';
-import takeEveryBatched from '../../sagas/takeEveryBatched.js';
 import Block from '../../block/index.js';
 import Transaction from '../../transaction/index.js';
 
@@ -11,13 +10,10 @@ import Transaction from '../../transaction/index.js';
 /** @internal */
 export function* saga() {
     yield* all([
-        takeEveryBatched(({ type }: { type: string }) => type.startsWith(Block.actionTypes.CREATE), blockSync),
-        takeEveryBatched(({ type }: { type: string }) => type.startsWith(Block.actionTypes.UPDATE), blockSync),
-        takeEveryBatched(
-            ({ type }: { type: string }) => type.startsWith(Transaction.actionTypes.CREATE),
-            transactionSync,
-        ),
-        takeEveryBatched(({ type }: { type: string }) => type.startsWith(Transaction.actionTypes.UPDATE), eventSync),
+        takeEvery(({ type }: { type: string }) => type.startsWith(Block.actionTypes.CREATE), blockSync),
+        takeEvery(({ type }: { type: string }) => type.startsWith(Block.actionTypes.UPDATE), blockSync),
+        takeEvery(({ type }: { type: string }) => type.startsWith(Transaction.actionTypes.CREATE), transactionSync),
+        takeEvery(({ type }: { type: string }) => type.startsWith(Transaction.actionTypes.UPDATE), eventSync),
     ]);
 }
 

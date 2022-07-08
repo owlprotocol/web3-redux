@@ -2,18 +2,17 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
+import jsdom from 'mocha-jsdom';
 import { getWeb3Provider } from '../../test/index.js';
 
 import { networkId, transaction1 } from '../../test/data.js';
-import { createAction as createNetwork } from '../../network/actions/index.js';
-import { createAction as createTransaction } from '../actions/index.js';
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
 import { Transaction, validate } from '../model/interface.js';
+import NetworkCRUD from '../../network/crud.js';
+import TransactionCRUD from '../crud.js';
 import { useTransaction } from './index.js';
-
-import jsdom from 'mocha-jsdom';
 
 describe(`${name}/hooks/useTransaction.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -34,7 +33,7 @@ describe(`${name}/hooks/useTransaction.tsx`, () => {
 
     beforeEach(async () => {
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
 
         const txSent = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[1], value: '1' });
@@ -55,7 +54,7 @@ describe(`${name}/hooks/useTransaction.tsx`, () => {
         });
 
         it('(networkId, hash, false)', async () => {
-            store.dispatch(createTransaction(transaction1));
+            store.dispatch(TransactionCRUD.actions.create(transaction1));
 
             const { result } = renderHook(() => useTransaction(networkId, transaction1.hash, false), {
                 wrapper,
@@ -77,7 +76,7 @@ describe(`${name}/hooks/useTransaction.tsx`, () => {
         });
 
         it('(networkId, hash, ifnull): defined', async () => {
-            store.dispatch(createTransaction(transaction1));
+            store.dispatch(TransactionCRUD.actions.create(transaction1));
 
             const { result } = renderHook(() => useTransaction(networkId, transaction1.hash, 'ifnull'), {
                 wrapper,

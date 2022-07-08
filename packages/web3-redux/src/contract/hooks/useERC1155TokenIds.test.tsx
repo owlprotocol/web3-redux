@@ -12,7 +12,7 @@ import { networkId } from '../../test/data.js';
 
 import { ERC1155PresetMinterPauser } from '../../abis/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 import { createStore, StoreType } from '../../store.js';
 
 describe('contract/hooks/useERC1155TokenIds.test.tsx', () => {
@@ -47,7 +47,7 @@ describe('contract/hooks/useERC1155TokenIds.test.tsx', () => {
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
     it('tokenIds = [0]', async () => {

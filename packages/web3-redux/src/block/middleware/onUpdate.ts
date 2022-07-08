@@ -1,13 +1,8 @@
 import { AnyAction, Store } from 'redux';
-import { selectLatestBlockNumber } from '../../network/selectors/index.js';
-import { set as setNetwork } from '../../network/actions/index.js';
 import { Transaction } from '../../transaction/model/interface.js';
-import { createBatchedAction as createTransactionBatchedAction } from '../../transaction/actions/index.js';
-import { getTransactionId } from '../../transaction/model/index.js';
-
-import { isCreateAction, isUpdateAction, isSetAction } from '../actions/index.js';
 import { isStrings } from '../../utils/index.js';
-import { getBlockId } from '../model/index.js';
+import TransactionCRUD from '../../transaction/crud.js';
+import BlockCRUD from '../crud.js';
 
 /**
  * Middleware for whenever a block is created/updated.
@@ -21,53 +16,32 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
     let blockNumber: number | undefined;
     let transactions: Transaction[] | string[] | undefined;
 
-    if (isCreateAction(action) || isUpdateAction(action)) {
+    if (BlockCRUD.actions.create.match(action) || BlockCRUD.actions.update.match(action)) {
         networkId = action.payload.networkId;
         blockNumber = action.payload.number;
         transactions = action.payload.transactions;
-    } else if (isSetAction(action) && action.payload.key === 'number') {
-        networkId = action.payload.id.networkId;
-        blockNumber = action.payload.value;
     }
 
     if (networkId) {
         if (blockNumber !== undefined) {
-            const state = store.getState();
-            const latestBlockNumber = selectLatestBlockNumber(state, networkId);
-
-            if (!latestBlockNumber || blockNumber > latestBlockNumber) {
-                //Update network latestBlockNumber
-                const updateNetworkAction = setNetwork({
-                    id: networkId,
-                    key: 'latestBlockNumber',
-                    value: blockNumber,
-                });
-
-                postActions.push(updateNetworkAction); //Update Network.latestBlockNumber after updating block
-            }
-
             //Create transactions
             if (transactions && transactions.length > 0 && isStrings(transactions)) {
-                const action = createTransactionBatchedAction(
+                const action = TransactionCRUD.actions.createBatched(
                     transactions.map((hash: string) => {
                         return {
                             hash,
                             networkId: networkId!,
                             blockNumber,
-                            blockId: getBlockId({ networkId: networkId!, number: blockNumber! }),
-                            id: getTransactionId({ hash, networkId: networkId! }),
                         };
                     }),
                 );
                 postActions.push(action);
             } else if (transactions && transactions.length > 0 && !isStrings(transactions)) {
-                const action = createTransactionBatchedAction(
+                const action = TransactionCRUD.actions.createBatched(
                     transactions.map((tx: Transaction) => {
                         return {
                             ...tx,
                             networkId: networkId!,
-                            blockId: getBlockId({ networkId: networkId!, number: blockNumber! })!,
-                            id: getTransactionId({ hash: tx.hash, networkId: networkId! }),
                         };
                     }),
                 );

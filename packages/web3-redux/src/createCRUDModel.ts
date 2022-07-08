@@ -1,6 +1,6 @@
 import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { put, call, all, takeEvery } from 'typed-redux-saga';
+import { put as putSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { IndexableType } from 'dexie';
 import { createSelector } from 'redux-orm';
@@ -8,10 +8,11 @@ import { useSelector } from 'react-redux';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
+import isStrings from './utils/isStrings.js';
 
 /* Compound indices are joined with separator */
 const SEPARATOR = '-';
-function toReduxOrmId(id: IndexableType) {
+export function toReduxOrmId(id: IndexableType) {
     if (typeof id === 'string') return id;
     return id.join(SEPARATOR);
 }
@@ -176,6 +177,110 @@ function createCRUDModel<
         selectByIdMany,
     };
 
+    /** Dexie Getters */
+    const get = (id: Partial<T_ID> | string | undefined) => {
+        if (!id) return undefined;
+        const db = getDB();
+        const table = db.table<T>(name);
+        if (typeof id != 'string') {
+            if (Object.values(id).includes(undefined)) {
+                return undefined;
+            }
+        }
+        const id2 = typeof id === 'string' ? id : validateId(id);
+        return table.get(id2);
+    };
+
+    const bulkGet = (id: T_ID[] | string[] | undefined) => {
+        if (!id) return undefined;
+        const db = getDB();
+        const table = db.table<T>(name);
+        if (isStrings(id)) {
+            return table.bulkGet(id);
+        } else {
+            return table.bulkGet(id.map(validateId));
+        }
+    };
+
+    const all = () => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.toArray();
+    };
+
+    const add = (item: T) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.add(item);
+    };
+
+    const bulkAdd = (items: T[]) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.bulkAdd(items);
+    };
+
+    const put = (item: T) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.put(item);
+    };
+
+    const bulkPut = (items: T[]) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.bulkPut(items);
+    };
+
+    const update = (item: Partial<T>) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.update(validateId(item), item);
+    };
+
+    const bulkUpdate = (items: Partial<T>[]) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+
+        return db.transaction('rw', table, async () => {
+            const promises = items.map((t) => table.update(validateId(t), t));
+            return Promise.all(promises);
+        });
+    };
+
+    const deleteDB = (id: IndexableType) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.delete(id);
+    };
+
+    const bulkDelete = (ids: IndexableType[]) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.bulkDelete(ids);
+    };
+
+    const where = (filter: Partial<T>) => {
+        const db = getDB();
+        const table = db.table<T>(name);
+        return table.where(filter).toArray();
+    };
+
+    const db = {
+        get,
+        bulkGet,
+        all,
+        add,
+        bulkAdd,
+        put,
+        bulkPut,
+        update,
+        bulkUpdate,
+        delete: deleteDB,
+        bulkDelete,
+        where,
+    };
+
     /** Dexie Sagas */
     const CREATE_ERROR = `${CREATE}/ERROR`;
     const CREATE_BATCHED_ERROR = `${CREATE_BATCHED}/ERROR`;
@@ -187,11 +292,9 @@ function createCRUDModel<
     const createSaga = function* (action: CreateAction) {
         try {
             const { payload } = action;
-
-            const db = getDB();
-            yield* call([db[name as keyof typeof db], db[name as keyof typeof db].add], payload);
+            yield* call(add, payload);
         } catch (error) {
-            yield* put(
+            yield* putSaga(
                 createError({
                     id: action.meta.uuid,
                     error: error as Error,
@@ -205,10 +308,9 @@ function createCRUDModel<
         try {
             const { payload } = action;
 
-            const db = getDB();
-            yield* call([db[name as keyof typeof db], db[name as keyof typeof db].bulkAdd], payload);
+            yield* call(bulkAdd, payload);
         } catch (error) {
-            yield* put(
+            yield* putSaga(
                 createError({
                     id: action.meta.uuid,
                     error: error as Error,
@@ -222,10 +324,9 @@ function createCRUDModel<
         try {
             const { payload } = action;
 
-            const db = getDB();
-            yield* call([db[name as keyof typeof db], db[name as keyof typeof db].put], payload);
+            yield* call(update, payload);
         } catch (error) {
-            yield* put(
+            yield* putSaga(
                 createError({
                     id: action.meta.uuid,
                     error: error as Error,
@@ -239,10 +340,9 @@ function createCRUDModel<
         try {
             const { payload } = action;
 
-            const db = getDB();
-            yield* call([db[name as keyof typeof db], db[name as keyof typeof db].bulkPut], payload);
+            yield* call(bulkUpdate, payload);
         } catch (error) {
-            yield* put(
+            yield* putSaga(
                 createError({
                     id: action.meta.uuid,
                     error: error as Error,
@@ -256,10 +356,9 @@ function createCRUDModel<
         try {
             const { payload } = action;
 
-            const db = getDB();
-            yield* call([db[name as keyof typeof db], db[name as keyof typeof db].delete], payload);
+            yield* call(deleteDB, payload);
         } catch (error) {
-            yield* put(
+            yield* putSaga(
                 createError({
                     id: action.meta.uuid,
                     error: error as Error,
@@ -273,10 +372,9 @@ function createCRUDModel<
         try {
             const { payload } = action;
 
-            const db = getDB();
-            yield* call([db[name as keyof typeof db], db[name as keyof typeof db].bulkDelete], payload);
+            yield* call(bulkDelete, payload);
         } catch (error) {
-            yield* put(
+            yield* putSaga(
                 createError({
                     id: action.meta.uuid,
                     error: error as Error,
@@ -288,7 +386,7 @@ function createCRUDModel<
     };
 
     const crudRootSaga = function* () {
-        yield* all([
+        yield* allSaga([
             takeEvery(CREATE, createSaga),
             takeEvery(CREATE_BATCHED, createBatchedSaga),
             takeEvery(UPDATE, updateSaga),
@@ -308,10 +406,11 @@ function createCRUDModel<
         crudRootSaga,
     };
 
-    /** Hooks */
+    /** Dexie Hooks */
     const useGet = (id: Partial<T_ID> | string | undefined) => {
         if (!id) return undefined;
         const db = getDB();
+        const table = db.table<T>(name);
         if (typeof id != 'string') {
             if (Object.values(id).includes(undefined)) {
                 return undefined;
@@ -319,16 +418,18 @@ function createCRUDModel<
         }
 
         const id2 = typeof id === 'string' ? id : validateId(id);
-        return useLiveQuery(() => db[name as keyof typeof db].get(id2)) as T | undefined;
+        return useLiveQuery(() => table.get(id2));
     };
     //TODO: string array id
-    const useGetBulk = (id: Partial<T_ID>[]) => {
+    const useGetBulk = (ids: Partial<T_ID>[]) => {
         const db = getDB();
-        return useLiveQuery(() => db[name as keyof typeof db].getBulk(id)) as T[] | undefined;
+        const table = db.table<T>(name);
+        return useLiveQuery(() => table.bulkGet(ids.map(validateId)));
     };
     const useWhere = (filter: Partial<T>) => {
         const db = getDB();
-        return useLiveQuery(() => db[name as keyof typeof db].where(filter)) as T[];
+        const table = db.table<T>(name);
+        return useLiveQuery(() => table.where(filter).toArray());
     };
     const useSelectByIdSingle = (id: Partial<T_ID> | string | undefined) => {
         return useSelector((state) => selectByIdSingle(state, id));
@@ -345,7 +446,20 @@ function createCRUDModel<
         useSelectByIdMany,
     };
 
-    return { name, actions, actionTypes, isAction, reducer, selectors, sagas, hooks, validate, validateId, hydrate };
+    return {
+        name,
+        actions,
+        actionTypes,
+        isAction,
+        reducer,
+        selectors,
+        sagas,
+        db,
+        hooks,
+        validate,
+        validateId,
+        hydrate,
+    };
 }
 
 export default createCRUDModel;

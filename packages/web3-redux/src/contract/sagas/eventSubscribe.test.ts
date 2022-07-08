@@ -12,7 +12,7 @@ import { networkId } from '../../test/data.js';
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { createAction as createNetwork } from '../../network/index.js';
+
 import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
 
 import { ContractId } from '../model/index.js';
@@ -40,7 +40,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
 
     beforeEach(async () => {
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3, web3Sender }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[]).deploy({
             data: BlockNumberArtifact.bytecode,

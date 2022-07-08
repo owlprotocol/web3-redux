@@ -14,16 +14,10 @@ import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 import { networkId } from '../../test/data.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { createAction as createNetwork, selectByIdSingle as selectNetwork } from '../../network/index.js';
-import {
-    createAction as createEthCall,
-    updateAction as updateEthCall,
-    selectEthCallById,
-    validateEthCall,
-} from '../../ethcall/index.js';
-
-import { selectByIdSingle, selectContractCall, selectEthCallId } from '../selectors/index.js';
-import { createAction, call as callAction } from '../actions/index.js';
+import { call as callAction } from '../actions/index.js';
+import EthCallCRUD from '../../ethcall/crud.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}/sagas/call.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -74,7 +68,7 @@ describe(`${name}/sagas/call.ts`, () => {
                 address,
                 method: 'getValue',
             });
-            const ethCall = validateEthCall({
+            const ethCall = EthCallCRUD.validate({
                 networkId,
                 from: undefined,
                 to: address,
@@ -84,18 +78,18 @@ describe(`${name}/sagas/call.ts`, () => {
             const returnValue = await tx.call({ ...ethCall, gas });
             testSaga(callSaga, action)
                 .next()
-                .select(selectNetwork, networkId)
+                .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
                 .next({ networkId })
-                .select(selectByIdSingle, { networkId, address })
+                .select(ContractCRUD.selectors.selectByIdSingle, { networkId, address })
                 .next({ web3Contract, address })
-                .put(createEthCall({ ...ethCall, status: 'LOADING' }, action.meta.uuid))
+                .put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid))
                 .next()
                 //.call(tx.estimateGas, { ...ethCall })
                 .next(gas)
                 //.call(tx.call, { ...ethCall, gas })
                 .next(returnValue)
                 .put(
-                    updateEthCall(
+                    EthCallCRUD.actions.update(
                         {
                             ...ethCall,
                             error: undefined,
@@ -114,7 +108,7 @@ describe(`${name}/sagas/call.ts`, () => {
     describe('store', () => {
         beforeEach(async () => {
             ({ store } = createStore());
-            store.dispatch(createNetwork({ networkId, web3, web3Sender }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3, web3Sender }));
 
             const tx = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[]).deploy({
                 data: BlockNumberArtifact.bytecode,
@@ -124,7 +118,7 @@ describe(`${name}/sagas/call.ts`, () => {
             address = web3Contract.options.address;
 
             store.dispatch(
-                createAction({
+                ContractCRUD.actions.create({
                     networkId,
                     address,
                     abi: cloneDeep(BlockNumberArtifact.abi) as AbiItem[],
@@ -146,7 +140,7 @@ describe(`${name}/sagas/call.ts`, () => {
 
                 //Call an invalid function
                 const ethCallId = selectEthCallId(store.getState(), { networkId, address }, 'revertTx');
-                const ethCall = selectEthCallById(store.getState(), ethCallId)!;
+                const ethCall = EthCallCRUD.selectors.selectByIdSingle(store.getState(), ethCallId)!;
                 const value = ethCall.returnValue;
                 const error = ethCall.error;
 

@@ -4,7 +4,6 @@ export { isNumbers } from './isNumbers.js';
 export { isStrings } from './isStrings.js';
 export { sleep } from './sleep.js';
 export { sleepForPort } from './sleepForPort.js';
-export { memoizeReturn, memoizeWeak, memoizeArrayByRef } from './memo/index.js';
 export { mineBlocks, mineBlock } from './mineBlocks.js';
 export { ganacheLogger } from './ganacheLogger.js';
 export { getInterfaceIdentifier } from './getInterfaceIdentifier.js';

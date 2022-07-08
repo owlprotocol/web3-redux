@@ -5,7 +5,7 @@ import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
 import jsdom from 'mocha-jsdom';
 import { useFetchAbi } from './useFetchAbi.js';
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 
 import { WETH } from '../../abis/index.js';
 import { WETH as WETH_ADDRESS, networkId } from '../../test/data.js';
@@ -32,7 +32,7 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
     beforeEach(() => {
         ({ store } = createStore());
         store.dispatch(
-            createNetwork({
+            NetworkCRUD.actions.create({
                 networkId,
                 explorerApiClient: client,
             }),

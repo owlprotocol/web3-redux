@@ -63,7 +63,7 @@ export const TransactionIndex =
     '[networkId+hash], [networkId+blockNumber], [networkId+blockHash], [networkId+from+to], [networkId+to]';
 
 /** @internal */
-export function validateId(item: TransactionId) {
+export function validateId(item: Partial<TransactionId>) {
     return [item.networkId, item.hash];
 }
 

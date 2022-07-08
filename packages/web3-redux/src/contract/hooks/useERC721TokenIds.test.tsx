@@ -13,7 +13,7 @@ import { NFT_COLLECTION_QMHASH } from '../../test/ipfs.js';
 
 import { ERC721PresetMinterPauserAutoId } from '../../abis/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 import { createStore, StoreType } from '../../store.js';
 
 describe('contract/hooks/useERC721TokenIds.test.tsx', () => {
@@ -36,7 +36,7 @@ describe('contract/hooks/useERC721TokenIds.test.tsx', () => {
 
     beforeEach(async () => {
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
         web3Contract = await new web3.eth.Contract(cloneDeep(ERC721PresetMinterPauserAutoId.abi) as any)
             .deploy({

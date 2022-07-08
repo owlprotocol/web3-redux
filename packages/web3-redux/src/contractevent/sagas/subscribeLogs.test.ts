@@ -9,11 +9,10 @@ import { ERC20PresetMinterPauser } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { createAction as createNetwork } from '../../network/index.js';
 
-import { selectByIdMany } from '../selectors/index.js';
 import { subscribeLogs as subscribeLogsAction } from '../actions/index.js';
 import { coder } from '../../utils/web3-eth-abi/index.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -40,7 +39,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
         address = web3Contract.options.address;
 
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
     describe('subscribeLogs', () => {
@@ -58,7 +57,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
 
             await sleep(1000);
 
-            const events1 = selectByIdMany(store.getState());
+            const events1 = NetworkCRUD.selectors.selectByIdMany(store.getState());
             //[Transfer(accounts[0])]
             assert.equal(events1.length, 1, 'events.length');
         });

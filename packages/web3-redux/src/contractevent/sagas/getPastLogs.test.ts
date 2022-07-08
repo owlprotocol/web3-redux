@@ -11,11 +11,9 @@ import { ERC20PresetMinterPauser, IERC20 } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { createAction as createNetwork } from '../../network/index.js';
-import { createAction as createContract } from '../../contract/index.js';
-
-import { selectByIdMany } from '../selectors/index.js';
 import { getPastLogs as getPastLogsAction } from '../actions/index.js';
+import ContractEventCRUD from '../crud.js';
+import ContractCRUD from '../../contract/crud.js';
 
 describe(`${name}/sagas/getPastLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -46,7 +44,7 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
     describe('getPastLogs', () => {
@@ -60,7 +58,7 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
 
             await sleep(1000);
 
-            const events1 = selectByIdMany(store.getState());
+            const events1 = ContractEventCRUD.selectors.selectByIdMany(store.getState());
             //[DefaultRoleGranted, MinterRoleGranted, PauserRoleGranted, Transfer(accounts[0])]
             assert.equal(events1.length, 4, 'events.length');
         });
@@ -88,14 +86,14 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
 
                 await sleep(1000);
 
-                const events1 = selectByIdMany(store.getState());
+                const events1 = ContractEventCRUD.selectors.selectByIdMany(store.getState());
                 //[Transfer(zero, accounts[0])]
                 assert.equal(events1.length, 1, 'events.length');
             });
 
             it('event.onUpdate middleware', async () => {
                 //Create contract before events are fetched
-                store.dispatch(createContract({ networkId, address, abi: IERC20.abi as any }));
+                store.dispatch(ContractCRUD.actions.create({ networkId, address, abi: IERC20.abi as any }));
 
                 //Trigger event.onUpdate which populates returnValues
                 store.dispatch(
@@ -109,7 +107,7 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
                 await sleep(1000);
 
                 //Proper decoding using middleware
-                const events1 = selectByIdMany(store.getState());
+                const events1 = ContractEventCRUD.selectors.selectByIdMany(store.getState());
                 const event = events1[0];
                 assert.equal(event?.returnValues?.from, ADDRESS_0, 'returnValues.from');
                 assert.equal(event?.returnValues?.to, accounts[0], 'returnValues.to');
@@ -129,10 +127,10 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
 
                 //Create contract after events are fetched
                 //Trigger contract.onUpdate which populates returnValues
-                store.dispatch(createContract({ networkId, address, abi: IERC20.abi as any }));
+                store.dispatch(ContractCRUD.actions.create({ networkId, address, abi: IERC20.abi as any }));
 
                 //Proper decoding using middleware
-                const events1 = selectByIdMany(store.getState());
+                const events1 = ContractEventCRUD.selectors.selectByIdMany(store.getState());
                 const event = events1[0];
                 assert.equal(event?.returnValues?.from, ADDRESS_0, 'returnValues.from');
                 assert.equal(event?.returnValues?.to, accounts[0], 'returnValues.to');

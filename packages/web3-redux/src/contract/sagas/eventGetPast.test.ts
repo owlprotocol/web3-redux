@@ -16,14 +16,9 @@ import { mineBlocks, sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
 import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
-
-import { selectByIdSingle, selectContractEvents } from '../selectors/index.js';
-import {
-    createAction,
-    eventGetPast as eventGetPastAction,
-    eventGetPastRaw as eventGetPastRawAction,
-} from '../actions/index.js';
-import { createAction as createNetwork, selectByIdSingle as selectNetwork } from '../../network/index.js';
+import { eventGetPast as eventGetPastAction, eventGetPastRaw as eventGetPastRawAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -62,9 +57,9 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
             const blockNo = await web3.eth.getBlockNumber();
             testSaga(eventGetPast, action)
                 .next()
-                .select(selectNetwork, networkId)
+                .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
                 .next({ networkId, web3 })
-                .select(selectByIdSingle, { networkId, address })
+                .select(ContractCRUD.selectors.selectByIdSingle, { networkId, address })
                 .next({ web3Contract, address })
                 .call(web3.eth.getBlockNumber)
                 .next(blockNo)
@@ -86,7 +81,7 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     describe('store', () => {
         beforeEach(async () => {
             ({ store } = createStore());
-            store.dispatch(createNetwork({ networkId, web3, web3Sender }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3, web3Sender }));
 
             web3Contract = await new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[])
                 .deploy({
@@ -96,7 +91,7 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
             address = web3Contract.options.address;
 
             store.dispatch(
-                createAction({
+                ContractCRUD.actions.create({
                     networkId,
                     address,
                     abi: cloneDeep(BlockNumberArtifact.abi) as AbiItem[],

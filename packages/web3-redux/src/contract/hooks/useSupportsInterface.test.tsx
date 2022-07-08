@@ -8,7 +8,7 @@ import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
 import { ERC165 } from '../../abis/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
@@ -45,7 +45,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
         address = web3Contract.options.address;
 
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(
             createAction({
                 networkId,

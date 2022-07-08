@@ -9,7 +9,7 @@ import { sleep } from '../../utils/index.js';
 import { createStore, StoreType } from '../../store.js';
 import { selectByIdSingle } from '../selectors/index.js';
 import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
-import { update as updateConfig } from '../../contractevent/config/actions/index.js';
+
 
 //Actions
 import fetchEventSignatureAction from '../actions/fetchEventSignature.js';
@@ -72,7 +72,7 @@ describe('4byte/sagas/fetchEventSignature.test.ts', () => {
 
         beforeEach(() => {
             ({ store } = createStore());
-            store.dispatch(updateConfig({ id: '0', _4byteClient: client }));
+            store.dispatch(ConfigCRUD.actions.update({ id: '0', _4byteClient: client }));
         });
 
         it('fetchEventSignature()', async () => {

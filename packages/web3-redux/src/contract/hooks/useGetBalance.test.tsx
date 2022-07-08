@@ -7,9 +7,9 @@ import { useGetBalance } from './useGetBalance.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { networkId, ADDRESS_0 } from '../../test/data.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
-import { createAction as createTransaction } from '../../transaction/actions/index.js';
-import { createAction as createBlock } from '../../block/actions/index.js';
+
+
+
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
@@ -34,7 +34,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
 
     beforeEach(() => {
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
@@ -87,7 +87,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
             //Create transaction, triggering a refresh
             store.dispatch(
-                createTransaction({
+                TransactionCRUD.actions.create({
                     networkId,
                     hash: '0x1',
                     from: address,
@@ -119,7 +119,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
             //Create block, triggering a refresh
             store.dispatch(
-                createBlock({
+                BlockCRUD.actions.create({
                     networkId,
                     number: 1,
                 }),

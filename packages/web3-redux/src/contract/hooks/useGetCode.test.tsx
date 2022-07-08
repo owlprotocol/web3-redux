@@ -6,7 +6,7 @@ import jsdom from 'mocha-jsdom';
 import { useGetCode } from './useGetCode.js';
 import { getWeb3Provider } from '../../test/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
@@ -32,7 +32,7 @@ describe(`${name}/hooks/useGetCode.test.tsx`, () => {
 
     beforeEach(() => {
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });

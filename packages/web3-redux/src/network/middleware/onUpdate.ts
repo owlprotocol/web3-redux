@@ -2,7 +2,7 @@ import { AnyAction, Store } from 'redux';
 import Web3 from 'web3';
 import { batchActions } from 'redux-batched-actions';
 import * as Network from '../index.js';
-import * as Contract from '../../contract/index.js';
+import ContractCRUD from '../../contract/crud.js';
 
 //When Network web3 or web3Sender is changed, update all corresponding contracts
 export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
@@ -32,10 +32,10 @@ export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => a
         const actions = contracts
             .map((c) => {
                 if (c.abi) {
-                    return Contract.set({
-                        id: { networkId: c.networkId, address: c.address },
-                        key: 'web3Contract',
-                        value: new newWeb3!.eth.Contract(c.abi, c.address),
+                    return ContractCRUD.actions.update({
+                        networkId: c.networkId,
+                        address: c.address,
+                        web3Contract: new newWeb3!.eth.Contract(c.abi, c.address),
                     });
                 }
             })
@@ -52,10 +52,10 @@ export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => a
         const actions = contracts
             .map((c) => {
                 if (c.abi) {
-                    return Contract.set({
-                        id: { networkId: c.networkId, address: c.address },
-                        key: 'web3SenderContract',
-                        value: new newWeb3Sender!.eth.Contract(c.abi, c.address),
+                    return ContractCRUD.actions.update({
+                        networkId: c.networkId,
+                        address: c.address,
+                        web3SenderContract: new newWeb3Sender!.eth.Contract(c.abi, c.address),
                     });
                 }
             })

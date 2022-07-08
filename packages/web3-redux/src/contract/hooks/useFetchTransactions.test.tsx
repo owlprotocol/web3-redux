@@ -5,7 +5,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import jsdom from 'mocha-jsdom';
 import { useFetchTransactions } from './useFetchTransactions.js';
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 
 import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
@@ -34,7 +34,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
     beforeEach(() => {
         ({ store } = createStore());
         store.dispatch(
-            createNetwork({
+            NetworkCRUD.actions.create({
                 networkId,
                 explorerApiClient: client,
             }),

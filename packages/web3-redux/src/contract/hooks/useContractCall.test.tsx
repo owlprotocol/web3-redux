@@ -8,10 +8,10 @@ import { cloneDeep } from '../../utils/lodash/index.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
-import { createAction as createTransaction } from '../../transaction/actions/index.js';
-import { createAction as createBlock } from '../../block/actions/index.js';
-import { createAction as createEvent } from '../../contractevent/actions/index.js';
+
+
+
+
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
@@ -115,7 +115,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
         it('Contract {id} undefined', async () => {
-            store.dispatch(createNetwork({ networkId }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId }));
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, ZERO_ADDRESS, 'invalidFunction', [], { sync: 'once' }),
@@ -134,7 +134,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
         it('Contract {id} has no web3 contract', async () => {
-            store.dispatch(createNetwork({ networkId }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId }));
             store.dispatch(
                 createAction({
                     networkId,
@@ -164,7 +164,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
         it('Contract {id} has no such method {method}', async () => {
-            store.dispatch(createNetwork({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
             web3Contract = await new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as any)
                 .deploy({
                     data: BlockNumberArtifact.bytecode,
@@ -203,7 +203,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
 
     describe('Network & Contract initialized', () => {
         beforeEach(async () => {
-            store.dispatch(createNetwork({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
 
             web3Contract = await new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as any)
                 .deploy({
@@ -322,7 +322,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create transaction, triggering a refresh
                 store.dispatch(
-                    createTransaction({
+                    TransactionCRUD.actions.create({
                         networkId,
                         hash: '0x1',
                         from: accounts[0],
@@ -353,7 +353,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create block, triggering a refresh
                 store.dispatch(
-                    createBlock({
+                    BlockCRUD.actions.create({
                         networkId,
                         number: 1,
                     }),
@@ -384,7 +384,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create event, triggering a refresh
                 store.dispatch(
-                    createEvent({
+                    ContractEvent.actions.create({
                         networkId,
                         address,
                         blockHash: '0x1',

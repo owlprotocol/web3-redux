@@ -14,7 +14,7 @@ describe('onNetworkUpdate', () => {
         ({ store } = createStore());
     });
 
-    it('createNetwork', () => {
+    it('NetworkCRUD.actions.create', () => {
         store.dispatch(Contract.createAction(contract1));
         store.dispatch(Network.createAction({ ...network1, web3, web3Sender }));
 

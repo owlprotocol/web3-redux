@@ -14,7 +14,7 @@ import {
 } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { update as updateConfig } from '../../contractevent/config/actions/index.js';
+
 import { selectByIdSingle, selectPathHash } from '../selectors/index.js';
 import { fetchIpfs as fetchIpfsAction, objectGet as objectGetAction, cat as catAction } from '../actions/index.js';
 
@@ -39,7 +39,7 @@ describe('ipfs/sagas/fetchIpfs.test.ts', () => {
 
         beforeEach(() => {
             ({ store } = createStore());
-            store.dispatch(updateConfig({ id: '0', ipfsClient: axios }));
+            store.dispatch(ConfigCRUD.actions.update({ id: '0', ipfsClient: axios }));
         });
 
         it('fetchIpfs(IPFS_HELLO_WORLD)', async () => {

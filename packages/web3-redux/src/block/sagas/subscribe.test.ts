@@ -28,7 +28,7 @@ describe(`${name}.subscribe`, () => {
     beforeEach(async () => {
         indexedDB = new FDBFactory();
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
     describe('subscribe', () => {
@@ -93,8 +93,8 @@ describe(`${name}.subscribe`, () => {
             //@ts-ignore
             const web3Network2 = new Web3(provider2);
 
-            store.dispatch(createNetwork({ networkId: network1, web3 }));
-            store.dispatch(createNetwork({ networkId: network2, web3: web3Network2 }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId: network1, web3 }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId: network2, web3: web3Network2 }));
             store.dispatch(subscribeAction({ networkId: network1, returnTransactionObjects: false }));
             store.dispatch(subscribeAction({ networkId: network2, returnTransactionObjects: false }));
 
@@ -159,7 +159,7 @@ describe(`${name}.subscribe.rpccalls`, () => {
 
     beforeEach(async () => {
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
     it.skip('({returnTransactionObjects:false}) - rpc calls', async () => {

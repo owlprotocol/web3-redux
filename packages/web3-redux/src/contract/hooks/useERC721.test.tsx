@@ -15,13 +15,7 @@ import { NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../test/ipfs.js';
 
 import { ERC721PresetMinterPauserAutoId } from '../../abis/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
-import { createAction as createTransaction } from '../../transaction/actions/index.js';
-import { createAction as createBlock } from '../../block/actions/index.js';
-import { createAction as createEvent } from '../../contractevent/actions/index.js';
-
 import { createStore, StoreType } from '../../store.js';
-import { update as updateConfig } from '../../contractevent/config/actions/index.js';
 
 describe('contract/hooks/useERC721.test.tsx', () => {
     jsdom({ url: 'http://localhost' });
@@ -48,7 +42,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
 
     beforeEach(async () => {
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
         web3Contract = await new web3.eth.Contract(cloneDeep(ERC721PresetMinterPauserAutoId.abi) as any)
             .deploy({
@@ -169,7 +163,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
             //Create transaction, triggering a refresh
             store.dispatch(
-                createTransaction({
+                TransactionCRUD.actions.create({
                     networkId,
                     hash: '0x1',
                     from: accounts[0],
@@ -206,7 +200,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
             //Create block, triggering a refresh
             store.dispatch(
-                createBlock({
+                BlockCRUD.actions.create({
                     networkId,
                     number: 1,
                 }),
@@ -239,7 +233,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
             //Create event, triggering a refresh
             store.dispatch(
-                createEvent({
+                ContractEvent.actions.create({
                     networkId,
                     address,
                     blockHash: '0x1',
@@ -310,7 +304,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
             //IPFS Mock
-            store.dispatch(updateConfig({ id: '0', ipfsClient: axios }));
+            store.dispatch(ConfigCRUD.actions.update({ id: '0', ipfsClient: axios }));
 
             //Hook
             const { result, waitForNextUpdate } = renderHook(

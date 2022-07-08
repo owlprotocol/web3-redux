@@ -7,7 +7,7 @@ import { objectGet } from './objectGet.js';
 import { HELLO_WORLD_QMHASH, moxiosIPFS } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { update as updateConfig } from '../../contractevent/config/actions/index.js';
+
 import { selectByIdSingle } from '../selectors/index.js';
 import { createAction, objectGet as objectGetAction } from '../actions/index.js';
 
@@ -35,7 +35,7 @@ describe('ipfs/sagas/objectGet.test.ts', () => {
 
         beforeEach(() => {
             ({ store } = createStore());
-            store.dispatch(updateConfig({ id: '0', ipfsClient: axios }));
+            store.dispatch(ConfigCRUD.actions.update({ id: '0', ipfsClient: axios }));
         });
 
         it('objectGet(IPFS_HELLO_WORLD)', async () => {

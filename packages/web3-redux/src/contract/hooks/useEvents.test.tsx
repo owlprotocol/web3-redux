@@ -9,7 +9,7 @@ import { getWeb3Provider } from '../../test/index.js';
 
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 import { validateContractEvent } from '../../contractevent/index.js';
 
 import { name } from '../common.js';
@@ -46,7 +46,7 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
         address = web3Contract.options.address;
 
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(
             createAction({
                 networkId,

@@ -10,7 +10,7 @@ export interface TransactionSync extends BaseSync {
     matchTo?: string; // | string[];
 }
 
-export function createTransactionSyncForAddress(
+export function createSyncForAddress(
     networkId: string,
     actions: TransactionSync['actions'],
     address?: string, // | string[],

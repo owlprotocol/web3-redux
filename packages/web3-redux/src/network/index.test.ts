@@ -34,7 +34,7 @@ describe(`${name}.integration`, () => {
             store.dispatch(createAction(item));
 
             //Middleware updates latestBlockNumber
-            store.dispatch(createBlock(block1));
+            store.dispatch(BlockCRUD.actions.create(block1));
 
             const selected1 = selectLatestBlock(store.getState(), id);
 
@@ -48,17 +48,17 @@ describe(`${name}.integration`, () => {
             assert.isUndefined(selected0);
 
             //Middleware updates latestBlockNumber
-            store.dispatch(createBlock(block1));
+            store.dispatch(BlockCRUD.actions.create(block1));
             const selected1 = selectLatestBlockNumber(store.getState(), id);
             assert.equal(selected1, 1, 'latestBlockNumber != 1');
 
             //latestBlockNumber updated to 3
-            store.dispatch(createBlock(block3));
+            store.dispatch(BlockCRUD.actions.create(block3));
             const selected2 = selectLatestBlockNumber(store.getState(), id);
             assert.equal(selected2, 3, 'latestBlockNumber != 3');
 
             //latestBlockNumber unchanged
-            store.dispatch(createBlock(block2));
+            store.dispatch(BlockCRUD.actions.create(block2));
             const selected3 = selectLatestBlockNumber(store.getState(), id);
             assert.equal(selected3, 3, 'latestBlockNumber != 3');
         });

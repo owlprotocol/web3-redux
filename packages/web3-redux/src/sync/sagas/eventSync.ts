@@ -1,18 +1,17 @@
-import { put, select, all } from 'typed-redux-saga';
+import { put, call, all } from 'typed-redux-saga';
 import { Action } from 'redux';
 import { isMatch, reduce } from '../../utils/lodash/index.js';
-import { CreateAction } from '../../contractevent/actions/index.js';
-import { selectByIdMany } from '../selector/index.js';
 import { EventSync } from '../model/index.js';
+import SyncCRUD from '../crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 //Handle on event update
-function* eventSync({ payload }: CreateAction) {
-    const syncs: ReturnType<typeof selectByIdMany> = yield* select(selectByIdMany);
-    const syncsFiltered = syncs.filter((s) => s?.type === 'Event') as EventSync[];
+function* eventSync({ payload }: ReturnType<typeof ContractEventCRUD.actions.create>) {
+    const syncs = (yield* call(SyncCRUD.db.where, { type: 'Event' })) as EventSync[];
 
     const actions: Action[] = []; //triggered actions
 
-    syncsFiltered.map((s) => {
+    syncs.map((s) => {
         if (s.networkId === payload.networkId && s.matchAddress === payload.address && s.matchName === payload.name) {
             //Event matches name
             if (!s.matchReturnValues) {

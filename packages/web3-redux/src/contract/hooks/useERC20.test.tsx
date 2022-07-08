@@ -10,10 +10,10 @@ import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
 import { ERC20PresetMinterPauser } from '../../abis/index.js';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
-import { createAction as createTransaction } from '../../transaction/actions/index.js';
-import { createAction as createBlock } from '../../block/actions/index.js';
-import { createAction as createEvent } from '../../contractevent/actions/index.js';
+
+
+
+
 
 import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
@@ -51,7 +51,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
@@ -171,7 +171,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
                 //Create transaction, triggering a refresh
                 store.dispatch(
-                    createTransaction({
+                    TransactionCRUD.actions.create({
                         networkId,
                         hash: '0x1',
                         from: accounts[0],
@@ -210,7 +210,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
                 //Create block, triggering a refresh
                 store.dispatch(
-                    createBlock({
+                    BlockCRUD.actions.create({
                         networkId,
                         number: 1,
                     }),
@@ -245,7 +245,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
                 //Create event, triggering a refresh
                 store.dispatch(
-                    createEvent({
+                    ContractEvent.actions.create({
                         networkId,
                         address,
                         blockHash: '0x1',

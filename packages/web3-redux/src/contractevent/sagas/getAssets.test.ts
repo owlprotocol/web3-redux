@@ -14,10 +14,9 @@ import {
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { createAction as createNetwork } from '../../network/index.js';
-import { selectByIdMany as selectContracts } from '../../contract/selectors/index.js';
-
 import { getAssets as getAssetsAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../../contract/crud.js';
 
 describe(`${name}/sagas/getAssets.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -63,7 +62,7 @@ describe(`${name}/sagas/getAssets.test.ts`, () => {
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
         ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
     describe('getAssets', () => {
@@ -78,7 +77,7 @@ describe(`${name}/sagas/getAssets.test.ts`, () => {
             await sleep(1000);
 
             //Create 3 contracts for ERC20, ERC721, ERC1155
-            const contracts = selectContracts(store.getState());
+            const contracts = ContractCRUD.selectors.selectByIdMany(store.getState());
             assert.equal(contracts.length, 3, 'contracts.length');
         });
     });

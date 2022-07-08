@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import jsdom from 'mocha-jsdom';
 
-import { createAction as createNetwork } from '../../network/actions/index.js';
+
 
 import { name } from '../common.js';
 import { networkId, block1 } from '../../test/data.js';
@@ -45,7 +45,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
         });
 
         beforeEach(async () => {
-            store.dispatch(createNetwork({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
 
             const txSent = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[1], value: '1' });
             const block = await web3.eth.getBlock(txSent.blockNumber);

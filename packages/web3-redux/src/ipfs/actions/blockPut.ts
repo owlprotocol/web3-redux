@@ -5,7 +5,7 @@ import { encode as encodeCBOR } from '@ipld/dag-cbor';
 
 import { name } from '../common.js';
 
-interface Payload {
+export interface BlockPutPayload {
     block: Parameters<IPFS['block']['put']>[0];
     options?: Parameters<IPFS['block']['put']>[1];
 }
@@ -13,7 +13,7 @@ interface Payload {
 /** @internal */
 export const BLOCK_PUT = `${name}/BLOCK/PUT`;
 /** @category Actions */
-export const blockPut = createAction(BLOCK_PUT, (payload: Payload) => {
+export const blockPut = createAction(BLOCK_PUT, (payload: BlockPutPayload) => {
     return {
         payload,
         meta: {

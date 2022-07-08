@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectIpfs, selectPathHash } from '../selectors/index.js';
+import { useDispatch } from 'react-redux';
+import useAtPath from './useAtPath.js';
 import { fetchIpfs as fetchIpfsAction } from '../actions/index.js';
 
 /**
@@ -10,8 +10,7 @@ import { fetchIpfs as fetchIpfsAction } from '../actions/index.js';
 export const useIpfs = (path: string | undefined) => {
     const dispatch = useDispatch();
 
-    const pathHash = useSelector((state) => selectPathHash(state, path));
-    const content = useSelector((state) => selectIpfs(state, pathHash));
+    const content = useAtPath(path);
 
     const dataExists = content?.data || false;
     const action = useMemo(() => {
@@ -22,7 +21,7 @@ export const useIpfs = (path: string | undefined) => {
         if (action) dispatch(action);
     }, [dispatch, action]);
 
-    return { contentId: pathHash, data: content?.data };
+    return { contentId: content?.contentId, data: content?.data };
 };
 
 export default useIpfs;

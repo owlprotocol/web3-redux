@@ -3,7 +3,7 @@ import type { IPFS } from 'ipfs';
 import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 
-interface Payload {
+export interface GetPayload {
     path: Parameters<IPFS['get']>[0];
     options?: Parameters<IPFS['get']>[1];
 }
@@ -11,7 +11,7 @@ interface Payload {
 /** @internal */
 export const GET = `${name}/GET`;
 /** @category Actions */
-export const get = createAction(GET, (payload: Payload) => {
+export const get = createAction(GET, (payload: GetPayload) => {
     return {
         payload,
         meta: {

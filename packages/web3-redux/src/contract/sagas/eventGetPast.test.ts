@@ -19,6 +19,7 @@ import { validate as validatedContractEvent } from '../../contractevent/model/in
 import { eventGetPast as eventGetPastAction, eventGetPastRaw as eventGetPastRawAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -127,11 +128,8 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
 
                 await sleep(1000);
 
-                const events1 = selectContractEvents(store.getState(), { networkId, address }, 'NewValue');
-                const events1Cleaned = events1?.map((e) => {
-                    return { ...e, indexIds: [e.indexIds![1], e.indexIds![2]] };
-                });
-                assert.deepEqual(events1Cleaned, expectedEvents);
+                const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
+                assert.deepEqual(events1, expectedEvents);
                 console.debug(store.getState().web3Redux.ContractEventIndex);
                 console.debug(store.getState().web3Redux.ContractEventIndexIds);
                 console.debug(store.getState().web3Redux.ContractEventIndexIds.indexes);
@@ -174,11 +172,8 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
                 assert.equal(expectedEvents.length, 2);
                 //only last emitted event, selected
                 expectedEvents = [expectedEvents[expectedEvents.length - 1]];
-                const events1 = selectContractEvents(store.getState(), { networkId, address }, 'NewValue');
-                const events1Cleaned = events1?.map((e) => {
-                    return { ...e, indexIds: [e.indexIds![1], e.indexIds![2]] };
-                });
-                assert.deepEqual(events1Cleaned, expectedEvents);
+                const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
+                assert.deepEqual(events1, expectedEvents);
             });
         });
     });

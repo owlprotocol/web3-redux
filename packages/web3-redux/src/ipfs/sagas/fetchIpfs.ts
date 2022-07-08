@@ -1,8 +1,8 @@
+//@ts-nocheck
 import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { objectGet } from './objectGet.js';
 import { objectGet as objectGetAction, FetchIpfsAction, cat } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
 
 /** @category Sagas */
 export function* fetchIpfs(action: FetchIpfsAction) {

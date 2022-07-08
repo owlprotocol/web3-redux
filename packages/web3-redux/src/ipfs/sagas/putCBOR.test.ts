@@ -14,8 +14,8 @@ import { createStore, StoreType } from '../../store.js';
 import { putCBOR as putCBORAction } from '../actions/index.js';
 
 import { IPFSSingleton } from '../IPFSSingleton.js';
-import { selectByIdSingle } from '../selectors/index.js';
 import sleep from '../../utils/sleep.js';
+import IPFSCacheCRUD from '../crud.js';
 
 //https://bafybeic3ui4dj5dzsvqeiqbxjgg3fjmfmiinb3iyd2trixj2voe4jtefgq.ipfs.dweb.link/metadata.json
 //https://bafybeihhii26gwp4w7b7w7d57nuuqeexau4pnnhrmckikaukjuei2dl3fq.ipfs.dweb.link/ticket.txt
@@ -66,7 +66,7 @@ describe('ipfs/sagas/putCBOR.test.ts', () => {
 
             await sleep(1000);
 
-            const ipfsItem = selectByIdSingle(store.getState(), cid.toString());
+            const ipfsItem = IPFSCacheCRUD.selectors.selectByIdSingle(store.getState(), cid.toString());
             assert.isDefined(ipfsItem?.data, 'data undefined');
             assert.deepEqual(ipfsItem?.data, payload, 'data != expected');
         });

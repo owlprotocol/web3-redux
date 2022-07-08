@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import axios from 'axios';
@@ -8,9 +9,8 @@ import { HELLO_WORLD_QMHASH, HELLO_WORLD, NFT_0_QMHASH, moxiosIPFS, NFT_0 } from
 
 import { createStore, StoreType } from '../../store.js';
 
-import { selectByIdSingle } from '../selectors/index.js';
-import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
-import { createAction, set as setAction, cat as catAction } from '../actions/index.js';
+import { set as setAction, cat as catAction } from '../actions/index.js';
+import ConfigCRUD from '../../config/crud.js';
 
 describe('ipfs/sagas/cat.test.ts', () => {
     before(() => moxios.install(axios));

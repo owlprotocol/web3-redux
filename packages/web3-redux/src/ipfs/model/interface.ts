@@ -24,9 +24,11 @@ export interface Ipfs extends IpfsId {
     readonly data?: Uint8Array | any;
     /** Type of data */
     readonly type?: IPFSDataType;
+    /** Paths that point to CID */
+    readonly paths?: string[];
 }
 
-export const IpfsIndex = 'contentId';
+export const IpfsIndex = 'contentId, *paths';
 
 /** @internal */
 export function validateId(item: IpfsId) {

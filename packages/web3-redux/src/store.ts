@@ -1,7 +1,7 @@
 import { createStore as createReduxStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { crashReporter, onPersistRehydrate } from './middleware/index.js';
+import { crashReporter } from './middleware/index.js';
 import { onBlockUpdate } from './block/middleware/index.js';
 import { onNetworkUpdate } from './network/middleware/index.js';
 import { onContractUpdate } from './contract/middleware/index.js';
@@ -10,14 +10,7 @@ import { onEventUpdate } from './contractevent/middleware/index.js';
 import { isClient } from './utils/isClient.js';
 import { rootReducer } from './reducer.js';
 import { rootSaga as defaultRootSaga } from './saga.js';
-const defaultMiddleware: any[] = [
-    crashReporter,
-    onPersistRehydrate,
-    onNetworkUpdate,
-    onContractUpdate,
-    onBlockUpdate,
-    onEventUpdate,
-];
+const defaultMiddleware: any[] = [crashReporter, onNetworkUpdate, onContractUpdate, onBlockUpdate, onEventUpdate];
 
 /** @internal */
 interface CreateStoreOptions {

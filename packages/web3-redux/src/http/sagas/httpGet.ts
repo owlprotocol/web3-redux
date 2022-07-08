@@ -2,7 +2,6 @@ import { AxiosResponse } from 'axios';
 import invariant from 'tiny-invariant';
 import { put, call, select } from 'typed-redux-saga';
 import ConfigCRUD from '../../config/crud.js';
-import getDB from '../../db.js';
 import { create as createError } from '../../error/actions/index.js';
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 
@@ -22,10 +21,7 @@ export function* httpGet(action: HttpGetAction) {
         const { httpClient, corsProxy } = config ?? {};
         invariant(httpClient, 'Http client undefined!');
 
-        const db = getDB();
-        const httpCache = (yield* call([db.HTTPCache, db.HTTPCache.get], HTTPCacheCRUD.validateId({ id: url }))) as
-            | Http
-            | undefined;
+        const httpCache = (yield* call(HTTPCacheCRUD.db.get, url)) as Http | undefined;
         if (!httpCache?.data) {
             try {
                 const response = (yield* call(httpClient.get, url)) as AxiosResponse;

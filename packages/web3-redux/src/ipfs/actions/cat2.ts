@@ -3,7 +3,7 @@ import type { IPFS } from 'ipfs';
 import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 
-interface Payload {
+export interface Cat2Payload {
     path: Parameters<IPFS['cat']>[0];
     options?: Parameters<IPFS['cat']>[1];
 }
@@ -11,7 +11,7 @@ interface Payload {
 /** @internal */
 export const CAT2 = `${name}/CAT2`;
 /** @category Actions */
-export const cat2 = createAction(CAT2, (payload: Payload) => {
+export const cat2 = createAction(CAT2, (payload: Cat2Payload) => {
     return {
         payload,
         meta: {

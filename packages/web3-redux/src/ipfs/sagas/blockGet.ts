@@ -1,8 +1,8 @@
+//@ts-nocheck
 import { call, put, select } from 'typed-redux-saga';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { BlockGetAction, BLOCK_GET, updateAction } from '../actions/index.js';
+import { BlockGetAction, BLOCK_GET } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
 import { IPFSDataType } from '../model/interface.js';
 
 const BLOCK_GET_ERROR = `${BLOCK_GET}/ERROR`;

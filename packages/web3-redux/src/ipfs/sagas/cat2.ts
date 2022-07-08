@@ -1,11 +1,11 @@
+//@ts-nocheck
 import { call, put, select } from 'typed-redux-saga';
 import { importer } from 'ipfs-unixfs-importer';
 import { CID } from 'multiformats';
 import { UnixFS } from 'ipfs-unixfs-exporter';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { Cat2Action, CAT2, createAction, updateAction } from '../actions/index.js';
+import { Cat2Action, CAT2 } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
-import { selectByIdSingle, selectPathHash } from '../selectors/index.js';
 import { blockstore } from '../blockstore.js';
 import asyncGeneratorToArray from '../../utils/asyncGeneratorToArray.js';
 import { IPFSDataType } from '../model/interface.js';

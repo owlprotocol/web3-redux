@@ -1,9 +1,9 @@
+//@ts-nocheck
 import { call, put, select } from 'typed-redux-saga';
 import { CID } from 'multiformats';
 import IPFSSingleton from '../IPFSSingleton.js';
-import { createAction, AddAllAction, ADD_ALL, updateAction } from '../actions/index.js';
+import { AddAllAction, ADD_ALL } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
 import asyncGeneratorToArray from '../../utils/asyncGeneratorToArray.js';
 import { IPFSDataType } from '../model/interface.js';
 

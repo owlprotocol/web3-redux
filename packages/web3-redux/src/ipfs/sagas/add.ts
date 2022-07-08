@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { call, put, select } from 'typed-redux-saga';
 import IPFSSingleton from '../IPFSSingleton.js';
 import { createAction, AddAction, ADD, updateAction } from '../actions/index.js';

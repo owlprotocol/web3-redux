@@ -36,6 +36,7 @@ const model = {
         useCat: Hooks.useCat,
         useIpfs: Hooks.useIpfs,
         useURI: Hooks.useURI,
+        useAtPath: Hooks.useAtPath,
     },
 };
 

@@ -427,25 +427,34 @@ function createCRUDModel<
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         if (typeof id != 'string') {
+            //Check if compound index missing value
             if (Object.values(id).includes(undefined)) {
                 return undefined;
             }
         }
 
-        const id2 = typeof id === 'string' ? id : validateId(id);
-        return useLiveQuery(() => table.get(id2));
+        const id2 = typeof id === 'string' ? id : validateId(id as T_ID);
+        const id2Dep = toReduxOrmId(id2);
+        return useLiveQuery(() => table.get(id2), [id2Dep]);
     };
     //TODO: string array id
-    const useGetBulk = (ids: Partial<T_ID>[]) => {
+    const useGetBulk = (ids: T_ID[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return useLiveQuery(() => table.bulkGet(ids.map(validateId)));
+
+        const ids2 = ids.map(validateId);
+        const ids2Dep = ids.map(validateId).map(toReduxOrmId).join(SEPARATOR);
+        return useLiveQuery(() => table.bulkGet(ids2), [ids2Dep]);
     };
     const useWhere = (filter: Partial<T_Encoded>) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return useLiveQuery(() => table.where(filter).toArray());
+
+        const filterDep = JSON.stringify(filter);
+        return useLiveQuery(() => table.where(filter).toArray(), [filterDep]);
     };
+
+    /** Redux ORM Hooks */
     const useSelectByIdSingle = (id: Partial<T_ID> | string | undefined) => {
         return useSelector((state) => selectByIdSingle(state, id));
     };

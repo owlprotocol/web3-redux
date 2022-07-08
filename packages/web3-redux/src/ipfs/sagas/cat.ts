@@ -1,11 +1,9 @@
+//@ts-nocheck
 import { put, call, select } from 'typed-redux-saga';
 import invariant from 'tiny-invariant';
 import { AxiosResponse } from 'axios';
 
-import { set, createAction, CatAction, CAT } from '../actions/index.js';
-
-import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import { CatAction, CAT } from '../actions/index.js';
 
 const CAT_ERROR = `${CAT}/ERROR`;
 /** @category Sagas */

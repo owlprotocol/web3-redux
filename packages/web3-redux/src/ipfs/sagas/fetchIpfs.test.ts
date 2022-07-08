@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 import axios from 'axios';

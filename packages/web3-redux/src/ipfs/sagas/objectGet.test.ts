@@ -8,10 +8,10 @@ import { HELLO_WORLD_QMHASH, moxiosIPFS } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
 
-import { selectByIdSingle } from '../selectors/index.js';
-import { createAction, objectGet as objectGetAction } from '../actions/index.js';
+import { objectGet as objectGetAction } from '../actions/index.js';
 
-import { selectConfig } from '../../contractevent/config/selectors/index.js.js';
+import ConfigCRUD from '../../config/crud.js';
+import IPFSCacheCRUD from '../crud.js';
 
 describe('ipfs/sagas/objectGet.test.ts', () => {
     before(() => moxios.install(axios));
@@ -22,11 +22,11 @@ describe('ipfs/sagas/objectGet.test.ts', () => {
 
         testSaga(objectGet, objectGetAction(cid))
             .next()
-            .select(selectConfig)
+            .select(ConfigCRUD.selectors.selectByIdSingle, { id: '0' })
             .next({ ipfsClient: axios })
-            .select(selectByIdSingle, cid) //Check if exists
+            .select(IPFSCacheCRUD.db.get, cid) //Check if exists
             .next(undefined)
-            .put(createAction({ contentId: cid })) //Create with contentId
+            .put(IPFSCacheCRUD.actions.create({ contentId: cid })) //Create with contentId
             .next();
     });
 
@@ -43,7 +43,7 @@ describe('ipfs/sagas/objectGet.test.ts', () => {
 
             await moxiosIPFS();
 
-            const ipfsItem = selectByIdSingle(store.getState(), HELLO_WORLD_QMHASH);
+            const ipfsItem = await IPFSCacheCRUD.db.get(HELLO_WORLD_QMHASH);
             assert.isDefined(ipfsItem?.pbNode?.Data, 'pbNode.Data');
             assert.isDefined(ipfsItem?.pbNode?.Links, 'pbNode.Links');
             assert.isDefined(ipfsItem?.linksByName, 'linkByName');

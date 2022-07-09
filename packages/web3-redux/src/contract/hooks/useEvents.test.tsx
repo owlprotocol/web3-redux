@@ -9,8 +9,6 @@ import { getWeb3Provider } from '../../test/index.js';
 
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
-import { validateContractEvent } from '../../contractevent/index.js';
-
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
@@ -18,6 +16,7 @@ import { createStore, StoreType } from '../../store.js';
 import { useEvents } from '../hooks/useEvents.js';
 import ContractCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 describe(`${name}/hooks/useEvents.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -61,7 +60,7 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
         it('(networkId, address, eventName)', async () => {
             const expectedEvents: any[] = [];
             web3Contract.events['NewValue']().on('data', (event: any) => {
-                expectedEvents.push(validateContractEvent({ networkId, address, name: 'NewValue', ...event }));
+                expectedEvents.push(ContractEventCRUD.validate({ networkId, address, name: 'NewValue', ...event }));
             });
 
             const { result, waitForNextUpdate } = renderHook(
@@ -83,7 +82,7 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
         it('(...,filter)', async () => {
             const expectedEvents: any[] = [];
             web3Contract.events['NewValue']({ filter: { value: 42 } }).on('data', (event: any) => {
-                expectedEvents.push(validateContractEvent({ networkId, address, name: 'NewValue', ...event }));
+                expectedEvents.push(ContractEventCRUD.validate({ networkId, address, name: 'NewValue', ...event }));
             });
 
             const { result, waitForNextUpdate } = renderHook(

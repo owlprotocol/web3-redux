@@ -20,7 +20,7 @@ export interface UseContractCallOptions {
     sync?: 'ifnull' | GenericSync | false;
 }
 
-interface UseContractCallReturnOptions {
+export interface UseContractCallReturnOptions {
     error: Error | undefined;
     dispatchCallAction: () => void;
 }

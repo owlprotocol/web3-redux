@@ -22,5 +22,4 @@ export function useERC165(networkId: string | undefined, address: string | undef
  *
  */
 export const useSupportsInterface = useERC165;
-
 export default useSupportsInterface;

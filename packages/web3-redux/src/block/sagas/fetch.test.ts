@@ -2,13 +2,11 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { testSaga } from 'redux-saga-test-plan';
 // eslint-disable-next-line import/no-unresolved
-import { Connector } from 'indexeddb-orm';
 import { fetchSaga } from './fetch.js';
 import getDB from '../../db.js';
 
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock } from '../../utils/index.js';
-const network = yield * select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
 import { createStore, StoreType } from '../../store.js';
 import { validate } from '../model/index.js';
 
@@ -16,13 +14,10 @@ import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { fetch as fetchAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
+import BlockCRUD from '../crud.js';
 
 describe(`${name}/sagas/fetch.ts`, () => {
     let web3: Web3; //Web3 loaded from store
-    let db: Connector;
 
     before(() => {
         const provider = getWeb3Provider();
@@ -30,10 +25,7 @@ describe(`${name}/sagas/fetch.ts`, () => {
         web3 = new Web3(provider);
     });
 
-    beforeEach(async () => {
-        indexedDB = new FDBFactory();
-        db = await getDB();
-    });
+    beforeEach(async () => { });
 
     describe('unit', () => {
         it('new block - by number', async () => {
@@ -41,11 +33,11 @@ describe(`${name}/sagas/fetch.ts`, () => {
             const action = fetchAction(item);
             testSaga(fetchSaga, action)
                 .next()
-                .select(selectByIdSingle, { networkId, number: 1 })
+                .call(BlockCRUD.db.get, { networkId, number: 1 })
                 .next(undefined)
                 .put(BlockCRUD.actions.create({ networkId, number: 1 }, action.meta.uuid))
                 .next()
-                .select(selectNetwork, networkId)
+                .select(NetworkCRUD.selectors.select, networkId)
                 .next({ networkId, web3 })
                 .call(web3.eth.getBlock, 1, false)
                 .next({ networkId, number: 1, hash: '0x1' })
@@ -59,7 +51,7 @@ describe(`${name}/sagas/fetch.ts`, () => {
             const action = fetchAction(item);
             testSaga(fetchSaga, action)
                 .next()
-                .select(selectNetwork, networkId)
+                .select(NetworkCRUD.selectors.select, networkId)
                 .next({ networkId, web3 })
                 .call(web3.eth.getBlock, '0x1', false)
                 .next({ networkId, number: 1, hash: '0x1' })
@@ -83,16 +75,9 @@ describe(`${name}/sagas/fetch.ts`, () => {
 
                 store.dispatch(fetchAction({ networkId, blockHashOrBlockNumber: 1, returnTransactionObjects: false }));
 
-                //Redux
                 const expected = validate({ ...(await web3.eth.getBlock(1)), networkId });
-                const selected = selectByIdSingle(store.getState(), { networkId, number: expected.number });
-                assert.deepEqual({ ...selected, transactions: [] }, expected as any);
-
-                //DB State
-                const models = await db.connect();
-                const record = await models[name].find(expected.id);
-                assert.isDefined(record);
-                assert.deepEqual(record, expected);
+                const selected = await BlockCRUD.db.get({ networkId, number: expected.number });
+                assert.deepEqual({ ...selected }, expected as any);
             });
         });
     });
@@ -125,7 +110,6 @@ describe(`${name}.fetch.rpccalls`, () => {
     });
 
     beforeEach(async () => {
-        indexedDB = new FDBFactory();
         ({ store } = createStore());
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });

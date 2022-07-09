@@ -12,7 +12,7 @@ export function validateId(item: BlockId) {
 
 /** @internal */
 export function validate(item: BlockTransaction): BlockTransaction {
-    let transactions = item.transactions;
+    /*
     if (transactions) {
         if (!isStrings(transactions))
             transactions = transactions.map((t) =>
@@ -23,7 +23,7 @@ export function validate(item: BlockTransaction): BlockTransaction {
     const result = {
         ...item,
     };
-    if (transactions) result.transactions = transactions;
+    */
 
-    return result;
+    return item;
 }

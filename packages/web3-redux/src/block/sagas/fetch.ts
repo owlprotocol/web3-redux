@@ -18,8 +18,7 @@ export function* fetchSaga(action: FetchAction) {
         const paramAsNumber =
             typeof blockHashOrBlockNumber === 'number' ? blockHashOrBlockNumber : parseInt(blockHashOrBlockNumber);
         //Check if block exists
-        const db = getDB();
-        const block = yield* call([db.Block, db.Block.get], validateId({ networkId, number: paramAsNumber }));
+        const block = yield* call(BlockCRUD.db.get, { networkId, number: paramAsNumber });
         if (!block) {
             yield* put(
                 BlockCRUD.actions.create(

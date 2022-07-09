@@ -1,16 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
-
-import {
-    ERC20PresetMinterPauser,
-    ERC721PresetMinterPauserAutoId,
-    ERC1155PresetMinterPauser,
-} from '../../abis/index.js';
-
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
@@ -18,13 +10,20 @@ import { getAssets as getAssetsAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../../contract/crud.js';
 
+import { ERC20PresetMinterPauser } from '../../typechain/ERC20PresetMinterPauser.js';
+import ERC20PresetMinterPauserArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import { ERC721PresetMinterPauserAutoId } from '../../typechain/ERC721PresetMinterPauserAutoId.js';
+import ERC721PresetMinterPauserAutoIdArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
+import { ERC1155PresetMinterPauser } from '../../typechain/ERC1155PresetMinterPauser.js';
+import ERC1155PresetMinterPauserArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
+
 describe(`${name}/sagas/getAssets.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let store: StoreType;
-    let ERC20Contract: Web3Contract;
-    let ERC721Contract: Web3Contract;
-    let ERC1155Contract: Web3Contract;
+    let ERC20Contract: ERC20PresetMinterPauser;
+    let ERC721Contract: ERC721PresetMinterPauserAutoId;
+    let ERC1155Contract: ERC1155PresetMinterPauser;
 
     before(async () => {
         const provider = getWeb3Provider();
@@ -34,24 +33,28 @@ describe(`${name}/sagas/getAssets.test.ts`, () => {
     });
 
     beforeEach(async () => {
-        ERC20Contract = await new web3.eth.Contract(ERC20PresetMinterPauser.abi as any)
+        ERC20Contract = (await new web3.eth.Contract(ERC20PresetMinterPauserArtifact.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: ERC20PresetMinterPauser.bytecode,
+                data: ERC20PresetMinterPauserArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-        ERC721Contract = await new web3.eth.Contract(ERC721PresetMinterPauserAutoId.abi as any)
+            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' })) as unknown as ERC20PresetMinterPauser;
+        ERC721Contract = (await new web3.eth.Contract(ERC721PresetMinterPauserAutoIdArtifact.abi as any)
             .deploy({
                 arguments: ['Test NFT', 'TEST', 'https://api.example.com/'],
-                data: ERC721PresetMinterPauserAutoId.bytecode,
+                data: ERC721PresetMinterPauserAutoIdArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
-        ERC1155Contract = await new web3.eth.Contract(ERC1155PresetMinterPauser.abi as any)
+            .send({
+                from: accounts[0],
+                gas: 3000000,
+                gasPrice: '875000000',
+            })) as unknown as ERC721PresetMinterPauserAutoId;
+        ERC1155Contract = (await new web3.eth.Contract(ERC1155PresetMinterPauserArtifact.abi as any)
             .deploy({
                 arguments: ['http://example.com/{id}'],
-                data: ERC1155PresetMinterPauser.bytecode,
+                data: ERC1155PresetMinterPauserArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 4000000, gasPrice: '875000000' });
+            .send({ from: accounts[0], gas: 4000000, gasPrice: '875000000' })) as unknown as ERC1155PresetMinterPauser;
 
         await ERC20Contract.methods
             .mint(accounts[0], 1)

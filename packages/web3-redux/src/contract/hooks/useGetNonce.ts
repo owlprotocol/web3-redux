@@ -43,7 +43,7 @@ export function useGetNonce(
     useEffect(() => {
         if (syncAction) dispatch(syncAction);
         return () => {
-            if (syncId) dispatch(SyncCRUD.actions.delete(syncId));
+            if (syncId) dispatch(SyncCRUD.actions.delete({ id: syncId }));
         };
     }, [dispatch, syncId]);
 

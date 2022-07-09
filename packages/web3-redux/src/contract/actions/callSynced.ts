@@ -1,6 +1,6 @@
 import { CallActionInput, call } from './call.js';
 import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
-import { create as createSyncAction } from '../../sync/actions/index.js';
+import SyncCRUD from '../../sync/crud.js';
 
 /** @internal */
 export interface CallSyncedActionInput extends CallActionInput {
@@ -17,7 +17,7 @@ export const callSynced = (payload: CallSyncedActionInput) => {
     const callAction = call(payload);
     const sync = createSyncForActions(networkId, [callAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${callAction.payload.id}`;
-    const syncAction = sync ? createSyncAction(sync) : undefined;
+    const syncAction = sync ? SyncCRUD.actions.create(sync) : undefined;
     return { callAction, syncAction };
 };
 

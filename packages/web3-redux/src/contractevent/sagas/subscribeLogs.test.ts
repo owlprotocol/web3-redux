@@ -1,11 +1,9 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
 
-import { ERC20PresetMinterPauser } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
@@ -15,11 +13,14 @@ import { coder } from '../../utils/web3-eth-abi/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractEventCRUD from '../crud.js';
 
+import { ERC20PresetMinterPauser } from '../../typechain/ERC20PresetMinterPauser.js';
+import ERC20PresetMinterPauserArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+
 describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let store: StoreType;
-    let web3Contract: Web3Contract;
+    let web3Contract: ERC20PresetMinterPauser;
 
     let address: string;
 
@@ -31,12 +32,12 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(ERC20PresetMinterPauser.abi as any)
+        web3Contract = (await new web3.eth.Contract(ERC20PresetMinterPauserArtifact.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: ERC20PresetMinterPauser.bytecode,
+                data: ERC20PresetMinterPauserArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' })) as unknown as ERC20PresetMinterPauser;
         address = web3Contract.options.address;
 
         ({ store } = createStore());
@@ -65,7 +66,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
 
         it('(networkId, address, [Transfer, from, to]) - All events', async () => {
             //Filter by address, Transfer event, from, address
-            const Transfer = ERC20PresetMinterPauser.abi.find((a: any) => a.name === 'Transfer');
+            const Transfer = ERC20PresetMinterPauserArtifact.abi.find((a: any) => a.name === 'Transfer');
             const eventTopic = coder.encodeEventSignature(Transfer as any);
             const fromTopic = coder.encodeParameter('address', ADDRESS_0);
             const toTopic = coder.encodeParameter('address', accounts[0]);

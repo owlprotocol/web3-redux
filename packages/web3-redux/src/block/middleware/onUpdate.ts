@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AnyAction, Store } from 'redux';
 import { Transaction } from '../../transaction/model/interface.js';
 import { isStrings } from '../../utils/index.js';
@@ -11,6 +12,7 @@ import BlockCRUD from '../crud.js';
  */
 //TODO: Handle batched updates? Is this even required? Most updates will be fetch or subscription updates.
 export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
+    /*
     const postActions: AnyAction[] = [];
     let networkId: string | undefined;
     let blockNumber: number | undefined;
@@ -19,7 +21,6 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
     if (BlockCRUD.actions.create.match(action) || BlockCRUD.actions.update.match(action)) {
         networkId = action.payload.networkId;
         blockNumber = action.payload.number;
-        transactions = action.payload.transactions;
     }
 
     if (networkId) {
@@ -49,9 +50,10 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
             }
         }
     }
+    */
 
     next(action);
-    postActions.forEach((a) => store.dispatch(a)); //Dispatch actions after original action
+    //postActions.forEach((a) => store.dispatch(a)); //Dispatch actions after original action
 };
 
 export default onUpdate;

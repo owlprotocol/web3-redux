@@ -12,9 +12,6 @@ import { subscribe as subscribeAction, unsubscribe as unsubscribeAction } from '
 import BlockCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
-
 describe(`${name}.subscribe`, () => {
     let accounts: string[];
     let web3: Web3; //Web3 loaded from store
@@ -28,7 +25,6 @@ describe(`${name}.subscribe`, () => {
     });
 
     beforeEach(async () => {
-        indexedDB = new FDBFactory();
         ({ store } = createStore());
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });

@@ -4,13 +4,17 @@ import { cloneDeep } from '../utils/lodash/index.js';
 import { REDUX_ROOT } from '../common.js';
 import { StateRoot } from '../state.js';
 import { getOrm } from '../orm.js';
-import { BlockNumber, IERC20, IERC721Metadata as IERC721, IERC1155MetadataURI as IERC1155 } from '../abis/index.js';
+import { BlockNumber } from '../abis/index.js';
 import ContractCRUD from '../contract/crud.js';
 import ContractEventCRUD from '../contractevent/crud.js';
 import BlockCRUD from '../block/crud.js';
 import TransactionCRUD from '../transaction/crud.js';
 import EthCallCRUD from '../ethcall/crud.js';
 import { toReduxOrmId } from '../createCRUDModel.js';
+
+import IERC20 from '../artifacts/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
+import IERC721 from '../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
+import IERC1155 from '../artifacts/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI.json';
 
 export const networkId = '1336';
 

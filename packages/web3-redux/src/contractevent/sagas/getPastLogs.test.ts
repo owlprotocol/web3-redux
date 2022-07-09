@@ -1,13 +1,11 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 
 import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
 
-import { ERC20PresetMinterPauser, IERC20 } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
@@ -16,11 +14,14 @@ import ContractEventCRUD from '../crud.js';
 import ContractCRUD from '../../contract/crud.js';
 import NetworkCRUD from '../../network/crud.js';
 
+import { ERC20PresetMinterPauser } from '../../typechain/ERC20PresetMinterPauser.js';
+import ERC20PresetMinterPauserArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+
 describe(`${name}/sagas/getPastLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let store: StoreType;
-    let web3Contract: Web3Contract;
+    let web3Contract: ERC20PresetMinterPauser;
 
     let address: string;
 
@@ -32,12 +33,12 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(ERC20PresetMinterPauser.abi as any)
+        web3Contract = (await new web3.eth.Contract(ERC20PresetMinterPauserArtifact.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: ERC20PresetMinterPauser.bytecode,
+                data: ERC20PresetMinterPauserArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' })) as unknown as ERC20PresetMinterPauser;
         address = web3Contract.options.address;
 
         await web3Contract.methods
@@ -68,7 +69,7 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
             let topics: string[];
             before(() => {
                 //Filter by address, Transfer event, from, address
-                const Transfer = ERC20PresetMinterPauser.abi.find((a: any) => a.name === 'Transfer');
+                const Transfer = ERC20PresetMinterPauserArtifact.abi.find((a: any) => a.name === 'Transfer');
                 const eventTopic = coder.encodeEventSignature(Transfer as any);
                 const fromTopic = coder.encodeParameter('address', ADDRESS_0);
                 const toTopic = coder.encodeParameter('address', accounts[0]);
@@ -94,7 +95,13 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
 
             it('event.onUpdate middleware', async () => {
                 //Create contract before events are fetched
-                store.dispatch(ContractCRUD.actions.create({ networkId, address, abi: IERC20.abi as any }));
+                store.dispatch(
+                    ContractCRUD.actions.create({
+                        networkId,
+                        address,
+                        abi: ERC20PresetMinterPauserArtifact.abi as any,
+                    }),
+                );
 
                 //Trigger event.onUpdate which populates returnValues
                 store.dispatch(
@@ -128,7 +135,13 @@ describe(`${name}/sagas/getPastLogs.test.ts`, () => {
 
                 //Create contract after events are fetched
                 //Trigger contract.onUpdate which populates returnValues
-                store.dispatch(ContractCRUD.actions.create({ networkId, address, abi: IERC20.abi as any }));
+                store.dispatch(
+                    ContractCRUD.actions.create({
+                        networkId,
+                        address,
+                        abi: ERC20PresetMinterPauserArtifact.abi as any,
+                    }),
+                );
 
                 //Proper decoding using middleware
                 const events1 = ContractEventCRUD.selectors.selectByIdMany(store.getState());

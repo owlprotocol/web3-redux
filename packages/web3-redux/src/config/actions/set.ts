@@ -1,4 +1,4 @@
-import ConfigCRUD from '../../contractevent/config/crud.js';
+import ConfigCRUD from '../../config/crud.js';
 import { Config } from '../model/interface.js';
 
 /** @internal */

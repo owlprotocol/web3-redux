@@ -17,7 +17,7 @@ export const useBlock = (
     const dispatch = useDispatch();
 
     //TODO: useNetwork
-    const network = NetworkCRUD.hooks.useGet({ networkId });
+    const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
     const block = BlockCRUD.hooks.useGet({ networkId, number });
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 

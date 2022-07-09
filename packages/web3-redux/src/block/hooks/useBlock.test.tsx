@@ -4,15 +4,14 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import jsdom from 'mocha-jsdom';
 
-
-
 import { name } from '../common.js';
 import { networkId, block1 } from '../../test/data.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { createAction } from '../actions/index.js';
 import { BlockTransaction, validate } from '../model/index.js';
 import { getWeb3Provider } from '../../test/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import BlockCRUD from '../crud.js';
 import { useBlock } from './index.js';
 
 describe(`${name}/hooks/useBlock.test.tsx`, () => {
@@ -23,12 +22,12 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
     let wrapper: any;
     before(async () => {
-        item = { networkId, number: 0, transactions: [] };
+        item = { networkId, number: 0 };
     });
 
     beforeEach(() => {
         ({ store } = createStore());
-        store.dispatch(createAction(item));
+        store.dispatch(BlockCRUD.actions.create(item));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
@@ -52,7 +51,6 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
             expected = validate({
                 networkId,
                 ...block,
-                transactions: [{ networkId, hash: txSent.transactionHash }],
             });
         });
 
@@ -68,14 +66,14 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
         });
 
         it('(networkId, number, false)', async () => {
-            store.dispatch(createAction(block1));
+            store.dispatch(BlockCRUD.actions.create(block1));
 
             const { result } = renderHook(() => useBlock(networkId, block1.number, true), {
                 wrapper,
             });
 
             const currentCall = result.current;
-            assert.deepEqual(currentCall, { ...block1, transactions: [] }, 'result.current');
+            assert.deepEqual(currentCall, { ...block1 }, 'result.current');
         });
 
         it('(networkId, number, ifnull): null', async () => {
@@ -90,14 +88,14 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
         });
 
         it('(networkId, number, ifnull): defined', async () => {
-            store.dispatch(createAction(block1));
+            store.dispatch(BlockCRUD.actions.create(block1));
 
             const { result } = renderHook(() => useBlock(networkId, block1.number, 'ifnull'), {
                 wrapper,
             });
 
             const currentCall = result.current;
-            assert.deepEqual(currentCall, { ...block1, transactions: [] }, 'result.current');
+            assert.deepEqual(currentCall, { ...block1 }, 'result.current');
         });
     });
 });

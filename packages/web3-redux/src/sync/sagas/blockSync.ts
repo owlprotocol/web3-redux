@@ -2,7 +2,7 @@ import { put, call, all } from 'typed-redux-saga';
 import { Action } from 'redux';
 import { BlockSync } from '../model/index.js';
 import SyncCRUD from '../crud.js';
-import BlockCRUD from '../../block/crud.js';
+import type BlockCRUD from '../../block/crud.js';
 
 //Handle on block update
 function* blockSync({ payload }: ReturnType<typeof BlockCRUD.actions.create | typeof BlockCRUD.actions.update>) {

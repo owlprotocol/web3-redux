@@ -1,4 +1,4 @@
-import { attr, many, fk, Model as ORMModel } from 'redux-orm';
+import { attr, fk, Model as ORMModel } from 'redux-orm';
 
 class Model extends ORMModel {
     static options = {
@@ -19,11 +19,6 @@ class Model extends ORMModel {
         nonce: attr(),
         code: attr(),
         ens: attr(),
-        indexIds: many({
-            to: 'ContractIndex',
-            as: 'indexes',
-            relatedName: 'contracts',
-        }),
     };
 }
 

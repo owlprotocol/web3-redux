@@ -13,6 +13,7 @@ describe('pet/crud.test.js', () => {
         });
 
         it('create', async () => {
+            console.debug({ BlockCRUD });
             store.dispatch(BlockCRUD.actions.create(block1));
 
             //Redux ORM

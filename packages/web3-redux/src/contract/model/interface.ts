@@ -3,6 +3,7 @@ import { coder } from '../../utils/web3-eth-abi/index.js';
 import { filter, keyBy, omit } from '../../utils/lodash/index.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { NetworkWithObjects } from '../../network/model/interface.js';
+import { toReduxOrmId } from '../../createCRUDModel.js';
 
 /**
  * Contract Id object.
@@ -81,11 +82,30 @@ export function validate(contract: Contract): Contract {
  */
 export function hydrate(contract: Contract, sess: any): ContractWithObjects {
     const { networkId, abi, address } = contract;
+    const contractORM: ContractWithObjects | undefined = sess.Contract.withId(
+        toReduxOrmId(validateId({ networkId, address })),
+    );
+
     const network: NetworkWithObjects | undefined = sess.Network.withId(networkId);
     const { web3, web3Sender } = network ?? {};
 
-    const web3Contract = web3 && abi ? new web3.eth.Contract(abi, address) : undefined;
-    const web3SenderContract = web3Sender && abi ? new web3Sender.eth.Contract(abi, address) : undefined;
+    let web3Contract: BaseWeb3Contract | undefined;
+    if (contractORM?.web3Contract && abi === contractORM.abi) {
+        //Existing web3 contract
+        web3Contract = contractORM.web3Contract;
+    } else if (abi && web3) {
+        //New web3 contract
+        web3Contract = new web3.eth.Contract(abi, address);
+    }
+
+    let web3SenderContract: BaseWeb3Contract | undefined;
+    if (contractORM?.web3SenderContract && abi === contractORM.abi) {
+        //Existing web3 contract
+        web3SenderContract = contractORM.web3SenderContract;
+    } else if (abi && web3Sender) {
+        //New web3 contract
+        web3SenderContract = new web3Sender.eth.Contract(abi, address);
+    }
 
     return {
         ...contract,

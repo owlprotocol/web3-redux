@@ -13,6 +13,7 @@ import {
 } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 const SUBSCRIBE_DATA = `${EVENT_SUBSCRIBE}/DATA`;
 const SUBSCRIBE_ERROR = `${EVENT_SUBSCRIBE}/ERROR`;
@@ -71,7 +72,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
             const { type, event, error } = message;
             if (type === SUBSCRIBE_DATA && event) {
                 yield* put(
-                    ContractEvent.actions.create({
+                    ContractEventCRUD.actions.create({
                         ...event,
                         networkId,
                         address,
@@ -82,7 +83,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
                 yield* put({ type: SUBSCRIBE_ERROR, error });
             } else if (type === SUBSCRIBE_CHANGED && event) {
                 yield* put(
-                    ContractEvent.actions.create({
+                    ContractEventCRUD.actions.create({
                         ...event,
                         networkId,
                         address,

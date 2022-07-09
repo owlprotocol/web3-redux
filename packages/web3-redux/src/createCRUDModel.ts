@@ -18,6 +18,15 @@ export function toReduxOrmId(id: string | IndexableTypeArray) {
     return id.join(SEPARATOR);
 }
 
+export function isDefinedRecord<T extends Record<string, any> = Record<string, any>>(t: Partial<T>): t is T {
+    //Compound index
+    if (Object.values(t).includes(undefined)) {
+        //Missing index key, return undefined
+        return false;
+    }
+    return true;
+}
+
 /**
  *
  * Creates common CRUD actions for a Redux/Dexie model including relevant action creators & sagas.
@@ -155,11 +164,7 @@ function createCRUDModel<
     const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined) => {
         if (!id) return undefined;
         if (typeof id != 'string') {
-            //Compound index
-            if (Object.values(id).includes(undefined)) {
-                //Missing index key, return undefined
-                return undefined;
-            }
+            if (!isDefinedRecord(id)) return undefined;
             //Validate id & convert to redux orm string id
             return select(state, toReduxOrmId(validateId(id))) as T | undefined;
         } else {
@@ -198,12 +203,11 @@ function createCRUDModel<
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         if (typeof id != 'string') {
-            if (Object.values(id).includes(undefined)) {
-                return undefined;
-            }
+            if (!isDefinedRecord(id)) return undefined;
+            return table.get(validateId(id));
+        } else {
+            return table.get(id);
         }
-        const id2 = typeof id === 'string' ? id : validateId(id);
-        return table.get(id2);
     };
 
     const bulkGet = (id: T_ID[] | string[] | undefined) => {
@@ -426,15 +430,11 @@ function createCRUDModel<
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        if (typeof id != 'string') {
-            //Check if compound index missing value
-            if (Object.values(id).includes(undefined)) {
-                return undefined;
-            }
-        }
 
-        const id2 = typeof id === 'string' ? id : validateId(id as T_ID);
+        const id2 = validateId(id as T_ID);
         const id2Dep = toReduxOrmId(id2);
+
+        //TODO: Undefined compound key?
         return useLiveQuery(() => table.get(id2), [id2Dep]);
     };
     //TODO: string array id

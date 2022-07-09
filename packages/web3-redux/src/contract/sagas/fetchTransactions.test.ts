@@ -5,9 +5,10 @@ import * as moxios from 'moxios';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 
-import { selectByIdMany } from '../../transaction/selectors/index.js';
 import { fetchTransactions } from '../actions/index.js';
 import { sleep } from '../../utils/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import TransactionCRUD from '../../transaction/crud.js';
 
 describe('contract/sagas/fetchTransactions.test.ts', () => {
     let store: StoreType;
@@ -63,7 +64,7 @@ describe('contract/sagas/fetchTransactions.test.ts', () => {
 
         await sleep(100);
 
-        const transactions = selectByIdMany(store.getState());
+        const transactions = await TransactionCRUD.db.all();
         //https://api.etherscan.io/api?module=account&action=txlist&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=YourApiKeyToken
         assert.equal(transactions.length, 1, 'missing transactions fetched by Etherscan');
     });

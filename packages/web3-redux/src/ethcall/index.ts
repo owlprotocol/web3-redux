@@ -5,7 +5,6 @@
 
 export * from './model/index.js';
 export * from './actions/index.js';
-export * from './reducer.js';
 
 import * as Actions from './actions/index.js';
 import CRUDModel from './crud.js';

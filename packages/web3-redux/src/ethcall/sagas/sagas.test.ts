@@ -7,9 +7,11 @@ import { getWeb3Provider } from '../../test/index.js';
 import { networkId } from '../../test/data.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { Network, EthCall } from '../../index.js';
 import { sleep } from '../../utils/index.js';
 import { getIdArgs } from '../model/interface.js';
+import NetworkCRUD from '../../network/crud.js';
+import EthCallCRUD from '../crud.js';
+import { fetch } from '../actions/index.js';
 
 describe('ethcall.sagas', () => {
     let web3: Web3;
@@ -38,14 +40,14 @@ describe('ethcall.sagas', () => {
         const tx2 = await contract.methods.setValue(42);
         await tx2.send({ from: accounts[0], gas: await tx2.estimateGas() });
 
-        const ethCall1 = EthCall.validate({
+        const ethCall1 = EthCallCRUD.validate({
             networkId,
             from: accounts[0],
             to: contract.options.address,
             data: '0x20965255',
         });
         store.dispatch(
-            EthCall.fetch(ethCall1), //getValue() 4byte selector
+            fetch(ethCall1), //getValue() 4byte selector
         );
 
         await sleep(150);
@@ -53,9 +55,11 @@ describe('ethcall.sagas', () => {
         const tx3 = await contract.methods.getValue();
         const expected = await tx3.call({ from: accounts[0], gas: await tx3.estimateGas() });
 
-        assert.equal(EthCall.selectByIdMany(store.getState()).length, 1, 'EthCallSelector.selectMany');
+        assert.equal(EthCallCRUD.selectors.selectByIdMany(store.getState()).length, 1, 'EthCallSelector.selectMany');
         assert.equal(
-            Web3.utils.hexToNumber(EthCall.selectByIdSingle(store.getState(), getIdArgs(ethCall1))!.returnValue!),
+            Web3.utils.hexToNumber(
+                EthCallCRUD.selectors.selectByIdSingle(store.getState(), getIdArgs(ethCall1))!.returnValue!,
+            ),
             expected,
             'EthCall.selectSingle',
         );

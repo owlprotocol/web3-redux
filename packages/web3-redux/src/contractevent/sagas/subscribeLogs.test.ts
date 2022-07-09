@@ -13,6 +13,7 @@ import { createStore, StoreType } from '../../store.js';
 import { subscribeLogs as subscribeLogsAction } from '../actions/index.js';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 import NetworkCRUD from '../../network/crud.js';
+import ContractEventCRUD from '../crud.js';
 
 describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -83,7 +84,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
             await sleep(1000);
 
-            const events1 = selectByIdMany(store.getState());
+            const events1 = await ContractEventCRUD.db.all();
             //[Transfer(zero, accounts[0])]
             assert.equal(events1.length, 1, 'events.length');
         });

@@ -25,7 +25,7 @@ export class Web3ReduxDexie extends Dexie {
     HTTPCache!: Table<Http>;
     IPFSCache!: Table<Ipfs>;
     Network!: Table<Network>;
-    Transaction!: Table<Transaction>;
+    EthTransaction!: Table<Transaction>;
 
     constructor() {
         super('Web3Redux');

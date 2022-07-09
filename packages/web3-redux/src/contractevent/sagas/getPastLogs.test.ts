@@ -14,6 +14,7 @@ import { createStore, StoreType } from '../../store.js';
 import { getPastLogs as getPastLogsAction } from '../actions/index.js';
 import ContractEventCRUD from '../crud.js';
 import ContractCRUD from '../../contract/crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}/sagas/getPastLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store

@@ -1,9 +1,9 @@
 import { put, select, all } from 'typed-redux-saga';
-import { Contract } from '../model/index.js';
 import { CallBatchedAction, CALL_BATCHED } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import ContractCRUD from '../crud.js';
+import { compact, groupBy } from '../../utils/lodash/index.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
@@ -12,61 +12,65 @@ export function* callBatched(action: CallBatchedAction) {
     try {
         const { payload } = action;
         const { requests, networkId } = payload;
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
-        if (!network?.web3) throw new Error(`Network ${networkId} missing web3`);
 
-        const web3 = network.web3;
-        const multicallContract = network.multicallContract;
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+        if (!network) throw new Error(`Network ${networkId} undefined`);
+
+        const web3 = network.web3 ?? network.web3Sender;
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
         const contractIds = Array.from(new Set(requests.map((f) => f.address))).map((address) => {
             return { networkId, address };
         });
-        const selectResult: ReturnType<typeof NetworkCRUD.selectors.selectByIdMany> = yield* select(
-            NetworkCRUD.selectors.selectByIdMany,
+        const selectResult: ReturnType<typeof ContractCRUD.selectors.selectByIdMany> = yield* select(
+            ContractCRUD.selectors.selectByIdMany,
             contractIds,
         );
-        const contracts = selectResult.filter((c) => !!c) as Contract[];
-        const contractsByAddress: { [key: string]: Contract } = {};
-        contracts.filter((c) => c != null).forEach((c) => (contractsByAddress[c.address] = c));
-
+        const contracts = compact(selectResult);
+        const contractsByAddress = groupBy(contracts, 'address');
         const batch = new web3.eth.BatchRequest();
 
         //TODO: Investigate potential issue batch gas expense too large
         //TODO: Investigate potential issue batch data size too large
-        const preCallTasks = requests.map((f) => {
-            const contract = contractsByAddress[f.address];
-            const web3Contract = contract.web3Contract!;
+        const preCallTasks = compact(
+            requests.map((f) => {
+                const contracts = contractsByAddress[f.address];
+                const contract = contracts.length > 0 ? contracts[0] : undefined;
+                if (!contract) return undefined;
+                const web3Contract = contract.web3Contract!;
 
-            let tx: any;
-            if (!f.args || f.args.length == 0) {
-                tx = web3Contract.methods[f.method]();
-            } else {
-                tx = web3Contract.methods[f.method](...f.args);
-            }
+                let tx: any;
+                if (!f.args || f.args.length == 0) {
+                    tx = web3Contract.methods[f.method]();
+                } else {
+                    tx = web3Contract.methods[f.method](...f.args);
+                }
 
-            const data = tx.encodeABI();
-            const ethCall = EthCallCRUD.validate({
-                networkId: network.networkId,
-                to: f.address,
-                data,
-                gas: f.gas,
-            });
+                const data = tx.encodeABI();
+                const ethCall = EthCallCRUD.validate({
+                    networkId: network.networkId,
+                    to: f.address,
+                    data,
+                    gas: f.gas,
+                });
 
-            //Create base call
-            const putEthCallTask = put(EthCallCRUD.actions.create(ethCall));
-            //Output decoder for multicall
-            const methodAbi = contract.abi!.find((m) => m.name === f.method)!;
-            const methodAbiOutput = methodAbi.outputs;
+                //Create base call
+                const putEthCallTask = put(EthCallCRUD.actions.create(ethCall));
+                //Output decoder for multicall
+                const methodAbi = contract.abi!.find((m) => m.name === f.method)!;
+                const methodAbiOutput = methodAbi.outputs;
 
-            return { tx, ethCall, putEthCallTask, methodAbiOutput };
-        });
+                return { tx, ethCall, putEthCallTask, methodAbiOutput };
+            }),
+        );
 
         /**TODO: Fix here */
         //All update eth call
-        yield* put(EthCallCRUD.actions.updateBatched(preCallTasks));
+        yield* put(EthCallCRUD.actions.updateBatched(preCallTasks.map((t) => t.ethCall)));
         //All update contract
         yield* put(ContractCRUD.actions.updateBatched(contracts));
 
+        const multicallContract = network.multicallContract;
         //If not Multicall, or from/defaultBlock specified
         const regularCallTasks = preCallTasks.filter((t) => {
             return !(
@@ -127,7 +131,7 @@ export function* callBatched(action: CallBatchedAction) {
                 if (callTaskIdx < regularCallTasks.length) {
                     const ethCall = preCallTasks[callTaskIdx].ethCall;
                     callTaskIdx += 1;
-                    return put(createEthCall({ ...ethCall, returnValue }));
+                    return put(EthCallCRUD.actions.create({ ...ethCall, returnValue }));
                 } else {
                     const [, returnData]: [any, string[]] = returnValue;
                     const putActions = returnData.map((data) => {
@@ -149,7 +153,7 @@ export function* callBatched(action: CallBatchedAction) {
                             }
                         }
                         callTaskIdx += 1;
-                        return put(createEthCall({ ...ethCall, returnValue: formatedValue }));
+                        return put(EthCallCRUD.actions.create({ ...ethCall, returnValue: formatedValue }));
                     });
 
                     return all(putActions);

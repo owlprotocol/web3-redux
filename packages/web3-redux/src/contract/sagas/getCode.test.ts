@@ -13,7 +13,9 @@ import { createStore, StoreType } from '../../store.js';
 import { Contract } from '../model/interface.js';
 import { name } from '../common.js';
 
-import { createAction, getCode as getCodeAction } from '../actions/index.js';
+import { getCode as getCodeAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;
@@ -41,7 +43,7 @@ describe(`${name}.integration`, () => {
             store.dispatch(getCodeAction(item));
             await sleep(100);
 
-            const account = selectByIdSingle(store.getState(), item);
+            const account = await ContractCRUD.db.get(item);
             assert.equal(account?.code, '0x', 'code should be empty 0x');
         });
 
@@ -58,7 +60,7 @@ describe(`${name}.integration`, () => {
             store.dispatch(getCodeAction({ networkId, address }));
             await sleep(100);
 
-            const account = selectByIdSingle(store.getState(), { networkId, address });
+            const account = await ContractCRUD.db.get({ networkId, address });
             assert.equal(account?.code, '0x' + BlockNumberArtifact.deployedBytecode, 'smart contract code');
         });
     });

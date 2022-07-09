@@ -245,7 +245,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
                 //Create event, triggering a refresh
                 store.dispatch(
-                    ContractEvent.actions.create({
+                    ContractEventCRUD.actions.create({
                         networkId,
                         address,
                         blockHash: '0x1',

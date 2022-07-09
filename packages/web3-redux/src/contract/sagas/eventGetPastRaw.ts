@@ -4,13 +4,14 @@ import { EventGetPastRawAction, EVENT_GET_PAST_RAW } from '../actions/eventGetPa
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 const EVENT_GET_PAST_RAW_ERROR = `${EVENT_GET_PAST_RAW}/ERROR`;
 
 export function* eventGetPastRaw(action: EventGetPastRawAction) {
     try {
         const { payload } = action;
-        const { id, networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
+        const { networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
 
         const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
         if (!network) throw new Error(`Network ${networkId} undefined`);
@@ -27,7 +28,8 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
 
         /**TODO */
         //const indexedEvents = (yield* select(selectEventsByIndex, id)) ?? [];
-        const existingEvents = (yield* select(selectContractEvents, { networkId, address }, eventName, filter)) ?? [];
+        //TODO: filter
+        const existingEvents = yield* call(ContractEventCRUD.db.where, { networkId, address, name: eventName });
         /*
         if (indexedEvents.length > 0) {
             throw new Error(`Cached ${id} reached! indexedEvents.length >= 0`);
@@ -49,14 +51,13 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
             });
 
             if (events.length > 0) {
-                const action = createEventBatched(
+                const action = ContractEventCRUD.actions.createBatched(
                     events.map((event: any) => {
                         return {
                             ...event,
                             networkId,
                             address,
                             name: eventName,
-                            indexIds: [id],
                         };
                     }),
                 );

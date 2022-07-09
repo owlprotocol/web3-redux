@@ -8,7 +8,9 @@ import { createStore, StoreType } from '../../store.js';
 import { Contract } from '../model/interface.js';
 import { name } from '../common.js';
 
-import { createAction, getNonce as getNonceAction } from '../actions/index.js';
+import { getNonce as getNonceAction } from '../actions/index.js';
+import ContractCRUD from '../crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;
@@ -33,7 +35,7 @@ describe(`${name}.integration`, () => {
     it('getNonce()', async () => {
         store.dispatch(getNonceAction(item));
         const expected = await web3.eth.getTransactionCount(item.address!);
-        const account = selectByIdSingle(store.getState(), item);
+        const account = await ContractCRUD.db.get(item);
         assert.equal(account!.nonce, expected, 'initial nonce');
     });
 });

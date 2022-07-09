@@ -13,10 +13,9 @@ import { BlockNumber as BlockNumberArtifact, Multicall } from '../../abis/index.
 
 import { createStore, StoreType } from '../../store.js';
 
-
 import { ContractId } from '../model/index.js';
-import { selectContractCall } from '../selectors/index.js';
-import { createAction, callBatched as callBatchedAction } from '../actions/index.js';
+import { callBatched as callBatchedAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}.sagas.callBatched`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -122,7 +121,9 @@ describe(`${name}.sagas.callBatched`, () => {
             });
             const gas3 = await tx3.estimateGas();
             const multiCallContract = await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '875000000' });
-            store.dispatch(NetworkCRUD.actions.create({ networkId, web3, multicallAddress: multiCallContract.options.address }));
+            store.dispatch(
+                NetworkCRUD.actions.create({ networkId, web3, multicallAddress: multiCallContract.options.address }),
+            );
             await sleep(300);
 
             const expectedBlockNumber = await web3.eth.getBlockNumber();

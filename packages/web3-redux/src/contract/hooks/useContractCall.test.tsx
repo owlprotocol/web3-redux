@@ -384,7 +384,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create event, triggering a refresh
                 store.dispatch(
-                    ContractEvent.actions.create({
+                    ContractEventCRUD.actions.create({
                         networkId,
                         address,
                         blockHash: '0x1',

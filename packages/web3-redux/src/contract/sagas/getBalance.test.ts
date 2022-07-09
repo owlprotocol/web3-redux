@@ -8,7 +8,9 @@ import { createStore, StoreType } from '../../store.js';
 import { Contract } from '../model/interface.js';
 import { name } from '../common.js';
 
-import { createAction, getBalance as getBalanceAction } from '../actions/index.js';
+import { getBalance as getBalanceAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}.integration`, () => {
     let store: StoreType;
@@ -33,7 +35,7 @@ describe(`${name}.integration`, () => {
     it('getBalance()', async () => {
         store.dispatch(getBalanceAction(item));
         const expected = await web3.eth.getBalance(item.address!);
-        const account = selectByIdSingle(store.getState(), item);
+        const account = await ContractCRUD.db.get(item);
         assert.equal(account!.balance, expected, 'initial balance');
     });
 });

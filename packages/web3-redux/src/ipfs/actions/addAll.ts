@@ -11,11 +11,11 @@ export interface AddAllPayload {
 /** @internal */
 export const ADD_ALL = `${name}/ADD_ALL`;
 /** @category Actions */
-export const addAll = createAction(ADD_ALL, (payload: AddAllPayload) => {
+export const addAll = createAction(ADD_ALL, (payload: AddAllPayload, uuid?: string) => {
     return {
         payload,
         meta: {
-            uuid: uuidv4(),
+            uuid: uuid ?? uuidv4(),
         },
     };
 });

@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import useAtPath from './useAtPath.js';
-import { fetchIpfs as fetchIpfsAction } from '../actions/index.js';
+import { catAction } from '../actions/index.js';
 
 /**
- * Reads IPFS content from store and makes a call to fetch content.
+ * Reads IPFS content from store and makes a call to cat content.
  * @category Hooks
  * */
 export const useIpfs = (path: string | undefined) => {
@@ -14,8 +14,8 @@ export const useIpfs = (path: string | undefined) => {
 
     const dataExists = content?.data || false;
     const action = useMemo(() => {
-        if (path && !dataExists) return fetchIpfsAction(path);
-    }, [path, fetch, dataExists]);
+        if (path && !dataExists) return catAction({ path });
+    }, [path, dataExists]);
 
     useEffect(() => {
         if (action) dispatch(action);

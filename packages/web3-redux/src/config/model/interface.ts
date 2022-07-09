@@ -1,4 +1,5 @@
 import { Axios } from 'axios';
+import type { IPFS } from 'ipfs';
 
 export interface ConfigId {
     /* Id in store. Default is 0. */
@@ -26,7 +27,7 @@ export interface Config extends ConfigId {
 
 export interface ConfigWithObjects extends Config {
     /* IPFS Client */
-    readonly ipfsClient?: Axios;
+    readonly ipfsClient?: IPFS;
     /* 4byte.directory Client */
     readonly _4byteClient?: Axios;
     /* CORS Proxy */

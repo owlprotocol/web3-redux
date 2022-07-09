@@ -11,11 +11,11 @@ export interface LSPayload {
 /** @internal */
 export const LS = `${name}/LS`;
 /** @category Actions */
-export const ls = createAction(LS, (payload: LSPayload) => {
+export const ls = createAction(LS, (payload: LSPayload, uuid?: string) => {
     return {
         payload,
         meta: {
-            uuid: uuidv4(),
+            uuid: uuid ?? uuidv4(),
         },
     };
 });

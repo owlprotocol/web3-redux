@@ -8,8 +8,6 @@ import { fetch as fetchAction, SUBSCRIBE } from '../actions/index.js';
 import { SubscribeAction } from '../actions/subscribe.js';
 import BlockCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
-import getDB from '../../db.js';
-import { validateId } from '../model/interface.js';
 
 const SUBSCRIBE_CONNECTED = `${SUBSCRIBE}/CONNECTED`;
 const SUBSCRIBE_DATA = `${SUBSCRIBE}/DATA`;

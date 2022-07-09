@@ -1,10 +1,8 @@
 import { select, put, call } from 'typed-redux-saga';
-import getDB from '../../db.js';
 import NetworkCRUD from '../../network/crud.js';
 import { isHexStrict } from '../../utils/web3-utils/index.js';
 import { FetchAction } from '../actions/index.js';
 import BlockCRUD from '../crud.js';
-import { validateId } from '../model/interface.js';
 
 /** @category Sagas */
 export function* fetchSaga(action: FetchAction) {

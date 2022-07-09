@@ -317,7 +317,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                 .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
             //IPFS Mock
-            store.dispatch(ConfigCRUD.actions.update({ id: '0', ipfsClient: axios }));
+            store.dispatch(ConfigCRUD.actions.update({ id: '0' }));
 
             //Hook
             const { result, waitForNextUpdate } = renderHook(

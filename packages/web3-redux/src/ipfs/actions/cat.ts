@@ -1,17 +1,28 @@
 import { createAction } from '@reduxjs/toolkit';
-import { isCIDGuard } from '../../utils/index.js';
+import type { IPFS } from 'ipfs';
+import { v4 as uuidv4 } from 'uuid';
+
 import { name } from '../common.js';
+
+export interface CatPayload {
+    path: Parameters<IPFS['cat']>[0];
+    options?: Parameters<IPFS['cat']>[1];
+}
 
 /** @internal */
 export const CAT = `${name}/CAT`;
 /** @category Actions */
-export const cat = createAction(CAT, (payload: string) => {
-    isCIDGuard(payload);
-    return { payload };
+export const catAction = createAction(CAT, (payload: CatPayload, uuid?: string) => {
+    return {
+        payload,
+        meta: {
+            uuid: uuid ?? uuidv4(),
+        },
+    };
 });
 /** @internal */
-export type CatAction = ReturnType<typeof cat>;
+export type CatAction = ReturnType<typeof catAction>;
 /** @internal */
-export const isCatAction = cat.match;
+export const isCatAction = catAction.match;
 
-export default cat;
+export default catAction;

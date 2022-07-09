@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import useAtPath from './useAtPath.js';
-import { cat2 as catAction } from '../actions/index.js';
+import { catAction } from '../actions/index.js';
 
 /**
  * Reads IPFS content from store and makes a call to fetch content.

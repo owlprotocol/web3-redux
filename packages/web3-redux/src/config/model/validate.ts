@@ -1,4 +1,6 @@
 import axios, { Axios } from 'axios';
+import type { IPFS } from 'ipfs';
+import { create as createIPFS } from 'ipfs-http-client';
 import { Config, ConfigId, ConfigWithObjects } from './interface.js';
 import { omit } from '../../utils/lodash/index.js';
 
@@ -22,13 +24,13 @@ export function hydrate(config: Config, sess: any): ConfigWithObjects {
     const { id, ipfsUrl, _4byteUrl } = config;
     const configORM: ConfigWithObjects | undefined = sess.Config.withId(id);
 
-    let ipfsClient: Axios | undefined;
+    let ipfsClient: IPFS | undefined;
     if (configORM?.ipfsUrl && ipfsUrl === configORM.ipfsUrl) {
         //Existing axios instance
         ipfsClient = configORM.ipfsClient;
     } else if (ipfsUrl) {
         //New axios instance
-        ipfsClient = axios.create({ baseURL: config.ipfsUrl });
+        ipfsClient = createIPFS({ url: ipfsUrl });
     }
 
     let _4byteClient: Axios | undefined;

@@ -198,7 +198,7 @@ function createCRUDModel<
     };
 
     /** Dexie Getters */
-    const get = (id: Partial<T_ID> | string | undefined) => {
+    const get = async (id: Partial<T_ID> | string | undefined) => {
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
@@ -210,7 +210,7 @@ function createCRUDModel<
         }
     };
 
-    const bulkGet = (id: T_ID[] | string[] | undefined) => {
+    const bulkGet = async (id: T_ID[] | string[] | undefined) => {
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
@@ -221,49 +221,49 @@ function createCRUDModel<
         }
     };
 
-    const all = () => {
+    const all = async () => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.toArray();
     };
 
-    const where = (filter: Partial<T_Encoded>) => {
+    const where = async (filter: Partial<T_Encoded>) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.where(filter).toArray();
     };
 
-    const add = (item: T) => {
+    const add = async (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.add(encode(item));
     };
 
-    const bulkAdd = (items: T[]) => {
+    const bulkAdd = async (items: T[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.bulkAdd(items.map(encode));
     };
 
-    const put = (item: T) => {
+    const put = async (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.put(encode(item));
     };
 
-    const bulkPut = (items: T[]) => {
+    const bulkPut = async (items: T[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.bulkPut(items.map(encode));
     };
 
-    const update = (item: T) => {
+    const update = async (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.update(validateId(item), encode(item));
     };
 
-    const bulkUpdate = (items: T[]) => {
+    const bulkUpdate = async (items: T[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
@@ -273,13 +273,13 @@ function createCRUDModel<
         });
     };
 
-    const deleteDB = (id: IndexableType) => {
+    const deleteDB = async (id: IndexableType) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.delete(id);
     };
 
-    const bulkDelete = (ids: IndexableType[]) => {
+    const bulkDelete = async (ids: IndexableType[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.bulkDelete(ids);

@@ -23,7 +23,7 @@ describe('ipfs/hooks/useIpfs.test.tsx', () => {
 
     beforeEach(async () => {
         ({ store } = createStore());
-        store.dispatch(ConfigCRUD.actions.update({ id: '0', ipfsClient: axios }));
+        store.dispatch(ConfigCRUD.actions.update({ id: '0' }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

@@ -2,7 +2,11 @@
 import Dexie, { Table } from 'dexie';
 //@ts-ignore
 import setGlobalVars from 'indexeddbshim';
+import { REDUX_ROOT } from './common.js';
+
+import { _4ByteSignature, _4ByteIndex } from './4byte/model/index.js';
 import { BlockTransaction, BlockIndex } from './block/model/index.js';
+import { Config, ConfigIndex } from './config/model/index.js';
 import { Contract, ContractIndex } from './contract/model/index.js';
 import { ContractEvent, ContractEventIndex } from './contractevent/model/index.js';
 import { ContractSend, ContractSendIndex } from './contractsend/model/index.js';
@@ -11,12 +15,15 @@ import { EthCall, EthCallIndex } from './ethcall/model/index.js';
 import { Http, HttpIndex } from './http/model/index.js';
 import { Ipfs, IpfsIndex } from './ipfs/model/index.js';
 import { Network, NetworkIndex } from './network/model/index.js';
+import { Sync, SyncIndex } from './sync/model/index.js';
 import { Transaction, TransactionIndex } from './transaction/model/index.js';
 
 import isClient from './utils/isClient.js';
 
 export class Web3ReduxDexie extends Dexie {
+    _4Byte!: Table<_4ByteSignature>;
     Block!: Table<BlockTransaction>;
+    Config!: Table<Config>;
     Contract!: Table<Contract>;
     ContractEvent!: Table<ContractEvent>;
     ContractSend!: Table<ContractSend>;
@@ -25,12 +32,15 @@ export class Web3ReduxDexie extends Dexie {
     HTTPCache!: Table<Http>;
     IPFSCache!: Table<Ipfs>;
     Network!: Table<Network>;
+    Sync!: Table<Sync>;
     EthTransaction!: Table<Transaction>;
 
     constructor() {
-        super('Web3Redux');
+        super(REDUX_ROOT);
         this.version(1).stores({
+            _4Byte: _4ByteIndex,
             Block: BlockIndex,
+            Config: ConfigIndex,
             Contract: ContractIndex,
             ContractEvent: ContractEventIndex,
             ContractSend: ContractSendIndex,
@@ -39,6 +49,7 @@ export class Web3ReduxDexie extends Dexie {
             HTTPCache: HttpIndex,
             IPFSCache: IpfsIndex,
             Network: NetworkIndex,
+            Sync: SyncIndex,
             Transaction: TransactionIndex,
         });
     }

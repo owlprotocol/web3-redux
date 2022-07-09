@@ -6,7 +6,7 @@ import type BlockCRUD from '../../block/crud.js';
 
 //Handle on block update
 function* blockSync({ payload }: ReturnType<typeof BlockCRUD.actions.create | typeof BlockCRUD.actions.update>) {
-    const syncs = (yield* call(SyncCRUD.db.where, { type: 'Transaction' })) as BlockSync[];
+    const syncs = (yield* call(SyncCRUD.db.where, { type: 'Block' })) as BlockSync[];
 
     const actions: Action[] = []; //triggered actions
 

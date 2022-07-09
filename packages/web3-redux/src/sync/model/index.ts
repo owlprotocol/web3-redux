@@ -41,6 +41,8 @@ export function createSyncForActions(
     }
 }
 
+export const SyncIndex = 'id,[networkId+type],type';
+
 /** @internal */
 export function validateId(item: Partial<Sync>) {
     if (!item.id) throw new Error('id undefined');

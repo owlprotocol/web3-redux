@@ -36,4 +36,6 @@ export interface ConfigWithObjects extends Config {
     readonly httpClient?: Axios;
 }
 
+export const ConfigIndex = 'id';
+
 export default Config;

@@ -105,7 +105,7 @@ export function useEvents<
 export function contractEventsHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
-    U extends ReturnValues = ReturnValues,
+    U extends Record<string, any> = Record<string, any>,
     >(eventName: K) {
     return (
         networkId: string | undefined,

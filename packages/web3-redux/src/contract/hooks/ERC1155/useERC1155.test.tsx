@@ -2,21 +2,21 @@ import { assert } from 'chai';
 // eslint-disable-next-line prettier/prettier
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import jsdom from 'mocha-jsdom';
 import { useERC1155 } from './useERC1155.js';
-import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
+import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
 
-import { ERC1155PresetMinterPauser } from '../../abis/index.js';
+import { name } from '../../common.js';
+import { ADDRESS_0, networkId } from '../../../test/data.js';
+import { createStore, StoreType } from '../../../store.js';
+import ContractEventCRUD from '../../../contractevent/crud.js';
+import BlockCRUD from '../../../block/crud.js';
+import TransactionCRUD from '../../../transaction/crud.js';
+import NetworkCRUD from '../../../network/crud.js';
 
-import { name } from '../common.js';
-import { ADDRESS_0, networkId } from '../../test/data.js';
-import { createStore, StoreType } from '../../store.js';
-import ContractEventCRUD from '../../contractevent/crud.js';
-import BlockCRUD from '../../block/crud.js';
-import TransactionCRUD from '../../transaction/crud.js';
-import NetworkCRUD from '../../network/crud.js';
+import { ERC1155PresetMinterPauser } from '../../../typechain/ERC1155PresetMinterPauser.js';
+import ERC1155PresetMinterPauserArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
 
 describe(`${name}/hooks/useERC1155.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -26,7 +26,7 @@ describe(`${name}/hooks/useERC1155.test.tsx`, () => {
 
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
-    let web3Contract: Web3Contract;
+    let web3Contract: ERC1155PresetMinterPauser;
     let address: string;
 
     before(async () => {
@@ -37,12 +37,12 @@ describe(`${name}/hooks/useERC1155.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(ERC1155PresetMinterPauser.abi as any)
+        web3Contract = (await new web3.eth.Contract(ERC1155PresetMinterPauserArtifact.abi as any)
             .deploy({
                 arguments: ['http://example.com/{id}'],
-                data: ERC1155PresetMinterPauser.bytecode,
+                data: ERC1155PresetMinterPauserArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 4000000, gasPrice: '875000000' });
+            .send({ from: accounts[0], gas: 4000000, gasPrice: '875000000' })) as unknown as ERC1155PresetMinterPauser;
         address = web3Contract.options.address;
 
         await web3Contract.methods
@@ -70,7 +70,7 @@ describe(`${name}/hooks/useERC1155.test.tsx`, () => {
             const value = result.current;
             //assert.equal(value.totalSupply, 1, 'totalSupply');
             assert.equal(value.uri, 'http://example.com/0', 'uri');
-            assert.equal(value.balanceOf, 1, 'balanceOf');
+            assert.equal(value.balanceOf, '1', 'balanceOf');
 
             assert.deepEqual(value.TransferFrom, [], 'TransferFrom');
             assert.deepEqual(value.TransferTo, [], 'TransferTo');
@@ -166,7 +166,7 @@ describe(`${name}/hooks/useERC1155.test.tsx`, () => {
                 await waitForNextUpdate(); //balanceOf gets updated by detecting new transaction
 
                 const value = result.current;
-                assert.equal(value.balanceOf, 2, 'balanceOf'); //updated balance
+                assert.equal(value.balanceOf, '2', 'balanceOf'); //updated balance
 
                 assert.equal(result.all.length, 5, 'result.all.length');
                 //No additional re-renders frm background tasks
@@ -199,7 +199,7 @@ describe(`${name}/hooks/useERC1155.test.tsx`, () => {
                 await waitForNextUpdate();
 
                 const value = result.current;
-                assert.equal(value.balanceOf, 2, 'balanceOf'); //updated balance
+                assert.equal(value.balanceOf, '2', 'balanceOf'); //updated balance
                 assert.equal(result.all.length, 5, 'result.all.length');
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -237,7 +237,7 @@ describe(`${name}/hooks/useERC1155.test.tsx`, () => {
                 await waitForNextUpdate();
 
                 const value = result.current;
-                assert.equal(value.balanceOf, 2, 'balanceOf'); //updated balance
+                assert.equal(value.balanceOf, '2', 'balanceOf'); //updated balance
                 assert.equal(result.all.length, 6, 'result.all.length');
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');

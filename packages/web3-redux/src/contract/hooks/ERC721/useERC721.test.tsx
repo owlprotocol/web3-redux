@@ -2,7 +2,6 @@ import { assert } from 'chai';
 // eslint-disable-next-line prettier/prettier
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import axios from 'axios';
 import * as moxios from 'moxios';
@@ -13,14 +12,15 @@ import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
 import { networkId } from '../../../test/data.js';
 import { NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../../test/ipfs.js';
 
-import { ERC721PresetMinterPauserAutoId } from '../../../abis/index.js';
-
 import { createStore, StoreType } from '../../../store.js';
 import ConfigCRUD from '../../../config/crud.js';
 import ContractEventCRUD from '../../../contractevent/crud.js';
 import BlockCRUD from '../../../block/crud.js';
 import TransactionCRUD from '../../../transaction/crud.js';
 import NetworkCRUD from '../../../network/crud.js';
+
+import { ERC721PresetMinterPauserAutoId } from '../../../typechain/ERC721PresetMinterPauserAutoId.js';
+import ERC721PresetMinterPauserAutoIdArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
 
 describe('contract/hooks/useERC721.test.tsx', () => {
     jsdom({ url: 'http://localhost' });
@@ -30,7 +30,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
 
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
-    let web3Contract: Web3Contract;
+    let web3Contract: ERC721PresetMinterPauserAutoId;
     let address: string;
 
     before(async () => {
@@ -49,12 +49,16 @@ describe('contract/hooks/useERC721.test.tsx', () => {
         ({ store } = createStore());
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
-        web3Contract = await new web3.eth.Contract(cloneDeep(ERC721PresetMinterPauserAutoId.abi) as any)
+        web3Contract = (await new web3.eth.Contract(cloneDeep(ERC721PresetMinterPauserAutoIdArtifact.abi) as any)
             .deploy({
                 arguments: ['Test NFT', 'TEST', `http://localhost/${NFT_COLLECTION_QMHASH}/`],
-                data: ERC721PresetMinterPauserAutoId.bytecode,
+                data: ERC721PresetMinterPauserAutoIdArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
+            .send({
+                from: accounts[0],
+                gas: 3000000,
+                gasPrice: '875000000',
+            })) as unknown as ERC721PresetMinterPauserAutoId;
         address = web3Contract.options.address;
         await web3Contract.methods.mint(accounts[0]).send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
     });
@@ -294,12 +298,16 @@ describe('contract/hooks/useERC721.test.tsx', () => {
         });
         it('IPFS metadata', async () => {
             //Contract setup
-            web3Contract = await new web3.eth.Contract(ERC721PresetMinterPauserAutoId.abi as any)
+            web3Contract = (await new web3.eth.Contract(ERC721PresetMinterPauserAutoIdArtifact.abi as any)
                 .deploy({
                     arguments: ['Test NFT', 'TEST', `ipfs://${NFT_COLLECTION_QMHASH}/`],
-                    data: ERC721PresetMinterPauserAutoId.bytecode,
+                    data: ERC721PresetMinterPauserAutoIdArtifact.bytecode,
                 })
-                .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
+                .send({
+                    from: accounts[0],
+                    gas: 3000000,
+                    gasPrice: '875000000',
+                })) as unknown as ERC721PresetMinterPauserAutoId;
             address = web3Contract.options.address;
             await web3Contract.methods
                 .mint(accounts[0])

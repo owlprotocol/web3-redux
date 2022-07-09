@@ -4,19 +4,20 @@ import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import jsdom from 'mocha-jsdom';
-import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
+import useERC165 from './useERC165.js';
+import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
 
-import { ERC165 } from '../../abis/index.js';
+import { name } from '../../common.js';
+import { networkId } from '../../../test/data.js';
+import { createStore, StoreType } from '../../../store.js';
 
-import { name } from '../common.js';
-import { networkId } from '../../test/data.js';
-import { createStore, StoreType } from '../../store.js';
+import NetworkCRUD from '../../../network/crud.js';
+import ContractCRUD from '../../crud.js';
 
-import { useSupportsInterface } from '../hooks/useSupportsInterface.js';
-import NetworkCRUD from '../../network/crud.js';
-import ContractCRUD from '../crud.js';
+import { ERC165 } from '../../../typechain/ERC165.js';
+import ERC165Artifact from '../../../artifacts/@openzeppelin/contracts/utils/introspection/ERC165.sol/ERC165.json';
 
-describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
+describe(`${name}/hooks/useERC165.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
@@ -24,7 +25,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
 
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
-    let web3Contract: Web3Contract;
+    let web3Contract: ERC165;
     let address: string;
 
     before(async () => {
@@ -36,11 +37,11 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(ERC165.abi as any)
+        web3Contract = (await new web3.eth.Contract(ERC165Artifact.abi as any)
             .deploy({
-                data: ERC165.bytecode,
+                data: ERC165Artifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+            .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' })) as unknown as ERC165;
         address = web3Contract.options.address;
 
         ({ store } = createStore());
@@ -49,20 +50,17 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
             ContractCRUD.actions.create({
                 networkId,
                 address,
-                abi: ERC165.abi as any,
+                abi: ERC165Artifact.abi as any,
             }),
         );
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
-    describe('useSupportsInterface()', async () => {
+    describe('useERC165()', async () => {
         it('supportsInterface(): false', async () => {
-            const { result, waitForNextUpdate } = renderHook(
-                () => useSupportsInterface(networkId, address, '0x00000000'),
-                {
-                    wrapper,
-                },
-            );
+            const { result, waitForNextUpdate } = renderHook(() => useERC165(networkId, address, '0x00000000'), {
+                wrapper,
+            });
 
             assert.equal(result.all.length, 1, 'result.all.length');
             await waitForNextUpdate();
@@ -75,12 +73,9 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
         });
 
         it('supportsInterface(): true', async () => {
-            const { result, waitForNextUpdate } = renderHook(
-                () => useSupportsInterface(networkId, address, '0x01ffc9a7'),
-                {
-                    wrapper,
-                },
-            );
+            const { result, waitForNextUpdate } = renderHook(() => useERC165(networkId, address, '0x01ffc9a7'), {
+                wrapper,
+            });
 
             assert.equal(result.all.length, 1, 'result.all.length');
             await waitForNextUpdate();

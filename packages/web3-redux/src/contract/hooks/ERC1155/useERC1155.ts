@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
 import invariant from 'tiny-invariant';
+import useERC1155TransferSingle from './useERC1155TransferSingle.js';
+import useERC1155BalanceOf from './useERC1155BalanceOf.js';
+import useERC1155TokenURI from './useERC1155TokenURI.js';
 import { useContractWithAbi } from '../useContractWithAbi.js';
 import { useContractCall } from '../useContractCall.js';
 import { useEvents, UseEventsOptions } from '../useEvents.js';
 import { isAddress } from '../../../utils/web3-utils/index.js';
-import { IERC1155MetadataURI } from '../../../typechain/IERC1155MetadataURI.js';
+import { IERC1155MetadataURI, TransferSingle } from '../../../typechain/IERC1155MetadataURI.js';
+import IERC1155MetadataURIArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI.json';
 
 import { GenericSync } from '../../../sync/model/index.js';
 import { createEventSync } from '../../../sync/model/EventSync.js';
@@ -29,7 +33,7 @@ export function useERC1155(
     },
 ) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC1155MetadataURI.abi as any);
+    useContractWithAbi(networkId, address, IERC1155MetadataURIArtifact.abi as any);
     if (address) invariant(isAddress(address), `${address} invalid contract address!`);
     if (balanceOfAddress) invariant(isAddress(balanceOfAddress), `${balanceOfAddress} invalid balanceOf address!`);
 
@@ -49,27 +53,25 @@ export function useERC1155(
 
     //Static values
     //const totalSupply = useContractCall(networkId, address, 'totalSupply', [balanceOfTokenId], { sync: totalSupplySync });
-    const [uri] = useContractCall(networkId, address, 'uri', [balanceOfTokenId]) as [string | undefined, any];
+    const [uri] = useERC1155TokenURI(networkId, address, [balanceOfTokenId]);
     const uriParsed = uri && balanceOfTokenId ? uri.replace('{id}', balanceOfTokenId) : undefined;
     const [metadata, { contentId }] = useURI(sync?.metadata ? uriParsed : undefined);
 
     //if balanceOf is 'Transfer' we disable hook sync and dispatch our own custom solution
-    const [balanceOf] = useContractCall(networkId, address, 'balanceOf', [balanceOfAddress, balanceOfTokenId], {
+    const [balanceOf] = useERC1155BalanceOf(networkId, address, [balanceOfAddress, balanceOfTokenId], {
         sync: balanceOfSync,
     });
 
     //Events
-    const TransferFrom = useEvents(
+    const TransferFrom = useERC1155TransferSingle(
         networkId,
         address,
-        'TransferSingle',
         { from: balanceOfAddress, id: balanceOfTokenId },
         TransferEventsOptions,
     );
-    const TransferTo = useEvents(
+    const TransferTo = useERC1155TransferSingle(
         networkId,
         address,
-        'TransferSingle',
         { to: balanceOfAddress, id: balanceOfTokenId },
         TransferEventsOptions,
     );

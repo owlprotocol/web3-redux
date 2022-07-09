@@ -6,17 +6,18 @@ import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import jsdom from 'mocha-jsdom';
 import { useERC20 } from './useERC20.js';
-import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
+import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
 
-import { ERC20PresetMinterPauser } from '../../abis/index.js';
+import { name } from '../../common.js';
+import { ADDRESS_0, networkId } from '../../../test/data.js';
+import { createStore, StoreType } from '../../../store.js';
+import ContractEventCRUD from '../../../contractevent/crud.js';
+import BlockCRUD from '../../../block/crud.js';
+import TransactionCRUD from '../../../transaction/crud.js';
+import NetworkCRUD from '../../../network/crud.js';
 
-import { name } from '../common.js';
-import { ADDRESS_0, networkId } from '../../test/data.js';
-import { createStore, StoreType } from '../../store.js';
-import ContractEventCRUD from '../../contractevent/crud.js';
-import BlockCRUD from '../../block/crud.js';
-import TransactionCRUD from '../../transaction/crud.js';
-import NetworkCRUD from '../../network/crud.js';
+import { ERC20PresetMinterPauser } from '../../../typechain/ERC20PresetMinterPauser.js';
+import ERC20PresetMinterPauserArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
 
 describe(`${name}/hooks/useERC20.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -26,7 +27,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
 
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
-    let web3Contract: Web3Contract;
+    let web3Contract: ERC20PresetMinterPauser;
     let address: string;
 
     before(async () => {
@@ -37,12 +38,12 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(ERC20PresetMinterPauser.abi as any)
+        web3Contract = (await new web3.eth.Contract(ERC20PresetMinterPauserArtifact.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: ERC20PresetMinterPauser.bytecode,
+                data: ERC20PresetMinterPauserArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
+            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' })) as unknown as ERC20PresetMinterPauser;
         address = web3Contract.options.address;
 
         await web3Contract.methods
@@ -72,9 +73,9 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
             const value = result.current;
             assert.equal(value.name, 'Test Token', 'name');
             assert.equal(value.symbol, 'TEST', 'symbol');
-            assert.equal(value.decimals, 18, 'decimals');
-            assert.equal(value.totalSupply, 1, 'totalSupply');
-            assert.equal(value.balanceOf, 1, 'balanceOf');
+            assert.equal(value.decimals, '18', 'decimals');
+            assert.equal(value.totalSupply, '1', 'totalSupply');
+            assert.equal(value.balanceOf, '1', 'balanceOf');
 
             assert.deepEqual(value.TransferFrom, [], 'TransferFrom');
             assert.deepEqual(value.TransferTo, [], 'TransferTo');
@@ -181,7 +182,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                 await waitForNextUpdate(); //balanceOf gets updated by detecting new transaction
 
                 const value = result.current;
-                assert.equal(value.balanceOf, 2, 'balanceOf'); //updated balance
+                assert.equal(value.balanceOf, '2', 'balanceOf'); //updated balance
 
                 assert.equal(result.all.length, 8, 'result.all.length');
                 //No additional re-renders frm background tasks
@@ -217,7 +218,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                 await waitForNextUpdate();
 
                 const value = result.current;
-                assert.equal(value.balanceOf, 2, 'balanceOf'); //updated balance
+                assert.equal(value.balanceOf, '2', 'balanceOf'); //updated balance
                 assert.equal(result.all.length, 8, 'result.all.length');
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -258,7 +259,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
                 await waitForNextUpdate();
 
                 const value = result.current;
-                assert.equal(value.balanceOf, 2, 'balanceOf'); //updated balance
+                assert.equal(value.balanceOf, '2', 'balanceOf'); //updated balance
                 assert.equal(result.all.length, 9, 'result.all.length');
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');

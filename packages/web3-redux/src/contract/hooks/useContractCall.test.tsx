@@ -40,7 +40,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

@@ -65,7 +65,7 @@ describe(`${name}/sagas/fetch.ts`, () => {
         let store: StoreType;
 
         beforeEach(async () => {
-            ({ store } = createStore());
+            store = createStore();
             store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         });
 
@@ -110,7 +110,7 @@ describe(`${name}.fetch.rpccalls`, () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 

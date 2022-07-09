@@ -19,7 +19,7 @@ describe(`${name}/hooks/useContractWithAbi.test.tsx`, () => {
     let wrapper: any;
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

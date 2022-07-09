@@ -53,7 +53,7 @@ describe(`${name}.sagas.callBatched`, () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[]).deploy({

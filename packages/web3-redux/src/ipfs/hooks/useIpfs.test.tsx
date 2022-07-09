@@ -22,7 +22,7 @@ describe('ipfs/hooks/useIpfs.test.tsx', () => {
     after(() => moxios.uninstall(axios));
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(ConfigCRUD.actions.update({ id: '0' }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });

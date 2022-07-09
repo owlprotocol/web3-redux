@@ -26,7 +26,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
     });
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(BlockCRUD.actions.create(item));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });

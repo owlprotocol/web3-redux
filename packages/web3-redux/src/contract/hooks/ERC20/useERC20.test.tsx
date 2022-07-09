@@ -50,7 +50,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
             .mint(accounts[0], 1)
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });

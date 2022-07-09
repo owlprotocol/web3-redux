@@ -15,7 +15,7 @@ describe(`${name}/hooks/useNetworkId.test.tsx`, () => {
     let wrapper: any;
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

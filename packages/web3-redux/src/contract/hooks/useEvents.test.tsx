@@ -44,7 +44,7 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
             .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address;
 
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(
             ContractCRUD.actions.create({

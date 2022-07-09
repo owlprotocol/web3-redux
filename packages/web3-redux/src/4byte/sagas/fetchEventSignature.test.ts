@@ -68,7 +68,7 @@ describe('4byte/sagas/fetchEventSignature.test.ts', () => {
         let store: StoreType;
 
         beforeEach(() => {
-            ({ store } = createStore());
+            store = createStore();
             store.dispatch(ConfigCRUD.actions.update({ id: '0', _4byteClient: client }));
         });
 

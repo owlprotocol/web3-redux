@@ -33,7 +33,7 @@ describe(`${name}.integration`, () => {
     });
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(ContractCRUD.actions.create(item));
     });

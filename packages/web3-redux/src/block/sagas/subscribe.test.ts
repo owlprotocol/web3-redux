@@ -25,7 +25,7 @@ describe(`${name}.subscribe`, () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
@@ -152,7 +152,7 @@ describe(`${name}.subscribe.rpccalls`, () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 

@@ -73,7 +73,6 @@
     "js-base64": "^3.7.2",
     "lodash": "^4.17.21",
     "multiformats": "^9.6.5",
-    "re-reselect": "^4.0.0",
     "redux": "4.1.2",
     "redux-orm": "^0.16.2",
     "redux-saga": "^1.1.3",

@@ -31,7 +31,7 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
     });
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;

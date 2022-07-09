@@ -26,7 +26,7 @@ describe('ethcall.sagas', () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 

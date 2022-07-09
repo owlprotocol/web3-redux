@@ -32,7 +32,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
     });
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(
             NetworkCRUD.actions.create({
                 networkId,

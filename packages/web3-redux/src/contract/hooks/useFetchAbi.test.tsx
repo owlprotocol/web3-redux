@@ -31,7 +31,7 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
     });
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(
             NetworkCRUD.actions.create({
                 networkId,

@@ -27,7 +27,7 @@ describe('contract/sagas/fetchAbi.test.ts', () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(
             NetworkCRUD.actions.create({
                 networkId,

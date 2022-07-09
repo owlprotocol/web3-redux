@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Action, combineReducers } from 'redux';
+import { Action, Reducer, combineReducers } from 'redux';
 import { REDUX_ROOT } from './common.js';
 import ConfigCRUD from './config/crud.js';
 import ContractCRUD from './contract/crud.js';
 import NetworkCRUD from './network/crud.js';
 import { getOrm, initializeState } from './orm.js';
 
-export type Reducer = (state: any, action: any) => any;
-
-export const reducerWeb3ReduxWithOrm = (state: any, action: Action) => {
+export const reducerWithOrm: Reducer = (state: any, action: Action) => {
     const orm = getOrm();
     const sess = orm.session(state || initializeState(orm));
 
@@ -25,5 +23,5 @@ export const createRootReducer = (reducerWeb3Redux: Reducer) => {
     });
 };
 
-export const rootReducer = createRootReducer(reducerWeb3ReduxWithOrm); //Default reducer has no persist
+export const rootReducer = createRootReducer(reducerWithOrm);
 export default rootReducer;

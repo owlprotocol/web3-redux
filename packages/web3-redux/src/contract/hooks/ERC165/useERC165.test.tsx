@@ -44,7 +44,7 @@ describe(`${name}/hooks/useERC165.test.tsx`, () => {
             .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' })) as unknown as ERC165;
         address = web3Contract.options.address;
 
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(
             ContractCRUD.actions.create({

@@ -2,7 +2,6 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { createStore, StoreType } from '../../store.js';
 import { network1, contract1, contract1Id } from '../../test/data.js';
-import { Network, Contract } from '../../index.js';
 import NetworkCRUD from '../crud.js';
 import ContractCRUD from '../../contract/crud.js';
 
@@ -13,7 +12,7 @@ describe('onNetworkUpdate', () => {
     const web3Sender = new Web3('http://localhost:8545');
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
     });
 
     it('NetworkCRUD.actions.create', () => {

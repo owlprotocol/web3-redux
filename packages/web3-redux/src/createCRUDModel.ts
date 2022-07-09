@@ -39,7 +39,7 @@ export function isDefinedRecord<T extends Record<string, any> = Record<string, a
  * @param encode Encode an hydrated object to be inserted stripping out objects.
  * @returns
  */
-function createCRUDModel<
+export function createCRUDModel<
     U extends string,
     T_ID extends Record<string, any> = Record<string, any>,
     T_Encoded extends T_ID = T_ID,

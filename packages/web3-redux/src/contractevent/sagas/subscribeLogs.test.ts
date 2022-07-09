@@ -40,7 +40,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' })) as unknown as ERC20PresetMinterPauser;
         address = web3Contract.options.address;
 
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 

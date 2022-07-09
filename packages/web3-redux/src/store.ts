@@ -20,7 +20,6 @@ interface CreateStoreOptions {
 /** @internal */
 export const createStore = (options?: CreateStoreOptions) => {
     const { middleware, rootSaga } = options ?? {};
-    const reducer = rootReducer;
 
     //Enable redux-devtools support, tracing
     const reduxDevToolsExists = isClient() && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -29,16 +28,16 @@ export const createStore = (options?: CreateStoreOptions) => {
         : compose;
     const sagaMiddleware = createSagaMiddleware();
     const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
-    const store = createReduxStore(reducer, composeEnhancers(rootMiddleware));
 
+    const store = createReduxStore(rootReducer, composeEnhancers(rootMiddleware));
     sagaMiddleware.run(rootSaga ?? defaultRootSaga);
 
-    return { store };
+    return store;
 };
 
-export type StoreType = ReturnType<typeof createStore>['store'];
+export type StoreType = ReturnType<typeof createStore>;
 export type DispatchType = StoreType['dispatch'];
 
-const { store } = createStore();
+const store = createStore();
 export { store };
 export default store;

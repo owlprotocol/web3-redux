@@ -3,7 +3,7 @@ import { coder } from '../../utils/web3-eth-abi/index.js';
 import { filter, keyBy, omit } from '../../utils/lodash/index.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { NetworkWithObjects } from '../../network/model/interface.js';
-import { toReduxOrmId } from '../../createCRUDModel.js';
+import toReduxOrmId from '../../utils/toReduxORMId.js';
 
 /**
  * Contract Id object.

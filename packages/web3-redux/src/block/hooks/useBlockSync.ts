@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useEffect, useCallback } from 'react';
 import * as BlockActions from '../actions/index.js';
-import BlockCRUD from '../index.js';
+import BlockCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
 
 /**

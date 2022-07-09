@@ -1,5 +1,5 @@
 import { validateId } from './interface.js';
-import { toReduxOrmId } from '../../createCRUDModel.js';
+import toReduxOrmId from '../../utils/toReduxORMId.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 export interface CallArgsHash<P extends any[] = any[]> {

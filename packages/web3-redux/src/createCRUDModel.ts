@@ -10,22 +10,8 @@ import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
 import isStrings from './utils/isStrings.js';
-
-/* Compound indices are joined with separator */
-const SEPARATOR = '-';
-export function toReduxOrmId(id: string | IndexableTypeArray) {
-    if (typeof id === 'string') return id;
-    return id.join(SEPARATOR);
-}
-
-export function isDefinedRecord<T extends Record<string, any> = Record<string, any>>(t: Partial<T>): t is T {
-    //Compound index
-    if (Object.values(t).includes(undefined)) {
-        //Missing index key, return undefined
-        return false;
-    }
-    return true;
-}
+import toReduxOrmId, { SEPARATOR } from './utils/toReduxORMId.js';
+import isDefinedRecord from './utils/isDefinedRecord.js';
 
 /**
  *

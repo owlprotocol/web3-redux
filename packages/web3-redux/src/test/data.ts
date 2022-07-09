@@ -10,7 +10,7 @@ import ContractEventCRUD from '../contractevent/crud.js';
 import BlockCRUD from '../block/crud.js';
 import TransactionCRUD from '../transaction/crud.js';
 import EthCallCRUD from '../ethcall/crud.js';
-import { toReduxOrmId } from '../createCRUDModel.js';
+import toReduxOrmId from '../utils/toReduxORMId.js';
 
 import IERC20 from '../artifacts/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
 import IERC721 from '../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';

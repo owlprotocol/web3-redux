@@ -3,7 +3,7 @@ import { getNonce } from './getNonce.js';
 import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
 import { ContractId } from '../model/interface.js';
 import ContractCRUD from '../crud.js';
-import { toReduxOrmId } from '../../createCRUDModel.js';
+import toReduxOrmId from '../../utils/toReduxORMId.js';
 import SyncCRUD from '../../sync/crud.js';
 
 /** @internal */

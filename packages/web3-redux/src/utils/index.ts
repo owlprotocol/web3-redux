@@ -10,3 +10,5 @@ export { getInterfaceIdentifier } from './getInterfaceIdentifier.js';
 export { isAddressGuard } from './isAddressGuard.js';
 export { isCID } from './isCID.js';
 export { isCIDGuard } from './isCIDGuard.js';
+export * from './toReduxORMId.js';
+export * from './isDefinedRecord.js';

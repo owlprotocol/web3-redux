@@ -9,15 +9,15 @@ import { getWeb3Provider } from '../../test/index.js';
 
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
-
 import { validateContractEvent } from '../../contractevent/index.js';
 
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 
-
 import { useEvents } from '../hooks/useEvents.js';
+import ContractCRUD from '../crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}/hooks/useEvents.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -48,7 +48,7 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
         ({ store } = createStore());
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(
-            createAction({
+            ContractCRUD.actions.create({
                 networkId,
                 address,
                 abi: cloneDeep(BlockNumberArtifact.abi) as any,

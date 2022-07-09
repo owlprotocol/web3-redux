@@ -18,6 +18,8 @@ import { call as callAction } from '../actions/index.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
+import getContractCall from '../db/getContractCall.js';
+import getEthCall from '../db/getEthCall.js';
 
 describe(`${name}/sagas/call.ts`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -139,10 +141,9 @@ describe(`${name}/sagas/call.ts`, () => {
                 await sleep(300);
 
                 //Call an invalid function
-                const ethCallId = selectEthCallId(store.getState(), { networkId, address }, 'revertTx');
-                const ethCall = EthCallCRUD.selectors.selectByIdSingle(store.getState(), ethCallId)!;
-                const value = ethCall.returnValue;
-                const error = ethCall.error;
+                const ethCall = await getEthCall(store.getState(), networkId, address, 'revertTx');
+                const value = ethCall?.returnValue;
+                const error = ethCall?.error;
 
                 assert.isUndefined(value, 'returnValue');
                 assert.isDefined(error, 'error');
@@ -171,7 +172,7 @@ describe(`${name}/sagas/call.ts`, () => {
                 await sleep(300);
 
                 //Selector
-                const value = selectContractCall(store.getState(), { networkId, address }, 'getValue');
+                const value = await getContractCall(store.getState(), networkId, address, 'getValue');
 
                 assert.equal(value, 42, 'getValue');
                 assert.strictEqual(value, '42', 'getValue');

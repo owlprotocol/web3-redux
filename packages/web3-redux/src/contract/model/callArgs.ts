@@ -1,4 +1,5 @@
-import { getId } from './interface.js';
+import { validateId } from './interface.js';
+import { toReduxOrmId } from '../../createCRUDModel.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 export interface CallArgsHash<P extends any[] = any[]> {
@@ -32,7 +33,7 @@ export function callHash(
     method: string | undefined,
     callArgs?: CallArgsHash,
 ): string {
-    const contractHash = getId({ networkId, address });
+    const contractHash = toReduxOrmId(validateId({ networkId, address }));
     const callArgsId = callArgsHash(callArgs);
 
     const idArgs = [contractHash, method, callArgsId];

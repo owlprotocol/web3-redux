@@ -16,6 +16,11 @@ import { NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../test/ipfs.js';
 import { ERC721PresetMinterPauserAutoId } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
+import ConfigCRUD from '../../config/crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
+import BlockCRUD from '../../block/crud.js';
+import TransactionCRUD from '../../transaction/crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe('contract/hooks/useERC721.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

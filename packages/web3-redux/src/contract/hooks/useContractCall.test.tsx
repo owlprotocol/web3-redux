@@ -8,19 +8,18 @@ import { cloneDeep } from '../../utils/lodash/index.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
-
-
-
-
-
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 
-
 import { useContractCall } from '../hooks/useContractCall.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
 import { ZERO_ADDRESS } from '../../utils/index.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
+import BlockCRUD from '../../block/crud.js';
+import TransactionCRUD from '../../transaction/crud.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -136,7 +135,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
         it('Contract {id} has no web3 contract', async () => {
             store.dispatch(NetworkCRUD.actions.create({ networkId }));
             store.dispatch(
-                createAction({
+                ContractCRUD.actions.create({
                     networkId,
                     address: ZERO_ADDRESS,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,
@@ -172,7 +171,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address;
             store.dispatch(
-                createAction({
+                ContractCRUD.actions.create({
                     networkId,
                     address,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,
@@ -212,7 +211,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address;
             store.dispatch(
-                createAction({
+                ContractCRUD.actions.create({
                     networkId,
                     address,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,

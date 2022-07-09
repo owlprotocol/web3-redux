@@ -7,13 +7,12 @@ import { useGetNonce } from './useGetNonce.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { networkId, ADDRESS_0 } from '../../test/data.js';
 
-
-
-
-
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
-
+import BlockCRUD from '../../block/crud.js';
+import TransactionCRUD from '../../transaction/crud.js';
+import ContractCRUD from '../crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

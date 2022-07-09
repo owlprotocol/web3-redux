@@ -12,8 +12,8 @@ import { networkId } from '../../test/data.js';
 
 import { ERC1155PresetMinterPauser } from '../../abis/index.js';
 
-
 import { createStore, StoreType } from '../../store.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe('contract/hooks/useERC1155TokenIds.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

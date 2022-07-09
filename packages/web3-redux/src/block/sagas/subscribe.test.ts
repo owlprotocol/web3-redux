@@ -9,6 +9,8 @@ import { BlockHeader, BlockTransaction, validate } from '../model/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { subscribe as subscribeAction, unsubscribe as unsubscribeAction } from '../actions/index.js';
+import BlockCRUD from '../crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const FDBFactory = require('fake-indexeddb/lib/FDBFactory');
@@ -46,7 +48,7 @@ describe(`${name}.subscribe`, () => {
             //Block ignored
             await mineBlock(web3);
 
-            const blocks = selectByIdMany(store.getState());
+            const blocks = await BlockCRUD.db.all();
             assert.equal(blocks.length, 2, 'blocks.length != expected');
             assert.deepEqual(blocks, expectedBlocks);
         });
@@ -71,18 +73,14 @@ describe(`${name}.subscribe`, () => {
             await mineBlock(web3);
 
             const promiseResults = await Promise.all(expectedBlocksPromise);
-            const expectedBlocks = promiseResults.map((b) =>
-                validate({ ...b, networkId, transactions: [] }),
-            ) as BlockTransaction[];
+            const expectedBlocks = promiseResults.map((b) => validate({ ...b, networkId })) as BlockTransaction[];
 
-            const blocks = selectByIdMany(store.getState()).map((b) => {
-                return { ...b, transactions: [] };
-            });
+            const blocks = await BlockCRUD.db.all();
             assert.equal(blocks.length, 2, 'blocks.length != expected');
             assert.deepEqual(blocks, expectedBlocks as any);
 
             const expectedBlockTransactions = promiseResults.map((b) => validate({ ...b, networkId }));
-            const blockTransactions = selectByIdMany(store.getState());
+            const blockTransactions = await BlockCRUD.db.all();
             assert.deepEqual(blockTransactions, expectedBlockTransactions, 'Block with transactions');
         });
 
@@ -114,7 +112,7 @@ describe(`${name}.subscribe`, () => {
             store.dispatch(unsubscribeAction(network1));
             subscription1.unsubscribe();
 
-            let blocks = selectByIdMany(store.getState());
+            let blocks = await BlockCRUD.db.all();
             assert.equal(blocks.length, 2, 'blocks.length != expected');
             assert.deepEqual(blocks, [...expectedBlocks1, ...expectedBlocks2]);
 
@@ -124,7 +122,7 @@ describe(`${name}.subscribe`, () => {
             store.dispatch(unsubscribeAction(network2));
             subscription2.unsubscribe();
 
-            blocks = selectByIdMany(store.getState());
+            blocks = await BlockCRUD.db.all();
             assert.equal(blocks.length, 3, 'blocks.length != expected');
             assert.deepEqual(blocks, [...expectedBlocks1, ...expectedBlocks2]);
         });

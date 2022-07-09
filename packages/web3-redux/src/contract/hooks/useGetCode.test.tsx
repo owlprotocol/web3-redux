@@ -6,12 +6,11 @@ import jsdom from 'mocha-jsdom';
 import { useGetCode } from './useGetCode.js';
 import { getWeb3Provider } from '../../test/index.js';
 
-
-
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}/hooks/useGetCode.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

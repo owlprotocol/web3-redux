@@ -8,14 +8,13 @@ import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
 import { ERC165 } from '../../abis/index.js';
 
-
-
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 
-
 import { useSupportsInterface } from '../hooks/useSupportsInterface.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
@@ -47,7 +46,7 @@ describe(`${name}/hooks/useSupportsInterface.test.tsx`, () => {
         ({ store } = createStore());
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
         store.dispatch(
-            createAction({
+            ContractCRUD.actions.create({
                 networkId,
                 address,
                 abi: ERC165.abi as any,

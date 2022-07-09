@@ -6,12 +6,12 @@ import { Provider } from 'react-redux';
 import jsdom from 'mocha-jsdom';
 import { useFetchTransactions } from './useFetchTransactions.js';
 
-
 import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 
-
 import { expectThrowsAsync } from '../../test/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe('contract/hooks/useFetchTransactions.test.tsx', () => {
     jsdom({ url: 'http://localhost' });
@@ -68,7 +68,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
                             {
                                 blockNumber: '1',
                                 hash: '0xffff',
-                                from: ADDRESS_0,
+                                from: address,
                                 to: ADDRESS_1,
                             },
                         ],
@@ -76,7 +76,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
                 });
             });
             await waitForNextUpdate();
-            assert.equal(result.current.length, 1, 'result.current.length');
+            assert.equal(result.current.from.length, 1, 'result.current.length');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });

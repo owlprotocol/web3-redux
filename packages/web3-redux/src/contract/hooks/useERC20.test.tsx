@@ -10,14 +10,13 @@ import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 
 import { ERC20PresetMinterPauser } from '../../abis/index.js';
 
-
-
-
-
-
 import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
+import BlockCRUD from '../../block/crud.js';
+import TransactionCRUD from '../../transaction/crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}/hooks/useERC20.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

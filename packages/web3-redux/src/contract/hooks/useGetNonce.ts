@@ -1,8 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import NetworkCRUD from '../../network/crud.js';
-import { selectByIdSingle as selectNetworkByIdSingle } from '../../network/selectors/index.js';
-import { remove as removeSync } from '../../sync/actions/index.js';
 import SyncCRUD from '../../sync/crud.js';
 import { GenericSync } from '../../sync/model/index.js';
 import { getNonceSynced } from '../actions/index.js';

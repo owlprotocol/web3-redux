@@ -6,10 +6,11 @@ import { renderHook } from '@testing-library/react-hooks';
 import jsdom from 'mocha-jsdom';
 import { useFetchAbi } from './useFetchAbi.js';
 
-
 import { WETH } from '../../abis/index.js';
 import { WETH as WETH_ADDRESS, networkId } from '../../test/data.js';
 import { StoreType, createStore } from '../../store.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe('contract/hooks/useFetchAbi.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

@@ -13,8 +13,8 @@ import { NFT_COLLECTION_QMHASH } from '../../test/ipfs.js';
 
 import { ERC721PresetMinterPauserAutoId } from '../../abis/index.js';
 
-
 import { createStore, StoreType } from '../../store.js';
+import NetworkCRUD from '../../network/crud.js';
 
 describe('contract/hooks/useERC721TokenIds.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

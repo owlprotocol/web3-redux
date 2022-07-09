@@ -7,13 +7,12 @@ import { useGetBalance } from './useGetBalance.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { networkId, ADDRESS_0 } from '../../test/data.js';
 
-
-
-
-
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
-
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
+import TransactionCRUD from '../../transaction/crud.js';
+import BlockCRUD from '../../block/crud.js';
 
 describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

@@ -1,3 +1,7 @@
+export * from './ERC20/index.js';
+export * from './ERC165/index.js';
+export * from './ERC721/index.js';
+export * from './ERC1155/index.js';
 export { useContract, contractHookFactory } from './useContract.js';
 export { useContractWithAbi } from './useContractWithAbi.js';
 export { useContractCall, contractCallHookFactory } from './useContractCall.js';
@@ -8,9 +12,3 @@ export { useFetchTransactions } from './useFetchTransactions.js';
 export { useGetBalance } from './useGetBalance.js';
 export { useGetNonce } from './useGetNonce.js';
 export { useGetCode } from './useGetCode.js';
-export { useERC165, useSupportsInterface } from './useSupportsInterface.js';
-export { useERC20, useToken } from './useERC20.js';
-export { useERC721, useNFT } from './useERC721.js';
-export { useERC1155, useMultiToken } from './useERC1155.js';
-export { useERC721TokenIds } from './useERC721TokenIds.js';
-export { useERC1155TokenIds } from './useERC1155TokenIds.js';

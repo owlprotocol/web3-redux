@@ -1,6 +1,6 @@
-import { useContractWithAbi } from './useContractWithAbi.js';
-import { useContractCall } from './useContractCall.js';
-import { IERC165 } from '../../abis/index.js';
+import useERC165SupportsInterface from './useERC165SupportsInterface.js';
+import { useContractWithAbi } from '../useContractWithAbi.js';
+import IERC165Artifact from '../../../artifacts/@openzeppelin/contracts/utils/introspection/IERC165.sol/IERC165.json';
 
 /**
  * Contract hook for ERC165 interface.
@@ -10,9 +10,9 @@ import { IERC165 } from '../../abis/index.js';
  */
 export function useERC165(networkId: string | undefined, address: string | undefined, interfaceId: string | undefined) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC165.abi as any);
+    useContractWithAbi(networkId, address, IERC165Artifact.abi as any);
 
-    const [value] = useContractCall(networkId, address, 'supportsInterface', [interfaceId], { sync: 'once' });
+    const [value] = useERC165SupportsInterface(networkId, address, [interfaceId]);
     return value;
 }
 

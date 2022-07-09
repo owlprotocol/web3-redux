@@ -8,19 +8,19 @@ import axios from 'axios';
 import * as moxios from 'moxios';
 import jsdom from 'mocha-jsdom';
 import { useERC721 } from './useERC721.js';
-import { cloneDeep } from '../../utils/lodash/index.js';
-import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
-import { networkId } from '../../test/data.js';
-import { NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../test/ipfs.js';
+import { cloneDeep } from '../../../utils/lodash/index.js';
+import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
+import { networkId } from '../../../test/data.js';
+import { NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../../test/ipfs.js';
 
-import { ERC721PresetMinterPauserAutoId } from '../../abis/index.js';
+import { ERC721PresetMinterPauserAutoId } from '../../../abis/index.js';
 
-import { createStore, StoreType } from '../../store.js';
-import ConfigCRUD from '../../config/crud.js';
-import ContractEventCRUD from '../../contractevent/crud.js';
-import BlockCRUD from '../../block/crud.js';
-import TransactionCRUD from '../../transaction/crud.js';
-import NetworkCRUD from '../../network/crud.js';
+import { createStore, StoreType } from '../../../store.js';
+import ConfigCRUD from '../../../config/crud.js';
+import ContractEventCRUD from '../../../contractevent/crud.js';
+import BlockCRUD from '../../../block/crud.js';
+import TransactionCRUD from '../../../transaction/crud.js';
+import NetworkCRUD from '../../../network/crud.js';
 
 describe('contract/hooks/useERC721.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

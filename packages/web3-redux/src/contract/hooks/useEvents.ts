@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { ReturnValues } from '../../contractevent/model/interface.js';
 import { BaseWeb3Contract } from '../model/index.js';
 import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions/index.js';
 import { EventGetPastActionInput } from '../actions/eventGetPast.js';
 import { isAddress } from '../../utils/web3-utils/index.js';
 import ContractCRUD from '../crud.js';
 import ContractEventCRUD from '../../contractevent/crud.js';
+import { ContractEvent } from '../../contractevent/model/index.js';
 
 //Contract Events
 /** @internal */
@@ -25,7 +25,7 @@ export interface UseEventsOptions {
 export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
-    U extends ReturnValues = ReturnValues,
+    U extends Record<string, any> = Record<string, any>,
     >(
         networkId: string | undefined,
         address: string | undefined,
@@ -46,7 +46,7 @@ export function useEvents<
         networkId,
         address: addressChecksum,
         name: eventName as string | undefined,
-    });
+    }) as ContractEvent<U>[] | undefined;
     const filterHash = filter ? JSON.stringify(filter) : '';
 
     const getPastAction = useMemo(() => {

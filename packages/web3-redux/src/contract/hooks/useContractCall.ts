@@ -28,12 +28,16 @@ export interface UseContractCallReturnOptions {
  * Create a contract call and return value.
  * @category Hooks
  */
-export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
-    networkId: string | undefined,
-    address: string | undefined,
-    method: K | undefined,
-    args?: Parameters<T['methods'][K]>,
-    options?: UseContractCallOptions,
+export function useContractCall<
+    T extends BaseWeb3Contract = BaseWeb3Contract,
+    K extends keyof T['methods'] = string,
+    P extends Partial<Parameters<T['methods'][K]>> = any,
+    >(
+        networkId: string | undefined,
+        address: string | undefined,
+        method: K | undefined,
+        args?: P,
+        options?: UseContractCallOptions,
 ): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, UseContractCallReturnOptions] {
     let error: Error | undefined;
     const sync = options?.sync ?? 'ifnull';
@@ -51,7 +55,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
         if (web3ContractMethod) {
             let tx: any;
             if (!args || args.length == 0) tx = web3ContractMethod();
-            else tx = web3ContractMethod(...args);
+            else tx = web3ContractMethod(...(args as any[]));
 
             const data = tx.encodeABI();
             return data;
@@ -77,7 +81,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                     networkId,
                     address,
                     method: method as string,
-                    args,
+                    args: args as any[],
                     from,
                     sync: 'once',
                 });
@@ -86,7 +90,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                     networkId,
                     address,
                     method: method as string,
-                    args,
+                    args: args as any[],
                     from,
                     sync,
                 });
@@ -95,7 +99,7 @@ export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K
                     networkId,
                     address,
                     method: method as string,
-                    args,
+                    args: args as any[],
                     from,
                 });
                 return { callAction, syncAction: undefined };
@@ -135,7 +139,7 @@ export function contractCallHookFactory<
     return (
         networkId: string | undefined,
         address: string | undefined,
-        args?: Parameters<T['methods'][K]>,
+        args?: Partial<Parameters<T['methods'][K]>>,
         options?: UseContractCallOptions,
     ) => {
         return useContractCall<T, K>(networkId, address, method, args, options);

@@ -10,17 +10,12 @@ export interface ContractEventId {
     readonly logIndex: number;
 }
 
-/** @internal */
-export interface ReturnValues {
-    returnValues: any;
-}
-
 /**
  * Contract event log.
  * @see [web3.eth.Contract.events](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html#events)
  * @typeParam T optional type for return values. Defaults to `any` object.
  */
-export interface ContractEvent<T extends ReturnValues = ReturnValues> extends ContractEventId {
+export interface ContractEvent<T extends Record<string, any> = Record<string, any>> extends ContractEventId {
     /** Block number */
     readonly blockNumber?: number;
     /** Address of contract that emitted event */
@@ -31,7 +26,7 @@ export interface ContractEvent<T extends ReturnValues = ReturnValues> extends Co
     readonly name?: string;
     /** Return values of event */
     /** TODO: Index returnValues? */
-    readonly returnValues?: T['returnValues'];
+    readonly returnValues?: T;
 
     /** Raw Log */
     /** Raw non-indexed log data */

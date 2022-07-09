@@ -29,7 +29,7 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 ) {
     const dispatch = useDispatch();
 
-    const contract = ContractCRUD.hooks.useGet({ networkId, address }) as Contract<T> | undefined;
+    const contract = ContractCRUD.hooks.useGet({ networkId, address });
     const contractExists = !!contract;
 
     //Default sync params

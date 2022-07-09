@@ -1,15 +1,16 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { useContractWithAbi } from './useContractWithAbi.js';
-import { useContractCall } from './useContractCall.js';
-import { useEvents, UseEventsOptions } from './useEvents.js';
-import { IERC721Metadata } from '../../abis/index.js';
+import useERC721TokenURI from './useERC721TokenURI.js';
+import useERC721OwnerOf from './useERC721OwnerOf.js';
+import { useContractWithAbi } from '../useContractWithAbi.js';
+import { useContractCall } from '../useContractCall.js';
+import { useEvents, UseEventsOptions } from '../useEvents.js';
+import { IERC721Metadata } from '../../../typechain/IERC721Metadata.js';
+import IERC721MetadataArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
 
-import { GenericSync } from '../../sync/model/index.js';
-import { createEventSync } from '../../sync/model/EventSync.js';
+import { GenericSync } from '../../../sync/model/index.js';
+import { createEventSync } from '../../../sync/model/EventSync.js';
 
-import { useURI } from '../../ipfs/hooks/useURI.js';
-import selectERC721TokenUris from '../selectors/selectERC721TokenUris.js';
+import { useURI } from '../../../ipfs/hooks/useURI.js';
 
 /**
  * Contract hook for ERC721 interface.
@@ -30,7 +31,7 @@ export function useERC721(
     },
 ) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC721Metadata.abi as any);
+    useContractWithAbi(networkId, address, IERC721MetadataArtifact.abi as any);
 
     //Refresh call action will get set by the callSyncedAction() creator, we pass an empty array as an argument
     //We also disable sync if networkId/address undefined to avoid unpredictable behaviour
@@ -42,29 +43,28 @@ export function useERC721(
     const ApprovalEventsOptions = sync?.ApprovalEventsOptions ?? { sync: false, past: false }; //Sync token Approval events, default just reads data
 
     //Static values
-    const [name] = useContractCall(networkId, address, 'name', [], { sync: 'ifnull' });
-    const [symbol] = useContractCall(networkId, address, 'symbol', [], {
-        sync: 'ifnull',
-    });
+    const [name] = useContractCall<IERC721Metadata, 'name'>(networkId, address, 'name');
+    const [symbol] = useContractCall<IERC721Metadata, 'symbol'>(networkId, address, 'symbol');
 
     //if ownerOf is 'Transfer' we disable hook sync and dispatch our own custom solution
-    const [ownerOf] = useContractCall(networkId, address, 'ownerOf', [tokenId], {
+    const [ownerOf] = useERC721OwnerOf(networkId, address, [tokenId], {
         sync: ownerOfSync,
     });
 
-    const tokenURIList = useSelector((state) => selectERC721TokenUris(state, networkId, address, [tokenId!]));
-    const tokenURI = tokenURIList ? tokenURIList[0] : undefined;
-
-    //If tokenURI computable & sync == ifnull, bypass by setting sync to fasle
-    const tokenURISyncIfNull = tokenURI ? false : 'ifnull';
-    useContractCall(networkId, address, 'tokenURI', [tokenId], {
-        sync: tokenURISync === 'ifnull' ? tokenURISyncIfNull : tokenURISync,
-    }) as [string | undefined, any];
+    const [tokenURI] = useERC721TokenURI(networkId, address, [tokenId], {
+        sync: tokenURISync,
+    });
 
     const [metadata, { contentId }] = useURI(sync?.metadata ? tokenURI : undefined);
 
     //Events
-    const Transfer = useEvents(networkId, address, 'Transfer', { tokenId }, TransferEventsOptions);
+    const Transfer = useEvents<IERC721Metadata, 'Transfer'>(
+        networkId,
+        address,
+        'Transfer',
+        { tokenId },
+        TransferEventsOptions,
+    );
     const Approval = useEvents(networkId, address, 'Approval', { tokenId }, ApprovalEventsOptions);
 
     //IPFS

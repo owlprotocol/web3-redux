@@ -11,11 +11,13 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../../contract/crud.js';
 
 import { ERC20PresetMinterPauser } from '../../typechain/ERC20PresetMinterPauser.js';
-import ERC20PresetMinterPauserArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
 import { ERC721PresetMinterPauserAutoId } from '../../typechain/ERC721PresetMinterPauserAutoId.js';
-import ERC721PresetMinterPauserAutoIdArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
 import { ERC1155PresetMinterPauser } from '../../typechain/ERC1155PresetMinterPauser.js';
-import ERC1155PresetMinterPauserArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
+import {
+    ERC20PresetMinterPauserArtifact,
+    ERC721PresetMinterPauserAutoIdArtifact,
+    ERC1155PresetMinterPauserArtifact,
+} from '../../abis/index.js';
 
 describe(`${name}/sagas/getAssets.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store

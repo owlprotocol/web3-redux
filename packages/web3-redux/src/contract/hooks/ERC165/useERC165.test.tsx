@@ -1,7 +1,6 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import jsdom from 'mocha-jsdom';
 import useERC165 from './useERC165.js';
@@ -15,7 +14,7 @@ import NetworkCRUD from '../../../network/crud.js';
 import ContractCRUD from '../../crud.js';
 
 import { ERC165 } from '../../../typechain/ERC165.js';
-import ERC165Artifact from '../../../artifacts/@openzeppelin/contracts/utils/introspection/ERC165.sol/ERC165.json';
+import { ERC165Artifact } from '../../../abis/index.js';
 
 describe(`${name}/hooks/useERC165.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

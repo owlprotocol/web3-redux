@@ -5,7 +5,7 @@ import { useContractWithAbi } from '../useContractWithAbi.js';
 import { useContractCall } from '../useContractCall.js';
 import { useEvents, UseEventsOptions } from '../useEvents.js';
 import { IERC721Metadata } from '../../../typechain/IERC721Metadata.js';
-import IERC721MetadataArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
+import { IERC721MetadataArtifact } from '../../../abis/index.js';
 
 import { GenericSync } from '../../../sync/model/index.js';
 import { createEventSync } from '../../../sync/model/EventSync.js';

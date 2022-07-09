@@ -146,7 +146,9 @@ export function createCRUDModel<
     };
 
     /** Redux ORM Selectors */
-    const select = createSelector(getOrm()[name]);
+    //Only create selectors if orm model defined
+    const ormModel = getOrm()[name]
+    const select = ormModel ? createSelector(getOrm()[name]) : (state: any, id: any) => undefined;
     const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined) => {
         if (!id) return undefined;
         if (typeof id != 'string') {

@@ -1,5 +1,4 @@
 import * as esbuild from 'esbuild';
-import { copy } from 'esbuild-plugin-copy';
 //import alias from 'esbuild-plugin-alias';
 import { NodeResolvePlugin } from '@esbuild-plugins/node-resolve';
 import * as glob from 'glob';
@@ -18,16 +17,6 @@ const excludeNodeModulesPlugin = NodeResolvePlugin({
         }
         return resolved;
     },
-});
-
-const copyStaticFilesPlugin = copy({
-    assets: {
-        from: ['src/abis/**/*.json'],
-        to: ['abis'],
-    },
-    once: true,
-    verbose: false,
-    keepStructure: true,
 });
 
 /*
@@ -53,7 +42,7 @@ const baseConfig = {
     //platform: 'node', //'browser',
     //target: 'es6',
     inject: ['./react-shim.mjs'],
-    plugins: [excludeNodeModulesPlugin, copyStaticFilesPlugin],
+    plugins: [excludeNodeModulesPlugin],
     watch,
 };
 

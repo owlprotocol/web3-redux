@@ -4,11 +4,9 @@ import useERC1155TransferSingle from './useERC1155TransferSingle.js';
 import useERC1155BalanceOf from './useERC1155BalanceOf.js';
 import useERC1155TokenURI from './useERC1155TokenURI.js';
 import { useContractWithAbi } from '../useContractWithAbi.js';
-import { useContractCall } from '../useContractCall.js';
-import { useEvents, UseEventsOptions } from '../useEvents.js';
+import { UseEventsOptions } from '../useEvents.js';
 import { isAddress } from '../../../utils/web3-utils/index.js';
-import { IERC1155MetadataURI, TransferSingle } from '../../../typechain/IERC1155MetadataURI.js';
-import IERC1155MetadataURIArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI.json';
+import { IERC1155MetadataURIArtifact } from '../../../abis/index.js';
 
 import { GenericSync } from '../../../sync/model/index.js';
 import { createEventSync } from '../../../sync/model/EventSync.js';

@@ -10,11 +10,13 @@ import {
 } from './getInterfaceIdentifier.js';
 import { AbiItem } from '../utils/web3-utils/index.js';
 
-import IERC165Artifact from '../artifacts/@openzeppelin/contracts/utils/introspection/IERC165.sol/IERC165.json';
-import IERC20Artifact from '../artifacts/@openzeppelin/contracts/token/ERC20/IERC20.sol/IERC20.json';
-import IERC721Artifact from '../artifacts/@openzeppelin/contracts/token/ERC721/IERC721.sol/IERC721.json';
-import IERC721EnumerableArtifact from '../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol/IERC721Enumerable.json';
-import IERC721MetadataArtifact from '../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
+import {
+    IERC165Artifact,
+    IERC20Artifact,
+    IERC721Artifact,
+    IERC721EnumerableArtifact,
+    IERC721MetadataArtifact,
+} from '../abis/index.js';
 
 describe('getInterfaceIdentifierForAbi', () => {
     it('ERC165', () => {

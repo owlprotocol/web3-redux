@@ -10,7 +10,7 @@ import { createStore, StoreType } from '../../store.js';
 
 import { expectThrowsAsync } from '../../test/index.js';
 
-import IERC20 from '../../artifacts/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
+import { IERC20MetadataArtifact as IERC20 } from '../../abis/index.js';
 
 describe(`${name}/hooks/useContractWithAbi.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

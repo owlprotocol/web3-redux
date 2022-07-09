@@ -112,6 +112,7 @@
     "dexie-react-hooks": "^1.1.1",
     "dotenv": "^10.0.0",
     "esbuild": "^0.14.25",
+    "esbuild-copy-static-files": "^0.1.0",
     "esbuild-plugin-alias": "^0.2.1",
     "esbuild-plugin-babel": "^0.2.3",
     "esbuild-plugin-copy": "^1.1.0",

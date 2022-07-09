@@ -14,7 +14,7 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractEventCRUD from '../crud.js';
 
 import { ERC20PresetMinterPauser } from '../../typechain/ERC20PresetMinterPauser.js';
-import ERC20PresetMinterPauserArtifact from '../../artifacts/@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import { ERC20PresetMinterPauserArtifact } from '../../abis/index.js';
 
 describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store

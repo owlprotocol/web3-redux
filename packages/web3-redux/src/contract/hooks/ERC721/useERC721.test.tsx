@@ -20,7 +20,7 @@ import TransactionCRUD from '../../../transaction/crud.js';
 import NetworkCRUD from '../../../network/crud.js';
 
 import { ERC721PresetMinterPauserAutoId } from '../../../typechain/ERC721PresetMinterPauserAutoId.js';
-import ERC721PresetMinterPauserAutoIdArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
+import { ERC721PresetMinterPauserAutoIdArtifact } from '../../../abis/index.js';
 
 describe('contract/hooks/useERC721.test.tsx', () => {
     jsdom({ url: 'http://localhost' });

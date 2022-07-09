@@ -5,7 +5,7 @@ import { UseEventsOptions } from '../useEvents.js';
 import { useContractWithAbi } from '../useContractWithAbi.js';
 import { useContractCall } from '../useContractCall.js';
 import { IERC20Metadata } from '../../../typechain/IERC20Metadata.js';
-import IERC20MetadataArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
+import { IERC20MetadataArtifact } from '../../../abis/index.js';
 
 import { GenericSync } from '../../../sync/model/index.js';
 import { createEventSync } from '../../../sync/model/EventSync.js';

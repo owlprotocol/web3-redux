@@ -2,7 +2,6 @@ import { assert } from 'chai';
 // eslint-disable-next-line prettier/prettier
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import jsdom from 'mocha-jsdom';
 import { useERC20 } from './useERC20.js';
@@ -17,7 +16,7 @@ import TransactionCRUD from '../../../transaction/crud.js';
 import NetworkCRUD from '../../../network/crud.js';
 
 import { ERC20PresetMinterPauser } from '../../../typechain/ERC20PresetMinterPauser.js';
-import ERC20PresetMinterPauserArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+import { ERC20PresetMinterPauserArtifact } from '../../../abis/index.js';
 
 describe(`${name}/hooks/useERC20.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

@@ -1,6 +1,6 @@
 import useERC165SupportsInterface from './useERC165SupportsInterface.js';
 import { useContractWithAbi } from '../useContractWithAbi.js';
-import IERC165Artifact from '../../../artifacts/@openzeppelin/contracts/utils/introspection/IERC165.sol/IERC165.json';
+import { IERC165Artifact } from '../../../abis/index.js';
 
 /**
  * Contract hook for ERC165 interface.

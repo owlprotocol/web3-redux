@@ -8,9 +8,11 @@ import { GetAssetsAction, GET_ASSETS, getPastLogs as getPastLogsAction } from '.
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../../contract/crud.js';
 
-import IERC20 from '../../artifacts/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
-import IERC721 from '../../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
-import IERC1155 from '../../artifacts/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI.json';
+import {
+    IERC20MetadataArtifact as IERC20,
+    IERC721MetadataArtifact as IERC721,
+    IERC1155MetadataURIArtifact as IERC1155,
+} from '../../abis/index.js';
 
 const GET_ASSETS_ERROR = `${GET_ASSETS}/ERROR`;
 

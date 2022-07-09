@@ -16,7 +16,7 @@ import TransactionCRUD from '../../../transaction/crud.js';
 import NetworkCRUD from '../../../network/crud.js';
 
 import { ERC1155PresetMinterPauser } from '../../../typechain/ERC1155PresetMinterPauser.js';
-import ERC1155PresetMinterPauserArtifact from '../../../artifacts/@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
+import { ERC1155PresetMinterPauserArtifact } from '../../../abis/index.js';
 
 describe(`${name}/hooks/useERC1155.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });

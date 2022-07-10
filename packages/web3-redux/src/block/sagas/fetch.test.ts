@@ -14,17 +14,11 @@ import { fetch as fetchAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import { network1336 } from '../../network/data.js';
 import BlockCRUD from '../crud.js';
-import getDB from '../../db.js';
 
-const db = getDB();
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;
 
 describe(`${name}/sagas/fetch.ts`, () => {
-    afterEach(async () => {
-        await db.clear();
-    });
-
     describe('unit', () => {
         it('new block - by number', async () => {
             const item = { networkId, blockHashOrBlockNumber: 1, returnTransactionObjects: false };

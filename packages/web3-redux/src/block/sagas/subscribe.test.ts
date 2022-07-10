@@ -15,11 +15,9 @@ import { network1336 } from '../../network/data.js';
 
 import BlockCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
-import getDB from '../../db.js';
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;
-const db = getDB();
 
 describe(`${name}/sagas/subscribe.test.ts`, () => {
     let accounts: string[];
@@ -27,10 +25,6 @@ describe(`${name}/sagas/subscribe.test.ts`, () => {
     before(async () => {
         //@ts-ignore
         accounts = await web3.eth.getAccounts();
-    });
-
-    afterEach(async () => {
-        await db.clear();
     });
 
     describe('unit', () => {

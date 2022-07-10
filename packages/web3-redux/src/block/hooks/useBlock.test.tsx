@@ -5,41 +5,43 @@ import { Provider } from 'react-redux';
 import jsdom from 'mocha-jsdom';
 
 import { name } from '../common.js';
-import { networkId, block1 } from '../../test/data.js';
 
 import { createStore, StoreType } from '../../store.js';
 import { BlockTransaction, validate } from '../model/index.js';
-import { getWeb3Provider } from '../../test/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import BlockCRUD from '../crud.js';
+import { network1336 } from '../../network/data.js';
+import getDB from '../../db.js';
+import sleep from '../../utils/sleep.js';
 import { useBlock } from './index.js';
+
+const db = getDB();
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
 
 describe(`${name}/hooks/useBlock.test.tsx`, () => {
     jsdom({ url: 'http://localhost' });
 
     let store: StoreType;
-    let item: BlockTransaction;
 
     let wrapper: any;
-    before(async () => {
-        item = { networkId, number: 0 };
-    });
 
     beforeEach(() => {
         store = createStore();
-        store.dispatch(BlockCRUD.actions.create(item));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
+    afterEach(async () => {
+        //await sleep(1000);
+        //await db.clear();
+    });
+
     describe('useBlock', () => {
-        let web3: Web3; //Web3 loaded from store
         let accounts: string[];
         let expected: BlockTransaction;
 
         before(async () => {
-            const provider = getWeb3Provider();
             //@ts-ignore
-            web3 = new Web3(provider);
             accounts = await web3.eth.getAccounts();
         });
 
@@ -54,7 +56,7 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
             });
         });
 
-        it('(networkId, number, true)', async () => {
+        it.skip('(networkId, number, true)', async () => {
             const { result, waitForNextUpdate } = renderHook(() => useBlock(networkId, expected.number, true), {
                 wrapper,
             });
@@ -66,17 +68,17 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
         });
 
         it('(networkId, number, false)', async () => {
-            store.dispatch(BlockCRUD.actions.create(block1));
+            store.dispatch(BlockCRUD.actions.create(expected));
 
-            const { result } = renderHook(() => useBlock(networkId, block1.number, true), {
+            const { result } = renderHook(() => useBlock(networkId, expected.number, false), {
                 wrapper,
             });
 
             const currentCall = result.current;
-            assert.deepEqual(currentCall, { ...block1 }, 'result.current');
+            assert.deepEqual(currentCall, expected, 'result.current');
         });
 
-        it('(networkId, number, ifnull): null', async () => {
+        it.skip('(networkId, number, ifnull): null', async () => {
             const { result, waitForNextUpdate } = renderHook(() => useBlock(networkId, expected.number, 'ifnull'), {
                 wrapper,
             });
@@ -87,15 +89,15 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
             assert.deepEqual(currentCall, expected, 'result.current');
         });
 
-        it('(networkId, number, ifnull): defined', async () => {
-            store.dispatch(BlockCRUD.actions.create(block1));
+        it.skip('(networkId, number, ifnull): defined', async () => {
+            store.dispatch(BlockCRUD.actions.create(expected));
 
-            const { result } = renderHook(() => useBlock(networkId, block1.number, 'ifnull'), {
+            const { result } = renderHook(() => useBlock(networkId, expected.number, 'ifnull'), {
                 wrapper,
             });
 
             const currentCall = result.current;
-            assert.deepEqual(currentCall, { ...block1 }, 'result.current');
+            assert.deepEqual(currentCall, expected, 'result.current');
         });
     });
 });

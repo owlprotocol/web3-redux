@@ -1,8 +1,9 @@
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import { put, call, fork, take, select } from 'typed-redux-saga';
 import Web3 from 'web3';
-
 import blockFetch from './fetch.js';
+import { create as createError } from '../../error/actions/index.js';
+
 import { BlockHeader } from '../model/BlockHeader.js';
 import { fetch as fetchAction, SUBSCRIBE } from '../actions/index.js';
 import { SubscribeAction } from '../actions/subscribe.js';
@@ -19,7 +20,7 @@ interface ChannelMessage {
     error?: any;
     block?: BlockHeader;
 }
-function subscribeChannel(web3: Web3): EventChannel<ChannelMessage> {
+export function subscribeChannel(web3: Web3): EventChannel<ChannelMessage> {
     const subscription = web3.eth.subscribe('newBlockHeaders');
 
     return eventChannel((emitter) => {
@@ -44,62 +45,72 @@ function subscribeChannel(web3: Web3): EventChannel<ChannelMessage> {
     });
 }
 
-function* subscribe(action: SubscribeAction) {
-    const { payload } = action;
-    const { networkId } = payload;
-
-    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
-    if (!network?.web3) throw new Error(`Network ${networkId} missing web3`);
-    const web3 = network.web3;
-
-    while (true) {
-        const channel: TakeableChannel<ChannelMessage> = yield* call(subscribeChannel, web3);
-
-        try {
-            while (true) {
-                const message: ChannelMessage = yield* take(channel);
-                const { type, block, error } = message;
-                if (type === SUBSCRIBE_DATA) {
-                    const newBlock = { ...block!, networkId };
-                    yield* put(BlockCRUD.actions.create(newBlock));
-                    if (payload.returnTransactionObjects ?? true) {
-                        yield* fork(
-                            //@ts-expect-error
-                            blockFetch,
-                            fetchAction({
-                                networkId,
-                                blockHashOrBlockNumber: newBlock.number,
-                                returnTransactionObjects: true,
-                            }),
-                            true, //Use update
-                        );
-                    }
-                } else if (type === SUBSCRIBE_CHANGED) {
-                    const newBlock = { ...block!, networkId };
-                    yield* put(BlockCRUD.actions.create(newBlock));
-                    if (payload.returnTransactionObjects) {
-                        yield* fork(
-                            //@ts-expect-error
-                            blockFetch,
-                            fetchAction({
-                                networkId,
-                                blockHashOrBlockNumber: newBlock.number,
-                                returnTransactionObjects: true,
-                            }),
-                            true, //Use update
-                        );
-                    }
-                } else if (type === SUBSCRIBE_ERROR) {
-                    console.error(error);
-                    yield* put({ type: SUBSCRIBE_ERROR, error });
-                }
-            }
-        } catch (error) {
-            yield* put({ type: SUBSCRIBE_ERROR, error });
-        } finally {
-            yield* put({ type: SUBSCRIBE_DONE });
+export function* subscribeSaga(action: SubscribeAction) {
+    try {
+        const { payload } = action;
+        let networkId: string;
+        let returnTransactionObjects = false;
+        if (typeof payload === 'string') networkId = payload;
+        else {
+            networkId = payload.networkId;
+            returnTransactionObjects = payload.returnTransactionObjects ?? false;
         }
+
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
+        const web3 = network?.web3 ?? network?.web3Sender;
+        if (!web3) throw new Error(`Network ${networkId} missing web3`);
+
+        const channel = subscribeChannel(web3);
+
+        while (true) {
+            const message: ChannelMessage = yield* take(channel);
+            const { type, block, error } = message;
+            if (type === SUBSCRIBE_DATA) {
+                const newBlock = { ...block!, networkId };
+                yield* put(BlockCRUD.actions.create(newBlock, action.meta.uuid));
+                if (returnTransactionObjects) {
+                    yield* fork(
+                        //@ts-expect-error
+                        blockFetch,
+                        fetchAction({
+                            networkId,
+                            blockHashOrBlockNumber: newBlock.number,
+                            returnTransactionObjects: true,
+                        }),
+                        true, //Use update
+                    );
+                }
+            } else if (type === SUBSCRIBE_CHANGED) {
+                const newBlock = { ...block!, networkId };
+                yield* put(BlockCRUD.actions.create(newBlock, action.meta.uuid));
+                if (returnTransactionObjects) {
+                    yield* fork(
+                        //@ts-expect-error
+                        blockFetch,
+                        fetchAction({
+                            networkId,
+                            blockHashOrBlockNumber: newBlock.number,
+                            returnTransactionObjects: true,
+                        }),
+                        true, //Use update
+                    );
+                }
+            } else if (type === SUBSCRIBE_ERROR) {
+                throw error;
+            }
+        }
+    } catch (error) {
+        yield* put(
+            createError({
+                id: action.meta.uuid,
+                error: error as Error,
+                errorMessage: (error as Error).message,
+                type: SUBSCRIBE_ERROR,
+            }),
+        );
+    } finally {
+        yield* put({ type: SUBSCRIBE_DONE });
     }
 }
 
-export default subscribe;
+export default subscribeSaga;

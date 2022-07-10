@@ -1,5 +1,8 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
+import { testSaga } from 'redux-saga-test-plan';
+import { subscribeSaga } from './subscribe.js';
+
 import { getWeb3Provider } from '../../test/index.js';
 import { mineBlock, sleep } from '../../utils/index.js';
 
@@ -7,20 +10,21 @@ import { createStore, StoreType } from '../../store.js';
 import { BlockHeader, BlockTransaction, validate } from '../model/index.js';
 
 import { name } from '../common.js';
-import { networkId } from '../../test/data.js';
 import { subscribe as subscribeAction, unsubscribe as unsubscribeAction } from '../actions/index.js';
+import { network1336 } from '../../network/data.js';
+
 import BlockCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
 
-describe(`${name}.subscribe`, () => {
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
+
+describe(`${name}/sagas/subscribe.test.ts`, () => {
     let accounts: string[];
-    let web3: Web3; //Web3 loaded from store
     let store: StoreType;
 
     before(async () => {
-        const provider = getWeb3Provider();
         //@ts-ignore
-        web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();
     });
 
@@ -29,15 +33,33 @@ describe(`${name}.subscribe`, () => {
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
-    describe('subscribe', () => {
-        it('({returnTransactionObjects:false})', async () => {
-            store.dispatch(subscribeAction({ networkId, returnTransactionObjects: false }));
+    afterEach(async () => {
+        await NetworkCRUD.db.clear();
+        await BlockCRUD.db.clear();
+    });
+
+    describe('unit', () => {
+        it('subscribe(networkId)', async () => {
+            const action = subscribeAction(networkId);
+            //const channel = subscribeChannel(web3);
+            testSaga(subscribeSaga, action)
+                .next()
+                .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
+                .next({ networkId, web3 });
+            //.take(channel)
+            //.next({ block1 })
+            //.put(BlockCRUD.actions.create(block1, action.meta.uuid));
+        });
+    });
+
+    describe('integration', () => {
+        it('subscribe(networkId)', async () => {
+            store.dispatch(subscribeAction(networkId));
             const expectedBlocks: BlockHeader[] = [];
             const subscription = web3.eth.subscribe('newBlockHeaders').on('data', (block: any) => {
-                expectedBlocks.push(validate({ ...block, networkId, transactions: [] }));
+                expectedBlocks.push(validate({ ...block, networkId }));
             });
 
-            await mineBlock(web3);
             await mineBlock(web3);
             store.dispatch(unsubscribeAction(networkId));
             subscription.unsubscribe();
@@ -45,7 +67,7 @@ describe(`${name}.subscribe`, () => {
             await mineBlock(web3);
 
             const blocks = await BlockCRUD.db.all();
-            assert.equal(blocks.length, 2, 'blocks.length != expected');
+            assert.equal(blocks.length, 1, 'blocks.length != expected');
             assert.deepEqual(blocks, expectedBlocks);
         });
 
@@ -80,7 +102,7 @@ describe(`${name}.subscribe`, () => {
             assert.deepEqual(blockTransactions, expectedBlockTransactions, 'Block with transactions');
         });
 
-        it('subscribe - multiple networks', async () => {
+        it.skip('subscribe - multiple networks', async () => {
             const network1 = networkId;
             const network2 = '1338';
             const provider2 = getWeb3Provider();
@@ -126,7 +148,6 @@ describe(`${name}.subscribe`, () => {
 });
 
 describe(`${name}.subscribe.rpccalls`, () => {
-    let web3: Web3; //Web3 loaded from store
     let store: StoreType;
     /*
     let rpcLogger: ReturnType<typeof ganacheLogger>;
@@ -145,10 +166,6 @@ describe(`${name}.subscribe.rpccalls`, () => {
         rpcLogger.addListener('eth_subscribe', ethSubscribeIncr);
         rpcLogger.addListener('eth_unsubscribe', ethUnsubscribeIncr);
         */
-
-        const provider = getWeb3Provider();
-        //@ts-ignore
-        web3 = new Web3(provider);
     });
 
     beforeEach(async () => {
@@ -156,10 +173,10 @@ describe(`${name}.subscribe.rpccalls`, () => {
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
-    it.skip('({returnTransactionObjects:false}) - rpc calls', async () => {
+    it.skip('(networkId) - rpc calls', async () => {
         //const ethGetBlockByNumberInitial = ethGetBlockByNumber;
         //const ethSubscribeInitial = ethSubscribe;
-        store.dispatch(subscribeAction({ networkId, returnTransactionObjects: false }));
+        store.dispatch(subscribeAction(networkId));
 
         //assert.equal(ethSubscribe - ethSubscribeInitial, 1, 'eth_subscribe rpc calls != expected');
         //No getBlockByNumber calls as relying on subscription

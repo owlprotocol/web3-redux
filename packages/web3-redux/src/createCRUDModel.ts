@@ -5,11 +5,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { IndexableType, IndexableTypeArray } from 'dexie';
 import { createSelector } from 'redux-orm';
 import { useSelector } from 'react-redux';
-import { filter } from './utils/lodash/index.js';
+import { compact, filter } from './utils/lodash/index.js';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
-import isStrings from './utils/isStrings.js';
 import toReduxOrmId, { SEPARATOR } from './utils/toReduxORMId.js';
 import isDefinedRecord from './utils/isDefinedRecord.js';
 
@@ -37,6 +36,31 @@ export function createCRUDModel<
         hydrate: (item: T, sess?: any) => T = (item: T) => item as T,
         encode: (item: T) => T_Encoded = (item: T) => item as T_Encoded,
 ) {
+    const idToStr = (id: string | IndexableTypeArray | Partial<T_ID>): string | undefined => {
+        if (typeof id === 'string') return id;
+        else if (Array.isArray(id)) return toReduxOrmId(id);
+        else {
+            if (!isDefinedRecord(id)) return undefined;
+            const id2 = validateId(id);
+            if (typeof id2 === 'string') return id2;
+            else return toReduxOrmId(id2);
+        }
+    };
+
+    const idToDexieId = (id: string | IndexableTypeArray | Partial<T_ID>): string | IndexableTypeArray | undefined => {
+        if (typeof id === 'string') {
+            const idSplit = id.split(SEPARATOR);
+            if (idSplit.length == 1) return idSplit[0];
+            return idSplit;
+        } else if (Array.isArray(id)) id;
+        else {
+            if (!isDefinedRecord(id)) return undefined;
+            const id2 = validateId(id);
+            if (typeof id2 === 'string') return id2;
+            else return id2;
+        }
+    };
+
     /** Actions */
     const CREATE = `${name}/CREATE`;
     const CREATE_BATCHED = `${CREATE}/BATCHED`;
@@ -138,9 +162,9 @@ export function createCRUDModel<
         } else if (createBatchedAction.match(action) || updateBatchedAction.match(action)) {
             action.payload.forEach((p) => Model.upsert(hydrate(p, sess)));
         } else if (deleteAction.match(action)) {
-            Model.withId(toReduxOrmId(action.payload))?.delete();
+            Model.withId(idToStr(action.payload))?.delete();
         } else if (deleteBatchedAction.match(action)) {
-            action.payload.forEach((p) => Model.withId(toReduxOrmId(p))?.delete());
+            action.payload.forEach((p) => Model.withId(idToStr(p))?.delete());
         }
         return sess;
     };
@@ -149,28 +173,14 @@ export function createCRUDModel<
     //Only create selectors if orm model defined
     const ormModel = getOrm()[name]
     const select = ormModel ? createSelector(getOrm()[name]) : (state: any, id: any) => undefined;
-    const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined) => {
+    const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined): T | undefined => {
         if (!id) return undefined;
-        if (typeof id != 'string') {
-            if (!isDefinedRecord(id)) return undefined;
-            //Validate id & convert to redux orm string id
-            return select(state, toReduxOrmId(validateId(id))) as T | undefined;
-        } else {
-            //redux orm string id
-            return select(state, id) as T | undefined;
-        }
+        return select(state, idToStr(id));
     };
 
     const selectByIdMany = (state: any, ids?: (T_ID | string)[]): (T | null)[] => {
         if (!ids) return select(state); //Return all
-        if (isStrings(ids)) {
-            return select(state, ids);
-        } else {
-            return select(
-                state,
-                ids.map((id) => toReduxOrmId(validateId(id as T_ID))),
-            );
-        }
+        return select(state, ids.map(idToStr));
     };
 
     const selectWhere = (state: any, f: Partial<T_Encoded>) => {
@@ -190,23 +200,15 @@ export function createCRUDModel<
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        if (typeof id != 'string') {
-            if (!isDefinedRecord(id)) return undefined;
-            return table.get(validateId(id));
-        } else {
-            return table.get(id);
-        }
+        const id2 = idToDexieId(id);
+        if (id2) return table.get(id2);
     };
 
     const bulkGet = async (id: T_ID[] | string[] | undefined) => {
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        if (isStrings(id)) {
-            return table.bulkGet(id);
-        } else {
-            return table.bulkGet(id.map(validateId));
-        }
+        return table.bulkGet(compact(id.map(idToDexieId)));
     };
 
     const all = async () => {
@@ -279,7 +281,6 @@ export function createCRUDModel<
         return table.clear();
     };
 
-
     const db = {
         get,
         bulkGet,
@@ -293,7 +294,7 @@ export function createCRUDModel<
         bulkUpdate,
         delete: deleteDB,
         bulkDelete,
-        clear
+        clear,
     };
 
     /** Dexie Sagas */
@@ -427,19 +428,18 @@ export function createCRUDModel<
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
-        const id2 = validateId(id as T_ID);
-        const id2Dep = toReduxOrmId(id2);
+        const id2 = idToDexieId(id);
+        const id2Dep = idToStr(id);
 
-        //TODO: Undefined compound key?
-        return useLiveQuery(() => table.get(id2), [id2Dep]);
+        return useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep]);
     };
     //TODO: string array id
-    const useGetBulk = (ids: T_ID[]) => {
+    const useGetBulk = (ids: Partial<T_ID>[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
-        const ids2 = ids.map(validateId);
-        const ids2Dep = ids.map(validateId).map(toReduxOrmId).join(SEPARATOR);
+        const ids2 = compact(ids.map(idToDexieId));
+        const ids2Dep = ids.map(idToStr).join(SEPARATOR);
         return useLiveQuery(() => table.bulkGet(ids2), [ids2Dep]);
     };
     const useWhere = (filter: Partial<T_Encoded>) => {
@@ -479,7 +479,7 @@ export function createCRUDModel<
         validate,
         validateId,
         hydrate,
-        encode
+        encode,
     };
 }
 

@@ -1,7 +1,8 @@
 {
-  "parallel": true,
+  "parallel": false,
   "jobs": 8,
   "timeout": 20000,
   "colors": true,
-  "recursive": false
+  "recursive": false,
+  "require": "lib/cjs/test/mochaHooks.js"
 }

@@ -79,7 +79,7 @@ export function hydrate(network: Network, sess: any): NetworkWithObjects {
  * @param network
  */
 export function encode(network: NetworkWithObjects): Network {
-    return omit(network, ['web3', 'web3Sender']);
+    return omit(network, ['web3', 'web3Sender', 'explorerApiClient']);
 }
 
 export default validate;

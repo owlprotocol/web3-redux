@@ -37,7 +37,7 @@ describe(`${name}/sagas/fetch.ts`, () => {
                 .next(undefined)
                 .put(BlockCRUD.actions.create({ networkId, number: 1 }, action.meta.uuid))
                 .next()
-                .select(NetworkCRUD.selectors.select, networkId)
+                .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
                 .next({ networkId, web3 })
                 .call(web3.eth.getBlock, 1, false)
                 .next({ networkId, number: 1, hash: '0x1' })
@@ -51,7 +51,7 @@ describe(`${name}/sagas/fetch.ts`, () => {
             const action = fetchAction(item);
             testSaga(fetchSaga, action)
                 .next()
-                .select(NetworkCRUD.selectors.select, networkId)
+                .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
                 .next({ networkId, web3 })
                 .call(web3.eth.getBlock, '0x1', false)
                 .next({ networkId, number: 1, hash: '0x1' })

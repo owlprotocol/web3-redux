@@ -471,6 +471,7 @@ export function createCRUDModel<
         validate,
         validateId,
         hydrate,
+        encode
     };
 }
 

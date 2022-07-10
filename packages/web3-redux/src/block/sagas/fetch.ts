@@ -31,7 +31,7 @@ export function* fetchSaga(action: FetchAction) {
         blockExists = true;
     }
 
-    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
     const web3 = network?.web3 ?? network?.web3Sender;
     if (!web3) throw new Error(`Network ${networkId} missing web3`);
 

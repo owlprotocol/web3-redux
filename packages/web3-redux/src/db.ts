@@ -76,7 +76,7 @@ export function createDB(options?: GetDBOptions) {
         const shim: any = {};
         //@ts-ignore
         //global.window = global; // We'll allow ourselves to use `window.indexedDB` or `indexedDB` as a global
-        setGlobalVars(shim, { checkOrigin: false }); // See signature below
+        setGlobalVars(shim, { checkOrigin: false, memoryDatabase: '' }); // See signature below
         const { indexedDB, IDBKeyRange } = shim;
         Dexie.dependencies.indexedDB = indexedDB;
         Dexie.dependencies.IDBKeyRange = IDBKeyRange;

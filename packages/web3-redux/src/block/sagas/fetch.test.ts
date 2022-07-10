@@ -3,29 +3,21 @@ import Web3 from 'web3';
 import { testSaga } from 'redux-saga-test-plan';
 // eslint-disable-next-line import/no-unresolved
 import { fetchSaga } from './fetch.js';
-import getDB from '../../db.js';
 
 import { getWeb3Provider } from '../../test/index.js';
-import { mineBlock } from '../../utils/index.js';
+import { mineBlock, sleep } from '../../utils/index.js';
 import { createStore, StoreType } from '../../store.js';
 import { validate } from '../model/index.js';
 
 import { name } from '../common.js';
-import { networkId } from '../../test/data.js';
 import { fetch as fetchAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
+import { network1336 } from '../../network/data.js';
 import BlockCRUD from '../crud.js';
 
 describe(`${name}/sagas/fetch.ts`, () => {
-    let web3: Web3; //Web3 loaded from store
-
-    before(() => {
-        const provider = getWeb3Provider();
-        //@ts-ignore
-        web3 = new Web3(provider);
-    });
-
-    beforeEach(async () => { });
+    const networkId = network1336.networkId;
+    const web3 = network1336.web3!;
 
     describe('unit', () => {
         it('new block - by number', async () => {
@@ -66,7 +58,7 @@ describe(`${name}/sagas/fetch.ts`, () => {
 
         beforeEach(async () => {
             store = createStore();
-            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.create(network1336));
         });
 
         describe('fetch', () => {
@@ -74,10 +66,11 @@ describe(`${name}/sagas/fetch.ts`, () => {
                 await mineBlock(web3);
 
                 store.dispatch(fetchAction({ networkId, blockHashOrBlockNumber: 1, returnTransactionObjects: false }));
+                await sleep(100);
 
                 const expected = validate({ ...(await web3.eth.getBlock(1)), networkId });
-                const selected = await BlockCRUD.db.get({ networkId, number: expected.number });
-                assert.deepEqual({ ...selected }, expected as any);
+                const selected = await BlockCRUD.db.get({ networkId, number: 1 });
+                assert.deepEqual(selected, expected as any);
             });
         });
     });

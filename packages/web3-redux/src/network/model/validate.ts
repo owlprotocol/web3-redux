@@ -38,31 +38,32 @@ export function validate(network: Network): Network {
  * Hydrate network with objects.
  * @param network
  */
-export function hydrate(network: Network, sess: any): NetworkWithObjects {
+export function hydrate(network: NetworkWithObjects, sess: any): NetworkWithObjects {
     const { networkId, web3Rpc, explorerApiUrl, explorerApiKey } = network;
     const networkORM: NetworkWithObjects | undefined = sess.Network.withId(networkId);
 
-    let web3: Web3 | undefined;
-    if (networkORM?.web3 && web3Rpc === networkORM.web3Rpc) {
+    let web3 = network.web3;
+    if (!web3 && networkORM?.web3 && web3Rpc === networkORM.web3Rpc) {
         //Existing web3 instance the same
         web3 = networkORM.web3;
-    } else if (web3Rpc) {
+    } else if (!web3 && web3Rpc) {
         //New web3 instance
         web3 = fromRpc(web3Rpc);
     }
 
-    let explorerApiClient: Axios | undefined;
+    let explorerApiClient = network.explorerApiClient;
     if (
+        !explorerApiClient &&
         networkORM?.explorerApiClient &&
         explorerApiUrl === networkORM.explorerApiUrl &&
         explorerApiKey === networkORM.explorerApiKey
     ) {
         //Existing axios instance
         explorerApiClient = networkORM.explorerApiClient;
-    } else if (explorerApiUrl && explorerApiKey) {
+    } else if (!explorerApiClient && explorerApiUrl && explorerApiKey) {
         //New axios instance
         explorerApiClient = axios.create({ baseURL: explorerApiUrl, params: { apikey: explorerApiKey } });
-    } else if (explorerApiUrl) {
+    } else if (!explorerApiClient && explorerApiUrl) {
         //New axios instance
         explorerApiClient = axios.create({ baseURL: explorerApiUrl });
     }

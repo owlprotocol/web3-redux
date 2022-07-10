@@ -15,27 +15,22 @@ import { network1336 } from '../../network/data.js';
 
 import BlockCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
+import getDB from '../../db.js';
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;
+const db = getDB();
 
 describe(`${name}/sagas/subscribe.test.ts`, () => {
     let accounts: string[];
-    let store: StoreType;
 
     before(async () => {
         //@ts-ignore
         accounts = await web3.eth.getAccounts();
     });
 
-    beforeEach(async () => {
-        store = createStore();
-        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
-    });
-
     afterEach(async () => {
-        await NetworkCRUD.db.clear();
-        await BlockCRUD.db.clear();
+        await db.clear();
     });
 
     describe('unit', () => {
@@ -53,6 +48,13 @@ describe(`${name}/sagas/subscribe.test.ts`, () => {
     });
 
     describe('integration', () => {
+        let store: StoreType;
+
+        beforeEach(async () => {
+            store = createStore();
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
+        });
+
         it('subscribe(networkId)', async () => {
             store.dispatch(subscribeAction(networkId));
             const expectedBlocks: BlockHeader[] = [];

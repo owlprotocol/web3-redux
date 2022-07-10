@@ -52,6 +52,11 @@ describe(`${name}/sagas/call.ts`, () => {
         */
     });
 
+    afterEach(async () => {
+        await NetworkCRUD.db.clear();
+        await ContractCRUD.db.clear();
+    });
+
     describe('unit', () => {
         it('call - success', async () => {
             const web3Contract = await new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[])

@@ -50,8 +50,27 @@ export class Web3ReduxDexie extends Dexie {
             IPFSCache: IpfsIndex,
             Network: NetworkIndex,
             Sync: SyncIndex,
-            Transaction: TransactionIndex,
+            EthTransaction: TransactionIndex,
         });
+    }
+
+    async clear() {
+        const promises = [
+            this._4Byte.clear(),
+            this.Block.clear(),
+            this.Config.clear(),
+            this.Contract.clear(),
+            this.ContractEvent.clear(),
+            this.ContractSend.clear(),
+            this.ReduxError.clear(),
+            this.EthCall.clear(),
+            this.HTTPCache.clear(),
+            this.IPFSCache.clear(),
+            this.Network.clear(),
+            this.Sync.clear(),
+            this.EthTransaction.clear(),
+        ];
+        return Promise.all(promises);
     }
 }
 

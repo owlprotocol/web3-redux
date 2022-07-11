@@ -19,13 +19,13 @@ export interface CallActionInput {
  * Create contract call
  * @category Actions
  */
-export const call = createAction(CALL, (payload: CallActionInput) => {
+export const call = createAction(CALL, (payload: CallActionInput, uuid?: string) => {
     const { networkId, address, method, args, defaultBlock, from } = payload;
     const id = callHash(networkId, address, method, { args, defaultBlock, from });
     return {
         payload: { id, networkId, address, method, args, defaultBlock, from },
         meta: {
-            uuid: uuidv4(),
+            uuid: uuid ?? uuidv4(),
         },
     };
 });

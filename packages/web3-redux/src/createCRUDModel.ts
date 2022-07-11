@@ -313,7 +313,7 @@ export function createCRUDModel<
             yield* putSaga(
                 createError({
                     id: action.meta.uuid,
-                    error: error as Error,
+                    stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: CREATE_ERROR,
                 }),
@@ -329,7 +329,7 @@ export function createCRUDModel<
             yield* putSaga(
                 createError({
                     id: action.meta.uuid,
-                    error: error as Error,
+                    stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: CREATE_BATCHED_ERROR,
                 }),
@@ -345,7 +345,7 @@ export function createCRUDModel<
             yield* putSaga(
                 createError({
                     id: action.meta.uuid,
-                    error: error as Error,
+                    stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: UPDATE_ERROR,
                 }),
@@ -361,7 +361,7 @@ export function createCRUDModel<
             yield* putSaga(
                 createError({
                     id: action.meta.uuid,
-                    error: error as Error,
+                    stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: UPDATE_BATCHED_ERROR,
                 }),
@@ -377,7 +377,7 @@ export function createCRUDModel<
             yield* putSaga(
                 createError({
                     id: action.meta.uuid,
-                    error: error as Error,
+                    stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: DELETE_ERROR,
                 }),
@@ -393,8 +393,8 @@ export function createCRUDModel<
             yield* putSaga(
                 createError({
                     id: action.meta.uuid,
-                    error: error as Error,
                     errorMessage: (error as Error).message,
+                    stack: (error as Error).stack,
                     type: DELETE_BATCHED_ERROR,
                 }),
             );
@@ -424,12 +424,11 @@ export function createCRUDModel<
 
     /** Dexie Hooks */
     const useGet = (id: Partial<T_ID> | string | undefined) => {
-        if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
-        const id2 = idToDexieId(id);
-        const id2Dep = idToStr(id);
+        const id2 = id ? idToDexieId(id) : undefined;
+        const id2Dep = id ? idToStr(id) : undefined;
 
         return useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep], 'loading' as 'loading');
     };

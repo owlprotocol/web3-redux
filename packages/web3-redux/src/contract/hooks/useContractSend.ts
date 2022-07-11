@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { BaseWeb3Contract } from '../model/index.js';
 import { send, SendAction } from '../actions/index.js';
@@ -33,7 +33,6 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
             contractSend: ContractSend | undefined;
         },
     ] {
-    let error: Error | undefined;
     const { value, from } = options ?? {};
     const dispatch = useDispatch();
     const [sendAction, setSendAction] = useState<SendAction | undefined>();
@@ -53,7 +52,16 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
 
     const reduxErrorResponse = ErrorCRUD.hooks.useGet(sendAction?.meta.uuid);
     const reduxError = reduxErrorResponse === 'loading' ? undefined : reduxErrorResponse;
-    if (reduxError) error = reduxError.error;
+    const error = useMemo(() => {
+        if (!networkId) return new Error('networkId undefined');
+        else if (!address) return new Error('address undefined');
+        else if (!method) return new Error('method undefined');
+        else if (!!reduxError) {
+            const err = new Error(reduxError.errorMessage);
+            err.stack = reduxError.stack;
+            return err;
+        }
+    }, [networkId, address, method, reduxError]);
 
     const contractSendResponse = ContractSendCRUD.hooks.useGet(sendAction?.meta.uuid);
     const contractSend = contractSendResponse === 'loading' ? undefined : contractSendResponse;

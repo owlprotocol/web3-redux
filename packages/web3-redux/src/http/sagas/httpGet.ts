@@ -41,11 +41,12 @@ export function* httpGet(action: HttpGetAction) {
             throw new Error(`Http ${url} cached!`);
         }
     } catch (error) {
+        const err = error as Error
         yield* put(
             createError({
                 id: action.meta.uuid,
-                error: error as Error,
-                errorMessage: (error as Error).message,
+                errorMessage: err.message,
+                stack: err.stack,
                 type: HTTP_GET_ERROR,
             }),
         );

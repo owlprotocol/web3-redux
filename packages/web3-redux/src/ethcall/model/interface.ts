@@ -20,12 +20,12 @@ export interface EthCall extends EthCallId {
     readonly id?: string;
     /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
     readonly returnValue?: any;
-    /** Last known error */
-    readonly error?: Error;
     /** Last returnValue updated UTC timestamp */
     readonly lastUpdated?: number;
     /** Status */
     readonly status?: 'LOADING' | 'SUCCESS' | 'ERROR';
+    /** Error Id */
+    readonly errorId?: string;
 }
 
 export const EthCallIndex = '[networkId+to+data+defaultBlock+from+gas]';

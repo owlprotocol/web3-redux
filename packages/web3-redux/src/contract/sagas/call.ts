@@ -53,7 +53,7 @@ export function* callSaga(action: CallAction) {
             const timestamp = Date.now();
             yield* put(
                 EthCallCRUD.actions.update(
-                    { ...ethCall, error: undefined, returnValue, status: 'SUCCESS', lastUpdated: timestamp },
+                    { ...ethCall, returnValue, status: 'SUCCESS', lastUpdated: timestamp },
                     action.meta.uuid,
                 ),
             );
@@ -61,14 +61,14 @@ export function* callSaga(action: CallAction) {
             const timestamp = Date.now();
             yield* put(
                 EthCallCRUD.actions.update(
-                    { ...ethCall, error: error as Error, status: 'ERROR', lastUpdated: timestamp },
+                    { ...ethCall, status: 'ERROR', errorId: action.meta.uuid, lastUpdated: timestamp },
                     action.meta.uuid,
                 ),
             );
             yield* put(
                 createError({
                     id: action.meta.uuid,
-                    error: error as Error,
+                    stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: CALL_ERROR,
                 }),
@@ -76,11 +76,12 @@ export function* callSaga(action: CallAction) {
         }
     } catch (error) {
         //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
+        const err = error as Error;
         yield* put(
             createError({
                 id: action.meta.uuid,
-                error: error as Error,
-                errorMessage: (error as Error).message,
+                errorMessage: err.message,
+                stack: err.stack,
                 type: CALL_ERROR,
             }),
         );

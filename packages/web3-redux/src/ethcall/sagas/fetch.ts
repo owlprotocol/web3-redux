@@ -34,22 +34,18 @@ export default function* fetch(action: FetchAction) {
         yield* put(
             EthCallCRUD.actions.update({
                 ...payload,
-                error: undefined,
                 returnValue,
                 status: 'SUCCESS',
                 lastUpdated: timestamp,
             }),
         );
     } catch (error) {
-        const timestamp = Date.now();
-        yield* put(
-            EthCallCRUD.actions.update({ ...payload, error: error as Error, status: 'ERROR', lastUpdated: timestamp }),
-        );
+        const err = error as Error;
         yield* put(
             createError({
                 id: action.meta.uuid,
-                error: error as Error,
-                errorMessage: (error as Error).message,
+                errorMessage: err.message,
+                stack: err.stack,
                 type: FETCH_ERROR,
             }),
         );

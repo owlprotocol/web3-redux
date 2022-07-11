@@ -17,22 +17,25 @@ export const useBlock = (
     const dispatch = useDispatch();
 
     const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
-    const block = BlockCRUD.hooks.useGet({ networkId, number });
+    const blockResponse = BlockCRUD.hooks.useGet({ networkId, number });
+    const loading = blockResponse === 'loading';
+    const block = loading ? undefined : blockResponse;
+    const blockExists = !!block;
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 
     const action = useMemo(() => {
-        if (block != 'loading' && networkId && number && web3Exists) {
-            if ((fetch === 'ifnull' && !block) || fetch === true) {
+        if (!loading && networkId && number && web3Exists) {
+            if ((!blockExists && fetch === 'ifnull') || fetch === true) {
                 return fetchAction({ networkId, blockHashOrBlockNumber: number, returnTransactionObjects });
             }
         }
-    }, [block, networkId, number, web3Exists, fetch, returnTransactionObjects]);
+    }, [loading, networkId, number, web3Exists, blockExists, fetch, returnTransactionObjects]);
 
     useEffect(() => {
         if (action) dispatch(action);
     }, [dispatch, action]);
 
-    return block == 'loading' ? undefined : block;
+    return block;
 };
 
 export default useBlock;

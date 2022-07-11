@@ -67,7 +67,7 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
     } catch (error) {
         yield* put({
             id: action.meta.uuid,
-            error: error as Error,
+            stack: (error as Error).stack,
             errorMessage: (error as Error).message,
             type: EVENT_GET_PAST_RAW_ERROR,
         });

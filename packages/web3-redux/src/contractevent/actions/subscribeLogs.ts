@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import invariant from 'tiny-invariant';
+import { v4 as uuidv4 } from 'uuid';
 import { isHexStrict } from '../../utils/web3-utils/index.js';
 import { name } from '../common.js';
 import { LogsSubscription } from '../model/logsSubscription.js';
@@ -11,7 +12,7 @@ export const SUBSCRIBE_LOGS = `${name}/SUBSCRIBE_LOGS`;
  * @link https://web3js.readthedocs.io/en/v1.7.0/web3-eth.html#getpastlogs
  * Get past logs using raw filter.
  */
-export const subscribeLogs = createAction(SUBSCRIBE_LOGS, (payload: LogsSubscription) => {
+export const subscribeLogs = createAction(SUBSCRIBE_LOGS, (payload: LogsSubscription, uuid?: string) => {
     let address: string | string[] | undefined;
     if (payload.address) {
         if (Array.isArray(payload.address)) {
@@ -34,7 +35,7 @@ export const subscribeLogs = createAction(SUBSCRIBE_LOGS, (payload: LogsSubscrip
         });
     }
 
-    return { payload: { ...payload, address } };
+    return { payload: { ...payload, address }, meta: { uuid: uuid ?? uuidv4() } };
 });
 /** @internal */
 export type SubscribeLogsAction = ReturnType<typeof subscribeLogs>;

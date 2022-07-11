@@ -167,7 +167,7 @@ export function* send(action: SendAction) {
                 yield* put(
                     createError({
                         id: action.meta.uuid,
-                        error: error as Error,
+                        stack: (error as Error).stack,
                         type: CONTRACT_SEND_ERROR,
                     }),
                 );
@@ -178,7 +178,7 @@ export function* send(action: SendAction) {
         yield* put(
             createError({
                 id: action.meta.uuid,
-                error: error as Error,
+                stack: (error as Error).stack,
                 type: CONTRACT_SEND_ERROR,
             }),
         );

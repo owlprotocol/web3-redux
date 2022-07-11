@@ -69,8 +69,8 @@ describe('http/sagas/httpGet.test.ts', () => {
                 .put(
                     createError({
                         id: action.meta.uuid,
-                        error,
                         errorMessage: (error as Error).message,
+                        stack: (error as Error).stack,
                         type: HTTP_GET_ERROR,
                     }),
                 )

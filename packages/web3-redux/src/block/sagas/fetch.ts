@@ -51,11 +51,12 @@ export function* fetchSaga(action: FetchAction) {
         }
     } catch (error) {
         //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
+        const err = error as Error
         yield* put(
             createError({
                 id: action.meta.uuid,
-                error: error as Error,
-                errorMessage: (error as Error).message,
+                errorMessage: err.message,
+                stack: err.stack,
                 type: GET_BLOCK_ERROR,
             }),
         );

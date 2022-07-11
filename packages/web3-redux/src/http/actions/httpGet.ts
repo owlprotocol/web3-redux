@@ -8,8 +8,8 @@ export interface HttpGetInput {
 /** @internal */
 export const HTTP_GET = `${name}/HTTP_GET`;
 /** @category Action */
-export const httpGet = createAction(HTTP_GET, (payload: HttpGetInput) => {
-    return { payload, meta: { uuid: uuidv4() } };
+export const httpGet = createAction(HTTP_GET, (payload: HttpGetInput, uuid?: string) => {
+    return { payload, meta: { uuid: uuid ?? uuidv4() } };
 });
 /** @internal */
 export type HttpGetAction = ReturnType<typeof httpGet>;

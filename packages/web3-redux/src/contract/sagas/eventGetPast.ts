@@ -58,7 +58,7 @@ export function* eventGetPast(action: EventGetPastAction) {
             } catch (error) {
                 yield* put({
                     id: action.meta.uuid,
-                    error: error as Error,
+                    stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: EVENT_GET_PAST_ERROR,
                 });
@@ -67,7 +67,7 @@ export function* eventGetPast(action: EventGetPastAction) {
     } catch (error) {
         yield* put({
             id: action.meta.uuid,
-            error: error as Error,
+            stack: (error as Error).stack,
             errorMessage: (error as Error).message,
             type: EVENT_GET_PAST_ERROR,
         });

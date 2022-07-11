@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 
 import { name } from '../common.js';
 
@@ -16,8 +17,13 @@ export interface GetAssetsActionInput {
  * It is also possible that some returned addresses might NOT be one of the above
  * interfaces but simply implement one of event signatures.
  */
-export const getAssets = createAction(GET_ASSETS, (payload: GetAssetsActionInput) => {
-    return { payload: { networkId: payload.networkId, address: payload.address.toLowerCase() } };
+export const getAssets = createAction(GET_ASSETS, (payload: GetAssetsActionInput, uuid?: string) => {
+    return {
+        payload: { networkId: payload.networkId, address: payload.address.toLowerCase() },
+        meta: {
+            uuid: uuid ?? uuidv4(),
+        },
+    };
 });
 /** @internal */
 export type GetAssetsAction = ReturnType<typeof getAssets>;

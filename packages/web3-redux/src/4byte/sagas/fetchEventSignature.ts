@@ -29,11 +29,12 @@ export function* fetchEventSignature(action: FetchEventSignatureAction) {
 
         yield* put(_4ByteCRUD.actions.update({ signatureHash, signatureType: 'Event', preImage: eventSig }));
     } catch (error) {
+        const err = error as Error
         yield* put(
             createError({
                 id: action.meta.uuid,
-                error: error as Error,
-                errorMessage: (error as Error).message,
+                errorMessage: err.message,
+                stack: err.stack,
                 type: FETCH_EVENT_SIGNATURE_ERROR,
             }),
         );

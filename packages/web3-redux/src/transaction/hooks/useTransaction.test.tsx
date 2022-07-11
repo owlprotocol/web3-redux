@@ -29,6 +29,10 @@ describe(`${name}/hooks/useTransaction.test.tsx`, () => {
         accounts = await web3.eth.getAccounts();
     });
 
+    after(() => {
+        createActionSpy.restore();
+    });
+
     beforeEach(async () => {
         store = createStore();
         dispatchSpy = sinon.spy(store, 'dispatch');
@@ -40,6 +44,10 @@ describe(`${name}/hooks/useTransaction.test.tsx`, () => {
         const txSent = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[1], value: '1' });
         const tx = await web3.eth.getTransaction(txSent.transactionHash);
         expected = validate({ networkId, ...tx });
+    });
+
+    afterEach(() => {
+        dispatchSpy.restore();
     });
 
     describe('useTransaction', () => {

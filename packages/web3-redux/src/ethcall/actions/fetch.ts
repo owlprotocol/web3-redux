@@ -6,11 +6,11 @@ import { EthCall, validate } from '../model/interface.js';
 /** @internal */
 export const FETCH = `${name}/FETCH`;
 /** @category Actions */
-export const fetch = createAction(FETCH, (payload: EthCall) => {
+export const fetch = createAction(FETCH, (payload: EthCall, uuid?: string) => {
     return {
         payload: validate(payload),
         meta: {
-            uuid: uuidv4(),
+            uuid: uuid ?? uuidv4(),
         },
     };
 });

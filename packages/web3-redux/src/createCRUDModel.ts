@@ -316,7 +316,7 @@ export function createCRUDModel<
                     stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: CREATE_ERROR,
-                }),
+                }, action.meta.uuid),
             );
         }
     };
@@ -332,7 +332,7 @@ export function createCRUDModel<
                     stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: CREATE_BATCHED_ERROR,
-                }),
+                }, action.meta.uuid),
             );
         }
     };
@@ -348,7 +348,7 @@ export function createCRUDModel<
                     stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: UPDATE_ERROR,
-                }),
+                }, action.meta.uuid),
             );
         }
     };
@@ -364,7 +364,7 @@ export function createCRUDModel<
                     stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: UPDATE_BATCHED_ERROR,
-                }),
+                }, action.meta.uuid),
             );
         }
     };
@@ -380,7 +380,7 @@ export function createCRUDModel<
                     stack: (error as Error).stack,
                     errorMessage: (error as Error).message,
                     type: DELETE_ERROR,
-                }),
+                }, action.meta.uuid),
             );
         }
     };
@@ -396,7 +396,7 @@ export function createCRUDModel<
                     errorMessage: (error as Error).message,
                     stack: (error as Error).stack,
                     type: DELETE_BATCHED_ERROR,
-                }),
+                }, action.meta.uuid),
             );
         }
     };

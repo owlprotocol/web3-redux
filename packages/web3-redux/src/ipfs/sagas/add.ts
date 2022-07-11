@@ -29,12 +29,15 @@ export function* add(action: AddAction) {
     } catch (error) {
         const err = error as Error;
         yield* put(
-            createError({
-                id: action.meta.uuid,
-                errorMessage: err.message,
-                stack: err.stack,
-                type: ADD_ERROR,
-            }),
+            createError(
+                {
+                    id: action.meta.uuid,
+                    errorMessage: err.message,
+                    stack: err.stack,
+                    type: ADD_ERROR,
+                },
+                action.meta.uuid,
+            ),
         );
     }
 }

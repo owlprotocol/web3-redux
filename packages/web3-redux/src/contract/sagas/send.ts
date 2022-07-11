@@ -165,22 +165,28 @@ export function* send(action: SendAction) {
                 );
 
                 yield* put(
-                    createError({
-                        id: action.meta.uuid,
-                        stack: (error as Error).stack,
-                        type: CONTRACT_SEND_ERROR,
-                    }),
+                    createError(
+                        {
+                            id: action.meta.uuid,
+                            stack: (error as Error).stack,
+                            type: CONTRACT_SEND_ERROR,
+                        },
+                        action.meta.uuid,
+                    ),
                 );
             }
         }
     } catch (error) {
         console.error(error);
         yield* put(
-            createError({
-                id: action.meta.uuid,
-                stack: (error as Error).stack,
-                type: CONTRACT_SEND_ERROR,
-            }),
+            createError(
+                {
+                    id: action.meta.uuid,
+                    stack: (error as Error).stack,
+                    type: CONTRACT_SEND_ERROR,
+                },
+                action.meta.uuid,
+            ),
         );
     } finally {
         yield* put({ type: CONTRACT_SEND_DONE, action });

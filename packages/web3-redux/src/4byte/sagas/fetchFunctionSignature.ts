@@ -44,14 +44,17 @@ export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
 
         yield* put(_4ByteCRUD.actions.update({ signatureHash, signatureType: 'Function', preImage: functionSig }));
     } catch (error) {
-        const err = error as Error
+        const err = error as Error;
         yield* put(
-            createError({
-                id: action.meta.uuid,
-                errorMessage: err.message,
-                stack: err.stack,
-                type: FETCH_FUNCTION_SIGNATURE_ERROR,
-            }),
+            createError(
+                {
+                    id: action.meta.uuid,
+                    errorMessage: err.message,
+                    stack: err.stack,
+                    type: FETCH_FUNCTION_SIGNATURE_ERROR,
+                },
+                action.meta.uuid,
+            ),
         );
     }
 }

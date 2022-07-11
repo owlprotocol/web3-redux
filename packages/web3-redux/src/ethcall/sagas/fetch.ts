@@ -42,12 +42,15 @@ export default function* fetch(action: FetchAction) {
     } catch (error) {
         const err = error as Error;
         yield* put(
-            createError({
-                id: action.meta.uuid,
-                errorMessage: err.message,
-                stack: err.stack,
-                type: FETCH_ERROR,
-            }),
+            createError(
+                {
+                    id: action.meta.uuid,
+                    errorMessage: err.message,
+                    stack: err.stack,
+                    type: FETCH_ERROR,
+                },
+                action.meta.uuid,
+            ),
         );
     }
 }

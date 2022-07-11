@@ -118,7 +118,8 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
 
             await waitForNextUpdate();
-            const currentCall = result.current[0];
+            await waitForNextUpdate();
+            onst currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');

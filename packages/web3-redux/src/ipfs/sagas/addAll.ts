@@ -38,14 +38,17 @@ export function* addAll(action: AddAllAction) {
                 );
         }
     } catch (error) {
-        const err = error as Error
+        const err = error as Error;
         yield* put(
-            createError({
-                id: action.meta.uuid,
-                errorMessage: err.message,
-                stack: err.stack,
-                type: ADD_ALL_ERROR,
-            }),
+            createError(
+                {
+                    id: action.meta.uuid,
+                    errorMessage: err.message,
+                    stack: err.stack,
+                    type: ADD_ALL_ERROR,
+                },
+                action.meta.uuid,
+            ),
         );
     }
 }

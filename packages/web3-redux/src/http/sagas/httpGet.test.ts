@@ -67,12 +67,15 @@ describe('http/sagas/httpGet.test.ts', () => {
                 .call(HTTPCacheCRUD.db.get, url)
                 .next({ data })
                 .put(
-                    createError({
-                        id: action.meta.uuid,
-                        errorMessage: (error as Error).message,
-                        stack: (error as Error).stack,
-                        type: HTTP_GET_ERROR,
-                    }),
+                    createError(
+                        {
+                            id: action.meta.uuid,
+                            errorMessage: (error as Error).message,
+                            stack: (error as Error).stack,
+                            type: HTTP_GET_ERROR,
+                        },
+                        action.meta.uuid,
+                    ),
                 )
                 .next()
                 .isDone();

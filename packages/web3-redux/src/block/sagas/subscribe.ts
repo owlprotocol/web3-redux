@@ -100,14 +100,17 @@ export function* subscribeSaga(action: SubscribeAction) {
             }
         }
     } catch (error) {
-        const err = error as Error
+        const err = error as Error;
         yield* put(
-            createError({
-                id: action.meta.uuid,
-                errorMessage: err.message,
-                stack: err.stack,
-                type: SUBSCRIBE_ERROR,
-            }),
+            createError(
+                {
+                    id: action.meta.uuid,
+                    errorMessage: err.message,
+                    stack: err.stack,
+                    type: SUBSCRIBE_ERROR,
+                },
+                action.meta.uuid,
+            ),
         );
     } finally {
         yield* put({ type: SUBSCRIBE_DONE });

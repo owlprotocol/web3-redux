@@ -1,4 +1,4 @@
-import { FETCH, fetch, FetchAction, isFetchAction } from './fetch.js';
+import { FETCH, fetchAction, FetchAction, isFetchAction } from './fetch.js';
 import { SUBSCRIBE, subscribe, SubscribeAction, isSubscribeAction } from './subscribe.js';
 import { UNSUBSCRIBE, unsubscribe, UnsubscribeAction, isUnsubscribeAction } from './unsubscribe.js';
 
@@ -13,7 +13,7 @@ export type { FetchAction, SubscribeAction, UnsubscribeAction };
 
 export {
     FETCH,
-    fetch,
+    fetchAction as fetch,
     isFetchAction,
     SUBSCRIBE,
     subscribe,

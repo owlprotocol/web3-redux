@@ -431,7 +431,7 @@ export function createCRUDModel<
         const id2 = idToDexieId(id);
         const id2Dep = idToStr(id);
 
-        return useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep]);
+        return useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep], 'loading' as 'loading');
     };
     //TODO: string array id
     const useGetBulk = (ids: Partial<T_ID>[]) => {
@@ -440,14 +440,14 @@ export function createCRUDModel<
 
         const ids2 = compact(ids.map(idToDexieId));
         const ids2Dep = ids.map(idToStr).join(SEPARATOR);
-        return useLiveQuery(() => table.bulkGet(ids2), [ids2Dep]);
+        return useLiveQuery(() => table.bulkGet(ids2), [ids2Dep], 'loading' as 'loading');
     };
     const useWhere = (filter: Partial<T_Encoded>) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
         const filterDep = JSON.stringify(filter);
-        return useLiveQuery(() => table.where(filter).toArray(), [filterDep]);
+        return useLiveQuery(() => table.where(filter).toArray(), [filterDep], 'loading' as 'loading');
     };
 
     /** Redux ORM Hooks */

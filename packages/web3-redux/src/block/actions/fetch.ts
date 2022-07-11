@@ -17,7 +17,7 @@ export interface FetchActionInput {
     returnTransactionObjects?: boolean;
 }
 /** @category Actions */
-export const fetch = createAction(FETCH, (payload: FetchActionInput, uuid?: string) => {
+export const fetchAction = createAction(FETCH, (payload: FetchActionInput, uuid?: string) => {
     return {
         payload,
         meta: {
@@ -27,8 +27,8 @@ export const fetch = createAction(FETCH, (payload: FetchActionInput, uuid?: stri
 });
 
 /** @internal */
-export type FetchAction = ReturnType<typeof fetch>;
+export type FetchAction = ReturnType<typeof fetchAction>;
 /** @internal */
-export const isFetchAction = fetch.match;
+export const isFetchAction = fetchAction.match;
 
-export default fetch;
+export default fetchAction;

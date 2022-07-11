@@ -1,7 +1,7 @@
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import jsdom from 'mocha-jsdom';
+import sinon from 'sinon';
 
 import { name } from '../common.js';
 
@@ -10,6 +10,7 @@ import { BlockTransaction, validate } from '../model/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import BlockCRUD from '../crud.js';
 import { network1336 } from '../../network/data.js';
+import fetchAction from '../actions/fetch.js';
 import { useBlock } from './index.js';
 
 const networkId = network1336.networkId;
@@ -17,11 +18,23 @@ const web3 = network1336.web3!;
 
 describe(`${name}/hooks/useBlock.test.tsx`, () => {
     let store: StoreType;
+    let dispatchSpy: sinon.SinonSpy;
+    const createActionSpy = sinon.spy(BlockCRUD.actions, 'create');
     let wrapper: any;
+
+    after(() => {
+        createActionSpy.restore();
+    });
 
     beforeEach(() => {
         store = createStore();
+        dispatchSpy = sinon.spy(store, 'dispatch');
+        createActionSpy.resetHistory();
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
+    });
+
+    afterEach(() => {
+        dispatchSpy.restore();
     });
 
     describe('useBlock', () => {
@@ -49,46 +62,61 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
                 wrapper,
             });
 
-            await waitForNextUpdate();
+            await waitForNextUpdate(); //load undefined & fetch
+            await waitForNextUpdate(); //fetch result
 
             const currentCall = result.current;
             assert.deepEqual(currentCall, expected, 'result.current');
+
+            assert.isTrue(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
+            assert.isTrue(createActionSpy.calledOnce, 'createAction called');
         });
 
         it('(networkId, number, false)', async () => {
+            store.dispatch(BlockCRUD.actions.create(expected));
+
             const { result, waitForNextUpdate } = renderHook(() => useBlock(networkId, expected.number, false), {
                 wrapper,
             });
 
-            store.dispatch(BlockCRUD.actions.create(expected));
             await waitForNextUpdate();
 
             const currentCall = result.current;
             assert.deepEqual(currentCall, expected, 'result.current');
+
+            assert.isFalse(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
+            assert.isTrue(createActionSpy.calledOnce, 'createAction called');
         });
 
-        //TODO: Check initial render of hook to avoid unecessary fetch
         it('(networkId, number, ifnull): null', async () => {
             const { result, waitForNextUpdate } = renderHook(() => useBlock(networkId, expected.number, 'ifnull'), {
                 wrapper,
             });
 
-            await waitForNextUpdate();
+            await waitForNextUpdate(); //load undefined & fetch
+            await waitForNextUpdate(); //fetch result
 
             const currentCall = result.current;
             assert.deepEqual(currentCall, expected, 'result.current');
+
+            assert.isTrue(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
+            assert.isTrue(createActionSpy.calledOnce, 'createAction called');
         });
 
         it('(networkId, number, ifnull): defined', async () => {
+            store.dispatch(BlockCRUD.actions.create(expected));
+
             const { result, waitForNextUpdate } = renderHook(() => useBlock(networkId, expected.number, 'ifnull'), {
                 wrapper,
             });
 
-            store.dispatch(BlockCRUD.actions.create(expected));
             await waitForNextUpdate();
 
             const currentCall = result.current;
             assert.deepEqual(currentCall, expected, 'result.current');
+
+            assert.isFalse(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
+            assert.isTrue(createActionSpy.calledOnce, 'createAction called');
         });
     });
 });

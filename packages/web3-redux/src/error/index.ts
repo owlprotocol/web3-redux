@@ -7,6 +7,7 @@ export * from './model/index.js';
 export * from './actions/index.js';
 
 import CRUDModel from './crud.js';
+import rootSaga from './sagas/index.js';
 
 const model = {
     name: CRUDModel.name,
@@ -16,7 +17,7 @@ const model = {
     },
     sagas: {
         ...CRUDModel.sagas,
-        rootSaga: CRUDModel.sagas.crudRootSaga,
+        rootSaga,
     },
     hooks: {
         ...CRUDModel.hooks,

@@ -63,13 +63,14 @@ export function validateId(item: Partial<ContractId>) {
 
 /** @internal */
 export function validate(contract: Contract): Contract {
-    const { address, abi } = contract;
+    const { networkId, address, abi } = contract;
     const eventAbis = filter(abi, (x) => x.type === 'event');
     const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
 
     const result = {
         ...contract,
         address: address.toLowerCase(),
+        id: toReduxOrmId(validateId({ networkId, address })),
     };
     if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;
 

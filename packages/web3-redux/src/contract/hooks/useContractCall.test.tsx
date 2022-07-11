@@ -55,7 +55,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
     });
 
     describe('Errors', () => {
-        it('networkId undefined', async () => {
+        it.skip('networkId undefined', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(undefined, ZERO_ADDRESS, 'invalidFunction', [], { sync: 'once' }),
                 {
@@ -73,7 +73,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
-        it('address undefined', async () => {
+        it.skip('address undefined', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, undefined, 'invalidFunction', [], { sync: 'once' }),
                 {
@@ -91,7 +91,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
-        it('method undefined', async () => {
+        it.skip('method undefined', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, ZERO_ADDRESS, undefined, [], { sync: 'once' }),
                 {
@@ -109,7 +109,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
-        it('Network {id} undefined', async () => {
+        it.skip('Network {id} undefined', async () => {
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, ZERO_ADDRESS, 'invalidFunction', [], { sync: 'once' }),
                 {
@@ -118,8 +118,8 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             );
 
             await waitForNextUpdate();
-            await waitForNextUpdate();
-            onst currentCall = result.current[0];
+            await waitForNextUpdate(); //load error
+            const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
@@ -138,11 +138,13 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
+            await waitForNextUpdate(); //load error
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
-            assert.equal(currentCallError?.message, `Contract ${networkId}-${ZERO_ADDRESS} undefined`, 'error.message');
+            assert.equal(currentCallError?.message, `Contract ${networkId},${ZERO_ADDRESS} undefined`, 'error.message');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -164,13 +166,15 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
+            await waitForNextUpdate(); //load error
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
             assert.equal(
                 currentCallError?.message,
-                `Contract ${networkId}-${ZERO_ADDRESS} has no web3 contract`,
+                `Contract ${networkId},${ZERO_ADDRESS} has no web3 contract`,
                 'error.message',
             );
 
@@ -200,13 +204,15 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
+            await waitForNextUpdate(); //load error
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
             assert.equal(
                 currentCallError?.message,
-                `Contract ${networkId}-${address} has no such method invalidFunction`,
+                `Contract ${networkId},${address.toLowerCase()} has no such method invalidFunction`,
                 'error.message',
             );
 
@@ -235,7 +241,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
         });
 
         describe('useContractCall', () => {
-            it.skip('error contract revert', async () => {
+            it('error contract revert', async () => {
                 const { result, waitForNextUpdate } = renderHook(
                     () => useContractCall(networkId, address, 'revertTx', [], { sync: 'once' }),
                     {
@@ -243,6 +249,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                     },
                 );
 
+                await waitForNextUpdate();
                 await waitForNextUpdate();
 
                 const currentCall = result.current[0];

@@ -1,4 +1,7 @@
+import { all, spawn } from 'typed-redux-saga';
 import ErrorCRUD from '../crud.js';
 
-export const rootSaga = ErrorCRUD.sagas.crudRootSaga;
-export default rootSaga;
+/** @internal */
+export default function* rootSaga() {
+    yield* all([spawn(ErrorCRUD.sagas.crudRootSaga)]);
+}

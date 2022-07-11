@@ -49,9 +49,9 @@ export function createCRUDModel<
 
     const idToDexieId = (id: string | IndexableTypeArray | Partial<T_ID>): string | IndexableTypeArray | undefined => {
         if (typeof id === 'string') {
-            const idSplit = id.split(SEPARATOR);
-            if (idSplit.length == 1) return idSplit[0];
-            return idSplit;
+            //const idSplit = id.split(SEPARATOR);
+            //if (idSplit.length == 1) return idSplit[0];
+            return id;
         } else if (Array.isArray(id)) id;
         else {
             if (!isDefinedRecord(id)) return undefined;

@@ -1,8 +1,8 @@
-import { put, call, select } from 'typed-redux-saga';
+import { put, call, select, takeEvery } from 'typed-redux-saga';
 import { create as createError } from '../../error/actions/index.js';
 
 import { CallAction, CALL } from '../actions/index.js';
-import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
+//import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import EthCallCRUD from '../../ethcall/crud.js';
@@ -22,10 +22,11 @@ export function* callSaga(action: CallAction) {
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
         const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
-        if (!contract) throw new Error(`Contract ${ContractCRUD.validateId(payload)} undefined`);
+        if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${ContractCRUD.validateId(payload)} has no web3 contract`);
+        if (!web3Contract)
+            throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
 
         const method = web3Contract.methods[payload.method];
         if (!method)
@@ -95,11 +96,14 @@ export function* callSaga(action: CallAction) {
 }
 
 export function* watchCallSaga() {
+    yield* takeEvery(CALL, callSaga);
+    /*
     yield takeEveryBuffered(CALL, callSaga, {
         bufferSize: 10,
         bufferBatchTimeout: 200,
         bufferCompletionTimeout: 1000,
     });
+    */
 }
 
 export default watchCallSaga;

@@ -58,19 +58,29 @@ export function getIdArgs(id: EthCallId): EthCallId {
 }
 
 /** @internal */
-export function validateId(item: EthCallId) {
-    return [item.networkId, item.to, item.data, item.defaultBlock ?? 'latest', item.from ?? ADDRESS_0, item.gas ?? 0];
+export function validateId(item: Partial<EthCallId>) {
+    return [
+        item.networkId,
+        item.to,
+        item.data,
+        item.defaultBlock ?? 'latest',
+        item.from?.toLowerCase() ?? ADDRESS_0,
+        item.gas ?? 0,
+    ] as [string, string, string, number | 'latest', string, number];
 }
 
 /** @internal */
-export function validate(item: EthCall): EthCall {
-    const toChecksum = item.to.toLowerCase();
-    const fromCheckSum = item.from ? item.from.toLowerCase() : undefined;
+export function validate(item: Partial<EthCall>): EthCall {
+    const [networkId, to, data, defaultBlock, from, gas] = validateId(item);
 
     return {
         ...item,
-        to: toChecksum,
-        from: fromCheckSum,
+        networkId,
+        to,
+        data,
+        defaultBlock,
+        from,
+        gas,
     };
 }
 

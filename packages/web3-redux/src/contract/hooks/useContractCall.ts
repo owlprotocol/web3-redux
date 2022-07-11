@@ -100,7 +100,6 @@ export function useContractCall<
     //Error
     const reduxErrorResponse = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
     const reduxError = reduxErrorResponse === 'loading' ? undefined : reduxErrorResponse;
-    console.debug({ reduxError });
     const error = useMemo(() => {
         if (!networkId) return new Error('networkId undefined');
         else if (!address) return new Error('address undefined');

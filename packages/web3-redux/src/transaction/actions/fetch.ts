@@ -5,11 +5,11 @@ import { TransactionId } from '../model/interface.js';
 /** @internal */
 export const FETCH = `${name}/FETCH`;
 /** @category Actions */
-export const fetch = createAction<TransactionId>(FETCH);
+export const fetchAction = createAction<TransactionId>(FETCH);
 
 /** @internal */
-export type FetchAction = ReturnType<typeof fetch>;
+export type FetchAction = ReturnType<typeof fetchAction>;
 /** @internal */
-export const isFetchAction = fetch.match;
+export const isFetchAction = fetchAction.match;
 
-export default fetch;
+export default fetchAction;

@@ -15,7 +15,7 @@ const model = {
     actionTypes: CRUDModel.actionTypes,
     actions: {
         ...CRUDModel.actions,
-        fetch: Actions.fetch,
+        fetch: Actions.fetchAction,
     },
     sagas: {
         ...CRUDModel.sagas,

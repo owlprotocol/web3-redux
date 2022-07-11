@@ -1,4 +1,4 @@
-import { assert, expect } from 'chai';
+import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import sinon from 'sinon';
@@ -65,8 +65,8 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
             await waitForNextUpdate(); //load undefined & fetch
             await waitForNextUpdate(); //fetch result
 
-            const currentCall = result.current;
-            assert.deepEqual(currentCall, expected, 'result.current');
+            const current = result.current;
+            assert.deepEqual(current, expected, 'result.current');
 
             assert.isTrue(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
             assert.isTrue(createActionSpy.calledOnce, 'createAction called');
@@ -81,8 +81,8 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current;
-            assert.deepEqual(currentCall, expected, 'result.current');
+            const current = result.current;
+            assert.deepEqual(current, expected, 'result.current');
 
             assert.isFalse(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
             assert.isTrue(createActionSpy.calledOnce, 'createAction called');
@@ -96,8 +96,8 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
             await waitForNextUpdate(); //load undefined & fetch
             await waitForNextUpdate(); //fetch result
 
-            const currentCall = result.current;
-            assert.deepEqual(currentCall, expected, 'result.current');
+            const current = result.current;
+            assert.deepEqual(current, expected, 'result.current');
 
             assert.isTrue(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
             assert.isTrue(createActionSpy.calledOnce, 'createAction called');
@@ -112,8 +112,8 @@ describe(`${name}/hooks/useBlock.test.tsx`, () => {
 
             await waitForNextUpdate();
 
-            const currentCall = result.current;
-            assert.deepEqual(currentCall, expected, 'result.current');
+            const current = result.current;
+            assert.deepEqual(current, expected, 'result.current');
 
             assert.isFalse(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
             assert.isTrue(createActionSpy.calledOnce, 'createAction called');

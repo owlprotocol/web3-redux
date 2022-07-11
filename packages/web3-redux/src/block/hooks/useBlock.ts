@@ -21,16 +21,12 @@ export const useBlock = (
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 
     const action = useMemo(() => {
-        if (
-            block != 'loading' &&
-            networkId &&
-            number &&
-            web3Exists &&
-            ((fetch === 'ifnull' && !block) || fetch === true)
-        ) {
-            return fetchAction({ networkId, blockHashOrBlockNumber: number, returnTransactionObjects });
+        if (block != 'loading' && networkId && number && web3Exists) {
+            if ((fetch === 'ifnull' && !block) || fetch === true) {
+                return fetchAction({ networkId, blockHashOrBlockNumber: number, returnTransactionObjects });
+            }
         }
-    }, [networkId, number, fetch, returnTransactionObjects, web3Exists, block]);
+    }, [block, networkId, number, web3Exists, fetch, returnTransactionObjects]);
 
     useEffect(() => {
         if (action) dispatch(action);

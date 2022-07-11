@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import NetworkCRUD from '../../network/crud.js';
-import { fetch as fetchAction } from '../actions/index.js';
+import { fetchAction as fetchAction } from '../actions/index.js';
 import TransactionCRUD from '../crud.js';
 
 /**
@@ -17,20 +17,21 @@ export const useTransaction = (
 
     const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
     const transaction = TransactionCRUD.hooks.useGet({ networkId, hash });
-
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 
     const action = useMemo(() => {
-        if (networkId && hash && web3Exists && ((fetch === 'ifnull' && !transaction) || fetch === true)) {
-            return fetchAction({ networkId, hash });
+        if (transaction != 'loading' && networkId && hash && web3Exists) {
+            if ((fetch === 'ifnull' && !transaction) || fetch === true) {
+                return fetchAction({ networkId, hash });
+            }
         }
-    }, [networkId, hash, fetch, dispatch, web3Exists]);
+    }, [transaction, networkId, hash, web3Exists, fetch]);
 
     useEffect(() => {
         if (action) dispatch(action);
     }, [dispatch, action]);
 
-    return transaction;
+    return transaction === 'loading' ? undefined : transaction;
 };
 
 export default useTransaction;

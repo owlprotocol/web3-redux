@@ -1,1 +1,1 @@
-export const name = 'Ipfs';
+export const name = 'IPFSCache';

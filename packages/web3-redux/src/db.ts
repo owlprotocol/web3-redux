@@ -16,57 +16,71 @@ import { Network, NetworkIndex } from './network/model/index.js';
 import { Sync, SyncIndex } from './sync/model/index.js';
 import { Transaction, TransactionIndex } from './transaction/model/index.js';
 
+import { name as _4ByteName } from './4byte/common.js';
+import { name as BlockName } from './block/common.js';
+import { name as ConfigName } from './config/common.js';
+import { name as ContractName } from './contract/common.js';
+import { name as ContractEventName } from './contractevent/common.js';
+import { name as ContractSendName } from './contractsend/common.js';
+import { name as ReduxErrorName } from './error/common.js';
+import { name as EthCallName } from './ethcall/common.js';
+import { name as HTTPCacheName } from './http/common.js';
+import { name as IPFSCacheName } from './ipfs/common.js';
+import { name as NetworkName } from './network/common.js';
+import { name as SyncName } from './sync/common.js';
+import { name as TransactionName } from './transaction/common.js';
+
 import isClient from './utils/isClient.js';
 
 export class Web3ReduxDexie extends Dexie {
-    _4Byte!: Table<_4ByteSignature>;
-    Block!: Table<BlockTransaction>;
-    Config!: Table<Config>;
-    Contract!: Table<Contract>;
-    ContractEvent!: Table<ContractEvent>;
-    ContractSend!: Table<ContractSend>;
-    ReduxError!: Table<ReduxError>;
-    EthCall!: Table<EthCall>;
-    HTTPCache!: Table<Http>;
-    IPFSCache!: Table<Ipfs>;
-    Network!: Table<Network>;
-    Sync!: Table<Sync>;
-    EthTransaction!: Table<Transaction>;
+    [_4ByteName]!: Table<_4ByteSignature>;
+    [BlockName]!: Table<BlockTransaction>;
+    [ConfigName]!: Table<Config>;
+    [ContractName]!: Table<Contract>;
+    [ContractEventName]!: Table<ContractEvent>;
+    [ContractSendName]!: Table<ContractSend>;
+    [ReduxErrorName]!: Table<ReduxError>;
+    [EthCallName]!: Table<EthCall>;
+    [HTTPCacheName]!: Table<Http>;
+    [IPFSCacheName]!: Table<Ipfs>;
+    [NetworkName]!: Table<Network>;
+    [SyncName]!: Table<Sync>;
+    [TransactionName]!: Table<Transaction>;
 
     constructor() {
         super(REDUX_ROOT);
         this.version(1).stores({
-            _4Byte: _4ByteIndex,
-            Block: BlockIndex,
-            Config: ConfigIndex,
-            Contract: ContractIndex,
-            ContractEvent: ContractEventIndex,
-            ContractSend: ContractSendIndex,
-            ReduxError: ReduxErrorIndex,
-            EthCall: EthCallIndex,
-            HTTPCache: HttpIndex,
-            IPFSCache: IpfsIndex,
-            Network: NetworkIndex,
-            Sync: SyncIndex,
-            EthTransaction: TransactionIndex,
+            [_4ByteName]: _4ByteIndex,
+            [BlockName]: BlockIndex,
+            [ConfigName]: ConfigIndex,
+            [ContractName]: ContractIndex,
+            [ContractEventName]: ContractEventIndex,
+            [ContractSendName]: ContractSendIndex,
+            [ReduxErrorName]: ReduxErrorIndex,
+            [EthCallName]: EthCallIndex,
+            [HTTPCacheName]: HttpIndex,
+            [IPFSCacheName]: IpfsIndex,
+            [NetworkName]: NetworkIndex,
+            [SyncName]: SyncIndex,
+            [TransactionName]: TransactionIndex,
         });
     }
 
     async clear() {
         const promises = [
-            this._4Byte.clear(),
-            this.Block.clear(),
-            this.Config.clear(),
-            this.Contract.clear(),
-            this.ContractEvent.clear(),
-            this.ContractSend.clear(),
-            this.ReduxError.clear(),
-            this.EthCall.clear(),
-            this.HTTPCache.clear(),
-            this.IPFSCache.clear(),
-            this.Network.clear(),
-            this.Sync.clear(),
-            this.EthTransaction.clear(),
+            this[_4ByteName].clear(),
+            this[BlockName].clear(),
+            this[ConfigName].clear(),
+            this[ContractName].clear(),
+            this[ContractEventName].clear(),
+            this[ContractSendName].clear(),
+            this[ReduxErrorName].clear(),
+            this[EthCallName].clear(),
+            this[HTTPCacheName].clear(),
+            this[IPFSCacheName].clear(),
+            this[NetworkName].clear(),
+            this[SyncName].clear(),
+            this[TransactionName].clear(),
         ];
         return Promise.all(promises);
     }

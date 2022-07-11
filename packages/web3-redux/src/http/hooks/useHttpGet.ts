@@ -10,14 +10,15 @@ import HTTPCacheCRUD from '../crud.js';
 export const useHttpGet = (uri: string | undefined) => {
     const dispatch = useDispatch();
     const httpRequest = HTTPCacheCRUD.hooks.useGet({ id: uri });
-    const dataExists = !!httpRequest?.data;
+    const data = httpRequest == 'loading' ? undefined : httpRequest?.data;
+    const dataExists = !!data;
 
     useEffect(() => {
         //Get http api content
         if (uri && !dataExists) dispatch(httpGetAction({ url: uri }));
     }, [uri, dataExists]);
 
-    return [httpRequest?.data];
+    return [data];
 };
 
 export default useHttpGet;

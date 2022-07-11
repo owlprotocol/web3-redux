@@ -51,10 +51,12 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
         dispatch(sendAction);
     }, [networkId, address, method, JSON.stringify(args), value, args, dispatch]);
 
-    const reduxError = ErrorCRUD.hooks.useGet(sendAction?.meta.uuid);
+    const reduxErrorResponse = ErrorCRUD.hooks.useGet(sendAction?.meta.uuid);
+    const reduxError = reduxErrorResponse === 'loading' ? undefined : reduxErrorResponse;
     if (reduxError) error = reduxError.error;
 
-    const contractSend = ContractSendCRUD.hooks.useGet(sendAction?.meta.uuid);
+    const contractSendResponse = ContractSendCRUD.hooks.useGet(sendAction?.meta.uuid);
+    const contractSend = contractSendResponse === 'loading' ? undefined : contractSendResponse;
 
     return [sendCallback, { error, sendAction, contractSend }];
 }

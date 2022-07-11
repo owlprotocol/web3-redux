@@ -1,10 +1,11 @@
 import { assert } from 'chai';
 
+import { name } from './common.js';
 import { block1 } from './data.js';
 import BlockCRUD from './crud.js';
 import { createStore, StoreType } from '../store.js';
 
-describe('pet/crud.test.js', () => {
+describe(`${name}/crud.test.js`, () => {
     describe('store', () => {
         let store: StoreType;
 

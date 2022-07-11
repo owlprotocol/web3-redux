@@ -62,13 +62,14 @@ export function useContractCall<
         }
     }, [web3ContractMethod]);
 
-    const ethCall = EthCallCRUD.hooks.useGet({
+    const ethCallResponse = EthCallCRUD.hooks.useGet({
         networkId,
         to: address,
         data,
         from,
         gas,
     });
+    const ethCall = ethCallResponse === 'loading' ? undefined : ethCallResponse;
     const returnValue = ethCall?.returnValue;
     //const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
     const returnValueExists = returnValue != undefined;
@@ -76,37 +77,40 @@ export function useContractCall<
     const argsHash = JSON.stringify(args);
     const { callAction, syncAction } =
         useMemo(() => {
-            if (networkId && address && method && sync === 'ifnull' && !returnValueExists) {
-                return callSynced({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args: args as any[],
-                    from,
-                    sync: 'once',
-                });
-            } else if (networkId && address && method && !!sync && sync != 'ifnull') {
-                return callSynced({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args: args as any[],
-                    from,
-                    sync,
-                });
-            } else if (networkId && address && method && !sync) {
-                const callAction = call({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args: args as any[],
-                    from,
-                });
-                return { callAction, syncAction: undefined };
+            if (ethCallResponse != 'loading' && networkId && address && method) {
+                if (sync === 'ifnull' && !returnValueExists) {
+                    const callAction = call({
+                        networkId,
+                        address,
+                        method: method as string,
+                        args: args as any[],
+                        from,
+                    });
+                    return { callAction, syncAction: undefined };
+                } else if (!!sync && sync != 'ifnull') {
+                    return callSynced({
+                        networkId,
+                        address,
+                        method: method as string,
+                        args: args as any[],
+                        from,
+                        sync,
+                    });
+                } else if (!sync) {
+                    const callAction = call({
+                        networkId,
+                        address,
+                        method: method as string,
+                        args: args as any[],
+                        from,
+                    });
+                    return { callAction, syncAction: undefined };
+                }
             }
-        }, [networkId, address, method, argsHash, JSON.stringify(sync)]) ?? {};
+        }, [networkId, address, method, argsHash, ethCallResponse, returnValueExists, JSON.stringify(sync)]) ?? {};
 
-    const reduxError = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
+    const reduxErrorResponse = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
+    const reduxError = reduxErrorResponse === 'loading' ? undefined : reduxErrorResponse;
     if (reduxError) error = reduxError.error;
 
     const callId = callAction?.payload.id;

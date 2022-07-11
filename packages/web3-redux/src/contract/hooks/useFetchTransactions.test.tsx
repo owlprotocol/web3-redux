@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import jsdom from 'mocha-jsdom';
+
 import { useFetchTransactions } from './useFetchTransactions.js';
 
 import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data.js';
@@ -14,7 +14,7 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 
 describe('contract/hooks/useFetchTransactions.test.tsx', () => {
-    jsdom({ url: 'http://localhost' });
+
 
     let store: StoreType;
     let wrapper: any;

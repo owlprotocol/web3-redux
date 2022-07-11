@@ -6,10 +6,10 @@ import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
 import { setNetworkId } from '../actions/index.js';
 
-import jsdom from 'mocha-jsdom';
+
 
 describe(`${name}/hooks/useNetworkId.test.tsx`, () => {
-    jsdom({ url: 'http://localhost' });
+
 
     let store: StoreType;
     let wrapper: any;

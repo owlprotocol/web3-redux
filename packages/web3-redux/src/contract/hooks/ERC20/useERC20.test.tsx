@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { renderHook } from '@testing-library/react-hooks';
-import jsdom from 'mocha-jsdom';
+
 import { useERC20 } from './useERC20.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
 
@@ -19,8 +19,6 @@ import { ERC20PresetMinterPauser } from '../../../typechain/ERC20PresetMinterPau
 import { ERC20PresetMinterPauserArtifact } from '../../../abis/index.js';
 
 describe(`${name}/hooks/useERC20.test.tsx`, () => {
-    jsdom({ url: 'http://localhost' });
-
     let store: StoreType;
     let wrapper: any;
 

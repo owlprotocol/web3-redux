@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import jsdom from 'mocha-jsdom';
+
 import { cloneDeep } from '../../utils/lodash/index.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
@@ -22,7 +22,7 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 
 describe(`${name}/hooks/useContractCall.test.tsx`, () => {
-    jsdom({ url: 'http://localhost' });
+
 
     let store: StoreType;
     let wrapper: any;

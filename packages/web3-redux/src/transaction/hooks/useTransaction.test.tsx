@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import Web3 from 'web3';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
-import jsdom from 'mocha-jsdom';
+
 import { getWeb3Provider } from '../../test/index.js';
 
 import { networkId, transaction1 } from '../../test/data.js';
@@ -15,8 +15,6 @@ import TransactionCRUD from '../crud.js';
 import { useTransaction } from './index.js';
 
 describe(`${name}/hooks/useTransaction.tsx`, () => {
-    jsdom({ url: 'http://localhost' });
-
     let store: StoreType;
     let wrapper: any;
 

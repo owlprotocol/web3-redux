@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import axios from 'axios';
 import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
-import jsdom from 'mocha-jsdom';
+
 import { useFetchAbi } from './useFetchAbi.js';
 
 import { WETH } from '../../abis/index.js';
@@ -13,7 +13,7 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 
 describe('contract/hooks/useFetchAbi.test.tsx', () => {
-    jsdom({ url: 'http://localhost' });
+
 
     let store: StoreType;
     let wrapper: any;

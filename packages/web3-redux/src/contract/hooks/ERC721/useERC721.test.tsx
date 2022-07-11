@@ -5,7 +5,7 @@ import Web3 from 'web3';
 import { renderHook } from '@testing-library/react-hooks';
 import axios from 'axios';
 import * as moxios from 'moxios';
-import jsdom from 'mocha-jsdom';
+
 import { useERC721 } from './useERC721.js';
 import { cloneDeep } from '../../../utils/lodash/index.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
@@ -23,8 +23,6 @@ import { ERC721PresetMinterPauserAutoId } from '../../../typechain/ERC721PresetM
 import { ERC721PresetMinterPauserAutoIdArtifact } from '../../../abis/index.js';
 
 describe('contract/hooks/useERC721.test.tsx', () => {
-    jsdom({ url: 'http://localhost' });
-
     let store: StoreType;
     let wrapper: any;
 

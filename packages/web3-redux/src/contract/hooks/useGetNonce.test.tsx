@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
-import jsdom from 'mocha-jsdom';
+
 import { useGetNonce } from './useGetNonce.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
 import { networkId, ADDRESS_0 } from '../../test/data.js';
@@ -15,7 +15,7 @@ import ContractCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
-    jsdom({ url: 'http://localhost' });
+
 
     let web3: Web3;
     let store: StoreType;

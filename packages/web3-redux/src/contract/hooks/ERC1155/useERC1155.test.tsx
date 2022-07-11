@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import Web3 from 'web3';
 import { renderHook } from '@testing-library/react-hooks';
-import jsdom from 'mocha-jsdom';
+
 import { useERC1155 } from './useERC1155.js';
 import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
 
@@ -19,8 +19,6 @@ import { ERC1155PresetMinterPauser } from '../../../typechain/ERC1155PresetMinte
 import { ERC1155PresetMinterPauserArtifact } from '../../../abis/index.js';
 
 describe(`${name}/hooks/useERC1155.test.tsx`, () => {
-    jsdom({ url: 'http://localhost' });
-
     let store: StoreType;
     let wrapper: any;
 

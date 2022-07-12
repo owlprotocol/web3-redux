@@ -67,6 +67,9 @@ export function createCRUDModel<
     const UPDATE_BATCHED = `${UPDATE}/BATCHED`;
     const DELETE = `${name}/DELETE`;
     const DELETE_BATCHED = `${DELETE}/BATCHED`;
+    const HYDRATE = `${name}/HYDRATE`;
+    const HYDRATE_BATCHED = `${HYDRATE}/BATCHED`;
+    const HYDRATE_ALL = `${HYDRATE}/ALL`;
 
     const createAction = createReduxAction(CREATE, (payload: T, uuid?: string) => {
         return {
@@ -116,6 +119,30 @@ export function createCRUDModel<
             },
         };
     });
+    const hydrateAction = createReduxAction(HYDRATE, (payload: T_ID, uuid?: string) => {
+        return {
+            payload: validateId(payload),
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    });
+    const hydrateBatchedAction = createReduxAction(HYDRATE_BATCHED, (payload: T_ID[], uuid?: string) => {
+        return {
+            payload: payload.map(validateId),
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    });
+    const hydrateAllAction = (uuid?: string) => {
+        return {
+            type: HYDRATE_ALL,
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    };
 
     const actionTypes = {
         CREATE,
@@ -124,6 +151,9 @@ export function createCRUDModel<
         UPDATE_BATCHED,
         DELETE,
         DELETE_BATCHED,
+        HYDRATE,
+        HYDRATE_BATCHED,
+        HYDRATE_ALL,
     };
 
     const actions = {
@@ -133,6 +163,9 @@ export function createCRUDModel<
         updateBatched: updateBatchedAction,
         delete: deleteAction,
         deleteBatched: deleteBatchedAction,
+        hydrate: hydrateAction,
+        hydrateBatched: hydrateBatchedAction,
+        hydrateAll: hydrateAllAction,
     };
 
     type CreateAction = ReturnType<typeof actions.create>;
@@ -141,6 +174,9 @@ export function createCRUDModel<
     type UpdateBatchedAction = ReturnType<typeof actions.updateBatched>;
     type DeleteAction = ReturnType<typeof actions.delete>;
     type DeleteBatchedAction = ReturnType<typeof actions.deleteBatched>;
+    type HydrateAction = ReturnType<typeof actions.hydrate>;
+    type HydrateBatchedAction = ReturnType<typeof actions.hydrateBatched>;
+    type HydrateAllAction = ReturnType<typeof actions.hydrateAll>;
 
     const isAction = (action: Action) => {
         return (
@@ -149,7 +185,10 @@ export function createCRUDModel<
             updateAction.match(action) ||
             updateBatchedAction.match(action) ||
             deleteAction.match(action) ||
-            deleteBatchedAction.match(action)
+            deleteBatchedAction.match(action) ||
+            hydrateAction.match(action) ||
+            hydrateBatchedAction.match(action) ||
+            HYDRATE_ALL === action.type
         );
     };
 
@@ -200,7 +239,7 @@ export function createCRUDModel<
     };
 
     /** Dexie Getters */
-    const get = async (id: T_ID | string | undefined) => {
+    const get = async (id: T_ID | IndexableTypeArray | string | undefined) => {
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
@@ -208,7 +247,7 @@ export function createCRUDModel<
         if (id2) return table.get(id2);
     };
 
-    const bulkGet = async (id: T_ID[] | string[] | undefined) => {
+    const bulkGet = async (id: (T_ID | IndexableTypeArray | string)[] | undefined) => {
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
@@ -422,6 +461,63 @@ export function createCRUDModel<
             );
         }
     };
+    const hydrateSaga = function* (action: HydrateAction) {
+        try {
+            const { payload } = action;
+            const item = yield* call(get, payload);
+            if (item) yield* putSaga(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
+        } catch (error) {
+            yield* putSaga(
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: DELETE_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
+            );
+        }
+    };
+    const hydrateBatchedSaga = function* (action: HydrateBatchedAction) {
+        try {
+            const { payload } = action;
+
+            const items = yield* call(bulkGet, payload);
+            if (items) yield* putSaga(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
+        } catch (error) {
+            yield* putSaga(
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        errorMessage: (error as Error).message,
+                        stack: (error as Error).stack,
+                        type: DELETE_BATCHED_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
+            );
+        }
+    };
+    const hydrateAllSaga = function* (action: HydrateAllAction) {
+        try {
+            const items = yield* call(all);
+            if (items) yield* putSaga(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
+        } catch (error) {
+            yield* putSaga(
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        errorMessage: (error as Error).message,
+                        stack: (error as Error).stack,
+                        type: DELETE_BATCHED_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
+            );
+        }
+    };
 
     const crudRootSaga = function* () {
         yield* allSaga([
@@ -431,6 +527,9 @@ export function createCRUDModel<
             takeEvery(UPDATE_BATCHED, updateBatchedSaga),
             takeEvery(DELETE, deleteSaga),
             takeEvery(DELETE_BATCHED, deleteBatchedSaga),
+            takeEvery(HYDRATE, hydrateSaga),
+            takeEvery(HYDRATE_BATCHED, hydrateBatchedSaga),
+            takeEvery(HYDRATE_ALL, hydrateAllSaga),
         ]);
     };
 

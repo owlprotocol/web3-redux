@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { put as putSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { IndexableType, IndexableTypeArray } from 'dexie';
 import { createSelector } from 'redux-orm';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { compact, filter } from './utils/lodash/index.js';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
@@ -210,7 +211,7 @@ export function createCRUDModel<
     /** Redux ORM Selectors */
     //Only create selectors if orm model defined
     const ormModel = getOrm()[name];
-    const select = ormModel ? createSelector(getOrm()[name]) : (state: any, id: any) => undefined;
+    const select = ormModel ? createSelector(getOrm()[name]) : () => undefined;
     const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined): T | undefined => {
         if (!id) return undefined;
         return select(state, idToStr(id));
@@ -584,6 +585,31 @@ export function createCRUDModel<
     const useSelectWhere = (f: Partial<T>) => {
         return useSelector((state) => selectWhere(state, f));
     };
+    const useHydrate = (id: Partial<T_ID> | undefined, defaultItem?: Partial<T> | undefined) => {
+        const dispatch = useDispatch();
+        const item = useSelectByIdSingle(id);
+        const itemExists = !!item;
+
+        const itemResponse = useGet(id);
+        const isLoading = itemResponse === 'loading';
+        const itemDB = isLoading ? undefined : itemResponse;
+        const itemDBExists = !isLoading && !!itemDB;
+
+        useEffect(() => {
+            if (id && isDefinedRecord(id) && !itemExists) {
+                if (!itemDBExists && defaultItem) {
+                    dispatch(createAction({ ...defaultItem, ...id } as T));
+                } else if (itemDBExists) {
+                    dispatch(hydrateAction(id));
+                }
+            }
+        }, [dispatch, id, itemExists, itemDBExists, defaultItem]);
+
+        const returnValue = item ?? itemDB ?? defaultItem;
+        const returnOptions = { isLoading };
+
+        return [returnValue, returnOptions] as [typeof returnValue, typeof returnOptions];
+    };
 
     const hooks = {
         useGet,
@@ -593,6 +619,7 @@ export function createCRUDModel<
         useSelectByIdMany,
         useSelectAll,
         useSelectWhere,
+        useHydrate,
     };
 
     return {

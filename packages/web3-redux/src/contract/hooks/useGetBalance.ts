@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import NetworkCRUD from '../../network/crud.js';
 import SyncCRUD from '../../sync/crud.js';
 import { GenericSync } from '../../sync/model/index.js';
-import { getBalanceSynced } from '../actions/index.js';
+import { getBalance, getBalanceSynced } from '../actions/index.js';
 import ContractCRUD from '../crud.js';
 
 /**
@@ -29,8 +29,9 @@ export function useGetBalance(
     const { getBalanceAction, syncAction } =
         useMemo(() => {
             if (networkId && address && web3Exists) {
-                if (sync === 'ifnull' && !balanceExists) {
-                    return getBalanceSynced({ networkId, address, sync: 'once' });
+                if (sync === false || (sync === 'ifnull' && !balanceExists)) {
+                    const getBalanceAction = getBalance({ networkId, address });
+                    return { getBalanceAction, syncAction: undefined };
                 } else if (!!sync && sync != 'ifnull') {
                     return getBalanceSynced({ networkId, address, sync });
                 }

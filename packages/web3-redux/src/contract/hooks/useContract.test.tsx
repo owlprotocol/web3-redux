@@ -1,31 +1,26 @@
 import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import Web3 from 'web3';
 
 import { useContract } from './useContract.js';
 import { map } from '../../utils/lodash/index.js';
-import { getWeb3Provider } from '../../test/index.js';
 
 import { name } from '../common.js';
-import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
+import { network1336 } from '../../network/data.js';
+import expectThrowsAsync from '../../test/expectThrowsAsync.js';
+
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
 
 describe(`${name}/hooks/useContract.test.tsx`, () => {
-
-
     let store: StoreType;
-    let web3: Web3;
     let address: string;
 
     let wrapper: any;
     before(async () => {
-        const provider = getWeb3Provider();
-        //@ts-ignore
-        web3 = new Web3(provider);
-
         const accounts = await web3.eth.getAccounts();
         address = accounts[0];
     });
@@ -49,6 +44,9 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
         const expected = await web3.eth.getBalance(address);
         assert.equal(result.current?.balance, expected, 'result.current.balance');
         assert.deepEqual(map(result.all, 'balance'), [undefined, expected], 'result.all');
+
+        //No additional re-renders frm background tasks
+        await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
     });
 
     it('getNonce', async () => {
@@ -63,6 +61,9 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
         const expected = await web3.eth.getTransactionCount(address);
         assert.equal(result.current?.nonce, expected, 'result.current.nonce');
         assert.deepEqual(map(result.all, 'nonce'), [undefined, expected], 'result.all');
+
+        //No additional re-renders frm background tasks
+        await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
     });
 
     it('getCode', async () => {
@@ -75,6 +76,8 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
 
         await waitForNextUpdate();
         assert.equal(result.current?.code, '0x', 'result.current.nonce');
-        assert.deepEqual(map(result.all, 'code'), [undefined, '0x'], 'result.all');
+
+        //No additional re-renders frm background tasks
+        await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
     });
 });

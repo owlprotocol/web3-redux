@@ -13,20 +13,17 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import TransactionCRUD from '../../transaction/crud.js';
 import BlockCRUD from '../../block/crud.js';
+import { network1336 } from '../../network/data.js';
+
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
 
 describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
-
-
-    let web3: Web3;
     let store: StoreType;
     let wrapper: any;
     let address: string;
 
     before(async () => {
-        const provider = getWeb3Provider();
-        //@ts-ignore
-        web3 = new Web3(provider);
-
         const accounts = await web3.eth.getAccounts();
         address = accounts[0];
     });
@@ -46,7 +43,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             await waitForNextUpdate();
             const expected = await web3.eth.getBalance(address);
             assert.equal(result.current, expected, 'contract.balance != expected');
-            assert.deepEqual(result.all, [undefined, expected], 'result.all');
+
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -56,7 +53,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
                 wrapper,
             });
             assert.isUndefined(result.current);
-            assert.deepEqual(result.all, [undefined], 'result.all');
+
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -68,7 +65,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             await waitForNextUpdate();
             const expected = await web3.eth.getBalance(address);
             assert.equal(result.current, expected, 'contract.balance != expected');
-            assert.deepEqual(result.all, [undefined, expected], 'result.all');
+
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -98,7 +95,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             const expected2 = await web3.eth.getBalance(address);
             const value2 = result.current;
             assert.equal(value2, expected2, 'contract.balance');
-            assert.deepEqual(result.all, [undefined, value1, value2], 'result.all');
+
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -123,13 +120,11 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
                     number: 1,
                 }),
             );
-            //synchronous re-render due to Network/SET/LATESTBLOCKNUMBER
-            assert.equal(result.all.length, 3, 'result.all.length');
             await waitForNextUpdate(); //re-render due to Contract/SET/BALANCE
 
             const expected2 = await web3.eth.getBalance(address);
             assert.equal(result.current, expected2, 'contract.balance');
-            assert.equal(result.all.length, 4, 'result.all.length');
+
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });

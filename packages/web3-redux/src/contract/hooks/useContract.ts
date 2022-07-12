@@ -27,24 +27,25 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
         fetchAbi?: 'ifnull' | true | false;
     },
 ) {
-    const dispatch = useDispatch();
-
-    const contractResponse = ContractCRUD.hooks.useGet({ networkId, address });
-    const contract = contractResponse === 'loading' ? undefined : contractResponse;
-    const contractExists = !!contract;
-
     //Default sync params
     const getBalance = sync?.getBalance ?? false;
     const getNonce = sync?.getNonce ?? false;
     const getCode = sync?.getCode ?? false;
     const fetchAbi = sync?.fetchAbi ?? false;
 
+    const dispatch = useDispatch();
+
+    const contractResponse = ContractCRUD.hooks.useGet({ networkId, address });
+    const contractLoading = contractResponse === 'loading';
+    const contract = contractLoading ? undefined : contractResponse;
+    const contractExists = !!contract;
+
     //Create contract if inexistant
     useEffect(() => {
-        if (!networkId && !address && !contractExists) {
+        if (!networkId && !address && !contractLoading && !contractExists) {
             dispatch(ContractCRUD.actions.create({ networkId: networkId!, address: address!, ...createData }));
         }
-    }, [dispatch, networkId, address, JSON.stringify(createData), contractExists]);
+    }, [dispatch, networkId, address, contractLoading, contractExists, JSON.stringify(createData)]);
 
     useGetBalance(networkId, address, getBalance);
     useGetNonce(networkId, address, getNonce);

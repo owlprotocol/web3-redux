@@ -15,13 +15,12 @@ import { createStore, StoreType } from '../../store.js';
 
 import { useContractCall } from '../hooks/useContractCall.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
-import { sleep, ZERO_ADDRESS } from '../../utils/index.js';
+import { ZERO_ADDRESS } from '../../utils/index.js';
 import ContractEventCRUD from '../../contractevent/crud.js';
 import BlockCRUD from '../../block/crud.js';
 import TransactionCRUD from '../../transaction/crud.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
-import EthCallCRUD from '../../ethcall/crud.js';
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;

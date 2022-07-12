@@ -61,6 +61,7 @@ import { ReactComponent as QRHover } from './general/QR.hover.svg';
 import { ReactComponent as QRSelected } from './general/QR.selected.svg';
 import { ReactComponent as Clock } from './general/Clock.svg';
 import { ReactComponent as DNA } from './general/DNA.svg';
+import { ReactComponent as View } from './general/View.svg';
 
 // Functional Icons
 import { ReactComponent as Heart } from './functions/Heart.svg';
@@ -122,6 +123,7 @@ export const ICONS = {
     'arrow-negative': <ArrowNegative />,
     heart: <Heart />,
     'heart.active': <HeartActive />,
+    view: <View />,
     copy: <Copy />,
     pencil: <Pencil />,
     search: <Search />,

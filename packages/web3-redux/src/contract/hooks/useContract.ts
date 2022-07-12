@@ -33,18 +33,7 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     const getCode = sync?.getCode ?? false;
     const fetchAbi = sync?.fetchAbi ?? false;
 
-    const dispatch = useDispatch();
-
-    const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
-    const contractExists = !!contract;
-
-    //Create contract if inexistant
-    useEffect(() => {
-        if (!networkId && !address && !contractExists && defaultContract) {
-            dispatch(ContractCRUD.actions.create({ networkId: networkId!, address: address!, ...defaultContract }));
-        }
-    }, [dispatch, networkId, address, contractExists, defaultContract]);
-
+    const contract = ContractCRUD.hooks.useHydrate({ networkId, address }, defaultContract);
     useGetBalance(networkId, address, getBalance);
     useGetNonce(networkId, address, getNonce);
     useGetCode(networkId, address, getCode);

@@ -42,7 +42,8 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
 
         await waitForNextUpdate();
         const expected = await web3.eth.getBalance(address);
-        assert.equal(result.current?.balance, expected, 'result.current.balance');
+        const current = result.current[0];
+        assert.equal(current?.balance, expected, 'result.current.balance');
         assert.deepEqual(map(result.all, 'balance'), [undefined, expected], 'result.all');
 
         //No additional re-renders frm background tasks
@@ -59,7 +60,8 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
 
         await waitForNextUpdate();
         const expected = await web3.eth.getTransactionCount(address);
-        assert.equal(result.current?.nonce, expected, 'result.current.nonce');
+        const current = result.current[0];
+        assert.equal(current?.nonce, expected, 'result.current.nonce');
         assert.deepEqual(map(result.all, 'nonce'), [undefined, expected], 'result.all');
 
         //No additional re-renders frm background tasks
@@ -75,7 +77,8 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
         );
 
         await waitForNextUpdate();
-        assert.equal(result.current?.code, '0x', 'result.current.nonce');
+        const current = result.current[0];
+        assert.equal(current?.code, '0x', 'result.current.nonce');
 
         //No additional re-renders frm background tasks
         await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');

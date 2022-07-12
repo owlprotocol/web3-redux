@@ -8,19 +8,27 @@ import rootSaga from './sagas/index.js';
 
 export const _4Byte = {
     name: CRUDModel.name,
-    actionTypes: CRUDModel.actionTypes,
     actions: {
         ...CRUDModel.actions,
         fetchEventSignature: Actions.fetchEventSignature,
         fetchFunctionSignature: Actions.fetchFunctionSignature,
     },
+    actionTypes: CRUDModel.actionTypes,
+    db: CRUDModel.db,
+    hooks: {
+        ...CRUDModel.hooks,
+    },
     sagas: {
         ...CRUDModel.sagas,
         rootSaga,
     },
-    hooks: {
-        ...CRUDModel.hooks,
-    },
+    selectors: CRUDModel.selectors,
+    isAction: CRUDModel.isAction,
+    reducer: CRUDModel.reducer,
+    validate: CRUDModel.validate,
+    validateId: CRUDModel.validateId,
+    hydrate: CRUDModel.hydrate,
+    encode: CRUDModel.encode,
 };
 
 export default _4Byte;

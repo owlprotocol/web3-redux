@@ -46,7 +46,7 @@ export const SelectAddress = ({
         };
     });
 
-    const contractsAllList = useSelector((state) => Contract.selectByFilter(state, { networkId })) ?? [];
+    const contractsAllList = useSelector((state) => Contract.selectors.selectWhere(state, { networkId })) ?? [];
     if (showOtherAddresses) {
         const contractsUnLabelled = contractsAllList
             .filter((c) => {

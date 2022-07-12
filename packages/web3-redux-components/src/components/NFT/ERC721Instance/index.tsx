@@ -8,7 +8,7 @@ export interface HookProps {
     tokenId: string;
 }
 export const useERC721Instance = ({ networkId, address, tokenId }: HookProps) => {
-    const { ownerOf, metadata } = Contract.useERC721(networkId, address, tokenId, {
+    const { ownerOf, metadata } = Contract.hooks.useERC721(networkId, address, tokenId, {
         metadata: true,
     });
     return {

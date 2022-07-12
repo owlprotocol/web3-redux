@@ -11,7 +11,7 @@ export default {
 const Template: ComponentStory<typeof AbiItemForm> = (args: any) => <AbiItemForm {...args} />;
 
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const totalSupplyAbi = Abi.IERC20.abi.find((a) => a.name === 'totalSupply')!;
+const totalSupplyAbi = Abi.IERC20ArtifactArtifact.abi.find((a) => a.name === 'totalSupply')!;
 const { inputs: inputsTotalSupply } = totalSupplyAbi as AbiItem;
 export const TotalSupply = Template.bind({});
 TotalSupply.args = {
@@ -19,14 +19,14 @@ TotalSupply.args = {
 };
 
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const balanceOfAbi = Abi.IERC20.abi.find((a) => a.name === 'balanceOf')!;
+const balanceOfAbi = Abi.IERC20ArtifactArtifact.abi.find((a) => a.name === 'balanceOf')!;
 const { inputs: inputsBalanceOf } = balanceOfAbi as AbiItem;
 export const BalanceOf = Template.bind({});
 BalanceOf.args = {
     inputs: inputsBalanceOf,
 };
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const transferAbi = Abi.IERC20.abi.find((a) => a.name === 'transfer')!;
+const transferAbi = Abi.IERC20ArtifactArtifact.abi.find((a) => a.name === 'transfer')!;
 const { inputs } = transferAbi as AbiItem;
 export const Transfer = Template.bind({});
 Transfer.args = {

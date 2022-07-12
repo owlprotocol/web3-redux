@@ -1,4 +1,4 @@
-import { Ipfs } from '@owlprotocol/web3-redux';
+import { IPFSCache } from '@owlprotocol/web3-redux';
 import { useMemo } from 'react';
 import { Buffer } from 'buffer';
 
@@ -10,7 +10,7 @@ export interface Props {
 
 export const IPFSReadJSON = ({ cid }: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { data } = Ipfs.useCat(cid);
+    const { data } = IPFSCache.hooks.useCat(cid);
 
     const dataTxt = useMemo(() => {
         if (!!data) {

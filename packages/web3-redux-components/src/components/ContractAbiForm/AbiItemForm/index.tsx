@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Box, useTheme, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import type { AbiType, StateMutabilityType } from 'web3-utils';
-import { Config, Contract, ContractSend } from '@owlprotocol/web3-redux';
+import { Config, Contract, ContractSend, ContractSendStatus } from '@owlprotocol/web3-redux';
 import AbiItemInput from '../AbiItemInput';
 
 //TODO
@@ -37,8 +37,8 @@ export const AbiItemForm = ({
     const { themes } = useTheme();
     //const dispatch = useDispatch();
 
-    const [configAccount] = Config.useAccount();
-    const [configNetworkId] = Config.useNetworkId();
+    const [configAccount] = Config.hooks.useAccount();
+    const [configNetworkId] = Config.hooks.useNetworkId();
     account = account ?? configAccount;
     networkId = networkId ?? configNetworkId;
 
@@ -77,7 +77,7 @@ export const AbiItemForm = ({
         inputErrors.length > 0 ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0]) : true;
     const validArgs = argsDefined && noInputErrors;
 
-    const [returnValue, { error: callError }] = Contract.useContractCall(networkId, address, name, args, {
+    const [returnValue, { error: callError }] = Contract.hooks.useContractCall(networkId, address, name, args, {
         sync: !write && validArgs ? 'once' : false,
     });
 
@@ -91,17 +91,23 @@ export const AbiItemForm = ({
         [setErrorAtIdx, setArgAtIdx],
     );
 
-    const [sendTx, { error: sendError, contractSend }] = Contract.useContractSend(networkId, address, name, args, {
-        from: account,
-    });
+    const [sendTx, { error: sendError, contractSend }] = Contract.hooks.useContractSend(
+        networkId,
+        address,
+        name,
+        args,
+        {
+            from: account,
+        },
+    );
     const { status, transactionHash, receipt, confirmations } = contractSend ?? {};
 
     // EVM error
     const error = callError ?? sendError;
     const isError = !!error;
 
-    const isPendingSig = status == ContractSend.ContractSendStatus.PENDING_SIGNATURE;
-    const isPendingConf = status == ContractSend.ContractSendStatus.PENDING_CONFIRMATION;
+    const isPendingSig = status == ContractSendStatus.PENDING_SIGNATURE;
+    const isPendingConf = status == ContractSendStatus.PENDING_CONFIRMATION;
     const isPending = isPendingSig || isPendingConf;
 
     let isPendingText: string | undefined;

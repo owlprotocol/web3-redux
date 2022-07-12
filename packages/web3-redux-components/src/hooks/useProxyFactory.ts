@@ -13,7 +13,7 @@ export function useProxyFactory(
     initMethodName: string,
     initArgs: any[],
 ) {
-    const [account] = Config.useAccount();
+    const [account] = Config.hooks.useAccount();
     console.debug({ networkId, factoryAddress, implementationAddress, initMethodName, initArgs });
 
     /**
@@ -29,7 +29,7 @@ export function useProxyFactory(
     //TODO: Additional args (salt?)
     const args = [implementationAddress, initData];
 
-    const [sendTx, { error: sendError, contractSend }] = Contract.useContractSend(
+    const [sendTx, { error: sendError, contractSend }] = Contract.hooks.useContractSend(
         networkId,
         factoryAddress,
         'deployProxy',

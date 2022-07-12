@@ -26,6 +26,13 @@ export const Block = {
         useBlock: Hooks.useBlock,
         useBlockSync: Hooks.useBlockSync,
     },
+    selectors: CRUDModel.selectors,
+    isAction: CRUDModel.isAction,
+    reducer: CRUDModel.reducer,
+    validate: CRUDModel.validate,
+    validateId: CRUDModel.validateId,
+    hydrate: CRUDModel.hydrate,
+    encode: CRUDModel.encode,
 };
 
 export default Block;

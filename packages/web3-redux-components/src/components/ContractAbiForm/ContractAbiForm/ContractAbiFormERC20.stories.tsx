@@ -19,7 +19,7 @@ export const ERC20 = Template.bind({});
 ERC20.args = {
     networkId: '1',
     address: TestData.WETH,
-    abi: Abi.IERC20.abi as any[],
+    abi: Abi.IERC20Artifact.abi as any[],
 };
 ERC20.argTypes = {
     networkId: networkIdArgType,
@@ -30,7 +30,7 @@ export const ERC721 = Template.bind({});
 ERC721.args = {
     networkId: '1',
     address: TestData.VEE_FRIENDS_SERIES2,
-    abi: Abi.IERC721.abi as any[],
+    abi: Abi.IERC721Artifact.abi as any[],
 };
 ERC721.argTypes = {
     networkId: networkIdArgType,
@@ -41,7 +41,7 @@ export const ERC1155 = Template.bind({});
 ERC1155.args = {
     networkId: '1',
     address: TestData.KITH_FRIENDS,
-    abi: Abi.IERC1155.abi as any[],
+    abi: Abi.IERC1155Artifact.abi as any[],
 };
 ERC1155.argTypes = {
     networkId: networkIdArgType,

@@ -25,6 +25,13 @@ const model = {
         ...CRUDModel.hooks,
         useTransaction: Hooks.useTransaction,
     },
+    selectors: CRUDModel.selectors,
+    isAction: CRUDModel.isAction,
+    reducer: CRUDModel.reducer,
+    validate: CRUDModel.validate,
+    validateId: CRUDModel.validateId,
+    hydrate: CRUDModel.hydrate,
+    encode: CRUDModel.encode,
 };
 
 export default model;

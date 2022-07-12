@@ -15,9 +15,9 @@ export const useWalletConnect = () => {
     useConfigureFromWeb3React(); //Update web3-redux config
     const { connectWallet, web3 } = useMetamask();
 
-    const [networkId] = Config.useNetworkId();
-    const [account] = Config.useAccount();
-    const { balance } = Contract.useContract(networkId, account, undefined, { getBalance: 'ifnull' }) ?? {};
+    const [networkId] = Config.hooks.useNetworkId();
+    const [account] = Config.hooks.useAccount();
+    const { balance } = Contract.hooks.useContract(networkId, account, undefined, { getBalance: 'ifnull' }) ?? {};
     const balanceFormatted = balance ? fromWei(balance, 'ether').substring(0, 6) : undefined;
     const btnText = account ? shortenHash(account) : undefined;
 
@@ -83,7 +83,7 @@ export const WalletConnectPresenter = ({
 
 const WalletConnect = composeHooks(() => ({
     useWalletConnect: () => useWalletConnect(),
-}))(WalletConnectPresenter) as ({}: any) => JSX.Element;
+}))(WalletConnectPresenter) as ({ }: any) => JSX.Element;
 
 //@ts-expect-error
 WalletConnect.displayName = 'WalletConnect';

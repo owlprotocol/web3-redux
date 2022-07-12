@@ -10,7 +10,6 @@ import * as Hooks from './hooks/index.js';
 
 export const Contract = {
     name: CRUDModel.name,
-    actionTypes: CRUDModel.actionTypes,
     actions: {
         ...CRUDModel.actions,
         call: Actions.call,
@@ -27,10 +26,8 @@ export const Contract = {
         getNonceSynced: Actions.getNonceSynced,
         send: Actions.send,
     },
-    sagas: {
-        ...CRUDModel.sagas,
-        rootSaga,
-    },
+    actionTypes: CRUDModel.actionTypes,
+    db: CRUDModel.db,
     hooks: {
         ...CRUDModel.hooks,
         useContract: Hooks.useContract,
@@ -48,6 +45,17 @@ export const Contract = {
         useGetNonce: Hooks.useGetCode,
         useSupportsInterface: Hooks.useSupportsInterface,
     },
+    sagas: {
+        ...CRUDModel.sagas,
+        rootSaga,
+    },
+    selectors: CRUDModel.selectors,
+    isAction: CRUDModel.isAction,
+    reducer: CRUDModel.reducer,
+    validate: CRUDModel.validate,
+    validateId: CRUDModel.validateId,
+    hydrate: CRUDModel.hydrate,
+    encode: CRUDModel.encode,
 };
 
 export default Contract;

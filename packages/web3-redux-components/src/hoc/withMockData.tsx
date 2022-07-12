@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { Config, Network, Contract, TestData, Environment } from '@owlprotocol/web3-redux';
+import { Config, Network, Contract, TestData, Environment, Abi } from '@owlprotocol/web3-redux';
 import getDisplayName from './getDisplayName';
 import { getEnvironment } from '../environment';
 
@@ -10,31 +10,18 @@ export const withMockData = (WrappedComponent: any) => {
     const Component = (props: any) => {
         const dispatch = useDispatch();
 
-        const config = useSelector((state) => Config.selectConfig(state));
+        const config = Config.hooks.useConfig();
         useEffect(() => {
             const corsProxy = getEnvironment().VITE_CORS_PROXY;
-            if (config.corsProxy != corsProxy) dispatch(Config.set({ id: '0', key: 'corsProxy', value: corsProxy }));
+            if (config?.corsProxy != corsProxy) dispatch(Config.actions.update({ id: '0', corsProxy }));
         }, [dispatch, config]);
 
-        const [networkMainnet, networkArbitrum, networkOptimism, networkPolygon, networkGanache] = useSelector(
-            (state) => Network.selectByIdMany(state, ['1', '42161', '10', '137', '1337']),
-        );
-        useEffect(() => {
-            if (!networkMainnet) dispatch(Network.create({ networkId: '1' }));
-        }, [dispatch, networkMainnet]);
-        useEffect(() => {
-            if (!networkArbitrum) dispatch(Network.create({ networkId: '42161' }));
-        }, [dispatch, networkArbitrum]);
-        useEffect(() => {
-            if (!networkOptimism) dispatch(Network.create({ networkId: '10' }));
-        }, [dispatch, networkOptimism]);
-        useEffect(() => {
-            if (!networkPolygon) dispatch(Network.create({ networkId: '137' }));
-        }, [dispatch, networkPolygon]);
-        useEffect(() => {
-            if (!networkGanache) dispatch(Network.create({ networkId: '1337', web3Rpc: 'ws://localhost:8545' }));
-        }, [dispatch, networkGanache]);
-
+        //Networks
+        Network.hooks.useNetwork('1', true);
+        Network.hooks.useNetwork('42161', true);
+        Network.hooks.useNetwork('10', true);
+        Network.hooks.useNetwork('137', true);
+        Network.hooks.useNetwork('1337', true);
         /*
         useEffect(() => {
             if (!networkOwl) dispatch(Network.create({ networkId: '1337', web3Rpc: import.meta.env.VITE_OWL_RPC }));
@@ -47,85 +34,33 @@ export const withMockData = (WrappedComponent: any) => {
         }, [dispatch, config]);
         */
 
-        const [
-            contractVITALIK,
-            contractWETH,
-            contractUSDC,
-            contractTETHER,
-            contractCHAINLINK,
-            contractVeeFriendsSeries2,
-            contractOZTeam,
-            contractKithFriends,
-            contractSkyweaver,
-            contractUSDCGanache,
-        ] = useSelector((state) =>
-            Contract.selectByIdMany(state, [
-                { networkId: '1', address: TestData.VITALIK },
-                { networkId: '1', address: TestData.WETH },
-                { networkId: '1', address: TestData.USDC },
-                { networkId: '1', address: TestData.TETHER },
-                { networkId: '1', address: TestData.CHAINLINK },
-                { networkId: '1', address: TestData.VEE_FRIENDS_SERIES2 },
-                { networkId: '1', address: TestData.OZ_TEAM },
-                { networkId: '1', address: TestData.KITH_FRIENDS },
-                { networkId: '137', address: TestData.SKYWEAVER },
-                { networkId: '1337', address: TestData.USDC },
-            ]),
-        );
-        useEffect(() => {
-            if (!contractVITALIK) dispatch(Contract.create(TestData.contractVITALIK));
-        }, [contractVITALIK, dispatch]);
-        useEffect(() => {
-            if (!contractWETH) dispatch(Contract.create(TestData.contractWETH));
-        }, [contractWETH, dispatch]);
-        useEffect(() => {
-            if (!contractUSDC) dispatch(Contract.create(TestData.contractUSDC));
-        }, [contractUSDC, dispatch]);
-        useEffect(() => {
-            if (!contractTETHER) dispatch(Contract.create(TestData.contractTETHER));
-        }, [contractTETHER, dispatch]);
-        useEffect(() => {
-            if (!contractCHAINLINK) dispatch(Contract.create(TestData.contractCHAINLINK));
-        }, [contractCHAINLINK, dispatch]);
-        useEffect(() => {
-            if (!contractVeeFriendsSeries2) dispatch(Contract.create(TestData.contractVeeFriendsSeries2));
-        }, [contractVeeFriendsSeries2, dispatch]);
-        useEffect(() => {
-            if (!contractOZTeam) dispatch(Contract.create(TestData.contractOZTeam));
-        }, [contractOZTeam, dispatch]);
-        useEffect(() => {
-            if (!contractKithFriends) dispatch(Contract.create(TestData.contractKithFriends));
-        }, [contractKithFriends, dispatch]);
-        useEffect(() => {
-            if (!contractSkyweaver) dispatch(Contract.create(TestData.contractSkyWeaver));
-        }, [contractSkyweaver, dispatch]);
-        useEffect(() => {
-            if (!contractUSDCGanache) dispatch(Contract.create({ ...TestData.contractUSDC, networkId: '1337' }));
-        }, [contractUSDCGanache, dispatch]);
+        //ERC20
+        Contract.hooks.useContract('1', TestData.VITALIK, {});
+        Contract.hooks.useContract('1', TestData.WETH, { abi: Abi.IERC20MetadataArtifact.abi });
+        Contract.hooks.useContract('1', TestData.USDC, { abi: Abi.IERC20MetadataArtifact.abi });
+        Contract.hooks.useContract('1', TestData.TETHER, {
+            abi: Abi.IERC20MetadataArtifact.abi,
+        });
+        Contract.hooks.useContract('1', TestData.CHAINLINK, {
+            abi: Abi.IERC20MetadataArtifact.abi,
+        });
 
-        const networks = [networkMainnet, networkArbitrum, networkOptimism, networkPolygon];
-        const contracts = [
-            contractVITALIK,
-            contractWETH,
-            contractUSDC,
-            contractTETHER,
-            contractCHAINLINK,
-            contractVeeFriendsSeries2,
-            contractOZTeam,
-            contractKithFriends,
-            contractSkyweaver,
-        ];
-        const contractERC20Implementation = Contract.useContract(
-            TestData.contractERC20Implementation.networkId,
-            TestData.contractERC20Implementation.address,
-            TestData.contractERC20Implementation,
-        );
+        //ERC721
+        Contract.hooks.useContract('1', TestData.VEE_FRIENDS_SERIES2, {
+            abi: Abi.IERC721MetadataArtifact.abi,
+        });
+        Contract.hooks.useContract('1', TestData.OZ_TEAM, {
+            abi: Abi.IERC721MetadataArtifact.abi,
+        });
+        //ERC1155
+        Contract.hooks.useContract('1', TestData.KITH_FRIENDS, {
+            abi: Abi.IERC1155MetadataURIArtifact.abi,
+        });
+        Contract.hooks.useContract('137', TestData.SKYWEAVER, {
+            abi: Abi.IERC1155MetadataURIArtifact.abi,
+        });
 
-        const all = [...networks, ...contracts, contractERC20Implementation];
-        const allDefined = all.reduce((acc, val) => acc && !!val, true);
-
-        if (!allDefined) return <>Loading React State...</>;
-        else return <WrappedComponent {...props} />;
+        return <WrappedComponent {...props} />;
     };
     Component.displayName = `withMockData(${getDisplayName(WrappedComponent)})`;
     return Component;

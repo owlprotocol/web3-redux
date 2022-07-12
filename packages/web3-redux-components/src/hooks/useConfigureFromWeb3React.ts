@@ -14,9 +14,9 @@ export function useConfigureFromWeb3React() {
     const newWeb3Sender = library as Web3 | undefined;
 
     //Web3Redux data
-    const [currentNetworkId, setNetworkId] = Config.useNetworkId();
-    const [currentAccount, setAccount] = Config.useAccount();
-    const currentNetwork = Network.useNetwork(currentNetworkId);
+    const [currentNetworkId, setNetworkId] = Config.hooks.useNetworkId();
+    const [currentAccount, setAccount] = Config.hooks.useAccount();
+    const currentNetwork = Network.hooks.useNetwork(currentNetworkId);
     const currentWeb3Sender = currentNetwork?.web3Sender;
 
     //Update networkId
@@ -32,7 +32,7 @@ export function useConfigureFromWeb3React() {
     //Update web3Sender
     useEffect(() => {
         if (newNetworkId && newWeb3Sender != currentWeb3Sender) {
-            dispatch(Network.set({ id: newNetworkId, key: 'web3Sender', value: newWeb3Sender }));
+            dispatch(Network.actions.update({ networkId: newNetworkId, web3Sender: newWeb3Sender }));
         }
     }, [dispatch, newNetworkId, newWeb3Sender, currentWeb3Sender]);
 }

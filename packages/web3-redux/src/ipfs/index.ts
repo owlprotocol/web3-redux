@@ -28,6 +28,13 @@ export const IPFSCache = {
         useURI: Hooks.useURI,
         useAtPath: Hooks.useAtPath,
     },
+    selectors: CRUDModel.selectors,
+    isAction: CRUDModel.isAction,
+    reducer: CRUDModel.reducer,
+    validate: CRUDModel.validate,
+    validateId: CRUDModel.validateId,
+    hydrate: CRUDModel.hydrate,
+    encode: CRUDModel.encode,
 };
 
 export default IPFSCache;

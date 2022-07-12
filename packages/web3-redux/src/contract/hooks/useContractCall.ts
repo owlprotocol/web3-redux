@@ -20,10 +20,6 @@ export interface UseContractCallOptions {
     sync?: 'ifnull' | GenericSync | false;
 }
 
-export interface UseContractCallReturnOptions {
-    error: Error | undefined;
-    dispatchCallAction: () => void;
-}
 /**
  * Create a contract call and return value.
  * @category Hooks
@@ -38,7 +34,7 @@ export function useContractCall<
         method: K | undefined,
         args?: P,
         options?: UseContractCallOptions,
-): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, UseContractCallReturnOptions] {
+) {
     const sync = options?.sync ?? 'ifnull';
     const from = options?.from;
     const gas = options?.gas;
@@ -68,14 +64,14 @@ export function useContractCall<
     });
     const ethCallLoading = ethCallResponse === 'loading';
     const ethCall = ethCallLoading ? undefined : ethCallResponse;
-    const returnValue = ethCall?.returnValue;
+    const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
     const returnValueExists = returnValue != undefined;
 
     const argsHash = JSON.stringify(args);
     const { callAction, syncAction } =
         useMemo(() => {
             if (!ethCallLoading && networkId && address && method) {
-                if (sync === 'once' || (!returnValueExists && sync === 'ifnull')) {
+                if (sync === false || sync === 'once' || (!returnValueExists && sync === 'ifnull')) {
                     const callAction = call({
                         networkId,
                         address,
@@ -117,7 +113,7 @@ export function useContractCall<
     }, [dispatch, callId]);
     useEffect(() => {
         if (!!sync) dispatchCallAction();
-    }, [dispatchCallAction]);
+    }, [dispatchCallAction, sync]);
 
     const syncId = syncAction?.payload.id;
     useEffect(() => {
@@ -127,7 +123,9 @@ export function useContractCall<
         };
     }, [dispatch, syncId]);
 
-    return [returnValue, { error, dispatchCallAction }];
+    const isLoading = ethCallLoading || ethCallLoading;
+    const returnOptions = { error, dispatchCallAction, isLoading, callAction, syncAction };
+    return [returnValue, returnOptions] as [typeof returnValue, typeof returnOptions];
 }
 
 /**

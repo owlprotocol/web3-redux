@@ -47,16 +47,15 @@ export function createCRUDModel<
         }
     };
 
-    const idToDexieId = (id: string | IndexableTypeArray | Partial<T_ID>): string | IndexableTypeArray | undefined => {
+    const idToDexieId = (id: string | IndexableTypeArray | T_ID): string | IndexableTypeArray | undefined => {
         if (typeof id === 'string') {
-            //const idSplit = id.split(SEPARATOR);
-            //if (idSplit.length == 1) return idSplit[0];
             return id;
         } else if (Array.isArray(id)) id;
         else {
-            if (!isDefinedRecord(id)) return undefined;
             const id2 = validateId(id);
             if (typeof id2 === 'string') return id2;
+            //@ts-expect-error
+            else if (id2.includes(undefined)) return undefined;
             else return id2;
         }
     };
@@ -171,7 +170,7 @@ export function createCRUDModel<
 
     /** Redux ORM Selectors */
     //Only create selectors if orm model defined
-    const ormModel = getOrm()[name]
+    const ormModel = getOrm()[name];
     const select = ormModel ? createSelector(getOrm()[name]) : (state: any, id: any) => undefined;
     const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined): T | undefined => {
         if (!id) return undefined;
@@ -196,7 +195,7 @@ export function createCRUDModel<
     };
 
     /** Dexie Getters */
-    const get = async (id: Partial<T_ID> | string | undefined) => {
+    const get = async (id: T_ID | string | undefined) => {
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
@@ -311,12 +310,15 @@ export function createCRUDModel<
             yield* call(add, payload);
         } catch (error) {
             yield* putSaga(
-                createError({
-                    id: action.meta.uuid,
-                    stack: (error as Error).stack,
-                    errorMessage: (error as Error).message,
-                    type: CREATE_ERROR,
-                }, action.meta.uuid),
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: CREATE_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
             );
         }
     };
@@ -327,12 +329,15 @@ export function createCRUDModel<
             yield* call(bulkAdd, payload);
         } catch (error) {
             yield* putSaga(
-                createError({
-                    id: action.meta.uuid,
-                    stack: (error as Error).stack,
-                    errorMessage: (error as Error).message,
-                    type: CREATE_BATCHED_ERROR,
-                }, action.meta.uuid),
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: CREATE_BATCHED_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
             );
         }
     };
@@ -343,12 +348,15 @@ export function createCRUDModel<
             yield* call(update, payload);
         } catch (error) {
             yield* putSaga(
-                createError({
-                    id: action.meta.uuid,
-                    stack: (error as Error).stack,
-                    errorMessage: (error as Error).message,
-                    type: UPDATE_ERROR,
-                }, action.meta.uuid),
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: UPDATE_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
             );
         }
     };
@@ -359,12 +367,15 @@ export function createCRUDModel<
             yield* call(bulkUpdate, payload);
         } catch (error) {
             yield* putSaga(
-                createError({
-                    id: action.meta.uuid,
-                    stack: (error as Error).stack,
-                    errorMessage: (error as Error).message,
-                    type: UPDATE_BATCHED_ERROR,
-                }, action.meta.uuid),
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: UPDATE_BATCHED_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
             );
         }
     };
@@ -375,12 +386,15 @@ export function createCRUDModel<
             yield* call(deleteDB, payload);
         } catch (error) {
             yield* putSaga(
-                createError({
-                    id: action.meta.uuid,
-                    stack: (error as Error).stack,
-                    errorMessage: (error as Error).message,
-                    type: DELETE_ERROR,
-                }, action.meta.uuid),
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: DELETE_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
             );
         }
     };
@@ -391,12 +405,15 @@ export function createCRUDModel<
             yield* call(bulkDelete, payload);
         } catch (error) {
             yield* putSaga(
-                createError({
-                    id: action.meta.uuid,
-                    errorMessage: (error as Error).message,
-                    stack: (error as Error).stack,
-                    type: DELETE_BATCHED_ERROR,
-                }, action.meta.uuid),
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        errorMessage: (error as Error).message,
+                        stack: (error as Error).stack,
+                        type: DELETE_BATCHED_ERROR,
+                    },
+                    action.meta.uuid,
+                ),
             );
         }
     };
@@ -427,26 +444,27 @@ export function createCRUDModel<
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
+        //@ts-expect-error
         const id2 = id ? idToDexieId(id) : undefined;
         const id2Dep = id ? idToStr(id) : undefined;
-
-        return useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep], 'loading' as 'loading');
+        return useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep], 'loading' as const);
     };
     //TODO: string array id
     const useGetBulk = (ids: Partial<T_ID>[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
+        //@ts-expect-error
         const ids2 = compact(ids.map(idToDexieId));
         const ids2Dep = ids.map(idToStr).join(SEPARATOR);
-        return useLiveQuery(() => table.bulkGet(ids2), [ids2Dep], 'loading' as 'loading');
+        return useLiveQuery(() => table.bulkGet(ids2), [ids2Dep], 'loading' as const);
     };
     const useWhere = (filter: Partial<T_Encoded>) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
         const filterDep = JSON.stringify(filter);
-        return useLiveQuery(() => table.where(filter).toArray(), [filterDep], 'loading' as 'loading');
+        return useLiveQuery(() => table.where(filter).toArray(), [filterDep], 'loading' as const);
     };
 
     /** Redux ORM Hooks */

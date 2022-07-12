@@ -12,6 +12,10 @@ export async function getEthCall<T extends BaseWeb3Contract = BaseWeb3Contract, 
     method: K | undefined,
     args?: Parameters<T['methods'][K]>,
 ) {
+    if (!networkId) throw new Error('networkId undefined');
+    else if (!address) throw new Error('address undefined');
+    else if (!method) throw new Error('method undefined');
+
     const contract = ContractCRUD.selectors.selectByIdSingle(state, { networkId, address });
     const web3Contract = contract?.web3Contract ?? contract?.web3SenderContract;
     const web3ContractMethod = web3Contract?.methods[method];

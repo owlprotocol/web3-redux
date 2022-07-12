@@ -16,8 +16,10 @@ export interface EthCallId {
     readonly gas?: number;
 }
 export interface EthCall extends EthCallId {
-    /** redux-orm id of call `${networkId}-{address}(data)-{options}` */
-    readonly id?: string;
+    /** Contract Call indexing */
+    readonly methodName?: string;
+    readonly methodSignature?: string;
+    readonly args?: any[];
     /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
     readonly returnValue?: any;
     /** Last returnValue updated UTC timestamp */
@@ -28,7 +30,7 @@ export interface EthCall extends EthCallId {
     readonly errorId?: string;
 }
 
-export const EthCallIndex = '[networkId+to+data+defaultBlock+from+gas]';
+export const EthCallIndex = '[networkId+to+data+defaultBlock+from+gas]'; //, [networkId+to+methodName+&args]';
 
 /** @internal */
 export function getOptionsId(from: EthCallId['from'], block: EthCallId['defaultBlock'], gas: EthCallId['gas']) {
@@ -61,7 +63,7 @@ export function getIdArgs(id: EthCallId): EthCallId {
 export function validateId(item: Partial<EthCallId>) {
     return [
         item.networkId,
-        item.to,
+        item.to?.toLowerCase(),
         item.data,
         item.defaultBlock ?? 'latest',
         item.from?.toLowerCase() ?? ADDRESS_0,

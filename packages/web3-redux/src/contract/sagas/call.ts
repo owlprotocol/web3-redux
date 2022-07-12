@@ -6,6 +6,7 @@ import { CallAction, CALL } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import EthCallCRUD from '../../ethcall/crud.js';
+import { NonPayableTransactionObject } from '../../typechain/types.js';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 
@@ -32,7 +33,7 @@ export function* callSaga(action: CallAction) {
         if (!method)
             throw new Error(`Contract ${ContractCRUD.validateId(payload)} has no such method ${payload.method}`);
 
-        let tx: any;
+        let tx: NonPayableTransactionObject<any>;
         if (!args || args.length == 0) tx = method();
         else tx = method(...args);
         const data = tx.encodeABI();
@@ -48,9 +49,9 @@ export function* callSaga(action: CallAction) {
             //Tx Encodable, any errors are execution related
             //Create base call
             yield* put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid));
-            const gas = ethCall.gas ?? (yield* call(tx.estimateGas, { ...ethCall })); //default gas
-            //@ts-ignore
-            const returnValue = yield* call(tx.call, { ...ethCall, gas }, ethCall.defaultBlock);
+            //Gas undefined or 0
+            const gas = ethCall.gas || (yield* call(tx.estimateGas, { from })); //default gas
+            const returnValue = yield* call(tx.call, { from, gas }, defaultBlock);
             const timestamp = Date.now();
             yield* put(
                 EthCallCRUD.actions.update(

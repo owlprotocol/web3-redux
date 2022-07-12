@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useGetBalance } from './useGetBalance.js';
-import { useGetNonce } from './useGetNonce.js';
-import { useGetCode } from './useGetCode.js';
+import { useGetBalance } from './web3/useGetBalance.js';
+import { useGetNonce } from './web3/useGetNonce.js';
+import { useGetCode } from './web3/useGetCode.js';
 import { useFetchAbi } from './useFetchAbi.js';
 import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced.js';
 import { GetNonceSyncedActionInput } from '../actions/getNonceSynced.js';
@@ -23,7 +23,7 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     sync?: {
         getBalance?: 'ifnull' | GetBalanceSyncedActionInput['sync'] | false;
         getNonce?: 'ifnull' | GetNonceSyncedActionInput['sync'] | false;
-        getCode?: 'ifnull' | true | false;
+        getCode?: 'ifnull' | false;
         fetchAbi?: 'ifnull' | true | false;
     },
 ) {

@@ -4,15 +4,15 @@ import { Provider } from 'react-redux';
 import Web3 from 'web3';
 
 import { useGetNonce } from './useGetNonce.js';
-import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
-import { networkId, ADDRESS_0 } from '../../test/data.js';
+import { getWeb3Provider, expectThrowsAsync } from '../../../test/index.js';
+import { networkId, ADDRESS_0 } from '../../../test/data.js';
 
-import { name } from '../common.js';
-import { createStore, StoreType } from '../../store.js';
-import BlockCRUD from '../../block/crud.js';
-import TransactionCRUD from '../../transaction/crud.js';
-import ContractCRUD from '../crud.js';
-import NetworkCRUD from '../../network/crud.js';
+import { name } from '../../common.js';
+import { createStore, StoreType } from '../../../store.js';
+import BlockCRUD from '../../../block/crud.js';
+import TransactionCRUD from '../../../transaction/crud.js';
+import ContractCRUD from '../../crud.js';
+import NetworkCRUD from '../../../network/crud.js';
 
 describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
     let web3: Web3;
@@ -43,8 +43,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             });
             await waitForNextUpdate();
             const expected = await web3.eth.getTransactionCount(address);
-            assert.equal(result.current, expected, 'contract.nonce != expected');
-            assert.deepEqual(result.all, [undefined, expected], 'result.all');
+            assert.equal(result.current[0], expected, 'contract.nonce != expected');
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -53,8 +52,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             const { result, waitForNextUpdate } = renderHook(() => useGetNonce(networkId, address, false), {
                 wrapper,
             });
-            assert.isUndefined(result.current);
-            assert.deepEqual(result.all, [undefined], 'result.all');
+            assert.isUndefined(result.current[0]);
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -65,8 +63,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             });
             await waitForNextUpdate();
             const expected = await web3.eth.getTransactionCount(address);
-            assert.equal(result.current, expected, 'contract.nonce != expected');
-            assert.deepEqual(result.all, [undefined, expected], 'result.all');
+            assert.equal(result.current[0], expected, 'contract.nonce != expected');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -78,7 +75,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
 
             await waitForNextUpdate();
             const expected1 = await web3.eth.getTransactionCount(address);
-            const value1 = result.current;
+            const value1 = result.current[0];
             assert.equal(value1, expected1, 'contract.nonce != expected');
 
             await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
@@ -94,9 +91,8 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             await waitForNextUpdate();
 
             const expected2 = await web3.eth.getTransactionCount(address);
-            const value2 = result.current;
+            const value2 = result.current[0];
             assert.equal(value2, expected2, 'contract.nonce != expected');
-            assert.deepEqual(result.all, [undefined, value1, value2], 'result.all');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
@@ -108,7 +104,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
 
             await waitForNextUpdate();
             const expected1 = await web3.eth.getTransactionCount(address);
-            assert.equal(result.current, expected1, 'contract.nonce != expected');
+            assert.equal(result.current[0], expected1, 'contract.nonce != expected');
 
             await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
             //Create block, triggering a refresh
@@ -123,7 +119,7 @@ describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
             await waitForNextUpdate(); //re-render due to Contract/SET/NONCE
 
             const expected2 = await web3.eth.getTransactionCount(address);
-            assert.equal(result.current, expected2, 'contract.nonce != expected');
+            assert.equal(result.current[0], expected2, 'contract.nonce != expected');
             assert.equal(result.all.length, 4, 'result.all.length');
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');

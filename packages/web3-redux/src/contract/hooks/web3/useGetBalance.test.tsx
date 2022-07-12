@@ -41,7 +41,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             });
             await waitForNextUpdate();
             const expected = await web3.eth.getBalance(address);
-            assert.equal(result.current, expected, 'contract.balance != expected');
+            assert.equal(result.current[0], expected, 'contract.balance != expected');
 
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -51,7 +51,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             const { result, waitForNextUpdate } = renderHook(() => useGetBalance(networkId, address, false), {
                 wrapper,
             });
-            assert.isUndefined(result.current);
+            assert.isUndefined(result.current[0]);
 
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -63,7 +63,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             });
             await waitForNextUpdate();
             const expected = await web3.eth.getBalance(address);
-            assert.equal(result.current, expected, 'contract.balance != expected');
+            assert.equal(result.current[0], expected, 'contract.balance != expected');
 
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -76,7 +76,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
 
             await waitForNextUpdate();
             const expected1 = await web3.eth.getBalance(address);
-            const value1 = result.current;
+            const value1 = result.current[0];
             assert.equal(value1, expected1, 'contract.balance != expected');
 
             await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
@@ -92,7 +92,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             await waitForNextUpdate();
 
             const expected2 = await web3.eth.getBalance(address);
-            const value2 = result.current;
+            const value2 = result.current[0];
             assert.equal(value2, expected2, 'contract.balance');
 
             //No additional re-renders from background tasks
@@ -106,7 +106,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
 
             await waitForNextUpdate();
             const expected1 = await web3.eth.getBalance(address);
-            assert.equal(result.current, expected1, 'contract.balance != expected');
+            assert.equal(result.current[0], expected1, 'contract.balance != expected');
 
             await web3.eth.sendTransaction({ from: address, to: ADDRESS_0, value: '1' });
             //Create block, triggering a refresh
@@ -119,7 +119,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
             await waitForNextUpdate(); //re-render due to Contract/SET/BALANCE
 
             const expected2 = await web3.eth.getBalance(address);
-            assert.equal(result.current, expected2, 'contract.balance');
+            assert.equal(result.current[0], expected2, 'contract.balance');
 
             //No additional re-renders from background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');

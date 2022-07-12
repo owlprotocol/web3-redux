@@ -68,7 +68,7 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
 
     it('getCode', async () => {
         const { result, waitForNextUpdate } = renderHook(
-            () => useContract(networkId, address, undefined, { getCode: true }),
+            () => useContract(networkId, address, undefined, { getCode: 'ifnull' }),
             {
                 wrapper,
             },

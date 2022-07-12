@@ -182,6 +182,10 @@ export function createCRUDModel<
         return select(state, ids.map(idToStr));
     };
 
+    const selectAll = (state: any): T[] => {
+        return select(state);
+    };
+
     const selectWhere = (state: any, f: Partial<T_Encoded>) => {
         const all = selectByIdMany(state);
         return filter(all, f) as T_Encoded[];
@@ -192,6 +196,7 @@ export function createCRUDModel<
         selectByIdSingle,
         selectByIdMany,
         selectWhere,
+        selectAll,
     };
 
     /** Dexie Getters */
@@ -474,6 +479,9 @@ export function createCRUDModel<
     const useSelectByIdMany = (id?: (T_ID | string)[]) => {
         return useSelector((state) => selectByIdMany(state, id));
     };
+    const useSelectAll = () => {
+        return useSelector((state) => selectAll(state));
+    };
 
     const hooks = {
         useGet,
@@ -481,6 +489,7 @@ export function createCRUDModel<
         useWhere,
         useSelectByIdSingle,
         useSelectByIdMany,
+        useSelectAll,
     };
 
     return {

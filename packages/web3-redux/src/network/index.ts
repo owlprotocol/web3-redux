@@ -9,6 +9,8 @@ import rootSaga from './sagas/index.js';
 import * as Hooks from './hooks/index.js';
 import defaultNetworks from './defaults.js';
 
+export type { NetworkWithObjects } from './model/index.js';
+
 export const Network = {
     name: CRUDModel.name,
     actionTypes: CRUDModel.actionTypes,

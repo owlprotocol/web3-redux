@@ -15,7 +15,6 @@ export const Main = Template.bind({});
 Main.args = {
     networkId: networkIdArgType.options[0],
     address: TestData.OZ_TEAM,
-    tokenId: '1',
 };
 Main.argTypes = {
     networkId: networkIdArgType,

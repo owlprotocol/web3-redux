@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Web3 from 'web3';
 import { useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
-import { Config, Network } from '@owlprotocol/web3-redux';
+import { Config, Network, NetworkWithObjects } from '@owlprotocol/web3-redux';
 import { WalletContext } from '../constants/web3React';
 
 export function useConfigureFromWeb3React() {
@@ -16,8 +16,8 @@ export function useConfigureFromWeb3React() {
     //Web3Redux data
     const [currentNetworkId, setNetworkId] = Config.hooks.useNetworkId();
     const [currentAccount, setAccount] = Config.hooks.useAccount();
-    const currentNetwork = Network.hooks.useNetwork(currentNetworkId);
-    const currentWeb3Sender = currentNetwork?.web3Sender;
+    const [currentNetwork] = Network.hooks.useNetwork(currentNetworkId);
+    const currentWeb3Sender = (currentNetwork as NetworkWithObjects | undefined)?.web3Sender;
 
     //Update networkId
     useEffect(() => {

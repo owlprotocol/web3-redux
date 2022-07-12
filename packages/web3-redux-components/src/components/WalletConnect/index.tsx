@@ -17,22 +17,14 @@ export const useWalletConnect = () => {
 
     const [networkId] = Config.hooks.useNetworkId();
     const [account] = Config.hooks.useAccount();
-    const { balance } = Contract.hooks.useContract(networkId, account, undefined, { getBalance: 'ifnull' }) ?? {};
+    const [contract] = Contract.hooks.useContract(networkId, account, undefined, { getBalance: 'ifnull' }) ?? {};
+    const balance = contract?.balance;
     const balanceFormatted = balance ? fromWei(balance, 'ether').substring(0, 6) : undefined;
     const btnText = account ? shortenHash(account) : undefined;
 
     // TODO: Add component prop to controll on-mount-connect.
     useEffect(() => {
         if (true) return;
-
-        //Try connect on mount
-        if (!web3) {
-            try {
-                connectWallet();
-            } catch (err) {
-                console.error(err);
-            }
-        }
     }, [connectWallet, web3]);
 
     return { networkId, balance: balanceFormatted, connectWallet, btnText, showBalance: !!balance };

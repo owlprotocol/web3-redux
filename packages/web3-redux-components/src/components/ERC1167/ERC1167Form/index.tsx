@@ -33,7 +33,7 @@ export const ERC1167FactoryForm = ({ networkId, factoryAddress, implementationIn
     const factoryContract = Contract.hooks.useContract(networkId, factoryAddress);
 
     //Get Implementation Contract
-    const implementationContract = Contract.hooks.useContract(networkId, implementationAddress);
+    const [implementationContract] = Contract.hooks.useContract(networkId, implementationAddress);
     const abi = implementationContract?.abi ?? [];
     const abiItem = abi.find((f) => {
         return f.name === implementationInitializer;

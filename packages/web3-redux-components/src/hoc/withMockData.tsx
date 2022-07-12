@@ -1,27 +1,17 @@
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { Config, Network, Contract, TestData, Environment, Abi } from '@owlprotocol/web3-redux';
+import { Config, Network, Contract, TestData, Environment } from '@owlprotocol/web3-redux';
 import getDisplayName from './getDisplayName';
 import { getEnvironment } from '../environment';
 
 Environment.setEnvironment(getEnvironment() as any);
 
+const corsProxy = getEnvironment().VITE_CORS_PROXY;
+const defaultConfig = { corsProxy };
+
 export const withMockData = (WrappedComponent: any) => {
     const Component = (props: any) => {
-        const dispatch = useDispatch();
-
-        const config = Config.hooks.useConfig();
-        useEffect(() => {
-            const corsProxy = getEnvironment().VITE_CORS_PROXY;
-            if (config?.corsProxy != corsProxy) dispatch(Config.actions.update({ id: '0', corsProxy }));
-        }, [dispatch, config]);
-
+        //Config
+        Config.hooks.useConfig(defaultConfig);
         //Networks
-        Network.hooks.useNetwork('1', true);
-        Network.hooks.useNetwork('42161', true);
-        Network.hooks.useNetwork('10', true);
-        Network.hooks.useNetwork('137', true);
-        Network.hooks.useNetwork('1337', true);
         /*
         useEffect(() => {
             if (!networkOwl) dispatch(Network.create({ networkId: '1337', web3Rpc: import.meta.env.VITE_OWL_RPC }));
@@ -34,31 +24,24 @@ export const withMockData = (WrappedComponent: any) => {
         }, [dispatch, config]);
         */
 
-        //ERC20
-        Contract.hooks.useContract('1', TestData.VITALIK, {});
-        Contract.hooks.useContract('1', TestData.WETH, { abi: Abi.IERC20MetadataArtifact.abi });
-        Contract.hooks.useContract('1', TestData.USDC, { abi: Abi.IERC20MetadataArtifact.abi });
-        Contract.hooks.useContract('1', TestData.TETHER, {
-            abi: Abi.IERC20MetadataArtifact.abi,
-        });
-        Contract.hooks.useContract('1', TestData.CHAINLINK, {
-            abi: Abi.IERC20MetadataArtifact.abi,
-        });
+        Network.hooks.useNetwork('1', true);
+        Network.hooks.useNetwork('42161', true);
+        Network.hooks.useNetwork('10', true);
+        Network.hooks.useNetwork('137', true);
+        Network.hooks.useNetwork('1337', true);
 
+        //ERC20
+        Contract.hooks.useContract('1', TestData.VITALIK, { label: 'Vitalik', tags: ['EOA'] });
+        Contract.hooks.useContract('1', TestData.contractWETH.address, TestData.contractWETH);
+        Contract.hooks.useContract('1', TestData.contractUSDC.address, TestData.contractUSDC);
+        Contract.hooks.useContract('1', TestData.contractTETHER.address, TestData.contractTETHER);
+        Contract.hooks.useContract('1', TestData.contractCHAINLINK.address, TestData.contractCHAINLINK);
         //ERC721
-        Contract.hooks.useContract('1', TestData.VEE_FRIENDS_SERIES2, {
-            abi: Abi.IERC721MetadataArtifact.abi,
-        });
-        Contract.hooks.useContract('1', TestData.OZ_TEAM, {
-            abi: Abi.IERC721MetadataArtifact.abi,
-        });
+        Contract.hooks.useContract('1', TestData.contractVeeFriendsSeries2.address, TestData.contractVeeFriendsSeries2);
+        Contract.hooks.useContract('1', TestData.contractOZTeam.address, TestData.contractOZTeam);
         //ERC1155
-        Contract.hooks.useContract('1', TestData.KITH_FRIENDS, {
-            abi: Abi.IERC1155MetadataURIArtifact.abi,
-        });
-        Contract.hooks.useContract('137', TestData.SKYWEAVER, {
-            abi: Abi.IERC1155MetadataURIArtifact.abi,
-        });
+        Contract.hooks.useContract('1', TestData.contractKithFriends.address, TestData.contractKithFriends);
+        Contract.hooks.useContract('137', TestData.contractSkyWeaver.address, TestData.contractSkyWeaver);
 
         return <WrappedComponent {...props} />;
     };

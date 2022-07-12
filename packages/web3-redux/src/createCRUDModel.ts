@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { put as putSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
@@ -51,8 +51,9 @@ export function createCRUDModel<
     const idToDexieId = (id: string | IndexableTypeArray | T_ID): string | IndexableTypeArray | undefined => {
         if (typeof id === 'string') {
             return id;
-        } else if (Array.isArray(id)) id;
-        else {
+        } else if (Array.isArray(id)) {
+            return id;
+        } else {
             const id2 = validateId(id);
             if (typeof id2 === 'string') return id2;
             //@ts-expect-error
@@ -68,6 +69,7 @@ export function createCRUDModel<
     const UPDATE_BATCHED = `${UPDATE}/BATCHED`;
     const DELETE = `${name}/DELETE`;
     const DELETE_BATCHED = `${DELETE}/BATCHED`;
+    //const DELETE_ALL = `${DELETE}/ALL`;
     const HYDRATE = `${name}/HYDRATE`;
     const HYDRATE_BATCHED = `${HYDRATE}/BATCHED`;
     const HYDRATE_ALL = `${HYDRATE}/ALL`;
@@ -466,6 +468,7 @@ export function createCRUDModel<
         try {
             const { payload } = action;
             const item = yield* call(get, payload);
+            console.debug({ payload, item });
             if (item) yield* putSaga(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
             yield* putSaga(
@@ -541,6 +544,9 @@ export function createCRUDModel<
         updateBatched: updateBatchedSaga,
         delete: deleteSaga,
         deleteBatched: deleteBatchedSaga,
+        hydrate: hydrateSaga,
+        hydrateBatched: hydrateBatchedSaga,
+        hydrateAll: hydrateAllSaga,
         crudRootSaga,
     };
 
@@ -586,6 +592,8 @@ export function createCRUDModel<
         return useSelector((state) => selectWhere(state, f));
     };
     const useHydrate = (id: Partial<T_ID> | undefined, defaultItem?: Partial<T> | undefined) => {
+        const [actionDispatched, setActionDispatched] = useState(false);
+
         const dispatch = useDispatch();
         const item = useSelectByIdSingle(id);
         const itemExists = !!item;
@@ -593,17 +601,29 @@ export function createCRUDModel<
         const itemResponse = useGet(id);
         const isLoading = itemResponse === 'loading';
         const itemDB = isLoading ? undefined : itemResponse;
-        const itemDBExists = !isLoading && !!itemDB;
+        const itemDBExists = isLoading || !!itemDB;
 
-        useEffect(() => {
+        //Reset state
+        const action = useMemo(() => {
             if (id && isDefinedRecord(id) && !itemExists) {
                 if (!itemDBExists && defaultItem) {
-                    dispatch(createAction({ ...defaultItem, ...id } as T));
+                    return createAction({ ...defaultItem, ...id } as T);
                 } else if (itemDBExists) {
-                    dispatch(hydrateAction(id));
+                    return hydrateAction(id);
                 }
             }
-        }, [dispatch, id, itemExists, itemDBExists, defaultItem]);
+        }, [id, itemExists, itemDBExists, defaultItem]);
+
+        useEffect(() => {
+            if (itemExists) setActionDispatched(false);
+        }, [id, itemExists]);
+
+        useEffect(() => {
+            if (action && !actionDispatched) {
+                dispatch(action);
+                setActionDispatched(true);
+            }
+        }, [dispatch, action, actionDispatched]);
 
         const returnValue = item ?? itemDB ?? defaultItem;
         const returnOptions = { isLoading };

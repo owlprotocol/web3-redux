@@ -61,13 +61,13 @@ export function useERC1155(
     });
 
     //Events
-    const TransferFrom = useERC1155TransferSingle(
+    const [TransferFrom] = useERC1155TransferSingle(
         networkId,
         address,
         { from: balanceOfAddress, id: balanceOfTokenId },
         TransferEventsOptions,
     );
-    const TransferTo = useERC1155TransferSingle(
+    const [TransferTo] = useERC1155TransferSingle(
         networkId,
         address,
         { to: balanceOfAddress, id: balanceOfTokenId },

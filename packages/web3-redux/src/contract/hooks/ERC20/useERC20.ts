@@ -65,10 +65,15 @@ export function useERC20(
     );
 
     //Events
-    const TransferFrom = useERC20Transfer(networkId, address, { from: balanceOfAddress }, TransferEventsOptions);
-    const TransferTo = useERC20Transfer(networkId, address, { to: balanceOfAddress }, TransferEventsOptions);
-    const ApprovalOwner = useERC20Approval(networkId, address, { owner: balanceOfAddress }, ApprovalEventsOptions);
-    const ApprovalSpender = useERC20Approval(networkId, address, { spender: balanceOfAddress }, ApprovalEventsOptions);
+    const [TransferFrom] = useERC20Transfer(networkId, address, { from: balanceOfAddress }, TransferEventsOptions);
+    const [TransferTo] = useERC20Transfer(networkId, address, { to: balanceOfAddress }, TransferEventsOptions);
+    const [ApprovalOwner] = useERC20Approval(networkId, address, { owner: balanceOfAddress }, ApprovalEventsOptions);
+    const [ApprovalSpender] = useERC20Approval(
+        networkId,
+        address,
+        { spender: balanceOfAddress },
+        ApprovalEventsOptions,
+    );
 
     const values = useMemo(() => {
         return {

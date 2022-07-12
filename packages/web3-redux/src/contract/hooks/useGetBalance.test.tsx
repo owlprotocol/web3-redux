@@ -1,11 +1,10 @@
 import { assert } from 'chai';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
-import Web3 from 'web3';
 
 import { useGetBalance } from './useGetBalance.js';
-import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
-import { networkId, ADDRESS_0 } from '../../test/data.js';
+import { expectThrowsAsync } from '../../test/index.js';
+import { ADDRESS_0 } from '../../test/data.js';
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';

@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import useERC721TokenURI from './useERC721TokenURI.js';
 import useERC721OwnerOf from './useERC721OwnerOf.js';
+import useERC721Transfer from './useERC721Transfer.js';
+import useERC721Approval from './useERC721Approval.js';
 import { useContractWithAbi } from '../useContractWithAbi.js';
 import { useContractCall } from '../useContractCall.js';
 import { useEvents, UseEventsOptions } from '../useEvents.js';
@@ -58,14 +60,8 @@ export function useERC721(
     const [metadata, { contentId }] = useURI(sync?.metadata ? tokenURI : undefined);
 
     //Events
-    const Transfer = useEvents<IERC721Metadata, 'Transfer'>(
-        networkId,
-        address,
-        'Transfer',
-        { tokenId },
-        TransferEventsOptions,
-    );
-    const Approval = useEvents(networkId, address, 'Approval', { tokenId }, ApprovalEventsOptions);
+    const [Transfer] = useERC721Transfer(networkId, address, { tokenId }, TransferEventsOptions);
+    const [Approval] = useERC721Approval(networkId, address, { tokenId }, ApprovalEventsOptions);
 
     //IPFS
     //TODO: Use tokenURI to fetch NFT metadata

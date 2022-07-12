@@ -12,3 +12,8 @@ https://dexie.org/docs/MultiEntry-Index
 
 ### IndexedDB Limitations
 https://dexie.org/docs/The-Main-Limitations-of-IndexedDB
+
+## TODO
+* getBalance/getNonce... hook tests
+* useEvents hook test
+* useEvents pagination

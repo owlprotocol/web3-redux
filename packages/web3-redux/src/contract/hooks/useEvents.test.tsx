@@ -5,34 +5,31 @@ import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 
 import { cloneDeep } from '../../utils/lodash/index.js';
-import { getWeb3Provider } from '../../test/index.js';
 
 import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
 
 import { name } from '../common.js';
-import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 
 import { useEvents } from '../hooks/useEvents.js';
 import ContractCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractEventCRUD from '../../contractevent/crud.js';
+import { network1336 } from '../../network/data.js';
+import expectThrowsAsync from '../../test/expectThrowsAsync.js';
+
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
 
 describe(`${name}/hooks/useEvents.tsx`, () => {
-
-
     let store: StoreType;
     let wrapper: any;
 
-    let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let web3Contract: Web3Contract;
     let address: string;
 
     before(async () => {
-        const provider = getWeb3Provider();
-        //@ts-ignore
-        web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();
     });
 
@@ -72,14 +69,16 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
 
             web3Contract.methods.setValue(42).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             await waitForNextUpdate();
+            await waitForNextUpdate();
 
-            const currentEvents = result.current;
-            const allEvents = result.all;
+            const currentEvents = result.current[0];
             assert.deepEqual(currentEvents, expectedEvents, 'result.current');
-            assert.deepEqual(allEvents, [[], expectedEvents], 'result.all');
+
+            //No additional re-renders frm background tasks
+            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
 
-        it('(...,filter)', async () => {
+        it.skip('(...,filter)', async () => {
             const expectedEvents: any[] = [];
             web3Contract.events['NewValue']({ filter: { value: 42 } }).on('data', (event: any) => {
                 expectedEvents.push(ContractEventCRUD.validate({ networkId, address, name: 'NewValue', ...event }));
@@ -98,10 +97,8 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
             //This is ignored by the hook
             await web3Contract.methods.setValue(43).send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
 
-            const currentEvents = result.current;
-            const allEvents = result.all;
+            const currentEvents = result.current[0];
             assert.deepEqual(currentEvents, expectedEvents, 'result.current');
-            assert.deepEqual(allEvents, [[], expectedEvents], 'result.all');
         });
     });
 });

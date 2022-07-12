@@ -42,11 +42,14 @@ export function useEvents<
     const dispatch = useDispatch();
 
     //TODO: handle filter
-    const events = ContractEventCRUD.hooks.useWhere({
+    const eventsResponse = ContractEventCRUD.hooks.useWhere({
         networkId,
         address: addressChecksum,
         name: eventName as string | undefined,
-    }) as ContractEvent<U>[] | undefined;
+    }) as ContractEvent<U>[] | 'loading';
+    const eventsLoading = eventsResponse === 'loading';
+    const events = eventsLoading ? undefined : eventsResponse;
+
     const filterHash = filter ? JSON.stringify(filter) : '';
 
     const getPastAction = useMemo(() => {
@@ -62,7 +65,7 @@ export function useEvents<
                 max,
             });
         }
-    }, [networkId, addressChecksum, eventName, filterHash, fromBlock, toBlock, blockBatch, contractExists, past]);
+    }, [networkId, addressChecksum, eventName, contractExists, past, filterHash, fromBlock, toBlock, blockBatch]);
 
     const subscribeAction = useMemo(() => {
         if (networkId && addressChecksum && eventName && contractExists && sync) {
@@ -86,6 +89,12 @@ export function useEvents<
         }
     }, [networkId, addressChecksum, eventName, filterHash, contractExists, sync]);
 
+    //Error
+    const error = useMemo(() => {
+        if (!networkId) return new Error('networkId undefined');
+        else if (!address) return new Error('address undefined');
+    }, [networkId, address]);
+
     //Send getPast action
     useEffect(() => {
         if (getPastAction) dispatch(getPastAction);
@@ -98,7 +107,8 @@ export function useEvents<
         };
     }, [subscribeAction, unsubscribeAction]);
 
-    return events;
+    const returnOptions = { error };
+    return [events, returnOptions] as [typeof events, typeof returnOptions];
 }
 
 /** @category Hooks */

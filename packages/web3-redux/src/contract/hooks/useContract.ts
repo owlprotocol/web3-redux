@@ -19,7 +19,7 @@ import ContractCRUD from '../crud.js';
 export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
     networkId: string | undefined,
     address: string | undefined,
-    createData: Partial<Contract> = {},
+    defaultContract?: Partial<Contract>,
     sync?: {
         getBalance?: 'ifnull' | GetBalanceSyncedActionInput['sync'] | false;
         getNonce?: 'ifnull' | GetNonceSyncedActionInput['sync'] | false;
@@ -35,17 +35,15 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 
     const dispatch = useDispatch();
 
-    const contractResponse = ContractCRUD.hooks.useGet({ networkId, address });
-    const contractLoading = contractResponse === 'loading';
-    const contract = contractLoading ? undefined : contractResponse;
+    const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
     const contractExists = !!contract;
 
     //Create contract if inexistant
     useEffect(() => {
-        if (!networkId && !address && !contractLoading && !contractExists) {
-            dispatch(ContractCRUD.actions.create({ networkId: networkId!, address: address!, ...createData }));
+        if (!networkId && !address && !contractExists && defaultContract) {
+            dispatch(ContractCRUD.actions.create({ networkId: networkId!, address: address!, ...defaultContract }));
         }
-    }, [dispatch, networkId, address, contractLoading, contractExists, JSON.stringify(createData)]);
+    }, [dispatch, networkId, address, contractExists, defaultContract]);
 
     useGetBalance(networkId, address, getBalance);
     useGetNonce(networkId, address, getNonce);

@@ -3,15 +3,13 @@
  * @module Network
  */
 
-export * from './model/index.js';
-export * from './defaults.js';
-
 import * as Actions from './actions/index.js';
 import CRUDModel from './crud.js';
 import rootSaga from './sagas/index.js';
 import * as Hooks from './hooks/index.js';
+import defaultNetworks from './defaults.js';
 
-const model = {
+export const Network = {
     name: CRUDModel.name,
     actionTypes: CRUDModel.actionTypes,
     actions: {
@@ -25,9 +23,11 @@ const model = {
     },
     hooks: {
         ...CRUDModel.hooks,
+        useNetwork: Hooks.useNetwork,
         useLatestBlock: Hooks.useLatestBlock,
         useLatestBlockNumber: Hooks.useLatestBlockNumber,
     },
+    defaultNetworks,
 };
 
-export default model;
+export default Network;

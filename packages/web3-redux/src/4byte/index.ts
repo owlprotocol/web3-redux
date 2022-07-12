@@ -2,13 +2,11 @@
  * @module 4Byte
  */
 
-export * from './model/index.js';
-
 import * as Actions from './actions/index.js';
 import CRUDModel from './crud.js';
 import rootSaga from './sagas/index.js';
 
-const model = {
+export const _4Byte = {
     name: CRUDModel.name,
     actionTypes: CRUDModel.actionTypes,
     actions: {
@@ -25,4 +23,4 @@ const model = {
     },
 };
 
-export default model;
+export default _4Byte;

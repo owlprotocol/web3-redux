@@ -3,12 +3,10 @@
  * @module ContractSend
  */
 
-export * from './model/index.js';
-
 import CRUDModel from './crud.js';
 import rootSaga from './sagas/index.js';
 
-const model = {
+export const ContractSend = {
     name: CRUDModel.name,
     actionTypes: CRUDModel.actionTypes,
     actions: {
@@ -23,4 +21,4 @@ const model = {
     },
 };
 
-export default model;
+export default ContractSend;

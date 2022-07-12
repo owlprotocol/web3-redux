@@ -35,3 +35,28 @@ export { default as ERC165Artifact } from '../artifacts/@openzeppelin/contracts/
 export { default as IERC1820ImplementerArtifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/IERC1820Implementer.sol/IERC1820Implementer';
 export { default as IERC1820RegistryArtifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol/IERC1820Registry';
 export { default as ERC1820ImplementerArtifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/ERC1820Implementer.sol/ERC1820Implementer';
+
+//Types
+export type { IAccessControl } from '../typechain/IAccessControl.js';
+export type { IAccessControlEnumerable } from '../typechain/IAccessControlEnumerable.js';
+
+export type { IERC20 } from '../typechain/IERC20.js';
+export type { IERC20Metadata } from '../typechain/IERC20Metadata.js';
+export type { ERC20PresetMinterPauser } from '../typechain/ERC20PresetMinterPauser.js';
+
+export type { IERC721 } from '../typechain/IERC721.js';
+export type { IERC721Receiver } from '../typechain/IERC721Receiver.js';
+export type { IERC721Metadata } from '../typechain/IERC721Metadata.js';
+export type { IERC721Enumerable } from '../typechain/IERC721Enumerable.js';
+export type { ERC721PresetMinterPauserAutoId } from '../typechain/ERC721PresetMinterPauserAutoId.js';
+
+export type { IERC1155 } from '../typechain/IERC1155.js';
+export type { IERC1155Receiver } from '../typechain/IERC1155Receiver.js';
+export type { IERC1155MetadataURI } from '../typechain/IERC1155MetadataURI.js';
+export type { ERC1155PresetMinterPauser } from '../typechain/ERC1155PresetMinterPauser.js';
+
+export type { IERC165 } from '../typechain/IERC165.js';
+export type { ERC165 } from '../typechain/ERC165.js';
+export type { IERC1820Implementer } from '../typechain/IERC1820Implementer.js';
+export type { IERC1820Registry } from '../typechain/IERC1820Registry.js';
+export type { ERC1820Implementer } from '../typechain/ERC1820Implementer.js';

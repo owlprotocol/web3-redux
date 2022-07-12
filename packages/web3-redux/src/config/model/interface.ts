@@ -21,6 +21,8 @@ export interface Config extends ConfigId {
     readonly ipfsUrl?: string | undefined;
     /* 4byte.directory Url */
     readonly _4byteUrl?: string | undefined;
+    /* CORS Proxy */
+    readonly corsProxy?: string | undefined;
     /* Arbitrary config values */
     //readonly [key: string]: any;
 }

@@ -1,2 +1,3 @@
-export { useLatestBlock } from './useLatestBlock.js';
-export { useLatestBlockNumber } from './useLatestBlockNumber.js';
+export * from './useLatestBlock.js';
+export * from './useLatestBlockNumber.js';
+export * from './useNetwork.js';

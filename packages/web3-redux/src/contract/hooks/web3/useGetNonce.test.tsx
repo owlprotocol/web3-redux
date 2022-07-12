@@ -15,8 +15,6 @@ import ContractCRUD from '../crud.js';
 import NetworkCRUD from '../../network/crud.js';
 
 describe(`${name}/hooks/useGetNonce.test.tsx`, () => {
-
-
     let web3: Web3;
     let store: StoreType;
     let wrapper: any;

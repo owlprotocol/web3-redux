@@ -44,6 +44,8 @@ export const Contract = {
         useGetCode: Hooks.useGetCode,
         useGetNonce: Hooks.useGetCode,
         useSupportsInterface: Hooks.useSupportsInterface,
+        useGetTags: Hooks.useGetTags,
+        useForNetworkId: Hooks.useForNetworkId,
     },
     sagas: {
         ...CRUDModel.sagas,

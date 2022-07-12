@@ -3,16 +3,16 @@ import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 
 import { useGetBalance } from './useGetBalance.js';
-import { expectThrowsAsync } from '../../test/index.js';
-import { ADDRESS_0 } from '../../test/data.js';
+import { expectThrowsAsync } from '../../../test/index.js';
+import { ADDRESS_0 } from '../../../test/data.js';
 
-import { name } from '../common.js';
-import { createStore, StoreType } from '../../store.js';
-import NetworkCRUD from '../../network/crud.js';
-import ContractCRUD from '../crud.js';
-import TransactionCRUD from '../../transaction/crud.js';
-import BlockCRUD from '../../block/crud.js';
-import { network1336 } from '../../network/data.js';
+import { name } from '../../common.js';
+import { createStore, StoreType } from '../../../store.js';
+import NetworkCRUD from '../../../network/crud.js';
+import ContractCRUD from '../../crud.js';
+import TransactionCRUD from '../../../transaction/crud.js';
+import BlockCRUD from '../../../block/crud.js';
+import { network1336 } from '../../../network/data.js';
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;

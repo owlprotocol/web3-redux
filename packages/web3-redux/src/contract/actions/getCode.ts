@@ -10,7 +10,7 @@ export const GET_CODE = `${name}/GET_CODE`;
 export const getCode = createAction(GET_CODE, (payload: ContractId, uuid?: string) => {
     return {
         payload: { networkId: payload.networkId, address: payload.address.toLowerCase() },
-        meta: { uuid: uuid ?? uuidv4 },
+        meta: { uuid: uuid ?? uuidv4() },
     };
 });
 /** @internal */

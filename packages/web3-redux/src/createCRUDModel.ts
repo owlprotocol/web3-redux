@@ -482,6 +482,9 @@ export function createCRUDModel<
     const useSelectAll = () => {
         return useSelector((state) => selectAll(state));
     };
+    const useSelectWhere = (f: Partial<T>) => {
+        return useSelector((state) => selectWhere(state, f));
+    };
 
     const hooks = {
         useGet,
@@ -490,6 +493,7 @@ export function createCRUDModel<
         useSelectByIdSingle,
         useSelectByIdMany,
         useSelectAll,
+        useSelectWhere,
     };
 
     return {

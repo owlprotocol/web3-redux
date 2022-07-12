@@ -105,10 +105,7 @@ describe(`${name}/hooks/useGetBalance.test.tsx`, () => {
                 wrapper,
             });
 
-            assert.equal(result.all.length, 1, 'result.all.length');
             await waitForNextUpdate();
-            assert.equal(result.all.length, 2, 'result.all.length');
-
             const expected1 = await web3.eth.getBalance(address);
             assert.equal(result.current, expected1, 'contract.balance != expected');
 

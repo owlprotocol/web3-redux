@@ -8,6 +8,7 @@ export * from './useContract.js';
 export * from './useContractWithAbi.js';
 export * from './useContractCall.js';
 export * from './useContractSend.js';
+export * from './useDeploy.js';
 export * from './useEvents.js';
 export * from './useFetchAbi.js';
 export * from './useFetchTransactions.js';

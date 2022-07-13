@@ -216,7 +216,9 @@ export function createCRUDModel<
     const select = ormModel ? createSelector(getOrm()[name]) : () => undefined;
     const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined): T | undefined => {
         if (!id) return undefined;
-        return select(state, idToStr(id));
+        const idStr = idToStr(id);
+        if (!idStr) return undefined;
+        return select(state, idStr);
     };
 
     const selectByIdMany = (state: any, ids?: (T_ID | string)[]): (T | null)[] => {
@@ -639,7 +641,7 @@ export function createCRUDModel<
         }, [dispatch, action, actionDispatched]);
 
         const returnValue = item ?? itemDB ?? defaultItem;
-        const returnOptions = { isLoading };
+        const returnOptions = { isLoading, exists };
 
         return [returnValue, returnOptions] as [typeof returnValue, typeof returnOptions];
     };

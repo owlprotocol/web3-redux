@@ -1,12 +1,10 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useGetBalance } from './web3/useGetBalance.js';
 import { useGetNonce } from './web3/useGetNonce.js';
 import { useGetCode } from './web3/useGetCode.js';
 import { useFetchAbi } from './useFetchAbi.js';
 import { GetBalanceSyncedActionInput } from '../actions/getBalanceSynced.js';
 import { GetNonceSyncedActionInput } from '../actions/getNonceSynced.js';
-import { BaseWeb3Contract, Contract } from '../model/index.js';
+import { Contract } from '../model/index.js';
 import ContractCRUD from '../crud.js';
 
 /**
@@ -16,7 +14,7 @@ import ContractCRUD from '../crud.js';
  * @category Hooks
  *
  */
-export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
+export function useContract(
     networkId: string | undefined,
     address: string | undefined,
     defaultContract?: Partial<Contract>,
@@ -43,9 +41,9 @@ export function useContract<T extends BaseWeb3Contract = BaseWeb3Contract>(
 }
 
 /** @category Hooks */
-export function contractHookFactory<T extends BaseWeb3Contract = BaseWeb3Contract>(createData: Partial<Contract> = {}) {
+export function contractHookFactory(createData: Partial<Contract> = {}) {
     return (networkId: string | undefined, address: string | undefined) => {
-        return useContract<T>(networkId, address, createData);
+        return useContract(networkId, address, createData);
     };
 }
 

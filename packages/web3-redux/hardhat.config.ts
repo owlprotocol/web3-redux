@@ -1,14 +1,23 @@
+/* eslint-disable import/no-commonjs */
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 
-import { HardhatUserConfig } from 'hardhat/types/config';
+/*
+import type { HardhatUserConfig } from 'hardhat/types/config';
 import '@typechain/hardhat';
 import '@nomiclabs/hardhat-web3';
+*/
+require('@typechain/hardhat');
+require('@nomiclabs/hardhat-web3');
 
-const config: HardhatUserConfig = {
+const config = {
     solidity: '0.8.9',
-    networks: {},
+    networks: {
+        hardhat: {
+            chainId: 1336,
+        },
+    },
     paths: {
         artifacts: 'src/artifacts',
     },
@@ -19,4 +28,5 @@ const config: HardhatUserConfig = {
     },
 };
 
-export default config;
+//export default config;
+exports.default = config;

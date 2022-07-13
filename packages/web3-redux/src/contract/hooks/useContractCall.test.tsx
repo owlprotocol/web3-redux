@@ -261,7 +261,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 assert.isDefined(currentCallError, 'error');
                 assert.equal(
                     currentCallError?.message,
-                    'VM Exception while processing transaction: revert Transaction reverted',
+                    'VM Exception while processing transaction: reverted with reason string \'Transaction reverted\'',
                     'error.message',
                 );
 

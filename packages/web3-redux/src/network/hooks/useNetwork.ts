@@ -1,5 +1,5 @@
 import NetworkCRUD from '../crud.js';
-import { Network } from '../model/index.js';
+import { Network, NetworkWithObjects } from '../model/index.js';
 
 /**
  * @category Hooks
@@ -8,5 +8,6 @@ import { Network } from '../model/index.js';
  */
 export function useNetwork(networkId: string | undefined, defaultNetwork?: Partial<Network> | true) {
     const defaultObj = defaultNetwork === true ? { networkId } : defaultNetwork;
-    return NetworkCRUD.hooks.useHydrate({ networkId }, defaultObj);
+    const [network, returnOptions] = NetworkCRUD.hooks.useHydrate({ networkId }, defaultObj);
+    return [network, returnOptions] as [NetworkWithObjects | undefined, typeof returnOptions];
 }

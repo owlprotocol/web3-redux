@@ -1,3 +1,4 @@
+import Web3 from 'web3';
 import { Network } from './model/interface.js';
 import {
     ETHERSCAN_API_KEY,
@@ -29,6 +30,7 @@ import {
     ARBITRUM_EXPLORER,
     ARBITRUM_EXPLORER_API,
 } from '../environment.js';
+import getWeb3Provider from '../test/getWeb3Provider.js';
 
 const ETHER = {
     name: 'Ether',
@@ -44,6 +46,12 @@ const MATIC = {
 
 export const defaultNetworks = () => {
     return {
+        '1336': {
+            networkId: '1336',
+            name: 'ganache-provider',
+            currency: ETHER,
+            web3: new Web3(getWeb3Provider() as any),
+        },
         '1337': {
             networkId: '1337',
             name: 'ganache',

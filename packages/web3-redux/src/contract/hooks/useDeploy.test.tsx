@@ -53,4 +53,22 @@ describe(`${name}/hooks/useDeploy.test.tsx`, () => {
         //No additional re-renders frm background tasks
         await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
     });
+
+    it('useDeploy - auto', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useDeploy({ networkId, abi, bytecode, from, label }, undefined, true),
+            {
+                wrapper,
+            },
+        );
+
+        await waitForNextUpdate();
+        await waitForNextUpdate();
+        await waitForNextUpdate();
+
+        const current1 = result.current;
+        assert.isDefined(current1[0], 'contract exists');
+        //No additional re-renders frm background tasks
+        await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+    });
 });

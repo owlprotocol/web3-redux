@@ -43,6 +43,7 @@ export function useContractCall<
     const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
     const web3Contract = contract?.web3Contract ?? contract?.web3SenderContract;
     const web3ContractMethod = web3Contract?.methods[method];
+    const web3ContractMethodExists = !!web3ContractMethod;
 
     const data = useMemo(() => {
         if (web3ContractMethod) {
@@ -55,32 +56,22 @@ export function useContractCall<
         }
     }, [web3ContractMethod]);
 
-    const ethCallResponse = EthCallCRUD.hooks.useGet({
+    const [ethCall, { isLoading: ethCallLoading }] = EthCallCRUD.hooks.useGet({
         networkId,
         to: address,
         data,
         from,
         gas,
     });
-    const ethCallLoading = ethCallResponse === 'loading';
-    const ethCall = ethCallLoading ? undefined : ethCallResponse;
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
-    const returnValueExists = returnValue != undefined;
+    const returnValueExists = ethCallLoading || returnValue != undefined;
+    const executeSync = (sync === 'ifnull' && !returnValueExists) || !sync;
 
     const argsHash = JSON.stringify(args);
     const { callAction, syncAction } =
         useMemo(() => {
-            if (!ethCallLoading && networkId && address && method) {
-                if (sync === false || sync === 'once' || (!returnValueExists && sync === 'ifnull')) {
-                    const callAction = call({
-                        networkId,
-                        address,
-                        method: method as string,
-                        args: args as any[],
-                        from,
-                    });
-                    return { callAction, syncAction: undefined };
-                } else if (!!sync && sync != 'ifnull') {
+            if (networkId && address && method && web3ContractMethodExists) {
+                if (!!sync && sync != 'ifnull' && sync != 'once') {
                     return callSynced({
                         networkId,
                         address,
@@ -89,13 +80,21 @@ export function useContractCall<
                         from,
                         sync,
                     });
+                } else {
+                    const callAction = call({
+                        networkId,
+                        address,
+                        method: method as string,
+                        args: args as any[],
+                        from,
+                    });
+                    return { callAction, syncAction: undefined };
                 }
             }
-        }, [ethCallLoading, networkId, address, method, argsHash, returnValueExists, JSON.stringify(sync)]) ?? {};
+        }, [networkId, address, method, web3ContractMethodExists, argsHash, JSON.stringify(sync)]) ?? {};
 
     //Error
-    const reduxErrorResponse = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
-    const reduxError = reduxErrorResponse === 'loading' ? undefined : reduxErrorResponse;
+    const [reduxError] = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
     const error = useMemo(() => {
         if (!networkId) return new Error('networkId undefined');
         else if (!address) return new Error('address undefined');
@@ -108,12 +107,14 @@ export function useContractCall<
     }, [networkId, address, method, reduxError]);
 
     const callId = callAction?.payload.id;
+    //Callback
     const dispatchCallAction = useCallback(() => {
         if (callAction) dispatch(callAction);
     }, [dispatch, callId]);
+    //Initial call
     useEffect(() => {
-        if (!!sync) dispatchCallAction();
-    }, [dispatchCallAction, sync]);
+        if (executeSync) dispatchCallAction();
+    }, [dispatchCallAction, executeSync]);
 
     const syncId = syncAction?.payload.id;
     useEffect(() => {

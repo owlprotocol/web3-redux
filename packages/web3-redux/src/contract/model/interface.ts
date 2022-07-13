@@ -55,10 +55,10 @@ export const ContractIndex = '[networkId+address], networkId, label, *tags';
 
 /** @internal */
 export function validateId(item: Partial<ContractId>) {
-    if (!item.networkId) throw new Error('networkId undefined');
-    if (!item.address) throw new Error('address undefined');
+    //if (!item.networkId) throw new Error('networkId undefined');
+    //if (!item.address) throw new Error('address undefined');
 
-    return [item.networkId, item.address.toLowerCase()];
+    return [item.networkId, item.address?.toLowerCase()] as [string, string];
 }
 
 /** @internal */

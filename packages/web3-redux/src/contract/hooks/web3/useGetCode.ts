@@ -42,8 +42,7 @@ export function useGetCode(
     }, [dispatch, dispatchGetCode, web3Exists, executeSync]);
 
     //Error
-    const reduxErrorResponse = ErrorCRUD.hooks.useGet(getCodeAction?.meta.uuid);
-    const reduxError = reduxErrorResponse === 'loading' ? undefined : reduxErrorResponse;
+    const [reduxError] = ErrorCRUD.hooks.useGet(getCodeAction?.meta.uuid);
     const error = useMemo(() => {
         if (!networkId) return new Error('networkId undefined');
         else if (!address) return new Error('address undefined');

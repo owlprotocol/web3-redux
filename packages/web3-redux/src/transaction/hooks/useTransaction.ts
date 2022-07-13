@@ -16,19 +16,16 @@ export const useTransaction = (
     const dispatch = useDispatch();
 
     const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
-    const transactionResponse = TransactionCRUD.hooks.useGet({ networkId, hash });
-    const loading = transactionResponse === 'loading';
-    const transaction = loading ? undefined : transactionResponse;
-    const transactionExists = !!transaction;
+    const [transaction, { exists }] = TransactionCRUD.hooks.useGet({ networkId, hash });
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
 
     const action = useMemo(() => {
-        if (!loading && networkId && hash && web3Exists) {
-            if ((!transactionExists && fetch === 'ifnull') || fetch === true) {
+        if (networkId && hash && web3Exists) {
+            if ((!exists && fetch === 'ifnull') || fetch === true) {
                 return fetchAction({ networkId, hash });
             }
         }
-    }, [loading, networkId, hash, web3Exists, transactionExists, fetch]);
+    }, [networkId, hash, web3Exists, exists, fetch]);
 
     useEffect(() => {
         if (action) dispatch(action);

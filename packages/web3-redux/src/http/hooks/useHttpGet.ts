@@ -9,9 +9,9 @@ import HTTPCacheCRUD from '../crud.js';
  * */
 export const useHttpGet = (uri: string | undefined) => {
     const dispatch = useDispatch();
-    const httpRequest = HTTPCacheCRUD.hooks.useGet({ id: uri });
-    const data = httpRequest == 'loading' ? undefined : httpRequest?.data;
-    const dataExists = !!data;
+    const [httpRequest, { isLoading }] = HTTPCacheCRUD.hooks.useGet({ id: uri });
+    const data = httpRequest?.data;
+    const dataExists = isLoading || !!data; //assume exists while loading
 
     useEffect(() => {
         //Get http api content

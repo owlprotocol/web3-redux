@@ -58,8 +58,7 @@ export function useGetNonce(
     }, [dispatch, syncId]);
 
     //Error
-    const reduxErrorResponse = ErrorCRUD.hooks.useGet(getNonceAction?.meta.uuid);
-    const reduxError = reduxErrorResponse === 'loading' ? undefined : reduxErrorResponse;
+    const [reduxError] = ErrorCRUD.hooks.useGet(getNonceAction?.meta.uuid);
     const error = useMemo(() => {
         if (!networkId) return new Error('networkId undefined');
         else if (!address) return new Error('address undefined');

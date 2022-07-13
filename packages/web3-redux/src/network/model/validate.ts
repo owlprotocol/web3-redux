@@ -1,6 +1,4 @@
-import axios, { Axios } from 'axios';
-
-import Web3 from 'web3';
+import axios from 'axios';
 import { Network, NetworkId, NetworkWithObjects } from './interface.js';
 import { defaultNetworks } from '../defaults.js';
 import { fromRpc } from '../../utils/web3/index.js';

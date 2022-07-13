@@ -558,7 +558,12 @@ export function createCRUDModel<
         //@ts-expect-error
         const id2 = id ? idToDexieId(id) : undefined;
         const id2Dep = id ? idToStr(id) : undefined;
-        return useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep], 'loading' as const);
+        const response = useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep], 'loading' as const);
+        const isLoading = response === 'loading';
+        const result = isLoading ? undefined : response;
+        const exists = isLoading || !!result; //assume exists while loading
+        const returnOptions = { isLoading, exists };
+        return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
     //TODO: string array id
     const useGetBulk = (ids: Partial<T_ID>[]) => {
@@ -568,14 +573,24 @@ export function createCRUDModel<
         //@ts-expect-error
         const ids2 = compact(ids.map(idToDexieId));
         const ids2Dep = ids.map(idToStr).join(SEPARATOR);
-        return useLiveQuery(() => table.bulkGet(ids2), [ids2Dep], 'loading' as const);
+        const response = useLiveQuery(() => table.bulkGet(ids2), [ids2Dep], 'loading' as const);
+        const isLoading = response === 'loading';
+        const result = isLoading ? undefined : response;
+        const exists = isLoading || !!result; //assume exists while loading
+        const returnOptions = { isLoading, exists };
+        return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
     const useWhere = (filter: Partial<T_Encoded>) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
         const filterDep = JSON.stringify(filter);
-        return useLiveQuery(() => table.where(filter).toArray(), [filterDep], 'loading' as const);
+        const response = useLiveQuery(() => table.where(filter).toArray(), [filterDep], 'loading' as const);
+        const isLoading = response === 'loading';
+        const result = isLoading ? undefined : response;
+        const exists = isLoading || !!result; //assume exists while loading
+        const returnOptions = { isLoading, exists };
+        return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
 
     /** Redux ORM Hooks */
@@ -599,9 +614,7 @@ export function createCRUDModel<
         const item = useSelectByIdSingle(id);
         const itemExists = !!item;
 
-        const itemResponse = useGet(id);
-        const isLoading = itemResponse === 'loading';
-        const itemDB = isLoading ? undefined : itemResponse;
+        const [itemDB, { isLoading }] = useGet(id);
         const itemDBExists = isLoading || !!itemDB;
 
         //Reset state

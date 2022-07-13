@@ -42,13 +42,11 @@ export function useEvents<
     const dispatch = useDispatch();
 
     //TODO: handle filter
-    const eventsResponse = ContractEventCRUD.hooks.useWhere({
+    const [events] = ContractEventCRUD.hooks.useWhere({
         networkId,
         address: addressChecksum,
         name: eventName as string | undefined,
-    }) as ContractEvent<U>[] | 'loading';
-    const eventsLoading = eventsResponse === 'loading';
-    const events = eventsLoading ? undefined : eventsResponse;
+    }) as [ContractEvent<U>[] | undefined, any];
 
     const filterHash = filter ? JSON.stringify(filter) : '';
 

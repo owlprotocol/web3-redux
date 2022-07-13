@@ -31,7 +31,7 @@ export function useGetBalance(
     const { getBalanceAction, syncAction } =
         useMemo(() => {
             if (networkId && address) {
-                if (!!sync && sync != 'ifnull') {
+                if (!!sync && sync != 'ifnull' && sync != 'once') {
                     return getBalanceSynced({ networkId, address, sync });
                 } else {
                     const getBalanceAction = getBalance({ networkId, address });
@@ -46,7 +46,7 @@ export function useGetBalance(
     //Initial call
     useEffect(() => {
         if (web3Exists && executeSync) dispatchGetBalance();
-    }, [dispatch, dispatchGetBalance, web3Exists, executeSync]);
+    }, [dispatchGetBalance, web3Exists, executeSync]);
 
     //Sync
     const syncId = syncAction?.payload.id;
@@ -58,8 +58,7 @@ export function useGetBalance(
     }, [dispatch, syncId]);
 
     //Error
-    const reduxErrorResponse = ErrorCRUD.hooks.useGet(getBalanceAction?.meta.uuid);
-    const reduxError = reduxErrorResponse === 'loading' ? undefined : reduxErrorResponse;
+    const [reduxError] = ErrorCRUD.hooks.useGet(getBalanceAction?.meta.uuid);
     const error = useMemo(() => {
         if (!networkId) return new Error('networkId undefined');
         else if (!address) return new Error('address undefined');

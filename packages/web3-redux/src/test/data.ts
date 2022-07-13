@@ -5,7 +5,7 @@ import { REDUX_ROOT } from '../common.js';
 import { StateRoot } from '../state.js';
 import { getOrm } from '../orm.js';
 import {
-    BlockNumber,
+    BlockNumberArtifact,
     IERC20MetadataArtifact as IERC20,
     IERC721MetadataArtifact as IERC721,
     IERC1155MetadataURIArtifact as IERC1155,
@@ -73,14 +73,14 @@ export const network1 = { networkId };
 export const contract0 = ContractCRUD.validate({
     networkId,
     address: ADDRESS_0,
-    abi: cloneDeep(BlockNumber.abi) as any,
+    abi: cloneDeep(BlockNumberArtifact.abi) as any,
 });
 
 //Used in tests
 export const contract1 = ContractCRUD.validate({
     networkId,
     address: ADDRESS_1,
-    abi: cloneDeep(BlockNumber.abi) as any,
+    abi: cloneDeep(BlockNumberArtifact.abi) as any,
 });
 export const contract2 = ContractCRUD.validate({
     networkId,
@@ -216,7 +216,7 @@ export const transaction2 = TransactionCRUD.validate({
 
 //Ethcall
 const method = 'getValue';
-const methodAbi = (cloneDeep(BlockNumber.abi) as any).filter((f: any) => f.name === method)[0];
+const methodAbi = (cloneDeep(BlockNumberArtifact.abi) as any).filter((f: any) => f.name === method)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = EthCallCRUD.validate({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 

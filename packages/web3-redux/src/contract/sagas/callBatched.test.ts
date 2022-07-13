@@ -9,11 +9,10 @@ import { sleep } from '../../utils/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 
-import { BlockNumber as BlockNumberArtifact, Multicall } from '../../abis/index.js';
+import { BlockNumberArtifact, MulticallArtifact } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
 
-import { ContractId } from '../model/index.js';
 import { callBatched as callBatchedAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import getContractCall from '../db/getContractCall.js';
@@ -116,8 +115,8 @@ describe(`${name}.sagas.callBatched`, () => {
             await tx2.send({ from: accounts[0], gas: await tx2.estimateGas() });
             await sleep(300);
 
-            const tx3 = new web3.eth.Contract(Multicall.abi as AbiItem[]).deploy({
-                data: Multicall.bytecode,
+            const tx3 = new web3.eth.Contract(MulticallArtifact.abi as AbiItem[]).deploy({
+                data: MulticallArtifact.bytecode,
             });
             const gas3 = await tx3.estimateGas();
             const multiCallContract = await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '875000000' });

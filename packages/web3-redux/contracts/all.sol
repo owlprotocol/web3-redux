@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+
 //Access
 import '@openzeppelin/contracts/access/IAccessControl.sol';
 import '@openzeppelin/contracts/access/IAccessControlEnumerable.sol';

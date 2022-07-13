@@ -10,7 +10,7 @@ import { sleep } from '../../utils/index.js';
 
 import { name } from '../common.js';
 
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
+import { BlockNumberArtifact } from '../../abis/index.js';
 import { networkId } from '../../test/data.js';
 
 import { createStore, StoreType } from '../../store.js';

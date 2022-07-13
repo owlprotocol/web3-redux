@@ -6,7 +6,7 @@ import { AbiItem } from '../../utils/web3-utils/index.js';
 import { getWeb3Provider } from '../../test/index.js';
 import { sleep } from '../../utils/index.js';
 
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
+import { BlockNumberArtifact } from '../../abis/index.js';
 import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 

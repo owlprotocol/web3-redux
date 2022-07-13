@@ -467,8 +467,8 @@ export function createCRUDModel<
     const hydrateSaga = function* (action: HydrateAction) {
         try {
             const { payload } = action;
+
             const item = yield* call(get, payload);
-            console.debug({ payload, item });
             if (item) yield* putSaga(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
             yield* putSaga(
@@ -614,19 +614,18 @@ export function createCRUDModel<
         const item = useSelectByIdSingle(id);
         const itemExists = !!item;
 
-        const [itemDB, { isLoading }] = useGet(id);
-        const itemDBExists = isLoading || !!itemDB;
+        const [itemDB, { isLoading, exists }] = useGet(id);
 
         //Reset state
         const action = useMemo(() => {
             if (id && isDefinedRecord(id) && !itemExists) {
-                if (!itemDBExists && defaultItem) {
+                if (!isLoading && !exists && defaultItem) {
                     return createAction({ ...defaultItem, ...id } as T);
-                } else if (itemDBExists) {
+                } else if (!isLoading && exists) {
                     return hydrateAction(id);
                 }
             }
-        }, [id, itemExists, itemDBExists, defaultItem]);
+        }, [id, itemExists, isLoading, exists, defaultItem]);
 
         useEffect(() => {
             if (itemExists) setActionDispatched(false);

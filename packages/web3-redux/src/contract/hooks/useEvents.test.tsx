@@ -6,7 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import { cloneDeep } from '../../utils/lodash/index.js';
 
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
+import { BlockNumberArtifact } from '../../abis/index.js';
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';

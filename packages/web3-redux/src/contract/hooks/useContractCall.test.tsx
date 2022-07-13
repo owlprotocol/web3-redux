@@ -6,7 +6,7 @@ import sinon from 'sinon';
 
 import { cloneDeep } from '../../utils/lodash/index.js';
 import { expectThrowsAsync } from '../../test/index.js';
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
+import { BlockNumberArtifact } from '../../abis/index.js';
 
 import { network1336 } from '../../network/data.js';
 

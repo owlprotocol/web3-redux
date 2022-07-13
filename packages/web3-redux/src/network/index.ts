@@ -19,6 +19,7 @@ export const Network = {
         getBlockNumber: Actions.getBlockNumber,
         getChainId: Actions.getChainId,
     },
+    db: CRUDModel.db,
     sagas: {
         ...CRUDModel.sagas,
         rootSaga,

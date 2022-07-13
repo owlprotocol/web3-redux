@@ -30,3 +30,4 @@ const config = {
 
 //export default config;
 exports.default = config;
+export { };

@@ -5,8 +5,8 @@
 //Imports fail as using json files that are transpiled by esbuild to js modules
 
 //Contracts
-export { default as BlockNumber } from './BlockNumber';
-export { default as Multicall } from './Multicall';
+export { default as BlockNumberArtifact } from '../artifacts/contracts/BlockNumber.sol/BlockNumber.json';
+export { default as MulticallArtifact } from '../artifacts/contracts/Multicall.sol/Multicall.json';
 export { default as WETH } from './WETH';
 
 //Access
@@ -37,6 +37,9 @@ export { default as IERC1820RegistryArtifact } from '../artifacts/@openzeppelin/
 export { default as ERC1820ImplementerArtifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/ERC1820Implementer.sol/ERC1820Implementer';
 
 //Types
+export type { BlockNumber } from '../typechain/BlockNumber.js';
+export type { Multicall } from '../typechain/Multicall.js';
+
 export type { IAccessControl } from '../typechain/IAccessControl.js';
 export type { IAccessControlEnumerable } from '../typechain/IAccessControlEnumerable.js';
 

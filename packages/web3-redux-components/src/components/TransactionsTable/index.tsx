@@ -2,12 +2,33 @@ import { useTheme, TableContainer, Table, Thead, Tbody, Tr, Td, Th, Badge } from
 import styled from '@emotion/styled';
 
 const TableWrapper = styled.div`
+    table {
+        border-spacing: 0;
+        border-collapse: seperate;
+    }
+
     table tr:nth-child(odd) {
         background-color: #1c1c24;
     }
 
     table tr:nth-child(even) {
         background-color: #2c2c30;
+    }
+
+    table th:first-child {
+        border-top-left-radius: 12px;
+    }
+
+    table th:last-child {
+        border-top-right-radius: 12px;
+    }
+
+    table tr:last-child td:first-child {
+        border-bottom-left-radius: 12px;
+    }
+
+    table tr:last-child td:last-child {
+        border-bottom-right-radius: 12px;
     }
 `;
 
@@ -50,45 +71,36 @@ export const TransactionsTable = ({ items = [] }: Props) => {
                     </Thead>
                     <br />
                     <Tbody>
-                        {items.map((item) => {
+                        {items.map((item, idx) => {
                             const { txHash, method, blockNumber, age, from, to, value, fee } = item;
 
                             return (
-                                <Tr key={txHash}>
-                                    <Th>
-                                        <Td p={0}>
-                                            <ExternalLink to={`/tx/${txHash}`}>{txHash}</ExternalLink>
-                                        </Td>
-                                    </Th>
-                                    <Th>
-                                        <Td p={0}>
-                                            <Badge textTransform={'capitalize'}>{method}</Badge>
-                                        </Td>
-                                    </Th>
-                                    <Th>
-                                        <Td p={0}>
-                                            <ExternalLink to={`/block/${blockNumber}`}>{blockNumber}</ExternalLink>
-                                        </Td>
-                                    </Th>
-                                    <Th>
-                                        <Td p={0}>{age}</Td>
-                                    </Th>
-                                    <Th>
-                                        <Td p={0}>
-                                            <ExternalLink to={`/address/${from}`}>{from}</ExternalLink>
-                                        </Td>
-                                    </Th>
-                                    <Th>
-                                        <Td p={0}>
-                                            <ExternalLink to={`/address/${to}`}>{to}</ExternalLink>
-                                        </Td>
-                                    </Th>
-                                    <Th>
-                                        <Td p={0}>{value}</Td>
-                                    </Th>
-                                    <Th>
-                                        <Td p={0}>{fee}</Td>
-                                    </Th>
+                                <Tr key={idx}>
+                                    <Td>
+                                        <ExternalLink to={`/tx/${txHash}`}>{txHash}</ExternalLink>
+                                    </Td>
+
+                                    <Td>
+                                        <Badge textTransform={'capitalize'}>{method}</Badge>
+                                    </Td>
+
+                                    <Td>
+                                        <ExternalLink to={`/block/${blockNumber}`}>{blockNumber}</ExternalLink>
+                                    </Td>
+
+                                    <Td>{age}</Td>
+
+                                    <Td>
+                                        <ExternalLink to={`/address/${from}`}>{from}</ExternalLink>
+                                    </Td>
+
+                                    <Td>
+                                        <ExternalLink to={`/address/${to}`}>{to}</ExternalLink>
+                                    </Td>
+
+                                    <Td>{value}</Td>
+
+                                    <Td>{fee}</Td>
                                 </Tr>
                             );
                         })}

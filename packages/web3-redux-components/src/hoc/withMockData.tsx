@@ -29,6 +29,7 @@ export const withMockData = (WrappedComponent: any) => {
         Network.hooks.useNetwork('10', true);
         Network.hooks.useNetwork('137', true);
         Network.hooks.useNetwork('1337', true);
+        Network.hooks.useNetwork('1336', true);
 
         //ERC20
         Contract.hooks.useContract('1', TestData.VITALIK, { label: 'Vitalik', tags: ['EOA'] });

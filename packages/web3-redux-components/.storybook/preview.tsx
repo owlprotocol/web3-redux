@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core'
@@ -38,14 +39,14 @@ const Web3ProviderWallet = createWeb3ReactRoot(WalletContext)
 
 export const decorators = [
     (Story) => {
-        const StoryWithData = withMockData(Story)
+        //const StoryWithData = withMockData(Story)
         return (
             <Web3ReactProvider getLibrary={getLibrary}>
                 <Web3ProviderWallet getLibrary={getLibrary}>
                     <Router>
                         <Provider store={store}>
                             <ChakraProvider theme={theme}>
-                                <StoryWithData />
+                                <Story/>
                             </ChakraProvider>
                         </Provider>
                     </Router>

@@ -19,13 +19,13 @@ Web3-Redux includes built-in defaults using environment variables to easily conf
 ```bash
 # .env | .env.local
 REACT_APP_INFURA_API_KEY=<PROJECT_ID> #Use Infura RPC for supported networks
-REACT_APP_MAINNET_RPC=ws://localhost:8546       #Set Ethereum Mainnet RPC (networkId: 1)
+REACT_APP_MAINNET_RPC=ws://localhost:8545       #Set Ethereum Mainnet RPC (networkId: 1)
 ```
 
 You can configure your network by simply dispatching the following create action:
 
 ```typescript
-store.dispatch(Network.create({ networkId: '1',  /*web3Rpc: 'ws://localhost:8546'*/})
+store.dispatch(Network.create({ networkId: '1',  /*web3Rpc: 'ws://localhost:8545'*/})
 ```
 
 Web3-Redux will automatically use the envvar configured RPC as a default for supported networks (Ethereum, Testnets, Polygon). For custom networks, you can manually set the `web3Rpc` parameter in the create action.

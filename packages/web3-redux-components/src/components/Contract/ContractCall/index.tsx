@@ -8,8 +8,9 @@ export interface ContractCallProps {
 }
 
 export const ContractCall = ({ networkId, address, method, args }: ContractCallProps) => {
-    const [returnValue] = Contract.hooks.useContractCall(networkId, address, method, args);
-    return <>{returnValue} </>;
+    const [returnValue, options] = Contract.hooks.useContractCall(networkId, address, method, args);
+    console.debug({ returnValue, options });
+    return <>Return Value: {returnValue} </>;
 };
 
 export default ContractCall;

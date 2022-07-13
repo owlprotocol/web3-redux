@@ -13,10 +13,13 @@ import ErrorCRUD from '../../error/crud.js';
 export function useDeploy(input: Partial<DeployActionInput> | undefined, address?: string, auto = false) {
     const dispatch = useDispatch();
     const { networkId, abi, bytecode, from, args, label, tags } = input ?? {};
-    const [contractExisting, { exists }] = ContractCRUD.hooks.useHydrate({ networkId, address });
-    const contractsLabelled = ContractCRUD.hooks.useSelectWhere({ networkId, label });
-    const contractLabelled = contractsLabelled.length > 0 ? contractsLabelled[0] : undefined;
-    const contract = contractExisting ?? contractLabelled;
+    const [contractByAddress, { exists: contractByAddressExists }] = ContractCRUD.hooks.useHydrate({
+        networkId,
+        address,
+    });
+    const [contractByLabel, { exists: contractByLabelExists }] = ContractCRUD.hooks.useFirstWhere({ networkId, label });
+    const contract = contractByAddress ?? contractByLabel;
+    const exists = contractByAddressExists || contractByLabelExists;
 
     //Action
     const action = useMemo(() => {
@@ -34,7 +37,7 @@ export function useDeploy(input: Partial<DeployActionInput> | undefined, address
         if (!exists && auto) deploy();
     }, [deploy, exists, auto]);
 
-    console.debug({ exists, auto, contract, action });
+    console.debug({ exists: contractByAddressExists, auto, contract, action });
 
     //Error
     const [reduxError] = ErrorCRUD.hooks.useGet(action?.meta.uuid);

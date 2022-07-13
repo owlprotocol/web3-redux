@@ -594,6 +594,18 @@ export function createCRUDModel<
         const returnOptions = { isLoading, exists };
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
+    const useFirstWhere = (id: Partial<T_Encoded> | undefined) => {
+        const db = getDB();
+        const table = db.table<T_Encoded>(name);
+
+        const idDep = JSON.stringify(id);
+        const response = useLiveQuery(() => (id ? table.get(id) : undefined), [idDep], 'loading' as const);
+        const isLoading = response === 'loading';
+        const result = isLoading ? undefined : response;
+        const exists = isLoading || !!result; //assume exists while loading
+        const returnOptions = { isLoading, exists };
+        return [result, returnOptions] as [typeof result, typeof returnOptions];
+    };
 
     /** Redux ORM Hooks */
     const useSelectByIdSingle = (id: Partial<T_ID> | string | undefined) => {
@@ -650,6 +662,7 @@ export function createCRUDModel<
         useGet,
         useGetBulk,
         useWhere,
+        useFirstWhere,
         useSelectByIdSingle,
         useSelectByIdMany,
         useSelectAll,

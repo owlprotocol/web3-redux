@@ -5,8 +5,8 @@
 //Imports fail as using json files that are transpiled by esbuild to js modules
 
 //Contracts
-export { default as BlockNumberArtifact } from '../artifacts/contracts/BlockNumber.sol/BlockNumber.json';
-export { default as MulticallArtifact } from '../artifacts/contracts/Multicall.sol/Multicall.json';
+export { default as BlockNumberArtifact } from '../artifacts/contracts/BlockNumber.sol/BlockNumber';
+export { default as MulticallArtifact } from '../artifacts/contracts/Multicall.sol/Multicall';
 export { default as WETH } from './WETH';
 
 //Access

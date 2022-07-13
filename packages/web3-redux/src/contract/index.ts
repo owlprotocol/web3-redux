@@ -15,6 +15,7 @@ export const Contract = {
         call: Actions.call,
         callBatched: Actions.callBatched,
         callSynced: Actions.callSynced,
+        deploy: Actions.deployAction,
         eventGetPast: Actions.eventGetPast,
         eventGetPastRaw: Actions.eventGetPastRaw,
         eventSubscribe: Actions.eventSubscribe,

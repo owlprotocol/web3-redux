@@ -11,8 +11,10 @@ import { fetchTransactions } from './fetchTransactions.js';
 import { getCode } from './getCode.js';
 import { getEns } from './getEns.js';
 import watchEventGetPastRaw from './eventGetPastRaw.js';
+import deploySaga from './deploy.js';
 import {
     CALL_BATCHED,
+    DEPLOY,
     SEND,
     EVENT_GET_PAST,
     FETCH_ABI,
@@ -30,6 +32,7 @@ export function* saga() {
     yield* all([
         spawn(ContractCRUD.sagas.crudRootSaga),
         spawn(watchCallSaga),
+        takeEvery(DEPLOY, deploySaga),
         takeEvery(EVENT_GET_PAST, eventGetPast),
         spawn(watchEventGetPastRaw),
         takeEvery(CALL_BATCHED, callBatched),

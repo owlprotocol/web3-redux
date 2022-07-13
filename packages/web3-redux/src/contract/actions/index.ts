@@ -1,5 +1,6 @@
 export * from './call.js';
 export * from './callBatched.js';
+export * from './deploy.js';
 export * from './send.js';
 export * from './eventGetPast.js';
 export * from './eventGetPastRaw.js';

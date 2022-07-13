@@ -1,3 +1,4 @@
+import Web3 from 'web3';
 import { coder } from '../utils/web3-eth-abi/index.js';
 import { toWei } from '../utils/web3-utils/index.js';
 import { cloneDeep } from '../utils/lodash/index.js';
@@ -9,6 +10,9 @@ import {
     IERC20MetadataArtifact as IERC20,
     IERC721MetadataArtifact as IERC721,
     IERC1155MetadataURIArtifact as IERC1155,
+    ERC20PresetMinterPauserArtifact,
+    ERC721PresetMinterPauserAutoIdArtifact,
+    ERC1155PresetMinterPauserArtifact,
 } from '../abis/index.js';
 import ContractCRUD from '../contract/crud.js';
 import ContractEventCRUD from '../contractevent/crud.js';
@@ -230,5 +234,37 @@ state[REDUX_ROOT]['Network'].itemsById[network1.networkId] = network1;
 
 state[REDUX_ROOT]['Contract'].items.push(toReduxOrmId(ContractCRUD.validateId(contract1)));
 state[REDUX_ROOT]['Contract'].itemsById[toReduxOrmId(ContractCRUD.validateId(contract1))] = contract1;
+
+export const deployTestContracts = async () => {
+    const web3 = new Web3('ws://localhost:8545');
+    const accounts = await web3.eth.getAccounts();
+    const contractBlockNumber = await new web3.eth.Contract(BlockNumberArtifact.abi as any)
+        .deploy({
+            data: BlockNumberArtifact.bytecode,
+        })
+        .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+    const contractERC20 = await new web3.eth.Contract(ERC20PresetMinterPauserArtifact.abi as any)
+        .deploy({
+            data: ERC20PresetMinterPauserArtifact.bytecode,
+        })
+        .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+    const contractERC721 = await new web3.eth.Contract(ERC721PresetMinterPauserAutoIdArtifact.abi as any)
+        .deploy({
+            data: ERC721PresetMinterPauserAutoIdArtifact.bytecode,
+        })
+        .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+    const contractERC1155 = await new web3.eth.Contract(ERC1155PresetMinterPauserArtifact.abi as any)
+        .deploy({
+            data: ERC1155PresetMinterPauserArtifact.bytecode,
+        })
+        .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+
+    return {
+        blockNumberAddress: contractBlockNumber.options.address,
+        erc20Address: contractERC20.options.address,
+        erc721Address: contractERC721.options.address,
+        erc1155Address: contractERC1155.options.address,
+    };
+};
 
 export { state };

@@ -3,14 +3,13 @@ import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { put as putSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { IndexableType, IndexableTypeArray } from 'dexie';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
 import { compact, filter } from './utils/lodash/index.js';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
-import toReduxOrmId, { SEPARATOR } from './utils/toReduxORMId.js';
+import toReduxOrmId from './utils/toReduxORMId.js';
 import isDefinedRecord from './utils/isDefinedRecord.js';
 
 /**
@@ -223,11 +222,11 @@ export function createCRUDModel<
     };
 
     /** Dexie Getters */
-    const get = async (id: T_Idx | string) => {
+    const get = async (idx: T_Idx | string) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         //@ts-expect-error
-        return table.get(id);
+        return table.get(idx);
     };
 
     const bulkGet = async (ids: T_ID[] | string[]) => {
@@ -541,10 +540,10 @@ export function createCRUDModel<
     };
 
     /** Dexie Hooks */
-    const useGet = (id: Partial<T_Idx> | string | undefined) => {
+    const useGet = (idx: Partial<T_Idx> | string | undefined) => {
         const response = useLiveQuery(
-            () => (id && (typeof id === 'string' || isDefinedRecord(id)) ? get(id) : undefined),
-            [JSON.stringify(id)],
+            () => (idx && (typeof idx === 'string' || isDefinedRecord(idx)) ? get(idx) : undefined),
+            [JSON.stringify(idx)],
             'loading' as const,
         );
         const isLoading = response === 'loading';
@@ -605,21 +604,22 @@ export function createCRUDModel<
     const useSelectWhere = (f: Partial<T>) => {
         return useSelector((state) => selectWhere(state, f));
     };
-    const useHydrate = (id: Partial<T_ID> | undefined, defaultItem?: Partial<T> | undefined) => {
+    const useHydrate = (idx: Partial<T_Idx> | undefined, defaultItem?: Partial<T> | undefined) => {
         //TODO: Is this necessary?
         const [actionDispatched, setActionDispatched] = useState(false);
 
         const dispatch = useDispatch();
+        const [itemDB, { isLoading, exists }] = useGet(idx);
+
+        const id = useMemo(() => (itemDB ? validateId(itemDB) : undefined), [itemDB]);
         const item = useSelectByIdSingle(id);
         const itemExists = !!item;
 
-        const [itemDB, { isLoading, exists }] = useGet(id as T_Idx);
-
         //Reset state
         const action = useMemo(() => {
-            if (id && isDefinedRecord(id) && !itemExists) {
+            if (id && !itemExists) {
                 if (!isLoading && !exists && defaultItem) {
-                    return createAction({ ...defaultItem, ...id } as T);
+                    return createAction({ ...defaultItem, ...idx } as T);
                 } else if (!isLoading && exists) {
                     return hydrateAction(id);
                 }
@@ -628,7 +628,7 @@ export function createCRUDModel<
 
         useEffect(() => {
             if (itemExists) setActionDispatched(false);
-        }, [id, itemExists]);
+        }, [idx, itemExists]);
 
         useEffect(() => {
             if (action && !actionDispatched) {

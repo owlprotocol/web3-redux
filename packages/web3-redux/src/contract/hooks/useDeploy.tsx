@@ -17,7 +17,7 @@ export function useDeploy(input: Partial<DeployActionInput> | undefined, address
         networkId,
         address,
     });
-    const [contractByLabel, { exists: contractByLabelExists }] = ContractCRUD.hooks.useFirstWhere({ networkId, label });
+    const [contractByLabel, { exists: contractByLabelExists }] = ContractCRUD.hooks.useGet({ networkId, label });
     const contract = contractByAddress ?? contractByLabel;
     const exists = contractByAddressExists || contractByLabelExists;
 

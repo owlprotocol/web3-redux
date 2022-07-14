@@ -44,6 +44,7 @@ export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => 
                 const returnValues = coder.decodeLog(eventAbi.inputs, e.data!, topics);
                 return {
                     networkId,
+                    blockNumber: e.blockNumber,
                     blockHash: e.blockHash,
                     logIndex: e.logIndex,
                     address,

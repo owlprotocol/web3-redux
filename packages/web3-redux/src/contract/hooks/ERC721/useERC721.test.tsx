@@ -243,6 +243,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
                 ContractEventCRUD.actions.create({
                     networkId,
                     address,
+                    blockNumber: 1,
                     blockHash: '0x1',
                     logIndex: 0,
                     name: 'Transfer',

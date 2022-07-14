@@ -30,6 +30,7 @@ export function createCRUDModel<
     T_ID extends Record<string, NonNullable<any>> = Record<string, NonNullable<any>>,
     T_Encoded extends T_ID = T_ID,
     T extends T_Encoded = T_Encoded,
+    T_Idx = T_ID,
     >(
         name: U,
         validateId: (id: T_ID) => string | IndexableTypeArray = (id: T_ID) => Object.values(id),
@@ -244,19 +245,20 @@ export function createCRUDModel<
     };
 
     /** Dexie Getters */
-    const get = async (id: T_ID | IndexableTypeArray | string | undefined) => {
+    const get = async (id: T_Idx | IndexableTypeArray | string | undefined) => {
         if (!id) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        const id2 = idToDexieId(id);
-        if (id2) return table.get(id2);
+        //@ts-expect-error
+        return table.get(id);
     };
 
-    const bulkGet = async (id: (T_ID | IndexableTypeArray | string)[] | undefined) => {
-        if (!id) return undefined;
+    const bulkGet = async (ids: (T_Idx | IndexableTypeArray | string)[] | undefined) => {
+        if (!ids) return undefined;
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.bulkGet(compact(id.map(idToDexieId)));
+        //@ts-expect-error
+        return table.bulkGet(ids);
     };
 
     const all = async () => {

@@ -60,7 +60,7 @@ function returnValueKeyCombinations(keys: string[]) {
 
 /** @internal */
 export function validateId(item: ContractEventId) {
-    return [item.networkId, item.blockHash, item.logIndex];
+    return [item.networkId, item.blockNumber, item.logIndex];
 }
 
 /** @internal */

@@ -59,6 +59,14 @@ export interface Transaction extends TransactionId {
     readonly timeStamp?: number;
 }
 
+export type TransactionIndexInput =
+    | TransactionId
+    | { networkId: string }
+    | { blockNumber: number }
+    | { blockHash: string }
+    | { networkId: string; from: string; to: string }
+    | { networkId: string; from: string }
+    | { networkId: string; to: string };
 export const TransactionIndex =
     '[networkId+hash], [networkId+blockNumber], [networkId+blockHash], [networkId+from+to], [networkId+to]';
 

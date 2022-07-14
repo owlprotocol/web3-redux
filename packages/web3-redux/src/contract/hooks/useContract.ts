@@ -17,7 +17,7 @@ import ContractCRUD from '../crud.js';
 export function useContract(
     networkId: string | undefined,
     address: string | undefined,
-    defaultContract?: Partial<Contract>,
+    defaultContract?: Contract,
     sync?: {
         getBalance?: 'ifnull' | GetBalanceSyncedActionInput['sync'] | false;
         getNonce?: 'ifnull' | GetNonceSyncedActionInput['sync'] | false;
@@ -41,7 +41,7 @@ export function useContract(
 }
 
 /** @category Hooks */
-export function contractHookFactory(createData: Partial<Contract> = {}) {
+export function contractHookFactory(createData: Contract) {
     return (networkId: string | undefined, address: string | undefined) => {
         return useContract(networkId, address, createData);
     };

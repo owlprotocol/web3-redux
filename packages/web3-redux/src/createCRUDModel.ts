@@ -110,9 +110,9 @@ export function createCRUDModel<
             },
         };
     });
-    const hydrateAction = createReduxAction(HYDRATE, (payload: T_ID, uuid?: string) => {
+    const hydrateAction = createReduxAction(HYDRATE, (payload: T_Idx, uuid?: string) => {
         return {
-            payload: validateId(payload),
+            payload: payload,
             meta: {
                 uuid: uuid ?? uuidv4(),
             },
@@ -466,7 +466,7 @@ export function createCRUDModel<
         try {
             const { payload } = action;
 
-            const item = yield* call(get, payload as unknown as T_Idx);
+            const item = yield* call(get, payload);
             if (item) yield* putSaga(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
             yield* putSaga(
@@ -613,27 +613,28 @@ export function createCRUDModel<
     const useSelectWhere = (f: Partial<T>) => {
         return useSelector((state) => selectWhere(state, f));
     };
-    const useHydrate = (idx: Partial<T_Idx> | undefined, defaultItem?: Partial<T> | undefined) => {
+    const useHydrate = (idx: Partial<T_Idx> | undefined, defaultItem?: T | undefined) => {
         //TODO: Is this necessary?
         const [actionDispatched, setActionDispatched] = useState(false);
 
         const dispatch = useDispatch();
-        const [itemDB, { isLoading, exists }] = useGet(idx);
+        const [itemDB, { isLoading, exists: itemDBExists }] = useGet(idx);
 
         const id = useMemo(() => (itemDB ? validateId(itemDB) : undefined), [itemDB]);
         const item = useSelectByIdSingle(id);
         const itemExists = !!item;
 
+        console.debug({ idx, itemDB, itemDBExists, item, itemExists, isLoading, defaultItem });
         //Reset state
         const action = useMemo(() => {
-            if (id && !itemExists) {
-                if (!isLoading && !exists && defaultItem) {
-                    return createAction({ ...defaultItem, ...idx } as T);
-                } else if (!isLoading && exists) {
-                    return hydrateAction(id);
+            if (idx && !itemExists) {
+                if (!isLoading && !itemDBExists && defaultItem) {
+                    return createAction(defaultItem);
+                } else if (!isLoading && itemDBExists && isDefinedRecord(idx)) {
+                    return hydrateAction(idx);
                 }
             }
-        }, [id, itemExists, isLoading, exists, defaultItem]);
+        }, [idx, itemExists, isLoading, itemDBExists, defaultItem]);
 
         useEffect(() => {
             if (itemExists) setActionDispatched(false);
@@ -647,6 +648,7 @@ export function createCRUDModel<
         }, [dispatch, action, actionDispatched]);
 
         const returnValue = item ?? itemDB ?? defaultItem;
+        const exists = itemExists || itemDBExists;
         const returnOptions = { isLoading, exists };
 
         return [returnValue, returnOptions] as [typeof returnValue, typeof returnOptions];

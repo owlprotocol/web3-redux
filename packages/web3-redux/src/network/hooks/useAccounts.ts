@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNetwork } from './useNetwork.js';
+import Network from '../model/interface.js';
 
 /**
  * @category Hooks
  * Return network if exists.
  * Create/hydrate depending on db state.
  */
-export function useAccounts(networkId: string | undefined) {
+export function useAccounts(networkId: string, defaultNetwork?: Network | true) {
     const [accounts, setAccounts] = useState<string[]>([]);
-    const [network] = useNetwork(networkId);
+    const [network] = useNetwork(networkId, defaultNetwork);
     const web3 = network?.web3;
 
     const getAccounts = useCallback(async () => {

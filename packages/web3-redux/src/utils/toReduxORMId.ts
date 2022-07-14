@@ -10,7 +10,6 @@ export function valuesDeterministic(item: Record<string, any>) {
 export const SEPARATOR = '-';
 export function toReduxOrmId(id: string | IndexableTypeArrayReadonly) {
     if (typeof id === 'string') return id;
-    console.debug(id);
     return id.join(SEPARATOR);
 }
 

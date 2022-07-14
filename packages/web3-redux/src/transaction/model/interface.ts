@@ -62,13 +62,13 @@ export interface Transaction extends TransactionId {
 export type TransactionIndexInput =
     | TransactionId
     | { networkId: string }
-    | { blockNumber: number }
-    | { blockHash: string }
+    | { networkId: string; blockHash: string }
     | { networkId: string; from: string; to: string }
     | { networkId: string; from: string }
-    | { networkId: string; to: string };
+    | { networkId: string; to: string }
+    | { networkId: string; contractAddress: string };
 export const TransactionIndex =
-    '[networkId+hash], [networkId+blockNumber], [networkId+blockHash], [networkId+from+to], [networkId+to]';
+    '[networkId+hash], [networkId+blockNumber], [networkId+blockHash], [networkId+from+to], [networkId+to], [networkId+contractAddress]';
 
 /** @internal */
 export function validateId(item: TransactionId) {

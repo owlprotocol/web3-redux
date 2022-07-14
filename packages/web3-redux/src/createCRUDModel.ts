@@ -267,10 +267,17 @@ export function createCRUDModel<
         return table.toArray();
     };
 
-    const where = async (filter: T_Idx) => {
+    const where = async (filter: T_Idx, options?: { limit?: number; offset?: number }) => {
+        const limit = options?.limit;
+        const offset = options?.offset;
+
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.where(filter).toArray();
+        let result = table.where(filter);
+        if (offset) result = result.offset(offset);
+        if (limit) result = result.limit(limit);
+
+        return result.toArray();
     };
 
     const add = async (item: T) => {
@@ -584,12 +591,17 @@ export function createCRUDModel<
         const returnOptions = { isLoading, exists };
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
-    const useWhere = (filter: Partial<T_Encoded>) => {
-        const db = getDB();
-        const table = db.table<T_Encoded>(name);
+    const useWhere = (filter: Partial<T_Idx>, options?: { limit?: number; offset?: number }) => {
+        const limit = options?.limit;
+        const offset = options?.offset;
 
         const filterDep = JSON.stringify(filter);
-        const response = useLiveQuery(() => table.where(filter).toArray(), [filterDep], 'loading' as const);
+        const response = useLiveQuery(
+            () => (isDefinedRecord(filter) ? where(filter, { limit, offset }) : []),
+            [filterDep, limit, offset],
+            'loading' as const,
+        );
+
         const isLoading = response === 'loading';
         const result = isLoading ? undefined : response;
         const exists = isLoading || !!result; //assume exists while loading

@@ -36,8 +36,6 @@ export function useContractCall<
         options?: UseContractCallOptions,
 ) {
     const sync = options?.sync ?? 'ifnull';
-    const from = options?.from;
-    const gas = options?.gas;
 
     const dispatch = useDispatch();
     const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
@@ -60,8 +58,6 @@ export function useContractCall<
         networkId,
         to: address,
         data,
-        from,
-        gas,
     });
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
     const returnValueExists = ethCallLoading || returnValue != undefined;
@@ -77,7 +73,6 @@ export function useContractCall<
                         address,
                         method: method as string,
                         args: args as any[],
-                        from,
                         sync,
                     });
                 } else {
@@ -86,7 +81,6 @@ export function useContractCall<
                         address,
                         method: method as string,
                         args: args as any[],
-                        from,
                     });
                     return { callAction, syncAction: undefined };
                 }

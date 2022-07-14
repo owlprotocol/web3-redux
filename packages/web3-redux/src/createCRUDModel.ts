@@ -27,7 +27,7 @@ import isDefinedRecord from './utils/isDefinedRecord.js';
  */
 export function createCRUDModel<
     U extends string,
-    T_ID extends Record<string, any> = Record<string, any>,
+    T_ID extends Record<string, NonNullable<any>> = Record<string, NonNullable<any>>,
     T_Encoded extends T_ID = T_ID,
     T extends T_Encoded = T_Encoded,
     >(

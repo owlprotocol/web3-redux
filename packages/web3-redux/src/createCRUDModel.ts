@@ -591,13 +591,13 @@ export function createCRUDModel<
         const returnOptions = { isLoading, exists };
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
-    const useWhere = (filter: Partial<T_Idx>, options?: { limit?: number; offset?: number }) => {
+    const useWhere = (filter: Partial<T_Idx> | undefined, options?: { limit?: number; offset?: number }) => {
         const limit = options?.limit;
         const offset = options?.offset;
 
         const filterDep = JSON.stringify(filter);
         const response = useLiveQuery(
-            () => (isDefinedRecord(filter) ? where(filter, { limit, offset }) : []),
+            () => (filter && isDefinedRecord(filter) ? where(filter, { limit, offset }) : []),
             [filterDep, limit, offset],
             'loading' as const,
         );

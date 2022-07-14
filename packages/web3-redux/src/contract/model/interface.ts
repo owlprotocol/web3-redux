@@ -51,6 +51,7 @@ export interface ContractWithObjects<T extends BaseWeb3Contract = BaseWeb3Contra
     readonly web3SenderContract?: T;
 }
 
+export type ContractIndexInput = ContractId | { networkId: string } | { label: string };
 export const ContractIndex = '[networkId+address], networkId, label, *tags';
 
 /** @internal */

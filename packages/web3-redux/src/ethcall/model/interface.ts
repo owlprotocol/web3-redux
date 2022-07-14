@@ -10,7 +10,7 @@ export interface EthCallId {
 }
 
 //Valid indexes
-export type EthCallIndex =
+export type EthCallIndexInput =
     | EthCallId
     | { networkId: string }
     | { networkId: string; to: string }

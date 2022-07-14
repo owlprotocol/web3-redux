@@ -4,8 +4,8 @@ export interface ContractEventId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
-    /** Block hash when event was emitted */
-    readonly blockHash: string;
+    /** Block number */
+    readonly blockNumber: number;
     /** Unique index within block of event */
     readonly logIndex: number;
 }
@@ -16,11 +16,10 @@ export interface ContractEventId {
  * @typeParam T optional type for return values. Defaults to `any` object.
  */
 export interface ContractEvent<T extends Record<string, any> = Record<string, any>> extends ContractEventId {
-    /** Block number */
-    readonly blockNumber?: number;
+    /** Block hash when event was emitted */
+    readonly blockHash: string;
     /** Address of contract that emitted event */
     readonly address: string;
-
     /** Parsed Contract Event */
     /** Event name */
     readonly name?: string;
@@ -35,8 +34,18 @@ export interface ContractEvent<T extends Record<string, any> = Record<string, an
     readonly topics?: string[];
 }
 
+export type ContractEventIndexInput =
+    | ContractEventId
+    | { networkId: string; blockNumber: number }
+    | { networkId: string }
+    | { networkId: string; blockHash: number; logIndex: number }
+    | { networkId: string; blockHash: number }
+    | { networkId: string; address: string; name: string }
+    | { networkId: string; address: string }
+    | { networkId: string; name: string }
+    | { name: string };
 export const ContractEventIndex =
-    '[networkId+blockHash+logIndex], [networkId+blockNumber], [networkId+address+name], [networkId+name], name';
+    '[networkId+blockNumber+logIndex], [networkId+blockNumber+logIndex], [networkId+address+name], [networkId+name], name';
 
 //Separate integer indexing from named indexing (eg. {0: val, value: val})
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

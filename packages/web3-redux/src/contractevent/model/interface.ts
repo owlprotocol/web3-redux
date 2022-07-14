@@ -1,4 +1,4 @@
-import { combinationAll } from '../../utils/combination.js';
+import type { AbiItem } from 'web3-utils';
 
 export interface ContractEventId {
     /** Blockchain network id.
@@ -23,6 +23,7 @@ export interface ContractEvent<T extends Record<string, any> = Record<string, an
     /** Parsed Contract Event */
     /** Event name */
     readonly name?: string;
+    readonly abi?: AbiItem;
     /** Return values of event */
     /** TODO: Index returnValues? */
     readonly returnValues?: T;
@@ -32,6 +33,11 @@ export interface ContractEvent<T extends Record<string, any> = Record<string, an
     readonly data?: string;
     /** Raw indexed data */
     readonly topics?: string[];
+    /** Topics */
+    readonly topic0?: any;
+    readonly topic1?: any;
+    readonly topic2?: any;
+    readonly topic3?: any;
 }
 
 export type ContractEventIndexInput =
@@ -43,20 +49,21 @@ export type ContractEventIndexInput =
     | { networkId: string; address: string; name: string }
     | { networkId: string; address: string }
     | { networkId: string; name: string }
-    | { name: string };
+    | { name: string }
+    | { networkId: string; address: string; topic0: any; topic1: any; topic2: any; topic3: any }
+    | { networkId: string; address: string; topic0: any; topic1: any; topic2: any }
+    | { networkId: string; address: string; topic0: any; topic1: any }
+    | { networkId: string; address: string; topic0: any }
+    | { networkId: string; topic0: any; topic1: any; topic2: any; topic3: any }
+    | { networkId: string; topic0: any; topic1: any; topic2: any }
+    | { networkId: string; topic0: any; topic1: any }
+    | { networkId: string; topic0: any };
+//| { networkId: string; address: string; topic0: any; topic3: any; topic1: any }
+//| { networkId: string; address: string; topic0: any; topic2: any; topic3: any }
+//| { networkId: string; address: string; topic0: any; topic2: any }
+//| { networkId: string; address: string; topic0: any; topic3: any }
 export const ContractEventIndex =
-    '[networkId+blockNumber+logIndex], [networkId+blockNumber+logIndex], [networkId+address+name], [networkId+name], name';
-
-//Separate integer indexing from named indexing (eg. {0: val, value: val})
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function returnValueKeyCombinations(keys: string[]) {
-    const integerKeys = keys.filter((k: string) => !isNaN(parseInt(k)));
-    const namedKeys = keys.filter((k: string) => isNaN(parseInt(k)));
-    const integerKeysCombinations = combinationAll(integerKeys) as string[][];
-    const namedKeysCombinations = combinationAll(namedKeys) as string[][];
-
-    return [...integerKeysCombinations, ...namedKeysCombinations].filter((c) => c.length > 0); ///Remove empty set from combination
-}
+    '[networkId+blockNumber+logIndex], [networkId+blockNumber+logIndex], [networkId+address+name], [networkId+name], name, [networkId+address+topic0+topic1+topic2+topic3], [networkId+topic0+topic1+topic2+topic3]';
 
 /** @internal */
 export function validateId(item: ContractEventId) {
@@ -68,42 +75,19 @@ export function validate(item: ContractEvent): ContractEvent {
     //@ts-ignore
     const name = item.name ?? item.event;
     const address = item.address.toLowerCase();
-    /*
-    const extraIndices = item.indexIds ?? [];
+    const topic0 = item.topic0 ?? (item.topics && item.topics.length > 0 ? item.topics[0] : undefined);
+    const topic1 = item.topic1 ?? (item.topics && item.topics.length > 1 ? item.topics[1] : undefined);
+    const topic2 = item.topic2 ?? (item.topics && item.topics.length > 2 ? item.topics[2] : undefined);
+    const topic3 = item.topic3 ?? (item.topics && item.topics.length > 3 ? item.topics[3] : undefined);
 
-    //Default we only index named keys, but user can also pass (0,1,2) as argument
-    const returnValuesKeys = Object.keys(item.returnValues ?? {}).filter((k: string) => isNaN(parseInt(k)));
-    let returnValuesIndexKeys: string[];
-    if (!item.returnValuesIndexKeys) returnValuesIndexKeys = [];
-    else if (item.returnValuesIndexKeys === true) returnValuesIndexKeys = returnValuesKeys;
-    else returnValuesIndexKeys = item.returnValuesIndexKeys;
-
-    //All events for contract
-    const contractIndex = { networkId, address };
-    //Events by name for contract (equivalent to signature)
-    const eventIndex = { ...contractIndex, name };
-    ///Events by returnValues filters (disabled by default)
-    const keyCombinations = returnValueKeyCombinations(returnValuesIndexKeys);
-
-    const returnValuesIndexes = keyCombinations.map((keys) => {
-        const returnValues: any = {};
-        keys.forEach((k) => {
-            returnValues[k] = item.returnValues[k];
-        });
-        return { ...eventIndex, returnValues };
-    });
-
-    const indices: any[] = [contractIndex];
-    if (name) indices.push(eventIndex);
-    indices.push(...returnValuesIndexes);
-
-    //Combine passed indices with default indices
-    const indexIds: string[] = uniq([...extraIndices, ...indices.map((v) => JSON.stringify(v))]);
-    */
     return {
         ...item,
         name,
         address,
+        topic0,
+        topic1,
+        topic2,
+        topic3,
     };
 }
 

@@ -1,5 +1,4 @@
 import type { AbiItem } from 'web3-utils';
-import { pick } from '../../utils/lodash/index.js';
 
 export interface ContractEventId {
     /** Blockchain network id.

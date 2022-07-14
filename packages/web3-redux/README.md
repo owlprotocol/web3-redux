@@ -2,6 +2,27 @@
 Core Redux Library. See [README.md](../../README.md) for more info.
 
 
+## Models
+In total we have 13 data models.
+### Simple Primary Key
+These models have a single id as a primary key.
+* `4Byte`: `signatureHash`
+* `Config`: `id`
+* `ContractSend`: `uuid` generated randomly
+* `Error`: `id`
+* `HTTPCache`
+* `IPFSCache`
+* `Network`: `networkId`
+* `Sync`
+
+### Compound Primary Key
+These models use a compound primary key that is computed based on multiple properties.
+* `Block`: `[networkId+blockNumber]`
+* `Contract`: `[networkId+address]`
+* `ContractEvent`: `[networkId+blockNumber+logIndex]`
+* `EthCall`: `[networkId+to+data]`
+* `Transaction`: `[networkId+hash]`
+
 ## IndexedDB
 ### Compound Index
 https://dexie.org/docs/Compound-Index

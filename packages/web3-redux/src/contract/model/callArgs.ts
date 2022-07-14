@@ -1,4 +1,4 @@
-import { validateId, getPrimaryKey } from './interface.js';
+import { validateId, toPrimaryKey } from './interface.js';
 import toReduxOrmId from '../../utils/toReduxORMId.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
@@ -28,7 +28,7 @@ export function callArgsHash<P extends any[] = any[]>(callArgs?: CallArgsHash<P>
 }
 
 export function callHash(networkId: string, address: string, method: string, callArgs?: CallArgsHash): string {
-    const contractHash = toReduxOrmId(getPrimaryKey(validateId({ networkId, address })));
+    const contractHash = toReduxOrmId(toPrimaryKey(validateId({ networkId, address })));
     const callArgsId = callArgsHash(callArgs);
 
     const idArgs = [contractHash, method, callArgsId];

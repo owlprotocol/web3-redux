@@ -8,6 +8,7 @@ import {
     hydrate,
     encode,
     ContractIndexInput,
+    toPrimaryKey,
 } from './model/index.js';
 import createCRUDModel from '../createCRUDModel.js';
 
@@ -16,6 +17,7 @@ export const ContractCRUD = createCRUDModel<typeof name, ContractId, Contract, C
     {
         validateId,
         validate,
+        toPrimaryKey,
         hydrate,
         encode,
     },

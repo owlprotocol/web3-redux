@@ -5,8 +5,12 @@ import { fromRpc } from '../../utils/web3/index.js';
 import { omit } from '../../utils/lodash/index.js';
 
 /** @internal */
-export function validateId(item: NetworkId) {
-    return item;
+export function validateId({ networkId }: NetworkId) {
+    return { networkId };
+}
+
+export function toPrimaryKey({ networkId }: NetworkId): [string] {
+    return [networkId];
 }
 
 /**

@@ -70,6 +70,10 @@ export function validateId({ networkId, blockNumber, logIndex }: ContractEventId
     return { networkId, blockNumber, logIndex };
 }
 
+export function toPrimaryKey({ networkId, blockNumber, logIndex }: ContractEventId): [string, number, number] {
+    return [networkId, blockNumber, logIndex];
+}
+
 /** @internal */
 export function validate(item: ContractEvent): ContractEvent {
     //@ts-ignore

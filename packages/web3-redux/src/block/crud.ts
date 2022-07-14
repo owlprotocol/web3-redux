@@ -1,6 +1,9 @@
 import { name } from './common.js';
-import { BlockId, BlockTransaction } from './model/index.js';
+import { BlockId, BlockTransaction, toPrimaryKey, validateId } from './model/index.js';
 import createCRUDModel from '../createCRUDModel.js';
 
-export const BlockCRUD = createCRUDModel<typeof name, BlockId, BlockTransaction, BlockTransaction>(name);
+export const BlockCRUD = createCRUDModel<typeof name, BlockId, BlockTransaction, BlockTransaction>(name, {
+    validateId,
+    toPrimaryKey,
+});
 export default BlockCRUD;

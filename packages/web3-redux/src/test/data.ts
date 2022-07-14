@@ -1,4 +1,3 @@
-//@ts-nocheck
 import Web3 from 'web3';
 import { coder } from '../utils/web3-eth-abi/index.js';
 import { toWei } from '../utils/web3-utils/index.js';
@@ -20,7 +19,6 @@ import ContractEventCRUD from '../contractevent/crud.js';
 import BlockCRUD from '../block/crud.js';
 import TransactionCRUD from '../transaction/crud.js';
 import EthCallCRUD from '../ethcall/crud.js';
-import toReduxOrmId from '../utils/toReduxORMId.js';
 
 export const networkId = '1336';
 
@@ -228,15 +226,17 @@ const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = EthCallCRUD.validate({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
 //State
-const state: StateRoot = {
-    [REDUX_ROOT]: getOrm().getEmptyState(),
+export const getTestState = () => {
+    const state: StateRoot = {
+        [REDUX_ROOT]: getOrm().getEmptyState(),
+    };
+
+    state[REDUX_ROOT]['Network'].items.push(network1.networkId);
+    state[REDUX_ROOT]['Network'].itemsById[network1.networkId] = network1;
+
+    state[REDUX_ROOT]['Contract'].items.push(ContractCRUD.toPrimaryKeyString(contract1));
+    state[REDUX_ROOT]['Contract'].itemsById[ContractCRUD.toPrimaryKeyString(contract1)] = contract1;
 };
-
-state[REDUX_ROOT]['Network'].items.push(network1.networkId);
-state[REDUX_ROOT]['Network'].itemsById[network1.networkId] = network1;
-
-state[REDUX_ROOT]['Contract'].items.push(toReduxOrmId(ContractCRUD.validateId(contract1)));
-state[REDUX_ROOT]['Contract'].itemsById[toReduxOrmId(ContractCRUD.validateId(contract1))] = contract1;
 
 export const deployTestContracts = async () => {
     const web3 = new Web3('ws://localhost:8545');
@@ -269,5 +269,3 @@ export const deployTestContracts = async () => {
         erc1155Address: contractERC1155.options.address,
     };
 };
-
-export { state };

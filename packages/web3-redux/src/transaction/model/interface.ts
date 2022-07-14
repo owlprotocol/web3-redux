@@ -71,8 +71,12 @@ export const TransactionIndex =
     '[networkId+hash], [networkId+blockNumber], [networkId+blockHash], [networkId+from+to], [networkId+to], [networkId+contractAddress]';
 
 /** @internal */
-export function validateId(item: TransactionId) {
-    return item;
+export function validateId({ networkId, hash }: TransactionId): TransactionId {
+    return { networkId, hash };
+}
+
+export function toPrimaryKey({ networkId, hash }: TransactionId): [string, string] {
+    return [networkId, hash];
 }
 
 /** @internal */

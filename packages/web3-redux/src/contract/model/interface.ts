@@ -55,15 +55,14 @@ export type ContractIndexInput = ContractId | { networkId: string } | { label: s
 export const ContractIndex = '[networkId+address], networkId, label, *tags';
 
 /** @internal */
-export function validateId(item: ContractId): ContractId {
-    const { networkId, address } = item;
+export function validateId({ networkId, address }: ContractId): ContractId {
     return {
         networkId,
         address: address?.toLowerCase(),
     };
 }
 
-export function getPrimaryKey(id: ContractId) {
+export function toPrimaryKey(id: ContractId): [string, string] {
     return [id.networkId, id.address];
 }
 
@@ -77,7 +76,7 @@ export function validate(contract: Contract): Contract {
     const result = {
         ...contract,
         address: address.toLowerCase(),
-        id: toReduxOrmId(getPrimaryKey({ networkId, address })),
+        id: toReduxOrmId(toPrimaryKey({ networkId, address })),
     };
     if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;
 
@@ -93,7 +92,7 @@ export function hydrate(contract: Contract, sess: any): ContractWithObjects {
     const { networkId, address } = validateId(contract);
 
     const contractORM: ContractWithObjects | undefined = sess.Contract.withId(
-        toReduxOrmId(getPrimaryKey({ networkId, address })),
+        toReduxOrmId(toPrimaryKey({ networkId, address })),
     );
 
     const network: NetworkWithObjects | undefined = sess.Network.withId(networkId);

@@ -38,6 +38,8 @@ export function* fetchSaga(action: FetchAction) {
             blockExists = true;
         }
 
+        //TODO: Handle existing by blockhash
+
         const result = yield* call(
             web3.eth.getBlock,
             blockHashOrBlockNumber,

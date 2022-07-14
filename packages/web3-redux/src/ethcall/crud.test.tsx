@@ -94,6 +94,9 @@ describe(`${name}/crud.test.js`, () => {
                 },
             );
 
+            const [, { isLoading }] = result.current;
+            assert.isTrue(isLoading);
+
             await waitForNextUpdate();
             const [selected] = result.current;
             assert.deepEqual(selected, ethCall1);
@@ -112,6 +115,9 @@ describe(`${name}/crud.test.js`, () => {
                     wrapper,
                 },
             );
+
+            const [, { isLoading }] = result.current;
+            assert.isTrue(isLoading);
 
             await waitForNextUpdate();
             const [selected] = result.current;
@@ -136,6 +142,9 @@ describe(`${name}/crud.test.js`, () => {
                 },
             );
 
+            const [, { isLoading }] = result.current;
+            assert.isTrue(isLoading);
+
             await waitForNextUpdate();
             const [selected] = result.current;
             assert.deepEqual(selected, [ethCall1]);
@@ -154,6 +163,9 @@ describe(`${name}/crud.test.js`, () => {
                     wrapper,
                 },
             );
+
+            const [, { isLoading }] = result.current;
+            assert.isTrue(isLoading);
 
             await waitForNextUpdate();
             const [selected] = result.current;
@@ -179,6 +191,9 @@ describe(`${name}/crud.test.js`, () => {
                 },
             );
 
+            const [, { isLoading }] = result.current;
+            assert.isTrue(isLoading);
+
             await waitForNextUpdate();
             const [selected] = result.current;
             assert.deepEqual(selected, [ethCall1]);
@@ -202,6 +217,9 @@ describe(`${name}/crud.test.js`, () => {
                     wrapper,
                 },
             );
+
+            const [, { isLoading }] = result.current;
+            assert.isTrue(isLoading);
 
             await waitForNextUpdate();
             const [selected] = result.current;

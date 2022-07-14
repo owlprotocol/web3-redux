@@ -58,12 +58,12 @@ export const ContractIndex = '[networkId+address], networkId, label, *tags';
 export function validateId({ networkId, address }: ContractId): ContractId {
     return {
         networkId,
-        address: address?.toLowerCase(),
+        address: address.toLowerCase(),
     };
 }
 
-export function toPrimaryKey(id: ContractId): [string, string] {
-    return [id.networkId, id.address];
+export function toPrimaryKey({ networkId, address }: ContractId): [string, string] {
+    return [networkId, address.toLowerCase()];
 }
 
 /** @internal */

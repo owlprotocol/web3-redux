@@ -46,9 +46,21 @@ export function* callSaga(action: CallAction) {
         });
 
         try {
-            //Tx Encodable, any errors are execution related
-            //Create base call
-            yield* put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid));
+            //Cached call
+            const existingEthCall = yield* call(EthCallCRUD.db.get, { networkId, to: contract.address, data });
+            if (!existingEthCall) {
+                //Tx Encodable, any errors are execution related
+                //Create base call
+                yield* put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid));
+            } else {
+                yield* put(
+                    EthCallCRUD.actions.update(
+                        { networkId, to: contract.address, data, status: 'LOADING' },
+                        action.meta.uuid,
+                    ),
+                );
+            }
+
             //Gas undefined or 0
             const gas = ethCall.gas || (yield* call(tx.estimateGas, { from })); //default gas
             const returnValue = yield* call(tx.call, { from, gas }, defaultBlock);
@@ -67,17 +79,7 @@ export function* callSaga(action: CallAction) {
                     action.meta.uuid,
                 ),
             );
-            yield* put(
-                createError(
-                    {
-                        id: action.meta.uuid,
-                        stack: (error as Error).stack,
-                        errorMessage: (error as Error).message,
-                        type: CALL_ERROR,
-                    },
-                    action.meta.uuid,
-                ),
-            );
+            throw error;
         }
     } catch (error) {
         //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)

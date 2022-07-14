@@ -7,7 +7,7 @@ import { Config } from '../model/index.js';
  * Create/hydrate depending on db state.
  */
 export function useConfig(defaultConfig?: Partial<Config>) {
-    return ConfigCRUD.hooks.useHydrate({ id: '0' }, defaultConfig);
+    return ConfigCRUD.hooks.useHydrate({ id: '0' }, { ...defaultConfig, id: '0' });
 }
 
 export default useConfig;

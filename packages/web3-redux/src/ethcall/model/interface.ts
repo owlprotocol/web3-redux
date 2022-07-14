@@ -51,7 +51,7 @@ export function validateId({ networkId, to, data }: EthCallId): EthCallId {
 }
 
 export function toPrimaryKey({ networkId, to, data }: EthCallId): [string, string, string] {
-    return [networkId, to, data];
+    return [networkId, to.toLowerCase(), data];
 }
 
 /** @internal */

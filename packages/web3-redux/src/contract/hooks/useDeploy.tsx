@@ -37,7 +37,7 @@ export function useDeploy(input: Partial<DeployActionInput> | undefined, address
         if (!exists && auto) deploy();
     }, [deploy, exists, auto]);
 
-    console.debug({ exists: contractByAddressExists, auto, contract, action });
+    //console.debug({ exists: contractByAddressExists, auto, contract, action });
 
     //Error
     const [reduxError] = ErrorCRUD.hooks.useGet(action?.meta.uuid);

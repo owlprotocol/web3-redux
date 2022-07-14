@@ -25,7 +25,7 @@ export function useGetBalance(
     const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
     const balanceExists = !!contract?.balance;
-    const executeSync = (sync === 'ifnull' && !balanceExists) || !!sync; //refresh
+    const executeSync = (sync === 'ifnull' && !balanceExists) || (sync != false && sync !== 'ifnull'); //refresh
 
     //Action
     const { getBalanceAction, syncAction } =

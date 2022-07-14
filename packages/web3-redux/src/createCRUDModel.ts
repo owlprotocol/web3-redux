@@ -624,7 +624,7 @@ export function createCRUDModel<
         const item = useSelectByIdSingle(id);
         const itemExists = !!item;
 
-        console.debug({ idx, itemDB, itemDBExists, item, itemExists, isLoading, defaultItem });
+        //console.debug({ idx, itemDB, itemDBExists, item, itemExists, isLoading, defaultItem });
         //Reset state
         const action = useMemo(() => {
             if (idx && !itemExists) {

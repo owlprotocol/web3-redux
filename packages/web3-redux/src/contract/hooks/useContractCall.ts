@@ -61,7 +61,8 @@ export function useContractCall<
     });
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
     const returnValueExists = ethCallLoading || returnValue != undefined;
-    const executeSync = (sync === 'ifnull' && !returnValueExists) || !sync;
+    const executeSync = (sync === 'ifnull' && !returnValueExists) || (sync != false && sync !== 'ifnull');
+    console.debug({ executeSync, ethCall, ethCallLoading });
 
     const argsHash = JSON.stringify(args);
     const { callAction, syncAction } =

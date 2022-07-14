@@ -13,9 +13,11 @@ import createCRUDModel from '../createCRUDModel.js';
 
 export const ContractCRUD = createCRUDModel<typeof name, ContractId, Contract, ContractWithObjects, ContractIndexInput>(
     name,
-    validateId,
-    validate,
-    hydrate,
-    encode,
+    {
+        validateId,
+        validate,
+        hydrate,
+        encode,
+    },
 );
 export default ContractCRUD;

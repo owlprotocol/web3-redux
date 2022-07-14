@@ -4,7 +4,9 @@ import createCRUDModel from '../createCRUDModel.js';
 
 export const ContractSendCRUD = createCRUDModel<typeof name, ContractSendId, ContractSend, ContractSend, ContractSend>(
     name,
-    validateId,
-    validate,
+    {
+        validateId,
+        validate,
+    },
 );
 export default ContractSendCRUD;

@@ -67,8 +67,8 @@ export const ContractEventIndex =
     '[networkId+blockNumber+logIndex], [networkId+blockNumber+logIndex], [networkId+address+name], [networkId+name], name, [networkId+address+topic0+topic1+topic2+topic3], [networkId+topic0+topic1+topic2+topic3]';
 
 /** @internal */
-export function validateId(item: ContractEventId) {
-    return pick(item, ['networkId', 'blockNumber', 'logIndex']) as ContractEventId;
+export function validateId({ networkId, blockNumber, logIndex }: ContractEventId): ContractEventId {
+    return { networkId, blockNumber, logIndex };
 }
 
 /** @internal */

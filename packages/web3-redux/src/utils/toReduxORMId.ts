@@ -1,4 +1,4 @@
-import { IndexableTypeArray } from 'dexie';
+import { IndexableTypeArrayReadonly } from 'dexie';
 
 export function valuesDeterministic(item: Record<string, any>) {
     return Object.keys(item)
@@ -8,7 +8,7 @@ export function valuesDeterministic(item: Record<string, any>) {
 
 /* Compound indices are joined with separator */
 export const SEPARATOR = '-';
-export function toReduxOrmId(id: string | IndexableTypeArray) {
+export function toReduxOrmId(id: string | IndexableTypeArrayReadonly) {
     if (typeof id === 'string') return id;
     return id.join(SEPARATOR);
 }

@@ -1,5 +1,5 @@
 import { name } from './common.js';
-import { _4ByteSignature, _4ByteSignatureId, validateId, validate } from './model/index.js';
+import { _4ByteSignature, _4ByteSignatureId } from './model/index.js';
 import createCRUDModel from '../createCRUDModel.js';
 
 export const _4ByteCRUD = createCRUDModel<
@@ -8,5 +8,5 @@ export const _4ByteCRUD = createCRUDModel<
     _4ByteSignature,
     _4ByteSignature,
     _4ByteSignature
->(name, validateId, validate);
+>(name);
 export default _4ByteCRUD;

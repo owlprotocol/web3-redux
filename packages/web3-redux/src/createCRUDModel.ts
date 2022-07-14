@@ -5,6 +5,7 @@ import { put as putSaga, call, all as allSaga, takeEvery } from 'typed-redux-sag
 import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
+import { IndexableTypeArrayReadonly } from 'dexie';
 import { compact, filter } from './utils/lodash/index.js';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
@@ -32,12 +33,20 @@ export function createCRUDModel<
     T_Idx = T_ID,
     >(
         name: U,
-        validateId: (id: T_ID) => T_ID = (id: T_ID) => id as T_ID,
-        validate: (item: T) => T = (item: T) => item as T,
-        hydrate: (item: T, sess?: any) => T = (item: T) => item as T,
-        encode: (item: T) => T_Encoded = (item: T) => item as T_Encoded,
+        validators?: {
+            validateId?: (id: T_ID) => T_ID;
+            validate?: (item: T) => T;
+            hydrate?: (item: T, sess?: any) => T;
+            encode?: (item: T) => T_Encoded;
+            toPrimaryKey?: (id: T_ID) => IndexableTypeArrayReadonly;
+        },
 ) {
-    const toPrimaryKey = (id: T_ID | string) => (typeof id === 'string' ? id : Object.values(id));
+    const validateId = validators?.validateId ?? ((id: T_ID) => id);
+    const validate = validators?.validate ?? ((item: T) => item);
+    const hydrate = validators?.hydrate ?? ((id: T) => id);
+    const encode = validators?.encode ?? ((item: T) => item);
+    const toPrimaryKey = validators?.toPrimaryKey ?? ((id: T_ID) => Object.values(id) as IndexableTypeArrayReadonly);
+
     const toPrimaryKeyString = (id: T_ID | string): string =>
         typeof id === 'string' ? id : toReduxOrmId(toPrimaryKey(id));
 
@@ -232,7 +241,7 @@ export function createCRUDModel<
     const bulkGet = async (ids: T_ID[] | string[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.bulkGet(ids.map(toPrimaryKey));
+        return table.bulkGet(ids.map((id) => (typeof id === 'string' ? id : toPrimaryKey(id))));
     };
 
     const all = async () => {

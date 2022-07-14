@@ -1,5 +1,5 @@
 import { name } from './common.js';
-import { TransactionId, Transaction, validateId, validate, TransactionIndexInput } from './model/index.js';
+import { TransactionId, Transaction, validate, TransactionIndexInput } from './model/index.js';
 import createCRUDModel from '../createCRUDModel.js';
 
 export const TransactionCRUD = createCRUDModel<
@@ -8,5 +8,5 @@ export const TransactionCRUD = createCRUDModel<
     Transaction,
     Transaction,
     TransactionIndexInput
->(name, validateId, validate);
+>(name, { validate });
 export default TransactionCRUD;

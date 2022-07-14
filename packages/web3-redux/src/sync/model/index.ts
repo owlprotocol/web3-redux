@@ -1,8 +1,10 @@
 import { AnyAction } from 'redux';
-export * from './BaseSync.js';
+import { BaseSync, BaseSyncId } from './BaseSync.js';
 import { BlockSync, createBlockSyncEveryBlock } from './BlockSync.js';
 import { EventSync } from './EventSync.js';
 import { TransactionSync, createSyncForAddress } from './TransactionSync.js';
+
+export * from './BaseSync.js';
 
 /**
  * Sync Middleware Type
@@ -41,6 +43,11 @@ export function createSyncForActions(
     }
 }
 
+export type SyncIndexInput =
+    | BaseSyncId
+    | { networkId: string; type: BaseSync['type'] }
+    | { networkId: string }
+    | { type: BaseSync['type'] };
 export const SyncIndex = 'id,[networkId+type],type';
 
 /** @internal */

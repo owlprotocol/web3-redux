@@ -30,7 +30,7 @@ export function createCRUDModel<
     T_ID extends Record<string, NonNullable<any>> = Record<string, NonNullable<any>>,
     T_Encoded extends T_ID = T_ID,
     T extends T_Encoded = T_Encoded,
-    T_Idx = T_ID,
+    T_Idx extends Record<string, NonNullable<any>> = T_ID,
     >(
         name: U,
         validateId: (id: T_ID) => string | IndexableTypeArray = (id: T_ID) => Object.values(id),
@@ -267,7 +267,7 @@ export function createCRUDModel<
         return table.toArray();
     };
 
-    const where = async (filter: Partial<T_Encoded>) => {
+    const where = async (filter: T_Idx) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.where(filter).toArray();

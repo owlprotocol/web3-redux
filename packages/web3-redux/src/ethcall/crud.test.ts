@@ -4,7 +4,6 @@ import { name } from './common.js';
 import { ethCall1 } from './data.js';
 import EthCallCRUD from './crud.js';
 import { createStore, StoreType } from '../store.js';
-import getDB from '../db.js';
 
 describe(`${name}/crud.test.js`, () => {
     describe('store', () => {
@@ -25,19 +24,16 @@ describe(`${name}/crud.test.js`, () => {
         });
 
         it('byMethod', async () => {
-            const db = getDB();
-            const table = db.EthCall;
-            const selected = await table.get({
-                methodName: ethCall1.methodName,
+            const selected = await EthCallCRUD.db.get({
+                methodName: ethCall1.methodName!,
             });
             assert.deepEqual(selected, ethCall1);
         });
 
         it.skip('byStatus', async () => {
             //Not indexed
-            const db = getDB();
-            const table = db.EthCall;
-            const selected = await table.get({
+            const selected = await EthCallCRUD.db.get({
+                //@ts-expect-error
                 status: 'LOADING',
             });
             assert.deepEqual(selected, ethCall1);

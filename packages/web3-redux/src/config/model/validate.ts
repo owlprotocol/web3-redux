@@ -5,7 +5,7 @@ import { Config, ConfigId, ConfigWithObjects } from './interface.js';
 import { omit } from '../../utils/lodash/index.js';
 
 export function validateId(config: ConfigId) {
-    return config.id;
+    return config;
 }
 
 /**

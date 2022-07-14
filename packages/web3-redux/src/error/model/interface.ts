@@ -21,9 +21,8 @@ export interface ReduxErrorWithObjects extends ReduxError {
 export const ReduxErrorIndex = 'id';
 
 /** @internal */
-export function validateId(item: Partial<ReduxErrorId>) {
-    if (!item.id) throw new Error('id undefined');
-    return item.id;
+export function validateId(item: ReduxErrorId) {
+    return item;
 }
 
 /** @internal */

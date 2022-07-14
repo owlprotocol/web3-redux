@@ -10,7 +10,7 @@ import { setAccount } from '../actions/index.js';
  */
 export function useAccount() {
     const dispatch = useDispatch();
-    const [config] = ConfigCRUD.hooks.useGet({ id: '0' });
+    const [config] = ConfigCRUD.hooks.useGet('0');
     const { account: value } = config ?? {};
     const setAccountCallback = useCallback(
         (account: string) => {

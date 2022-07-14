@@ -1,4 +1,5 @@
 import type { AbiItem } from 'web3-utils';
+import { pick } from '../../utils/lodash/index.js';
 
 export interface ContractEventId {
     /** Blockchain network id.
@@ -67,7 +68,7 @@ export const ContractEventIndex =
 
 /** @internal */
 export function validateId(item: ContractEventId) {
-    return [item.networkId, item.blockNumber, item.logIndex];
+    return pick(item, ['networkId', 'blockNumber', 'logIndex']) as ContractEventId;
 }
 
 /** @internal */

@@ -6,7 +6,7 @@ import { omit } from '../../utils/lodash/index.js';
 
 /** @internal */
 export function validateId(item: NetworkId) {
-    return item.networkId;
+    return item;
 }
 
 /**

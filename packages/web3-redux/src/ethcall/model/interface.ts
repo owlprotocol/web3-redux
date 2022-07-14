@@ -42,13 +42,16 @@ export interface EthCall extends EthCallId {
 export const EthCallIndex = '[networkId+to+data], [networkId+to+methodName], [networkId+methodName], methodName';
 
 /** @internal */
-export function validateId(item: Partial<EthCallId>) {
-    return [item.networkId, item.to?.toLowerCase(), item.data] as [string, string, string];
+export function validateId(item: EthCallId) {
+    return {
+        ...item,
+        to: item.to.toLowerCase(),
+    };
 }
 
 /** @internal */
 export function validate(item: Partial<EthCall>): EthCall {
-    const [networkId, to, data] = validateId(item);
+    const { networkId, to, data } = validateId(item as EthCallId);
 
     return {
         ...item,

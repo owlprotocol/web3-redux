@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Web3 from 'web3';
 import { coder } from '../utils/web3-eth-abi/index.js';
 import { toWei } from '../utils/web3-utils/index.js';

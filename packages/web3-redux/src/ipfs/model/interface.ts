@@ -32,7 +32,7 @@ export const IpfsIndex = 'contentId, *paths';
 
 /** @internal */
 export function validateId(item: IpfsId) {
-    return item.contentId;
+    return item;
 }
 
 /** @internal */

@@ -3,7 +3,6 @@ import { getNonce } from './getNonce.js';
 import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
 import { ContractId } from '../model/interface.js';
 import ContractCRUD from '../crud.js';
-import toReduxOrmId from '../../utils/toReduxORMId.js';
 import SyncCRUD from '../../sync/crud.js';
 
 /** @internal */
@@ -20,7 +19,7 @@ export const getNonceSynced = (payload: GetNonceSyncedActionInput) => {
     const getNonceAction = getNonce({ networkId, address });
 
     const sync = createSyncForActions(networkId, [getNonceAction], payload.sync, address);
-    if (sync) sync.id = `${sync.type}-${toReduxOrmId(ContractCRUD.validateId({ networkId, address }))}-getNonce`;
+    if (sync) sync.id = `${sync.type}-${ContractCRUD.validateId({ networkId, address })}-getNonce`;
     const syncAction = sync ? SyncCRUD.actions.create(sync) : undefined;
     return { getNonceAction, syncAction };
 };

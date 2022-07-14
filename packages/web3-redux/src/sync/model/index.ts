@@ -51,9 +51,8 @@ export type SyncIndexInput =
 export const SyncIndex = 'id,[networkId+type],type';
 
 /** @internal */
-export function validateId(item: Partial<Sync>) {
-    if (!item.id) throw new Error('id undefined');
-    return item.id;
+export function validateId(item: BaseSyncId) {
+    return item;
 }
 
 /** @internal */

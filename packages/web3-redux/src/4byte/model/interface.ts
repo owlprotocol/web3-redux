@@ -13,8 +13,8 @@ export interface _4ByteSignature extends _4ByteSignatureId {
 export const _4ByteIndex = 'signatureHash';
 
 /** @internal */
-export function validateId(item: _4ByteSignatureId) {
-    return item.signatureHash;
+export function validateId({ signatureHash }: _4ByteSignatureId) {
+    return { signatureHash };
 }
 
 /** @internal */

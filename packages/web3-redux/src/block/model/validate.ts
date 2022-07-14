@@ -3,7 +3,7 @@ import { BlockId } from './id.js';
 
 /** @internal */
 export function validateId(item: BlockId) {
-    return [item.networkId, item.number];
+    return item;
 }
 
 /** @internal */

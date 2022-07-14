@@ -27,41 +27,20 @@ import isDefinedRecord from './utils/isDefinedRecord.js';
  */
 export function createCRUDModel<
     U extends string,
-    T_ID extends Record<string, NonNullable<any>> = Record<string, NonNullable<any>>,
+    T_ID,
     T_Encoded extends T_ID = T_ID,
     T extends T_Encoded = T_Encoded,
-    T_Idx extends Record<string, NonNullable<any>> = T_ID,
+    T_Idx = T_ID,
     >(
         name: U,
-        validateId: (id: T_ID) => string | IndexableTypeArray = (id: T_ID) => Object.values(id),
+        validateId: (id: T_ID) => T_ID = (id: T_ID) => id as T_ID,
         validate: (item: T) => T = (item: T) => item as T,
         hydrate: (item: T, sess?: any) => T = (item: T) => item as T,
         encode: (item: T) => T_Encoded = (item: T) => item as T_Encoded,
 ) {
-    const idToStr = (id: string | IndexableTypeArray | Partial<T_ID>): string | undefined => {
-        if (typeof id === 'string') return id;
-        else if (Array.isArray(id)) return toReduxOrmId(id);
-        else {
-            if (!isDefinedRecord(id)) return undefined;
-            const id2 = validateId(id);
-            if (typeof id2 === 'string') return id2;
-            else return toReduxOrmId(id2);
-        }
-    };
-
-    const idToDexieId = (id: string | IndexableTypeArray | T_ID): string | IndexableTypeArray | undefined => {
-        if (typeof id === 'string') {
-            return id;
-        } else if (Array.isArray(id)) {
-            return id;
-        } else {
-            const id2 = validateId(id);
-            if (typeof id2 === 'string') return id2;
-            //@ts-expect-error
-            else if (id2.includes(undefined)) return undefined;
-            else return id2;
-        }
-    };
+    const toPrimaryKey = (id: T_ID | string) => (typeof id === 'string' ? id : Object.values(id));
+    const toPrimaryKeyString = (id: T_ID | string): string =>
+        typeof id === 'string' ? id : toReduxOrmId(toPrimaryKey(id));
 
     /** Actions */
     const CREATE = `${name}/CREATE`;
@@ -204,9 +183,9 @@ export function createCRUDModel<
         } else if (createBatchedAction.match(action) || updateBatchedAction.match(action)) {
             action.payload.forEach((p) => Model.upsert(hydrate(p, sess)));
         } else if (deleteAction.match(action)) {
-            Model.withId(idToStr(action.payload))?.delete();
+            Model.withId(toPrimaryKeyString(action.payload))?.delete();
         } else if (deleteBatchedAction.match(action)) {
-            action.payload.forEach((p) => Model.withId(idToStr(p))?.delete());
+            action.payload.forEach((p) => Model.withId(toPrimaryKeyString(p))?.delete());
         }
         return sess;
     };
@@ -217,14 +196,13 @@ export function createCRUDModel<
     const select = ormModel ? createSelector(getOrm()[name]) : () => undefined;
     const selectByIdSingle = (state: any, id: Partial<T_ID> | string | undefined): T | undefined => {
         if (!id) return undefined;
-        const idStr = idToStr(id);
-        if (!idStr) return undefined;
-        return select(state, idStr);
+        if (typeof id != 'string' && !isDefinedRecord(id)) return undefined;
+        return select(state, toPrimaryKeyString(id));
     };
 
-    const selectByIdMany = (state: any, ids?: (T_ID | string)[]): (T | null)[] => {
+    const selectByIdMany = (state: any, ids?: T_ID[] | string[]): (T | null)[] => {
         if (!ids) return select(state); //Return all
-        return select(state, ids.map(idToStr));
+        return select(state, ids.map(toPrimaryKeyString));
     };
 
     const selectAll = (state: any): T[] => {
@@ -245,20 +223,17 @@ export function createCRUDModel<
     };
 
     /** Dexie Getters */
-    const get = async (id: T_Idx | IndexableTypeArray | string | undefined) => {
-        if (!id) return undefined;
+    const get = async (id: T_Idx | string) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         //@ts-expect-error
         return table.get(id);
     };
 
-    const bulkGet = async (ids: (T_Idx | IndexableTypeArray | string)[] | undefined) => {
-        if (!ids) return undefined;
+    const bulkGet = async (ids: T_ID[] | string[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        //@ts-expect-error
-        return table.bulkGet(ids);
+        return table.bulkGet(ids.map(toPrimaryKey));
     };
 
     const all = async () => {
@@ -307,7 +282,8 @@ export function createCRUDModel<
     const update = async (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.update(validateId(item), encode(item));
+        const encoded = encode(item);
+        return table.update(encoded, encoded);
     };
 
     const bulkUpdate = async (items: T[]) => {
@@ -315,21 +291,24 @@ export function createCRUDModel<
         const table = db.table<T_Encoded>(name);
 
         return db.transaction('rw', table, async () => {
-            const promises = items.map((t) => table.update(validateId(t), encode(t)));
+            const promises = items.map((t) => {
+                const encoded = encode(t);
+                table.update(encoded, encoded);
+            });
             return Promise.all(promises);
         });
     };
 
-    const deleteDB = async (id: IndexableType) => {
+    const deleteDB = async (id: T_ID) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.delete(id);
+        return table.delete(Object.values(id));
     };
 
-    const bulkDelete = async (ids: IndexableType[]) => {
+    const bulkDelete = async (ids: T_ID[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.bulkDelete(ids);
+        return table.bulkDelete(ids.map(Object.values));
     };
 
     const clear = async () => {
@@ -479,7 +458,7 @@ export function createCRUDModel<
         try {
             const { payload } = action;
 
-            const item = yield* call(get, payload);
+            const item = yield* call(get, payload as unknown as T_Idx);
             if (item) yield* putSaga(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
             yield* putSaga(
@@ -562,14 +541,12 @@ export function createCRUDModel<
     };
 
     /** Dexie Hooks */
-    const useGet = (id: Partial<T_ID> | string | undefined) => {
-        const db = getDB();
-        const table = db.table<T_Encoded>(name);
-
-        //@ts-expect-error
-        const id2 = id ? idToDexieId(id) : undefined;
-        const id2Dep = id ? idToStr(id) : undefined;
-        const response = useLiveQuery(() => (id2 ? table.get(id2) : undefined), [id2Dep], 'loading' as const);
+    const useGet = (id: Partial<T_Idx> | string | undefined) => {
+        const response = useLiveQuery(
+            () => (id && (typeof id === 'string' || isDefinedRecord(id)) ? get(id) : undefined),
+            [JSON.stringify(id)],
+            'loading' as const,
+        );
         const isLoading = response === 'loading';
         const result = isLoading ? undefined : response;
         const exists = isLoading || !!result; //assume exists while loading
@@ -577,14 +554,20 @@ export function createCRUDModel<
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
     //TODO: string array id
-    const useGetBulk = (ids: Partial<T_ID>[]) => {
-        const db = getDB();
-        const table = db.table<T_Encoded>(name);
-
-        //@ts-expect-error
-        const ids2 = compact(ids.map(idToDexieId));
-        const ids2Dep = ids.map(idToStr).join(SEPARATOR);
-        const response = useLiveQuery(() => table.bulkGet(ids2), [ids2Dep], 'loading' as const);
+    const useGetBulk = (ids: Partial<T_ID>[] | string[] | undefined) => {
+        const response = useLiveQuery(
+            () => {
+                if (ids) {
+                    const ids2 = (ids as (Partial<T_ID> | string)[]).filter((id) => {
+                        return typeof id === 'string' || isDefinedRecord(id);
+                    }) as T_ID[] | string[];
+                    return bulkGet(ids2);
+                }
+                return [];
+            },
+            [JSON.stringify(ids)],
+            'loading' as const,
+        );
         const isLoading = response === 'loading';
         const result = isLoading ? undefined : response;
         const exists = isLoading || !!result; //assume exists while loading
@@ -608,24 +591,12 @@ export function createCRUDModel<
         const returnOptions = { isLoading, exists };
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
-    const useFirstWhere = (id: Partial<T_Encoded> | undefined) => {
-        const db = getDB();
-        const table = db.table<T_Encoded>(name);
-
-        const idDep = JSON.stringify(id);
-        const response = useLiveQuery(() => (id ? table.get(id) : undefined), [idDep], 'loading' as const);
-        const isLoading = response === 'loading';
-        const result = isLoading ? undefined : response;
-        const exists = isLoading || !!result; //assume exists while loading
-        const returnOptions = { isLoading, exists };
-        return [result, returnOptions] as [typeof result, typeof returnOptions];
-    };
 
     /** Redux ORM Hooks */
     const useSelectByIdSingle = (id: Partial<T_ID> | string | undefined) => {
         return useSelector((state) => selectByIdSingle(state, id));
     };
-    const useSelectByIdMany = (id?: (T_ID | string)[]) => {
+    const useSelectByIdMany = (id?: T_ID[] | string[]) => {
         return useSelector((state) => selectByIdMany(state, id));
     };
     const useSelectAll = () => {
@@ -642,7 +613,7 @@ export function createCRUDModel<
         const item = useSelectByIdSingle(id);
         const itemExists = !!item;
 
-        const [itemDB, { isLoading, exists }] = useGet(id);
+        const [itemDB, { isLoading, exists }] = useGet(id as T_Idx);
 
         //Reset state
         const action = useMemo(() => {
@@ -676,7 +647,6 @@ export function createCRUDModel<
         useGet,
         useGetBulk,
         useWhere,
-        useFirstWhere,
         useSelectByIdSingle,
         useSelectByIdMany,
         useSelectAll,
@@ -698,6 +668,8 @@ export function createCRUDModel<
         validateId,
         hydrate,
         encode,
+        toPrimaryKey,
+        toPrimaryKeyString,
     };
 }
 

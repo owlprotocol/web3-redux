@@ -72,7 +72,7 @@ export const TransactionIndex =
 
 /** @internal */
 export function validateId(item: TransactionId) {
-    return [item.networkId, item.hash];
+    return item;
 }
 
 /** @internal */

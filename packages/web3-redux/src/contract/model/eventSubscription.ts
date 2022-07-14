@@ -1,5 +1,5 @@
 import { EventData } from 'web3-eth-contract';
-import { validateId } from './interface.js';
+import { validateId, getPrimaryKey } from './interface.js';
 import toReduxOrmId from '../../utils/toReduxORMId.js';
 
 export interface EventSubscription {
@@ -9,7 +9,8 @@ export interface EventSubscription {
     filter?: { [key: string]: any };
 }
 export function eventSubscriptionHash(subscription: EventSubscription): string {
-    const cId = toReduxOrmId(validateId({ networkId: subscription.networkId, address: subscription.address }));
+    const { networkId, address } = validateId({ networkId: subscription.networkId, address: subscription.address });
+    const cId = toReduxOrmId(getPrimaryKey({ networkId, address }));
     let id = `${cId}-${subscription.eventName}`;
     if (subscription.filter) id = `${id}-${JSON.stringify(subscription.filter)}`;
     return id;

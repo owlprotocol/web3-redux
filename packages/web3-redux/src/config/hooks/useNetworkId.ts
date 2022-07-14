@@ -10,7 +10,7 @@ import ConfigCRUD from '../crud.js';
  */
 export function useNetworkId() {
     const dispatch = useDispatch();
-    const [config] = ConfigCRUD.hooks.useGet({ id: '0' });
+    const [config] = ConfigCRUD.hooks.useGet('0');
     const { networkId: value } = config ?? {};
     const setNetworkIdCallback = useCallback(
         (networkId: string) => {

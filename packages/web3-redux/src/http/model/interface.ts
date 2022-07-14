@@ -14,7 +14,7 @@ export const HttpIndex = 'id';
 
 /** @internal */
 export function validateId(item: HTTPCacheId) {
-    return item.id;
+    return item;
 }
 
 /** @internal */

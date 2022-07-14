@@ -55,23 +55,29 @@ export type ContractIndexInput = ContractId | { networkId: string } | { label: s
 export const ContractIndex = '[networkId+address], networkId, label, *tags';
 
 /** @internal */
-export function validateId(item: Partial<ContractId>) {
-    //if (!item.networkId) throw new Error('networkId undefined');
-    //if (!item.address) throw new Error('address undefined');
+export function validateId(item: ContractId): ContractId {
+    const { networkId, address } = item;
+    return {
+        networkId,
+        address: address?.toLowerCase(),
+    };
+}
 
-    return [item.networkId, item.address?.toLowerCase()] as [string, string];
+export function getPrimaryKey(id: ContractId) {
+    return [id.networkId, id.address];
 }
 
 /** @internal */
 export function validate(contract: Contract): Contract {
-    const { networkId, address, abi } = contract;
+    const { abi } = contract;
+    const { networkId, address } = validateId(contract);
     const eventAbis = filter(abi, (x) => x.type === 'event');
     const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
 
     const result = {
         ...contract,
         address: address.toLowerCase(),
-        id: toReduxOrmId(validateId({ networkId, address })),
+        id: toReduxOrmId(getPrimaryKey({ networkId, address })),
     };
     if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;
 
@@ -83,9 +89,11 @@ export function validate(contract: Contract): Contract {
  * @param contract
  */
 export function hydrate(contract: Contract, sess: any): ContractWithObjects {
-    const { networkId, abi, address } = contract;
+    const { abi } = contract;
+    const { networkId, address } = validateId(contract);
+
     const contractORM: ContractWithObjects | undefined = sess.Contract.withId(
-        toReduxOrmId(validateId({ networkId, address })),
+        toReduxOrmId(getPrimaryKey({ networkId, address })),
     );
 
     const network: NetworkWithObjects | undefined = sess.Network.withId(networkId);

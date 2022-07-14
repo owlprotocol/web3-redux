@@ -33,6 +33,17 @@ describe(`${name}/crud.test.js`, () => {
             assert.deepEqual(selected, ethCall1);
         });
 
+        it('bulkGet({networkId,to,data})', async () => {
+            const selected = await EthCallCRUD.db.bulkGet([
+                {
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                },
+            ]);
+            assert.deepEqual(selected, [ethCall1]);
+        });
+
         it('where({methodName})', async () => {
             const selected = await EthCallCRUD.db.where({
                 methodName: ethCall1.methodName!,
@@ -81,6 +92,29 @@ describe(`${name}/crud.test.js`, () => {
                 await waitForNextUpdate();
                 const [selected] = result.current;
                 assert.deepEqual(selected, ethCall1);
+
+                //No additional re-renders frm background tasks
+                await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+            });
+
+            it('useGetBulk([{networkId,to,data}])', async () => {
+                const { result, waitForNextUpdate } = renderHook(
+                    () =>
+                        EthCallCRUD.hooks.useGetBulk([
+                            {
+                                networkId: ethCall1.networkId,
+                                to: ethCall1.to,
+                                data: ethCall1.data,
+                            },
+                        ]),
+                    {
+                        wrapper,
+                    },
+                );
+
+                await waitForNextUpdate();
+                const [selected] = result.current;
+                assert.deepEqual(selected, [ethCall1]);
 
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');

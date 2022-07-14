@@ -73,7 +73,7 @@ export function getOptionsId(from: string | undefined, value: string | undefined
 
 /** @internal */
 export function validateId(item: ContractSendId) {
-    return item.uuid;
+    return item;
 }
 
 /** @internal */

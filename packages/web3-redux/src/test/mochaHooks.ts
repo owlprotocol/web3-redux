@@ -16,6 +16,8 @@ const beforeAll = async () => {
     global.document = window.document;
     Dexie.dependencies.indexedDB = indexedDB;
     Dexie.dependencies.IDBKeyRange = IDBKeyRange;
+    //@ts-expect-error
+    Dexie.debug = true;
 };
 
 const beforeEach = async () => {

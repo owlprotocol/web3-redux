@@ -2,7 +2,6 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Contract, Abi, Network } from '@owlprotocol/web3-redux';
 //import { addressERC721ArgType, networkIdArgType } from '../../../test/storybookArgs';
 import { AbiItem } from '@owlprotocol/web3-redux/src/utils/web3-utils';
-import { useEffect, useState } from 'react';
 import ContractCall, { ContractCallProps } from '.';
 
 export default {
@@ -53,7 +52,7 @@ const label = 'BlockNumber';
 
 Main.decorators = [
     (Story) => {
-        const [accounts] = Network.hooks.useAccounts('1337');
+        const [accounts] = Network.hooks.useAccounts('1337', true);
         const from = accounts.length > 0 ? accounts[0] : undefined;
         const [contract] = Contract.hooks.useDeploy({ networkId: '1337', abi, bytecode, from, label }, undefined, true);
         console.debug(contract);

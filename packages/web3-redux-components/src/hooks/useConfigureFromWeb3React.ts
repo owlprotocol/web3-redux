@@ -16,7 +16,7 @@ export function useConfigureFromWeb3React() {
     //Web3Redux data
     const [currentNetworkId, setNetworkId] = Config.hooks.useNetworkId();
     const [currentAccount, setAccount] = Config.hooks.useAccount();
-    const [currentNetwork] = Network.hooks.useNetwork(currentNetworkId);
+    const [currentNetwork] = Network.hooks.useNetwork(currentNetworkId ?? '1');
     const currentWeb3Sender = (currentNetwork as NetworkWithObjects | undefined)?.web3Sender;
 
     //Update networkId

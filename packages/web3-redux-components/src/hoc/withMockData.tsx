@@ -32,7 +32,12 @@ export const withMockData = (WrappedComponent: any) => {
         Network.hooks.useNetwork('1336', true);
 
         //ERC20
-        Contract.hooks.useContract('1', TestData.VITALIK, { label: 'Vitalik', tags: ['EOA'] });
+        Contract.hooks.useContract('1', TestData.VITALIK, {
+            networkId: '1',
+            address: TestData.VITALIK,
+            label: 'Vitalik',
+            tags: ['EOA'],
+        });
         Contract.hooks.useContract('1', TestData.contractWETH.address, TestData.contractWETH);
         Contract.hooks.useContract('1', TestData.contractUSDC.address, TestData.contractUSDC);
         Contract.hooks.useContract('1', TestData.contractTETHER.address, TestData.contractTETHER);

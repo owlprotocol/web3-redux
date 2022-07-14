@@ -1,7 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
-import { callHash } from '../model/callArgs.js';
 
 /** @internal */
 export const CALL = `${name}/CALL`;
@@ -11,19 +10,16 @@ export interface CallActionInput {
     address: string;
     method: string;
     args?: any[];
-    from?: string;
-    defaultBlock?: number | 'latest';
-    gas?: number;
+    ifnull?: boolean;
 }
 /**
  * Create contract call
  * @category Actions
  */
 export const call = createAction(CALL, (payload: CallActionInput, uuid?: string) => {
-    const { networkId, address, method, args, defaultBlock, from } = payload;
-    const id = callHash(networkId, address, method, { args, defaultBlock, from });
+    const { networkId, address, method, args, ifnull } = payload;
     return {
-        payload: { id, networkId, address: address.toLowerCase(), method, args, defaultBlock, from },
+        payload: { networkId, address: address.toLowerCase(), method, args, ifnull },
         meta: {
             uuid: uuid ?? uuidv4(),
         },

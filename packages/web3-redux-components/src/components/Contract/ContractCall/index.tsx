@@ -9,8 +9,11 @@ export interface ContractCallProps {
 
 export const ContractCall = ({ networkId, address, method, args }: ContractCallProps) => {
     const [returnValue, options] = Contract.hooks.useContractCall(networkId, address, method, args);
-    console.debug({ returnValue, options });
-    return <>Return Value: {returnValue} </>;
+    const { isLoading, error } = options;
+
+    if (isLoading) return <>Loading...</>;
+    else if (error) return <>Error: {error.message}</>;
+    else return <>Return Value: {returnValue} </>;
 };
 
 export default ContractCall;

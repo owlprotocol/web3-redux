@@ -13,7 +13,7 @@ const CALL_ERROR = `${CALL}/ERROR`;
 export function* callSaga(action: CallAction) {
     try {
         const { payload } = action;
-        const { networkId, address, args, from, defaultBlock } = payload;
+        const { networkId, address, args, ifnull } = payload;
         //Make sure required parameters defined
         if (!networkId) throw new Error('networkId undefined');
         if (!address) throw new Error('address undefined');
@@ -39,38 +39,38 @@ export function* callSaga(action: CallAction) {
         const data = tx.encodeABI();
         const ethCall = EthCallCRUD.validate({
             networkId,
-            from,
             to: contract.address,
-            defaultBlock,
             data,
         });
 
         try {
             //Cached call
             const existingEthCall = yield* call(EthCallCRUD.db.get, { networkId, to: contract.address, data });
-            if (!existingEthCall) {
-                //Tx Encodable, any errors are execution related
-                //Create base call
-                yield* put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid));
-            } else {
+            if (!ifnull || (ifnull && !existingEthCall)) {
+                //Refresh data
+                if (!existingEthCall) {
+                    //Tx Encodable, any errors are execution related
+                    //Create base call
+                    yield* put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid));
+                } else {
+                    yield* put(
+                        EthCallCRUD.actions.update(
+                            { networkId, to: contract.address, data, status: 'LOADING' },
+                            action.meta.uuid,
+                        ),
+                    );
+                }
+
+                const gas = yield* call(tx.estimateGas);
+                const returnValue = yield* call(tx.call, { gas });
+                const timestamp = Date.now();
                 yield* put(
                     EthCallCRUD.actions.update(
-                        { networkId, to: contract.address, data, status: 'LOADING' },
+                        { ...ethCall, returnValue, status: 'SUCCESS', lastUpdated: timestamp },
                         action.meta.uuid,
                     ),
                 );
             }
-
-            //Gas undefined or 0
-            const gas = ethCall.gas || (yield* call(tx.estimateGas, { from })); //default gas
-            const returnValue = yield* call(tx.call, { from, gas }, defaultBlock);
-            const timestamp = Date.now();
-            yield* put(
-                EthCallCRUD.actions.update(
-                    { ...ethCall, returnValue, status: 'SUCCESS', lastUpdated: timestamp },
-                    action.meta.uuid,
-                ),
-            );
         } catch (error) {
             const timestamp = Date.now();
             yield* put(

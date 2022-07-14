@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Await } from '../../types/promise.js';
@@ -60,11 +60,8 @@ export function useContractCall<
         data,
     });
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
-    const returnValueExists = ethCallLoading || returnValue != undefined;
-    const executeSync = (sync === 'ifnull' && !returnValueExists) || (sync != false && sync !== 'ifnull');
-    console.debug({ executeSync, ethCall, ethCallLoading });
+    const executeSync = sync != false;
 
-    const argsHash = JSON.stringify(args);
     const { callAction, syncAction } =
         useMemo(() => {
             if (networkId && address && method && web3ContractMethodExists) {
@@ -82,11 +79,12 @@ export function useContractCall<
                         address,
                         method: method as string,
                         args: args as any[],
+                        ifnull: sync === 'ifnull',
                     });
                     return { callAction, syncAction: undefined };
                 }
             }
-        }, [networkId, address, method, web3ContractMethodExists, argsHash, JSON.stringify(sync)]) ?? {};
+        }, [networkId, address, method, web3ContractMethodExists, JSON.stringify(args), JSON.stringify(sync)]) ?? {};
 
     //Error
     const [reduxError] = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
@@ -94,18 +92,19 @@ export function useContractCall<
         if (!networkId) return new Error('networkId undefined');
         else if (!address) return new Error('address undefined');
         else if (!method) return new Error('method undefined');
+        else if (!web3ContractMethodExists)
+            return new Error(`method ${method as string} does not exist on ${networkId}-${address}`);
         else if (!!reduxError) {
             const err = new Error(reduxError.errorMessage);
             err.stack = reduxError.stack;
             return err;
         }
-    }, [networkId, address, method, reduxError]);
+    }, [networkId, address, method, web3Contract, reduxError]);
 
-    const callId = callAction?.payload.id;
     //Callback
     const dispatchCallAction = useCallback(() => {
         if (callAction) dispatch(callAction);
-    }, [dispatch, callId]);
+    }, [dispatch, callAction]);
     //Initial call
     useEffect(() => {
         if (executeSync) dispatchCallAction();

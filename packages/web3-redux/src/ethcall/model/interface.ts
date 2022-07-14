@@ -9,15 +9,6 @@ export interface EthCallId {
     readonly data: string;
 }
 
-//Valid indexes
-export type EthCallIndexInput =
-    | EthCallId
-    | { networkId: string }
-    | { networkId: string; to: string }
-    | { networkId: string; to: string; methodName: string }
-    | { networkId: string; methodName: string }
-    | { methodName: string };
-
 export interface EthCall extends EthCallId {
     /** Contract Call indexing */
     readonly methodName?: string;
@@ -38,6 +29,15 @@ export interface EthCall extends EthCallId {
     /** Maximum `gas` field for call. */
     readonly gas?: number;
 }
+
+//Valid indexes
+export type EthCallIndexInput =
+    | EthCallId
+    | { networkId: string }
+    | { networkId: string; to: string }
+    | { networkId: string; to: string; methodName: string }
+    | { networkId: string; methodName: string }
+    | { methodName: string };
 
 export const EthCallIndex = '[networkId+to+data], [networkId+to+methodName], [networkId+methodName], methodName';
 

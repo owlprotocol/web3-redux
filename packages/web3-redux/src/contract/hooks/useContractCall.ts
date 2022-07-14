@@ -60,11 +60,11 @@ export function useContractCall<
         data,
     });
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
-    const executeSync = sync != false;
+    const executeSync = sync != false && web3ContractMethodExists;
 
     const { callAction, syncAction } =
         useMemo(() => {
-            if (networkId && address && method && web3ContractMethodExists) {
+            if (networkId && address && method) {
                 if (!!sync && sync != 'ifnull' && sync != 'once') {
                     return callSynced({
                         networkId,
@@ -84,7 +84,7 @@ export function useContractCall<
                     return { callAction, syncAction: undefined };
                 }
             }
-        }, [networkId, address, method, web3ContractMethodExists, JSON.stringify(args), JSON.stringify(sync)]) ?? {};
+        }, [networkId, address, method, JSON.stringify(args), JSON.stringify(sync)]) ?? {};
 
     //Error
     const [reduxError] = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
@@ -105,7 +105,7 @@ export function useContractCall<
     const dispatchCallAction = useCallback(() => {
         if (callAction) dispatch(callAction);
     }, [dispatch, callAction]);
-    //Initial call
+    //Effects
     useEffect(() => {
         if (executeSync) dispatchCallAction();
     }, [dispatchCallAction, executeSync]);

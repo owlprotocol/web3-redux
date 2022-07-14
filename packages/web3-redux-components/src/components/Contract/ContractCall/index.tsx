@@ -5,10 +5,11 @@ export interface ContractCallProps {
     address: string | undefined;
     method: string | undefined;
     args?: any[];
+    sync?: 'ifnull' | 'once';
 }
 
-export const ContractCall = ({ networkId, address, method, args }: ContractCallProps) => {
-    const [returnValue, options] = Contract.hooks.useContractCall(networkId, address, method, args);
+export const ContractCall = ({ networkId, address, method, args, sync }: ContractCallProps) => {
+    const [returnValue, options] = Contract.hooks.useContractCall(networkId, address, method, args, { sync });
     const { isLoading, error } = options;
 
     if (isLoading) return <>Loading...</>;

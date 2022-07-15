@@ -1,7 +1,7 @@
 import { name } from './common.js';
 import {
-    ContractEventId,
-    ContractEvent,
+    ContractEventQueryId,
+    ContractEventQuery,
     validate,
     ContractEventIndexInput,
     validateId,
@@ -11,9 +11,9 @@ import createCRUDModel from '../createCRUDModel.js';
 
 export const ContractEventCRUD = createCRUDModel<
     typeof name,
-    ContractEventId,
-    ContractEvent,
-    ContractEvent,
+    ContractEventQueryId,
+    ContractEventQuery,
+    ContractEventQuery,
     ContractEventIndexInput
 >(name, { validate, validateId, toPrimaryKey });
 export default ContractEventCRUD;

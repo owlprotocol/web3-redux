@@ -7,6 +7,7 @@ import { BlockTransaction, BlockIndex } from './block/model/index.js';
 import { Config, ConfigIndex } from './config/model/index.js';
 import { Contract, ContractIndex } from './contract/model/index.js';
 import { ContractEvent, ContractEventIndex } from './contractevent/model/index.js';
+import { ContractEventQuery, ContractEventQueryIndex } from './contracteventquery/model/index.js';
 import { ContractSend, ContractSendIndex } from './contractsend/model/index.js';
 import { ReduxError, ReduxErrorIndex } from './error/model/index.js';
 import { EthCall, EthCallIndex } from './ethcall/model/index.js';
@@ -21,6 +22,7 @@ import { name as BlockName } from './block/common.js';
 import { name as ConfigName } from './config/common.js';
 import { name as ContractName } from './contract/common.js';
 import { name as ContractEventName } from './contractevent/common.js';
+import { name as ContractEventQueryName } from './contracteventquery/common.js';
 import { name as ContractSendName } from './contractsend/common.js';
 import { name as ReduxErrorName } from './error/common.js';
 import { name as EthCallName } from './ethcall/common.js';
@@ -38,6 +40,7 @@ export class Web3ReduxDexie extends Dexie {
     [ConfigName]!: Table<Config>;
     [ContractName]!: Table<Contract>;
     [ContractEventName]!: Table<ContractEvent>;
+    [ContractEventQueryName]!: Table<ContractEventQuery>;
     [ContractSendName]!: Table<ContractSend>;
     [ReduxErrorName]!: Table<ReduxError>;
     [EthCallName]!: Table<EthCall>;
@@ -55,6 +58,7 @@ export class Web3ReduxDexie extends Dexie {
             [ConfigName]: ConfigIndex,
             [ContractName]: ContractIndex,
             [ContractEventName]: ContractEventIndex,
+            [ContractEventQueryName]: ContractEventQueryIndex,
             [ContractSendName]: ContractSendIndex,
             [ReduxErrorName]: ReduxErrorIndex,
             [EthCallName]: EthCallIndex,

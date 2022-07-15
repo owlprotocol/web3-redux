@@ -3,9 +3,8 @@ import useERC721TokenURI from './useERC721TokenURI.js';
 import useERC721OwnerOf from './useERC721OwnerOf.js';
 import useERC721Transfer from './useERC721Transfer.js';
 import useERC721Approval from './useERC721Approval.js';
-import { useContractWithAbi } from '../useContractWithAbi.js';
 import { useContractCall } from '../useContractCall.js';
-import { useEvents, UseEventsOptions } from '../useEvents.js';
+import { UseEventsOptions } from '../useEvents.js';
 import { IERC721Metadata } from '../../../typechain/IERC721Metadata.js';
 import { IERC721MetadataArtifact } from '../../../abis/index.js';
 
@@ -13,6 +12,7 @@ import { GenericSync } from '../../../sync/model/index.js';
 import { createEventSync } from '../../../sync/model/EventSync.js';
 
 import { useURI } from '../../../ipfs/hooks/useURI.js';
+import useContract from '../useContract.js';
 
 /**
  * Contract hook for ERC721 interface.
@@ -33,7 +33,7 @@ export function useERC721(
     },
 ) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC721MetadataArtifact.abi as any);
+    useContract(networkId, address, { abi: IERC721MetadataArtifact.abi });
 
     //Refresh call action will get set by the callSyncedAction() creator, we pass an empty array as an argument
     //We also disable sync if networkId/address undefined to avoid unpredictable behaviour

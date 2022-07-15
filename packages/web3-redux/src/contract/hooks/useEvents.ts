@@ -17,6 +17,10 @@ export interface UseEventsOptions {
     sync?: boolean; //Send event subscribe action
     blockBatch?: number;
     max?: number; //Max events to fetch
+    //Hook params
+    reverse?: boolean;
+    offset?: number;
+    limit?: number;
 }
 /**
  * Fetch and sync contract events. Return list of events with optional filter.
@@ -34,6 +38,9 @@ export function useEvents<
         options?: UseEventsOptions,
 ) {
     const { fromBlock, toBlock, blockBatch, max, past, sync } = options ?? {};
+    const reverse = options?.reverse ?? true;
+    const offset = options?.offset ?? 0;
+    const limit = options?.limit ?? 10;
 
     const dispatch = useDispatch();
     const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
@@ -41,11 +48,14 @@ export function useEvents<
     const web3ContractExists = !!web3Contract;
 
     //TODO: handle filter
-    const [events] = ContractEventCRUD.hooks.useWhere({
-        networkId,
-        address,
-        name: eventName as string | undefined,
-    }) as [ContractEvent<U>[] | undefined, any];
+    const [events] = ContractEventCRUD.hooks.useWhere(
+        {
+            networkId,
+            address,
+            name: eventName as string | undefined,
+        },
+        { reverse, offset, limit },
+    ) as [ContractEvent<U>[] | undefined, any];
 
     const filterHash = filter ? JSON.stringify(filter) : '';
 

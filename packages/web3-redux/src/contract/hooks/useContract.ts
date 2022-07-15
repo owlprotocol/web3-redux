@@ -17,7 +17,7 @@ import ContractCRUD from '../crud.js';
 export function useContract(
     networkId: string | undefined,
     address: string | undefined,
-    defaultContract?: Contract,
+    defaultContract?: Partial<Contract>,
     sync?: {
         getBalance?: 'ifnull' | GetBalanceSyncedActionInput['sync'] | false;
         getNonce?: 'ifnull' | GetNonceSyncedActionInput['sync'] | false;
@@ -31,7 +31,10 @@ export function useContract(
     const getCode = sync?.getCode ?? false;
     const fetchAbi = sync?.fetchAbi ?? false;
 
-    const contract = ContractCRUD.hooks.useHydrate({ networkId, address }, defaultContract);
+    const contract = ContractCRUD.hooks.useHydrate(
+        { networkId, address },
+        { ...defaultContract, networkId: networkId!, address: address! },
+    );
     useGetBalance(networkId, address, getBalance);
     useGetNonce(networkId, address, getNonce);
     useGetCode(networkId, address, getCode);

@@ -250,13 +250,15 @@ export function createCRUDModel<
         return table.toArray();
     };
 
-    const where = async (filter: T_Idx, options?: { limit?: number; offset?: number }) => {
-        const limit = options?.limit;
+    const where = async (filter: T_Idx, options?: { reverse?: boolean; offset?: number; limit?: number }) => {
+        const reverse = options?.reverse;
         const offset = options?.offset;
+        const limit = options?.limit;
 
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         let result = table.where(filter);
+        if (reverse) result = result.reverse();
         if (offset) result = result.offset(offset);
         if (limit) result = result.limit(limit);
 
@@ -266,13 +268,13 @@ export function createCRUDModel<
     const add = async (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.add(encode(item));
+        return table.put(encode(item));
     };
 
     const bulkAdd = async (items: T[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.bulkAdd(items.map(encode));
+        return table.bulkPut(items.map(encode));
     };
 
     const put = async (item: T) => {
@@ -582,13 +584,17 @@ export function createCRUDModel<
         const returnOptions = { isLoading, exists };
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
-    const useWhere = (filter: Partial<T_Idx> | undefined, options?: { limit?: number; offset?: number }) => {
-        const limit = options?.limit;
+    const useWhere = (
+        filter: Partial<T_Idx> | undefined,
+        options?: { reverse?: boolean; offset?: number; limit?: number },
+    ) => {
+        const reverse = options?.reverse;
         const offset = options?.offset;
+        const limit = options?.limit;
 
         const filterDep = JSON.stringify(filter);
         const response = useLiveQuery(
-            () => (filter && isDefinedRecord(filter) ? where(filter, { limit, offset }) : []),
+            () => (filter && isDefinedRecord(filter) ? where(filter, { reverse, offset, limit }) : []),
             [filterDep, limit, offset],
             'loading' as const,
         );

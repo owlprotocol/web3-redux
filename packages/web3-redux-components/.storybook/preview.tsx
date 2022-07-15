@@ -39,14 +39,14 @@ const Web3ProviderWallet = createWeb3ReactRoot(WalletContext)
 
 export const decorators = [
     (Story) => {
-        //const StoryWithData = withMockData(Story)
+        const StoryWithData = withMockData(Story)
         return (
             <Web3ReactProvider getLibrary={getLibrary}>
                 <Web3ProviderWallet getLibrary={getLibrary}>
                     <Router>
                         <Provider store={store}>
                             <ChakraProvider theme={theme}>
-                                <Story/>
+                                <StoryWithData />
                             </ChakraProvider>
                         </Provider>
                     </Router>

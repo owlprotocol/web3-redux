@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 import useERC20Transfer from './useERC20Transfer.js';
 import useERC20Approval from './useERC20Approval.js';
 import { UseEventsOptions } from '../useEvents.js';
-import { useContractWithAbi } from '../useContractWithAbi.js';
 import { useContractCall } from '../useContractCall.js';
 import { IERC20Metadata } from '../../../typechain/IERC20Metadata.js';
 import { IERC20MetadataArtifact } from '../../../abis/index.js';
 
 import { GenericSync } from '../../../sync/model/index.js';
 import { createEventSync } from '../../../sync/model/EventSync.js';
+import useContract from '../useContract.js';
 
 /**
  * Contract hook for ERC20 interface.
@@ -28,7 +28,7 @@ export function useERC20(
     },
 ) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC20MetadataArtifact.abi as any);
+    useContract(networkId, address, { abi: IERC20MetadataArtifact.abi });
 
     //Default sync params
     const totalSupplySync = sync?.totalSupply ?? 'ifnull'; //Some tokens might have dynamic supply

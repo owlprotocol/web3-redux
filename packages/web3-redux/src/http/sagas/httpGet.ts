@@ -38,7 +38,7 @@ export function* httpGet(action: HttpGetAction) {
                 }
             }
         } else {
-            throw new Error(`Http ${url} cached!`);
+            //throw new Error(`Http ${url} cached!`);
         }
     } catch (error) {
         const err = error as Error;

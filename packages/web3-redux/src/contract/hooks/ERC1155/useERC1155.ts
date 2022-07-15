@@ -3,7 +3,6 @@ import invariant from 'tiny-invariant';
 import useERC1155TransferSingle from './useERC1155TransferSingle.js';
 import useERC1155BalanceOf from './useERC1155BalanceOf.js';
 import useERC1155TokenURI from './useERC1155TokenURI.js';
-import { useContractWithAbi } from '../useContractWithAbi.js';
 import { UseEventsOptions } from '../useEvents.js';
 import { isAddress } from '../../../utils/web3-utils/index.js';
 import { IERC1155MetadataURIArtifact } from '../../../abis/index.js';
@@ -11,6 +10,7 @@ import { IERC1155MetadataURIArtifact } from '../../../abis/index.js';
 import { GenericSync } from '../../../sync/model/index.js';
 import { createEventSync } from '../../../sync/model/EventSync.js';
 import { useURI } from '../../../ipfs/hooks/useURI.js';
+import useContract from '../useContract.js';
 
 /**
  * Contract hook for ERC1155 interface.
@@ -31,7 +31,7 @@ export function useERC1155(
     },
 ) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC1155MetadataURIArtifact.abi as any);
+    useContract(networkId, address, { abi: IERC1155MetadataURIArtifact.abi });
     if (address) invariant(isAddress(address), `${address} invalid contract address!`);
     if (balanceOfAddress) invariant(isAddress(balanceOfAddress), `${balanceOfAddress} invalid balanceOf address!`);
 

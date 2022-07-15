@@ -5,7 +5,6 @@ export * from './ERC1155/index.js';
 export * from './selectors/index.js';
 export * from './web3/index.js';
 export * from './useContract.js';
-export * from './useContractWithAbi.js';
 export * from './useContractCall.js';
 export * from './useContractSend.js';
 export * from './useDeploy.js';

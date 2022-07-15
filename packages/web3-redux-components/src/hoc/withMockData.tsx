@@ -29,8 +29,7 @@ export const withMockData = (WrappedComponent: any) => {
         Network.hooks.useNetwork('10', true);
         Network.hooks.useNetwork('137', true);
         Network.hooks.useNetwork('1337', true);
-        Network.hooks.useNetwork('1336', true);
-
+        /*
         //ERC20
         Contract.hooks.useContract('1', TestData.VITALIK, {
             networkId: '1',
@@ -48,6 +47,7 @@ export const withMockData = (WrappedComponent: any) => {
         //ERC1155
         Contract.hooks.useContract('1', TestData.contractKithFriends.address, TestData.contractKithFriends);
         Contract.hooks.useContract('137', TestData.contractSkyWeaver.address, TestData.contractSkyWeaver);
+        */
 
         return <WrappedComponent {...props} />;
     };

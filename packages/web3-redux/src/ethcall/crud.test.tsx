@@ -59,13 +59,24 @@ describe(`${name}/crud.test.js`, () => {
             assert.deepEqual(selected, [ethCall1]);
         });
 
-        it('where({networkId},{limit:1,offset:1})', async () => {
+        it('where({networkId},{reverse:true,limit:1})', async () => {
             await EthCallCRUD.db.add(ethCall2);
             const selected = await EthCallCRUD.db.where(
                 {
                     networkId: ethCall1.networkId!,
                 },
-                { limit: 1, offset: 1 },
+                { reverse: true, limit: 1 },
+            );
+            assert.deepEqual(selected, [ethCall2]);
+        });
+
+        it('where({networkId},{offset:1,limit:1})', async () => {
+            await EthCallCRUD.db.add(ethCall2);
+            const selected = await EthCallCRUD.db.where(
+                {
+                    networkId: ethCall1.networkId!,
+                },
+                { offset: 1, limit: 1 },
             );
             assert.deepEqual(selected, [ethCall2]);
         });

@@ -75,7 +75,7 @@ export function validate(contract: Contract): Contract {
 
     const result = {
         ...contract,
-        address: address.toLowerCase(),
+        address,
         id: toReduxOrmId(toPrimaryKey({ networkId, address })),
     };
     if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;

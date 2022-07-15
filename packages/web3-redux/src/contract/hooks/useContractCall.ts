@@ -43,16 +43,21 @@ export function useContractCall<
     const web3ContractMethod = web3Contract?.methods[method];
     const web3ContractMethodExists = !!web3ContractMethod;
 
-    const data = useMemo(() => {
-        if (web3ContractMethod) {
-            let tx: any;
-            if (!args || args.length == 0) tx = web3ContractMethod();
-            else tx = web3ContractMethod(...(args as any[]));
+    const { data, dataError } =
+        useMemo(() => {
+            if (web3ContractMethod) {
+                try {
+                    let tx: any;
+                    if (!args || args.length == 0) tx = web3ContractMethod();
+                    else tx = web3ContractMethod(...(args as any[]));
 
-            const data = tx.encodeABI();
-            return data;
-        }
-    }, [web3ContractMethod]);
+                    const data = tx.encodeABI();
+                    return { data };
+                } catch (dataError) {
+                    return { dataError };
+                }
+            }
+        }, [web3ContractMethod]) ?? {};
 
     const [ethCall, { isLoading: ethCallLoading }] = EthCallCRUD.hooks.useGet({
         networkId,
@@ -62,6 +67,7 @@ export function useContractCall<
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
     const executeSync = sync != false && web3ContractMethodExists;
 
+    //Actions
     const { callAction, syncAction } =
         useMemo(() => {
             if (networkId && address && method) {
@@ -94,12 +100,13 @@ export function useContractCall<
         else if (!method) return new Error('method undefined');
         else if (!web3ContractMethodExists)
             return new Error(`method ${method as string} does not exist on ${networkId}-${address}`);
+        else if (!dataError) return dataError;
         else if (!!reduxError) {
             const err = new Error(reduxError.errorMessage);
             err.stack = reduxError.stack;
             return err;
         }
-    }, [networkId, address, method, web3Contract, reduxError]);
+    }, [networkId, address, method, web3Contract, dataError, reduxError]);
 
     //Callback
     const dispatchCallAction = useCallback(() => {
@@ -116,7 +123,7 @@ export function useContractCall<
         return () => {
             if (syncId) dispatch(SyncCRUD.actions.delete({ id: syncId }));
         };
-    }, [dispatch, syncId]);
+    }, [dispatch, syncAction, syncId]);
 
     const isLoading = ethCallLoading || ethCallLoading;
     const returnOptions = { error, dispatchCallAction, isLoading, callAction, syncAction };

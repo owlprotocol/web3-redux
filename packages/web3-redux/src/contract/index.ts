@@ -34,7 +34,6 @@ export const Contract = {
         useContract: Hooks.useContract,
         useContractCall: Hooks.useContractCall,
         useContractSend: Hooks.useContractSend,
-        useContractWithAbi: Hooks.useContractWithAbi,
         useDeploy: Hooks.useDeploy,
         useERC20: Hooks.useERC20,
         useERC721: Hooks.useERC721,

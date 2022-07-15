@@ -16,7 +16,7 @@ export const Main = Template.bind({});
 Main.args = {
     networkId: '1337',
     method: 'getValue',
-    address: '0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0',
+    address: '0xf5059a5d33d5853360d16c683c16e67980206f36',
     sync: 'once',
 };
 Main.argTypes = {
@@ -41,7 +41,7 @@ Main.loaders = [
 
 Main.decorators = [
     (Story) => {
-        const [accounts] = Network.hooks.useAccounts('1337', true);
+        const [accounts] = Network.hooks.useAccounts('1337');
         const from = accounts.length > 0 ? accounts[0] : undefined;
         const [contract] = Contract.hooks.useDeploy({ networkId: '1337', abi, bytecode, from, label }, undefined, true);
         console.debug({ address: contract?.address });

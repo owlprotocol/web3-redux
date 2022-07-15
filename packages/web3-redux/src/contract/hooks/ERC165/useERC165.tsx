@@ -1,6 +1,6 @@
 import useERC165SupportsInterface from './useERC165SupportsInterface.js';
-import { useContractWithAbi } from '../useContractWithAbi.js';
 import { IERC165Artifact } from '../../../abis/index.js';
+import useContract from '../useContract.js';
 
 /**
  * Contract hook for ERC165 interface.
@@ -10,7 +10,7 @@ import { IERC165Artifact } from '../../../abis/index.js';
  */
 export function useERC165(networkId: string | undefined, address: string | undefined, interfaceId: string | undefined) {
     //Create abi in store if non-existant
-    useContractWithAbi(networkId, address, IERC165Artifact.abi as any);
+    useContract(networkId, address, { abi: IERC165Artifact.abi });
 
     const [value] = useERC165SupportsInterface(networkId, address, [interfaceId]);
     return value;

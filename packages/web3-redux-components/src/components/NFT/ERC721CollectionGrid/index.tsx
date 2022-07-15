@@ -12,7 +12,7 @@ export const ERC721CollectionGrid = ({ networkId, address }: ContractEventsTable
     const [tokenIds, options] = Contract.hooks.useERC721TokenIds(networkId, address, {
         past: true,
         limit: 50,
-        blockBatch: 10000,
+        blockBatch: 10000000,
         fromBlock: 0,
     });
     const { error } = options;

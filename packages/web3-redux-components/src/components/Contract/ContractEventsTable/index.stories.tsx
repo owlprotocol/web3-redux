@@ -36,7 +36,8 @@ Main.decorators = [
         const web3Contract = (contract as ContractWithObjects | undefined)?.web3Contract as BlockNumber | undefined;
 
         useEffect(() => {
-            if (web3Contract && from) web3Contract.methods.setValue('42').send({ gas: 1000000, from });
+            if (web3Contract && from)
+                web3Contract.methods.setValue(Math.floor(Math.random() * 100)).send({ gas: 1000000, from });
         }, [web3Contract, from]);
         console.debug({ address: contract?.address });
 

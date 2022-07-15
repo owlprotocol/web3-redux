@@ -31,7 +31,7 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
         toBlock = payload.toBlock;
     }
 
-    const blockBatch = payload.blockBatch ?? 1000;
+    const blockBatch = payload.blockBatch ?? 10000000;
 
     return {
         payload: { ...payload, fromBlock, toBlock, blocks: payload.blocks, blockBatch },

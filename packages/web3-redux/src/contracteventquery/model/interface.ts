@@ -18,10 +18,11 @@ export interface ContractEventQueryId {
 export interface ContractEventQuery extends ContractEventQueryId {
     readonly filter?: Record<string, any>;
     readonly events?: ContractEventId[];
+    readonly errorId?: string;
 }
 
 export type ContractEventIndexInput = ContractEventQueryId;
-export const ContractEventQueryIndex = '[networkId+address+name+fromBlock+toBlock+filterHash], ';
+export const ContractEventQueryIndex = '[networkId+address+name+fromBlock+toBlock+filterHash]';
 
 /** @internal */
 export function validateId({

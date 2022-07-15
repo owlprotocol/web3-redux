@@ -82,7 +82,6 @@ export function* callSaga(action: CallAction) {
             throw error;
         }
     } catch (error) {
-        //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
         const err = error as Error;
         yield* put(
             createError(

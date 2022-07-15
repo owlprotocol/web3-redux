@@ -12,7 +12,7 @@ import { BlockNumberArtifact } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { eventGetPast as eventGetPastAction, eventGetPastRaw as eventGetPastRawAction } from '../actions/index.js';
+import { eventGetPast as eventGetPastAction, eventGetPastRawAction as eventGetPastRawAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import ContractEventCRUD from '../../contractevent/crud.js';

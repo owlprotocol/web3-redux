@@ -5,6 +5,7 @@ import blockSaga from './block/sagas/index.js';
 import configSaga from './config/sagas/index.js';
 import contractSaga from './contract/sagas/index.js';
 import contractEventSaga from './contractevent/sagas/index.js';
+import contractEventQuerySaga from './contracteventquery/sagas/index.js';
 import contractSendSaga from './contractsend/sagas/index.js';
 import reduxErrorSaga from './error/sagas/index.js';
 import ethCallSaga from './ethcall/sagas/index.js';
@@ -24,6 +25,7 @@ export function* rootSaga() {
         spawn(configSaga),
         spawn(contractSaga),
         spawn(contractEventSaga),
+        spawn(contractEventQuerySaga),
         spawn(contractSendSaga),
         spawn(reduxErrorSaga),
         spawn(ethCallSaga),

@@ -16,7 +16,7 @@ export interface EventGetPastRawActionInput {
     toBlock: number;
 }
 /** @category Actions */
-export const eventGetPastRaw = createAction(
+export const eventGetPastRawAction = createAction(
     EVENT_GET_PAST_RAW,
     (payload: EventGetPastRawActionInput, uuid?: string) => {
         const { networkId, address, eventName, filter, fromBlock, toBlock } = payload;
@@ -42,8 +42,8 @@ export const eventGetPastRaw = createAction(
     },
 );
 /** @internal */
-export type EventGetPastRawAction = ReturnType<typeof eventGetPastRaw>;
+export type EventGetPastRawAction = ReturnType<typeof eventGetPastRawAction>;
 /** @internal */
-export const isEventGetPastRawAction = eventGetPastRaw.match;
+export const isEventGetPastRawAction = eventGetPastRawAction.match;
 
-export default eventGetPastRaw;
+export default eventGetPastRawAction;

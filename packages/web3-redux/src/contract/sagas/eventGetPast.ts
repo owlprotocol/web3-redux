@@ -1,6 +1,6 @@
 import { put, call, select } from 'typed-redux-saga';
 import NetworkCRUD from '../../network/crud.js';
-import { EventGetPastAction, EVENT_GET_PAST, eventGetPastRaw as eventGetPastRawAction } from '../actions/index.js';
+import { EventGetPastAction, EVENT_GET_PAST, eventGetPastRawAction as eventGetPastRawAction } from '../actions/index.js';
 import ContractCRUD from '../crud.js';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;

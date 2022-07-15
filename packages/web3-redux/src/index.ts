@@ -3,6 +3,7 @@ export * from './block/index.js';
 export * from './config/index.js';
 export * from './contract/index.js';
 export * from './contractevent/index.js';
+export * from './contracteventquery/index.js';
 export * from './contractsend/index.js';
 export * from './error/index.js';
 export * from './ethcall/index.js';

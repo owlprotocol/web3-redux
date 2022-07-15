@@ -56,18 +56,18 @@ export const ADDRESS_8 = addressList[8];
 export const ADDRESS_9 = addressList[9];
 
 //Popular tokens
-export const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-export const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
-export const TETHER = '0xdac17f958d2ee523a2206206994597c13d831ec7';
-export const CHAINLINK = '0x514910771af9ca656af840dff83e8264ecf986ca';
+export const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'.toLowerCase();
+export const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'.toLowerCase();
+export const TETHER = '0xdac17f958d2ee523a2206206994597c13d831ec7'.toLowerCase();
+export const CHAINLINK = '0x514910771af9ca656af840dff83e8264ecf986ca'.toLowerCase();
 //ERC721
-export const VEE_FRIENDS_SERIES2 = '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18';
-export const OZ_TEAM = '0x67ed2e5dd3d01ca342db045037be054dc6d8482a';
+export const VEE_FRIENDS_SERIES2 = '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18'.toLowerCase();
+export const OZ_TEAM = '0x67ed2e5dd3d01ca342db045037be054dc6d8482a'.toLowerCase();
 //ERC1155
-export const KITH_FRIENDS = '0x130cfab3817467f532c179d4e6502f5a7e7d44c7'; //metadata has no CORS
-export const SKYWEAVER = '0x631998e91476da5b870d741192fc5cbc55f5a52e';
+export const KITH_FRIENDS = '0x130cfab3817467f532c179d4e6502f5a7e7d44c7'.toLowerCase(); //metadata has no CORS
+export const SKYWEAVER = '0x631998e91476da5b870d741192fc5cbc55f5a52e'.toLowerCase();
 //Popular addresses
-export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
+export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b'.toLowerCase();
 
 //Network
 export const network1 = { networkId };

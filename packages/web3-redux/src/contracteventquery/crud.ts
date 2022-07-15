@@ -9,11 +9,11 @@ import {
 } from './model/index.js';
 import createCRUDModel from '../createCRUDModel.js';
 
-export const ContractEventCRUD = createCRUDModel<
+export const ContractEventQueryCRUD = createCRUDModel<
     typeof name,
     ContractEventQueryId,
     ContractEventQuery,
     ContractEventQuery,
     ContractEventIndexInput
 >(name, { validate, validateId, toPrimaryKey });
-export default ContractEventCRUD;
+export default ContractEventQueryCRUD;

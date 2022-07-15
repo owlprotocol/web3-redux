@@ -54,7 +54,7 @@ export function useContractCall<
                     const data = tx.encodeABI();
                     return { data };
                 } catch (dataError) {
-                    return { dataError };
+                    return { dataError: dataError as Error };
                 }
             }
         }, [web3ContractMethod]) ?? {};

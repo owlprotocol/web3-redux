@@ -5,13 +5,29 @@ import ContractCRUD from '../crud.js';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
 
+/** Generates batch ranges */
+export function* batchGenerator(from: number, to: number, size: number) {
+    const initialTo = to;
+    const initialFrom = Math.max(to - (to % size), from);
+    yield { from: initialFrom, to: initialTo };
+
+    let currTo = initialFrom - 1;
+    let currFrom = initialFrom - size;
+
+    while (currFrom >= from - (from % size)) {
+        yield { from: currFrom, to: currTo };
+        currFrom = currFrom - size;
+        currTo = currTo - size;
+    }
+}
+
 /** Batches event requests into EventGetPastRaw actions */
 export function* eventGetPast(action: EventGetPastAction) {
     try {
         const { payload } = action;
-        const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch, max } = payload;
+        const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch } = payload;
 
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
         const web3 = network.web3 ?? network.web3Sender;
@@ -25,19 +41,16 @@ export function* eventGetPast(action: EventGetPastAction) {
             throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
 
         //Ranged queries
-        const eventCount = 0;
-        let currToBlock;
+        let toBlockInitial;
         if (!toBlock || toBlock === 'latest') {
-            currToBlock = yield* call(web3.eth.getBlockNumber);
+            toBlockInitial = yield* call(web3.eth.getBlockNumber);
         } else {
-            currToBlock = toBlock;
+            toBlockInitial = toBlock;
         }
 
-        let currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock); //lower-bound fromBlock=0
-
-        while (currFromBlock >= fromBlock && (eventCount < max || !max)) {
+        const gen = batchGenerator(fromBlock, toBlockInitial, blockBatch);
+        for (const { from, to } of gen) {
             try {
-                //blocking call, choose batch size accordingly
                 yield* put(
                     eventGetPastRawAction(
                         {
@@ -45,16 +58,12 @@ export function* eventGetPast(action: EventGetPastAction) {
                             address,
                             eventName,
                             filter,
-                            fromBlock: currFromBlock,
-                            toBlock: currToBlock,
-                            max,
+                            fromBlock: from,
+                            toBlock: to,
                         },
                         action.meta.uuid,
                     ),
                 );
-                currToBlock = Math.max(currToBlock - blockBatch, currFromBlock);
-                currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock);
-                if (currToBlock === currFromBlock) break;
             } catch (error) {
                 yield* put({
                     id: action.meta.uuid,

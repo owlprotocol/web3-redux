@@ -91,6 +91,7 @@
   },
   "devDependencies": {
     "@esbuild-plugins/node-resolve": "^0.1.4",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.3",
     "@nomiclabs/hardhat-web3": "^2.0.0",
     "@openzeppelin/contracts": "^4.7.0",
     "@testing-library/react": "^12.1.3",

@@ -16,7 +16,6 @@ export interface UseEventsOptions {
     past?: boolean; //Send event get past action
     sync?: boolean; //Send event subscribe action
     blockBatch?: number;
-    max?: number; //Max events to fetch
     //Hook params
     reverse?: boolean;
     offset?: number;
@@ -34,13 +33,13 @@ export function useEvents<
         networkId: string | undefined,
         address: string | undefined,
         eventName: K | undefined,
-        filter?: { [key: string]: any },
+        filter?: Partial<U>,
         options?: UseEventsOptions,
 ) {
-    const { fromBlock, toBlock, blockBatch, max, past, sync } = options ?? {};
+    const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
     const reverse = options?.reverse ?? true;
     const offset = options?.offset ?? 0;
-    const limit = options?.limit ?? 10;
+    const limit = options?.limit ?? 20;
 
     const dispatch = useDispatch();
     const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
@@ -70,10 +69,9 @@ export function useEvents<
                 fromBlock,
                 toBlock,
                 blockBatch,
-                max,
             });
         }
-    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blockBatch, max]);
+    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blockBatch]);
     const subscribeAction = useMemo(() => {
         if (networkId && address && eventName) {
             return eventSubscribe({
@@ -144,7 +142,7 @@ export function contractEventsHookFactory<
     return (
         networkId: string | undefined,
         address: string | undefined,
-        filter?: { [key: string]: any },
+        filter?: Partial<U>,
         options?: UseEventsOptions,
     ) => {
         return useEvents<T, K, U>(networkId, address, eventName, filter, options);

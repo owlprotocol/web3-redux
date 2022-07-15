@@ -11,7 +11,7 @@ const EVENT_GET_PAST_RAW_ERROR = `${EVENT_GET_PAST_RAW}/ERROR`;
 export function* eventGetPastRaw(action: EventGetPastRawAction) {
     try {
         const { payload } = action;
-        const { networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
+        const { networkId, address, eventName, filter, fromBlock, toBlock } = payload;
 
         const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
         if (!network) throw new Error(`Network ${networkId} undefined`);
@@ -29,12 +29,13 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
         /**TODO */
         //const indexedEvents = (yield* select(selectEventsByIndex, id)) ?? [];
         //TODO: filter
-        const existingEvents = yield* call(ContractEventCRUD.db.where, { networkId, address, name: eventName });
+        //const existingEvents = yield* call(ContractEventCRUD.db.where, { networkId, address, name: eventName });
         /*
         if (indexedEvents.length > 0) {
             throw new Error(`Cached ${id} reached! indexedEvents.length >= 0`);
         } else
         */
+        /*
         if (max && existingEvents.length >= max) {
             throw new Error(
                 `Max ${networkId}-${address} ${eventName} ${JSON.stringify(
@@ -42,28 +43,39 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
                 )} reached! existingEvents.length >= ${max}`,
             );
         } else {
-            //blocking call, choose batch size accordingly
-            //@ts-ignore
-            const events: EventData[] = yield* call([web3Contract, web3Contract.getPastEvents], eventName, {
-                ...filter,
+            */
+        //blocking call, choose batch size accordingly
+        let events: EventData[];
+        if (filter) {
+            //@ts-expect-error
+            events = yield* call([web3Contract, web3Contract.getPastEvents], eventName, {
+                filter,
                 fromBlock,
                 toBlock,
             });
-
-            if (events.length > 0) {
-                const action = ContractEventCRUD.actions.createBatched(
-                    events.map((event: any) => {
-                        return {
-                            ...event,
-                            networkId,
-                            address,
-                            name: eventName,
-                        };
-                    }),
-                );
-                yield* put(action);
-            }
+        } else {
+            //@ts-expect-error
+            events = yield* call([web3Contract, web3Contract.getPastEvents], eventName, {
+                fromBlock,
+                toBlock,
+            });
         }
+
+        if (events.length > 0) {
+            const batch = ContractEventCRUD.actions.createBatched(
+                events.map((event: any) => {
+                    return {
+                        ...event,
+                        networkId,
+                        address,
+                        name: eventName,
+                    };
+                }),
+                action.meta.uuid,
+            );
+            yield* put(batch);
+        }
+        //}
     } catch (error) {
         yield* put({
             id: action.meta.uuid,
@@ -76,7 +88,7 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
 
 export function* watchEventGetPastRaw() {
     yield takeEveryBuffered(EVENT_GET_PAST_RAW, eventGetPastRaw, {
-        bufferSize: 1,
+        bufferSize: 5,
         bufferBatchTimeout: 200,
         bufferCompletionTimeout: 5000,
     });

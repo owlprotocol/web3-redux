@@ -14,13 +14,12 @@ export interface EventGetPastRawActionInput {
     filter?: { [key: string]: any };
     fromBlock: number;
     toBlock: number;
-    max?: number;
 }
 /** @category Actions */
 export const eventGetPastRaw = createAction(
     EVENT_GET_PAST_RAW,
     (payload: EventGetPastRawActionInput, uuid?: string) => {
-        const { networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
+        const { networkId, address, eventName, filter, fromBlock, toBlock } = payload;
         const addressChecksum = address.toLowerCase();
 
         //cache id for eventGetPast action
@@ -35,7 +34,6 @@ export const eventGetPastRaw = createAction(
                 filter,
                 fromBlock,
                 toBlock,
-                max,
             },
             meta: {
                 uuid: uuid ?? uuidv4(),

@@ -1,6 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { Contract } from '@owlprotocol/web3-redux';
-//import ERC1155Instance from '../ERC1155Instance';
+import ERC721Instance from '../ERC721Instance';
 
 export interface ContractEventsTableProps {
     networkId: string | undefined;
@@ -9,7 +9,12 @@ export interface ContractEventsTableProps {
 }
 
 export const ERC721CollectionGrid = ({ networkId, address }: ContractEventsTableProps) => {
-    const [tokenIds, options] = Contract.hooks.useERC721TokenIds(networkId, address, { past: true });
+    const [tokenIds, options] = Contract.hooks.useERC721TokenIds(networkId, address, {
+        past: true,
+        limit: 50,
+        blockBatch: 10000,
+        fromBlock: 0,
+    });
     const { error } = options;
     console.debug({ tokenIds });
 
@@ -19,7 +24,7 @@ export const ERC721CollectionGrid = ({ networkId, address }: ContractEventsTable
             <Grid templateColumns={{ sm: 'repeat(4, 1fr)' }} gap={6}>
                 <GridItem>
                     {tokenIds.map((id) => {
-                        return <>{id}</>; ///<ERC1155Instance />
+                        return <ERC721Instance key={id} networkId={networkId} address={address} tokenId={id} />;
                     })}
                 </GridItem>
             </Grid>

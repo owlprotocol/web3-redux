@@ -25,7 +25,7 @@ export function* batchGenerator(from: number, to: number, size: number) {
 export function* eventGetPast(action: EventGetPastAction) {
     try {
         const { payload } = action;
-        const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch } = payload;
+        const { networkId, address, eventName, filter, fromBlock, toBlock, blocks, blockBatch } = payload;
 
         const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
@@ -41,14 +41,22 @@ export function* eventGetPast(action: EventGetPastAction) {
             throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
 
         //Ranged queries
-        let toBlockInitial;
+        let toBlockInitial: number;
         if (!toBlock || toBlock === 'latest') {
             toBlockInitial = yield* call(web3.eth.getBlockNumber);
         } else {
             toBlockInitial = toBlock;
         }
 
-        const gen = batchGenerator(fromBlock, toBlockInitial, blockBatch);
+        let fromBlockInitial: number;
+        if (fromBlock === undefined) {
+            if (blocks) fromBlockInitial = Math.max(toBlockInitial - blocks, 0);
+            else fromBlockInitial = 0;
+        } else {
+            fromBlockInitial = fromBlock;
+        }
+
+        const gen = batchGenerator(fromBlockInitial, toBlockInitial, blockBatch);
         for (const { from, to } of gen) {
             try {
                 yield* put(

@@ -9,7 +9,10 @@ export interface ContractEventsTableProps {
 
 const THEAD_LABELS = ['name', 'blockNumber', 'logIndex', 'returnValues'];
 export const ContractEventsTable = ({ networkId, address, eventName }: ContractEventsTableProps) => {
-    const [events, options] = Contract.hooks.useEvents(networkId, address, eventName, undefined, { past: true });
+    const [events, options] = Contract.hooks.useEvents(networkId, address, eventName, undefined, {
+        past: true,
+        limit: 50,
+    });
     const { error } = options;
 
     if (error) return <>Error: {error.message}</>;

@@ -13,6 +13,7 @@ import ErrorCRUD from '../../error/crud.js';
 export interface UseEventsOptions {
     fromBlock?: EventGetPastActionInput['fromBlock'];
     toBlock?: EventGetPastActionInput['toBlock'];
+    blocks?: EventGetPastActionInput['blocks'];
     past?: boolean; //Send event get past action
     sync?: boolean; //Send event subscribe action
     blockBatch?: number;
@@ -36,7 +37,9 @@ export function useEvents<
         filter?: Partial<U>,
         options?: UseEventsOptions,
 ) {
-    const { fromBlock, toBlock, blockBatch, past, sync } = options ?? {};
+    const { fromBlock, toBlock, past, sync } = options ?? {};
+    const blockBatch = options?.blockBatch ?? 100000;
+    const blocks = options?.blocks ?? 1000000;
     const reverse = options?.reverse ?? true;
     const offset = options?.offset ?? 0;
     const limit = options?.limit ?? 20;
@@ -68,10 +71,11 @@ export function useEvents<
                 filter,
                 fromBlock,
                 toBlock,
+                blocks,
                 blockBatch,
             });
         }
-    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blockBatch]);
+    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blocks, blockBatch]);
     const subscribeAction = useMemo(() => {
         if (networkId && address && eventName) {
             return eventSubscribe({

@@ -39,3 +39,4 @@ https://dexie.org/docs/The-Main-Limitations-of-IndexedDB
 * useEvents hook test
 * useEvents pagination
 * component integrations (table, display)
+* ContractEvent getPastEvents query cache

@@ -12,12 +12,13 @@ export interface EventGetPastActionInput {
     filter?: { [key: string]: any };
     fromBlock?: number | 'earliest';
     toBlock?: number | 'latest';
+    blocks?: number;
     blockBatch?: number;
 }
 /** @category Actions */
 export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput, uuid?: string) => {
-    let fromBlock: number;
-    if (!payload.fromBlock || payload.fromBlock == 'earliest') {
+    let fromBlock: number | undefined;
+    if (payload.fromBlock == 'earliest') {
         fromBlock = 0;
     } else {
         fromBlock = payload.fromBlock;
@@ -33,7 +34,7 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
     const blockBatch = payload.blockBatch ?? 1000;
 
     return {
-        payload: { ...payload, fromBlock, toBlock, blockBatch },
+        payload: { ...payload, fromBlock, toBlock, blocks: payload.blocks, blockBatch },
         meta: {
             uuid: uuid ?? uuidv4(),
         },

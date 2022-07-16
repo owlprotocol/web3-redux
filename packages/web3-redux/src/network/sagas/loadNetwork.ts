@@ -9,9 +9,9 @@ function* loadNetwork(networkId: string, uuid?: string) {
         //Hydrate
         yield* putSaga(NetworkCRUD.actions.update(dbSelected, uuid ?? uuidv4()));
         return yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
-    } else {
-        return reduxSelected;
     }
+
+    return reduxSelected;
 }
 
 export default loadNetwork;

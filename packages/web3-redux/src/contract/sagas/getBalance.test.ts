@@ -38,7 +38,6 @@ describe(`${name}/sagas/getBalance.test.ts`, () => {
         beforeEach(async () => {
             store = createStore();
             store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
-            store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         });
 
         it('getBalance', async () => {

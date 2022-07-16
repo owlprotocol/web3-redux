@@ -17,8 +17,8 @@ export function* getCode(action: GetCodeAction) {
         if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
         //@ts-expect-error
-        const code: string = yield* call((web3 ?? web3Sender).eth.getCode, address);
-        yield* put(ContractCRUD.actions.upsert({ networkId, address, code }));
+        const code: string = yield* call(web3.eth.getCode, address);
+        yield* put(ContractCRUD.actions.upsert({ networkId, address, code }, action.meta.uuid));
     } catch (error) {
         yield* put(
             createError(

@@ -63,7 +63,7 @@ export function toPrimaryKey({ networkId, to, data }: EthCallId): [string, strin
 export function validate(item: EthCall): EthCall {
     const { networkId, to, data } = validateId(item);
     const from = item.from ? item.from.toLowerCase() : undefined;
-    const argsHash = item.args ? JSON.stringify(item.args) : '';
+    const argsHash = item.args ? JSON.stringify(item.args) : undefined;
 
     return omitBy(
         {

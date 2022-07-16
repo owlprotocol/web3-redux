@@ -60,8 +60,6 @@ describe(`${name}/sagas/call.ts`, () => {
             const returnValue = 0;
             testSaga(callSaga, action)
                 .next()
-                .call(loadNetwork, networkId)
-                .next({ networkId })
                 .call(loadContract, { networkId, address })
                 .next({ web3Contract, address })
                 .call(EthCallCRUD.db.get, { networkId, to: address, data })
@@ -129,7 +127,7 @@ describe(`${name}/sagas/call.ts`, () => {
                 assert.isDefined(error, 'error');
                 assert.equal(
                     error?.errorMessage,
-                    'VM Exception while processing transaction: reverted with reason string \'Transaction reverted\'',
+                    "VM Exception while processing transaction: reverted with reason string 'Transaction reverted'",
                     'error.message',
                 );
             });

@@ -7,7 +7,6 @@ import { CallAction, CALL } from '../actions/index.js';
 import ContractCRUD from '../crud.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import { NonPayableTransactionObject } from '../../typechain/types.js';
-import loadNetwork from '../../network/sagas/loadNetwork.js';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 
@@ -39,6 +38,7 @@ export function* callSaga(action: CallAction) {
             networkId,
             to: contract.address,
             data,
+            args,
         });
 
         try {

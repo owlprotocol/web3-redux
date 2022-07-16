@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Network, NetworkId, NetworkWithObjects } from './interface.js';
 import { defaultNetworks } from '../defaults.js';
 import { fromRpc } from '../../utils/web3/index.js';
-import { omit } from '../../utils/lodash/index.js';
+import { isUndefined, omit, omitBy } from '../../utils/lodash/index.js';
 
 /** @internal */
 export function validateId({ networkId }: NetworkId) {
@@ -26,14 +26,17 @@ export function validate(network: Network): Network {
     const explorerApiKey = network.explorerApiKey ?? defaultNetworkForId?.explorerApiKey;
     const web3Rpc = network.web3Rpc ?? defaultNetworkForId?.web3Rpc;
 
-    return {
-        ...network,
-        name,
-        explorerUrl,
-        explorerApiUrl,
-        explorerApiKey,
-        web3Rpc,
-    };
+    return omitBy(
+        {
+            ...network,
+            name,
+            explorerUrl,
+            explorerApiUrl,
+            explorerApiKey,
+            web3Rpc,
+        },
+        isUndefined,
+    ) as unknown as Network;
 }
 
 /**
@@ -70,11 +73,14 @@ export function hydrate(network: NetworkWithObjects, sess: any): NetworkWithObje
         explorerApiClient = axios.create({ baseURL: explorerApiUrl });
     }
 
-    return {
-        ...network,
-        web3,
-        explorerApiClient,
-    };
+    return omitBy(
+        {
+            ...network,
+            web3,
+            explorerApiClient,
+        },
+        isUndefined,
+    ) as unknown as NetworkWithObjects;
 }
 
 /**

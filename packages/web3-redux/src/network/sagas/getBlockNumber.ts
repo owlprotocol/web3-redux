@@ -7,7 +7,7 @@ function* getBlockNumber(action: GetBlockNumberAction) {
     const { payload } = action;
     const networkId = payload;
 
-    const network = yield* call(loadNetwork, networkId);
+    const network = yield* call(loadNetwork, networkId, action.meta.uuid);
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
     const web3 = network.web3 ?? network.web3Sender;

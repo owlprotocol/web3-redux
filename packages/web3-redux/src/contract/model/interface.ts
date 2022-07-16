@@ -1,6 +1,6 @@
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
-import { filter, keyBy, omit } from '../../utils/lodash/index.js';
+import { filter, isUndefined, keyBy, omit, omitBy } from '../../utils/lodash/index.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { NetworkWithObjects } from '../../network/model/interface.js';
 import toReduxOrmId from '../../utils/toReduxORMId.js';
@@ -73,14 +73,15 @@ export function validate(contract: Contract): Contract {
     const eventAbis = filter(abi, (x) => x.type === 'event');
     const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
 
-    const result = {
-        ...contract,
-        address,
-        id: toReduxOrmId(toPrimaryKey({ networkId, address })),
-    };
-    if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;
-
-    return result;
+    return omitBy(
+        {
+            ...contract,
+            address,
+            id: toReduxOrmId(toPrimaryKey({ networkId, address })),
+            eventAbiBySignature,
+        },
+        isUndefined,
+    ) as unknown as Contract;
 }
 
 /**
@@ -116,11 +117,14 @@ export function hydrate(contract: Contract, sess: any): ContractWithObjects {
         web3SenderContract = new web3Sender.eth.Contract(abi, address);
     }
 
-    return {
-        ...contract,
-        web3Contract,
-        web3SenderContract,
-    };
+    return omitBy(
+        {
+            ...contract,
+            web3Contract,
+            web3SenderContract,
+        },
+        isUndefined,
+    ) as unknown as ContractWithObjects;
 }
 
 /**

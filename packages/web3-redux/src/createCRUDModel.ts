@@ -219,18 +219,18 @@ export function createCRUDModel<
 
     const isAction = (action: Action) => {
         return (
-            createAction.match(action) ||
-            createBatchedAction.match(action) ||
-            putAction.match(action) ||
-            putBatchedAction.match(action) ||
-            updateAction.match(action) ||
-            updateBatchedAction.match(action) ||
-            upsertAction.match(action) ||
-            upsertBatchedAction.match(action) ||
-            deleteAction.match(action) ||
-            deleteBatchedAction.match(action) ||
-            hydrateAction.match(action) ||
-            hydrateBatchedAction.match(action) ||
+            actions.create.match(action) ||
+            actions.createBatched.match(action) ||
+            actions.put.match(action) ||
+            actions.putBatched.match(action) ||
+            actions.update.match(action) ||
+            actions.updateBatched.match(action) ||
+            actions.upsert.match(action) ||
+            actions.upsertBatched.match(action) ||
+            actions.delete.match(action) ||
+            actions.deleteBatched.match(action) ||
+            actions.hydrate.match(action) ||
+            actions.hydrateBatched.match(action) ||
             HYDRATE_ALL === action.type
         );
     };
@@ -238,9 +238,25 @@ export function createCRUDModel<
     /** Redux ORM Reducer */
     const reducer = (sess: any, action: Action) => {
         const Model = sess[name];
-        if (createAction.match(action) || updateAction.match(action)) {
+        if (actions.create.match(action)) {
+            Model.create(hydrate(action.payload, sess));
+        } else if (actions.createBatched.match(action)) {
+            action.payload.forEach((p) => Model.create(hydrate(p, sess)));
+        } else if (actions.put.match(action)) {
+            Model.withId(toPrimaryKeyString(action.payload))?.delete();
+            Model.create(hydrate(action.payload, sess));
+        } else if (actions.putBatched.match(action)) {
+            action.payload.forEach((p) => {
+                Model.withId(toPrimaryKeyString(p))?.delete();
+                Model.create(hydrate(p, sess));
+            });
+        } else if (actions.update.match(action)) {
+            Model.update(hydrate(action.payload, sess));
+        } else if (actions.updateBatched.match(action)) {
+            action.payload.forEach((p) => Model.update(hydrate(p, sess)));
+        } else if (actions.upsert.match(action)) {
             Model.upsert(hydrate(action.payload, sess));
-        } else if (createBatchedAction.match(action) || updateBatchedAction.match(action)) {
+        } else if (actions.upsertBatched.match(action)) {
             action.payload.forEach((p) => Model.upsert(hydrate(p, sess)));
         } else if (deleteAction.match(action)) {
             Model.withId(toPrimaryKeyString(action.payload))?.delete();
@@ -283,26 +299,26 @@ export function createCRUDModel<
     };
 
     /** Dexie Getters */
-    const get = async (idx: T_Idx | string) => {
+    const get = (idx: T_Idx | string) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         //@ts-expect-error
         return table.get(idx);
     };
 
-    const bulkGet = async (ids: T_ID[] | string[]) => {
+    const bulkGet = (ids: T_ID[] | string[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.bulkGet(ids.map((id) => (typeof id === 'string' ? id : toPrimaryKey(id))));
     };
 
-    const all = async () => {
+    const all = () => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.toArray();
     };
 
-    const where = async (filter: T_Idx, options?: { reverse?: boolean; offset?: number; limit?: number }) => {
+    const where = (filter: T_Idx, options?: { reverse?: boolean; offset?: number; limit?: number }) => {
         const reverse = options?.reverse;
         const offset = options?.offset;
         const limit = options?.limit;
@@ -317,42 +333,42 @@ export function createCRUDModel<
         return result.toArray();
     };
 
-    const add = async (item: T) => {
+    const add = (item: T) => {
+        const db = getDB();
+        const table = db.table<T_Encoded>(name);
+        return table.add(encode(item));
+    };
+
+    const bulkAdd = (items: T[]) => {
+        const db = getDB();
+        const table = db.table<T_Encoded>(name);
+        return table.bulkAdd(items.map(encode));
+    };
+
+    const put = (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.put(encode(item));
     };
 
-    const bulkAdd = async (items: T[]) => {
+    const bulkPut = (items: T[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.bulkPut(items.map(encode));
     };
 
-    const put = async (item: T) => {
-        const db = getDB();
-        const table = db.table<T_Encoded>(name);
-        return table.put(encode(item));
-    };
-
-    const bulkPut = async (items: T[]) => {
-        const db = getDB();
-        const table = db.table<T_Encoded>(name);
-        return table.bulkPut(items.map(encode));
-    };
-
-    const update = async (item: T) => {
+    const update = (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         const encoded = encode(item);
         return table.update(encoded, encoded);
     };
 
-    const bulkUpdate = async (items: T[]) => {
+    const bulkUpdate = (items: T[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
-        return db.transaction('rw', table, async () => {
+        return db.transaction('rw', table, () => {
             const promises = items.map((t) => {
                 const encoded = encode(t);
                 table.update(encoded, encoded);
@@ -361,16 +377,18 @@ export function createCRUDModel<
         });
     };
 
-    const upsert = async (item: T) => {
+    const upsert = (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
-        return db.transaction('rw', table, async () => {
-            const id = toPrimaryKey(item);
-            const encoded = encode(item);
-            const exists = !!table.get(id);
-            if (!exists) return table.add(encoded);
-            else return table.update(id, encoded);
+        const id = toPrimaryKey(item);
+        const encoded = encode(item);
+
+        return db.transaction('rw', table, () => {
+            return table.get(id).then((existing) => {
+                if (!existing) return table.add(encoded);
+                else return table.update(id, encoded);
+            });
         });
     };
 
@@ -378,37 +396,38 @@ export function createCRUDModel<
         const db = getDB();
         const table = db.table<T_Encoded>(name);
 
-        return db.transaction('rw', table, async () => {
-            const ids = items.map(toPrimaryKey);
-            const encoded = items.map(encode);
-            const results = await table.bulkGet(ids);
-            const joined = zip(encoded, ids, results) as [
-                T_Encoded,
-                IndexableTypeArrayReadonly,
-                T_Encoded | undefined,
-            ][];
-            const promises = joined.map(([data, id, result]) => {
-                if (!result) return table.add(data!);
-                else return table.update(id, data);
-            });
+        const ids = items.map(toPrimaryKey);
+        const encoded = items.map(encode);
 
-            return Promise.all(promises);
+        return db.transaction('rw', table, () => {
+            return table.bulkGet(ids).then((results) => {
+                const joined = zip(encoded, ids, results) as [
+                    T_Encoded,
+                    IndexableTypeArrayReadonly,
+                    T_Encoded | undefined,
+                ][];
+                const promises = joined.map(([data, id, result]) => {
+                    if (!result) return table.add(data!);
+                    else return table.update(id, data);
+                });
+                return Promise.all(promises);
+            });
         });
     };
 
-    const deleteDB = async (id: T_ID) => {
+    const deleteDB = (id: T_ID) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.delete(Object.values(id));
     };
 
-    const bulkDelete = async (ids: T_ID[]) => {
+    const bulkDelete = (ids: T_ID[]) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.bulkDelete(ids.map(Object.values));
     };
 
-    const clear = async () => {
+    const clear = () => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         return table.clear();

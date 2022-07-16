@@ -18,7 +18,7 @@ export function* getBalance(action: GetBalanceAction) {
 
         //@ts-expect-error
         const balance: string = yield* call(web3.eth.getBalance, address);
-        yield* put(ContractCRUD.actions.upsert({ networkId, address, balance }));
+        yield* put(ContractCRUD.actions.upsert({ networkId, address, balance }, action.meta.uuid));
     } catch (error) {
         yield* put(
             createError(

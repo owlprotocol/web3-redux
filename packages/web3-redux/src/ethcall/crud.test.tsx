@@ -10,75 +10,171 @@ import expectThrowsAsync from '../test/expectThrowsAsync.js';
 
 describe(`${name}/crud.test.js`, () => {
     describe('db', () => {
-        beforeEach(async () => {
-            await EthCallCRUD.db.add(ethCall1);
-        });
-
-        it('get({networkId,to,data})', async () => {
-            const selected = await EthCallCRUD.db.get({
-                networkId: ethCall1.networkId,
-                to: ethCall1.to,
-                data: ethCall1.data,
+        describe('read', () => {
+            beforeEach(async () => {
+                await EthCallCRUD.db.add(ethCall1);
             });
-            assert.deepEqual(selected, ethCall1);
-        });
 
-        it('get({methodName})', async () => {
-            const selected = await EthCallCRUD.db.get({
-                methodName: ethCall1.methodName!,
-            });
-            assert.deepEqual(selected, ethCall1);
-        });
-
-        it('bulkGet({networkId,to,data})', async () => {
-            const selected = await EthCallCRUD.db.bulkGet([
-                {
+            it('get({networkId,to,data})', async () => {
+                const selected = await EthCallCRUD.db.get({
                     networkId: ethCall1.networkId,
                     to: ethCall1.to,
                     data: ethCall1.data,
-                },
-            ]);
-            assert.deepEqual(selected, [ethCall1]);
-        });
-
-        it('where({methodName})', async () => {
-            const selected = await EthCallCRUD.db.where({
-                methodName: ethCall1.methodName!,
+                });
+                assert.deepEqual(selected, ethCall1);
             });
-            assert.deepEqual(selected, [ethCall1]);
-        });
 
-        it('where({networkId},{limit:1})', async () => {
-            await EthCallCRUD.db.add(ethCall2);
-            const selected = await EthCallCRUD.db.where(
-                {
-                    networkId: ethCall1.networkId!,
-                },
-                { limit: 1 },
-            );
-            assert.deepEqual(selected, [ethCall1]);
-        });
+            it('get({methodName})', async () => {
+                const selected = await EthCallCRUD.db.get({
+                    methodName: ethCall1.methodName!,
+                });
+                assert.deepEqual(selected, ethCall1);
+            });
 
-        it('where({networkId},{reverse:true,limit:1})', async () => {
-            await EthCallCRUD.db.add(ethCall2);
-            const selected = await EthCallCRUD.db.where(
-                {
-                    networkId: ethCall1.networkId!,
-                },
-                { reverse: true, limit: 1 },
-            );
-            assert.deepEqual(selected, [ethCall2]);
-        });
+            it('bulkGet({networkId,to,data})', async () => {
+                const selected = await EthCallCRUD.db.bulkGet([
+                    {
+                        networkId: ethCall1.networkId,
+                        to: ethCall1.to,
+                        data: ethCall1.data,
+                    },
+                ]);
+                assert.deepEqual(selected, [ethCall1]);
+            });
 
-        it('where({networkId},{offset:1,limit:1})', async () => {
-            await EthCallCRUD.db.add(ethCall2);
-            const selected = await EthCallCRUD.db.where(
-                {
-                    networkId: ethCall1.networkId!,
-                },
-                { offset: 1, limit: 1 },
-            );
-            assert.deepEqual(selected, [ethCall2]);
+            it('where({methodName})', async () => {
+                const selected = await EthCallCRUD.db.where({
+                    methodName: ethCall1.methodName!,
+                });
+                assert.deepEqual(selected, [ethCall1]);
+            });
+
+            it('where({networkId},{limit:1})', async () => {
+                await EthCallCRUD.db.add(ethCall2);
+                const selected = await EthCallCRUD.db.where(
+                    {
+                        networkId: ethCall1.networkId!,
+                    },
+                    { limit: 1 },
+                );
+                assert.deepEqual(selected, [ethCall1]);
+            });
+
+            it('where({networkId},{reverse:true,limit:1})', async () => {
+                await EthCallCRUD.db.add(ethCall2);
+                const selected = await EthCallCRUD.db.where(
+                    {
+                        networkId: ethCall1.networkId!,
+                    },
+                    { reverse: true, limit: 1 },
+                );
+                assert.deepEqual(selected, [ethCall2]);
+            });
+
+            it('where({networkId},{offset:1,limit:1})', async () => {
+                await EthCallCRUD.db.add(ethCall2);
+                const selected = await EthCallCRUD.db.where(
+                    {
+                        networkId: ethCall1.networkId!,
+                    },
+                    { offset: 1, limit: 1 },
+                );
+                assert.deepEqual(selected, [ethCall2]);
+            });
+        });
+        describe('write', () => {
+            it('add', async () => {
+                await EthCallCRUD.db.add(ethCall1);
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, ethCall1);
+            });
+
+            it('bulkAdd', async () => {
+                await EthCallCRUD.db.bulkAdd([ethCall1]);
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, ethCall1);
+            });
+
+            it('put', async () => {
+                await EthCallCRUD.db.put(ethCall1);
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, ethCall1);
+            });
+
+            it('bulkPut', async () => {
+                await EthCallCRUD.db.bulkPut([ethCall1]);
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, ethCall1);
+            });
+
+            it('update', async () => {
+                await EthCallCRUD.db.add(ethCall1);
+                await EthCallCRUD.db.update({ ...ethCall1, returnValue: 42 });
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, { ...ethCall1, returnValue: 42 });
+            });
+
+            it('bulkUpdate', async () => {
+                await EthCallCRUD.db.add(ethCall1);
+                await EthCallCRUD.db.bulkUpdate([{ ...ethCall1, returnValue: 42 }]);
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, { ...ethCall1, returnValue: 42 });
+            });
+
+            it('upsert - insert', async () => {
+                await EthCallCRUD.db.upsert(ethCall1);
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, ethCall1);
+            });
+
+            it('upsert - update', async () => {
+                await EthCallCRUD.db.add(ethCall1);
+                await EthCallCRUD.db.upsert({ ...ethCall1, returnValue: 42 });
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, { ...ethCall1, returnValue: 42 });
+            });
+
+            it('bulkUpsert - insert', async () => {
+                await EthCallCRUD.db.bulkUpsert([ethCall1]);
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, ethCall1);
+            });
         });
     });
 

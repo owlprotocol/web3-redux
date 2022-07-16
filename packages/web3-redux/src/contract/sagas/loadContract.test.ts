@@ -9,12 +9,12 @@ import ContractCRUD from '../crud.js';
 import { BlockNumberArtifact } from '../../abis/index.js';
 
 const networkId = network1336.networkId;
-const web3 = network1336.web3;
+const web3 = network1336.web3!;
 const web3Sender = web3;
 const address = ADDRESS_0;
 const abi = BlockNumberArtifact.abi;
-const web3Contract = new web3!.eth.Contract(abi, address);
-const web3SenderContract = new web3Sender!.eth.Contract(abi, address);
+const web3Contract = new web3.eth.Contract(abi, address);
+const web3SenderContract = new web3Sender.eth.Contract(abi, address);
 
 describe(`${name}/sagas/loadContract.test.ts`, () => {
     describe('unit', () => {

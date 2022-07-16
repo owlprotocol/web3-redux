@@ -344,13 +344,6 @@ export function createCRUDModel<
     };
 
     /** Dexie Sagas */
-    const CREATE_ERROR = `${CREATE}/ERROR`;
-    const CREATE_BATCHED_ERROR = `${CREATE_BATCHED}/ERROR`;
-    const UPDATE_ERROR = `${UPDATE}/ERROR`;
-    const UPDATE_BATCHED_ERROR = `${UPDATE_BATCHED}/ERROR`;
-    const DELETE_ERROR = `${DELETE}/ERROR`;
-    const DELETE_BATCHED_ERROR = `${DELETE_BATCHED}/ERROR`;
-
     const createSaga = function* (action: CreateAction) {
         try {
             const { payload } = action;
@@ -362,7 +355,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: CREATE_ERROR,
+                        type: CREATE,
                     },
                     action.meta.uuid,
                 ),
@@ -381,7 +374,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: CREATE_BATCHED_ERROR,
+                        type: CREATE_BATCHED,
                     },
                     action.meta.uuid,
                 ),
@@ -400,7 +393,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: UPDATE_ERROR,
+                        type: UPDATE,
                     },
                     action.meta.uuid,
                 ),
@@ -419,7 +412,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: UPDATE_BATCHED_ERROR,
+                        type: UPDATE_BATCHED,
                     },
                     action.meta.uuid,
                 ),
@@ -438,7 +431,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: DELETE_ERROR,
+                        type: DELETE,
                     },
                     action.meta.uuid,
                 ),
@@ -457,7 +450,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         errorMessage: (error as Error).message,
                         stack: (error as Error).stack,
-                        type: DELETE_BATCHED_ERROR,
+                        type: DELETE_BATCHED,
                     },
                     action.meta.uuid,
                 ),
@@ -477,7 +470,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: DELETE_ERROR,
+                        type: HYDRATE,
                     },
                     action.meta.uuid,
                 ),
@@ -497,7 +490,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         errorMessage: (error as Error).message,
                         stack: (error as Error).stack,
-                        type: DELETE_BATCHED_ERROR,
+                        type: HYDRATE_BATCHED,
                     },
                     action.meta.uuid,
                 ),
@@ -515,7 +508,7 @@ export function createCRUDModel<
                         id: action.meta.uuid,
                         errorMessage: (error as Error).message,
                         stack: (error as Error).stack,
-                        type: DELETE_BATCHED_ERROR,
+                        type: HYDRATE_ALL,
                     },
                     action.meta.uuid,
                 ),

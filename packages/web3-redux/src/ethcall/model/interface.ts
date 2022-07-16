@@ -14,6 +14,7 @@ export interface EthCall extends EthCallId {
     readonly methodName?: string;
     readonly methodSignature?: string;
     readonly args?: any[];
+    readonly argsHash?: string;
     /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
     readonly returnValue?: any;
     /** Last returnValue updated UTC timestamp */
@@ -33,13 +34,15 @@ export interface EthCall extends EthCallId {
 //Valid indexes
 export type EthCallIndexInput =
     | EthCallId
-    | { networkId: string }
     | { networkId: string; to: string }
+    | { networkId: string }
+    | { networkId: string; to: string; methodName: string; argsHash: string }
     | { networkId: string; to: string; methodName: string }
     | { networkId: string; methodName: string }
     | { methodName: string };
 
-export const EthCallIndex = '[networkId+to+data], [networkId+to+methodName], [networkId+methodName], methodName';
+export const EthCallIndex =
+    '[networkId+to+data], [networkId+to+methodName+argsHash], [networkId+methodName], methodName';
 
 /** @internal */
 export function validateId({ networkId, to, data }: EthCallId): EthCallId {
@@ -57,12 +60,16 @@ export function toPrimaryKey({ networkId, to, data }: EthCallId): [string, strin
 /** @internal */
 export function validate(item: EthCall): EthCall {
     const { networkId, to, data } = validateId(item);
+    const from = item.from ? item.from.toLowerCase() : undefined;
+    const argsHash = item.args ? JSON.stringify(item.args) : '';
 
     return {
         ...item,
         networkId,
         to,
         data,
+        from,
+        argsHash,
     };
 }
 

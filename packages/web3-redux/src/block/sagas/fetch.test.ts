@@ -27,27 +27,9 @@ describe(`${name}/sagas/fetch.ts`, () => {
                 .next()
                 .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
                 .next({ networkId, web3 })
-                .call(BlockCRUD.db.get, { networkId, number: 1 })
-                .next(undefined)
-                .put(BlockCRUD.actions.create({ networkId, number: 1 }, action.meta.uuid))
-                .next()
                 .call(web3.eth.getBlock, 1, false)
                 .next({ networkId, number: 1, hash: '0x1' })
-                .put(BlockCRUD.actions.update({ networkId, number: 1, hash: '0x1' }, action.meta.uuid))
-                .next()
-                .isDone();
-        });
-
-        it('new block - by hash', async () => {
-            const item = { networkId, blockHashOrBlockNumber: '0x1', returnTransactionObjects: false };
-            const action = fetchAction(item);
-            testSaga(fetchSaga, action)
-                .next()
-                .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
-                .next({ networkId, web3 })
-                .call(web3.eth.getBlock, '0x1', false)
-                .next({ networkId, number: 1, hash: '0x1' })
-                .put(BlockCRUD.actions.create({ networkId, number: 1, hash: '0x1' }, action.meta.uuid))
+                .put(BlockCRUD.actions.put({ networkId, number: 1, hash: '0x1' }, action.meta.uuid))
                 .next()
                 .isDone();
         });

@@ -67,7 +67,7 @@ export function* subscribeSaga(action: SubscribeAction) {
             const { type, block, error } = message;
             if (type === SUBSCRIBE_DATA) {
                 const newBlock = { ...block!, networkId };
-                yield* put(BlockCRUD.actions.create(newBlock, action.meta.uuid));
+                yield* put(BlockCRUD.actions.put(newBlock, action.meta.uuid));
                 if (returnTransactionObjects) {
                     yield* fork(
                         //@ts-expect-error
@@ -82,7 +82,7 @@ export function* subscribeSaga(action: SubscribeAction) {
                 }
             } else if (type === SUBSCRIBE_CHANGED) {
                 const newBlock = { ...block!, networkId };
-                yield* put(BlockCRUD.actions.create(newBlock, action.meta.uuid));
+                yield* put(BlockCRUD.actions.put(newBlock, action.meta.uuid));
                 if (returnTransactionObjects) {
                     yield* fork(
                         //@ts-expect-error

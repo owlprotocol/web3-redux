@@ -1,5 +1,4 @@
-import { select, put, call } from 'typed-redux-saga';
-import NetworkCRUD from '../../network/crud.js';
+import { put, call } from 'typed-redux-saga';
 import { GetCodeAction } from '../actions/index.js';
 import ContractCRUD from '../crud.js';
 import loadNetwork from '../../network/sagas/loadNetwork.js';

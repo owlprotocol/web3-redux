@@ -8,14 +8,7 @@ import { network1336 } from '../../network/data.js';
 const networkId = network1336.networkId;
 const web3 = network1336.web3;
 
-describe(`${name}/sagas/call.ts`, () => {
-    before(async () => { });
-
-    beforeEach(async () => {
-        //Write network to db
-        await NetworkCRUD.db.add(network1336);
-    });
-
+describe(`${name}/sagas/loadNetwork.test.ts`, () => {
     describe('unit', () => {
         it('loadNetwork - existing', async () => {
             testSaga(loadNetwork, networkId, '')

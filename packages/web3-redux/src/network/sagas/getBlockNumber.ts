@@ -14,7 +14,7 @@ function* getBlockNumber(action: GetBlockNumberAction) {
     if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
     const latestBlockNumber = yield* call(web3.eth.getBlockNumber);
-    yield* put(NetworkCRUD.actions.update({ networkId, latestBlockNumber }));
+    yield* put(NetworkCRUD.actions.update({ networkId, latestBlockNumber }, action.meta.uuid));
 }
 
 export default getBlockNumber;

@@ -16,7 +16,7 @@ export const Network = {
     actionTypes: CRUDModel.actionTypes,
     actions: {
         ...CRUDModel.actions,
-        getBlockNumber: Actions.getBlockNumber,
+        getBlockNumber: Actions.getBlockNumberAction,
         getChainId: Actions.getChainId,
     },
     db: CRUDModel.db,

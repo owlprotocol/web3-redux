@@ -1,4 +1,5 @@
-import { put, call, select } from 'typed-redux-saga';
+import { put, call } from 'typed-redux-saga';
+import loadNetwork from './loadNetwork.js';
 import { GetBlockNumberAction } from '../actions/index.js';
 import NetworkCRUD from '../crud.js';
 
@@ -6,7 +7,7 @@ function* getBlockNumber(action: GetBlockNumberAction) {
     const { payload } = action;
     const networkId = payload;
 
-    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+    const network = yield* call(loadNetwork, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
     const web3 = network.web3 ?? network.web3Sender;

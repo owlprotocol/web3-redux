@@ -1,10 +1,10 @@
-import { put, call, select } from 'typed-redux-saga';
+import { put, call } from 'typed-redux-saga';
 import type { ContractSendMethod } from 'web3-eth-contract';
 import { create as createError } from '../../error/actions/index.js';
 
 import { DeployAction, DEPLOY } from '../actions/index.js';
-import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
 
 const DEPLOY_ERROR = `${DEPLOY}/ERROR`;
 
@@ -15,7 +15,7 @@ export function* deploySaga(action: DeployAction) {
         //Make sure required parameters defined
         if (!networkId) throw new Error('networkId undefined');
 
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
+        const network = yield* call(loadNetwork, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
         const web3 = network.web3Sender ?? network.web3;

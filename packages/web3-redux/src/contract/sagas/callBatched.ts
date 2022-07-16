@@ -1,9 +1,9 @@
-import { put, select, all } from 'typed-redux-saga';
+import { put, select, all, call } from 'typed-redux-saga';
 import { CallBatchedAction, CALL_BATCHED } from '../actions/index.js';
-import NetworkCRUD from '../../network/crud.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import ContractCRUD from '../crud.js';
 import { compact, groupBy } from '../../utils/lodash/index.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 const CALL_BATCHED_ERROR = `${CALL_BATCHED}/ERROR`;
@@ -13,7 +13,9 @@ export function* callBatched(action: CallBatchedAction) {
         const { payload } = action;
         const { requests, networkId } = payload;
 
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+        if (!networkId) throw new Error('networkId undefined');
+
+        const network = yield* call(loadNetwork, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
         const web3 = network.web3 ?? network.web3Sender;

@@ -20,9 +20,6 @@ export function* callSaga(action: CallAction) {
         if (!address) throw new Error('address undefined');
         if (!payload.method) throw new Error('method undefined');
 
-        const network = yield* call(loadNetwork, networkId);
-        if (!network) throw new Error(`Network ${networkId} undefined`);
-
         const contract = yield* call(loadContract, { networkId, address });
         if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 

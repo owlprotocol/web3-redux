@@ -2,14 +2,14 @@ import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { FetchAbiAction } from '../actions/index.js';
-import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
 /** @category Sagas */
 export function* fetchAbi(action: FetchAbiAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
-    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+    const network = yield* call(loadNetwork, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
     const apiClient = network?.explorerApiClient;

@@ -1,6 +1,12 @@
 import { put, call, select } from 'typed-redux-saga';
+import loadContract from './loadContract.js';
 import NetworkCRUD from '../../network/crud.js';
-import { EventGetPastAction, EVENT_GET_PAST, eventGetPastRawAction as eventGetPastRawAction } from '../actions/index.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
+import {
+    EventGetPastAction,
+    EVENT_GET_PAST,
+    eventGetPastRawAction as eventGetPastRawAction,
+} from '../actions/index.js';
 import ContractCRUD from '../crud.js';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
@@ -27,13 +33,13 @@ export function* eventGetPast(action: EventGetPastAction) {
         const { payload } = action;
         const { networkId, address, eventName, filter, fromBlock, toBlock, blocks, blockBatch } = payload;
 
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
+        const network = yield* call(loadNetwork, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        const web3 = network.web3 ?? network.web3Sender;
+        const web3 = network.web3Sender ?? network.web3;
         if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
-        const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+        const contract = yield* call(loadContract, { networkId, address });
         if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;

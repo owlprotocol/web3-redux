@@ -1,11 +1,12 @@
 import { END, eventChannel, EventChannel, TakeableChannel } from 'redux-saga';
 import { put, call, take, select } from 'typed-redux-saga';
 import { PromiEvent, TransactionReceipt } from 'web3-core';
+import loadContract from './loadContract.js';
 import ConfigCRUD from '../../config/crud.js';
 import ContractSendCRUD from '../../contractsend/crud.js';
 import { ContractSendStatus } from '../../contractsend/model/index.js';
 import { create as createError } from '../../error/actions/index.js';
-import NetworkCRUD from '../../network/crud.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
 import TransactionCRUD from '../../transaction/crud.js';
 import { SEND, SendAction } from '../actions/index.js';
 import ContractCRUD from '../crud.js';
@@ -65,13 +66,7 @@ export function* send(action: SendAction) {
         const from = payload.from ?? defaultFrom;
         if (!from) throw new Error('from undefined');
 
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
-        if (!network) throw new Error(`Network ${networkId} undefined`);
-
-        const web3 = network.web3 ?? network.web3Sender;
-        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
-
-        const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+        const contract = yield* call(loadContract, { networkId, address });
         if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3SenderContract;

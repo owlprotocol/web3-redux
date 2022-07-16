@@ -3,6 +3,7 @@ import { put, call, cancel, take, fork, select } from 'typed-redux-saga';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import type { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';
+import loadContract from './loadContract.js';
 import { eventSubscriptionHash } from '../model/index.js';
 import {
     EventSubscribeAction,
@@ -11,7 +12,6 @@ import {
     isEventSubscribeAction,
     isEventUnsubscribeAction,
 } from '../actions/index.js';
-import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import ContractEventCRUD from '../../contractevent/crud.js';
 
@@ -50,13 +50,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
         const { payload } = action;
         const { networkId, address, eventName } = payload;
 
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
-        if (!network) throw new Error(`Network ${networkId} undefined`);
-
-        const web3 = network.web3 ?? network.web3Sender;
-        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
-
-        const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+        const contract = yield* call(loadContract, { networkId, address });
         if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;

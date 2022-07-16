@@ -4,6 +4,7 @@ import { FetchTransactionsAction } from '../actions/index.js';
 import TransactionCRUD from '../../transaction/crud.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
 
 interface EtherscanTx {
     blockNumber: string;
@@ -31,7 +32,7 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     const { payload } = action;
     const { networkId, address, startblock, endblock, page, offset, sort } = payload;
 
-    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+    const network = yield* call(loadNetwork, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
     const apiClient = network?.explorerApiClient;

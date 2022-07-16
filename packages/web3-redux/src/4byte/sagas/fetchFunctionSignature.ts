@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 import { create as createError } from '../../error/actions/create.js';
 import { FetchFunctionSignatureAction, FETCH_FUNCTION_SIGNATURE } from '../actions/index.js';
 import _4ByteCRUD from '../crud.js';
-import ConfigCRUD from '../../config/crud.js';
+import loadConfig from '../../config/sagas/loadConfig.js';
 
 interface _4ByteResponseItem {
     id: number;
@@ -23,26 +23,26 @@ export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
         const { payload } = action;
         const { signatureHash } = payload;
 
-        const config = yield* select(ConfigCRUD.selectors.selectByIdSingle, { id: '0' });
+        const config = yield* call(loadConfig, action.meta.uuid);
         const client = config?._4byteClient;
         invariant(client, '4byte client undefined!');
 
         //Check if preImage exists
         const preImage = yield* select(_4ByteCRUD.selectors.selectByIdSingle, { signatureHash });
-        if (!preImage) yield* put(_4ByteCRUD.actions.create({ signatureHash, signatureType: 'Function' }));
+        if (!preImage) {
+            const functionSigRes = yield* call(client.get, `/signatures/?hex_signature=${signatureHash}`);
+            const functionSigResArr: _4ByteResponseItem[] | undefined = (functionSigRes as AxiosResponse).data?.results;
 
-        const functionSigRes = yield* call(client.get, `/signatures/?hex_signature=${signatureHash}`);
-        const functionSigResArr: _4ByteResponseItem[] | undefined = (functionSigRes as AxiosResponse).data?.results;
+            if (functionSigResArr === undefined)
+                throw new Error('This function signature was not found in the 4Byte database');
 
-        if (functionSigResArr === undefined)
-            throw new Error('This function signature was not found in the 4Byte database');
+            //get functionSig with lowest id
+            const functionSig: string | undefined = functionSigResArr?.reduce((prev, curr) =>
+                prev.id < curr.id ? prev : curr,
+            ).text_signature;
 
-        //get functionSig with lowest id
-        const functionSig: string | undefined = functionSigResArr?.reduce((prev, curr) =>
-            prev.id < curr.id ? prev : curr,
-        ).text_signature;
-
-        yield* put(_4ByteCRUD.actions.update({ signatureHash, signatureType: 'Function', preImage: functionSig }));
+            yield* put(_4ByteCRUD.actions.create({ signatureHash, signatureType: 'Function', preImage: functionSig }));
+        }
     } catch (error) {
         const err = error as Error;
         yield* put(

@@ -2,7 +2,7 @@ import axios, { Axios } from 'axios';
 import type { IPFS } from 'ipfs';
 import { create as createIPFS } from 'ipfs-http-client';
 import { Config, ConfigId, ConfigWithObjects } from './interface.js';
-import { omit } from '../../utils/lodash/index.js';
+import { omit, omitBy, isUndefined } from '../../utils/lodash/index.js';
 
 export function validateId(config: ConfigId) {
     return config;
@@ -45,12 +45,15 @@ export function hydrate(config: Config, sess: any): ConfigWithObjects {
     //Existing or new axios instance
     const httpClient = configORM?.httpClient ? configORM.httpClient : axios.create();
 
-    return {
-        ...config,
-        ipfsClient,
-        _4byteClient,
-        httpClient,
-    };
+    return omitBy(
+        {
+            ...config,
+            ipfsClient,
+            _4byteClient,
+            httpClient,
+        },
+        isUndefined,
+    ) as unknown as Config;
 }
 
 /**

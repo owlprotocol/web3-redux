@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { put as putSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
+import { put as putDispatch, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
 import { IndexableTypeArrayReadonly } from 'dexie';
-import { compact, filter } from './utils/lodash/index.js';
+import { compact, filter, zip } from './utils/lodash/index.js';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
@@ -53,8 +53,12 @@ export function createCRUDModel<
     /** Actions */
     const CREATE = `${name}/CREATE`;
     const CREATE_BATCHED = `${CREATE}/BATCHED`;
+    const PUT = `${name}/PUT`;
+    const PUT_BATCHED = `${PUT}/BATCHED`;
     const UPDATE = `${name}/UPDATE`;
     const UPDATE_BATCHED = `${UPDATE}/BATCHED`;
+    const UPSERT = `${name}/UPSERT`;
+    const UPSERT_BATCHED = `${UPSERT}/BATCHED`;
     const DELETE = `${name}/DELETE`;
     const DELETE_BATCHED = `${DELETE}/BATCHED`;
     //const DELETE_ALL = `${DELETE}/ALL`;
@@ -78,6 +82,22 @@ export function createCRUDModel<
             },
         };
     });
+    const putAction = createReduxAction(PUT, (payload: T, uuid?: string) => {
+        return {
+            payload: validate(payload),
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    });
+    const putBatchedAction = createReduxAction(PUT_BATCHED, (payload: T[], uuid?: string) => {
+        return {
+            payload: payload.map(validate),
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    });
     const updateAction = createReduxAction(UPDATE, (payload: T, uuid?: string) => {
         return {
             payload: validate(payload),
@@ -87,6 +107,22 @@ export function createCRUDModel<
         };
     });
     const updateBatchedAction = createReduxAction(UPDATE_BATCHED, (payload: T[], uuid?: string) => {
+        return {
+            payload: payload.map(validate),
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    });
+    const upsertAction = createReduxAction(UPSERT, (payload: T, uuid?: string) => {
+        return {
+            payload: validate(payload),
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    });
+    const upsertBatchedAction = createReduxAction(UPSERT_BATCHED, (payload: T[], uuid?: string) => {
         return {
             payload: payload.map(validate),
             meta: {
@@ -138,8 +174,12 @@ export function createCRUDModel<
     const actionTypes = {
         CREATE,
         CREATE_BATCHED,
+        PUT,
+        PUT_BATCHED,
         UPDATE,
         UPDATE_BATCHED,
+        UPSERT,
+        UPSERT_BATCHED,
         DELETE,
         DELETE_BATCHED,
         HYDRATE,
@@ -150,8 +190,12 @@ export function createCRUDModel<
     const actions = {
         create: createAction,
         createBatched: createBatchedAction,
+        put: putAction,
+        putBatched: putBatchedAction,
         update: updateAction,
         updateBatched: updateBatchedAction,
+        upsert: upsertAction,
+        upsertBatched: upsertBatchedAction,
         delete: deleteAction,
         deleteBatched: deleteBatchedAction,
         hydrate: hydrateAction,
@@ -161,8 +205,12 @@ export function createCRUDModel<
 
     type CreateAction = ReturnType<typeof actions.create>;
     type CreateBatchedAction = ReturnType<typeof actions.createBatched>;
+    type PutAction = ReturnType<typeof actions.put>;
+    type PutBatchedAction = ReturnType<typeof actions.putBatched>;
     type UpdateAction = ReturnType<typeof actions.update>;
     type UpdateBatchedAction = ReturnType<typeof actions.updateBatched>;
+    type UpsertAction = ReturnType<typeof actions.upsert>;
+    type UpsertBatchedAction = ReturnType<typeof actions.upsertBatched>;
     type DeleteAction = ReturnType<typeof actions.delete>;
     type DeleteBatchedAction = ReturnType<typeof actions.deleteBatched>;
     type HydrateAction = ReturnType<typeof actions.hydrate>;
@@ -173,8 +221,12 @@ export function createCRUDModel<
         return (
             createAction.match(action) ||
             createBatchedAction.match(action) ||
+            putAction.match(action) ||
+            putBatchedAction.match(action) ||
             updateAction.match(action) ||
             updateBatchedAction.match(action) ||
+            upsertAction.match(action) ||
+            upsertBatchedAction.match(action) ||
             deleteAction.match(action) ||
             deleteBatchedAction.match(action) ||
             hydrateAction.match(action) ||
@@ -309,6 +361,41 @@ export function createCRUDModel<
         });
     };
 
+    const upsert = async (item: T) => {
+        const db = getDB();
+        const table = db.table<T_Encoded>(name);
+
+        return db.transaction('rw', table, async () => {
+            const id = toPrimaryKey(item);
+            const encoded = encode(item);
+            const exists = !!table.get(id);
+            if (!exists) return table.add(encoded);
+            else return table.update(id, encoded);
+        });
+    };
+
+    const bulkUpsert = async (items: T[]) => {
+        const db = getDB();
+        const table = db.table<T_Encoded>(name);
+
+        return db.transaction('rw', table, async () => {
+            const ids = items.map(toPrimaryKey);
+            const encoded = items.map(encode);
+            const results = await table.bulkGet(ids);
+            const joined = zip(encoded, ids, results) as [
+                T_Encoded,
+                IndexableTypeArrayReadonly,
+                T_Encoded | undefined,
+            ][];
+            const promises = joined.map(([data, id, result]) => {
+                if (!result) return table.add(data!);
+                else return table.update(id, data);
+            });
+
+            return Promise.all(promises);
+        });
+    };
+
     const deleteDB = async (id: T_ID) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
@@ -338,6 +425,8 @@ export function createCRUDModel<
         bulkPut,
         update,
         bulkUpdate,
+        upsert,
+        bulkUpsert,
         delete: deleteDB,
         bulkDelete,
         clear,
@@ -349,13 +438,13 @@ export function createCRUDModel<
             const { payload } = action;
             yield* call(add, payload);
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: CREATE,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -368,13 +457,49 @@ export function createCRUDModel<
 
             yield* call(bulkAdd, payload);
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: CREATE_BATCHED,
+                        type: action.type,
+                    },
+                    action.meta.uuid,
+                ),
+            );
+        }
+    };
+    const putSaga = function* (action: PutAction) {
+        try {
+            const { payload } = action;
+            yield* call(put, payload);
+        } catch (error) {
+            yield* putDispatch(
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: action.type,
+                    },
+                    action.meta.uuid,
+                ),
+            );
+        }
+    };
+    const putBatchedSaga = function* (action: PutBatchedAction) {
+        try {
+            const { payload } = action;
+            yield* call(bulkPut, payload);
+        } catch (error) {
+            yield* putDispatch(
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -387,13 +512,13 @@ export function createCRUDModel<
 
             yield* call(update, payload);
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: UPDATE,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -406,13 +531,51 @@ export function createCRUDModel<
 
             yield* call(bulkUpdate, payload);
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: UPDATE_BATCHED,
+                        type: action.type,
+                    },
+                    action.meta.uuid,
+                ),
+            );
+        }
+    };
+    const upsertSaga = function* (action: UpsertAction) {
+        try {
+            const { payload } = action;
+
+            yield* call(upsert, payload);
+        } catch (error) {
+            yield* putDispatch(
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: action.type,
+                    },
+                    action.meta.uuid,
+                ),
+            );
+        }
+    };
+    const upsertBatchedSaga = function* (action: UpsertBatchedAction) {
+        try {
+            const { payload } = action;
+
+            yield* call(bulkUpsert, payload);
+        } catch (error) {
+            yield* putDispatch(
+                createError(
+                    {
+                        id: action.meta.uuid,
+                        stack: (error as Error).stack,
+                        errorMessage: (error as Error).message,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -425,13 +588,13 @@ export function createCRUDModel<
 
             yield* call(deleteDB, payload);
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: DELETE,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -444,13 +607,13 @@ export function createCRUDModel<
 
             yield* call(bulkDelete, payload);
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         errorMessage: (error as Error).message,
                         stack: (error as Error).stack,
-                        type: DELETE_BATCHED,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -462,15 +625,15 @@ export function createCRUDModel<
             const { payload } = action;
 
             const item = yield* call(get, payload);
-            if (item) yield* putSaga(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
+            if (item) yield* putDispatch(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         stack: (error as Error).stack,
                         errorMessage: (error as Error).message,
-                        type: HYDRATE,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -482,15 +645,15 @@ export function createCRUDModel<
             const { payload } = action;
 
             const items = yield* call(bulkGet, payload);
-            if (items) yield* putSaga(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
+            if (items) yield* putDispatch(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         errorMessage: (error as Error).message,
                         stack: (error as Error).stack,
-                        type: HYDRATE_BATCHED,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -500,15 +663,15 @@ export function createCRUDModel<
     const hydrateAllSaga = function* (action: HydrateAllAction) {
         try {
             const items = yield* call(all);
-            if (items) yield* putSaga(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
+            if (items) yield* putDispatch(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
-            yield* putSaga(
+            yield* putDispatch(
                 createError(
                     {
                         id: action.meta.uuid,
                         errorMessage: (error as Error).message,
                         stack: (error as Error).stack,
-                        type: HYDRATE_ALL,
+                        type: action.type,
                     },
                     action.meta.uuid,
                 ),
@@ -520,8 +683,12 @@ export function createCRUDModel<
         yield* allSaga([
             takeEvery(CREATE, createSaga),
             takeEvery(CREATE_BATCHED, createBatchedSaga),
+            takeEvery(PUT, putSaga),
+            takeEvery(PUT_BATCHED, putBatchedSaga),
             takeEvery(UPDATE, updateSaga),
             takeEvery(UPDATE_BATCHED, updateBatchedSaga),
+            takeEvery(UPSERT, upsertSaga),
+            takeEvery(UPSERT_BATCHED, upsertBatchedSaga),
             takeEvery(DELETE, deleteSaga),
             takeEvery(DELETE_BATCHED, deleteBatchedSaga),
             takeEvery(HYDRATE, hydrateSaga),
@@ -532,9 +699,13 @@ export function createCRUDModel<
 
     const sagas = {
         create: createSaga,
-        createBatchedAction: createBatchedSaga,
+        createBatched: createBatchedSaga,
+        put: putSaga,
+        putBatched: putBatchedSaga,
         update: updateSaga,
         updateBatched: updateBatchedSaga,
+        upsert: upsertSaga,
+        upsertBatched: upsertBatchedSaga,
         delete: deleteSaga,
         deleteBatched: deleteBatchedSaga,
         hydrate: hydrateSaga,

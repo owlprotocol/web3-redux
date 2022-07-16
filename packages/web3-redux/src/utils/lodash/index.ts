@@ -16,4 +16,5 @@ export const {
     uniq,
     keyBy,
     filter,
+    zip,
 } = lodash;

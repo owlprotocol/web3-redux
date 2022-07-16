@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { testSaga } from 'redux-saga-test-plan';
 import { callSaga } from './call.js';
+import loadContract from './loadContract.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { sleep } from '../../utils/index.js';
 
@@ -17,6 +18,9 @@ import ContractCRUD from '../crud.js';
 import getContractCall from '../db/getContractCall.js';
 import getEthCall from '../db/getEthCall.js';
 import { network1336 } from '../../network/data.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
+import { ADDRESS_0 } from '../../data.js';
+import ErrorCRUD from '../../error/crud.js';
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;
@@ -32,16 +36,12 @@ describe(`${name}/sagas/call.ts`, () => {
         accounts = await web3.eth.getAccounts();
     });
 
-    beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(BlockNumberArtifact.abi as AbiItem[])
-            .deploy({
-                data: BlockNumberArtifact.bytecode,
-            })
-            .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
-        address = web3Contract.options.address;
-    });
-
     describe('unit', () => {
+        beforeEach(async () => {
+            address = ADDRESS_0;
+            web3Contract = await new web3.eth.Contract(BlockNumberArtifact.abi as AbiItem[], address);
+        });
+
         it('call - success', async () => {
             const tx = web3Contract.methods.getValue();
             const data = tx.encodeABI();
@@ -54,21 +54,21 @@ describe(`${name}/sagas/call.ts`, () => {
             });
             const ethCall = EthCallCRUD.validate({
                 networkId,
-                from: undefined,
                 to: address,
-                defaultBlock: undefined,
                 data,
             });
-            const returnValue = await tx.call({ ...ethCall, gas });
+            const returnValue = 0;
             testSaga(callSaga, action)
                 .next()
-                .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
+                .call(loadNetwork, networkId)
                 .next({ networkId })
-                .select(ContractCRUD.selectors.selectByIdSingle, { networkId, address })
+                .call(loadContract, { networkId, address })
                 .next({ web3Contract, address })
+                .call(EthCallCRUD.db.get, { networkId, to: address, data })
+                .next(undefined)
                 .put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid))
                 .next()
-                //.call(tx.estimateGas, { ...ethCall })
+                //.call(tx.estimateGas)
                 .next(gas)
                 //.call(tx.call, { ...ethCall, gas })
                 .next(returnValue)
@@ -90,6 +90,13 @@ describe(`${name}/sagas/call.ts`, () => {
 
     describe('store', () => {
         beforeEach(async () => {
+            web3Contract = await new web3.eth.Contract(BlockNumberArtifact.abi as AbiItem[])
+                .deploy({
+                    data: BlockNumberArtifact.bytecode,
+                })
+                .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+            address = web3Contract.options.address.toLowerCase();
+
             store = createStore();
             store.dispatch(NetworkCRUD.actions.create(network1336));
             store.dispatch(
@@ -104,26 +111,25 @@ describe(`${name}/sagas/call.ts`, () => {
         describe('call', () => {
             it('(): error contract revert', async () => {
                 //Error caused by contract revert
-                store.dispatch(
-                    callAction({
-                        networkId,
-                        address,
-                        method: 'revertTx',
-                    }),
-                );
+                const action = callAction({
+                    networkId,
+                    address,
+                    method: 'revertTx',
+                });
+                store.dispatch(action);
                 await sleep(300);
 
                 //Call an invalid function
                 const ethCall = await getEthCall(store.getState(), networkId, address, 'revertTx');
                 const value = ethCall?.returnValue;
                 //TODO: Fix bug
-                const error = {} as any; //ethCall?.error;
+                const error = await ErrorCRUD.db.get(action.meta.uuid);
 
                 assert.isUndefined(value, 'returnValue');
                 assert.isDefined(error, 'error');
                 assert.equal(
-                    error?.message,
-                    'VM Exception while processing transaction: revert Transaction reverted',
+                    error?.errorMessage,
+                    'VM Exception while processing transaction: reverted with reason string \'Transaction reverted\'',
                     'error.message',
                 );
             });

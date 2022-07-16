@@ -1,12 +1,13 @@
 import { put, call, select, takeEvery } from 'typed-redux-saga';
+import loadContract from './loadContract.js';
 import { create as createError } from '../../error/actions/index.js';
 
 import { CallAction, CALL } from '../actions/index.js';
 //import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
-import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import { NonPayableTransactionObject } from '../../typechain/types.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
 
 const CALL_ERROR = `${CALL}/ERROR`;
 
@@ -19,10 +20,10 @@ export function* callSaga(action: CallAction) {
         if (!address) throw new Error('address undefined');
         if (!payload.method) throw new Error('method undefined');
 
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+        const network = yield* call(loadNetwork, networkId);
         if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+        const contract = yield* call(loadContract, { networkId, address });
         if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;

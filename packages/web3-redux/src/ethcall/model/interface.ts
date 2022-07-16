@@ -1,3 +1,5 @@
+import { isUndefined, omitBy } from '../../utils/lodash/index.js';
+
 /** EthCall id components */
 export interface EthCallId {
     /** Blockchain network id.
@@ -63,14 +65,17 @@ export function validate(item: EthCall): EthCall {
     const from = item.from ? item.from.toLowerCase() : undefined;
     const argsHash = item.args ? JSON.stringify(item.args) : '';
 
-    return {
-        ...item,
-        networkId,
-        to,
-        data,
-        from,
-        argsHash,
-    };
+    return omitBy(
+        {
+            ...item,
+            networkId,
+            to,
+            data,
+            from,
+            argsHash,
+        },
+        isUndefined,
+    ) as unknown as EthCall;
 }
 
 export default EthCall;

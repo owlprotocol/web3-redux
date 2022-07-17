@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle } from '../selectors/index.js';
+import { useDispatch } from 'react-redux';
 import { httpGet as httpGetAction } from '../actions/index.js';
+import HTTPCacheCRUD from '../crud.js';
 
 /**
  * Get content for HTTP URI
@@ -9,15 +9,16 @@ import { httpGet as httpGetAction } from '../actions/index.js';
  * */
 export const useHttpGet = (uri: string | undefined) => {
     const dispatch = useDispatch();
-    const httpRequest = useSelector((state) => selectByIdSingle(state, uri));
-    const dataExists = !!httpRequest?.data;
+    const [httpRequest, { isLoading }] = HTTPCacheCRUD.hooks.useGet({ id: uri });
+    const data = httpRequest?.data;
+    const dataExists = isLoading || !!data; //assume exists while loading
 
     useEffect(() => {
         //Get http api content
         if (uri && !dataExists) dispatch(httpGetAction({ url: uri }));
     }, [uri, dataExists]);
 
-    return [httpRequest?.data];
+    return [data];
 };
 
 export default useHttpGet;

@@ -1,22 +1,22 @@
 import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
 import { AbiItem } from '../../utils/web3-utils/index.js';
-
-import networkExists from '../../network/sagas/exists.js';
-import { create, set as setAction, FetchAbiAction } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
-
+import { FetchAbiAction } from '../actions/index.js';
+import ContractCRUD from '../crud.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
 /** @category Sagas */
 export function* fetchAbi(action: FetchAbiAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
-    const account = yield* select(selectByIdSingle, { networkId, address });
-    if (!account) yield* put(create({ networkId, address }));
+    const network = yield* call(loadNetwork, networkId);
+    if (!network) throw new Error(`Network ${networkId} undefined`);
 
-    const network = yield* call(networkExists, networkId);
-    const apiClient = network.explorerApiClient;
+    const apiClient = network?.explorerApiClient;
     if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
+
+    const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+    if (!contract) yield* put(ContractCRUD.actions.create({ networkId, address }));
 
     const options = {
         params: {
@@ -29,7 +29,7 @@ export function* fetchAbi(action: FetchAbiAction) {
     const response = (yield* call(apiClient.get as any, '/', options)) as AxiosResponse;
     const abi = JSON.parse(response.data?.result) as AbiItem[];
 
-    yield* put(setAction({ id: { networkId, address }, key: 'abi', value: abi }));
+    yield* put(ContractCRUD.actions.update({ networkId, address, abi }));
 }
 
 export default fetchAbi;

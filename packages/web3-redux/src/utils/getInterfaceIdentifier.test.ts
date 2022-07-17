@@ -9,35 +9,42 @@ import {
     get4ByteIdentifier,
 } from './getInterfaceIdentifier.js';
 import { AbiItem } from '../utils/web3-utils/index.js';
-import { IERC165, IERC721Enumerable, IERC721Metadata } from '../abis/index.js';
+
+import {
+    IERC165Artifact,
+    IERC20Artifact,
+    IERC721Artifact,
+    IERC721EnumerableArtifact,
+    IERC721MetadataArtifact,
+} from '../abis/index.js';
 
 describe('getInterfaceIdentifierForAbi', () => {
     it('ERC165', () => {
-        assert.equal(getInterfaceIdentifierForAbi(IERC165.abi as AbiItem[]), '01ffc9a7');
+        assert.equal(getInterfaceIdentifierForAbi(IERC165Artifact.abi as AbiItem[]), '01ffc9a7');
     });
 
     it('ERC721Enumerable', () => {
-        assert.equal(getInterfaceIdentifierForAbi(IERC721Enumerable.abi as AbiItem[]), 'bfc4c1ea'); // '780e9d63');
+        assert.equal(getInterfaceIdentifierForAbi(IERC20Artifact.abi as AbiItem[]), 'bfc4c1ea'); // '780e9d63');
     });
 
     it('ERC721Metadata', () => {
-        assert.equal(getInterfaceIdentifierForAbi(IERC721Metadata.abi as AbiItem[]), '9c944f16'); // '5b5e139f');
+        assert.equal(getInterfaceIdentifierForAbi(IERC721Artifact.abi as AbiItem[]), '9c944f16'); // '5b5e139f');
     });
 });
 
 describe('getFunctionIdentifier', () => {
     it('supportsInterface', () => {
-        const abi = (IERC165.abi as AbiItem[]).find((a) => a.name === 'supportsInterface');
+        const abi = (IERC165Artifact.abi as AbiItem[]).find((a) => a.name === 'supportsInterface');
         assert.equal(getFunctionIdentifier(abi!), '0x01ffc9a7');
     });
 
     it('tokenByIndex', () => {
-        const abi = (IERC721Enumerable.abi as AbiItem[]).find((a) => a.name === 'tokenByIndex');
+        const abi = (IERC721EnumerableArtifact.abi as AbiItem[]).find((a) => a.name === 'tokenByIndex');
         assert.equal(getFunctionIdentifier(abi!), '0x4f6ccce7');
     });
 
     it('name', () => {
-        const abi = (IERC721Metadata.abi as AbiItem[]).find((a) => a.name === 'name');
+        const abi = (IERC721MetadataArtifact.abi as AbiItem[]).find((a) => a.name === 'name');
         assert.equal(getFunctionIdentifier(abi!), '0x06fdde03');
     });
 });

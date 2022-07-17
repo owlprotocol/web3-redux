@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { map } from '../../utils/lodash/index.js';
 import invariant from 'tiny-invariant';
-import { toChecksumAddress, isHexStrict } from '../../utils/web3-utils/index.js';
+import { v4 as uuidv4 } from 'uuid';
+import { isHexStrict } from '../../utils/web3-utils/index.js';
 import { name } from '../common.js';
 import { LogsSubscription } from '../model/logsSubscription.js';
 
@@ -12,13 +12,13 @@ export const UNSUBSCRIBE_LOGS = `${name}/UNSUBSCRIBE_LOGS`;
  * @link https://web3js.readthedocs.io/en/v1.7.0/web3-eth.html#getpastlogs
  * Get past logs using raw filter.
  */
-export const unsubscribeLogs = createAction(UNSUBSCRIBE_LOGS, (payload: LogsSubscription) => {
+export const unsubscribeLogs = createAction(UNSUBSCRIBE_LOGS, (payload: LogsSubscription, uuid?: string) => {
     let address: string | string[] | undefined;
     if (payload.address) {
         if (Array.isArray(payload.address)) {
-            address = map(payload.address, toChecksumAddress);
+            address = payload.address.map((a) => a.toLowerCase());
         } else {
-            address = toChecksumAddress(payload.address.slice());
+            address = payload.address.toLowerCase();
         }
     }
 
@@ -35,7 +35,7 @@ export const unsubscribeLogs = createAction(UNSUBSCRIBE_LOGS, (payload: LogsSubs
         });
     }
 
-    return { payload: { ...payload, address } };
+    return { payload: { ...payload, address }, meta: { uuid: uuid ?? uuidv4() } };
 });
 /** @internal */
 export type UnsubscribeLogsAction = ReturnType<typeof unsubscribeLogs>;

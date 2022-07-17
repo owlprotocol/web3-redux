@@ -25,14 +25,8 @@ export interface Network extends NetworkId {
     };
     /** Web3 RPC URL (websocket recommended). Used to generate Web3 instance. */
     readonly web3Rpc?: string;
-    /** Web3 object. We recommend using a websocket connection. */
-    readonly web3?: Web3;
-    /** Web3 object specialized for sending transactions. */
-    readonly web3Sender?: Web3;
     /** @hidden Multicall.sol contract address. Used for optimized batching of calls. */
     readonly multicallAddress?: string;
-    /** @hidden Multicall web3 contract instance */
-    readonly multicallContract?: Web3Contract;
     /** @hidden Gas limit of network. */
     readonly gasLimit?: number;
     /** Latest block nummber. Updated via getBlockNumber() or middleware tracking block subscription updates. */
@@ -43,10 +37,21 @@ export interface Network extends NetworkId {
     readonly explorerApiUrl?: string;
     /** Block explorer API key */
     readonly explorerApiKey?: string;
-    /** Block explorer API HTTP Client */
-    readonly explorerApiClient?: Axios;
     /** Ens domain */
     readonly ens?: string;
 }
+
+export interface NetworkWithObjects extends Network {
+    /** Web3 object. We recommend using a websocket connection. */
+    readonly web3?: Web3;
+    /** Web3 object specialized for sending transactions. */
+    readonly web3Sender?: Web3;
+    /** Multicall web3 contract instance */
+    readonly multicallContract?: Web3Contract;
+    /** Block explorer API HTTP Client */
+    readonly explorerApiClient?: Axios;
+}
+
+export const NetworkIndex = 'networkId';
 
 export default Network;

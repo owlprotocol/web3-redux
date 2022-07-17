@@ -1,68 +1,111 @@
-import { put, call } from 'typed-redux-saga';
-import exists from './exists.js';
-import { EventGetPastAction, EVENT_GET_PAST, eventGetPastRaw as eventGetPastRawAction } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
-
-import { getId } from '../model/index.js';
+import { put, call, select } from 'typed-redux-saga';
+import loadContract from './loadContract.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
+import {
+    EventGetPastAction,
+    EVENT_GET_PAST,
+    eventGetPastRawAction as eventGetPastRawAction,
+} from '../actions/index.js';
+import ContractCRUD from '../crud.js';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
+
+const sizes = [10000000, 5000000, 1000000, 500000, 100000, 50000, 10000, 5000, 1000, 500, 100, 50, 10];
+const minSize = sizes[sizes.length - 1];
+//Returns buckets from small to large starting from 0-to
+export function* findBuckets(from: number, to: number) {
+    const fromMod = from % minSize === 0 ? from : from - (from % minSize) + minSize;
+    let toMod = to - (to % minSize); //smallest bucket
+    if (toMod != to) {
+        //Initial bucket remainder
+        yield { from: toMod, to };
+    }
+
+    while (toMod > fromMod) {
+        for (const size of sizes) {
+            if (toMod % size == 0 && toMod - size >= fromMod) {
+                //valid bucket
+                yield { from: toMod - size, to: toMod };
+                toMod = toMod - size;
+                break;
+            }
+        }
+    }
+
+    if (fromMod != from) {
+        //Last bucket remainder
+        yield { from, to: fromMod };
+    }
+}
+
+export function* splitBucket(from: number, to: number) {
+    const fromMod = from - (from % minSize);
+    let toMod = to - (to % minSize); //smallest bucket
+    const range = toMod - fromMod;
+    const size = sizes.find((x) => x < range); //find next range
+    if (size) {
+        while (toMod > fromMod) {
+            yield { from: toMod - size, to: toMod };
+            toMod = toMod - size;
+        }
+    }
+}
 
 /** Batches event requests into EventGetPastRaw actions */
 export function* eventGetPast(action: EventGetPastAction) {
     try {
         const { payload } = action;
-        const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch, max } = payload;
-        const id = getId({ networkId, address });
+        const { networkId, address, eventName, filter, fromBlock, toBlock, blocks } = payload;
 
-        const network = yield* call(networkExists, networkId);
-        if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
-        const contract = yield* call(exists, { networkId, address });
+        const network = yield* call(loadNetwork, networkId);
+        if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        //Contract
+        const web3 = network.web3Sender ?? network.web3;
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+
+        const contract = yield* call(loadContract, { networkId, address });
+        if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
+
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+        if (!web3Contract)
+            throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
 
         //Ranged queries
-        const eventCount = 0;
-        let currToBlock;
+        let toBlockInitial: number;
         if (!toBlock || toBlock === 'latest') {
-            currToBlock = yield* call(network.web3.eth.getBlockNumber);
+            toBlockInitial = yield* call(web3.eth.getBlockNumber);
         } else {
-            currToBlock = toBlock;
+            toBlockInitial = toBlock;
         }
 
-        let currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock); //lower-bound fromBlock=0
+        let fromBlockInitial: number;
+        if (fromBlock === undefined) {
+            if (blocks) fromBlockInitial = Math.max(toBlockInitial - blocks, 0);
+            else fromBlockInitial = 0;
+        } else {
+            fromBlockInitial = fromBlock;
+        }
 
-        while (currFromBlock >= fromBlock && (eventCount < max || !max)) {
-            try {
-                //blocking call, choose batch size accordingly
-                yield* put(
-                    eventGetPastRawAction({
+        const gen = findBuckets(fromBlockInitial, toBlockInitial);
+        for (const { from, to } of gen) {
+            yield* put(
+                eventGetPastRawAction(
+                    {
                         networkId,
                         address,
                         eventName,
                         filter,
-                        fromBlock: currFromBlock,
-                        toBlock: currToBlock,
-                        max,
-                    }),
-                );
-                currToBlock = Math.max(currToBlock - blockBatch, currFromBlock);
-                currFromBlock = Math.max(currToBlock - blockBatch - 1, fromBlock);
-                if (currToBlock === currFromBlock) break;
-            } catch (error) {
-                yield* put({
-                    id: action.meta.uuid,
-                    error: error as Error,
-                    errorMessage: (error as Error).message,
-                    type: EVENT_GET_PAST_ERROR,
-                });
-            }
+                        fromBlock: from,
+                        toBlock: to,
+                    },
+                    action.meta.uuid,
+                ),
+            );
         }
     } catch (error) {
         yield* put({
             id: action.meta.uuid,
-            error: error as Error,
+            stack: (error as Error).stack,
             errorMessage: (error as Error).message,
             type: EVENT_GET_PAST_ERROR,
         });

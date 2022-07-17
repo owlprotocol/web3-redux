@@ -1,22 +1,65 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable import/no-commonjs */
-//Contract ABI Exports
-export { default as BlockNumber } from './BlockNumber.json';
-export { default as Multicall } from './Multicall.json';
-export { default as WETH } from './WETH.json';
+//@ts-nocheck
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
 
-export { default as IERC165 } from './utils/introspection/IERC165.sol/IERC165.json';
-export { default as ERC165 } from './utils/introspection/ERC165.sol/ERC165.json';
+//Imports fail as using json files that are transpiled by esbuild to js modules
 
-export { default as IERC20 } from './token/ERC20/IERC20.sol/IERC20.json';
-export { default as IERC20Metadata } from './token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata.json';
-export { default as ERC20PresetMinterPauser } from './token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser.json';
+//Contracts
+export { default as BlockNumberArtifact } from '../artifacts/contracts/BlockNumber.sol/BlockNumber';
+export { default as MulticallArtifact } from '../artifacts/contracts/Multicall.sol/Multicall';
+export { default as WETH } from './WETH';
 
-export { default as IERC721 } from './token/ERC721/IERC721.sol/IERC721.json';
-export { default as IERC721Enumerable } from './token/ERC721/extensions/IERC721Enumerable.sol/IERC721Enumerable.json';
-export { default as IERC721Metadata } from './token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.json';
-export { default as ERC721PresetMinterPauserAutoId } from './token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId.json';
+//Access
+export { default as IAccessControlArtifact } from '../artifacts/@openzeppelin/contracts/access/IAccessControl.sol/IAccessControl';
+export { default as IAccessControlEnumerableArtifact } from '../artifacts/@openzeppelin/contracts/access/IAccessControlEnumerable.sol/IAccessControlEnumerable';
 
-export { default as IERC1155 } from './token/ERC1155/IERC1155.sol/IERC1155.json';
-export { default as IERC1155MetadataURI } from './token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI.json';
-export { default as ERC1155PresetMinterPauser } from './token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser.json';
+//Tokens
+export { default as IERC20Artifact } from '../artifacts/@openzeppelin/contracts/token/ERC20/IERC20.sol/IERC20';
+export { default as IERC20MetadataArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol/IERC20Metadata';
+export { default as ERC20PresetMinterPauserArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol/ERC20PresetMinterPauser';
+
+export { default as IERC721Artifact } from '../artifacts/@openzeppelin/contracts/token/ERC721/IERC721.sol/IERC721';
+export { default as IERC721ReceiverArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol/IERC721Receiver';
+export { default as IERC721MetadataArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata';
+export { default as IERC721EnumerableArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol/IERC721Enumerable';
+export { default as ERC721PresetMinterPauserAutoIdArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol/ERC721PresetMinterPauserAutoId';
+
+export { default as IERC1155Artifact } from '../artifacts/@openzeppelin/contracts/token/ERC1155/IERC1155.sol/IERC1155';
+export { default as IERC1155ReceiverArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol/IERC1155Receiver';
+export { default as IERC1155MetadataURIArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol/IERC1155MetadataURI';
+export { default as ERC1155PresetMinterPauserArtifact } from '../artifacts/@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol/ERC1155PresetMinterPauser';
+
+//Utils
+export { default as IERC165Artifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/IERC165.sol/IERC165';
+export { default as ERC165Artifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/ERC165.sol/ERC165';
+export { default as IERC1820ImplementerArtifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/IERC1820Implementer.sol/IERC1820Implementer';
+export { default as IERC1820RegistryArtifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol/IERC1820Registry';
+export { default as ERC1820ImplementerArtifact } from '../artifacts/@openzeppelin/contracts/utils/introspection/ERC1820Implementer.sol/ERC1820Implementer';
+
+//Types
+export type { BlockNumber } from '../typechain/BlockNumber.js';
+export type { Multicall } from '../typechain/Multicall.js';
+
+export type { IAccessControl } from '../typechain/IAccessControl.js';
+export type { IAccessControlEnumerable } from '../typechain/IAccessControlEnumerable.js';
+
+export type { IERC20 } from '../typechain/IERC20.js';
+export type { IERC20Metadata } from '../typechain/IERC20Metadata.js';
+export type { ERC20PresetMinterPauser } from '../typechain/ERC20PresetMinterPauser.js';
+
+export type { IERC721 } from '../typechain/IERC721.js';
+export type { IERC721Receiver } from '../typechain/IERC721Receiver.js';
+export type { IERC721Metadata } from '../typechain/IERC721Metadata.js';
+export type { IERC721Enumerable } from '../typechain/IERC721Enumerable.js';
+export type { ERC721PresetMinterPauserAutoId } from '../typechain/ERC721PresetMinterPauserAutoId.js';
+
+export type { IERC1155 } from '../typechain/IERC1155.js';
+export type { IERC1155Receiver } from '../typechain/IERC1155Receiver.js';
+export type { IERC1155MetadataURI } from '../typechain/IERC1155MetadataURI.js';
+export type { ERC1155PresetMinterPauser } from '../typechain/ERC1155PresetMinterPauser.js';
+
+export type { IERC165 } from '../typechain/IERC165.js';
+export type { ERC165 } from '../typechain/ERC165.js';
+export type { IERC1820Implementer } from '../typechain/IERC1820Implementer.js';
+export type { IERC1820Registry } from '../typechain/IERC1820Registry.js';
+export type { ERC1820Implementer } from '../typechain/ERC1820Implementer.js';

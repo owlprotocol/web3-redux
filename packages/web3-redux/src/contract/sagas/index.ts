@@ -11,8 +11,10 @@ import { fetchTransactions } from './fetchTransactions.js';
 import { getCode } from './getCode.js';
 import { getEns } from './getEns.js';
 import watchEventGetPastRaw from './eventGetPastRaw.js';
+import deploySaga from './deploy.js';
 import {
     CALL_BATCHED,
+    DEPLOY,
     SEND,
     EVENT_GET_PAST,
     FETCH_ABI,
@@ -22,12 +24,15 @@ import {
     GET_BALANCE,
     GET_NONCE,
 } from '../actions/index.js';
+import ContractCRUD from '../crud.js';
 
 //https://typed-redux-saga.js.org/docs/advanced/RootSaga
 /** @internal */
 export function* saga() {
     yield* all([
+        spawn(ContractCRUD.sagas.crudRootSaga),
         spawn(watchCallSaga),
+        takeEvery(DEPLOY, deploySaga),
         takeEvery(EVENT_GET_PAST, eventGetPast),
         spawn(watchEventGetPastRaw),
         takeEvery(CALL_BATCHED, callBatched),
@@ -43,33 +48,3 @@ export function* saga() {
 }
 
 export default saga;
-
-/*
-//https://typed-redux-saga.js.org/docs/advanced/RootSaga/#keeping-everything-alive
-export function* saga() {
-    const sagas = [
-        takeEvery(CALL, contractCall),
-        takeEvery(CALL_BATCHED, contractCallBatched),
-        takeEvery(CALL_SYNCED, contractCallSynced),
-        takeEvery(SEND, contractSend),
-        takeEvery(EVENT_GET_PAST, contractEventGetPast),
-        //contractEventSubscribe(),
-    ];
-
-    yield all(
-        sagas.map((saga) =>
-            spawn(function* () {
-                while (true) {
-                    try {
-                        //@ts-ignore
-                        yield call(saga);
-                        break;
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-            }),
-        ),
-    );
-}
-*/

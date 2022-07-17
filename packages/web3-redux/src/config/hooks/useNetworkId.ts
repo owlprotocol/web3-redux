@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setNetworkId } from '../actions/index.js';
-import { selectNetworkId } from '../selectors/index.js';
+import ConfigCRUD from '../crud.js';
 
 /**
  * @category Hooks
@@ -10,7 +10,8 @@ import { selectNetworkId } from '../selectors/index.js';
  */
 export function useNetworkId() {
     const dispatch = useDispatch();
-    const value = useSelector(selectNetworkId);
+    const [config] = ConfigCRUD.hooks.useGet('0');
+    const { networkId: value } = config ?? {};
     const setNetworkIdCallback = useCallback(
         (networkId: string) => {
             dispatch(setNetworkId(networkId));

@@ -10,7 +10,7 @@ export interface HookProps {
     assetPreviewSrc: string;
 }
 export const useERC1155ItemCard = ({ networkId, address, tokenId }: HookProps) => {
-    const { metadata } = Contract.useERC1155(networkId, address, undefined, tokenId, {
+    const { metadata } = Contract.hooks.useERC1155(networkId, address, undefined, tokenId, {
         balanceOf: false,
         metadata: true,
     });

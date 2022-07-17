@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 
 /** @internal */
@@ -15,7 +16,15 @@ export interface SubscribeActionInput {
     returnTransactionObjects?: boolean;
 }
 /** @category Actions */
-export const subscribe = createAction<SubscribeActionInput>(SUBSCRIBE);
+export const subscribe = createAction(SUBSCRIBE, (payload: SubscribeActionInput | string, uuid?: string) => {
+    return {
+        payload,
+        meta: {
+            uuid: uuid ?? uuidv4(),
+        },
+    };
+});
+
 /** @internal */
 export type SubscribeAction = ReturnType<typeof subscribe>;
 /** @internal */

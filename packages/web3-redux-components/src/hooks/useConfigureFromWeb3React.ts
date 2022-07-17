@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Web3 from 'web3';
 import { useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
-import { Config, Network } from '@owlprotocol/web3-redux';
+import { Config, Network, NetworkWithObjects } from '@owlprotocol/web3-redux';
 import { WalletContext } from '../constants/web3React';
 
 export function useConfigureFromWeb3React() {
@@ -14,10 +14,10 @@ export function useConfigureFromWeb3React() {
     const newWeb3Sender = library as Web3 | undefined;
 
     //Web3Redux data
-    const [currentNetworkId, setNetworkId] = Config.useNetworkId();
-    const [currentAccount, setAccount] = Config.useAccount();
-    const currentNetwork = Network.useNetwork(currentNetworkId);
-    const currentWeb3Sender = currentNetwork?.web3Sender;
+    const [currentNetworkId, setNetworkId] = Config.hooks.useNetworkId();
+    const [currentAccount, setAccount] = Config.hooks.useAccount();
+    const [currentNetwork] = Network.hooks.useNetwork(currentNetworkId ?? '1');
+    const currentWeb3Sender = (currentNetwork as NetworkWithObjects | undefined)?.web3Sender;
 
     //Update networkId
     useEffect(() => {
@@ -32,7 +32,7 @@ export function useConfigureFromWeb3React() {
     //Update web3Sender
     useEffect(() => {
         if (newNetworkId && newWeb3Sender != currentWeb3Sender) {
-            dispatch(Network.set({ id: newNetworkId, key: 'web3Sender', value: newWeb3Sender }));
+            dispatch(Network.actions.update({ networkId: newNetworkId, web3Sender: newWeb3Sender }));
         }
     }, [dispatch, newNetworkId, newWeb3Sender, currentWeb3Sender]);
 }

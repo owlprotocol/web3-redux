@@ -8,13 +8,13 @@ import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
+import { BlockNumberArtifact } from '../../abis/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
-
-import { create as createAction, send as sendAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import { send as sendAction } from '../actions/index.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}.sagas.send`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -35,8 +35,8 @@ describe(`${name}.sagas.send`, () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3, web3Sender }));
+        store = createStore();
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[]).deploy({
             data: BlockNumberArtifact.bytecode,
@@ -46,7 +46,7 @@ describe(`${name}.sagas.send`, () => {
         address = web3Contract.options.address;
 
         store.dispatch(
-            createAction({
+            ContractCRUD.actions.create({
                 networkId,
                 address,
                 abi: cloneDeep(BlockNumberArtifact.abi) as AbiItem[],

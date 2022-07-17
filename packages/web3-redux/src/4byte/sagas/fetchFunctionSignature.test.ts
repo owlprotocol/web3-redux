@@ -7,14 +7,11 @@ import { networkId } from '../../test/data.js';
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { selectByIdSingle } from '../selectors/index.js';
-import { selectConfig } from '../../config/selectors/index.js';
-import { update as updateConfig } from '../../config/actions/index.js';
 
 //Actions
-import createAction from '../actions/create.js';
 import fetchFunctionSignatureAction from '../actions/fetchFunctionSignature.js';
-import setAction from '../actions/set.js';
+import _4ByteCRUD from '../crud.js';
+import ConfigCRUD from '../../config/crud.js';
 
 //Sagas
 
@@ -62,15 +59,15 @@ describe('4byte/sagas/fetchFunctionSignature.test.ts', () => {
     it('testSaga()', async () => {
         testSaga(fetchFunctionSignature, fetchFunctionSignatureAction(eventItem))
             .next()
-            .select(selectConfig)
+            .select(ConfigCRUD.selectors.selectByIdSingle, { id: '0' })
             .next({ _4byteClient: client })
-            .select(selectByIdSingle, eventItem.signatureHash) //Check if exists
+            .call(_4ByteCRUD.db.get, eventItem.signatureHash) //Check if exists
             .next(undefined)
-            .put(createAction({ signatureHash: eventItem.signatureHash })) //Create with signatureHash
+            .put(_4ByteCRUD.actions.create({ signatureHash: eventItem.signatureHash })) //Create with signatureHash
             .next()
             .call(client.get, requestUrl)
             .next({ data: expectedResponse })
-            .put(setAction({ id: eventItem, key: 'preImage', value: ApprovePreImage }))
+            .put(_4ByteCRUD.actions.update({ signatureHash: eventItem.signatureHash, preImage: ApprovePreImage }))
             .next();
     });
 
@@ -78,15 +75,15 @@ describe('4byte/sagas/fetchFunctionSignature.test.ts', () => {
         let store: StoreType;
 
         beforeEach(() => {
-            ({ store } = createStore());
-            store.dispatch(updateConfig({ id: '0', _4byteClient: client }));
+            store = createStore();
+            store.dispatch(ConfigCRUD.actions.update({ id: '0', _4byteClient: client }));
         });
 
         it('fetchFunctionSignature()', async () => {
             store.dispatch(fetchFunctionSignatureAction(eventItem));
             await sleep(100);
 
-            const item = selectByIdSingle(store.getState(), eventItem.signatureHash);
+            const item = await _4ByteCRUD.db.get(eventItem.signatureHash);
             assert.equal(item!.preImage, ApprovePreImage, 'preImage');
         });
     });

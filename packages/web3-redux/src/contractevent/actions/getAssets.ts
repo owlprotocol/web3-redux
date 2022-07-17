@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+import { v4 as uuidv4 } from 'uuid';
+
 import { name } from '../common.js';
 
 /** @internal */
@@ -16,8 +17,13 @@ export interface GetAssetsActionInput {
  * It is also possible that some returned addresses might NOT be one of the above
  * interfaces but simply implement one of event signatures.
  */
-export const getAssets = createAction(GET_ASSETS, (payload: GetAssetsActionInput) => {
-    return { payload: { networkId: payload.networkId, address: toChecksumAddress(payload.address.slice()) } };
+export const getAssets = createAction(GET_ASSETS, (payload: GetAssetsActionInput, uuid?: string) => {
+    return {
+        payload: { networkId: payload.networkId, address: payload.address.toLowerCase() },
+        meta: {
+            uuid: uuid ?? uuidv4(),
+        },
+    };
 });
 /** @internal */
 export type GetAssetsAction = ReturnType<typeof getAssets>;

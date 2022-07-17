@@ -1,13 +1,13 @@
-import { useSelector } from 'react-redux';
-import { selectConfig } from '../selectors/index.js';
+import ConfigCRUD from '../crud.js';
+import { Config } from '../model/index.js';
 
 /**
  * @category Hooks
- * Returns the Config.withId(0)
+ * Returns the Config.withId(0).
+ * Create/hydrate depending on db state.
  */
-export function useConfig() {
-    const value = useSelector(selectConfig);
-    return value;
+export function useConfig(defaultConfig?: Partial<Config>) {
+    return ConfigCRUD.hooks.useHydrate({ id: '0' }, { ...defaultConfig, id: '0' });
 }
 
 export default useConfig;

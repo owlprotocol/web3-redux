@@ -141,3 +141,5 @@ export const defaultNetworks = () => {
         },
     } as { [networkId: string]: Network | undefined };
 };
+
+export default defaultNetworks;

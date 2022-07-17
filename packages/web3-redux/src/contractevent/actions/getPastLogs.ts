@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { map } from '../../utils/lodash/index.js';
 import invariant from 'tiny-invariant';
-import { toChecksumAddress, isHexStrict } from '../../utils/web3-utils/index.js';
+import { v4 as uuidv4 } from 'uuid';
+import { isHexStrict } from '../../utils/web3-utils/index.js';
 import { name } from '../common.js';
 
 /** @internal */
@@ -19,7 +19,7 @@ export interface GetPastLogsActionInput {
  * @link https://web3js.readthedocs.io/en/v1.7.0/web3-eth.html#getpastlogs
  * Get past logs using raw filter.
  */
-export const getPastLogs = createAction(GET_PAST_LOGS, (payload: GetPastLogsActionInput) => {
+export const getPastLogs = createAction(GET_PAST_LOGS, (payload: GetPastLogsActionInput, uuid?: string) => {
     let fromBlock: number;
     if (!payload.fromBlock || payload.fromBlock == 'earliest') {
         fromBlock = 0;
@@ -37,9 +37,9 @@ export const getPastLogs = createAction(GET_PAST_LOGS, (payload: GetPastLogsActi
     let address: string | string[] | undefined;
     if (payload.address) {
         if (Array.isArray(payload.address)) {
-            address = map(payload.address, toChecksumAddress);
+            address = payload.address.map((a) => a.toLowerCase());
         } else {
-            address = toChecksumAddress(payload.address.slice());
+            address = payload.address.toLowerCase();
         }
     }
 
@@ -56,7 +56,12 @@ export const getPastLogs = createAction(GET_PAST_LOGS, (payload: GetPastLogsActi
         });
     }
 
-    return { payload: { ...payload, fromBlock, toBlock, address } };
+    return {
+        payload: { ...payload, fromBlock, toBlock, address },
+        meta: {
+            uuid: uuid ?? uuidv4(),
+        },
+    };
 });
 /** @internal */
 export type GetPastLogsAction = ReturnType<typeof getPastLogs>;

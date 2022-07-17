@@ -3,17 +3,17 @@ import { assert } from 'chai';
 import axios from 'axios';
 import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
+
 import { useFetchAbi } from './useFetchAbi.js';
-import { create as createNetwork } from '../../network/actions/index.js';
-import { create } from '../actions/index.js';
+
 import { WETH } from '../../abis/index.js';
 import { WETH as WETH_ADDRESS, networkId } from '../../test/data.js';
 import { StoreType, createStore } from '../../store.js';
-
-import jsdom from 'mocha-jsdom';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe('contract/hooks/useFetchAbi.test.tsx', () => {
-    jsdom({ url: 'http://localhost' });
+
 
     let store: StoreType;
     let wrapper: any;
@@ -31,14 +31,14 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
     });
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(
-            createNetwork({
+            NetworkCRUD.actions.create({
                 networkId,
                 explorerApiClient: client,
             }),
         );
-        store.dispatch(create({ networkId, address }));
+        store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+import { v4 as uuidv4 } from 'uuid';
+
 import { name } from '../common.js';
 
 export interface FetchTransactionOptions {
@@ -18,9 +19,12 @@ export interface FetchTransactionsPayload extends FetchTransactionOptions {
 /** @internal */
 export const FETCH_TRANSACTIONS = `${name}/FETCH_TRANSACTIONS`;
 /** @category Actions */
-export const fetchTransactions = createAction(FETCH_TRANSACTIONS, (payload: FetchTransactionsPayload) => {
-    return { payload: { ...payload, address: toChecksumAddress(payload.address.slice()) } };
-});
+export const fetchTransactions = createAction(
+    FETCH_TRANSACTIONS,
+    (payload: FetchTransactionsPayload, uuid?: string) => {
+        return { payload: { ...payload, address: payload.address.toLowerCase() }, meta: uuid ?? uuidv4() };
+    },
+);
 /** @internal */
 export type FetchTransactionsAction = ReturnType<typeof fetchTransactions>;
 /** @internal */

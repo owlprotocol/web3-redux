@@ -1,3 +1,2 @@
-export { validate } from './validate.js';
-
-export type { Network } from './interface.js';
+export * from './interface.js';
+export * from './validate.js';

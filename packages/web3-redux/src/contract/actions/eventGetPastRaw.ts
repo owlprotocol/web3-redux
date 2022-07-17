@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+
 import { name } from '../common.js';
 
 /** @internal */
@@ -14,35 +14,36 @@ export interface EventGetPastRawActionInput {
     filter?: { [key: string]: any };
     fromBlock: number;
     toBlock: number;
-    max?: number;
 }
 /** @category Actions */
-export const eventGetPastRaw = createAction(EVENT_GET_PAST_RAW, (payload: EventGetPastRawActionInput) => {
-    const { networkId, address, eventName, filter, fromBlock, toBlock, max } = payload;
-    const addressChecksum = toChecksumAddress(address.slice());
+export const eventGetPastRawAction = createAction(
+    EVENT_GET_PAST_RAW,
+    (payload: EventGetPastRawActionInput, uuid?: string) => {
+        const { networkId, address, eventName, filter, fromBlock, toBlock } = payload;
+        const addressChecksum = address.toLowerCase();
 
-    //cache id for eventGetPast action
-    const eventIndex = { networkId, address: addressChecksum, name: eventName, filter, fromBlock, toBlock };
-    const id = JSON.stringify(eventIndex);
-    return {
-        payload: {
-            id,
-            networkId,
-            address: addressChecksum,
-            eventName,
-            filter,
-            fromBlock,
-            toBlock,
-            max,
-        },
-        meta: {
-            uuid: uuidv4(),
-        },
-    };
-});
+        //cache id for eventGetPast action
+        const eventIndex = { networkId, address: addressChecksum, name: eventName, filter, fromBlock, toBlock };
+        const id = JSON.stringify(eventIndex);
+        return {
+            payload: {
+                id,
+                networkId,
+                address: addressChecksum,
+                eventName,
+                filter,
+                fromBlock,
+                toBlock,
+            },
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    },
+);
 /** @internal */
-export type EventGetPastRawAction = ReturnType<typeof eventGetPastRaw>;
+export type EventGetPastRawAction = ReturnType<typeof eventGetPastRawAction>;
 /** @internal */
-export const isEventGetPastRawAction = eventGetPastRaw.match;
+export const isEventGetPastRawAction = eventGetPastRawAction.match;
 
-export default eventGetPastRaw;
+export default eventGetPastRawAction;

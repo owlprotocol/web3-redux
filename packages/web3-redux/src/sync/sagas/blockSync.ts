@@ -1,17 +1,16 @@
-import { put, select, all } from 'typed-redux-saga';
+import { put, call, all } from 'typed-redux-saga';
 import { Action } from 'redux';
-import { CreateAction } from '../../block/actions/index.js';
-import { selectByIdMany } from '../selector/index.js';
 import { BlockSync } from '../model/index.js';
+import SyncCRUD from '../crud.js';
+import type BlockCRUD from '../../block/crud.js';
 
 //Handle on block update
-function* blockSync({ payload }: CreateAction) {
-    const syncs: ReturnType<typeof selectByIdMany> = yield* select(selectByIdMany);
-    const syncsFiltered = syncs.filter((s) => s?.type === 'Block') as BlockSync[];
+function* blockSync({ payload }: ReturnType<typeof BlockCRUD.actions.create | typeof BlockCRUD.actions.update>) {
+    const syncs = (yield* call(SyncCRUD.db.where, { type: 'Block' })) as BlockSync[];
 
     const actions: Action[] = []; //triggered actions
 
-    syncsFiltered.map((s) => {
+    syncs.map((s) => {
         if (
             s.networkId === payload.networkId &&
             (!s.matchBlockNumberModulo || payload.number % s.matchBlockNumberModulo)

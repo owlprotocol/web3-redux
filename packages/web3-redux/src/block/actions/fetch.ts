@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 
 /** @internal */
@@ -16,11 +17,18 @@ export interface FetchActionInput {
     returnTransactionObjects?: boolean;
 }
 /** @category Actions */
-export const fetch = createAction<FetchActionInput>(FETCH);
+export const fetchAction = createAction(FETCH, (payload: FetchActionInput, uuid?: string) => {
+    return {
+        payload,
+        meta: {
+            uuid: uuid ?? uuidv4(),
+        },
+    };
+});
 
 /** @internal */
-export type FetchAction = ReturnType<typeof fetch>;
+export type FetchAction = ReturnType<typeof fetchAction>;
 /** @internal */
-export const isFetchAction = fetch.match;
+export const isFetchAction = fetchAction.match;
 
-export default fetch;
+export default fetchAction;

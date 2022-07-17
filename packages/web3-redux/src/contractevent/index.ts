@@ -3,7 +3,34 @@
  * @module ContractEvent
  */
 
-export * from './model/index.js';
-export * from './actions/index.js';
-export * from './selectors/index.js';
-export * from './reducer.js';
+import * as Actions from './actions/index.js';
+import CRUDModel from './crud.js';
+import rootSaga from './sagas/index.js';
+
+const ContractEvent = {
+    name: CRUDModel.name,
+    actionTypes: CRUDModel.actionTypes,
+    actions: {
+        ...CRUDModel.actions,
+        getAssets: Actions.getAssets,
+        getPastLogs: Actions.getPastLogs,
+        subscribeLogs: Actions.subscribeLogs,
+        unsubscribeLogs: Actions.unsubscribeLogs,
+    },
+    sagas: {
+        ...CRUDModel.sagas,
+        rootSaga,
+    },
+    hooks: {
+        ...CRUDModel.hooks,
+    },
+    selectors: CRUDModel.selectors,
+    isAction: CRUDModel.isAction,
+    reducer: CRUDModel.reducer,
+    validate: CRUDModel.validate,
+    validateId: CRUDModel.validateId,
+    hydrate: CRUDModel.hydrate,
+    encode: CRUDModel.encode,
+};
+
+export default ContractEvent;

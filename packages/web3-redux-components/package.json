@@ -24,7 +24,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "cross-env NODE_OPTIONS='--max-old-space-size=4096' build-storybook",
     "lint": "eslint --ext .ts,.tsx src",
-    "lint:fix": "eslint --ext .ts,.tsx src --fix"
+    "lint:fix": "eslint --ext .ts,.tsx src --fix",
+    "node": "hardhat node"
   },
   "dependencies": {
     "@chakra-ui/react": "1.8.8",
@@ -105,6 +106,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-storybook": "^0.5.7",
     "global": "^4.4.0",
+    "hardhat": "^2.10.0",
     "prettier": "^2.5.1",
     "rc": "^1.2.8",
     "rollup": "^2.72.1",

@@ -1,125 +1,161 @@
 import { assert } from 'chai';
-import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
-import { cloneDeep } from '../../utils/lodash/index.js';
+import { testSaga } from 'redux-saga-test-plan';
+import { callSaga } from './call.js';
+import loadContract from './loadContract.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
-import { getWeb3Provider } from '../../test/index.js';
 import { sleep } from '../../utils/index.js';
 
 import { name } from '../common.js';
 
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
-import { networkId } from '../../test/data.js';
+import { BlockNumberArtifact } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+import { call as callAction } from '../actions/index.js';
+import EthCallCRUD from '../../ethcall/crud.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
+import getContractCall from '../db/getContractCall.js';
+import getEthCall from '../db/getEthCall.js';
+import { network1336 } from '../../network/data.js';
+import { ADDRESS_0 } from '../../data.js';
+import ErrorCRUD from '../../error/crud.js';
 
-import { selectContractCall, selectEthCallId } from '../selectors/index.js';
-import { create as createAction, call as callAction } from '../actions/index.js';
-import { selectEthCallById } from '../../ethcall/index.js';
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
 
-describe(`${name}.sagas.call`, () => {
-    let web3: Web3; //Web3 loaded from store
-    let web3Sender: Web3;
+describe(`${name}/sagas/call.ts`, () => {
     let accounts: string[];
     let store: StoreType;
-    let web3Contract: Web3Contract;
 
+    let web3Contract: Web3Contract;
     let address: string;
 
-    ///let rpcLogger: ReturnType<typeof ganacheLogger>;
-    //let ethCall = 0;
-    //let rpcBatch = 0;
-
     before(async () => {
-        //rpcLogger = ganacheLogger();
-
-        const provider = getWeb3Provider(); //TODO: Track logging
-        //@ts-ignore
-        web3 = new Web3(provider);
-        //@ts-ignore
-        web3Sender = new Web3(provider);
         accounts = await web3.eth.getAccounts();
-
-        /*
-        const ethCallIncr = () => (ethCall += 1);
-        const rpcBatchIncr = () => (rpcBatch += 1);
-        rpcLogger.addListener('eth_call', ethCallIncr);
-        rpcLogger.addListener('rpc_batch', rpcBatchIncr);
-        */
     });
 
-    beforeEach(async () => {
-        ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3, web3Sender }));
-
-        const tx = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[]).deploy({
-            data: BlockNumberArtifact.bytecode,
+    describe('unit', () => {
+        beforeEach(async () => {
+            address = ADDRESS_0;
+            web3Contract = await new web3.eth.Contract(BlockNumberArtifact.abi as AbiItem[], address);
         });
-        const gas = await tx.estimateGas();
-        web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '875000000' });
-        address = web3Contract.options.address;
 
-        store.dispatch(
-            createAction({
+        it('call - success', async () => {
+            const tx = web3Contract.methods.getValue();
+            const data = tx.encodeABI();
+            const gas = await tx.estimateGas();
+
+            const action = callAction({
                 networkId,
                 address,
-                abi: cloneDeep(BlockNumberArtifact.abi) as AbiItem[],
-            }),
-        );
+                method: 'getValue',
+            });
+            const ethCall = EthCallCRUD.validate({
+                networkId,
+                to: address,
+                data,
+            });
+            const returnValue = 0;
+            testSaga(callSaga, action)
+                .next()
+                .call(loadContract, { networkId, address })
+                .next({ web3Contract, address })
+                .call(EthCallCRUD.db.get, { networkId, to: address, data })
+                .next(undefined)
+                .put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid))
+                .next()
+                //.call(tx.estimateGas)
+                .next(gas)
+                //.call(tx.call, { ...ethCall, gas })
+                .next(returnValue)
+                .put(
+                    EthCallCRUD.actions.update(
+                        {
+                            ...ethCall,
+                            returnValue: returnValue,
+                            status: 'SUCCESS',
+                            lastUpdated: Date.now(),
+                        },
+                        action.meta.uuid,
+                    ),
+                )
+                .next()
+                .isDone();
+        });
     });
 
-    describe('call', () => {
-        it('(): error contract revert', async () => {
-            //Error caused by contract revert
+    describe('store', () => {
+        beforeEach(async () => {
+            web3Contract = await new web3.eth.Contract(BlockNumberArtifact.abi as AbiItem[])
+                .deploy({
+                    data: BlockNumberArtifact.bytecode,
+                })
+                .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+            address = web3Contract.options.address.toLowerCase();
+
+            store = createStore();
+            store.dispatch(NetworkCRUD.actions.create(network1336));
             store.dispatch(
-                callAction({
+                ContractCRUD.actions.create({
+                    networkId,
+                    address,
+                    abi: BlockNumberArtifact.abi as AbiItem[],
+                }),
+            );
+        });
+
+        describe('call', () => {
+            it('(): error contract revert', async () => {
+                //Error caused by contract revert
+                const action = callAction({
                     networkId,
                     address,
                     method: 'revertTx',
-                }),
-            );
-            await sleep(300);
+                });
+                store.dispatch(action);
+                await sleep(300);
 
-            //Call an invalid function
-            const ethCallId = selectEthCallId(store.getState(), { networkId, address }, 'revertTx');
-            const ethCall = selectEthCallById(store.getState(), ethCallId)!;
-            const value = ethCall.returnValue;
-            const error = ethCall.error;
+                //Call an invalid function
+                const ethCall = await getEthCall(store.getState(), networkId, address, 'revertTx');
+                const value = ethCall?.returnValue;
+                //TODO: Fix bug
+                const error = await ErrorCRUD.db.get(action.meta.uuid);
 
-            assert.isUndefined(value, 'returnValue');
-            assert.isDefined(error, 'error');
-            assert.equal(
-                error?.message,
-                'VM Exception while processing transaction: revert Transaction reverted',
-                'error.message',
-            );
-        });
+                assert.isUndefined(value, 'returnValue');
+                assert.isDefined(error, 'error');
+                assert.equal(
+                    error?.errorMessage,
+                    'VM Exception while processing transaction: reverted with reason string \'Transaction reverted\'',
+                    'error.message',
+                );
+            });
 
-        it('(): success', async () => {
-            //const ethCallInitial = ethCall;
-            //const rpcBatchInitial = rpcBatch;
+            it('(): success', async () => {
+                //const ethCallInitial = ethCall;
+                //const rpcBatchInitial = rpcBatch;
 
-            const tx2 = await web3Contract.methods.setValue(42);
-            const gas2 = await tx2.estimateGas();
-            await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
+                const tx2 = await web3Contract.methods.setValue(42);
+                const gas2 = await tx2.estimateGas();
+                await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
-            store.dispatch(
-                callAction({
-                    networkId,
-                    address,
-                    method: 'getValue',
-                }),
-            );
-            await sleep(300);
+                store.dispatch(
+                    callAction({
+                        networkId,
+                        address,
+                        method: 'getValue',
+                    }),
+                );
+                await sleep(300);
 
-            //Selector
-            const value = selectContractCall(store.getState(), { networkId, address }, 'getValue');
+                //Selector
+                const value = await getContractCall(store.getState(), networkId, address, 'getValue');
 
-            assert.equal(value, 42, 'getValue');
-            assert.strictEqual(value, '42', 'getValue');
-            //assert.equal(rpcBatch - rpcBatchInitial, 0, 'rpc_batch rpc calls != expected');
-            //assert.equal(ethCall - ethCallInitial, 1, 'eth_call rpc calls != expected');
+                assert.equal(value, 42, 'getValue');
+                assert.strictEqual(value, '42', 'getValue');
+                //assert.equal(rpcBatch - rpcBatchInitial, 0, 'rpc_batch rpc calls != expected');
+                //assert.equal(ethCall - ethCallInitial, 1, 'eth_call rpc calls != expected');
+            });
         });
     });
 });

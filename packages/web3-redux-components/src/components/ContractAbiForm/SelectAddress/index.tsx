@@ -1,7 +1,6 @@
 import { useTheme, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { Select, CreatableSelect } from 'chakra-react-select';
-import { useSelector } from 'react-redux';
-import { Contract, ContractIndex } from '@owlprotocol/web3-redux';
+import { Contract } from '@owlprotocol/web3-redux';
 import { useForm, useController } from 'react-hook-form';
 import { intersection } from 'lodash';
 import Web3 from 'web3';
@@ -32,27 +31,27 @@ export const SelectAddress = ({
     const [error, setError] = useState<Error | undefined>();
     const [, setValue] = useState<string | undefined>();
 
-    const indexList = useSelector((state) => ContractIndex.selectByIdMany(state, indexFilter)) ?? [];
-    const contractsByIndexList = useSelector((state) => ContractIndex.selectContractsMany(state, indexFilter)) ?? [];
+    const tags = Contract.hooks.useGetTags(networkId);
+    const contracts = Contract.hooks.useForNetworkId(networkId);
 
-    const options = indexList.map((contractIdx, idx) => {
+    //Options map tags to list of contracts with them
+    const options = tags.map((t) => {
         return {
-            label: contractIdx?.id ?? 'Other',
-            options: contractsByIndexList[idx]
-                ?.filter((c) => c.networkId === networkId)
+            label: t,
+            options: contracts
+                .filter((c) => c.networkId === networkId)
                 .map((c) => {
                     return { label: c.address, value: c.address };
                 }),
         };
     });
 
-    const contractsAllList = useSelector((state) => Contract.selectByFilter(state, { networkId })) ?? [];
     if (showOtherAddresses) {
-        const contractsUnLabelled = contractsAllList
+        const contractsUnLabelled = contracts
             .filter((c) => {
-                if (!c.indexIds) return true;
+                if (!c.tags) return true;
                 //Not in filter
-                const intersect = intersection(c.indexIds, indexFilter);
+                const intersect = intersection(c.tags, indexFilter);
                 return intersect.length == 0;
             })
             .map((c) => {

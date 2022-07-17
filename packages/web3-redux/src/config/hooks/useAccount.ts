@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import ConfigCRUD from '../crud.js';
 import { setAccount } from '../actions/index.js';
-import { selectAccount } from '../selectors/index.js';
 
 /**
  * @category Hooks
@@ -10,7 +10,8 @@ import { selectAccount } from '../selectors/index.js';
  */
 export function useAccount() {
     const dispatch = useDispatch();
-    const value = useSelector(selectAccount);
+    const [config] = ConfigCRUD.hooks.useGet('0');
+    const { account: value } = config ?? {};
     const setAccountCallback = useCallback(
         (account: string) => {
             dispatch(setAccount(account));

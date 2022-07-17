@@ -1,5 +1,5 @@
 import composeHooks from 'react-hooks-compose';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Contract } from '@owlprotocol/web3-redux';
 import { useCallback, useMemo } from 'react';
 import AddressDisplayPresenter from './AddressDisplayPresenter';
@@ -9,27 +9,23 @@ export interface HookProps {
     address: string;
 }
 
+const FAVORITES = 'Favorites';
 const useAddressDisplay = ({ networkId, address }: HookProps) => {
     const dispatch = useDispatch();
-    const contract = useSelector((state) => Contract.selectByIdSingle(state, { networkId, address }));
+    const contract = Contract.hooks.useSelectByIdSingle({ networkId, address });
     const label = contract?.label;
-    const indexIds: string[] = useMemo(() => contract?.indexIds ?? [], [contract]);
-    const isFavorite = indexIds.find((v) => v === 'Favorites');
+    const tags = useMemo(() => contract?.tags ?? [], [contract]);
+    const isFavorite = tags.includes(FAVORITES);
 
-    const setFavorite = useCallback(
-        (v) => {
-            //Remove Favorites label
-            const newIds = indexIds.filter((v) => v !== 'Favorites');
-            //Add favorites
-            if (v) newIds.push('Favorites');
-            dispatch(Contract.set({ id: { networkId, address }, key: 'indexIds', value: newIds }));
-        },
-        [networkId, address, dispatch, indexIds],
-    );
+    const setFavorite = useCallback(() => {
+        //Add favorites
+        if (isFavorite) dispatch(Contract.actions.update({ networkId, address, tags: [...tags, FAVORITES] }));
+        else dispatch(Contract.actions.update({ networkId, address, tags: tags.filter((t) => t != FAVORITES) }));
+    }, [networkId, address, dispatch, tags, isFavorite]);
 
     const setLabel = useCallback(
         (v) => {
-            dispatch(Contract.set({ id: { networkId, address }, key: 'label', value: v }));
+            dispatch(Contract.actions.update({ networkId, address, label: v }));
         },
         [dispatch, address, networkId],
     );

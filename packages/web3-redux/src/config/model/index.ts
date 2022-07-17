@@ -1,2 +1,2 @@
-export type { Config } from './interface.js';
-export { validate } from './validate.js';
+export * from './interface.js';
+export * from './validate.js';

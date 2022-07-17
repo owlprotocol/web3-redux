@@ -1,1 +1,1 @@
-export const name = 'Transaction';
+export const name = 'EthTransaction';

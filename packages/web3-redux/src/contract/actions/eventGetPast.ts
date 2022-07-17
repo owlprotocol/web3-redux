@@ -12,13 +12,12 @@ export interface EventGetPastActionInput {
     filter?: { [key: string]: any };
     fromBlock?: number | 'earliest';
     toBlock?: number | 'latest';
-    blockBatch?: number;
-    max?: number;
+    blocks?: number;
 }
 /** @category Actions */
-export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput) => {
-    let fromBlock: number;
-    if (!payload.fromBlock || payload.fromBlock == 'earliest') {
+export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput, uuid?: string) => {
+    let fromBlock: number | undefined;
+    if (payload.fromBlock == 'earliest') {
         fromBlock = 0;
     } else {
         fromBlock = payload.fromBlock;
@@ -31,13 +30,10 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
         toBlock = payload.toBlock;
     }
 
-    const blockBatch = payload.blockBatch ?? 100; //100 block batch
-    const max = payload.max ?? 100; //100 events max
-
     return {
-        payload: { ...payload, fromBlock, toBlock, blockBatch, max },
+        payload: { ...payload, fromBlock, toBlock, blocks: payload.blocks },
         meta: {
-            uuid: uuidv4(),
+            uuid: uuid ?? uuidv4(),
         },
     };
 });

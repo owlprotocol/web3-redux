@@ -11,7 +11,7 @@ export interface TokenDropDownOptionProps {
     accountAddress: string;
 }
 export const ERC20DropDownOption = ({ networkId, tokenAddress, accountAddress }: TokenDropDownOptionProps) => {
-    const { symbol, balanceOf, decimals } = Contract.useERC20(networkId, tokenAddress, accountAddress);
+    const { symbol, balanceOf, decimals } = Contract.hooks.useERC20(networkId, tokenAddress, accountAddress);
     const decimalsBN = toBN('10').pow(toBN(decimals ?? '18'));
     const unit = reverseUnitMap[decimalsBN.toString()];
     const balanceOfEth = fromWei(balanceOf ?? '0', unit as any);

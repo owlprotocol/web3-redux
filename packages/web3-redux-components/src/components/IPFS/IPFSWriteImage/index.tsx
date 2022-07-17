@@ -1,4 +1,4 @@
-import { Ipfs } from '@owlprotocol/web3-redux';
+import { IPFSCache } from '@owlprotocol/web3-redux';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 //import { Base64 } from 'js-base64';
@@ -20,7 +20,7 @@ export const IPFSWriteImage = ({ mimeType = 'image/*' }: Props) => {
             if (!!data) {
                 const dataArr = data as ArrayBuffer;
                 console.debug(dataArr);
-                const addFileAction = Ipfs.add({ file: dataArr });
+                const addFileAction = IPFSCache.actions.add({ file: dataArr });
                 dispatch(addFileAction);
             }
         },

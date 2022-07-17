@@ -3,12 +3,12 @@ import composeHooks from 'react-hooks-compose';
 import InstancePresenter from '../InstancePresenter';
 
 export interface HookProps {
-    networkId: string;
-    address: string;
-    tokenId: string;
+    networkId: string | undefined;
+    address: string | undefined;
+    tokenId: string | undefined;
 }
 export const useERC721Instance = ({ networkId, address, tokenId }: HookProps) => {
-    const { ownerOf, metadata } = Contract.useERC721(networkId, address, tokenId, {
+    const { ownerOf, metadata } = Contract.hooks.useERC721(networkId, address, tokenId, {
         metadata: true,
     });
     return {

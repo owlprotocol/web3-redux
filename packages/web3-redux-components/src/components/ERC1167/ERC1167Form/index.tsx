@@ -1,5 +1,5 @@
 import { Box, Button, FormControl, FormErrorMessage, useTheme } from '@chakra-ui/react';
-import { Contract, Config, ContractSend } from '@owlprotocol/web3-redux';
+import { Contract, Config, ContractSendStatus } from '@owlprotocol/web3-redux';
 import { useCallback, useState } from 'react';
 import Web3 from 'web3';
 import AbiItemForm from '../../ContractAbiForm/AbiItemForm2';
@@ -25,15 +25,15 @@ const ImplementationIndexes = ['ERC20Implementation']; //['ERC20Implementation',
  */
 export const ERC1167FactoryForm = ({ networkId, factoryAddress, implementationInitializer = 'initialize' }: Props) => {
     const { themes } = useTheme();
-    const [account] = Config.useAccount();
+    const [account] = Config.hooks.useAccount();
 
     //User selects implementation, we use this for the factory and to generate the initializer form
     const [implementationAddress, setImplementationAddress] = useState<string | undefined>();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const factoryContract = Contract.useContract(networkId, factoryAddress);
+    const factoryContract = Contract.hooks.useContract(networkId, factoryAddress);
 
     //Get Implementation Contract
-    const implementationContract = Contract.useContract(networkId, implementationAddress);
+    const [implementationContract] = Contract.hooks.useContract(networkId, implementationAddress);
     const abi = implementationContract?.abi ?? [];
     const abiItem = abi.find((f) => {
         return f.name === implementationInitializer;
@@ -55,7 +55,7 @@ export const ERC1167FactoryForm = ({ networkId, factoryAddress, implementationIn
         [abiItem],
     );
 
-    const [sendTx, { error, contractSend }] = Contract.useContractSend(
+    const [sendTx, { error, contractSend }] = Contract.hooks.useContractSend(
         networkId,
         factoryAddress,
         'cloneDetermistic',
@@ -68,8 +68,8 @@ export const ERC1167FactoryForm = ({ networkId, factoryAddress, implementationIn
 
     console.debug({ data });
 
-    const isPendingSig = status == ContractSend.ContractSendStatus.PENDING_SIGNATURE;
-    const isPendingConf = status == ContractSend.ContractSendStatus.PENDING_CONFIRMATION;
+    const isPendingSig = status == ContractSendStatus.PENDING_SIGNATURE;
+    const isPendingConf = status == ContractSendStatus.PENDING_CONFIRMATION;
     const isPending = isPendingSig || isPendingConf;
 
     let isPendingText: string | undefined;

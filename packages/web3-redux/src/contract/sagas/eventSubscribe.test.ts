@@ -9,15 +9,17 @@ import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
+import { BlockNumberArtifact } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
+
 import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
 
 import { ContractId } from '../model/index.js';
-import { selectContractEvents } from '../selectors/index.js';
-import { create as createAction, eventSubscribe as eventSubscribeAction } from '../actions/index.js';
+import { eventSubscribe as eventSubscribeAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 describe(`${name}.sagas.eventSubscribe`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -39,8 +41,8 @@ describe(`${name}.sagas.eventSubscribe`, () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3, web3Sender }));
+        store = createStore();
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[]).deploy({
             data: BlockNumberArtifact.bytecode,
@@ -51,7 +53,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
         id = { networkId, address };
 
         store.dispatch(
-            createAction({
+            ContractCRUD.actions.create({
                 networkId,
                 address,
                 abi: cloneDeep(BlockNumberArtifact.abi) as AbiItem[],
@@ -77,7 +79,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
-            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
+            const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events1, expectedEvents);
         });
 
@@ -99,7 +101,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
-            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
+            const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events1, expectedEvents);
         });
 
@@ -119,7 +121,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
             //Expect no event to be captured
-            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
+            const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events1, expectedEvents);
         });
 
@@ -154,16 +156,15 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             const gas3 = await tx3.estimateGas();
             await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '875000000' });
 
-            const events1 = selectContractEvents(store.getState(), id, 'NewValue');
+            const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.equal(events1?.length, expectedEvents.length, 'expectedEvents.length');
             assert.deepEqual(events1, expectedEvents, 'events value=any');
-            const events2 = selectContractEvents(store.getState(), id, 'NewValue', {
-                value: '42',
-            });
+            //TODO: Index by return value
+            //value=42
+            const events2 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events2, [expectedEvents[0]], 'events value=42');
-            const events3 = selectContractEvents(store.getState(), id, 'NewValue', {
-                value: '43',
-            });
+            //value=43
+            const events3 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events3, [expectedEvents[1]], 'events value=43');
         });
     });

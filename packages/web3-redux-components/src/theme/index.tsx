@@ -19,7 +19,7 @@ const components = {
                 borderRadius: '12px',
                 backgroundColor: THEME_COLORS[CURRENT_THEME].color1,
                 _hover: {
-                    color: THEME_COLORS[CURRENT_THEME].color1,
+                    color: '#fff',
                 },
             },
         },

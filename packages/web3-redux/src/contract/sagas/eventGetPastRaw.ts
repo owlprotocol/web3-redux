@@ -1,6 +1,7 @@
-import { put, call, select } from 'typed-redux-saga';
+import { put, call } from 'typed-redux-saga';
 import { EventData } from 'web3-eth-contract';
 import loadContract from './loadContract.js';
+import { splitBucket } from './eventGetPast.js';
 import { create as createError } from '../../error/actions/index.js';
 import eventGetPastRawAction, { EventGetPastRawAction, EVENT_GET_PAST_RAW } from '../actions/eventGetPastRaw.js';
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
@@ -63,7 +64,7 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
             yield* put(updateQuery);
 
             if (events.length > 0) {
-                const batch = ContractEventCRUD.actions.createBatched(
+                const batch = ContractEventCRUD.actions.putBatched(
                     events.map((event: any) => {
                         return {
                             ...event,
@@ -113,54 +114,21 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
         //Returned error: query returned more than 10000 results
         if (err.message === 'Returned error: query returned more than 10000 results') {
             //Dispatch split block query
-            const blockRange = toBlock - fromBlock;
-            let midpoint = Math.floor(fromBlock + blockRange / 2);
-            for (const x of [10000000, 1000000, 100000, 10000, 1000, 100, 10]) {
-                if (midpoint - (midpoint % x) > fromBlock) {
-                    midpoint = midpoint - (midpoint % x);
-                    break;
-                }
-            }
-            let endpoint = toBlock;
-            for (const x of [10000000, 1000000, 100000, 10000, 1000, 100, 10]) {
-                if (endpoint - (endpoint % x) > midpoint) {
-                    endpoint = endpoint - (endpoint % x);
-                    break;
-                }
-            }
-
-            if (blockRange > 2) {
-                const action1 = eventGetPastRawAction({
-                    networkId,
-                    address,
-                    eventName,
-                    fromBlock,
-                    toBlock: midpoint,
-                    filter,
-                });
-                const action2 = eventGetPastRawAction({
-                    networkId,
-                    address,
-                    eventName,
-                    fromBlock: midpoint,
-                    toBlock: endpoint,
-                    filter,
-                });
-
-                if (toBlock != endpoint) {
-                    const action3 = eventGetPastRawAction({
-                        networkId,
-                        address,
-                        eventName,
-                        fromBlock: endpoint,
-                        toBlock: toBlock,
-                        filter,
-                    });
-                    yield* put(action3);
-                }
-
-                yield* put(action2);
-                yield* put(action1);
+            const gen = splitBucket(fromBlock, toBlock);
+            for (const { from, to } of gen) {
+                yield* put(
+                    eventGetPastRawAction(
+                        {
+                            networkId,
+                            address,
+                            eventName,
+                            filter,
+                            fromBlock: from,
+                            toBlock: to,
+                        },
+                        action.meta.uuid,
+                    ),
+                );
             }
         }
     }

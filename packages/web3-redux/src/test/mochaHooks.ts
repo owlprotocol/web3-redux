@@ -26,7 +26,7 @@ const beforeEach = async () => {
 };
 
 const afterAll = async () => {
-    console.debug('Tests finishsed.');
+    console.debug('Tests finished.');
 };
 
 const afterEach = async () => {

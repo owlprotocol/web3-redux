@@ -5,11 +5,12 @@ import { Await } from '../../types/promise.js';
 
 import { GenericSync } from '../../sync/model/index.js';
 
-import { BaseWeb3Contract } from '../model/index.js';
+import { BaseWeb3Contract, ContractWithObjects } from '../model/index.js';
 import { callSynced, call } from '../actions/index.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import SyncCRUD from '../../sync/crud.js';
 import ErrorCRUD from '../../error/crud.js';
+import ContractCRUD from '../crud.js';
 
 //Contract Call
 /** @internal */
@@ -36,6 +37,9 @@ export function useContractCall<
 ) {
     const sync = options?.sync ?? 'ifnull';
     const dispatch = useDispatch();
+    const [contract] = ContractCRUD.hooks.useHydrate({ networkId, address });
+    const web3Contract = (contract as ContractWithObjects | undefined)?.web3Contract;
+    const contractExists = !!web3Contract;
     const [ethCall, { isLoading: ethCallLoading }] = EthCallCRUD.hooks.useGet({
         networkId,
         to: address,
@@ -43,7 +47,7 @@ export function useContractCall<
         argsHash: JSON.stringify(args ?? []),
     });
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
-    const executeCall = sync != false;
+    const executeCall = contractExists && sync != false;
 
     //Actions
     const { callAction, syncAction } =

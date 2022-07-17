@@ -72,10 +72,9 @@ export function useEvents<
                 fromBlock,
                 toBlock,
                 blocks,
-                blockBatch,
             });
         }
-    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blocks, blockBatch]);
+    }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blocks]);
     const subscribeAction = useMemo(() => {
         if (networkId && address && eventName) {
             return eventSubscribe({

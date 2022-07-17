@@ -18,7 +18,6 @@ import ContractCRUD from '../crud.js';
 import getContractCall from '../db/getContractCall.js';
 import getEthCall from '../db/getEthCall.js';
 import { network1336 } from '../../network/data.js';
-import loadNetwork from '../../network/sagas/loadNetwork.js';
 import { ADDRESS_0 } from '../../data.js';
 import ErrorCRUD from '../../error/crud.js';
 
@@ -127,7 +126,7 @@ describe(`${name}/sagas/call.ts`, () => {
                 assert.isDefined(error, 'error');
                 assert.equal(
                     error?.errorMessage,
-                    "VM Exception while processing transaction: reverted with reason string 'Transaction reverted'",
+                    'VM Exception while processing transaction: reverted with reason string \'Transaction reverted\'',
                     'error.message',
                 );
             });

@@ -20,15 +20,15 @@ export function* callSaga(action: CallAction) {
         if (!payload.method) throw new Error('method undefined');
 
         const contract = yield* call(loadContract, { networkId, address });
-        if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
+        if (!contract) throw new Error(`Contract ${ContractCRUD.toPrimaryKeyString({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
         if (!web3Contract)
-            throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
+            throw new Error(`Contract ${ContractCRUD.toPrimaryKeyString({ networkId, address })} has no web3 contract`);
 
         const method = web3Contract.methods[payload.method];
         if (!method)
-            throw new Error(`Contract ${ContractCRUD.validateId(payload)} has no such method ${payload.method}`);
+            throw new Error(`Contract ${ContractCRUD.toPrimaryKey(payload)} has no such method ${payload.method}`);
 
         let tx: NonPayableTransactionObject<any>;
         if (!args || args.length == 0) tx = method();
@@ -38,6 +38,7 @@ export function* callSaga(action: CallAction) {
             networkId,
             to: contract.address,
             data,
+            methodName: payload.method,
             args,
         });
 

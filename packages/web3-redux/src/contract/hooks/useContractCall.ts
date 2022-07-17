@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Await } from '../../types/promise.js';
@@ -8,7 +8,6 @@ import { GenericSync } from '../../sync/model/index.js';
 import { BaseWeb3Contract } from '../model/index.js';
 import { callSynced, call } from '../actions/index.js';
 import EthCallCRUD from '../../ethcall/crud.js';
-import ContractCRUD from '../crud.js';
 import SyncCRUD from '../../sync/crud.js';
 import ErrorCRUD from '../../error/crud.js';
 
@@ -36,36 +35,15 @@ export function useContractCall<
         options?: UseContractCallOptions,
 ) {
     const sync = options?.sync ?? 'ifnull';
-
     const dispatch = useDispatch();
-    const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
-    const web3Contract = contract?.web3Contract ?? contract?.web3SenderContract;
-    const web3ContractMethod = web3Contract?.methods[method];
-    const web3ContractMethodExists = !!web3ContractMethod;
-
-    const { data, dataError } =
-        useMemo(() => {
-            if (web3ContractMethod) {
-                try {
-                    let tx: any;
-                    if (!args || args.length == 0) tx = web3ContractMethod();
-                    else tx = web3ContractMethod(...(args as any[]));
-
-                    const data = tx.encodeABI();
-                    return { data };
-                } catch (dataError) {
-                    return { dataError: dataError as Error };
-                }
-            }
-        }, [web3ContractMethod]) ?? {};
-
     const [ethCall, { isLoading: ethCallLoading }] = EthCallCRUD.hooks.useGet({
         networkId,
         to: address,
-        data,
+        methodName: method as string,
+        argsHash: JSON.stringify(args ?? []),
     });
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
-    const executeSync = sync != false && web3ContractMethodExists;
+    const executeCall = sync != false;
 
     //Actions
     const { callAction, syncAction } =
@@ -98,15 +76,12 @@ export function useContractCall<
         if (!networkId) return new Error('networkId undefined');
         else if (!address) return new Error('address undefined');
         else if (!method) return new Error('method undefined');
-        else if (!web3ContractMethodExists)
-            return new Error(`method ${method as string} does not exist on ${networkId}-${address}`);
-        else if (!dataError) return dataError;
         else if (!!reduxError) {
             const err = new Error(reduxError.errorMessage);
             err.stack = reduxError.stack;
             return err;
         }
-    }, [networkId, address, method, web3Contract, dataError, reduxError]);
+    }, [networkId, address, method, reduxError]);
 
     //Callback
     const dispatchCallAction = useCallback(() => {
@@ -114,8 +89,8 @@ export function useContractCall<
     }, [dispatch, callAction]);
     //Effects
     useEffect(() => {
-        if (executeSync) dispatchCallAction();
-    }, [dispatchCallAction, executeSync]);
+        if (executeCall) dispatchCallAction();
+    }, [dispatchCallAction, executeCall]);
 
     const syncId = syncAction?.payload.id;
     useEffect(() => {

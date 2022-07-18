@@ -1,4 +1,4 @@
-import { Config, Network, Contract, TestData, Environment } from '@owlprotocol/web3-redux';
+import { Config, Network, Environment } from '@owlprotocol/web3-redux';
 import getDisplayName from './getDisplayName';
 import { getEnvironment } from '../environment';
 

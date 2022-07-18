@@ -9,7 +9,7 @@ export interface SetActionInput {
 }
 /** @category Actions */
 export const set = ({ id, key, value }: SetActionInput) => {
-    return ConfigCRUD.actions.update({ id, [key]: value });
+    return ConfigCRUD.actions.upsert({ id, [key]: value });
 };
 
 /** @internal */

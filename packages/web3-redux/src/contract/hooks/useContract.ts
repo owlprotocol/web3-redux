@@ -31,10 +31,9 @@ export function useContract(
     const getCode = sync?.getCode ?? false;
     const fetchAbi = sync?.fetchAbi ?? false;
 
-    const contract = ContractCRUD.hooks.useHydrate(
-        { networkId, address },
-        { ...defaultContract, networkId: networkId!, address: address! },
-    );
+    const data = networkId && address ? { ...defaultContract, networkId: networkId, address: address } : undefined;
+
+    const contract = ContractCRUD.hooks.useHydrate({ networkId, address }, data);
     useGetBalance(networkId, address, getBalance);
     useGetNonce(networkId, address, getNonce);
     useGetCode(networkId, address, getCode);

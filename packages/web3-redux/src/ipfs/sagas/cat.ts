@@ -51,25 +51,14 @@ export function* cat(action: CatAction) {
                 const { cid, unixfs } = entries[i];
 
                 if (unixfs?.data) {
-                    if (!content) {
-                        yield* put(
-                            IPFSCacheCRUD.actions.create({
-                                contentId: cid.toString(),
-                                data: unixfs.data,
-                                type: IPFSDataType.File,
-                                paths: [pathStr],
-                            }),
-                        );
-                    } else {
-                        yield* put(
-                            IPFSCacheCRUD.actions.update({
-                                contentId: cid.toString(),
-                                data: unixfs.data,
-                                type: IPFSDataType.File,
-                                paths: [pathStr],
-                            }),
-                        );
-                    }
+                    yield* put(
+                        IPFSCacheCRUD.actions.upsert({
+                            contentId: cid.toString(),
+                            data: unixfs.data,
+                            type: IPFSDataType.File,
+                            paths: [pathStr],
+                        }),
+                    );
                 }
             }
         }

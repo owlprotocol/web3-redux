@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { put as putDispatch, call, all as allSaga, takeEvery } from 'typed-redux-saga';
+import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
 import { IndexableTypeArrayReadonly } from 'dexie';
-import { compact, filter, zip } from './utils/lodash/index.js';
+import { compact, filter, zip, isEqual } from './utils/lodash/index.js';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
@@ -386,6 +386,7 @@ export function createCRUDModel<
 
         return db.transaction('rw', table, () => {
             return table.get(id).then((existing) => {
+                console.debug({ existing, encoded });
                 if (!existing) return table.add(encoded);
                 else return table.update(id, encoded);
             });
@@ -643,8 +644,18 @@ export function createCRUDModel<
         try {
             const { payload } = action;
 
-            const item = yield* call(get, payload);
-            if (item) yield* putDispatch(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
+            const itemDB = yield* call(get, payload);
+            const itemRedux = yield* selectSaga(selectByIdSingle, payload);
+
+            if (itemDB) {
+                if (!itemRedux) {
+                    //Update redux by dispatching an update
+                    yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
+                } else if (!isEqual(encode(itemRedux), itemDB)) {
+                    //Update redux by dispatching an update
+                    yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
+                }
+            }
         } catch (error) {
             yield* putDispatch(
                 createError(
@@ -664,7 +675,7 @@ export function createCRUDModel<
             const { payload } = action;
 
             const items = yield* call(bulkGet, payload);
-            if (items) yield* putDispatch(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
+            if (items) yield* putDispatch(actions.upsertBatched(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
             yield* putDispatch(
                 createError(
@@ -810,24 +821,24 @@ export function createCRUDModel<
         const [itemDB, { isLoading, exists: itemDBExists }] = useGet(idx);
 
         const id = useMemo(() => (itemDB ? validateId(itemDB) : undefined), [itemDB]);
-        const item = useSelectByIdSingle(id);
-        const itemExists = !!item;
+        const itemRedux = useSelectByIdSingle(id);
+        const itemReduxExists = !!itemRedux;
 
         //console.debug({ idx, itemDB, itemDBExists, item, itemExists, isLoading, defaultItem });
         //Reset state
         const action = useMemo(() => {
-            if (idx && !itemExists) {
-                if (!isLoading && !itemDBExists && defaultItem) {
+            if (idx && !itemReduxExists && !isLoading) {
+                if (!itemDBExists && defaultItem) {
                     return createAction(defaultItem);
-                } else if (!isLoading && itemDBExists && isDefinedRecord(idx)) {
+                } else if (itemDBExists && isDefinedRecord(idx)) {
                     return hydrateAction(idx);
                 }
             }
-        }, [idx, itemExists, isLoading, itemDBExists, defaultItem]);
+        }, [idx, itemReduxExists, isLoading, itemDBExists, defaultItem]);
 
         useEffect(() => {
-            if (itemExists) setActionDispatched(false);
-        }, [idx, itemExists]);
+            if (itemReduxExists) setActionDispatched(false);
+        }, [idx, itemReduxExists]);
 
         useEffect(() => {
             if (action && !actionDispatched) {
@@ -836,8 +847,8 @@ export function createCRUDModel<
             }
         }, [dispatch, action, actionDispatched]);
 
-        const returnValue = item ?? itemDB ?? defaultItem;
-        const exists = itemExists || itemDBExists;
+        const returnValue = itemRedux ?? itemDB ?? defaultItem;
+        const exists = itemReduxExists || itemDBExists;
         const returnOptions = { isLoading, exists };
 
         return [returnValue, returnOptions] as [typeof returnValue, typeof returnOptions];

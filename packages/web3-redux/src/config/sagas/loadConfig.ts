@@ -11,7 +11,7 @@ function* loadConfig(uuid?: string) {
         (!reduxSelected?.ipfsClient && dbSelected?.ipfsUrl)
     ) {
         //Hydrate
-        yield* putSaga(ConfigCRUD.actions.update(dbSelected, uuid ?? uuidv4()));
+        yield* putSaga(ConfigCRUD.actions.upsert(dbSelected, uuid ?? uuidv4()));
         return yield* select(ConfigCRUD.selectors.selectByIdSingle, '0');
     }
 

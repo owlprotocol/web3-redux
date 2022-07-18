@@ -4,8 +4,12 @@ import { create as createIPFS } from 'ipfs-http-client';
 import { Config, ConfigId, ConfigWithObjects } from './interface.js';
 import { omit, omitBy, isUndefined } from '../../utils/lodash/index.js';
 
-export function validateId(config: ConfigId) {
-    return config;
+export function validateId({ id }: ConfigId) {
+    return { id };
+}
+
+export function toPrimaryKey({ id }: ConfigId): [string] {
+    return [id];
 }
 
 /**

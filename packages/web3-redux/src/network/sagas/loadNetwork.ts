@@ -7,7 +7,7 @@ function* loadNetwork(networkId: string, uuid?: string) {
     const dbSelected = yield* call(NetworkCRUD.db.get, networkId);
     if (!reduxSelected?.web3 && dbSelected?.web3Rpc) {
         //Hydrate
-        yield* putSaga(NetworkCRUD.actions.update(dbSelected, uuid ?? uuidv4()));
+        yield* putSaga(NetworkCRUD.actions.upsert(dbSelected, uuid ?? uuidv4()));
         return yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
     }
 

@@ -1,15 +1,22 @@
+//@ts-nocheck
+/* eslint-disable */
 import { useEffect } from 'react';
 import Web3 from 'web3';
 import { useDispatch } from 'react-redux';
-import { useWeb3React } from '@web3-react/core';
 import { Config, Network, NetworkWithObjects } from '@owlprotocol/web3-redux';
-import { WalletContext } from '../constants/web3React';
+import { hooks } from '../connectors/metaMask';
+
+const { useChainId, useAccounts, useIsActive } = hooks;
 
 export function useConfigureFromWeb3React() {
     const dispatch = useDispatch();
 
     //Web3React data
-    const { chainId, account: newAccount, library } = useWeb3React(WalletContext); //Injected connector value
+    const chainId = useChainId();
+    const accounts = useAccounts();
+    const isActive = useIsActive();
+
+    /*
     const newNetworkId = chainId ? `${chainId}` : undefined;
     const newWeb3Sender = library as Web3 | undefined;
 
@@ -17,6 +24,7 @@ export function useConfigureFromWeb3React() {
     const [currentNetworkId, setNetworkId] = Config.hooks.useNetworkId();
     const [currentAccount, setAccount] = Config.hooks.useAccount();
     const [currentNetwork] = Network.hooks.useNetwork(currentNetworkId ?? '1');
+
     const currentWeb3Sender = (currentNetwork as NetworkWithObjects | undefined)?.web3Sender;
 
     //Update networkId
@@ -35,6 +43,7 @@ export function useConfigureFromWeb3React() {
             dispatch(Network.actions.update({ networkId: newNetworkId, web3Sender: newWeb3Sender }));
         }
     }, [dispatch, newNetworkId, newWeb3Sender, currentWeb3Sender]);
+    */
 }
 
 export default useConfigureFromWeb3React;

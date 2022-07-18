@@ -26,16 +26,9 @@ export function* addAll(action: AddAllAction) {
             //@ts-expect-error
             const file = files[i];
             const { cid } = entries[i];
-
-            const content = yield* call(IPFSCacheCRUD.db.get, cid.toString());
-            if (!content)
-                yield* put(
-                    IPFSCacheCRUD.actions.create({ contentId: cid.toString(), data: file, type: IPFSDataType.File }),
-                );
-            else if (!content?.data)
-                yield* put(
-                    IPFSCacheCRUD.actions.update({ contentId: cid.toString(), data: file, type: IPFSDataType.File }),
-                );
+            yield* put(
+                IPFSCacheCRUD.actions.upsert({ contentId: cid.toString(), data: file, type: IPFSDataType.File }),
+            );
         }
     } catch (error) {
         const err = error as Error;

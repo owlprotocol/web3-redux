@@ -14,14 +14,17 @@ To fully understand the architecture of web3-redux, you might want to get famili
 
 **React**
 -   [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+
 **Redux**
 -   [redux](https://redux.js.org/)
 -   [redux-saga](https://redux-saga.js.org/)
 -   [redux-orm](https://redux-orm.github.io/redux-orm/)
 -   [reselect](https://github.com/reduxjs/reselect)
+
 **IndexedDB**
 -   [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
 -   [Dexie.js](https://dexie.org/docs/)
+
 **Blockchain/Web3**
 -   [web3.js](https://web3js.readthedocs.io/en/v1.3.0/)
 -   [js-ipfs](https://github.com/ipfs/js-ipfs/tree/master/docs/core-api)
@@ -47,7 +50,7 @@ All of these operations have **batched** versions (`{ACTION}/BATCHED`) enabling 
 ## State
 State is stored in 2 distinct ways, persistent and in-memory.
 
-**IndexedDB**
+#### IndexedDB
 Persistent state is stored using [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API), a modern NoSQL database for the browser supported by Chromium, Mozilla and other mainstream browsers. We used [indexeddbshim](https://github.com/indexeddbshim/indexeddbshim) to potentially support older browsers with [WebSQL](https://caniuse.com/?search=websql) and to run our NodeJS tests by emulating the IndexedDB APIs in-memory. Data stored in IndexedDB can be indexed using various indices enabling efficient queries and pagination. Data is also persistent across user sessions, enabling the web app to load with data on startup without having to make any API calls.
 Most of our data models such as Block, Transaction, ContractEvent are just stored in IndexedDB but other models also have the concept of instantiated objects such as `Web3.eth.Contract` which is used for querying blockchain data. Due to the limitation that all data stored in IndexedDB must be encodable, we cannot store these objects in IndexedDB and instead opt to use a secondary in-memory redux store to store this data during the user session.
 Due to the low-level complexity of IndexedDB APIs, we use [Dexie.js](https://dexie.org/) as an easy to use API wrapper for CRUD operations on IndexedDB.
@@ -56,7 +59,7 @@ For reading data, we use the Dexie provided [useLiveQuery](https://dexie.org/doc
 * `useGetBulk(ids|indices)`
 * `useWhere(filter, {reverse,offset,limit})`
 
-**Redux**
+### Redux
 We use the Redux store to store models that required an instantiated object during the user session. Such objects while not directly stored in IndexedDB, usually have relevant info stored persistently.
 - Config: The `ipfsUrl` data stored in IndexedDB enables instantiating the `ipfsClient` object.
 - Network: The `web3Rpc` data stored in IndexedDB enables instantiating the `web3` object.
@@ -75,7 +78,7 @@ Selectors have their hook counterparts, which abstract the need to pass in the s
 * `useSelectWhere(filter)`
 
 ## Actions
-State is mutated by the dispatching of Actions. Actions are **synchronously** processed by **reducers** for updates to the redux state and then **asyncrounously** processed by **sagas** for updates to the IndexedDB state as its API is asynchrounous. Other actions such as API calls to fetch data are also usually asynchrously processed by sagas. Action creators validate the payload they are given using the `validate` or `validateId` function for a specific data model.
+State is mutated by the dispatching of Actions. Actions are **synchronously** processed by **reducers** for updates to the redux state and then **asynchronously** processed by **sagas** for updates to the IndexedDB state as its API is asynchronous. Other actions such as API calls to fetch data are also usually asynchronously processed by sagas. Action creators validate the payload they are given using the `validate` or `validateId` function for a specific data model.
 ## Reducers
 Reducers are used by the redux-orm to update the redux state for all CRUD operations.
 
@@ -89,14 +92,17 @@ We use the following building blocks of hooks to create easy to use hooks for co
 * `useSelector`: Read data from redux state.
 
 All data models include the following hooks:
-**Dexie useLiveQuery Hooks**
+
+**Dexie `useLiveQuery` Hooks**
 * `useGet(id|index)`
 * `useGetBulk(ids|indices)`
 * `useWhere(filter, {reverse,offset,limit})`
-**Redux useSelector Hooks**
+
+**Redux `useSelector` Hooks**
 * `useSelectByIdSingle(id)`
 * `useSelectByIdMany(ids)`
 * `useSelectAll()`
 * `useSelectWhere(filter)`
+
 **Other Hooks**
 * `useHydrate(id)`: Hydrate redux state by reading persistent IndexedDB state & dispatching an `UPDATE` action if item exists in IndexedDB state but **not** in redux state. This is a simple way to make sure that a `Contract` model's `web3Contract` is instantianted.

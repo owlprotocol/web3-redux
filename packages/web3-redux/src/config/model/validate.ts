@@ -8,8 +8,8 @@ export function validateId({ id }: ConfigId) {
     return { id };
 }
 
-export function toPrimaryKey({ id }: ConfigId): [string] {
-    return [id];
+export function toPrimaryKey({ id }: ConfigId): string {
+    return id;
 }
 
 /**

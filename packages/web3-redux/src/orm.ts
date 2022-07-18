@@ -22,12 +22,6 @@ export function getOrm(): any {
 
 /** @internal */
 export const initializeState = (orm: any) => {
-    //TODO: redux-persist state reconciler might break this
     const state = orm.getEmptyState();
-
-    //TODO: Merge initial state redux-persist??
-    const { Config } = orm.mutableSession(state);
-    Config.create({ id: 0, networkId: '1', ipfsUrl: IPFS_URL, _4byteUrl: _4BYTE_URL });
-
     return state;
 };

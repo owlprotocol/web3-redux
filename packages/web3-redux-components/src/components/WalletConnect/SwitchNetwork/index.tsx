@@ -37,7 +37,7 @@ export const SwitchNetwork = ({ networkId }: SwitchNetworkProps) => {
     const isActive = useIsActive();
     const provider = useProvider();
 
-    console.debug({ chainId, isActivating, isActive, error })
+    //console.debug({ chainId, isActivating, isActive, error })
 
     // attempt to connect eagerly on mount
     useEffect(() => {

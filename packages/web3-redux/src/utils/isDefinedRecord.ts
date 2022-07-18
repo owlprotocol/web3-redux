@@ -7,4 +7,11 @@ export function isDefinedRecord<T extends Record<string, any> = Record<string, a
     return true;
 }
 
+export function isDefined<T extends Record<string, any> = Record<string, any>>(
+    t: string | Partial<T> | undefined,
+): t is string | T {
+    if (!t) return false;
+    return typeof t === 'string' || isDefinedRecord(t);
+}
+
 export default isDefinedRecord;

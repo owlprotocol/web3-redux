@@ -166,6 +166,18 @@ describe(`${name}/crud.test.js`, () => {
                 assert.deepEqual(selected, { ...ethCall1, returnValue: 42 });
             });
 
+            it('upsert - update concurrent', async () => {
+                const add = EthCallCRUD.db.add(ethCall1);
+                const upsert = EthCallCRUD.db.upsert({ ...ethCall1, returnValue: 42 });
+                await Promise.all([add, upsert]);
+                const selected = await EthCallCRUD.db.get({
+                    networkId: ethCall1.networkId,
+                    to: ethCall1.to,
+                    data: ethCall1.data,
+                });
+                assert.deepEqual(selected, { ...ethCall1, returnValue: 42 });
+            });
+
             it('bulkUpsert - insert', async () => {
                 await EthCallCRUD.db.bulkUpsert([ethCall1]);
                 const selected = await EthCallCRUD.db.get({

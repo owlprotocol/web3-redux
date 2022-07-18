@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
-import Web3 from 'web3';
 import { useDispatch } from 'react-redux';
 import { Config, Network, NetworkWithObjects } from '@owlprotocol/web3-redux';
 import { hooks } from '../connectors/metaMask';
+import getLibrary from '../utils/getLibrary';
 
 const { useChainId, useAccounts, useProvider } = hooks;
 
@@ -12,19 +12,22 @@ export function useConfigureFromWeb3React() {
     //Web3React data
     const chainId = useChainId();
     const accounts = useAccounts();
-    const provider = useProvider();
+    const metamask = useProvider();
+    const provider = metamask?.provider;
 
-    const newWeb3Sender = useMemo(() => (provider ? new Web3(provider as any) : undefined), [provider]);
+    const newWeb3Sender = useMemo(() => (provider ? getLibrary(provider) : undefined), [provider]);
     const newAccount = accounts && accounts.length > 0 ? accounts[0].toLowerCase() : undefined;
     const newNetworkId = chainId ? `${chainId}` : undefined;
 
     //Web3Redux data
-    const [currentNetworkId, setNetworkId] = Config.hooks.useNetworkId();
-    const [currentAccount, setAccount] = Config.hooks.useAccount();
+    const [config, { setNetworkId, setAccount }] = Config.hooks.useConfig();
+    const { account: currentAccount, networkId: currentNetworkId } = config ?? {};
+
     const [currentNetwork] = Network.hooks.useNetwork(currentNetworkId ?? '1');
     const currentWeb3Sender = (currentNetwork as NetworkWithObjects | undefined)?.web3Sender;
+    const isSameWeb3Provider = currentWeb3Sender?.givenProvider === provider;
 
-    console.debug({ newAccount, currentAccount });
+    //console.debug({ newAccount, currentAccount, newNetworkId, currentNetworkId, newWeb3Sender, currentWeb3Sender });
 
     //Update networkId
     useEffect(() => {
@@ -38,10 +41,10 @@ export function useConfigureFromWeb3React() {
 
     //Update web3Sender
     useEffect(() => {
-        if (newNetworkId && newWeb3Sender != currentWeb3Sender) {
+        if (newNetworkId && !isSameWeb3Provider) {
             dispatch(Network.actions.upsert({ networkId: newNetworkId, web3Sender: newWeb3Sender }));
         }
-    }, [dispatch, newNetworkId, newWeb3Sender, currentWeb3Sender]);
+    }, [dispatch, newNetworkId, isSameWeb3Provider, newWeb3Sender]);
 }
 
 export default useConfigureFromWeb3React;

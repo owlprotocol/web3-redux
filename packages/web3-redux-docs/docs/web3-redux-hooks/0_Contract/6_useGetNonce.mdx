@@ -3,7 +3,7 @@
 Get nonce (tx count) of address. Uses [Web3.eth.getTransactionCount](https://web3js.readthedocs.io/en/v1.7.0/web3-eth.html#gettransactioncount)
 
 ```tsx
-const nonce = Contract.useGetNonce(networkId, address);
+const nonce = Contract.hooks.useGetNonce(networkId, address);
 ```
 
 **Reference:** [Contract.useGetNonce](../../web3-redux-reference/namespaces/Contract.md#usegetnonce)

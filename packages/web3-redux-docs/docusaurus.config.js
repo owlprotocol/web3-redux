@@ -6,6 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+    themes: ['@docusaurus/theme-live-codeblock'],
     title: 'Web3 Redux',
     tagline: 'Redux for Web3',
     url: 'https://owlprotocol.github.io',

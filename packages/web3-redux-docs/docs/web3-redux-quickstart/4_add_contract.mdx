@@ -35,9 +35,9 @@ Below we've extended the example from the previous section and add a generic `IE
 <TabItem value="react" label="React">
 
 ```tsx  title="src/App.tsx"
-import { Network, Abi } from '@owlprotocol/web3-redux';
+import { Abi, Network } from '@owlprotocol/web3-redux';
 
-const defaultNetwork = { web3Rpc: 'http://localhost:8545' };
+const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 const defaultContract = { abi: Abi.IERC20.abi };
 
@@ -52,14 +52,14 @@ const App = () => {
 ```
 
 :::caution
-The component must have access to the Redux context (see [Configure Store](./2_add_store.md)).
+The component must have access to the Redux context (see [Configure Store](./2_add_store.mdx)).
 :::
 
 </TabItem>
 <TabItem value="redux" label="Redux">
 
 ```typescript title="src/createContract.ts"
-import { store, Network } from '@leovigna/web3-redux';
+import { store, Network } from '@owlprotocol/web3-redux';
 const defaultNetwork = { networkId: '1', web3Rpc: 'http://localhost:8545' };
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 const defaultContract = { networkId: '1', address: USDC, abi: Abi.IERC20.abi };

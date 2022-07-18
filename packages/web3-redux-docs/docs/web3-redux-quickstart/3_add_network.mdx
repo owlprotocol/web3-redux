@@ -28,7 +28,7 @@ If using React, you will want to configure the network(s) on app mount with the 
 ```tsx  title="src/App.tsx"
 import { Network } from '@owlprotocol/web3-redux';
 
-const defaultNetwork = { web3Rpc: 'http://localhost:8545' }
+const defaultNetwork = { web3Rpc: 'ws://localhost:8545' }
 const App = () => {
     // highlight-start
     const [network] = Network.hooks.useNetwork('1', defaultNetwork);
@@ -39,7 +39,7 @@ const App = () => {
 ```
 
 :::caution
-The component must have access to the Redux context (see [Configure Store](./2_add_store.md)).
+The component must have access to the Redux context (see [Configure Store](./2_add_store.mdx)).
 :::
 
 </TabItem>
@@ -49,7 +49,7 @@ In pure Redux, the configuration can be dispatched from the store.
 
 
 ```typescript title="src/createNetwork.ts"
-import { store, Network } from '@leovigna/web3-redux';
+import { store, Network } from '@owlprotocol/web3-redux';
 const defaultNetwork = { networkId: '1', web3Rpc: 'http://localhost:8545' };
 
 // highlight-start

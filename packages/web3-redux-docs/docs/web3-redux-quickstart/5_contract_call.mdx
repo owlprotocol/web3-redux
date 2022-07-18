@@ -1,0 +1,81 @@
+---
+sidebar_position: 5
+label: 'Contract Call'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Contract Call
+
+We now look to read data from the contract we have added to our app.
+
+A contract call is read-only RPC request to fetch data from a smart contract. Fetching an ERC20 token balance with `balanceOf(address)` is a contract call for example. Under the hood, Web3-Redux uses the [web3.eth.Contract.methods.myMethod.call](https://web3js.readthedocs.io/en/v1.7.0/web3-eth-contract.html#methods-mymethod-call) API.
+
+In this example we will do a simple `balanceOf(address)` contract calls on the `USDC` token contract:
+
+
+<Tabs groupId="framework">
+<TabItem value="react" label="React">
+
+The easiest way make a contract is using the `useContractCall` hook. This combines dispatching a redux action and using a selector to return the updated result.
+
+```tsx  title="src/App.tsx"
+import { Abi, Contract, Network } from '@owlprotocol/web3-redux';
+
+const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
+const defaultContract = { abi: Abi.IERC20.abi };
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
+
+const App = () => {
+    const [network] = Network.hooks.useNetwork('1', defaultNetwork)
+    const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
+    // highlight-start
+    const [balance] = Contract.hooks.useContractCall('1', USDC, 'balanceOf', [VITALIK]);
+    // highlight-end
+
+    return <>{balance}</>
+};
+```
+
+:::tip
+Here our hook implicitly uses `"ifnull"` as the default sync parameter to instruct the hook to dispatch an eth call only if no value is currently cached.
+For more info on complex sync strategies, see the [Advanced/Contract Call Sync](..//web3-redux-advanced/sync_contract_call.md)
+:::
+
+</TabItem>
+<TabItem value="redux" label="Redux">
+
+Under the hood, the [useContractCall](../web3-redux-reference/namespaces/Contract.md#usecontractcall) hook is mainly composed by dispatching a [call](../web3-redux-reference/namespaces/Contract.md#call) action and then using the [selectContractCall](../web3-redux-reference/namespaces/Contract.md#selectcontractcall) selector to read the result from the state.
+
+```typescript title="src/createContractCall.ts"
+import { store, Contract, Network, EthCall, TestData } from '@owlprotocol/web3-redux';
+
+const networkId = '1'
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
+
+//Make contract call
+//highlight-start
+store.dispatch(Contract.actions.call({
+    networkId,
+    address: USDC,
+    method: 'balanceOf',
+    args: [VITALIK],
+}));
+ //highlight-end
+const balance = await EthCall.db.get({
+    networkId,
+    to: USDC,
+    methodName: method as string,
+    argsHash: JSON.stringify([VITALIK]),
+})
+```
+
+</TabItem>
+</Tabs>
+
+
+
+

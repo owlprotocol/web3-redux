@@ -6,6 +6,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
 import { IndexableType, IndexableTypeArrayReadonly } from 'dexie';
+import createCRUDActions from './createActions.js';
 import { compact, filter, zip, isEqual } from '../utils/lodash/index.js';
 import { create as createError } from '../error/actions/create.js';
 import getDB from '../db.js';
@@ -56,158 +57,10 @@ export function createCRUDModel<
     const toPrimaryKeyString = (id: T_ID | string): string =>
         typeof id === 'string' ? id : toReduxOrmId(toPrimaryKey(id));
 
-    /** Actions */
-    const CREATE = `${name}/CREATE`;
-    const CREATE_BATCHED = `${CREATE}/BATCHED`;
-    const PUT = `${name}/PUT`;
-    const PUT_BATCHED = `${PUT}/BATCHED`;
-    const UPDATE = `${name}/UPDATE`;
-    const UPDATE_BATCHED = `${UPDATE}/BATCHED`;
-    const UPSERT = `${name}/UPSERT`;
-    const UPSERT_BATCHED = `${UPSERT}/BATCHED`;
-    const DELETE = `${name}/DELETE`;
-    const DELETE_BATCHED = `${DELETE}/BATCHED`;
-    //const DELETE_ALL = `${DELETE}/ALL`;
-    const HYDRATE = `${name}/HYDRATE`;
-    const HYDRATE_BATCHED = `${HYDRATE}/BATCHED`;
-    const HYDRATE_ALL = `${HYDRATE}/ALL`;
-
-    const createAction = createReduxAction(CREATE, (payload: T, uuid?: string) => {
-        return {
-            payload: validate(payload),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
+    const { actions, actionTypes, isAction } = createCRUDActions<U, T_ID, T_Encoded, T, T_Idx>(name, {
+        validateId,
+        validate,
     });
-    const createBatchedAction = createReduxAction(CREATE_BATCHED, (payload: T[], uuid?: string) => {
-        return {
-            payload: payload.map(validate),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const putAction = createReduxAction(PUT, (payload: T, uuid?: string) => {
-        return {
-            payload: validate(payload),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const putBatchedAction = createReduxAction(PUT_BATCHED, (payload: T[], uuid?: string) => {
-        return {
-            payload: payload.map(validate),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const updateAction = createReduxAction(UPDATE, (payload: T, uuid?: string) => {
-        return {
-            payload: validate(payload),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const updateBatchedAction = createReduxAction(UPDATE_BATCHED, (payload: T[], uuid?: string) => {
-        return {
-            payload: payload.map(validate),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const upsertAction = createReduxAction(UPSERT, (payload: T, uuid?: string) => {
-        return {
-            payload: validate(payload),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const upsertBatchedAction = createReduxAction(UPSERT_BATCHED, (payload: T[], uuid?: string) => {
-        return {
-            payload: payload.map(validate),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const deleteAction = createReduxAction(DELETE, (payload: T_ID, uuid?: string) => {
-        return {
-            payload: validateId(payload),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const deleteBatchedAction = createReduxAction(DELETE_BATCHED, (payload: T_ID[], uuid?: string) => {
-        return {
-            payload: payload.map(validateId),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const hydrateAction = createReduxAction(HYDRATE, (payload: T_Idx, uuid?: string) => {
-        return {
-            payload: payload,
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const hydrateBatchedAction = createReduxAction(HYDRATE_BATCHED, (payload: T_ID[], uuid?: string) => {
-        return {
-            payload: payload.map(validateId),
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
-    const hydrateAllAction = (uuid?: string) => {
-        return {
-            type: HYDRATE_ALL,
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    };
-
-    const actionTypes = {
-        CREATE,
-        CREATE_BATCHED,
-        PUT,
-        PUT_BATCHED,
-        UPDATE,
-        UPDATE_BATCHED,
-        UPSERT,
-        UPSERT_BATCHED,
-        DELETE,
-        DELETE_BATCHED,
-        HYDRATE,
-        HYDRATE_BATCHED,
-        HYDRATE_ALL,
-    };
-
-    const actions = {
-        create: createAction,
-        createBatched: createBatchedAction,
-        put: putAction,
-        putBatched: putBatchedAction,
-        update: updateAction,
-        updateBatched: updateBatchedAction,
-        upsert: upsertAction,
-        upsertBatched: upsertBatchedAction,
-        delete: deleteAction,
-        deleteBatched: deleteBatchedAction,
-        hydrate: hydrateAction,
-        hydrateBatched: hydrateBatchedAction,
-        hydrateAll: hydrateAllAction,
-    };
 
     type CreateAction = ReturnType<typeof actions.create>;
     type CreateBatchedAction = ReturnType<typeof actions.createBatched>;
@@ -222,24 +75,6 @@ export function createCRUDModel<
     type HydrateAction = ReturnType<typeof actions.hydrate>;
     type HydrateBatchedAction = ReturnType<typeof actions.hydrateBatched>;
     type HydrateAllAction = ReturnType<typeof actions.hydrateAll>;
-
-    const isAction = (action: Action) => {
-        return (
-            actions.create.match(action) ||
-            actions.createBatched.match(action) ||
-            actions.put.match(action) ||
-            actions.putBatched.match(action) ||
-            actions.update.match(action) ||
-            actions.updateBatched.match(action) ||
-            actions.upsert.match(action) ||
-            actions.upsertBatched.match(action) ||
-            actions.delete.match(action) ||
-            actions.deleteBatched.match(action) ||
-            actions.hydrate.match(action) ||
-            actions.hydrateBatched.match(action) ||
-            HYDRATE_ALL === action.type
-        );
-    };
 
     /** Redux ORM Reducer */
     const reducer = (sess: any, action: Action) => {
@@ -264,9 +99,9 @@ export function createCRUDModel<
             Model.upsert(hydrate(action.payload, sess));
         } else if (actions.upsertBatched.match(action)) {
             action.payload.forEach((p) => Model.upsert(hydrate(p, sess)));
-        } else if (deleteAction.match(action)) {
+        } else if (actions.delete.match(action)) {
             Model.withId(toPrimaryKeyString(action.payload))?.delete();
-        } else if (deleteBatchedAction.match(action)) {
+        } else if (actions.deleteBatched.match(action)) {
             action.payload.forEach((p) => Model.withId(toPrimaryKeyString(p))?.delete());
         }
         return sess;
@@ -698,7 +533,7 @@ export function createCRUDModel<
     const hydrateAllSaga = function* (action: HydrateAllAction) {
         try {
             const items = yield* call(all);
-            if (items) yield* putDispatch(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
+            if (items) yield* putDispatch(actions.updateBatched(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
             yield* putDispatch(
                 createError(
@@ -716,19 +551,19 @@ export function createCRUDModel<
 
     const crudRootSaga = function* () {
         yield* allSaga([
-            takeEvery(CREATE, createSaga),
-            takeEvery(CREATE_BATCHED, createBatchedSaga),
-            takeEvery(PUT, putSaga),
-            takeEvery(PUT_BATCHED, putBatchedSaga),
-            takeEvery(UPDATE, updateSaga),
-            takeEvery(UPDATE_BATCHED, updateBatchedSaga),
-            takeEvery(UPSERT, upsertSaga),
-            takeEvery(UPSERT_BATCHED, upsertBatchedSaga),
-            takeEvery(DELETE, deleteSaga),
-            takeEvery(DELETE_BATCHED, deleteBatchedSaga),
-            takeEvery(HYDRATE, hydrateSaga),
-            takeEvery(HYDRATE_BATCHED, hydrateBatchedSaga),
-            takeEvery(HYDRATE_ALL, hydrateAllSaga),
+            takeEvery(actionTypes.CREATE, createSaga),
+            takeEvery(actionTypes.CREATE_BATCHED, createBatchedSaga),
+            takeEvery(actionTypes.PUT, putSaga),
+            takeEvery(actionTypes.PUT_BATCHED, putBatchedSaga),
+            takeEvery(actionTypes.UPDATE, updateSaga),
+            takeEvery(actionTypes.UPDATE_BATCHED, updateBatchedSaga),
+            takeEvery(actionTypes.UPSERT, upsertSaga),
+            takeEvery(actionTypes.UPSERT_BATCHED, upsertBatchedSaga),
+            takeEvery(actionTypes.DELETE, deleteSaga),
+            takeEvery(actionTypes.DELETE_BATCHED, deleteBatchedSaga),
+            takeEvery(actionTypes.HYDRATE, hydrateSaga),
+            takeEvery(actionTypes.HYDRATE_BATCHED, hydrateBatchedSaga),
+            takeEvery(actionTypes.HYDRATE_ALL, hydrateAllSaga),
         ]);
     };
 
@@ -834,9 +669,9 @@ export function createCRUDModel<
         const action = useMemo(() => {
             if (idx && !itemReduxExists && !isLoading) {
                 if (!itemDBExists && defaultItem) {
-                    return createAction(defaultItem);
+                    return actions.create(defaultItem);
                 } else if (itemDBExists && isDefinedRecord(idx)) {
-                    return hydrateAction(idx);
+                    return actions.hydrate(idx);
                 }
             }
         }, [idx, itemReduxExists, isLoading, itemDBExists, defaultItem]);

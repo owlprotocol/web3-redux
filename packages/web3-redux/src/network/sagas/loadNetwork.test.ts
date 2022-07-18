@@ -28,7 +28,7 @@ describe(`${name}/sagas/loadNetwork.test.ts`, () => {
                 .next({ networkId }) //no web3 instance, will hydrate
                 .call(NetworkCRUD.db.get, networkId)
                 .next({ networkId, web3Rpc: 'http://localhost:8545' })
-                .put(NetworkCRUD.actions.update({ networkId, web3Rpc: 'http://localhost:8545' }, ''))
+                .put(NetworkCRUD.actions.upsert({ networkId, web3Rpc: 'http://localhost:8545' }, ''))
                 .next()
                 .select(NetworkCRUD.selectors.selectByIdSingle, networkId)
                 .next({ networkId, web3 })

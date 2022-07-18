@@ -9,8 +9,8 @@ export function validateId({ networkId }: NetworkId) {
     return { networkId };
 }
 
-export function toPrimaryKey({ networkId }: NetworkId): [string] {
-    return [networkId];
+export function toPrimaryKey({ networkId }: NetworkId): string {
+    return networkId;
 }
 
 /**

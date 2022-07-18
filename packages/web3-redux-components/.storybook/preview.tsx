@@ -1,15 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core'
 import { ChakraProvider } from '@chakra-ui/react';
-import { store } from '@owlprotocol/web3-redux';
-import { withMockData } from '../src/hoc/withMockData';
+import composeHooks from 'react-hooks-compose';
+import { useConfigureFromWeb3React, useMockData } from '../src/hooks/index.js'
+import { withChakraProvider, withMockData, withStoreProvider, withWeb3ReactProvider } from '../src/hoc/index.js';
 import { THEME_COLORS } from '../src/constants';
-import { WalletContext } from '../src/constants/web3React'
-import { getLibrary } from '../src/utils/getLibrary'
 
 import theme from '../src/theme';
+import { Provider } from 'react-redux';
+import { store } from '@owlprotocol/web3-redux';
 
 export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },
@@ -34,24 +33,20 @@ export const parameters = {
     },
 }
 
-//Browser wallet context provider
-const Web3ProviderWallet = createWeb3ReactRoot(WalletContext)
-
 export const decorators = [
     (Story) => {
-        const StoryWithData = withMockData(Story)
+        let Story2 = withChakraProvider(Story)
+        Story2 = withWeb3ReactProvider(Story2)
+        Story2 = composeHooks(() => ({
+            useConfigureFromWeb3React,
+            useMockData,
+        }))(Story2)
         return (
-            <Web3ReactProvider getLibrary={getLibrary}>
-                <Web3ProviderWallet getLibrary={getLibrary}>
-                    <Router>
-                        <Provider store={store}>
-                            <ChakraProvider theme={theme}>
-                                <StoryWithData />
-                            </ChakraProvider>
-                        </Provider>
-                    </Router>
-                </Web3ProviderWallet>
-            </Web3ReactProvider>
+            <Router>
+                <Provider store={store}>
+                    <Story2 />
+                </Provider>
+            </Router>
         )
     }
 ];

@@ -14,12 +14,9 @@ function* fetch(action: FetchAction) {
     const web3 = network.web3 ?? network.web3Sender;
     if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
-    const tx = (yield* call(TransactionCRUD.db.get, { networkId, hash })) as Transaction | undefined;
-    if (!tx) yield* put(TransactionCRUD.actions.create({ networkId, hash }));
-
     const transaction = yield* call(web3.eth.getTransaction, hash);
     const newTransaction = { ...transaction, networkId } as Transaction;
-    yield* put(TransactionCRUD.actions.update(newTransaction));
+    yield* put(TransactionCRUD.actions.put(newTransaction));
 }
 
 export default fetch;

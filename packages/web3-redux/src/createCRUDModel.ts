@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { put as putDispatch, call, all as allSaga, takeEvery } from 'typed-redux-saga';
+import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
-import { IndexableTypeArrayReadonly } from 'dexie';
-import { compact, filter, zip } from './utils/lodash/index.js';
+import { IndexableType, IndexableTypeArrayReadonly } from 'dexie';
+import { compact, filter, zip, isEqual } from './utils/lodash/index.js';
 import { create as createError } from './error/actions/create.js';
 import getDB from './db.js';
 import { getOrm } from './orm.js';
 import toReduxOrmId from './utils/toReduxORMId.js';
-import isDefinedRecord from './utils/isDefinedRecord.js';
+import isDefinedRecord, { isDefined } from './utils/isDefinedRecord.js';
 
 /**
  *
@@ -38,14 +38,20 @@ export function createCRUDModel<
             validate?: (item: T) => T;
             hydrate?: (item: T, sess?: any) => T;
             encode?: (item: T) => T_Encoded;
-            toPrimaryKey?: (id: T_ID) => IndexableTypeArrayReadonly;
+            toPrimaryKey?: (id: T_ID) => IndexableType;
         },
 ) {
     const validateId = validators?.validateId ?? ((id: T_ID) => id);
     const validate = validators?.validate ?? ((item: T) => item);
     const hydrate = validators?.hydrate ?? ((id: T) => id);
     const encode = validators?.encode ?? ((item: T) => item);
-    const toPrimaryKey = validators?.toPrimaryKey ?? ((id: T_ID) => Object.values(id) as IndexableTypeArrayReadonly);
+    const toPrimaryKey =
+        validators?.toPrimaryKey ??
+        ((id: T_ID) => {
+            const values = Object.values(id) as IndexableTypeArrayReadonly;
+            if (values.length == 1) return values[0];
+            return values;
+        });
 
     const toPrimaryKeyString = (id: T_ID | string): string =>
         typeof id === 'string' ? id : toReduxOrmId(toPrimaryKey(id));
@@ -643,8 +649,18 @@ export function createCRUDModel<
         try {
             const { payload } = action;
 
-            const item = yield* call(get, payload);
-            if (item) yield* putDispatch(updateAction(item as T, action.meta.uuid)); //Update redux by dispatching an update
+            const itemDB = yield* call(get, payload);
+            const itemRedux = yield* selectSaga(selectByIdSingle, payload);
+
+            if (itemDB) {
+                if (!itemRedux) {
+                    //Update redux by dispatching an update
+                    yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
+                } else if (!isEqual(encode(itemRedux), itemDB)) {
+                    //Update redux by dispatching an update
+                    yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
+                }
+            }
         } catch (error) {
             yield* putDispatch(
                 createError(
@@ -664,7 +680,7 @@ export function createCRUDModel<
             const { payload } = action;
 
             const items = yield* call(bulkGet, payload);
-            if (items) yield* putDispatch(updateBatchedAction(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
+            if (items) yield* putDispatch(actions.upsertBatched(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
         } catch (error) {
             yield* putDispatch(
                 createError(
@@ -735,11 +751,10 @@ export function createCRUDModel<
 
     /** Dexie Hooks */
     const useGet = (idx: Partial<T_Idx> | string | undefined) => {
-        const response = useLiveQuery(
-            () => (idx && (typeof idx === 'string' || isDefinedRecord(idx)) ? get(idx) : undefined),
-            [JSON.stringify(idx)],
-            'loading' as const,
-        );
+        const defined = isDefined(idx);
+        const dep = defined ? JSON.stringify(idx) : undefined;
+
+        const response = useLiveQuery(() => (defined ? get(idx) : undefined), [dep], 'loading' as const);
         const isLoading = response === 'loading';
         const result = isLoading ? undefined : response;
         const exists = isLoading || !!result; //assume exists while loading
@@ -752,7 +767,7 @@ export function createCRUDModel<
             () => {
                 if (ids) {
                     const ids2 = (ids as (Partial<T_ID> | string)[]).filter((id) => {
-                        return typeof id === 'string' || isDefinedRecord(id);
+                        return isDefined(id);
                     }) as T_ID[] | string[];
                     return bulkGet(ids2);
                 }
@@ -809,25 +824,26 @@ export function createCRUDModel<
         const dispatch = useDispatch();
         const [itemDB, { isLoading, exists: itemDBExists }] = useGet(idx);
 
-        const id = useMemo(() => (itemDB ? validateId(itemDB) : undefined), [itemDB]);
-        const item = useSelectByIdSingle(id);
-        const itemExists = !!item;
+        //Use db item or assume idx is id
+        const id = useMemo(() => (itemDB ? validateId(itemDB) : validateId(idx as T_ID)), [idx, itemDB]);
+        const itemRedux = useSelectByIdSingle(id);
+        const itemReduxExists = !!itemRedux;
 
         //console.debug({ idx, itemDB, itemDBExists, item, itemExists, isLoading, defaultItem });
         //Reset state
         const action = useMemo(() => {
-            if (idx && !itemExists) {
-                if (!isLoading && !itemDBExists && defaultItem) {
+            if (idx && !itemReduxExists && !isLoading) {
+                if (!itemDBExists && defaultItem) {
                     return createAction(defaultItem);
-                } else if (!isLoading && itemDBExists && isDefinedRecord(idx)) {
+                } else if (itemDBExists && isDefinedRecord(idx)) {
                     return hydrateAction(idx);
                 }
             }
-        }, [idx, itemExists, isLoading, itemDBExists, defaultItem]);
+        }, [idx, itemReduxExists, isLoading, itemDBExists, defaultItem]);
 
         useEffect(() => {
-            if (itemExists) setActionDispatched(false);
-        }, [idx, itemExists]);
+            if (itemReduxExists) setActionDispatched(false);
+        }, [idx, itemReduxExists]);
 
         useEffect(() => {
             if (action && !actionDispatched) {
@@ -836,8 +852,8 @@ export function createCRUDModel<
             }
         }, [dispatch, action, actionDispatched]);
 
-        const returnValue = item ?? itemDB ?? defaultItem;
-        const exists = itemExists || itemDBExists;
+        const returnValue = itemRedux ?? itemDB ?? defaultItem;
+        const exists = itemReduxExists || itemDBExists;
         const returnOptions = { isLoading, exists };
 
         return [returnValue, returnOptions] as [typeof returnValue, typeof returnOptions];

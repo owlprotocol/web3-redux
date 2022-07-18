@@ -4,16 +4,23 @@ import { create as createIPFS } from 'ipfs-http-client';
 import { Config, ConfigId, ConfigWithObjects } from './interface.js';
 import { omit, omitBy, isUndefined } from '../../utils/lodash/index.js';
 
-export function validateId(config: ConfigId) {
-    return config;
+export function validateId({ id }: ConfigId) {
+    return { id };
+}
+
+export function toPrimaryKey({ id }: ConfigId): string {
+    return id;
 }
 
 /**
  * Validate config.
  * @param config
  */
-export function validate(config: Config): Config {
-    return config;
+export function validate({ id, networkId, account, ipfsUrl, _4byteUrl, corsProxy }: Config): Config {
+    return omitBy(
+        { id, networkId, account: account?.toLowerCase(), ipfsUrl, _4byteUrl, corsProxy },
+        isUndefined,
+    ) as unknown as Config;
 }
 
 /**

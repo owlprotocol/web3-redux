@@ -1,7 +1,4 @@
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { setNetworkId } from '../actions/index.js';
-import ConfigCRUD from '../crud.js';
+import useConfig from './useConfig.js';
 
 /**
  * @category Hooks
@@ -9,17 +6,9 @@ import ConfigCRUD from '../crud.js';
  * callback that will automatically dispatch an action.
  */
 export function useNetworkId() {
-    const dispatch = useDispatch();
-    const [config] = ConfigCRUD.hooks.useGet('0');
-    const { networkId: value } = config ?? {};
-    const setNetworkIdCallback = useCallback(
-        (networkId: string) => {
-            dispatch(setNetworkId(networkId));
-        },
-        [dispatch],
-    );
-
-    return [value, setNetworkIdCallback] as [typeof value, typeof setNetworkIdCallback];
+    const [config, { setNetworkId }] = useConfig();
+    const networkId = config?.networkId;
+    return [networkId, setNetworkId] as [typeof networkId, typeof setNetworkId];
 }
 
 export default useNetworkId;

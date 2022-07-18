@@ -1,7 +1,4 @@
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import ConfigCRUD from '../crud.js';
-import { setAccount } from '../actions/index.js';
+import useConfig from './useConfig.js';
 
 /**
  * @category Hooks
@@ -9,17 +6,9 @@ import { setAccount } from '../actions/index.js';
  * callback that will automatically dispatch an action.
  */
 export function useAccount() {
-    const dispatch = useDispatch();
-    const [config] = ConfigCRUD.hooks.useGet('0');
-    const { account: value } = config ?? {};
-    const setAccountCallback = useCallback(
-        (account: string) => {
-            dispatch(setAccount(account));
-        },
-        [dispatch],
-    );
-
-    return [value, setAccountCallback] as [typeof value, typeof setAccountCallback];
+    const [config, { setAccount }] = useConfig();
+    const account = config?.account;
+    return [account, setAccount] as [typeof account, typeof setAccount];
 }
 
 export default useAccount;

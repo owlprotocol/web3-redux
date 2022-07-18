@@ -8,6 +8,7 @@ export const {
     groupBy,
     omit,
     omitBy,
+    isEqual,
     isMatch,
     isUndefined,
     reduce,

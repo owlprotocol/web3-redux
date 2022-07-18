@@ -17,7 +17,7 @@ function* loadContract({ networkId, address }: ContractId, uuid?: string) {
         dbSelected?.abi
     ) {
         //Hydrate
-        yield* putSaga(ContractCRUD.actions.update(dbSelected, id));
+        yield* putSaga(ContractCRUD.actions.upsert(dbSelected, id));
         return yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
     }
 

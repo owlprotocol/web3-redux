@@ -1,5 +1,4 @@
 import { Config, Network, Environment } from '@owlprotocol/web3-redux';
-import getDisplayName from './getDisplayName';
 import { getEnvironment } from '../environment';
 
 Environment.setEnvironment(getEnvironment() as any);
@@ -7,12 +6,11 @@ Environment.setEnvironment(getEnvironment() as any);
 const corsProxy = getEnvironment().VITE_CORS_PROXY;
 const defaultConfig = { corsProxy };
 
-export const withMockData = (WrappedComponent: any) => {
-    const Component = (props: any) => {
-        //Config
-        Config.hooks.useConfig(defaultConfig);
-        //Networks
-        /*
+export const useMockData = () => {
+    //Config
+    Config.hooks.useConfig(defaultConfig);
+    //Networks
+    /*
         useEffect(() => {
             if (!networkOwl) dispatch(Network.create({ networkId: '1337', web3Rpc: import.meta.env.VITE_OWL_RPC }));
         }, [dispatch, networkOwl]);
@@ -24,12 +22,12 @@ export const withMockData = (WrappedComponent: any) => {
         }, [dispatch, config]);
         */
 
-        Network.hooks.useNetwork('1', true);
-        Network.hooks.useNetwork('42161', true);
-        Network.hooks.useNetwork('10', true);
-        Network.hooks.useNetwork('137', true);
-        Network.hooks.useNetwork('1337', true);
-        /*
+    Network.hooks.useNetwork('1', true);
+    Network.hooks.useNetwork('42161', true);
+    Network.hooks.useNetwork('10', true);
+    Network.hooks.useNetwork('137', true);
+    Network.hooks.useNetwork('1337', true);
+    /*
         //ERC20
         Contract.hooks.useContract('1', TestData.VITALIK, {
             networkId: '1',
@@ -48,9 +46,4 @@ export const withMockData = (WrappedComponent: any) => {
         Contract.hooks.useContract('1', TestData.contractKithFriends.address, TestData.contractKithFriends);
         Contract.hooks.useContract('137', TestData.contractSkyWeaver.address, TestData.contractSkyWeaver);
         */
-
-        return <WrappedComponent {...props} />;
-    };
-    Component.displayName = `withMockData(${getDisplayName(WrappedComponent)})`;
-    return Component;
 };

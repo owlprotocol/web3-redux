@@ -27,8 +27,6 @@ export function useConfigureFromWeb3React() {
     const currentWeb3Sender = (currentNetwork as NetworkWithObjects | undefined)?.web3Sender;
     const isSameWeb3Provider = currentWeb3Sender?.givenProvider === provider;
 
-    //console.debug({ newAccount, currentAccount, newNetworkId, currentNetworkId, newWeb3Sender, currentWeb3Sender });
-
     //Update networkId
     useEffect(() => {
         if (newNetworkId && newNetworkId != currentNetworkId) setNetworkId(newNetworkId);

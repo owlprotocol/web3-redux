@@ -16,8 +16,11 @@ export function toPrimaryKey({ id }: ConfigId): [string] {
  * Validate config.
  * @param config
  */
-export function validate(config: Config): Config {
-    return config;
+export function validate({ id, networkId, account, ipfsUrl, _4byteUrl, corsProxy }: Config): Config {
+    return omitBy(
+        { id, networkId, account: account?.toLowerCase(), ipfsUrl, _4byteUrl, corsProxy },
+        isUndefined,
+    ) as unknown as Config;
 }
 
 /**

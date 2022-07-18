@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
-import { store } from '@owlprotocol/web3-redux';
-import { withMockData, withWeb3ReactProvider } from '../src/hoc/index.js';
+import composeHooks from 'react-hooks-compose';
+import { useConfigureFromWeb3React, useMockData } from '../src/hooks/index.js'
+import { withChakraProvider, withMockData, withStoreProvider, withWeb3ReactProvider } from '../src/hoc/index.js';
 import { THEME_COLORS } from '../src/constants';
 
 import theme from '../src/theme';
+import { Provider } from 'react-redux';
+import { store } from '@owlprotocol/web3-redux';
 
 export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },
@@ -33,14 +35,16 @@ export const parameters = {
 
 export const decorators = [
     (Story) => {
-        const StoryWithWeb3 = withWeb3ReactProvider(Story)
-        const StoryWithData = withMockData(StoryWithWeb3)
+        let Story2 = withChakraProvider(Story)
+        Story2 = withWeb3ReactProvider(Story2)
+        Story2 = composeHooks(() => ({
+            useConfigureFromWeb3React,
+            useMockData,
+        }))(Story2)
         return (
             <Router>
                 <Provider store={store}>
-                    <ChakraProvider theme={theme}>
-                        <StoryWithData />
-                    </ChakraProvider>
+                    <Story2 />
                 </Provider>
             </Router>
         )

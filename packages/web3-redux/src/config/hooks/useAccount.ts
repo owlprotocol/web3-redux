@@ -19,6 +19,8 @@ export function useAccount() {
         [dispatch],
     );
 
+    console.debug({ config });
+
     return [value, setAccountCallback] as [typeof value, typeof setAccountCallback];
 }
 

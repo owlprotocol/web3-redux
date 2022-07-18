@@ -19,12 +19,19 @@ Welcome to the Web3-Redux Developer Docs. To get started, be sure to checkout ou
 
 Before you begin, you might want to get familiar with some of the libraries this "meta-library" is built with:
 
+**React**
 -   [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+**Redux**
 -   [redux](https://redux.js.org/)
--   [reselect](https://github.com/reduxjs/reselect)
--   [redux-orm](https://redux-orm.github.io/redux-orm/)
--   [web3.js](https://web3js.readthedocs.io/en/v1.3.0/)
 -   [redux-saga](https://redux-saga.js.org/)
+-   [redux-orm](https://redux-orm.github.io/redux-orm/)
+-   [reselect](https://github.com/reduxjs/reselect)
+**IndexedDB**
+-   [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+-   [Dexie.js](https://dexie.org/docs/)
+**Blockchain/Web3**
+-   [web3.js](https://web3js.readthedocs.io/en/v1.3.0/)
+-   [js-ipfs](https://github.com/ipfs/js-ipfs/tree/master/docs/core-api)
 
 [repo]: https://github.com/owlprotocol/web3-redux
 [gh-page]: https://owlprotocol.github.io/web3-redux/

@@ -6,7 +6,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
 import { IndexableType, IndexableTypeArrayReadonly } from 'dexie';
-import createCRUDActions from './createActions.js';
+import createCRUDActions from './createCRUDActions.js';
 import { compact, filter, zip, isEqual } from '../utils/lodash/index.js';
 import { create as createError } from '../error/actions/create.js';
 import getDB from '../db.js';
@@ -20,10 +20,11 @@ import isDefinedRecord, { isDefined } from '../utils/isDefinedRecord.js';
  * Automatically infers types.
  *
  * @param name
- * @param validateId Validate id to Dexie-supported format. Defaults to calling object values.
- * @param validate Validate item that will be inserted computing any default values. Defaults to identity function.
- * @param hydrate Instantiate objects that are not encoded in Dexie.
- * @param encode Encode an hydrated object to be inserted stripping out objects.
+ * @param validators Validators used to sanitize data
+ *      @param validateId Validate id to Dexie-supported format. Defaults to calling object values.
+ *      @param validate Validate item that will be inserted computing any default values. Defaults to identity function.
+ *      @param hydrate Instantiate objects that are not encoded in Dexie.
+ *      @param encode Encode an hydrated object to be inserted stripping out objects.
  * @returns
  */
 export function createCRUDModel<

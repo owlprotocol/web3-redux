@@ -150,8 +150,9 @@ const config = {
                 copyright: `Copyright © ${new Date().getFullYear()} Owl Labs. Built with Docusaurus.`,
             },
             prism: {
-                theme: lightCodeTheme,
-                darkTheme: darkCodeTheme,
+                theme: require('prism-react-renderer/themes/dracula'),
+                //theme: lightCodeTheme,
+                //darkTheme: darkCodeTheme,
             },
         }),
 };

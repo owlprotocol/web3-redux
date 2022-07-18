@@ -7,7 +7,7 @@ import {
     validateId,
     toPrimaryKey,
 } from './model/index.js';
-import createCRUDModel from '../createCRUDModel.js';
+import createCRUDModel from '../crud/createCRUDModel.js';
 
 export const TransactionCRUD = createCRUDModel<
     typeof name,

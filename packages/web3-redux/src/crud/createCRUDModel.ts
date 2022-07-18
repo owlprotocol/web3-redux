@@ -6,12 +6,12 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
 import { IndexableType, IndexableTypeArrayReadonly } from 'dexie';
-import { compact, filter, zip, isEqual } from './utils/lodash/index.js';
-import { create as createError } from './error/actions/create.js';
-import getDB from './db.js';
-import { getOrm } from './orm.js';
-import toReduxOrmId from './utils/toReduxORMId.js';
-import isDefinedRecord, { isDefined } from './utils/isDefinedRecord.js';
+import { compact, filter, zip, isEqual } from '../utils/lodash/index.js';
+import { create as createError } from '../error/actions/create.js';
+import getDB from '../db.js';
+import { getOrm } from '../orm.js';
+import toReduxOrmId from '../utils/toReduxORMId.js';
+import isDefinedRecord, { isDefined } from '../utils/isDefinedRecord.js';
 
 /**
  *

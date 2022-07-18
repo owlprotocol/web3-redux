@@ -10,7 +10,7 @@ import {
     ContractIndexInput,
     toPrimaryKey,
 } from './model/index.js';
-import createCRUDModel from '../createCRUDModel.js';
+import createCRUDModel from '../crud/createCRUDModel.js';
 
 export const ContractCRUD = createCRUDModel<typeof name, ContractId, Contract, ContractWithObjects, ContractIndexInput>(
     name,

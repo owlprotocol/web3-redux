@@ -9,6 +9,24 @@ Overview of the overall architecture of the library.
 ![Flowchart.svg](/img/web3-redux-architecture.svg)
 
 
+## Related Libraries
+To fully understand the architecture of web3-redux, you might want to get familiar with some of the libraries this "meta-library" is built with:
+
+**React**
+-   [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+**Redux**
+-   [redux](https://redux.js.org/)
+-   [redux-saga](https://redux-saga.js.org/)
+-   [redux-orm](https://redux-orm.github.io/redux-orm/)
+-   [reselect](https://github.com/reduxjs/reselect)
+**IndexedDB**
+-   [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+-   [Dexie.js](https://dexie.org/docs/)
+**Blockchain/Web3**
+-   [web3.js](https://web3js.readthedocs.io/en/v1.3.0/)
+-   [js-ipfs](https://github.com/ipfs/js-ipfs/tree/master/docs/core-api)
+
+
 ## Data Models
 We use the concept of a data model to refer to each type of relevant data that is stored by web3-redux and be queried on-chain (EVM) or on decentralized networks (IPFS). The data model defines the interface of the data, but also validation logic, indexing rules, and relevant actions, selectors & hooks to perform CRUD operations on the data collection. Some common data models meant to represet blockchain data include the following:
 - [Block](../web3-redux-reference/interfaces/Block.BlockHeader.md)

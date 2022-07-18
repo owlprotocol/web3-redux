@@ -1,0 +1,15 @@
+# useERC1155
+
+This hook is designed to optimize fetching data from the popular `ERC1155` multi-token interface.
+No ABI is required for this hook as it contains presets.
+Optimizations take into account `TransferSingle` and `TransferBatch` event logs to refresh calls only when required.
+
+Popular Multi-Token standard. Common [ERC1155](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md) contract calls and events.
+
+```tsx
+const { uri, balanceOf } = Contract.useERC1155(networkId, address, balanceOfAddress, balanceOfTokenId);
+```
+
+**Reference:** [Contract.useERC1155](../../web3-redux-reference/namespaces/Contract.md#useerc1155)
+
+**Alias:** [Contract.useMultiToken](../../web3-redux-reference/namespaces/Contract.md#usemultitoken)

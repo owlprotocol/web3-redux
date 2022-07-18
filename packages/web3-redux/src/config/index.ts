@@ -1,5 +1,6 @@
 /**
- * Comments on Config module
+ * Config module
+ * Global Config for current network, account, and api urls.
  * @module Config
  */
 

@@ -1,5 +1,6 @@
 /**
  * EVM transaction data module.
+ * Store data relevant to ethereum transactions.
  * @module Transaction
  */
 

@@ -1,5 +1,7 @@
 /**
- * Comments on ContractSend module
+ * ContractSend module
+ * Temporarily store transactions signature requests
+ * before they are signed as fully formed transactions.
  * @module ContractSend
  */
 

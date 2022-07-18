@@ -28,7 +28,6 @@ export function* deploySaga(action: DeployAction) {
         else tx = web3Contract.deploy({ data: bytecode });
 
         //Gas undefined or 0
-        //@ts-expect-error
         const gas = yield* call(tx.estimateGas, { from }); //default gas
         const contract = yield* call(tx.send, { from, gas });
         yield* put(

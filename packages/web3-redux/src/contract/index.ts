@@ -1,5 +1,7 @@
 /**
- * EVM smart contract / EOA module.
+ * EVM smart contract module.
+ * Used to query balances, call smart contracts, send transactions and sync events.
+ * Common pre-configured abstractions include ERC20, ERC721, ERC1155, and ERC165.
  * @module Contract
  */
 

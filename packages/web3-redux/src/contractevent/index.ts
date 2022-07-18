@@ -1,5 +1,7 @@
 /**
- * Comments on ContractEvent module
+ * ContractEvent module
+ * Used to sync past events and subscribe to contract updates.
+ * Efficiently stored in IndexedDB to enable optimal querying in the cache.
  * @module ContractEvent
  */
 

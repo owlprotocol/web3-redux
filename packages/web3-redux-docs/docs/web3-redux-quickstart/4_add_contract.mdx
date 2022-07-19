@@ -60,7 +60,7 @@ The component must have access to the Redux context (see [Configure Store](./2_a
 
 ```typescript title="src/createContract.ts" showLineNumbers
 import { store, Network } from '@owlprotocol/web3-redux';
-const defaultNetwork = { networkId: '1', web3Rpc: 'http://localhost:8545' };
+const defaultNetwork = { networkId: '1', web3Rpc: 'ws://localhost:8545' };
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 const defaultContract = { networkId: '1', address: USDC, abi: Abi.IERC20.abi };
 

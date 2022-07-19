@@ -25,7 +25,7 @@ In later sections we will look into connecting the network with Metamask to add 
 
 If using React, you will want to configure the network(s) on app mount with the simple `useNetwork` hook. Under the hood, this uses the `useHydrate` hook to load the IndexedDB persisted configuration or create a new network with the defaultNetwork.
 
-```tsx  title="src/App.tsx"
+```tsx  title="src/App.tsx" showLineNumbers
 import { Network } from '@owlprotocol/web3-redux';
 
 const defaultNetwork = { web3Rpc: 'ws://localhost:8545' }
@@ -48,7 +48,7 @@ The component must have access to the Redux context (see [Configure Store](./2_a
 In pure Redux, the configuration can be dispatched from the store.
 
 
-```typescript title="src/createNetwork.ts"
+```typescript title="src/createNetwork.ts" showLineNumbers
 import { store, Network } from '@owlprotocol/web3-redux';
 const defaultNetwork = { networkId: '1', web3Rpc: 'http://localhost:8545' };
 

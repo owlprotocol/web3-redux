@@ -1,12 +1,12 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require('prism-react-renderer/themes/vsLight'); //github
+const darkCodeTheme = require('prism-react-renderer/themes/vsDark'); //dracula
+const webPackPlugin = require('./docusaurusWebpack5Plugin')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    themes: ['@docusaurus/theme-live-codeblock'],
     title: 'Web3 Redux',
     tagline: 'Redux for Web3',
     url: 'https://owlprotocol.github.io',
@@ -17,6 +17,8 @@ const config = {
     favicon: 'img/favicon.ico',
     organizationName: 'owlprotocol', // Usually your GitHub org/user name.
     plugins: [
+        //@ts-expect-error
+        webPackPlugin,
         //https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/docusaurus-plugin-typedoc
         [
             'docusaurus-plugin-typedoc',
@@ -51,10 +53,11 @@ const config = {
 
     ],
     projectName: 'web3-redux', // Usually your repo name.
-
+    themes: ['@docusaurus/theme-live-codeblock'],
     presets: [
         [
-            'classic',
+            '@docusaurus/preset-classic',
+            //'classic',
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
                 docs: {
@@ -151,9 +154,13 @@ const config = {
                 copyright: `Copyright © ${new Date().getFullYear()} Owl Labs. Built with Docusaurus.`,
             },
             prism: {
-                theme: require('prism-react-renderer/themes/dracula'),
-                //theme: lightCodeTheme,
-                //darkTheme: darkCodeTheme,
+                theme: darkCodeTheme,
+                darkTheme: darkCodeTheme,
+            },
+            colorMode: {
+                defaultMode: 'dark',
+                disableSwitch: false,
+                respectPrefersColorScheme: true,
             },
         }),
 };

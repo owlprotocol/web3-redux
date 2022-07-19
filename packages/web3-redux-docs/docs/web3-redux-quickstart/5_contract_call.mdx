@@ -6,6 +6,7 @@ label: 'Contract Call'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # Contract Call
 
 We now look to read data from the contract we have added to our app.
@@ -20,7 +21,7 @@ In this example we will do a simple `balanceOf(address)` contract calls on the `
 
 The easiest way make a contract is using the `useContractCall` hook. This combines dispatching a redux action and using a selector to return the updated result.
 
-```tsx  title="src/App.tsx"
+```tsx  title="src/App.tsx" showLineNumbers
 import { Abi, Contract, Network } from '@owlprotocol/web3-redux';
 
 const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
@@ -31,9 +32,7 @@ const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
 const App = () => {
     const [network] = Network.hooks.useNetwork('1', defaultNetwork)
     const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
-    // highlight-start
     const [balance] = Contract.hooks.useContractCall('1', USDC, 'balanceOf', [VITALIK]);
-    // highlight-end
 
     return <>{balance}</>
 };
@@ -49,7 +48,7 @@ For more info on complex sync strategies, see the [Advanced/Contract Call Sync](
 
 Under the hood, the [useContractCall](../web3-redux-reference/namespaces/Contract.md#usecontractcall) hook is mainly composed by dispatching a [call](../web3-redux-reference/namespaces/Contract.md#call) action and then using the [selectContractCall](../web3-redux-reference/namespaces/Contract.md#selectcontractcall) selector to read the result from the state.
 
-```typescript title="src/createContractCall.ts"
+```typescript title="src/createContractCall.ts" showLineNumbers
 import { store, Contract, Network, EthCall, TestData } from '@owlprotocol/web3-redux';
 
 const networkId = '1'
@@ -76,6 +75,24 @@ const balance = await EthCall.db.get({
 </TabItem>
 </Tabs>
 
+## Live Editor
+Try it your self using the Live Editor
 
+```tsx live noInline
+const App = () => {
+    const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
+    const defaultContract = { abi: Abi.IERC20Artifact.abi };
+    const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+    const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
+    const [network] = Network.hooks.useNetwork('1', defaultNetwork)
+    const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
+    const [balance] = Contract.hooks.useContractCall('1', USDC, 'balanceOf', [VITALIK]);
+    return <>{balance}</>
+};
 
-
+render(
+<Provider store={store}>
+    <App />
+</Provider>
+)
+```

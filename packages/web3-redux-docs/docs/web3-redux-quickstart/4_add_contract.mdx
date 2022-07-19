@@ -34,7 +34,7 @@ Below we've extended the example from the previous section and add a generic `IE
 <Tabs groupId="framework">
 <TabItem value="react" label="React">
 
-```tsx  title="src/App.tsx"
+```tsx  title="src/App.tsx" showLineNumbers
 import { Abi, Network } from '@owlprotocol/web3-redux';
 
 const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
@@ -58,7 +58,7 @@ The component must have access to the Redux context (see [Configure Store](./2_a
 </TabItem>
 <TabItem value="redux" label="Redux">
 
-```typescript title="src/createContract.ts"
+```typescript title="src/createContract.ts" showLineNumbers
 import { store, Network } from '@owlprotocol/web3-redux';
 const defaultNetwork = { networkId: '1', web3Rpc: 'http://localhost:8545' };
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';

@@ -14,7 +14,7 @@
     "url": "https://github.com/leovigna/"
   },
   "license": "MIT",
-  "type": "commonjs",
+  "type": "module",
   "main": "./dist/web3-redux-lib.cjs.js",
   "module": "./dist/web3-redux-lib.es.js",
   "types": "./types/index.d.ts",
@@ -82,7 +82,7 @@
     "tiny-invariant": "1.2.0",
     "typed-redux-saga": "^1.3.1",
     "uuid": "^8.3.2",
-    "web3": "^1.7.3"
+    "web3": "1.7.4"
   },
   "peerDependencies": {
     "dexie-react-hooks": "^1.1.1",
@@ -149,11 +149,11 @@
     "ts-node": "^10.7.0",
     "typechain": "^5.1.2",
     "typescript": "4.6.2",
-    "web3-core": "^1.7.3",
-    "web3-core-subscriptions": "^1.7.3",
-    "web3-eth": "^1.7.3",
-    "web3-eth-abi": "^1.7.3",
-    "web3-eth-contract": "^1.7.3",
-    "web3-utils": "^1.7.3"
+    "web3-core": "1.7.4",
+    "web3-core-subscriptions": "1.7.4",
+    "web3-eth": "1.7.4",
+    "web3-eth-abi": "1.7.4",
+    "web3-eth-contract": "1.7.4",
+    "web3-utils": "1.7.4"
   }
 }

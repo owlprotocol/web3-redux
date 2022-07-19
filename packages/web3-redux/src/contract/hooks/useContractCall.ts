@@ -35,6 +35,7 @@ export function useContractCall<
         args?: P,
         options?: UseContractCallOptions,
 ) {
+    address = address?.toLowerCase()
     const sync = options?.sync ?? 'ifnull';
     const dispatch = useDispatch();
     const [contract] = ContractCRUD.hooks.useHydrate({ networkId, address });

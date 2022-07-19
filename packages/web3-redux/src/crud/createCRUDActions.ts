@@ -1,5 +1,6 @@
 import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { isUndefined, omitBy, pick } from '../utils/lodash';
 
 /**
  *
@@ -122,9 +123,17 @@ export function createCRUDActions<
             },
         };
     });
-    const hydrateAction = createReduxAction(HYDRATE, (payload: T_Idx, uuid?: string) => {
+    const hydrateAction = createReduxAction(HYDRATE, (payload: { id: T_Idx, defaultItem?: T_Encoded }, uuid?: string) => {
+        const idxKeys = Object.keys(payload.id);
+        const idxValidate = validate(payload.id as unknown as T) as unknown as T_Idx
+        const defaultItemKeys = payload.defaultItem ? Object.keys(payload.defaultItem) : []
+        const defaultItemValidate = payload.defaultItem ? validate(payload.defaultItem as T) : {}
+        let p = {
+            id: pick(idxValidate, idxKeys) as T_Idx,
+            defaultItem: payload.defaultItem ? pick(defaultItemValidate, defaultItemKeys) : undefined
+        }
         return {
-            payload: payload,
+            payload: omitBy(p, isUndefined) as unknown as typeof p,
             meta: {
                 uuid: uuid ?? uuidv4(),
             },

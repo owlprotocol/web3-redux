@@ -40,7 +40,7 @@ const watch = ESBUILD_WATCH
 const baseConfig = {
     sourcemap: 'external',
     //platform: 'node', //'browser',
-    //target: 'es6',
+    target: ['es2020'],
     inject: ['./react-shim.mjs'],
     plugins: [excludeNodeModulesPlugin],
     watch,
@@ -56,7 +56,6 @@ await esbuild.default.build({
     ...baseConfig,
 });
 //ESM Library
-/*
 await esbuild.default.build({
     entryPoints: files,
     bundle: false,
@@ -64,7 +63,6 @@ await esbuild.default.build({
     format: 'esm',
     ...baseConfig,
 });
-*/
 
 //CJS Bundle
 await esbuild.default.build({

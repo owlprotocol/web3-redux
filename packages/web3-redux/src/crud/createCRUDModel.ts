@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useMemo } from 'react';
+import { Action } from '@reduxjs/toolkit';
 import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
 import { IndexableType, IndexableTypeArrayReadonly } from 'dexie';
 import createCRUDActions from './createCRUDActions.js';
-import { compact, filter, zip, isEqual } from '../utils/lodash/index.js';
+import { compact, filter, zip, isEqual, omitBy, isUndefined } from '../utils/lodash/index.js';
 import { create as createError } from '../error/actions/create.js';
 import getDB from '../db.js';
 import { getOrm } from '../orm.js';
@@ -43,10 +42,10 @@ export function createCRUDModel<
             toPrimaryKey?: (id: T_ID) => IndexableType;
         },
 ) {
-    const validateId = validators?.validateId ?? ((id: T_ID) => id);
-    const validate = validators?.validate ?? ((item: T) => item);
-    const hydrate = validators?.hydrate ?? ((id: T) => id);
-    const encode = validators?.encode ?? ((item: T) => item);
+    const validateId = validators?.validateId ?? ((id: T_ID) => omitBy(id, isUndefined) as T_ID);
+    const validate = validators?.validate ?? ((item: T) => omitBy(item, isUndefined) as T);
+    const hydrate = validators?.hydrate ?? ((item: T) => omitBy(item, isUndefined) as T);
+    const encode = validators?.encode ?? ((item: T) => omitBy(item, isUndefined) as T_Encoded);
     const toPrimaryKey =
         validators?.toPrimaryKey ??
         ((id: T_ID) => {
@@ -484,11 +483,11 @@ export function createCRUDModel<
     const hydrateSaga = function* (action: HydrateAction) {
         try {
             const { payload } = action;
+            const { id, defaultItem } = payload
 
-            const itemDB = yield* call(get, payload);
-            const itemRedux = yield* selectSaga(selectByIdSingle, payload);
-
+            const itemDB = yield* call(get, id);
             if (itemDB) {
+                const itemRedux = yield* selectSaga(selectByIdSingle, itemDB);
                 if (!itemRedux) {
                     //Update redux by dispatching an update
                     yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
@@ -496,7 +495,10 @@ export function createCRUDModel<
                     //Update redux by dispatching an update
                     yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
                 }
+            } else if (defaultItem) {
+                yield* putDispatch(actions.create(defaultItem as T))
             }
+
         } catch (error) {
             yield* putDispatch(
                 createError(
@@ -654,43 +656,29 @@ export function createCRUDModel<
         return useSelector((state) => selectWhere(state, f));
     };
     const useHydrate = (idx: Partial<T_Idx> | undefined, defaultItem?: T | undefined) => {
-        //TODO: Is this necessary?
-        const [actionDispatched, setActionDispatched] = useState(false);
-
         const dispatch = useDispatch();
-        const [itemDB, { isLoading, exists: itemDBExists }] = useGet(idx);
-
+        const [itemDB] = useGet(idx);
         //Use db item or assume idx is id
         const id = useMemo(() => (itemDB ? validateId(itemDB) : validateId(idx as T_ID)), [idx, itemDB]);
         const itemRedux = useSelectByIdSingle(id);
         const itemReduxExists = !!itemRedux;
 
-        //console.debug({ idx, itemDB, itemDBExists, item, itemExists, isLoading, defaultItem });
         //Reset state
         const action = useMemo(() => {
-            if (idx && !itemReduxExists && !isLoading) {
-                if (!itemDBExists && defaultItem) {
-                    return actions.create(defaultItem);
-                } else if (itemDBExists && isDefinedRecord(idx)) {
-                    return actions.hydrate(idx);
-                }
+            if (idx && isDefinedRecord(idx)) {
+                return actions.hydrate({ id: idx, defaultItem });
             }
-        }, [idx, itemReduxExists, isLoading, itemDBExists, defaultItem]);
+        }, [JSON.stringify(idx), JSON.stringify(defaultItem)]);
 
         useEffect(() => {
-            if (itemReduxExists) setActionDispatched(false);
-        }, [idx, itemReduxExists]);
-
-        useEffect(() => {
-            if (action && !actionDispatched) {
+            if (action && !itemReduxExists) {
                 dispatch(action);
-                setActionDispatched(true);
             }
-        }, [dispatch, action, actionDispatched]);
+        }, [dispatch, action, itemReduxExists]);
 
-        const returnValue = itemRedux ?? itemDB ?? defaultItem;
-        const exists = itemReduxExists || itemDBExists;
-        const returnOptions = { isLoading, exists };
+        const returnValue = itemRedux;
+        const exists = itemReduxExists;
+        const returnOptions = { exists };
 
         return [returnValue, returnOptions] as [typeof returnValue, typeof returnOptions];
     };

@@ -11,7 +11,7 @@ import CRUDModel from './crud.js';
 import rootSaga from './sagas/index.js';
 import * as Hooks from './hooks/index.js';
 
-const model = {
+const Transaction = {
     name: CRUDModel.name,
     actionTypes: CRUDModel.actionTypes,
     actions: {
@@ -35,4 +35,4 @@ const model = {
     encode: CRUDModel.encode,
 };
 
-export default model;
+export default Transaction;

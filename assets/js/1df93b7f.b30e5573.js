@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_owlprotocol_web3_redux_docs=globalThis.webpackChunk_owlprotocol_web3_redux_docs||[]).push([[3237],{189:(o,e,c)=>{c.r(e),c.d(e,{default:()=>s});var l=c(9901),r=(c(1002),c(4738),c(5912));var t=c(8681);function s(){const o=(0,t.Z)("/docs");return l.createElement(r.l_,{to:o})}}}]);

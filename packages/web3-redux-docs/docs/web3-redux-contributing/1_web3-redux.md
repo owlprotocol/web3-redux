@@ -30,7 +30,7 @@ Some important folders include:
  ┣ 📂contractevent  #Smart Contract event log
  ┣ 📂contracteventquery #Cache event log queries across block ranges
  ┣ 📂contractsend   #Smart Contract send signed transaction
- ┣ 📂contractsend   #Generic CRUD Model
+ ┣ 📂crud       #Generic CRUD Model
  ┣ 📂error      #Store Redux Errors
  ┣ 📂ethcall    #Ethereum Call
  ┣ 📂ipfs       #IPFS read/write

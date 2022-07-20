@@ -6,7 +6,7 @@ Get past or sync contract event logs.
 const Transfer = Contract.useEvents(networkId, address, 'Transfer', filter, { past: true, sync: true });
 ```
 
-**Reference:** [Contract.useEvents](../web3-redux-reference/namespaces/Contract.md#useevents)
+**Reference:** [Contract.useEvents](../../web3-redux-reference/namespaces/Contract.md#useevents)
 
 :::tip
 The `filter` parameter can be used to filter events by indexed `returnValues` fields. This leverages the indexing features of event logs and is often required to efficiently query only the relevent events.

@@ -1,0 +1,33 @@
+## Live Editor
+Try it yourself using the Live Editor. Try the following:
+* Get `Approval` events
+* Increase past query range to last 100 blocks
+* Filter by `{from: address}` to get only your `Transfer` events
+
+```tsx live noInline
+const App = () => {
+    const defaultNetwork = { web3Rpc: 'wss://mainnet.infura.io/ws/v3/fee5821234524325b482f04d51c75878' };
+    const defaultContract = { abi: Abi.IERC20Artifact.abi };
+    const USDC = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
+    const filter = undefined;
+    const [network] = Network.hooks.useNetwork('1', defaultNetwork)
+    const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
+    const [events, { error, isLoading }] = Contract.hooks.useEvents('1', USDC,
+        'Transfer', filter, { past:true, fromBlock: 15177500, toBlock: 15177600, limit: 5, sync: false});
+    const eventsData = (events || []).map((e) => {
+        return  [e.blockNumber,
+            e.returnValues.from.substring(0,10),
+            e.returnValues.to.substring(0,10),
+            e.returnValues.value]})
+
+    if (isLoading) return <>Loading...</>
+    else if (error) return <>{error.message}</>
+    return <>{eventsData.map((e) => <>{JSON.stringify(e)}<br/></>)}</>
+};
+
+render(
+<Provider store={store}>
+    <App />
+</Provider>
+)
+```

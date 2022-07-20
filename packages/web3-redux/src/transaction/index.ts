@@ -11,7 +11,7 @@ import CRUDModel from './crud.js';
 import rootSaga from './sagas/index.js';
 import * as Hooks from './hooks/index.js';
 
-const Transaction = {
+export const Transaction = {
     name: CRUDModel.name,
     actionTypes: CRUDModel.actionTypes,
     actions: {

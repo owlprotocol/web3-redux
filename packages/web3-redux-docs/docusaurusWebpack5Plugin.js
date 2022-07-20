@@ -7,6 +7,14 @@ module.exports = function (context, options) {
         // eslint-disable-next-line
         configureWebpack(config, isServer, utils) {
             return {
+                experiments: {
+                    topLevelAwait: true
+                },
+                ignoreWarnings: [
+                    {
+                        message: /Critical dependency: the request of a dependency is an expression/
+                    }
+                ],
                 resolve: {
                     alias: {
                         path: require.resolve('path-browserify'),

@@ -73,6 +73,7 @@ importers:
       ipfs-unixfs: ^6.0.9
       ipfs-unixfs-exporter: ^7.0.11
       ipfs-unixfs-importer: ^9.0.10
+      ipfs-utils: ^9.0.7
       iso-url: ^1.2.1
       js-base64: ^3.7.2
       jsdom: ^20.0.0
@@ -123,6 +124,7 @@ importers:
       ipfs-unixfs: 6.0.9
       ipfs-unixfs-exporter: 7.0.11
       ipfs-unixfs-importer: 9.0.10
+      ipfs-utils: 9.0.7
       iso-url: 1.2.1
       js-base64: 3.7.2
       lodash: 4.17.21
@@ -412,7 +414,6 @@ importers:
       '@docusaurus/theme-common': 2.0.0-rc.1
       '@docusaurus/theme-live-codeblock': 2.0.0-rc.1
       '@mdx-js/react': ^1.6.22
-      '@owlprotocol/web3-redux': ../web3-redux
       '@tsconfig/docusaurus': ^1.0.4
       '@types/react': ^17.0.40
       buffer: ^6.0.3
@@ -444,7 +445,6 @@ importers:
       '@docusaurus/theme-common': 2.0.0-rc.1_sfoxds7t5ydpegc3knd667wn6m
       '@docusaurus/theme-live-codeblock': 2.0.0-rc.1_sfoxds7t5ydpegc3knd667wn6m
       '@mdx-js/react': 1.6.22_react@17.0.2
-      '@owlprotocol/web3-redux': link:../web3-redux
       clsx: 1.2.1
       crypto-browserify: 3.12.0
       events: 3.3.0
@@ -788,6 +788,7 @@ packages:
   /@babel/helper-module-imports/7.18.6:
     resolution: {integrity: sha512-0NFvs3VkuSYbFi1x2Vd6tKrywq+z/cLeYC/RJNFrIX/30Bf5aiGYbtvGXolEktzJH8o5E5KJ3tT+nkxuuZFVlA==}
     engines: {node: '>=6.9.0'}
+    requiresBuild: true
     dependencies:
       '@babel/types': 7.18.9
 
@@ -7850,7 +7851,7 @@ packages:
   /@types/sax/1.2.4:
     resolution: {integrity: sha512-pSAff4IAxJjfAXUG6tFkO7dsSbTmf8CtUpfhhZ5VhkRpC4628tJhh3+V6H1E+/Gs9piSzYKT5yzHO5M4GG9jkw==}
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 18.0.6
     dev: false
 
   /@types/scheduler/0.16.2:
@@ -9679,6 +9680,7 @@ packages:
   /babel-plugin-macros/3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
+    requiresBuild: true
     dependencies:
       '@babel/runtime': 7.18.9
       cosmiconfig: 7.0.1

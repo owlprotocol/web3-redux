@@ -74,6 +74,7 @@ import { ReactComponent as AddRounded } from './functions/add-rounded.svg';
 // Signs
 import { ReactComponent as ExclamationMark } from './signs/ExclamationMark.svg';
 import { ReactComponent as FlowCheckMark } from './signs/FlowCheckMark.svg';
+import { ReactComponent as QuestionMark } from './signs/QuestionMark.svg';
 
 // @ts-ignore
 export const ICONS = {
@@ -129,6 +130,7 @@ export const ICONS = {
     search: <Search />,
     ExclamationMark: <ExclamationMark />,
     FlowCheckMark: <FlowCheckMark />,
+    QuestionMark: <QuestionMark />,
     QR: <QR />,
     QRHover: <QRHover />,
     QRSelected: <QRSelected />,

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Await } from '../../types/promise.js';
@@ -6,7 +6,7 @@ import { Await } from '../../types/promise.js';
 import { GenericSync } from '../../sync/model/index.js';
 
 import { BaseWeb3Contract, ContractWithObjects } from '../model/index.js';
-import { callSynced, call } from '../actions/index.js';
+import { callSynced, call, CallAction } from '../actions/index.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import SyncCRUD from '../../sync/crud.js';
 import ErrorCRUD from '../../error/crud.js';
@@ -30,12 +30,12 @@ export function useContractCall<
     P extends Partial<Parameters<T['methods'][K]>> = any,
     >(
         networkId: string | undefined,
-        address: string | undefined,
+        address2: string | undefined,
         method: K | undefined,
         args?: P,
         options?: UseContractCallOptions,
 ) {
-    address = address?.toLowerCase()
+    const address = address2?.toLowerCase();
     const sync = options?.sync ?? 'ifnull';
     const dispatch = useDispatch();
     const [contract] = ContractCRUD.hooks.useHydrate({ networkId, address });
@@ -49,49 +49,60 @@ export function useContractCall<
     });
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
     const executeCall = contractExists && sync != false;
-
     //Actions
-    const { callAction, syncAction } =
-        useMemo(() => {
-            if (networkId && address && method) {
-                if (!!sync && sync != 'ifnull' && sync != 'once') {
-                    return callSynced({
-                        networkId,
-                        address,
-                        method: method as string,
-                        args: args as any[],
-                        sync,
-                    });
-                } else {
-                    const callAction = call({
-                        networkId,
-                        address,
-                        method: method as string,
-                        args: args as any[],
-                        ifnull: sync === 'ifnull',
-                    });
-                    return { callAction, syncAction: undefined };
-                }
+    const [callAction, setCallAction] = useState<CallAction | undefined>();
+    const [syncAction, setSyncAction] = useState<ReturnType<typeof SyncCRUD.actions.create> | undefined>();
+
+    useEffect(() => {
+        console.debug([networkId, address, method, JSON.stringify(args), JSON.stringify(sync)]);
+        if (networkId && address && method) {
+            if (!!sync && sync != 'ifnull' && sync != 'once') {
+                const { callAction, syncAction } = callSynced({
+                    networkId,
+                    address,
+                    method: method as string,
+                    args: args as any[],
+                    sync,
+                });
+                setCallAction(callAction);
+                setSyncAction(syncAction);
+            } else {
+                const callAction = call({
+                    networkId,
+                    address,
+                    method: method as string,
+                    args: args as any[],
+                    ifnull: sync === 'ifnull',
+                });
+                setCallAction(callAction);
+                setSyncAction(undefined);
             }
-        }, [networkId, address, method, JSON.stringify(args), JSON.stringify(sync)]) ?? {};
+        } else {
+            setCallAction(undefined);
+            setSyncAction(undefined);
+        }
+    }, [networkId, address, method, JSON.stringify(args), JSON.stringify(sync)]);
 
     //Error
     const [reduxError] = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
-    const error = useMemo(() => {
-        if (!networkId) return new Error('networkId undefined');
-        else if (!address) return new Error('address undefined');
-        else if (!method) return new Error('method undefined');
+    const [error, setError] = useState<Error | undefined>();
+    useEffect(() => {
+        if (!networkId) setError(new Error('networkId undefined'));
+        else if (!address) setError(new Error('address undefined'));
+        else if (!method) setError(new Error('method undefined'));
         else if (!!reduxError) {
             const err = new Error(reduxError.errorMessage);
             err.stack = reduxError.stack;
-            return err;
+            setError(err);
+        } else {
+            setError(undefined);
         }
     }, [networkId, address, method, reduxError]);
 
     //Callback
     const dispatchCallAction = useCallback(() => {
         if (callAction) dispatch(callAction);
-    }, [dispatch, callAction]);
+    }, [dispatch, JSON.stringify(callAction)]);
     //Effects
     useEffect(() => {
         if (executeCall) dispatchCallAction();

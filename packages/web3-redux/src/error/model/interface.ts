@@ -16,13 +16,12 @@ export interface ReduxErrorWithObjects extends ReduxError {
     readonly error?: Error;
 }
 
-//TODO: hydrate Error object
-
-export const ReduxErrorIndex = 'id';
+//Hack
+export const ReduxErrorIndex = '++id2, id';
 
 /** @internal */
-export function validateId(item: ReduxErrorId) {
-    return item;
+export function validateId({ id }: ReduxErrorId) {
+    return { id };
 }
 
 /** @internal */

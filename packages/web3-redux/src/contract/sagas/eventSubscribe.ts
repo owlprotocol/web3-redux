@@ -66,7 +66,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
             const { type, event, error } = message;
             if (type === SUBSCRIBE_DATA && event) {
                 yield* put(
-                    ContractEventCRUD.actions.create({
+                    ContractEventCRUD.actions.upsert({
                         ...event,
                         networkId,
                         address,
@@ -77,7 +77,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
                 yield* put({ type: SUBSCRIBE_ERROR, error });
             } else if (type === SUBSCRIBE_CHANGED && event) {
                 yield* put(
-                    ContractEventCRUD.actions.create({
+                    ContractEventCRUD.actions.upsert({
                         ...event,
                         networkId,
                         address,

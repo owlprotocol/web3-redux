@@ -50,7 +50,7 @@ export function* callSaga(action: CallAction) {
                 if (!existingEthCall) {
                     //Tx Encodable, any errors are execution related
                     //Create base call
-                    yield* put(EthCallCRUD.actions.create({ ...ethCall, status: 'LOADING' }, action.meta.uuid));
+                    yield* put(EthCallCRUD.actions.upsert({ ...ethCall, status: 'LOADING' }, action.meta.uuid));
                 } else {
                     yield* put(
                         EthCallCRUD.actions.update(

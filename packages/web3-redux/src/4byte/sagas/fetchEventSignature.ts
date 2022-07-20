@@ -26,7 +26,7 @@ export function* fetchEventSignature(action: FetchEventSignatureAction) {
 
             if (eventSig === undefined) throw new Error('This event signature was not found in the 4Byte database');
 
-            yield* put(_4ByteCRUD.actions.create({ signatureHash, signatureType: 'Event', preImage: eventSig }));
+            yield* put(_4ByteCRUD.actions.upsert({ signatureHash, signatureType: 'Event', preImage: eventSig }));
         }
     } catch (error) {
         const err = error as Error;

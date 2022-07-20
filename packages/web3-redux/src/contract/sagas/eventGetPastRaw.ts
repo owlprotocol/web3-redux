@@ -29,7 +29,7 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
             name: eventName,
             fromBlock,
             toBlock,
-            filterHash: JSON.stringify(filter),
+            filterHash: filter ? JSON.stringify(filter) : '',
         });
 
         const existingEventQuery = yield* call(ContractEventQueryCRUD.db.get, eventQuery);
@@ -52,7 +52,7 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
             const eventIds = events.map((e) => {
                 return { networkId, blockNumber: e.blockNumber, logIndex: e.logIndex };
             });
-            const updateQuery = ContractEventQueryCRUD.actions.create(
+            const updateQuery = ContractEventQueryCRUD.actions.upsert(
                 {
                     ...eventQuery,
                     events: eventIds,
@@ -100,7 +100,7 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
         });
 
         //Update query cache
-        const updateQuery = ContractEventQueryCRUD.actions.create(
+        const updateQuery = ContractEventQueryCRUD.actions.upsert(
             {
                 ...eventQuery,
                 errorId: action.meta.uuid,

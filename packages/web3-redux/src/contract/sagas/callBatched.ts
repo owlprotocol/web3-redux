@@ -57,7 +57,7 @@ export function* callBatched(action: CallBatchedAction) {
                 });
 
                 //Create base call
-                const putEthCallTask = put(EthCallCRUD.actions.create(ethCall));
+                const putEthCallTask = put(EthCallCRUD.actions.upsert(ethCall));
                 //Output decoder for multicall
                 const methodAbi = contract.abi!.find((m) => m.name === f.method)!;
                 const methodAbiOutput = methodAbi.outputs;
@@ -133,7 +133,7 @@ export function* callBatched(action: CallBatchedAction) {
                 if (callTaskIdx < regularCallTasks.length) {
                     const ethCall = preCallTasks[callTaskIdx].ethCall;
                     callTaskIdx += 1;
-                    return put(EthCallCRUD.actions.create({ ...ethCall, returnValue }));
+                    return put(EthCallCRUD.actions.upsert({ ...ethCall, returnValue }));
                 } else {
                     const [, returnData]: [any, string[]] = returnValue;
                     const putActions = returnData.map((data) => {
@@ -155,7 +155,7 @@ export function* callBatched(action: CallBatchedAction) {
                             }
                         }
                         callTaskIdx += 1;
-                        return put(EthCallCRUD.actions.create({ ...ethCall, returnValue: formatedValue }));
+                        return put(EthCallCRUD.actions.upsert({ ...ethCall, returnValue: formatedValue }));
                     });
 
                     return all(putActions);

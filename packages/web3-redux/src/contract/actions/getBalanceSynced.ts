@@ -19,6 +19,6 @@ export const getBalanceSynced = (payload: GetBalanceSyncedActionInput) => {
     const getBalanceAction = getBalance({ networkId, address });
     const sync = createSyncForActions(networkId, [getBalanceAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${ContractCRUD.validateId({ networkId, address })}-getBalance`;
-    const syncAction = sync ? SyncCRUD.actions.create(sync) : undefined;
+    const syncAction = sync ? SyncCRUD.actions.upsert(sync) : undefined;
     return { getBalanceAction, syncAction };
 };

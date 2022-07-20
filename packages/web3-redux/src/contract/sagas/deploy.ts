@@ -31,7 +31,7 @@ export function* deploySaga(action: DeployAction) {
         const gas = yield* call(tx.estimateGas, { from }); //default gas
         const contract = yield* call(tx.send, { from, gas });
         yield* put(
-            ContractCRUD.actions.create(
+            ContractCRUD.actions.upsert(
                 { networkId, address: contract.options.address, abi, label, tags },
                 action.meta.uuid,
             ),

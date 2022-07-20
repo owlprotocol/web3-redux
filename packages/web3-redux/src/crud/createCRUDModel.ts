@@ -483,7 +483,7 @@ export function createCRUDModel<
     const hydrateSaga = function* (action: HydrateAction) {
         try {
             const { payload } = action;
-            const { id, defaultItem } = payload
+            const { id, defaultItem } = payload;
 
             const itemDB = yield* call(get, id);
             if (itemDB) {
@@ -496,9 +496,8 @@ export function createCRUDModel<
                     yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
                 }
             } else if (defaultItem) {
-                yield* putDispatch(actions.create(defaultItem as T))
+                yield* putDispatch(actions.upsert(defaultItem as T));
             }
-
         } catch (error) {
             yield* putDispatch(
                 createError(

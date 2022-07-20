@@ -78,17 +78,21 @@ const balance = await EthCall.db.get({
 ## Live Editor
 Try it yourself using the Live Editor. Try the following:
 * Replace `VITALIK` with your own address to get your balance
-* Replace `getBalance` with `totalSupply` & `[VITALINK]` with `[]` to get the total USDC supply
+* Replace `getBalance` with `totalSupply` & `[VITALIK]` with `[]` to get the total USDC supply
 
 ```tsx live noInline
 const App = () => {
     const defaultNetwork = { web3Rpc: 'wss://mainnet.infura.io/ws/v3/fee5821234524325b482f04d51c75878' };
     const defaultContract = { abi: Abi.IERC20Artifact.abi };
-    const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+    const USDC = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
     const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
     const [network] = Network.hooks.useNetwork('1', defaultNetwork)
     const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
-    const [balance] = Contract.hooks.useContractCall('1', USDC, 'balanceOf', [VITALIK]);
+    const [balance, { error, isLoading }] = Contract.hooks.useContractCall('1', USDC,
+        'balanceOf', [VITALIK]);
+
+    if (isLoading) return <>Loading...</>
+    else if (error) return <>{error.message}</>
     return <>{balance}</>
 };
 

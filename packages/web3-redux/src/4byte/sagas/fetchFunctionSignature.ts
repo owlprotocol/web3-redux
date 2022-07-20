@@ -41,7 +41,7 @@ export function* fetchFunctionSignature(action: FetchFunctionSignatureAction) {
                 prev.id < curr.id ? prev : curr,
             ).text_signature;
 
-            yield* put(_4ByteCRUD.actions.create({ signatureHash, signatureType: 'Function', preImage: functionSig }));
+            yield* put(_4ByteCRUD.actions.upsert({ signatureHash, signatureType: 'Function', preImage: functionSig }));
         }
     } catch (error) {
         const err = error as Error;

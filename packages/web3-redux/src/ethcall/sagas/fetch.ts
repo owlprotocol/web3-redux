@@ -17,7 +17,7 @@ export default function* fetch(action: FetchAction) {
     const web3 = network.web3 ?? network.web3Sender;
     if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
-    yield* put(EthCallCRUD.actions.create({ ...payload, status: 'LOADING' }));
+    yield* put(EthCallCRUD.actions.upsert({ ...payload, status: 'LOADING' }));
 
     try {
         const gas = payload.gas ?? (yield* call(web3.eth.estimateGas, payload)); //default gas

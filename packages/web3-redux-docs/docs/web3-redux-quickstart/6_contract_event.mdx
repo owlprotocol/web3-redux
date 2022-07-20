@@ -109,11 +109,16 @@ const App = () => {
     const [network] = Network.hooks.useNetwork('1', defaultNetwork)
     const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
     const [events, { error, isLoading }] = Contract.hooks.useEvents('1', USDC,
-        'Transfer', filter, { past:true, fromBlock: 15177500, toBlock: 15177600, sync: false});
+        'Transfer', filter, { past:true, fromBlock: 15177500, toBlock: 15177600, limit: 5, sync: false});
+    const eventsData = (events || []).map((e) => {
+        return  [e.blockNumber,
+            e.returnValues.from.substring(0,10),
+            e.returnValues.to.substring(0,10),
+            e.returnValues.value]})
 
     if (isLoading) return <>Loading...</>
     else if (error) return <>{error.message}</>
-    return <>{JSON.stringify(events)}</>
+    return <>{eventsData.map((e) => <>{JSON.stringify(e)}<br/></>)}</>
 };
 
 render(

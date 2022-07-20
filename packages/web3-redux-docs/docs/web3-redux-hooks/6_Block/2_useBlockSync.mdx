@@ -1,0 +1,13 @@
+# useBlockSync
+
+Subscribe to new blocks and return all current blocks for network in store.
+
+```tsx
+const blocks = Block.hooks.useBlockSync(networkId);
+```
+
+**Reference:** [Block.useBlockSync](../../web3-redux-reference/namespaces/Block.md#useblocksync)
+
+:::caution
+While some features of Web3-Redux might work with an HTTP (`http://`) connection, subscriptions **REQUIRE** a network configured with a websocket (`ws://`) connection.
+:::

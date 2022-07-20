@@ -7,7 +7,7 @@ function* getChainId(action: GetChainIdAction) {
     const web3 = payload;
 
     const chainId = yield* call(web3.eth.getChainId);
-    yield* put(NetworkCRUD.actions.create({ networkId: `${chainId}` }));
+    yield* put(NetworkCRUD.actions.upsert({ networkId: `${chainId}` }));
 }
 
 export default getChainId;

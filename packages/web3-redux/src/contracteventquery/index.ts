@@ -1,5 +1,7 @@
 /**
- * Comments on ContractEventQuery module
+ * ContractEventQuery module
+ * Used to cache past event query ranges (eg. blocks 0-100) to avoid
+ * re-fetching already cached data.
  * @module ContractEventQuery
  */
 

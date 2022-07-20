@@ -64,7 +64,7 @@ function* subscribeLogs(action: SubscribeLogsAction) {
             const { type, log, error } = message;
             if (type === SUBSCRIBE_DATA && log) {
                 yield* put(
-                    ContractEventCRUD.actions.create({
+                    ContractEventCRUD.actions.upsert({
                         ...log,
                         networkId,
                     }),
@@ -73,7 +73,7 @@ function* subscribeLogs(action: SubscribeLogsAction) {
                 yield* put({ type: SUBSCRIBE_ERROR, error });
             } else if (type === SUBSCRIBE_CHANGED && log) {
                 yield* put(
-                    ContractEventCRUD.actions.update({
+                    ContractEventCRUD.actions.upsert({
                         ...log,
                         networkId,
                     }),
@@ -81,7 +81,6 @@ function* subscribeLogs(action: SubscribeLogsAction) {
             }
         }
     } catch (error) {
-        console.error(error);
         yield* put({ type: SUBSCRIBE_ERROR, error });
     } finally {
         yield* put({ type: SUBSCRIBE_DONE });

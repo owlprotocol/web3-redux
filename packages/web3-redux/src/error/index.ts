@@ -1,4 +1,5 @@
 /**
+ * ReduxError module
  * Store errors from redux actions
  * @module Error
  */

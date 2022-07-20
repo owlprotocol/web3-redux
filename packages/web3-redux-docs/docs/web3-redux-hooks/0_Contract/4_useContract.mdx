@@ -1,0 +1,40 @@
+# useContract
+```tsx title="src/index.tsx"
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { store } from '@owlprotocol/web3-redux';
+
+import App from './App';
+
+ReactDOM.render(
+    <React.StrictMode>
+        // highlight-start
+        <Provider store={store}>
+            <App />
+        </Provider>
+        // highlight-end
+    </React.StrictMode>,
+);
+```
+
+```tsx  title="src/App.tsx"
+import { Abi, Network } from '@owlprotocol/web3-redux';
+
+const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+const defaultContract = { abi: Abi.IERC20.abi };
+
+const App = () => {
+    const [network] = Network.hooks.useNetwork('1', defaultNetwork)
+    //highlight-start
+    const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
+    // highlight-end
+
+    return <>{contract.address}</>
+};
+```
+
+:::caution
+The component must have access to the Redux context (see [Configure Store](../../web3-redux-quickstart/2_add_store.mdx)).
+:::

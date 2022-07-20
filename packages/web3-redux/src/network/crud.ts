@@ -9,7 +9,7 @@ import {
     validateId,
     toPrimaryKey,
 } from './model/index.js';
-import createCRUDModel from '../createCRUDModel.js';
+import createCRUDModel from '../crud/createCRUDModel.js';
 
 export const NetworkCRUD = createCRUDModel<typeof name, NetworkId, Network, NetworkWithObjects>(name, {
     validateId,

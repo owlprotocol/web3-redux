@@ -16,7 +16,7 @@ In most situations, you will want to add web3-redux to your existing redux store
 //store.ts
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { web3Reducer, web3Saga } from '@leovigna/web3-redux';
+import { web3Reducer, web3Saga } from '@owlprotocol/web3-redux';
 
 const reducers = combineReducers({
     web3Redux: web3Reducer,

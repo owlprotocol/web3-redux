@@ -16,7 +16,7 @@ export function* getEns(action: GetEnsAction) {
     if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
     const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
-    if (!contract) yield* put(ContractCRUD.actions.create({ networkId, address }));
+    if (!contract) yield* put(ContractCRUD.actions.upsert({ networkId, address }));
 
     const ens = new ENS(web3?.currentProvider);
     const ensName = yield* call(ens.reverse(address).name);

@@ -39,7 +39,7 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
 
     const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
-    if (!contract) yield* put(ContractCRUD.actions.create({ networkId, address }));
+    if (!contract) yield* put(ContractCRUD.actions.upsert({ networkId, address }));
 
     const options = {
         params: {

@@ -1,5 +1,6 @@
 /**
  * EVM call data module.
+ * Store EVM call data for caching and searchability.
  * @module EthCall
  */
 

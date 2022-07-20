@@ -1,0 +1,28 @@
+---
+sidebar_position: 2
+label: 'Configure Store'
+---
+
+# Initialize the Redux Store
+
+In this quickstart example, we will be using configuring Web3-Redux store, adding a network, a contract, and making web3 rpc queries.
+To setup our store, we follow the standard `react-redux` configuration [guide](https://redux.js.org/usage/configuring-your-store). Add a `Provider` component to wrap the entire React app with the redux context.
+
+```tsx title="src/index.tsx" showLineNumbers
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { store } from '@owlprotocol/web3-redux';
+
+import App from './App';
+
+ReactDOM.render(
+    <React.StrictMode>
+        // highlight-start
+        <Provider store={store}>
+            <App />
+        </Provider>
+        // highlight-end
+    </React.StrictMode>,
+);
+```

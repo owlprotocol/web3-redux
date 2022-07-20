@@ -16,7 +16,7 @@ TODO
 
 ## Generic Sync
 
-This type union of [Sync](../web3-redux-reference/namespaces/Sync.md#sync) and some defaults is often used as a parameter in certain hooks such as [useContractCall](../web3-redux-hooks/Contract_Data.md#usecontractcall).
+This type union of [Sync](../web3-redux-reference/namespaces/Sync.md#sync) and some defaults is often used as a parameter in certain hooks such as [useContractCall](../web3-redux-hooks/0_Contract/0_useContractCall.mdx).
 
 -   Sync: Regular Sync middleware action.
 -   `"Block"`: Sync every block. Represents a [BlockSync](../web3-redux-reference/interfaces/Sync.BlockSync.md) with `matchBlockNumberModulo = 1`.

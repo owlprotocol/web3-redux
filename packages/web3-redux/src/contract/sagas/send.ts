@@ -101,7 +101,7 @@ export function* send(action: SendAction) {
         };
 
         yield* put(
-            ContractSendCRUD.actions.create({
+            ContractSendCRUD.actions.upsert({
                 ...baseContractSend,
                 status: ContractSendStatus.PENDING_SIGNATURE,
             }),
@@ -118,7 +118,7 @@ export function* send(action: SendAction) {
             const message: ContractSendChannelMessage = yield* take(channel);
             const { type, hash, receipt, confirmations } = message;
             if (type === CONTRACT_SEND_HASH) {
-                yield* put(TransactionCRUD.actions.create({ networkId, hash: hash! }));
+                yield* put(TransactionCRUD.actions.upsert({ networkId, hash: hash! }));
                 yield* put(
                     ContractSendCRUD.actions.update({
                         ...baseContractSend,

@@ -16,7 +16,6 @@ export function* getBalance(action: GetBalanceAction) {
         const web3 = network.web3 ?? network.web3Sender;
         if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
-        //@ts-expect-error
         const balance: string = yield* call(web3.eth.getBalance, address);
         yield* put(ContractCRUD.actions.upsert({ networkId, address, balance }, action.meta.uuid));
     } catch (error) {

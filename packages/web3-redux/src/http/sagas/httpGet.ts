@@ -25,14 +25,14 @@ export function* httpGet(action: HttpGetAction) {
         if (!httpCache?.data) {
             try {
                 const response = (yield* call(httpClient.get, url)) as AxiosResponse;
-                yield* put(HTTPCacheCRUD.actions.create({ id: url, url, data: response.data }));
+                yield* put(HTTPCacheCRUD.actions.upsert({ id: url, url, data: response.data }));
             } catch (error) {
                 if (corsProxy) {
                     //TODO: Handle search params
                     //Try with CORS Proxy
                     const urlProxied = `${corsProxy}/${url}`;
                     const response = (yield* call(httpClient.get, urlProxied)) as AxiosResponse;
-                    yield* put(HTTPCacheCRUD.actions.create({ id: url, url, data: response.data, corsProxied: true }));
+                    yield* put(HTTPCacheCRUD.actions.upsert({ id: url, url, data: response.data, corsProxied: true }));
                 } else {
                     throw error;
                 }

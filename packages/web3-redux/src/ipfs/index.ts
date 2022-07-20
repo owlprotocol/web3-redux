@@ -1,4 +1,6 @@
 /**
+ * IPFS Cache Module
+ * Cache data fetched by IPFS HTTP client.
  * @module Ipfs
  */
 

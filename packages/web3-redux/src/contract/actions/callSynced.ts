@@ -18,7 +18,7 @@ export const callSynced = (payload: CallSyncedActionInput, uuid?: string) => {
     const callAction = call(payload);
     const sync = createSyncForActions(networkId, [callAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${JSON.stringify(callAction.payload)}`;
-    const syncAction = sync ? SyncCRUD.actions.create(sync, uuid ?? uuidv4()) : undefined;
+    const syncAction = sync ? SyncCRUD.actions.upsert(sync, uuid ?? uuidv4()) : undefined;
     return { callAction, syncAction };
 };
 

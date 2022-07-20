@@ -70,7 +70,6 @@ export function* subscribeSaga(action: SubscribeAction) {
                 yield* put(BlockCRUD.actions.put(newBlock, action.meta.uuid));
                 if (returnTransactionObjects) {
                     yield* fork(
-                        //@ts-expect-error
                         blockFetch,
                         fetchAction({
                             networkId,
@@ -85,7 +84,6 @@ export function* subscribeSaga(action: SubscribeAction) {
                 yield* put(BlockCRUD.actions.put(newBlock, action.meta.uuid));
                 if (returnTransactionObjects) {
                     yield* fork(
-                        //@ts-expect-error
                         blockFetch,
                         fetchAction({
                             networkId,

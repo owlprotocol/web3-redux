@@ -1,5 +1,8 @@
 /**
+ * Store sha-256 preimages queried with https://www.4byte.directory/
+ * to be used for identifying Event & Function signatures.
  * @module 4Byte
+ *
  */
 
 import * as Actions from './actions/index.js';

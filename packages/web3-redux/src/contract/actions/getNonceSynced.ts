@@ -20,7 +20,7 @@ export const getNonceSynced = (payload: GetNonceSyncedActionInput) => {
 
     const sync = createSyncForActions(networkId, [getNonceAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${ContractCRUD.validateId({ networkId, address })}-getNonce`;
-    const syncAction = sync ? SyncCRUD.actions.create(sync) : undefined;
+    const syncAction = sync ? SyncCRUD.actions.upsert(sync) : undefined;
     return { getNonceAction, syncAction };
 };
 

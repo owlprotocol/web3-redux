@@ -1,5 +1,7 @@
 /**
  * EVM network config module.
+ * Store EVM network parameters such as RPC url, web3/web3Sender instances
+ * and other relevant data such as block explorer urls.
  * @module Network
  */
 

@@ -1,4 +1,5 @@
-import { useTheme, Box, IconButton, HStack, Image, Skeleton } from '@chakra-ui/react';
+import { useTheme, Box, Text, IconButton, HStack, Image, Skeleton, Tooltip } from '@chakra-ui/react';
+import { ReactComponent as PreMintIcon } from './assets/premint.svg';
 import Icon from '../Icon';
 import { shortenHash } from '../../utils';
 import NetworkIcon from '../NetworkIcon';
@@ -20,6 +21,8 @@ export interface PresenterProps {
     metadata?: any | undefined;
     contentId?: string | undefined;
     editable?: boolean | undefined;
+    preMint?: boolean | undefined;
+    onClick?: any | undefined;
 }
 
 export const NFTInstancePresenter = ({
@@ -33,8 +36,16 @@ export const NFTInstancePresenter = ({
     imageSrc,
     imageAlt = '',
     editable = false,
+    preMint = false,
+    onClick,
 }: PresenterProps) => {
     const { themes } = useTheme();
+    const clickHandler = (e: PointerEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('hi mom ');
+        onClick && onClick();
+    };
 
     return (
         <Box
@@ -61,6 +72,9 @@ export const NFTInstancePresenter = ({
                         h={'196px'}
                         alt={imageAlt}
                         objectFit={'scale-down'}
+                        // @ts-ignore
+                        onClick={clickHandler}
+                        cursor={'pointer'}
                     />
                 ) : (
                     <Skeleton h={'100%'} speed={1} />
@@ -77,6 +91,9 @@ export const NFTInstancePresenter = ({
                 textAlign="center"
                 fontWeight={700}
                 fontSize={14}
+                // @ts-ignore
+                onClick={clickHandler}
+                cursor={'pointer'}
             >
                 {itemName}
             </Box>
@@ -116,6 +133,26 @@ export const NFTInstancePresenter = ({
                         {price} ETH
                     </Box>
                     {editable && <NetworkIcon networkId={networkId} size={18} />}
+                </HStack>
+            )}
+
+            {preMint && (
+                <HStack
+                    mr={3} // @ts-ignore
+                    onClick={clickHandler}
+                    cursor={'pointer'}
+                >
+                    <Box boxSize={9}>
+                        <PreMintIcon />
+                    </Box>
+                    <Text color={themes.color9} fontSize={16} flex={1}>
+                        Pre mint a new NFT
+                    </Text>
+                    <Tooltip label="Place more information here about this item">
+                        <Box boxSize={4}>
+                            <Icon icon={'QuestionMark'} size={15} />
+                        </Box>
+                    </Tooltip>
                 </HStack>
             )}
         </Box>

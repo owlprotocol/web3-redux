@@ -18,6 +18,26 @@ If you'd like to contribute:
 -   Look for an existing [issue](https://github.com/owlprotocol/web3-redux/issues), and comment if interested in researching/implementing
 -   Create a [new issue](https://github.com/owlprotocol/web3-redux/issues/new) for feature requests/bugs
 
+## Related Libraries
+To fully understand the architecture of web3-redux, you might want to get familiar with some of the libraries this "meta-library" is built with:
+
+**React**
+-   [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+
+**Redux**
+-   [redux](https://redux.js.org/)
+-   [redux-saga](https://redux-saga.js.org/)
+-   [redux-orm](https://redux-orm.github.io/redux-orm/)
+-   [reselect](https://github.com/reduxjs/reselect)
+
+**IndexedDB**
+-   [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+-   [Dexie.js](https://dexie.org/docs/)
+
+**Blockchain/Web3**
+-   [web3.js](https://web3js.readthedocs.io/en/v1.3.0/)
+-   [js-ipfs](https://github.com/ipfs/js-ipfs/tree/master/docs/core-api)
+
 ## Research
 Current areas of research include:
 

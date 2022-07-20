@@ -45,8 +45,7 @@ export const decorators = [
                     <Router>
                         <Provider store={store}>
                             <ChakraProvider theme={theme}>
-                                {/* <StoryWithData /> */}
-                                <Story />
+                                <StoryWithData />
                             </ChakraProvider>
                         </Provider>
                     </Router>

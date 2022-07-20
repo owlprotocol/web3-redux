@@ -60,6 +60,7 @@ import { ReactComponent as QR } from './general/QR.svg';
 import { ReactComponent as QRHover } from './general/QR.hover.svg';
 import { ReactComponent as QRSelected } from './general/QR.selected.svg';
 import { ReactComponent as Clock } from './general/Clock.svg';
+import { ReactComponent as Calendar } from './general/Calendar.svg';
 import { ReactComponent as DNA } from './general/DNA.svg';
 import { ReactComponent as View } from './general/View.svg';
 
@@ -135,6 +136,7 @@ export const ICONS = {
     QRHover: <QRHover />,
     QRSelected: <QRSelected />,
     Clock: <Clock />,
+    Calendar: <Calendar />,
     DNA: <DNA />,
     AddRounded: <AddRounded />,
 };

@@ -1,0 +1,95 @@
+---
+sidebar_position: 6
+label: 'Contract Event'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Contract Event
+
+A contract event log is like notification on the blockchain that some data has changed. Event logs are indexed separately and are an efficient way to get past updates or listen to new ones. The ERC20 token `Transfer(from, to, value)` event is emitted whenever a token is transferred for example.
+
+## Past Events
+
+Fetching past events can help you display historical changes in the smart contract's state. Web3-Redux uses the [web3.eth.Contract.events.getPastEvents](https://web3js.readthedocs.io/en/v1.7.0/web3-eth-contract.html#getpastevents) API to get past events.
+
+<Tabs groupId="framework">
+<TabItem value="react" label="React">
+
+The `useEvents` hook can help us easily achieve fetch contract events. To get past events, enable the `past` option of the hook.
+
+```tsx  title="src/App.tsx"
+import { Abi, Contract, Network } from '@owlprotocol/web3-redux';
+
+const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
+const defaultContract = { abi: Abi.IERC20.abi };
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
+
+const App = () => {
+    const [network] = Network.hooks.useNetwork('1', defaultNetwork)
+    const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
+    const [balance] = Contract.hooks.useContractCall('1', USDC,
+        'balanceOf', [VITALIK]);
+
+    const filter = { from: VITALIK }
+    // Sync events
+    // highlight-start
+    const [events] = Contract.hooks.useEvents(networkId, USDC,
+        'Transfer',
+        filter,
+        { past: true, fromBlock: 0, toBlock: 'latest'});
+    // highlight-end
+
+    return <>{JSON.stringify(events)}</>
+};
+```
+
+</TabItem>
+<TabItem value="redux" label="Redux">
+
+```
+TBD
+```
+
+</TabItem>
+</Tabs>
+
+:::tip
+The `filter` parameter is used to only query Transfer events from `VITALIK`. This leverages the indexing features of event logs and is often required to efficiently query only the relevent events.
+:::
+:::caution
+Getting past events can be an expensive operation. We recommend limiting the amount of data queried using filters or block range parameters.
+
+Web3-Redux does implement efficient cache strategies for event logs and dynamically splits block ranges into buckets when the queried block range returns an `Returned error: query returned more than 10000 results` error.
+:::
+
+## Event Subscription
+
+Event subscriptions can enable your app to efficiently get updates regarding a smart contract without having to poll every block. Web3-Redux uses the [web3.eth.Contract.events.MyEvent](https://web3js.readthedocs.io/en/v1.7.0/web3-eth-contract.html#contract-events) API to sync new events.
+
+To get updates on new events, enable the `sync` option of the hook. The Web3-Redux event subscription hook is configured to automatically start/stop the correct subscription if any relevant parameters of the hook change: this avoids having "zombie" subscriptions that continue syncing a contract that is no longer needed.
+
+<Tabs groupId="framework">
+<TabItem value="react" label="React">
+
+```tsx  title="src/App.tsx" showLineNumbers
+const [events] = Contract.hooks.useEvents(networkId, USDC,
+        'Transfer',
+        filter,
+        { sync: true });
+```
+
+</TabItem>
+<TabItem value="redux" label="Redux">
+</TabItem>
+</Tabs>
+
+:::tip
+To get both past events and sync new ones, simply enable both `past` and `sync` options.
+:::
+
+:::caution
+While some features of Web3-Redux might work with an HTTP (`http://`) connection, subscriptions **REQUIRE** a network configured with a websocket (`ws://`) connection.
+:::

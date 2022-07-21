@@ -1,27 +1,27 @@
 import { select, put, call } from 'typed-redux-saga';
 import ENS from 'ethereum-ens';
-import networkExists from '../../network/sagas/exists.js';
-import { set, create, GetEnsAction } from '../actions/index.js';
-import { selectByIdSingle } from '../selectors/index.js';
-//@ts-ignore
+import { GetEnsAction } from '../actions/index.js';
+import ContractCRUD from '../crud.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
 
 /** @category Sagas */
 export function* getEns(action: GetEnsAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
-    const account = yield* select(selectByIdSingle, { networkId, address });
-    if (!account) yield* put(create({ networkId, address }));
+    const network = yield* call(loadNetwork, networkId);
+    if (!network) throw new Error(`Network ${networkId} undefined`);
 
-    const network = yield* call(networkExists, networkId);
-    const web3 = network.web3;
-    const web3Sender = network.web3Sender;
-    if (!web3 && !web3Sender) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+    const web3 = network.web3 ?? network.web3Sender;
+    if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+
+    const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+    if (!contract) yield* put(ContractCRUD.actions.upsert({ networkId, address }));
 
     const ens = new ENS(web3?.currentProvider);
     const ensName = yield* call(ens.reverse(address).name);
 
-    yield* put(set({ id: { networkId, address }, key: 'ens', value: ensName }));
+    yield* put(ContractCRUD.actions.update({ networkId, address, ens: ensName as string }));
 }
 
 export default getEns;

@@ -1,9 +1,9 @@
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
-import { filter, keyBy } from '../../utils/lodash/index.js';
-import { AbiItem, toChecksumAddress, isAddress } from '../../utils/web3-utils/index.js';
-import { ModelWithId } from '../../types/model.js';
-import { Transaction } from '../../transaction/model/interface.js';
+import { filter, isUndefined, keyBy, omit, omitBy } from '../../utils/lodash/index.js';
+import { AbiItem } from '../../utils/web3-utils/index.js';
+import { NetworkWithObjects } from '../../network/model/interface.js';
+import toReduxOrmId from '../../utils/toReduxORMId.js';
 
 /**
  * Contract Id object.
@@ -25,15 +25,9 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
  * @typeParam T
  * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Web3.js contract interface.
  */
-export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends ContractId {
-    /** Used to index contracts in redux-orm. Computed as `${networkId}-${address}` */
-    readonly id?: string;
+export interface Contract extends ContractId {
     /** Contract ABI */
     readonly abi?: AbiItem[];
-    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance */
-    readonly web3Contract?: T;
-    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance used for send transactions */
-    readonly web3SenderContract?: T;
     /** Account balance in wei */
     readonly balance?: string;
     /** Account nonce aka number of transactions sent. */
@@ -44,44 +38,101 @@ export interface Contract<T extends BaseWeb3Contract = BaseWeb3Contract> extends
     readonly ens?: string;
     /** Custom label set by user for address */
     readonly label?: string;
+    /** Custom tags set to index address */
+    readonly tags?: string[];
     /** Event abis indexed by signature */
     readonly eventAbiBySignature?: { [k: string]: AbiItem };
-
-    /** ORM Relational */
-    readonly fromTransactions?: Transaction[];
-    readonly toTransactions?: Transaction[];
-    /** ContractIndex redux-orm ids. Used for efficient filtering. */
-    readonly indexIds?: string[];
 }
 
-const SEPARATOR = '-';
-/** @internal */
-export function getId(id: Partial<ContractId>): string {
-    const { networkId, address } = id;
-    if (address && isAddress(address)) return [networkId, toChecksumAddress(address)].join(SEPARATOR);
-    return [networkId, address].join(SEPARATOR);
+export interface ContractWithObjects<T extends BaseWeb3Contract = BaseWeb3Contract> extends Contract {
+    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance */
+    readonly web3Contract?: T;
+    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance used for send transactions */
+    readonly web3SenderContract?: T;
 }
+
+export type ContractIndexInput = ContractId | { networkId: string } | { label: string };
+export const ContractIndex = '[networkId+address], networkId, label, *tags';
+
 /** @internal */
-export function getIdDeconstructed(id: string): ContractId {
-    const [networkId, address] = id.split(SEPARATOR); //Assumes separator not messed up
-    return { networkId, address: toChecksumAddress(address) };
+export function validateId({ networkId, address }: ContractId): ContractId {
+    return {
+        networkId,
+        address: address.toLowerCase(),
+    };
+}
+
+export function toPrimaryKey({ networkId, address }: ContractId): [string, string] {
+    return [networkId, address.toLowerCase()];
 }
 
 /** @internal */
-export function validate(contract: Contract): ModelWithId<Contract> {
-    const { networkId, address, abi } = contract;
-    const id = getId({ networkId, address });
+export function validate(contract: Contract): Contract {
+    const { abi } = contract;
+    const { networkId, address } = validateId(contract);
     const eventAbis = filter(abi, (x) => x.type === 'event');
     const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
 
-    const result = {
-        ...contract,
-        id,
-        address: toChecksumAddress(address),
-    };
-    if (Object.keys(eventAbiBySignature).length > 0) result.eventAbiBySignature = eventAbiBySignature;
+    return omitBy(
+        {
+            ...contract,
+            address,
+            id: toReduxOrmId(toPrimaryKey({ networkId, address })),
+            eventAbiBySignature,
+        },
+        isUndefined,
+    ) as unknown as Contract;
+}
 
-    return result;
+/**
+ * Hydrate contract with objects.
+ * @param contract
+ */
+export function hydrate(contract: Contract, sess: any): ContractWithObjects {
+    const { abi } = contract;
+    const { networkId, address } = validateId(contract);
+
+    const contractORM: ContractWithObjects | undefined = sess.Contract.withId(
+        toReduxOrmId(toPrimaryKey({ networkId, address })),
+    );
+
+    const network: NetworkWithObjects | undefined = sess.Network.withId(networkId);
+    const { web3, web3Sender } = network ?? {};
+
+    let web3Contract: BaseWeb3Contract | undefined;
+    if (contractORM?.web3Contract && abi === contractORM.abi) {
+        //Existing web3 contract
+        web3Contract = contractORM.web3Contract;
+    } else if (abi && web3) {
+        //New web3 contract
+        web3Contract = new web3.eth.Contract(abi, address);
+    }
+
+    let web3SenderContract: BaseWeb3Contract | undefined;
+    if (contractORM?.web3SenderContract && abi === contractORM.abi) {
+        //Existing web3 contract
+        web3SenderContract = contractORM.web3SenderContract;
+    } else if (abi && web3Sender) {
+        //New web3 contract
+        web3SenderContract = new web3Sender.eth.Contract(abi, address);
+    }
+
+    return omitBy(
+        {
+            ...contract,
+            web3Contract,
+            web3SenderContract,
+        },
+        isUndefined,
+    ) as unknown as ContractWithObjects;
+}
+
+/**
+ * Encode contract
+ * @param contract
+ */
+export function encode(contract: ContractWithObjects): Contract {
+    return omit(contract, ['web3Contract', 'web3SenderContract']);
 }
 
 export default Contract;

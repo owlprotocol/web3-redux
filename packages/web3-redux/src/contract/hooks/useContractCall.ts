@@ -1,106 +1,124 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Await } from '../../types/promise.js';
 
-import { remove as removeSync } from '../../sync/actions/index.js';
 import { GenericSync } from '../../sync/model/index.js';
 
-import { BaseWeb3Contract } from '../model/index.js';
-import { callSynced, call } from '../actions/index.js';
-import selectContractCall from '../selectors/selectContractCallById.js';
-import { selectByIdSingle as selectReduxError } from '../../error/selectors/index.js';
+import { BaseWeb3Contract, ContractWithObjects } from '../model/index.js';
+import { callSynced, call, CallAction } from '../actions/index.js';
+import EthCallCRUD from '../../ethcall/crud.js';
+import SyncCRUD from '../../sync/crud.js';
+import ErrorCRUD from '../../error/crud.js';
+import ContractCRUD from '../crud.js';
 
 //Contract Call
 /** @internal */
 export interface UseContractCallOptions {
     from?: string;
-    gas?: string;
+    gas?: number;
     sync?: 'ifnull' | GenericSync | false;
 }
 
-
-interface UseContractCallReturnOptions {
-    error: Error | undefined;
-    dispatchCallAction: () => void;
-}
 /**
  * Create a contract call and return value.
  * @category Hooks
  */
-export function useContractCall<T extends BaseWeb3Contract = BaseWeb3Contract, K extends keyof T['methods'] = string>(
-    networkId: string | undefined,
-    address: string | undefined,
-    method: K | undefined,
-    args?: Parameters<T['methods'][K]>,
-    options?: UseContractCallOptions,
-): [Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined, UseContractCallReturnOptions] {
-    let error: Error | undefined;
+export function useContractCall<
+    T extends BaseWeb3Contract = BaseWeb3Contract,
+    K extends keyof T['methods'] = string,
+    P extends Partial<Parameters<T['methods'][K]>> = any,
+    >(
+        networkId: string | undefined,
+        address2: string | undefined,
+        method: K | undefined,
+        args?: P,
+        options?: UseContractCallOptions,
+) {
+    const address = address2?.toLowerCase();
     const sync = options?.sync ?? 'ifnull';
-    const from = options?.from;
-
     const dispatch = useDispatch();
-    const id = networkId && address ? { networkId, address } : undefined;
+    const [contract] = ContractCRUD.hooks.useHydrate({ networkId, address });
+    const web3Contract = (contract as ContractWithObjects | undefined)?.web3Contract;
+    const contractExists = !!web3Contract;
+    const [ethCall, { isLoading: ethCallLoading }] = EthCallCRUD.hooks.useGet({
+        networkId,
+        to: address,
+        methodName: method as string,
+        argsHash: JSON.stringify(args ?? []),
+    });
+    const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
+    const executeCall = contractExists && sync != false;
+    //Actions
+    const [callAction, setCallAction] = useState<CallAction | undefined>();
+    const [syncAction, setSyncAction] = useState<ReturnType<typeof SyncCRUD.actions.create> | undefined>();
 
-    //const contract = useSelector((state) => selectSingle<T>(state, id));
-
-    const returnValue = useSelector((state) => selectContractCall(state, id, method, { args, from }));
-    //const contractCall = useSelector((state) => selectContractCall<T, K>(state, id, method, { args, from }));
-    const returnValueExists = returnValue != undefined;
-
-    const argsHash = JSON.stringify(args);
-    const { callAction, syncAction } =
-        useMemo(() => {
-            if (sync === 'ifnull' && !returnValueExists) {
-                return callSynced({
+    useEffect(() => {
+        console.debug([networkId, address, method, JSON.stringify(args), JSON.stringify(sync)]);
+        if (networkId && address && method) {
+            if (!!sync && sync != 'ifnull' && sync != 'once') {
+                const { callAction, syncAction } = callSynced({
                     networkId,
                     address,
-                    method: method as string | undefined,
-                    args,
-                    from,
-                    sync: 'once',
-                });
-            } else if (!!sync && sync != 'ifnull') {
-                return callSynced({
-                    networkId,
-                    address,
-                    method: method as string | undefined,
-                    args,
-                    from,
+                    method: method as string,
+                    args: args as any[],
                     sync,
                 });
-            } else if (!sync) {
+                setCallAction(callAction);
+                setSyncAction(syncAction);
+            } else {
                 const callAction = call({
                     networkId,
                     address,
-                    method: method as string | undefined,
-                    args,
-                    from,
+                    method: method as string,
+                    args: args as any[],
+                    ifnull: sync === 'ifnull',
                 });
-                return { callAction, syncAction: undefined };
+                setCallAction(callAction);
+                setSyncAction(undefined);
             }
-        }, [networkId, address, method, argsHash, JSON.stringify(sync)]) ?? {};
+        } else {
+            setCallAction(undefined);
+            setSyncAction(undefined);
+        }
+    }, [networkId, address, method, JSON.stringify(args), JSON.stringify(sync)]);
 
-    const reduxError = useSelector((state) => selectReduxError(state, callAction?.meta.uuid));
-    if (reduxError) error = reduxError.error;
+    //Error
+    const [reduxError] = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
+    const [error, setError] = useState<Error | undefined>();
+    useEffect(() => {
+        if (!networkId) setError(new Error('networkId undefined'));
+        else if (!address) setError(new Error('address undefined'));
+        else if (!method) setError(new Error('method undefined'));
+        else if (!!reduxError) {
+            const err = new Error(reduxError.errorMessage);
+            err.stack = reduxError.stack;
+            setError(err);
+        } else {
+            setError(undefined);
+        }
+    }, [networkId, address, method, reduxError]);
 
-    const callId = callAction?.payload.id;
+    //Callback
     const dispatchCallAction = useCallback(() => {
         if (callAction) dispatch(callAction);
-    }, [dispatch, callId]);
+    }, [dispatch, JSON.stringify(callAction)]);
+    //Effects
     useEffect(() => {
-        if (!!sync) dispatchCallAction();
-    }, [dispatchCallAction]);
+        if (executeCall) dispatchCallAction();
+    }, [dispatchCallAction, executeCall]);
 
     const syncId = syncAction?.payload.id;
     useEffect(() => {
         if (syncAction) dispatch(syncAction);
         return () => {
-            if (syncId) dispatch(removeSync(syncId));
+            if (syncId) dispatch(SyncCRUD.actions.delete({ id: syncId }));
         };
-    }, [dispatch, syncId]);
+    }, [dispatch, syncAction, syncId]);
 
-    return [returnValue, { error, dispatchCallAction }];
+    const isLoading = ethCallLoading || ethCallLoading;
+    const returnOptions = { error, dispatchCallAction, isLoading, callAction, syncAction };
+    return [returnValue, returnOptions] as [typeof returnValue, typeof returnOptions];
 }
 
 /**
@@ -114,7 +132,7 @@ export function contractCallHookFactory<
     return (
         networkId: string | undefined,
         address: string | undefined,
-        args?: Parameters<T['methods'][K]>,
+        args?: Partial<Parameters<T['methods'][K]>>,
         options?: UseContractCallOptions,
     ) => {
         return useContractCall<T, K>(networkId, address, method, args, options);

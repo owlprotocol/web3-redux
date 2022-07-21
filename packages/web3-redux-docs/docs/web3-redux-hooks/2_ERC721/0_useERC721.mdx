@@ -1,0 +1,15 @@
+# useERC721
+
+This hook is designed to optimize fetching data from the popular `ERC721` NFT interface.
+No ABI is required for this hook as it contains presets.
+Optimizations take into account `Transfer` event logs to refresh calls only when required.
+
+Popular NFT standard. Common [ERC721](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md) contract calls and events.
+
+```tsx
+const { name, symbol, tokenURI, metadata, ownerOf } = Contract.useERC721(networkId, address, tokenId);
+```
+
+**Reference:** [Contract.useERC721](../../web3-redux-reference/namespaces/Contract.md#useerc721)
+
+**Alias:** [Contract.useNFT](../../web3-redux-reference/namespaces/Contract.md#usenft)

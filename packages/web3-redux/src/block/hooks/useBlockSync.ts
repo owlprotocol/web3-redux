@@ -1,7 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, useCallback } from 'react';
 import * as BlockActions from '../actions/index.js';
-import { selectByIdSingle as selectNetwork, selectBlocks } from '../../network/selectors/index.js';
+import BlockCRUD from '../crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 /**
  * Reads blocks for network and syncs data with a block subscription.
@@ -10,8 +11,8 @@ import { selectByIdSingle as selectNetwork, selectBlocks } from '../../network/s
 export const useBlockSync = (networkId: string | undefined, returnTransactionObjects = false) => {
     const dispatch = useDispatch();
 
-    const network = useSelector((state) => selectNetwork(state, networkId));
-    const blocks = useSelector((state) => selectBlocks(state, networkId));
+    const network = NetworkCRUD.hooks.useGet({ networkId });
+    const blocks = BlockCRUD.hooks.useWhere({ networkId });
     const networkExists = !!network;
 
     //Recompute subscribe function if network is created, otherwise function is void

@@ -1,6 +1,7 @@
+import { v4 as uuidv4 } from 'uuid';
 import { CallActionInput, call } from './call.js';
 import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
-import { create as createSyncAction } from '../../sync/actions/index.js';
+import SyncCRUD from '../../sync/crud.js';
 
 /** @internal */
 export interface CallSyncedActionInput extends CallActionInput {
@@ -12,12 +13,12 @@ export interface CallSyncedActionInput extends CallActionInput {
  * @category Actions
  *
  */
-export const callSynced = (payload: CallSyncedActionInput) => {
+export const callSynced = (payload: CallSyncedActionInput, uuid?: string) => {
     const { networkId, address } = payload;
     const callAction = call(payload);
     const sync = createSyncForActions(networkId, [callAction], payload.sync, address);
-    if (sync) sync.id = `${sync.type}-${callAction.payload.id}`;
-    const syncAction = sync ? createSyncAction(sync) : undefined;
+    if (sync) sync.id = `${sync.type}-${JSON.stringify(callAction.payload)}`;
+    const syncAction = sync ? SyncCRUD.actions.upsert(sync, uuid ?? uuidv4()) : undefined;
     return { callAction, syncAction };
 };
 

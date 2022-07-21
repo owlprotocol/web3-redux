@@ -1,8 +1,9 @@
 import { getBalance } from './getBalance.js';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
+
 import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
-import { create as createSyncAction } from '../../sync/actions/index.js';
-import { ContractId, getId } from '../model/interface.js';
+import { ContractId } from '../model/interface.js';
+import ContractCRUD from '../crud.js';
+import SyncCRUD from '../../sync/crud.js';
 
 /** @internal */
 export interface GetBalanceSyncedActionInput extends ContractId {
@@ -14,10 +15,10 @@ export interface GetBalanceSyncedActionInput extends ContractId {
  */
 export const getBalanceSynced = (payload: GetBalanceSyncedActionInput) => {
     const { networkId } = payload;
-    const address = toChecksumAddress(payload.address);
+    const address = payload.address.toLowerCase();
     const getBalanceAction = getBalance({ networkId, address });
     const sync = createSyncForActions(networkId, [getBalanceAction], payload.sync, address);
-    if (sync) sync.id = `${sync.type}-${getId({ networkId, address })}-getBalance`;
-    const syncAction = sync ? createSyncAction(sync) : undefined;
+    if (sync) sync.id = `${sync.type}-${ContractCRUD.validateId({ networkId, address })}-getBalance`;
+    const syncAction = sync ? SyncCRUD.actions.upsert(sync) : undefined;
     return { getBalanceAction, syncAction };
 };

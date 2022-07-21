@@ -1,5 +1,5 @@
 import { take, cancel, fork } from 'typed-redux-saga';
-import subscribe from './subscribe.js';
+import subscribeSaga from './subscribe.js';
 import { isSubscribeAction, isUnsubscribeAction } from '../actions/index.js';
 import { SubscribeAction } from '../actions/subscribe.js';
 import { UnsubscribeAction } from '../actions/unsubscribe.js';
@@ -17,13 +17,15 @@ function* subscribeLoop() {
 
         if (isSubscribeAction(action)) {
             const { payload } = action;
-            const { networkId } = payload;
+            let networkId: string;
+            if (typeof payload === 'string') networkId = payload;
+            else networkId = payload.networkId;
 
             if (!subscribed[networkId]) {
                 //Only one active subscription per network
                 //TODO: Allow editing of subscription params (auto-cancel)
                 subscribed[networkId] = true;
-                tasks[networkId] = yield* fork(subscribe, action);
+                tasks[networkId] = yield* fork(subscribeSaga, action);
             }
         } else if (isUnsubscribeAction(action)) {
             const { payload } = action;

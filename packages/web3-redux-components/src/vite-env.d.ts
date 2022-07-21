@@ -5,8 +5,9 @@ export interface ImportMetaEnv {
     readonly VITE_INFURA_API_KEY: string;
     readonly VITE_OWL_RPC: string;
     readonly VITE_IPFS_URL: string;
+    readonly VITE_CORS_PROXY: string;
 }
 
-interface ImportMeta {
+export interface ImportMeta {
     readonly env: ImportMetaEnv;
 }

@@ -1,15 +1,24 @@
+import Web3 from 'web3';
 import { coder } from '../utils/web3-eth-abi/index.js';
 import { toWei } from '../utils/web3-utils/index.js';
 import { cloneDeep } from '../utils/lodash/index.js';
 import { REDUX_ROOT } from '../common.js';
 import { StateRoot } from '../state.js';
 import { getOrm } from '../orm.js';
-import { validateBlock } from '../block/index.js';
-import { validateContract } from '../contract/index.js';
-import { validateContractEvent } from '../contractevent/index.js';
-import { validateEthCall } from '../ethcall/index.js';
-import { validateTransaction } from '../transaction/index.js';
-import { BlockNumber, IERC20, IERC721Metadata as IERC721, IERC1155MetadataURI as IERC1155 } from '../abis/index.js';
+import {
+    BlockNumberArtifact,
+    IERC20MetadataArtifact as IERC20,
+    IERC721MetadataArtifact as IERC721,
+    IERC1155MetadataURIArtifact as IERC1155,
+    ERC20PresetMinterPauserArtifact,
+    ERC721PresetMinterPauserAutoIdArtifact,
+    ERC1155PresetMinterPauserArtifact,
+} from '../abis/index.js';
+import ContractCRUD from '../contract/crud.js';
+import ContractEventCRUD from '../contractevent/crud.js';
+import BlockCRUD from '../block/crud.js';
+import TransactionCRUD from '../transaction/crud.js';
+import EthCallCRUD from '../ethcall/crud.js';
 
 export const networkId = '1336';
 
@@ -47,18 +56,18 @@ export const ADDRESS_8 = addressList[8];
 export const ADDRESS_9 = addressList[9];
 
 //Popular tokens
-export const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-export const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
-export const TETHER = '0xdac17f958d2ee523a2206206994597c13d831ec7';
-export const CHAINLINK = '0x514910771af9ca656af840dff83e8264ecf986ca';
+export const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'.toLowerCase();
+export const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'.toLowerCase();
+export const TETHER = '0xdac17f958d2ee523a2206206994597c13d831ec7'.toLowerCase();
+export const CHAINLINK = '0x514910771af9ca656af840dff83e8264ecf986ca'.toLowerCase();
 //ERC721
-export const VEE_FRIENDS_SERIES2 = '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18';
-export const OZ_TEAM = '0x67ed2e5dd3d01ca342db045037be054dc6d8482a';
+export const VEE_FRIENDS_SERIES2 = '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18'.toLowerCase();
+export const OZ_TEAM = '0x67ed2e5dd3d01ca342db045037be054dc6d8482a'.toLowerCase();
 //ERC1155
-export const KITH_FRIENDS = '0x130cfab3817467f532c179d4e6502f5a7e7d44c7'; //metadata has no CORS
-export const SKYWEAVER = '0x631998e91476da5b870d741192fc5cbc55f5a52e';
+export const KITH_FRIENDS = '0x130cfab3817467f532c179d4e6502f5a7e7d44c7'.toLowerCase(); //metadata has no CORS
+export const SKYWEAVER = '0x631998e91476da5b870d741192fc5cbc55f5a52e'.toLowerCase();
 //Popular addresses
-export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';
+export const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b'.toLowerCase();
 
 //Crypto Owls demo collection
 export const CRYPTO_OWLS = '0xebd50f74350C2FDc576509c72b1Fdb931517c84A'; //ERC721
@@ -68,19 +77,19 @@ export const OWL_PARTS = '0x7717744b7415984bd593628c389524F03b52D756'; //ERC1155
 export const network1 = { networkId };
 
 //Contract
-export const contract0 = validateContract({
+export const contract0 = ContractCRUD.validate({
     networkId,
     address: ADDRESS_0,
-    abi: cloneDeep(BlockNumber.abi) as any,
+    abi: cloneDeep(BlockNumberArtifact.abi) as any,
 });
 
 //Used in tests
-export const contract1 = validateContract({
+export const contract1 = ContractCRUD.validate({
     networkId,
     address: ADDRESS_1,
-    abi: cloneDeep(BlockNumber.abi) as any,
+    abi: cloneDeep(BlockNumberArtifact.abi) as any,
 });
-export const contract2 = validateContract({
+export const contract2 = ContractCRUD.validate({
     networkId,
     address: ADDRESS_2,
     balance: toWei('1'),
@@ -88,64 +97,63 @@ export const contract2 = validateContract({
 });
 
 //Implementation Contracts
-export const contractERC20Implementation = validateContract({
+export const contractERC20Implementation = ContractCRUD.validate({
     networkId: '1',
     address: ADDRESS_3,
     abi: cloneDeep(IERC20.abi) as any,
-    indexIds: ['ERC20Implementation'],
+    tags: ['ERC20Implementation'],
     label: 'ERC20Implementation',
 });
-export const contractERC721Implementation = validateContract({
+export const contractERC721Implementation = ContractCRUD.validate({
     networkId: '1',
     address: ADDRESS_4,
     abi: cloneDeep(IERC721.abi) as any,
-    indexIds: ['ERC721Implementation'],
     label: 'ERC721Implementation',
 });
 
 //Token Contracts
-export const contractWETH = validateContract({
+export const contractWETH = ContractCRUD.validate({
     networkId: '1',
     address: WETH,
     abi: cloneDeep(IERC20.abi) as any,
-    indexIds: ['ERC20'],
+    tags: ['ERC20'],
     label: 'WETH',
 });
-export const contractUSDC = validateContract({
+export const contractUSDC = ContractCRUD.validate({
     networkId: '1',
     address: USDC,
     abi: cloneDeep(IERC20.abi) as any,
-    indexIds: ['Favorites', 'ERC20'],
+    tags: ['Favorites', 'ERC20'],
     label: 'USDC',
 });
-export const contractTETHER = validateContract({
+export const contractTETHER = ContractCRUD.validate({
     networkId: '1',
     address: TETHER,
     abi: cloneDeep(IERC20.abi) as any,
-    indexIds: ['ERC20'],
+    tags: ['ERC20'],
     label: 'TETHER',
 });
-export const contractCHAINLINK = validateContract({
+export const contractCHAINLINK = ContractCRUD.validate({
     networkId: '1',
     address: CHAINLINK,
     abi: cloneDeep(IERC20.abi) as any,
-    indexIds: ['ERC20'],
+    tags: ['ERC20'],
     label: 'LINK',
 });
 
 //ERC721
-export const contractVeeFriendsSeries2 = validateContract({
+export const contractVeeFriendsSeries2 = ContractCRUD.validate({
     networkId: '1',
     address: VEE_FRIENDS_SERIES2,
     abi: cloneDeep(IERC721.abi) as any,
-    indexIds: ['ERC721'],
+    tags: ['ERC721'],
     label: 'Vee Friends 2',
 });
-export const contractOZTeam = validateContract({
+export const contractOZTeam = ContractCRUD.validate({
     networkId: '1',
     address: OZ_TEAM,
     abi: cloneDeep(IERC721.abi) as any,
-    indexIds: ['ERC721'],
+    tags: ['ERC721'],
     label: 'OZ Team NFT',
 });
 export const contractCRYPTO_OWLS = validateContract({
@@ -157,18 +165,18 @@ export const contractCRYPTO_OWLS = validateContract({
 });
 
 //ERC1155
-export const contractKithFriends = validateContract({
+export const contractKithFriends = ContractCRUD.validate({
     networkId: '1',
     address: KITH_FRIENDS,
     abi: cloneDeep(IERC1155.abi) as any,
-    indexIds: ['ERC1155'],
+    tags: ['ERC1155'],
     label: 'Kith Friends',
 });
-export const contractSkyWeaver = validateContract({
+export const contractSkyWeaver = ContractCRUD.validate({
     networkId: '137',
     address: SKYWEAVER,
     abi: cloneDeep(IERC1155.abi) as any,
-    indexIds: ['ERC1155'],
+    tags: ['ERC1155'],
     label: 'Sky Weaver',
 });
 export const contractOWL_PARTS = validateContract({
@@ -180,46 +188,48 @@ export const contractOWL_PARTS = validateContract({
 });
 
 //Popular Addresses
-export const contractVITALIK = validateContract({
+export const contractVITALIK = ContractCRUD.validate({
     networkId: '1',
     address: VITALIK,
-    indexIds: [],
+    tags: [],
     label: 'Vitalik Buterin',
 });
 
 export const contract1Id = { networkId, address: ADDRESS_1 };
 
 //ContractEvent
-export const event1 = validateContractEvent({
+export const event1 = ContractEventCRUD.validate({
     networkId,
     address: ADDRESS_1,
     name: 'NewValue',
+    blockNumber: 0,
     blockHash: '0x0',
     logIndex: 0,
     returnValues: { val: 42 },
 });
 
-export const event2 = validateContractEvent({
+export const event2 = ContractEventCRUD.validate({
     networkId,
     address: ADDRESS_1,
     name: 'NewValue',
+    blockNumber: 0,
     blockHash: '0x0',
     logIndex: 1,
     returnValues: { val: 42, val2: 69 },
 });
 
 //Block
-export const block1 = validateBlock({ networkId, number: 1 });
-export const block2 = validateBlock({ networkId, number: 2 });
+export const block1 = BlockCRUD.validate({ networkId, number: 1 });
+export const block2 = BlockCRUD.validate({ networkId, number: 2 });
 //Transaction
-export const transaction1 = validateTransaction({
+export const transaction1 = TransactionCRUD.validate({
     networkId,
     hash: '0x0',
     blockNumber: 1,
     from: ADDRESS_1,
     to: ADDRESS_0,
 });
-export const transaction2 = validateTransaction({
+export const transaction2 = TransactionCRUD.validate({
     networkId,
     hash: '0x1',
     blockNumber: 2,
@@ -229,38 +239,51 @@ export const transaction2 = validateTransaction({
 
 //Ethcall
 const method = 'getValue';
-const methodAbi = (cloneDeep(BlockNumber.abi) as any).filter((f: any) => f.name === method)[0];
+const methodAbi = (cloneDeep(BlockNumberArtifact.abi) as any).filter((f: any) => f.name === method)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);
-export const ethCall1 = validateEthCall({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
+export const ethCall1 = EthCallCRUD.validate({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
 //State
-const state: StateRoot = {
-    [REDUX_ROOT]: getOrm().getEmptyState(),
+export const getTestState = () => {
+    const state: StateRoot = {
+        [REDUX_ROOT]: getOrm().getEmptyState(),
+    };
+
+    state[REDUX_ROOT]['Network'].items.push(network1.networkId);
+    state[REDUX_ROOT]['Network'].itemsById[network1.networkId] = network1;
+
+    state[REDUX_ROOT]['Contract'].items.push(ContractCRUD.toPrimaryKeyString(contract1));
+    state[REDUX_ROOT]['Contract'].itemsById[ContractCRUD.toPrimaryKeyString(contract1)] = contract1;
 };
 
-state[REDUX_ROOT]['Network'].items.push(network1.networkId);
-state[REDUX_ROOT]['Network'].itemsById[network1.networkId] = network1;
+export const deployTestContracts = async () => {
+    const web3 = new Web3('ws://localhost:8545');
+    const accounts = await web3.eth.getAccounts();
+    const contractBlockNumber = await new web3.eth.Contract(BlockNumberArtifact.abi as any)
+        .deploy({
+            data: BlockNumberArtifact.bytecode,
+        })
+        .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+    const contractERC20 = await new web3.eth.Contract(ERC20PresetMinterPauserArtifact.abi as any)
+        .deploy({
+            data: ERC20PresetMinterPauserArtifact.bytecode,
+        })
+        .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+    const contractERC721 = await new web3.eth.Contract(ERC721PresetMinterPauserAutoIdArtifact.abi as any)
+        .deploy({
+            data: ERC721PresetMinterPauserAutoIdArtifact.bytecode,
+        })
+        .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
+    const contractERC1155 = await new web3.eth.Contract(ERC1155PresetMinterPauserArtifact.abi as any)
+        .deploy({
+            data: ERC1155PresetMinterPauserArtifact.bytecode,
+        })
+        .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
 
-state[REDUX_ROOT]['Contract'].items.push(contract1.id);
-state[REDUX_ROOT]['Contract'].itemsById[contract1.id] = contract1;
-
-//Set Eth Call
-state[REDUX_ROOT]['EthCall'].items.push(ethCall1.id);
-state[REDUX_ROOT]['EthCall'].itemsById[ethCall1.id!] = ethCall1;
-
-//Set Event
-state[REDUX_ROOT]['ContractEvent'].items.push(event1.id);
-state[REDUX_ROOT]['ContractEvent'].itemsById[event1.id!] = event1;
-state[REDUX_ROOT]['ContractEvent'].items.push(event2.id);
-state[REDUX_ROOT]['ContractEvent'].itemsById[event2.id!] = event2;
-
-//Set Transactions
-state[REDUX_ROOT]['Transaction'].items.push(transaction1.id);
-state[REDUX_ROOT]['Transaction'].itemsById[transaction1.id!] = transaction1;
-state[REDUX_ROOT]['Transaction'].items.push(transaction2.id);
-state[REDUX_ROOT]['Transaction'].itemsById[transaction2.id!] = transaction2;
-
-state[REDUX_ROOT]['Transaction'].indexes.fromId[contract1.id] = [transaction1.id];
-state[REDUX_ROOT]['Transaction'].indexes.toId[contract1.id] = [transaction2.id];
-
-export { state };
+    return {
+        blockNumberAddress: contractBlockNumber.options.address,
+        erc20Address: contractERC20.options.address,
+        erc721Address: contractERC721.options.address,
+        erc1155Address: contractERC1155.options.address,
+    };
+};

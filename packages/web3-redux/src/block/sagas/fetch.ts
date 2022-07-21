@@ -1,50 +1,41 @@
 import { select, put, call } from 'typed-redux-saga';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { Eth } from 'web3-eth';
-import { isHexStrict } from '../../utils/web3-utils/index.js';
-import { create, update, FetchAction } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
-import { selectByIdSingle } from '../selectors/index.js';
+import { create as createError } from '../../error/actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import { FETCH, FetchAction } from '../actions/index.js';
+import BlockCRUD from '../crud.js';
 
+const GET_BLOCK_ERROR = `${FETCH}/ERROR`;
 /** @category Sagas */
-function* fetch(action: FetchAction) {
-    const { payload } = action;
-    const { networkId, blockHashOrBlockNumber, returnTransactionObjects } = payload;
+export function* fetchSaga(action: FetchAction) {
+    try {
+        const { payload } = action;
+        const { networkId, blockHashOrBlockNumber, returnTransactionObjects } = payload;
 
-    const paramIsNumber = !isHexStrict(blockHashOrBlockNumber);
-    let blockExists = false;
-    if (paramIsNumber) {
-        //Get block number
-        const paramAsNumber =
-            typeof blockHashOrBlockNumber === 'number' ? blockHashOrBlockNumber : parseInt(blockHashOrBlockNumber);
-        //Check if block exists
-        const block = yield* select(selectByIdSingle, { networkId, number: paramAsNumber });
-        if (!block) {
-            yield* put(
-                create({
-                    networkId,
-                    number: paramAsNumber,
-                }),
-            );
-        }
-        blockExists = true;
-    }
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
+        const web3 = network?.web3 ?? network?.web3Sender;
+        if (!web3) throw new Error(`Network ${networkId} missing web3`);
 
-    const network = yield* call(networkExists, networkId);
-    const web3 = network.web3 ?? network.web3Sender;
-    if (!web3) throw new Error(`Network ${networkId} missing web3`);
-
-    const result = yield* call(
-        web3.eth.getBlock,
-        blockHashOrBlockNumber,
-        returnTransactionObjects ?? false, //default to false
-    );
-    if (blockExists) {
-        yield* put(update({ ...result, networkId }));
-    } else {
-        //User passed blockHash as arg so we create the block only once data is passed
-        yield* put(create({ ...result, networkId }));
+        const result = yield* call(
+            web3.eth.getBlock,
+            blockHashOrBlockNumber,
+            returnTransactionObjects ?? false, //default to false
+        );
+        yield* put(BlockCRUD.actions.put({ ...result, networkId }, action.meta.uuid));
+    } catch (error) {
+        //Errors thrown at tx encoding, most likely invalid ABI (function name, paremeters...)
+        const err = error as Error;
+        yield* put(
+            createError(
+                {
+                    id: action.meta.uuid,
+                    errorMessage: err.message,
+                    stack: err.stack,
+                    type: GET_BLOCK_ERROR,
+                },
+                action.meta.uuid,
+            ),
+        );
     }
 }
 
-export default fetch;
+export default fetchSaga;

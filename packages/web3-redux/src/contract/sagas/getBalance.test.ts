@@ -1,39 +1,53 @@
 import { assert } from 'chai';
-import Web3 from 'web3';
-import { getWeb3Provider } from '../../test/index.js';
+import { testSaga } from 'redux-saga-test-plan';
+import getBalance from './getBalance.js';
 
-import { networkId } from '../../test/data.js';
+import { ADDRESS_0 } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/actions/index.js';
-import { Contract } from '../model/interface.js';
+
 import { name } from '../common.js';
-import { selectByIdSingle } from '../selectors/index.js';
-import { create as createAction, getBalance as getBalanceAction } from '../actions/index.js';
 
-describe(`${name}.integration`, () => {
-    let store: StoreType;
-    let web3: Web3;
+import { getBalance as getBalanceAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
+import { network1336 } from '../../network/data.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
+import sleep from '../../utils/sleep.js';
 
-    let item: Contract;
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
+const address = ADDRESS_0;
+const action = getBalanceAction({ networkId, address }, '');
 
-    before(async () => {
-        const provider = getWeb3Provider();
-        //@ts-ignore
-        web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
-        item = { networkId, address: accounts[0] };
+describe(`${name}/sagas/getBalance.test.ts`, () => {
+    describe('unit', () => {
+        it('getBalance', () => {
+            testSaga(getBalance, action)
+                .next()
+                .call(loadNetwork, networkId)
+                .next({ networkId, web3 })
+                .call(web3.eth.getBalance, address)
+                .next('0')
+                .put(ContractCRUD.actions.upsert({ networkId, address, balance: '0' }, ''));
+        });
     });
 
-    beforeEach(() => {
-        ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
-        store.dispatch(createAction(item));
-    });
+    describe('store', () => {
+        let store: StoreType;
 
-    it('getBalance()', async () => {
-        store.dispatch(getBalanceAction(item));
-        const expected = await web3.eth.getBalance(item.address!);
-        const account = selectByIdSingle(store.getState(), item);
-        assert.equal(account!.balance, expected, 'initial balance');
+        beforeEach(async () => {
+            store = createStore();
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
+        });
+
+        it('getBalance', async () => {
+            store.dispatch(getBalanceAction({ networkId, address }));
+            await sleep(1000);
+
+            const expected = await web3.eth.getBalance(address!);
+            const account = await ContractCRUD.db.get({ networkId, address });
+
+            assert.equal(account!.balance, expected, 'initial balance');
+        });
     });
 });

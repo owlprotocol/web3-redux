@@ -1,1 +1,1 @@
-export type { Ipfs, IpfsId } from './interface.js';
+export * from './interface.js';

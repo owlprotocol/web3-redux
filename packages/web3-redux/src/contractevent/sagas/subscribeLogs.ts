@@ -1,20 +1,19 @@
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
-import { put, call, cancel, take, fork } from 'typed-redux-saga';
+import { put, call, cancel, take, fork, select } from 'typed-redux-saga';
 import { Action } from 'redux';
-import invariant from 'tiny-invariant';
 import type { Subscription } from 'web3-core-subscriptions';
 import type { Log } from 'web3-core';
 
 import {
-    create as createEvent,
     SubscribeLogsAction,
     SUBSCRIBE_LOGS,
     isSubscribeLogsAction,
     isUnsubscribeLogsAction,
 } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
 import { UnsubscribeLogsAction } from '../actions/unsubscribeLogs.js';
 import { getLogsSubscriptionId } from '../model/logsSubscription.js';
+import ContractEventCRUD from '../crud.js';
+import NetworkCRUD from '../../network/crud.js';
 
 const SUBSCRIBE_DATA = `${SUBSCRIBE_LOGS}/DATA`;
 const SUBSCRIBE_ERROR = `${SUBSCRIBE_LOGS}/ERROR`;
@@ -51,9 +50,11 @@ function* subscribeLogs(action: SubscribeLogsAction) {
         const { payload } = action;
         const { networkId, address, topics } = payload;
 
-        const network = yield* call(networkExists, networkId);
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+        if (!network) throw new Error(`Network ${networkId} undefined`);
+
         const web3 = network.web3 ?? network.web3Sender;
-        invariant(web3, `Network ${networkId} missing web3`);
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
         const subscription = web3.eth.subscribe('logs', { address, topics });
         const channel: TakeableChannel<SubscribeLogsChannelMessage> = yield* call(subscribeLogsChannel, subscription);
@@ -63,7 +64,7 @@ function* subscribeLogs(action: SubscribeLogsAction) {
             const { type, log, error } = message;
             if (type === SUBSCRIBE_DATA && log) {
                 yield* put(
-                    createEvent({
+                    ContractEventCRUD.actions.upsert({
                         ...log,
                         networkId,
                     }),
@@ -72,7 +73,7 @@ function* subscribeLogs(action: SubscribeLogsAction) {
                 yield* put({ type: SUBSCRIBE_ERROR, error });
             } else if (type === SUBSCRIBE_CHANGED && log) {
                 yield* put(
-                    createEvent({
+                    ContractEventCRUD.actions.upsert({
                         ...log,
                         networkId,
                     }),
@@ -80,7 +81,6 @@ function* subscribeLogs(action: SubscribeLogsAction) {
             }
         }
     } catch (error) {
-        console.error(error);
         yield* put({ type: SUBSCRIBE_ERROR, error });
     } finally {
         yield* put({ type: SUBSCRIBE_DONE });

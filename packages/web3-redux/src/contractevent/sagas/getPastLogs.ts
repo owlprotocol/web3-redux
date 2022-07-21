@@ -1,8 +1,7 @@
-import { put, call } from 'typed-redux-saga';
-import { batchActions } from 'redux-batched-actions';
-import invariant from 'tiny-invariant';
-import { create as createEvent, GetPastLogsAction, GET_PAST_LOGS } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
+import { put, call, select } from 'typed-redux-saga';
+import NetworkCRUD from '../../network/crud.js';
+import { GetPastLogsAction, GET_PAST_LOGS } from '../actions/index.js';
+import ContractEventCRUD from '../crud.js';
 
 const GET_PAST_LOGS_ERROR = `${GET_PAST_LOGS}/ERROR`;
 
@@ -11,19 +10,23 @@ function* getPastLogs(action: GetPastLogsAction) {
         const { payload } = action;
         const { networkId, address, topics, fromBlock, toBlock } = payload;
 
-        const network = yield* call(networkExists, networkId);
+        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+        if (!network) throw new Error(`Network ${networkId} undefined`);
+
         const web3 = network.web3 ?? network.web3Sender;
-        invariant(web3, `Network ${networkId} missing web3`);
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
 
         const options = { address, topics, fromBlock, toBlock };
         const result = yield* call(web3.eth.getPastLogs, options);
 
-        const actions = result.map((l) => {
-            return createEvent({ ...l, networkId });
-        });
-        if (actions.length > 0) {
-            const batchCreate = batchActions(actions, `${createEvent.type}/${actions.length}`);
-            yield* put(batchCreate);
+        if (result.length > 0) {
+            const action = ContractEventCRUD.actions.createBatched(
+                result.map((l) => {
+                    return { ...l, networkId };
+                }),
+            );
+
+            yield* put(action);
         }
 
         return result;

@@ -1,0 +1,17 @@
+# useERC20
+
+This hook is designed to optimize fetching data from the popular `ERC20` token interface.
+No ABI is required for this hook as it contains presets.
+Optimizations take into account `Transfer` event logs to refresh calls only when required.
+
+
+Popular token standard. Common [ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) contract calls and events.
+
+```tsx
+const { name, symbol, decimals, totalSupply, balanceOf } =
+    Contract.hooks.useERC20(networkId, address, balanceOfAddress);
+```
+
+**Reference:** [Contract.hooks.useERC20](../../web3-redux-reference/namespaces/Contract.md#useerc20)
+
+**Alias:** [Contract..hooks.useToken](../../web3-redux-reference/namespaces/Contract.md#usetoken)

@@ -1,7 +1,5 @@
 import type { TransactionReceipt } from 'web3-core';
-import { toChecksumAddress, isHexStrict, hexToNumberString } from '../../utils/web3-utils/index.js';
-import { getId as getBlockId } from '../../block/model/id.js';
-import { ModelWithId } from '../../types/model.js';
+import { isHexStrict, hexToNumberString } from '../../utils/web3-utils/index.js';
 
 /** Transaction id components */
 export interface TransactionId {
@@ -21,16 +19,12 @@ export interface TransactionId {
  *
  */
 export interface Transaction extends TransactionId {
-    /** Used to index transactions in redux-orm. Computed as `${networkId}-${hash}`. */
-    readonly id?: string;
     /** The number of transactions made by the sender prior to this one. */
     readonly nonce?: number;
     /** 32 bytes. Hash of the block where this transaction was in. `null` if pending */
     readonly blockHash?: string | null;
     /** Block number where this transaction was in. `null` if pending */
     readonly blockNumber?: number | null;
-    /** Integer of the transactions index position in the block. `null` if pending */
-    readonly transactionIndex?: number | null;
     /** Address of the sender */
     readonly from?: string;
     /** Address of the receiver. `null` if it’s a contract creation transaction */
@@ -63,52 +57,47 @@ export interface Transaction extends TransactionId {
     readonly contractAddress?: string;
     /** Ethersan timestamp */
     readonly timeStamp?: number;
-
-    /** ORM Relational */
-    /** @hidden */
-    //readonly network?: Network;
-    /** @hidden Used to index the block this transaction is in. Computed as `${networkId}-${blockNumber}` */
-    readonly blockId?: string | null;
-    //readonly block?: Block
-    /** @hidden */
-    readonly fromId?: string;
-    /** @hidden */
-    //readonly fromContract?: string;
-    /** @hidden */
-    readonly toId?: string;
-    /** @hidden */
-    //readonly toContract?: string;
 }
 
-const SEPARATOR = '-';
+export type TransactionIndexInput =
+    | TransactionId
+    | { networkId: string }
+    | { networkId: string; blockHash: string }
+    | { networkId: string; from: string; to: string }
+    | { networkId: string; from: string }
+    | { networkId: string; to: string }
+    | { networkId: string; contractAddress: string };
+export const TransactionIndex =
+    '[networkId+hash], [networkId+blockNumber], [networkId+blockHash], [networkId+from+to], [networkId+to], [networkId+contractAddress]';
+
 /** @internal */
-export function getId(id: TransactionId): string {
-    return [id.networkId, id.hash].join(SEPARATOR);
+export function validateId({ networkId, hash }: TransactionId): TransactionId {
+    return { networkId, hash };
+}
+
+export function toPrimaryKey({ networkId, hash }: TransactionId): [string, string] {
+    return [networkId, hash];
 }
 
 /** @internal */
-export function validate(item: Transaction): ModelWithId<Transaction> {
-    const id = getId(item);
-    const to = item.to ? toChecksumAddress(item.to) : undefined;
-    const from = item.from ? toChecksumAddress(item.from) : undefined;
-    const contractAddress = item.contractAddress ? toChecksumAddress(item.contractAddress) : undefined;
+export function validate(item: Transaction): Transaction {
+    const to = item.to ? item.to.toLowerCase() : undefined;
+    const from = item.from ? item.from.toLowerCase() : undefined;
+    const contractAddress = item.contractAddress ? item.contractAddress.toLowerCase() : undefined;
     const gasPriceNumber = item.gasPrice
         ? isHexStrict(item.gasPrice)
             ? hexToNumberString(item.gasPrice)
             : item.gasPrice
         : undefined;
-    const blockId = item.blockNumber ? getBlockId({ networkId: item.networkId, number: item.blockNumber }) : undefined;
 
     const result = {
         ...item,
-        id,
     };
 
     if (to) result.to = to;
     if (from) result.from = from;
     if (contractAddress) result.contractAddress = contractAddress;
     if (gasPriceNumber) result.gasPrice = gasPriceNumber;
-    if (blockId) result.blockId = blockId;
 
     return result;
 }

@@ -16,6 +16,7 @@ yarn.lock
 /build
 /lib
 /dist
+/ipfs
 #/types
 
 # misc
@@ -26,3 +27,11 @@ yarn.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# hardhat
+artifacts
+/cache
+typechain
+
+# slite
+*.sqlite

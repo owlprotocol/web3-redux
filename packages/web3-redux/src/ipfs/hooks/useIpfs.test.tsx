@@ -5,17 +5,16 @@ import { renderHook } from '@testing-library/react-hooks';
 import axios from 'axios';
 import * as moxios from 'moxios';
 
+
 import { useIpfs } from './useIpfs.js';
 import { expectThrowsAsync } from '../../test/index.js';
 import { HELLO_WORLD, HELLO_WORLD_QMHASH, NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../test/ipfs.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { update as updateConfig } from '../../config/actions/index.js';
-
-import jsdom from 'mocha-jsdom';
+import ConfigCRUD from '../../config/crud.js';
 
 describe('ipfs/hooks/useIpfs.test.tsx', () => {
-    jsdom({ url: 'http://localhost' });
+
 
     let store: StoreType;
     let wrapper: any;
@@ -23,8 +22,8 @@ describe('ipfs/hooks/useIpfs.test.tsx', () => {
     after(() => moxios.uninstall(axios));
 
     beforeEach(async () => {
-        ({ store } = createStore());
-        store.dispatch(updateConfig({ id: '0', ipfsClient: axios }));
+        store = createStore();
+        store.dispatch(ConfigCRUD.actions.update({ id: '0' }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

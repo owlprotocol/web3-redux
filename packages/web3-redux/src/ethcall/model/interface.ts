@@ -1,8 +1,5 @@
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
-import { getId as getContractId } from '../../contract/model/interface.js';
-import { ModelWithId } from '../../types/model.js';
+import { isUndefined, omitBy } from '../../utils/lodash/index.js';
 
-const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 /** EthCall id components */
 export interface EthCallId {
     /** Blockchain network id.
@@ -12,77 +9,75 @@ export interface EthCallId {
     readonly to: string;
     /** `data` field for call */
     readonly data: string;
-    /** Historical block height to execute call. Defaults to `latest` */
-    readonly defaultBlock?: number | 'latest';
+}
+
+export interface EthCall extends EthCallId {
+    /** Contract Call indexing */
+    readonly methodName?: string;
+    readonly methodSignature?: string;
+    readonly args?: any[];
+    readonly argsHash?: string;
+    /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
+    readonly returnValue?: any;
+    /** Last returnValue updated UTC timestamp */
+    readonly lastUpdated?: number;
+    /** Status */
+    readonly status?: 'LOADING' | 'SUCCESS' | 'ERROR';
+    /** Error Id */
+    readonly errorId?: string;
     /** `from` field of call. Some providers may default this to `null` or `ADDRESS_0`. */
     readonly from?: string;
+    /** Historical block height to execute call. Defaults to `latest` */
+    readonly defaultBlock?: number | 'latest';
     /** Maximum `gas` field for call. */
     readonly gas?: number;
 }
-export interface EthCall extends EthCallId {
-    /** redux-orm id of call `${networkId}-{address}(data)-{options}` */
-    readonly id?: string;
-    /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
-    readonly returnValue?: any;
-    /** Last known error */
-    readonly error?: Error;
-    /** Last returnValue updated UTC timestamp */
-    readonly lastUpdated?: number
-    /** Status */
-    readonly status?: 'LOADING' | 'SUCCESS' | 'ERROR'
-}
+
+//Valid indexes
+export type EthCallIndexInput =
+    | EthCallId
+    | { networkId: string; to: string }
+    | { networkId: string }
+    | { networkId: string; to: string; methodName: string; argsHash: string }
+    | { networkId: string; to: string; methodName: string }
+    | { networkId: string; methodName: string }
+    | { methodName: string };
+
+export const EthCallIndex =
+    '[networkId+to+data], [networkId+to+methodName+argsHash], [networkId+methodName], methodName';
 
 /** @internal */
-export function getOptionsId(from: EthCallId['from'], block: EthCallId['defaultBlock'], gas: EthCallId['gas']) {
-    if ((!from || from == ADDRESS_0) && (block == undefined || block == 'latest') && gas == undefined) return undefined;
-
-    const options: any = {};
-    if (from) options.from = toChecksumAddress(from);
-    if (block) options.block = block;
-    if (gas) options.gas = gas;
-
-    return JSON.stringify(block);
-}
-
-/** @internal */
-export function getIdArgs(id: EthCallId): EthCallId {
-    const { networkId, to, data, defaultBlock, from, gas } = id;
-    const val: any = {
-        networkId,
-        to,
-        data,
-    };
-    if (defaultBlock) val.defaultBlock = defaultBlock;
-    if (from) val.from = from;
-    if (gas) val.gas = gas;
-
-    return val;
-}
-
-const SEPARATOR = '-';
-/** @internal */
-export function getId(id: EthCallId): string {
-    const contractId = getContractId({ networkId: id.networkId, address: id.to });
-    const optionsId = getOptionsId(id.from, id.defaultBlock, id.gas);
-
-    let idStr = `${contractId}(${id.data})`;
-    if (optionsId) idStr = [idStr, optionsId].join(SEPARATOR);
-
-    return idStr;
-}
-
-/** @internal */
-export function validate(item: EthCall): ModelWithId<EthCall> {
-    const id = getId(item);
-    const toChecksum = toChecksumAddress(item.to);
-    const fromCheckSum = item.from ? toChecksumAddress(item.from) : undefined;
-
+export function validateId({ networkId, to, data }: EthCallId): EthCallId {
     return {
-        ...item,
-        id,
-        to: toChecksum,
-        from: fromCheckSum,
+        networkId: networkId,
+        to: to.toLowerCase(),
+        data: data,
     };
+}
+
+export function toPrimaryKey({ networkId, to, data }: EthCallId): [string, string, string] {
+    return [networkId, to.toLowerCase(), data];
+}
+
+/** @internal */
+export function validate(item: EthCall): EthCall {
+    const { networkId, to, data } = validateId(item);
+    const from = item.from ? item.from.toLowerCase() : undefined;
+    const args = item.args ?? [];
+    const argsHash = JSON.stringify(args);
+
+    return omitBy(
+        {
+            ...item,
+            networkId,
+            to,
+            data,
+            from,
+            args,
+            argsHash,
+        },
+        isUndefined,
+    ) as unknown as EthCall;
 }
 
 export default EthCall;

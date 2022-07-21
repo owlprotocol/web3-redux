@@ -5,7 +5,7 @@ The `web3-redux` block subscription hook is configured to automatically start/st
 
 ```typescript
 //Blocks.tsx
-import { Block } from '@leovigna/web3-redux';
+import { Block } from '@owlprotocol/web3-redux';
 const BlocksComponent = ({ networkId }) => {
     const [blocks, { subscribe, unsubsribe }] = Block.useBlockSync(networkId);
 };
@@ -14,7 +14,7 @@ const BlocksComponent = ({ networkId }) => {
 Alternatively, if not using hooks or React in general, you can manually dispatch a block sync action and use the selector as follows:
 
 ```typescript
-import { Block, Network } from '@leovigna/web3-redux';
+import { Block, Network } from '@owlprotocol/web3-redux';
 store.dispatch(Block.subscribe({ networkId: '1' }));
 const blocks = Network.selectBlocks(store.getState());
 ```

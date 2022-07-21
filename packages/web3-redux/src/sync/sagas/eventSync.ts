@@ -1,46 +1,53 @@
-import { put, select, all } from 'typed-redux-saga';
-import { Action } from 'redux';
-import { isMatch, reduce } from '../../utils/lodash/index.js';
-import { CreateAction } from '../../contractevent/actions/index.js';
-import { selectByIdMany } from '../selector/index.js';
+import { put, call, all } from 'typed-redux-saga';
+import { compact, flatten, isMatch, reduce } from '../../utils/lodash/index.js';
 import { EventSync } from '../model/index.js';
+import SyncCRUD from '../crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 //Handle on event update
-function* eventSync({ payload }: CreateAction) {
-    const syncs: ReturnType<typeof selectByIdMany> = yield* select(selectByIdMany);
-    const syncsFiltered = syncs.filter((s) => s?.type === 'Event') as EventSync[];
+function* eventSync({ payload }: ReturnType<typeof ContractEventCRUD.actions.create>) {
+    if (!payload.returnValues) return;
 
-    const actions: Action[] = []; //triggered actions
+    const syncs = (yield* call(SyncCRUD.db.where, { type: 'Event' })) as EventSync[];
 
-    syncsFiltered.map((s) => {
-        if (s.networkId === payload.networkId && s.matchAddress === payload.address && s.matchName === payload.name) {
-            //Event matches name
-            if (!s.matchReturnValues) {
-                //No filter
-                actions.push(...s.actions);
-            } else if (
-                Array.isArray(s.matchReturnValues) &&
-                reduce(
-                    payload.returnValues,
-                    (acc, curr) => {
-                        return acc || isMatch(payload.returnValues, curr);
-                    },
-                    false,
-                )
-            ) {
-                //Reduce over isMatch (any 1 filter can match)
-                actions.push(...s.actions);
-            } else if (isMatch(payload.returnValues, s.matchReturnValues)) {
-                //Use lodash isMatch
-                //https://lodash.com/docs/4.17.15#isMatch
-                actions.push(...s.actions);
-            }
-        }
-    });
+    const actions = compact(
+        syncs
+            .filter(
+                (s) =>
+                    s.networkId === payload.networkId &&
+                    s.matchAddress === payload.address &&
+                    s.matchName === payload.name,
+            )
+            .map((s) => {
+                //Event matches name
+                if (!s.matchReturnValues) {
+                    //No filter
+                    return s.actions;
+                } else if (
+                    Array.isArray(s.matchReturnValues) &&
+                    !!payload.returnValues &&
+                    reduce(
+                        payload.returnValues,
+                        (acc, curr) => {
+                            return acc || isMatch(payload.returnValues!, curr);
+                        },
+                        false,
+                    )
+                ) {
+                    //Reduce over isMatch (any 1 filter can match)
+                    return s.actions;
+                } else if (isMatch(payload.returnValues!, s.matchReturnValues)) {
+                    //Use lodash isMatch
+                    //https://lodash.com/docs/4.17.15#isMatch
+                    return s.actions;
+                }
+            }),
+    );
+    const actionsFlat = flatten(actions);
 
     //TODO: Should we instead use fork() or spawn()?
     //Note these are arbitrary actions
-    const tasks = actions.map((a) => put(a));
+    const tasks = actionsFlat.map((a) => put(a));
     yield* all(tasks);
 }
 

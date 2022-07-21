@@ -3,19 +3,18 @@ import axios from 'axios';
 import * as moxios from 'moxios';
 import { renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
+
 import { useFetchTransactions } from './useFetchTransactions.js';
-import { create as createNetwork } from '../../network/actions/index.js';
 
 import { networkId, ADDRESS_0, ADDRESS_1 } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create } from '../actions/index.js';
 
 import { expectThrowsAsync } from '../../test/index.js';
-
-import jsdom from 'mocha-jsdom';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
 
 describe('contract/hooks/useFetchTransactions.test.tsx', () => {
-    jsdom({ url: 'http://localhost' });
+
 
     let store: StoreType;
     let wrapper: any;
@@ -33,14 +32,14 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
     });
 
     beforeEach(() => {
-        ({ store } = createStore());
+        store = createStore();
         store.dispatch(
-            createNetwork({
+            NetworkCRUD.actions.create({
                 networkId,
                 explorerApiClient: client,
             }),
         );
-        store.dispatch(create({ networkId, address }));
+        store.dispatch(ContractCRUD.actions.create({ networkId, address }));
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
@@ -69,7 +68,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
                             {
                                 blockNumber: '1',
                                 hash: '0xffff',
-                                from: ADDRESS_0,
+                                from: address,
                                 to: ADDRESS_1,
                             },
                         ],
@@ -77,7 +76,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
                 });
             });
             await waitForNextUpdate();
-            assert.equal(result.current.length, 1, 'result.current.length');
+            assert.equal(result.current.from.length, 1, 'result.current.length');
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });

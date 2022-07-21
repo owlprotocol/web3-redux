@@ -1,7 +1,10 @@
 import { AnyAction } from 'redux';
+import { BaseSync, BaseSyncId } from './BaseSync.js';
 import { BlockSync, createBlockSyncEveryBlock } from './BlockSync.js';
 import { EventSync } from './EventSync.js';
-import { TransactionSync, createTransactionSyncForAddress } from './TransactionSync.js';
+import { TransactionSync, createSyncForAddress } from './TransactionSync.js';
+
+export * from './BaseSync.js';
 
 /**
  * Sync Middleware Type
@@ -29,7 +32,7 @@ export function createSyncForActions(
     } else if (sync === 'once') {
         return undefined;
     } else if (sync === 'Transaction') {
-        return createTransactionSyncForAddress(networkId, actions, address);
+        return createSyncForAddress(networkId, actions, address);
     } else if (sync === 'Block') {
         return createBlockSyncEveryBlock(networkId, actions);
     } else if (typeof sync === 'number') {
@@ -39,4 +42,22 @@ export function createSyncForActions(
         return sync;
     }
 }
+
+export type SyncIndexInput =
+    | BaseSyncId
+    | { networkId: string; type: BaseSync['type'] }
+    | { networkId: string }
+    | { type: BaseSync['type'] };
+export const SyncIndex = 'id,[networkId+type],type';
+
+/** @internal */
+export function validateId(item: BaseSyncId) {
+    return item;
+}
+
+/** @internal */
+export function validate(item: Partial<Sync>): Sync {
+    return item as Sync;
+}
+
 export default Sync;

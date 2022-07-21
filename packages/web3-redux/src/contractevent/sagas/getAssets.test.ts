@@ -1,31 +1,31 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
-
-import {
-    ERC20PresetMinterPauser,
-    ERC721PresetMinterPauserAutoId,
-    ERC1155PresetMinterPauser,
-} from '../../abis/index.js';
-
 import { sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
-import { selectByIdMany as selectContracts } from '../../contract/selectors/index.js';
-
 import { getAssets as getAssetsAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../../contract/crud.js';
+
+import { ERC20PresetMinterPauser } from '../../typechain/ERC20PresetMinterPauser.js';
+import { ERC721PresetMinterPauserAutoId } from '../../typechain/ERC721PresetMinterPauserAutoId.js';
+import { ERC1155PresetMinterPauser } from '../../typechain/ERC1155PresetMinterPauser.js';
+import {
+    ERC20PresetMinterPauserArtifact,
+    ERC721PresetMinterPauserAutoIdArtifact,
+    ERC1155PresetMinterPauserArtifact,
+} from '../../abis/index.js';
 
 describe(`${name}/sagas/getAssets.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let store: StoreType;
-    let ERC20Contract: Web3Contract;
-    let ERC721Contract: Web3Contract;
-    let ERC1155Contract: Web3Contract;
+    let ERC20Contract: ERC20PresetMinterPauser;
+    let ERC721Contract: ERC721PresetMinterPauserAutoId;
+    let ERC1155Contract: ERC1155PresetMinterPauser;
 
     before(async () => {
         const provider = getWeb3Provider();
@@ -35,24 +35,28 @@ describe(`${name}/sagas/getAssets.test.ts`, () => {
     });
 
     beforeEach(async () => {
-        ERC20Contract = await new web3.eth.Contract(ERC20PresetMinterPauser.abi as any)
+        ERC20Contract = (await new web3.eth.Contract(ERC20PresetMinterPauserArtifact.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: ERC20PresetMinterPauser.bytecode,
+                data: ERC20PresetMinterPauserArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
-        ERC721Contract = await new web3.eth.Contract(ERC721PresetMinterPauserAutoId.abi as any)
+            .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' })) as unknown as ERC20PresetMinterPauser;
+        ERC721Contract = (await new web3.eth.Contract(ERC721PresetMinterPauserAutoIdArtifact.abi as any)
             .deploy({
                 arguments: ['Test NFT', 'TEST', 'https://api.example.com/'],
-                data: ERC721PresetMinterPauserAutoId.bytecode,
+                data: ERC721PresetMinterPauserAutoIdArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 3000000, gasPrice: '875000000' });
-        ERC1155Contract = await new web3.eth.Contract(ERC1155PresetMinterPauser.abi as any)
+            .send({
+                from: accounts[0],
+                gas: 3000000,
+                gasPrice: '875000000',
+            })) as unknown as ERC721PresetMinterPauserAutoId;
+        ERC1155Contract = (await new web3.eth.Contract(ERC1155PresetMinterPauserArtifact.abi as any)
             .deploy({
                 arguments: ['http://example.com/{id}'],
-                data: ERC1155PresetMinterPauser.bytecode,
+                data: ERC1155PresetMinterPauserArtifact.bytecode,
             })
-            .send({ from: accounts[0], gas: 4000000, gasPrice: '875000000' });
+            .send({ from: accounts[0], gas: 4000000, gasPrice: '875000000' })) as unknown as ERC1155PresetMinterPauser;
 
         await ERC20Contract.methods
             .mint(accounts[0], 1)
@@ -62,8 +66,8 @@ describe(`${name}/sagas/getAssets.test.ts`, () => {
             .mint(accounts[0], '0', 1, '0x')
             .send({ from: accounts[0], gas: 2000000, gasPrice: '875000000' });
 
-        ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store = createStore();
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
     });
 
     describe('getAssets', () => {
@@ -78,7 +82,7 @@ describe(`${name}/sagas/getAssets.test.ts`, () => {
             await sleep(1000);
 
             //Create 3 contracts for ERC20, ERC721, ERC1155
-            const contracts = selectContracts(store.getState());
+            const contracts = ContractCRUD.selectors.selectByIdMany(store.getState());
             assert.equal(contracts.length, 3, 'contracts.length');
         });
     });

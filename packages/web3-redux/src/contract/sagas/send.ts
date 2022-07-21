@@ -1,17 +1,15 @@
 import { END, eventChannel, EventChannel, TakeableChannel } from 'redux-saga';
 import { put, call, take, select } from 'typed-redux-saga';
 import { PromiEvent, TransactionReceipt } from 'web3-core';
-
-import { selectByIdSingle as selectNetwork } from '../../network/selectors/index.js';
+import loadContract from './loadContract.js';
+import ConfigCRUD from '../../config/crud.js';
+import ContractSendCRUD from '../../contractsend/crud.js';
 import { ContractSendStatus } from '../../contractsend/model/index.js';
-import { create as createContractSend, update as updateContractSend } from '../../contractsend/actions/index.js';
-import { create as createTransaction } from '../../transaction/actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
+import TransactionCRUD from '../../transaction/crud.js';
 import { SEND, SendAction } from '../actions/index.js';
-import { getId } from '../model/index.js';
-
-import { selectByIdSingle } from '../selectors/index.js';
-import { selectAccount } from '../../config/index.js';
+import ContractCRUD from '../crud.js';
 
 const CONTRACT_SEND_HASH = `${SEND}/HASH`;
 const CONTRACT_SEND_RECEIPT = `${SEND}/RECEIPT`;
@@ -63,21 +61,23 @@ export function* send(action: SendAction) {
         if (!address) throw new Error('address undefined');
         if (!payload.method) throw new Error('method undefined');
 
-        const defaultFrom = yield* select(selectAccount);
+        const config = yield* select(ConfigCRUD.selectors.selectByIdSingle, { id: '0' });
+        const defaultFrom = config?.account;
         const from = payload.from ?? defaultFrom;
         if (!from) throw new Error('from undefined');
 
-        const network = yield* select(selectNetwork, networkId);
-        if (!network) throw new Error(`Network ${networkId} undefined`);
-
-        const contract = yield* select(selectByIdSingle, { networkId, address });
-        if (!contract) throw new Error(`Contract ${getId(payload)} undefined`);
+        const contract = yield* call(loadContract, { networkId, address });
+        if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${getId(payload)} has no web3Sender contract`);
+        if (!web3Contract)
+            throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
 
         const method = web3Contract.methods[payload.method];
-        if (!method) throw new Error(`Contract ${getId(payload)} has no such method ${payload.method}`);
+        if (!method)
+            throw new Error(
+                `Contract ${ContractCRUD.validateId({ networkId, address })} has no such method ${payload.method}`,
+            );
 
         const gasPrice = payload.gasPrice ?? 0;
         const value = payload.value ?? 0;
@@ -101,7 +101,7 @@ export function* send(action: SendAction) {
         };
 
         yield* put(
-            createContractSend({
+            ContractSendCRUD.actions.upsert({
                 ...baseContractSend,
                 status: ContractSendStatus.PENDING_SIGNATURE,
             }),
@@ -118,9 +118,9 @@ export function* send(action: SendAction) {
             const message: ContractSendChannelMessage = yield* take(channel);
             const { type, hash, receipt, confirmations } = message;
             if (type === CONTRACT_SEND_HASH) {
-                yield* put(createTransaction({ networkId, hash: hash! }));
+                yield* put(TransactionCRUD.actions.upsert({ networkId, hash: hash! }));
                 yield* put(
-                    updateContractSend({
+                    ContractSendCRUD.actions.update({
                         ...baseContractSend,
                         transactionHash: hash!,
                         status: ContractSendStatus.PENDING_CONFIRMATION,
@@ -128,7 +128,7 @@ export function* send(action: SendAction) {
                 );
             } else if (type === CONTRACT_SEND_RECEIPT) {
                 yield* put(
-                    updateContractSend({
+                    ContractSendCRUD.actions.update({
                         ...baseContractSend,
                         receipt: receipt,
                         blockNumber: receipt?.blockNumber,
@@ -140,7 +140,7 @@ export function* send(action: SendAction) {
                 if (!initialConfirm && confirmations && confirmations > 0) {
                     initialConfirm = true;
                     yield* put(
-                        updateContractSend({
+                        ContractSendCRUD.actions.update({
                             ...baseContractSend,
                             confirmations: confirmations,
                             status: ContractSendStatus.CONFIRMED,
@@ -152,7 +152,7 @@ export function* send(action: SendAction) {
                 const { error } = message;
                 //handle metamask reject or other errors
                 yield* put(
-                    updateContractSend({
+                    ContractSendCRUD.actions.update({
                         ...baseContractSend,
                         error,
                         status: ContractSendStatus.ERROR,
@@ -160,22 +160,28 @@ export function* send(action: SendAction) {
                 );
 
                 yield* put(
-                    createError({
-                        id: action.meta.uuid,
-                        error: error as Error,
-                        type: CONTRACT_SEND_ERROR,
-                    }),
+                    createError(
+                        {
+                            id: action.meta.uuid,
+                            stack: (error as Error).stack,
+                            type: CONTRACT_SEND_ERROR,
+                        },
+                        action.meta.uuid,
+                    ),
                 );
             }
         }
     } catch (error) {
         console.error(error);
         yield* put(
-            createError({
-                id: action.meta.uuid,
-                error: error as Error,
-                type: CONTRACT_SEND_ERROR,
-            }),
+            createError(
+                {
+                    id: action.meta.uuid,
+                    stack: (error as Error).stack,
+                    type: CONTRACT_SEND_ERROR,
+                },
+                action.meta.uuid,
+            ),
         );
     } finally {
         yield* put({ type: CONTRACT_SEND_DONE, action });

@@ -1,11 +1,10 @@
 import { Action } from 'redux';
-import { put, call, cancel, take, fork } from 'typed-redux-saga';
+import { put, call, cancel, take, fork, select } from 'typed-redux-saga';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import type { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';
-import exists from './exists.js';
-import { create as createEvent } from '../../contractevent/actions/index.js';
-import { eventSubscriptionHash, getId } from '../model/index.js';
+import loadContract from './loadContract.js';
+import { eventSubscriptionHash } from '../model/index.js';
 import {
     EventSubscribeAction,
     EventUnsubscribeAction,
@@ -13,7 +12,8 @@ import {
     isEventSubscribeAction,
     isEventUnsubscribeAction,
 } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
+import ContractCRUD from '../crud.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
 
 const SUBSCRIBE_DATA = `${EVENT_SUBSCRIBE}/DATA`;
 const SUBSCRIBE_ERROR = `${EVENT_SUBSCRIBE}/ERROR`;
@@ -49,13 +49,13 @@ function* eventSubscribe(action: EventSubscribeAction) {
     try {
         const { payload } = action;
         const { networkId, address, eventName } = payload;
-        const id = getId({ networkId, address });
 
-        yield* call(networkExists, networkId);
-        const contract = yield* call(exists, { networkId, address });
+        const contract = yield* call(loadContract, { networkId, address });
+        if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
 
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+        if (!web3Contract)
+            throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
 
         const filter = payload.filter ?? {};
         const subscription = web3Contract.events[eventName]({ filter });
@@ -66,7 +66,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
             const { type, event, error } = message;
             if (type === SUBSCRIBE_DATA && event) {
                 yield* put(
-                    createEvent({
+                    ContractEventCRUD.actions.upsert({
                         ...event,
                         networkId,
                         address,
@@ -77,7 +77,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
                 yield* put({ type: SUBSCRIBE_ERROR, error });
             } else if (type === SUBSCRIBE_CHANGED && event) {
                 yield* put(
-                    createEvent({
+                    ContractEventCRUD.actions.upsert({
                         ...event,
                         networkId,
                         address,

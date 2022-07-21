@@ -7,7 +7,7 @@ export interface Props {
     address: string;
 }
 export const useContractCode = ({ networkId, address }: Props) => {
-    const bytecode = Contract.useGetCode(networkId, address);
+    const bytecode = Contract.hooks.useGetCode(networkId, address);
     return { bytecode };
 };
 

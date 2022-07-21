@@ -48,6 +48,8 @@ export function getEnvVar(name: string): string | undefined {
     }
 }
 
+/** CORS Proxy Endpoint */
+export const CORS_PROXY = () => getEnvVar('CORS_PROXY');
 /**
  * Infura API Project Id.
  * Used to defive default Infura connection uri. */
@@ -57,7 +59,7 @@ export const ETHERSCAN_API_KEY = () => getEnvVar('ETHERSCAN_API_KEY');
 export const LOG_REDUX_ACTIONS = () => getEnvVar('LOG_REDUX_ACTIONS');
 
 /** Local Ganache Blockchain */
-export const GANACHE_RPC = () => getEnvVar('GANACHE_RPC') ?? 'ws://localhost:8546';
+export const GANACHE_RPC = () => getEnvVar('GANACHE_RPC') ?? 'ws://localhost:8545';
 
 /** Ethereum Mainnet Blockchain */
 export const MAINNET_RPC = () =>

@@ -2,6 +2,9 @@
   "name": "@owlprotocol/web3-redux-docs",
   "version": "0.1.10",
   "private": true,
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "TYPEDOC_WATCH=true docusaurus start",
@@ -15,21 +18,38 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-beta.15",
-    "@docusaurus/preset-classic": "2.0.0-beta.15",
-    "@mdx-js/react": "^2.0.0",
+    "@algolia/client-search": "^4.9.1",
+    "@docusaurus/core": "2.0.0-rc.1",
+    "@docusaurus/preset-classic": "2.0.0-rc.1",
+    "@docusaurus/theme-common": "2.0.0-rc.1",
+    "@docusaurus/theme-live-codeblock": "2.0.0-rc.1",
+    "@mdx-js/react": "^1.6.22",
     "clsx": "^1.1.1",
+    "crypto-browserify": "^3.12.0",
+    "events": "^3.3.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "prism-react-renderer": "^1.2.1",
+    "process": "^0.11.10",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "string_decoder": "^1.3.0",
+    "url": "^0.11.0",
+    "util": "^0.12.4"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.0.0-beta.15",
+    "@docusaurus/module-type-aliases": "2.0.0-rc.1",
     "@tsconfig/docusaurus": "^1.0.4",
     "@types/react": "^17.0.40",
+    "buffer": "^6.0.3",
     "docusaurus-plugin-typedoc": "^0.17.0",
     "typedoc": "^0.22.11",
     "typedoc-plugin-markdown": "^3.11.14",
-    "typescript": "4.6.2"
+    "typescript": "4.6.2",
+    "webpack": "^5.73.0"
   }
 }

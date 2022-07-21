@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
-import selectLatestBlockNumber from '../selectors/selectLatestBlockNumber.js';
+import useLatestBlock from './useLatestBlock.js';
 
 /** @category Hooks */
 export function useLatestBlockNumber(networkId: string | undefined) {
-    return useSelector((state: any) => selectLatestBlockNumber(state, networkId));
+    const block = useLatestBlock(networkId);
+    return block?.number;
 }
 
 export default useLatestBlockNumber;

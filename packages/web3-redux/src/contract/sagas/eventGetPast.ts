@@ -1,118 +1,113 @@
-import { put, call, fork } from 'typed-redux-saga';
-import { batchActions } from 'redux-batched-actions';
-import { EventData } from 'web3-eth-contract';
-import exists from './exists.js';
-import { create as createEvent } from '../../contractevent/actions/index.js';
-import { EventGetPastAction, EVENT_GET_PAST } from '../actions/index.js';
-import networkExists from '../../network/sagas/exists.js';
-
-import { getId } from '../model/index.js';
+import { put, call, select } from 'typed-redux-saga';
+import loadContract from './loadContract.js';
+import loadNetwork from '../../network/sagas/loadNetwork.js';
+import {
+    EventGetPastAction,
+    EVENT_GET_PAST,
+    eventGetPastRawAction as eventGetPastRawAction,
+} from '../actions/index.js';
+import ContractCRUD from '../crud.js';
 
 const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
 
-function* eventGetPastInRange(networkId: string, address: string, name: string, task: EventData[]) {
-    //@ts-ignore
-    const events: any[] = yield task;
+const sizes = [10000000, 5000000, 1000000, 500000, 100000, 50000, 10000, 5000, 1000, 500, 100, 50, 10];
+const minSize = sizes[sizes.length - 1];
+//Returns buckets from small to large starting from 0-to
+export function* findBuckets(from: number, to: number) {
+    const fromMod = from % minSize === 0 ? from : from - (from % minSize) + minSize;
+    let toMod = to - (to % minSize); //smallest bucket
+    if (toMod != to) {
+        //Initial bucket remainder
+        yield { from: toMod, to };
+    }
 
-    if (events.length > 0) {
-        const actions = events.map((event: any) => {
-            return createEvent({
-                ...event,
-                networkId,
-                address,
-                name,
-            });
-        });
-        const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
+    while (toMod > fromMod) {
+        for (const size of sizes) {
+            if (toMod % size == 0 && toMod - size >= fromMod) {
+                //valid bucket
+                yield { from: toMod - size, to: toMod };
+                toMod = toMod - size;
+                break;
+            }
+        }
+    }
 
-        yield* put(batch);
+    if (fromMod != from) {
+        //Last bucket remainder
+        yield { from, to: fromMod };
     }
 }
 
+export function* splitBucket(from: number, to: number) {
+    const fromMod = from - (from % minSize);
+    let toMod = to - (to % minSize); //smallest bucket
+    const range = toMod - fromMod;
+    const size = sizes.find((x) => x < range); //find next range
+    if (size) {
+        while (toMod > fromMod) {
+            yield { from: toMod - size, to: toMod };
+            toMod = toMod - size;
+        }
+    }
+}
+
+/** Batches event requests into EventGetPastRaw actions */
 export function* eventGetPast(action: EventGetPastAction) {
     try {
         const { payload } = action;
-        const { networkId, address, eventName, filter, fromBlock, toBlock, blockBatch, max } = payload;
-        const id = getId({ networkId, address });
+        const { networkId, address, eventName, filter, fromBlock, toBlock, blocks } = payload;
 
-        const network = yield* call(networkExists, networkId);
-        if (!network.web3) throw new Error(`Network ${networkId} missing web3`);
-        const contract = yield* call(exists, { networkId, address });
+        const network = yield* call(loadNetwork, networkId);
+        if (!network) throw new Error(`Network ${networkId} undefined`);
 
-        //Contract
+        const web3 = network.web3Sender ?? network.web3;
+        if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+
+        const contract = yield* call(loadContract, { networkId, address });
+        if (!contract) throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} undefined`);
+
         const web3Contract = contract.web3Contract ?? contract.web3SenderContract;
-        if (!web3Contract) throw new Error(`Contract ${id} has no web3 contract`);
+        if (!web3Contract)
+            throw new Error(`Contract ${ContractCRUD.validateId({ networkId, address })} has no web3 contract`);
 
         //Ranged queries
-        let eventCount = 0;
-        let currToBlock;
+        let toBlockInitial: number;
         if (!toBlock || toBlock === 'latest') {
-            currToBlock = yield* call(network.web3.eth.getBlockNumber);
+            toBlockInitial = yield* call(web3.eth.getBlockNumber);
         } else {
-            currToBlock = toBlock;
+            toBlockInitial = toBlock;
         }
 
-        let currFromBlock = Math.max(currToBlock - blockBatch - 1, 0); //lower-bound fromBlock=0
+        let fromBlockInitial: number;
+        if (fromBlock === undefined) {
+            if (blocks) fromBlockInitial = Math.max(toBlockInitial - blocks, 0);
+            else fromBlockInitial = 0;
+        } else {
+            fromBlockInitial = fromBlock;
+        }
 
-        while (currFromBlock >= 0 && (eventCount < max || !max)) {
-            //blocking call, choose batch size accordingly
-            //@ts-ignore
-            const events: EventData[] = yield* call([web3Contract, web3Contract.getPastEvents], eventName, { ...filter, fromBlock: currFromBlock, toBlock: currToBlock });
-            //create events
-            if (events.length > 0) {
-                const actions = events.map((event: any) => {
-                    return createEvent({
-                        ...event,
+        const gen = findBuckets(fromBlockInitial, toBlockInitial);
+        for (const { from, to } of gen) {
+            yield* put(
+                eventGetPastRawAction(
+                    {
                         networkId,
                         address,
-                        name: eventName,
-                    });
-                });
-                const batch = batchActions(actions, `${createEvent.type}/${actions.length}`);
-
-                yield* put(batch);
-            }
-
-            //Update loop
-            eventCount += events.length;
-            currToBlock = currToBlock - blockBatch
-            currFromBlock = currToBlock - blockBatch - 1
+                        eventName,
+                        filter,
+                        fromBlock: from,
+                        toBlock: to,
+                    },
+                    action.meta.uuid,
+                ),
+            );
         }
-
-        /*
-        //TODO: use a generator
-        //Use a multiple calls to get incremental batches of updates, starting from latest
-        const ranges = [];
-        for (let i = rangeLastBlock; i > fromBlock; i -= blockBatch) {
-            const range = { fromBlock: i - blockBatch + 1, toBlock: i };
-            ranges.push(range);
-        }
-
-        //Override toBlock parameter to account for new blocks
-        //@ts-expect-error
-        if (!toBlock || toBlock === 'latest') ranges[0].toBlock = 'latest';
-        //Override fromBlock to get correct range for last range
-        ranges[ranges.length - 1].fromBlock = fromBlock;
-
-        const eventsPromises = ranges.map((r) => {
-            const options: any = { ...r };
-            if (filter) options.filter = filter;
-
-            //We use [context, fn] so that this keyword is not null
-            return call([web3Contract, web3Contract.getPastEvents], eventName, options);
-        });
-
-        for (const task of eventsPromises) {
-            //@ts-ignore
-            yield* fork(eventGetPastInRange, networkId, address, eventName, task);
-        }
-        */
     } catch (error) {
-        console.error(error);
         yield* put({
+            id: action.meta.uuid,
+            stack: (error as Error).stack,
+            errorMessage: (error as Error).message,
             type: EVENT_GET_PAST_ERROR,
-            error,
-            action,
         });
     }
 }

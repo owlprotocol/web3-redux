@@ -1,21 +1,13 @@
-import { toChecksumAddress } from '../../utils/web3-utils/index.js'
-import { getId as getContractId } from '../../contract/model/interface.js';
-import { combinationAll } from '../../utils/combination.js';
-import { ModelWithId } from '../../types/model.js';
+import type { AbiItem } from 'web3-utils';
 
 export interface ContractEventId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
-    /** Block hash when event was emitted */
-    readonly blockHash: string;
+    /** Block number */
+    readonly blockNumber: number;
     /** Unique index within block of event */
     readonly logIndex: number;
-}
-
-/** @internal */
-export interface ReturnValues {
-    returnValues: any;
 }
 
 /**
@@ -23,102 +15,83 @@ export interface ReturnValues {
  * @see [web3.eth.Contract.events](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html#events)
  * @typeParam T optional type for return values. Defaults to `any` object.
  */
-export interface ContractEvent<T extends ReturnValues = ReturnValues> extends ContractEventId {
-    /** Used to index contract events in redux-orm. Computed as `${networkId}-${blockHash}-{logIndex}` */
-    readonly id?: string;
-    /** redux-orm id of contract `${networkId}-{address}` */
-    readonly contractId?: string;
-
-    /** Block number */
-    readonly blockNumber?: number;
-
+export interface ContractEvent<T extends Record<string, any> = Record<string, any>> extends ContractEventId {
+    /** Block hash when event was emitted */
+    readonly blockHash: string;
     /** Address of contract that emitted event */
     readonly address: string;
-
     /** Parsed Contract Event */
     /** Event name */
     readonly name?: string;
+    readonly abi?: AbiItem;
     /** Return values of event */
-    readonly returnValues?: T['returnValues'];
-    /** Keys of `returnValues` to index event on */
-    readonly returnValuesIndexKeys?: string[] | boolean;
-    /** ContractEventIndex redux-orm ids. Used for efficient filtering. */
-    readonly indexIds?: string[];
+    /** TODO: Index returnValues? */
+    readonly returnValues?: T;
 
     /** Raw Log */
     /** Raw non-indexed log data */
     readonly data?: string;
     /** Raw indexed data */
     readonly topics?: string[];
+    /** Topics */
+    readonly topic0?: any;
+    readonly topic1?: any;
+    readonly topic2?: any;
+    readonly topic3?: any;
 }
 
-const SEPARATOR = '-';
+export type ContractEventIndexInput =
+    | ContractEventId
+    | { networkId: string; blockNumber: number }
+    | { networkId: string }
+    | { networkId: string; blockHash: number; logIndex: number }
+    | { networkId: string; blockHash: number }
+    | { networkId: string; address: string; name: string }
+    | { networkId: string; address: string }
+    | { networkId: string; name: string }
+    | { name: string }
+    | { networkId: string; address: string; topic0: any; topic1: any; topic2: any; topic3: any }
+    | { networkId: string; address: string; topic0: any; topic1: any; topic2: any }
+    | { networkId: string; address: string; topic0: any; topic1: any }
+    | { networkId: string; address: string; topic0: any }
+    | { networkId: string; topic0: any; topic1: any; topic2: any; topic3: any }
+    | { networkId: string; topic0: any; topic1: any; topic2: any }
+    | { networkId: string; topic0: any; topic1: any }
+    | { networkId: string; topic0: any };
+//| { networkId: string; address: string; topic0: any; topic3: any; topic1: any }
+//| { networkId: string; address: string; topic0: any; topic2: any; topic3: any }
+//| { networkId: string; address: string; topic0: any; topic2: any }
+//| { networkId: string; address: string; topic0: any; topic3: any }
+export const ContractEventIndex =
+    '[networkId+blockNumber+logIndex], [networkId+blockNumber+logIndex], [networkId+address+name], [networkId+name], name, [networkId+address+topic0+topic1+topic2+topic3], [networkId+topic0+topic1+topic2+topic3]';
+
 /** @internal */
-export function getId(id: ContractEventId): string {
-    const { networkId, blockHash, logIndex } = id;
-
-    return [networkId, blockHash, logIndex].join(SEPARATOR);
-}
-/** @internal */
-export function getIdDeconstructed(id: string): ContractEventId {
-    const [networkId, blockHash, logIndex] = id.split(SEPARATOR); //Assumes separator not messed up
-    return { networkId, blockHash, logIndex: parseInt(logIndex) };
+export function validateId({ networkId, blockNumber, logIndex }: ContractEventId): ContractEventId {
+    return { networkId, blockNumber, logIndex };
 }
 
-//Separate integer indexing from named indexing (eg. {0: val, value: val})
-function returnValueKeyCombinations(keys: string[]) {
-    const integerKeys = keys.filter((k: string) => !isNaN(parseInt(k)));
-    const namedKeys = keys.filter((k: string) => isNaN(parseInt(k)));
-    const integerKeysCombinations = combinationAll(integerKeys) as string[][];
-    const namedKeysCombinations = combinationAll(namedKeys) as string[][];
-
-    return [...integerKeysCombinations, ...namedKeysCombinations].filter((c) => c.length > 0); ///Remove empty set from combination
+export function toPrimaryKey({ networkId, blockNumber, logIndex }: ContractEventId): [string, number, number] {
+    return [networkId, blockNumber, logIndex];
 }
 
 /** @internal */
-export function validate(item: ContractEvent): ModelWithId<ContractEvent> {
+export function validate(item: ContractEvent): ContractEvent {
     //@ts-ignore
     const name = item.name ?? item.event;
-    const id = getId(item);
-    const networkId = item.networkId;
-    const address = toChecksumAddress(item.address);
-    const contractId = getContractId(item);
+    const address = item.address.toLowerCase();
+    const topic0 = item.topic0 ?? (item.topics && item.topics.length > 0 ? item.topics[0] : undefined);
+    const topic1 = item.topic1 ?? (item.topics && item.topics.length > 1 ? item.topics[1] : undefined);
+    const topic2 = item.topic2 ?? (item.topics && item.topics.length > 2 ? item.topics[2] : undefined);
+    const topic3 = item.topic3 ?? (item.topics && item.topics.length > 3 ? item.topics[3] : undefined);
 
-    //Default we only index named keys, but user can also pass (0,1,2) as argument
-    const returnValuesKeys = Object.keys(item.returnValues ?? {}).filter((k: string) => isNaN(parseInt(k)));
-    let returnValuesIndexKeys: string[];
-    if (!item.returnValuesIndexKeys) returnValuesIndexKeys = [];
-    else if (item.returnValuesIndexKeys === true) returnValuesIndexKeys = returnValuesKeys;
-    else returnValuesIndexKeys = item.returnValuesIndexKeys;
-
-    //All events for contract
-    const contractIndex = { networkId, address };
-    //Events by name for contract (equivalent to signature)
-    const eventIndex = { ...contractIndex, name };
-    ///Events by returnValues filters (disabled by default)
-    const keyCombinations = returnValueKeyCombinations(returnValuesIndexKeys);
-
-    const returnValuesIndexes = keyCombinations.map((keys) => {
-        const returnValues: any = {};
-        keys.forEach((k) => {
-            returnValues[k] = item.returnValues[k];
-        });
-        return { ...eventIndex, returnValues };
-    });
-
-    const indices: any[] = [contractIndex];
-    if (name) indices.push(eventIndex);
-    indices.push(...returnValuesIndexes);
-
-    const indexIds: string[] = indices.map((v) => JSON.stringify(v));
     return {
         ...item,
         name,
-        id,
         address,
-        contractId,
-        returnValuesIndexKeys,
-        indexIds,
+        topic0,
+        topic1,
+        topic2,
+        topic3,
     };
 }
 

@@ -1,7 +1,4 @@
-import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setNetworkId } from '../actions/index.js';
-import { selectNetworkId } from '../selectors/index.js';
+import useConfig from './useConfig.js';
 
 /**
  * @category Hooks
@@ -9,16 +6,9 @@ import { selectNetworkId } from '../selectors/index.js';
  * callback that will automatically dispatch an action.
  */
 export function useNetworkId() {
-    const dispatch = useDispatch();
-    const value = useSelector(selectNetworkId);
-    const setNetworkIdCallback = useCallback(
-        (networkId: string) => {
-            dispatch(setNetworkId(networkId));
-        },
-        [dispatch],
-    );
-
-    return [value, setNetworkIdCallback] as [typeof value, typeof setNetworkIdCallback];
+    const [config, { setNetworkId }] = useConfig();
+    const networkId = config?.networkId;
+    return [networkId, setNetworkId] as [typeof networkId, typeof setNetworkId];
 }
 
 export default useNetworkId;

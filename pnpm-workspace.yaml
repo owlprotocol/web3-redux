@@ -2,6 +2,4 @@ packages:
   - "packages/web3-redux"
   - "packages/web3-redux-components"
   - "packages/web3-redux-docs"
-  - "examples/demo-app"
-
-shamefully-hoist: false
+  #- "examples/demo-app"

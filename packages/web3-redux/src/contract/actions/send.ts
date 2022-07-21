@@ -16,13 +16,13 @@ export interface SendActionInput {
     value?: string;
 }
 /** @category Actions */
-export const send = createAction(SEND, (payload: SendActionInput) => {
+export const send = createAction(SEND, (payload: SendActionInput, uuid?: string) => {
     return {
         payload: payload,
         meta: {
-            uuid: uuidv4(),
+            uuid: uuid ?? uuidv4(),
         },
-    }
+    };
 });
 /** @internal */
 export type SendAction = ReturnType<typeof send>;

@@ -1,8 +1,6 @@
 export * from './components/AddressDisplay';
 export { default as ContractCode } from './components/ContractCode';
 export { default as Icon } from './components/Icon';
-export { default as SingleNFTInstancePresenter } from './components/SingleNFTInstance';
-export { default as NFTSingleItemPresenter } from './components/SingleNFTInstance/NFTSingleItemPresenter';
 export { default as BreedingNFTCard } from './components/BreedingNFTCard';
 export * from './components/SingleNFTInstance/ItemCardPresenter';
 export { default as WalletConnect } from './components/WalletConnect';
@@ -26,7 +24,4 @@ export * as HOC from './hoc';
 export * as Constants from './constants';
 export { default as Theme } from './theme';
 export * as StorybookArgs from './test/storybookArgs';
-export { default as ERC1155Instance } from './components/SingleNFTInstance/ERC1155Instance';
-export { default as ERC721Instance } from './components/SingleNFTInstance/ERC1155Instance';
-export { default as ERC721ItemCard } from './components/SingleNFTInstance/ERC721ItemCard';
-export { default as ERC1155ItemCard } from './components/SingleNFTInstance/ERC1155ItemCard';
+export * from './components/NFT';

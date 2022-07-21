@@ -6,20 +6,4 @@ interface BlockId {
     readonly number: number;
 }
 
-const SEPARATOR = '-';
-/** @internal */
-export function getId(id: BlockId): string {
-    if (typeof id === 'string') return id;
-    const { networkId, number } = id;
-
-    return [networkId, number].join(SEPARATOR);
-}
-/** @internal */
-export function getIdDeconstructed(id: string): BlockId {
-    if (typeof id !== 'string') return id;
-
-    const [networkId, number] = id.split(SEPARATOR); //Assumes separator not messed up
-    return { networkId, number: parseInt(number) };
-}
-
 export type { BlockId };

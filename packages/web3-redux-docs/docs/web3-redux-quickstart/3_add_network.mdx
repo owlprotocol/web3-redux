@@ -1,0 +1,104 @@
+---
+sidebar_position: 3
+label: 'Configure Network'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Configure Network
+
+## Network
+
+All entities in the Web3-Redux store are indexed by networkId. Web3-Redux let's you sync multiple networks concurrently (eg. sync Mainnet & Ropsten blocks). The [Network](../web3-redux-reference/interfaces/Network.Network-1.md) object is meant to store a global `web3` object that is responsible for connecting to the Ethereum RPC. You must first configure a network by adding it to the store and passing it a web3 instance or an Ethereum RPC.
+:::tip
+We recomend using a Websocket (`wss://`) connection as this enables more advanced usage such as subscriptions.
+:::
+:::info
+In later sections we will look into connecting the network with Metamask to add a `web3Sender` instance used for sending transactions.
+:::
+## Add Network
+
+
+<Tabs groupId="framework">
+<TabItem value="react" label="React">
+
+If using React, you will want to configure the network(s) on app mount with the simple `useNetwork` hook. Under the hood, this uses the `useHydrate` hook to load the IndexedDB persisted configuration or create a new network with the defaultNetwork.
+
+```tsx  title="src/App.tsx" showLineNumbers
+import { Network } from '@owlprotocol/web3-redux';
+
+const defaultNetwork = { web3Rpc: 'ws://localhost:8545' }
+const App = () => {
+    // highlight-start
+    const [network] = Network.hooks.useNetwork('1', defaultNetwork);
+    // highlight-end
+
+    return <>{network.networkId}</>
+};
+```
+
+:::caution
+The component must have access to the Redux context (see [Configure Store](./2_add_store.mdx)).
+:::
+
+</TabItem>
+<TabItem value="redux" label="Redux">
+
+In pure Redux, the configuration can be dispatched from the store.
+
+
+```typescript title="src/createNetwork.ts" showLineNumbers
+import { store, Network } from '@owlprotocol/web3-redux';
+const defaultNetwork = { networkId: '1', web3Rpc: 'http://localhost:8545' };
+
+// highlight-start
+store.dispatch(Network.actions.upsert(defaultNetwork));
+// highlight-end
+```
+
+</TabItem>
+</Tabs>
+
+
+## Env Var Config
+Web3-Redux includes built-in defaults using environment variables to easily configure your store. Environment variables can be as is or prefixed by the following common framework prefixes `REACT_APP_`, `NEXT_PUBLIC_`, `VITE_`.
+
+To enable this, set the **one** of the following envvars in your React App's `.env` or `.env.local` file:
+
+```bash title=".env"
+#Use Infura RPC for supported networks
+REACT_APP_INFURA_API_KEY=<PROJECT_ID>
+#Set Ethereum Mainnet RPC (networkId: 1)
+REACT_APP_MAINNET_RPC=ws://localhost:8545
+```
+
+You can configure now configure your network by just passing in the relevant networkId.
+<Tabs groupId="framework">
+<TabItem value="react" label="React">
+
+```tsx  title="src/App.tsx"
+const [network] = Network.hooks.useNetwork('1');
+```
+
+</TabItem>
+<TabItem value="redux" label="Redux">
+
+```typescript title="src/createNetwork.ts"
+store.dispatch(Network.actions.upsert({ networkId: '1'}));
+```
+
+</TabItem>
+</Tabs>
+
+Web3-Redux will automatically use the envvar configured RPC as a default for supported networks (Ethereum, Testnets, Polygon). For custom networks, you can manually set the `web3Rpc` parameter as seen in the previous example.
+
+For more details on supported envvars (additional default networks), check out [Reference/Environment](../web3-redux-reference/namespaces/Environment.md).
+
+Also see the documentation relevant to your UI Framework:
+* [React CRA Envvars](https://create-react-app.dev/docs/adding-custom-environment-variables/).
+* [Vite Envvars](https://vitejs.dev/guide/env-and-mode.html)
+
+## Advanced
+
+For more dynamic configuration such as integration with Metamask, and setting up a dual configuration with a `web3Sender` object, check out [Integrations/Metamask](../web3-redux-integrations/metamask.md).

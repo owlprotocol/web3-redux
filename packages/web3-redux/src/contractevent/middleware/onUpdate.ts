@@ -1,10 +1,9 @@
 import { AnyAction, Store } from 'redux';
-import { batchActions } from 'redux-batched-actions';
+import ContractCRUD from '../../contract/crud.js';
+import { compact } from '../../utils/lodash/index.js';
+
 import { coder } from '../../utils/web3-eth-abi/index.js';
-
-import { selectByIdSingle as selectContract } from '../../contract/selectors/index.js';
-
-import { CREATE, UPDATE, set as setEvent, SetAction as SetEventAction, SET as SET_EVENT } from '../actions/index.js';
+import ContractEventCRUD from '../crud.js';
 import { ContractEvent } from '../model/interface.js';
 
 /**
@@ -14,52 +13,49 @@ import { ContractEvent } from '../model/interface.js';
  */
 export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
     let events: ContractEvent[] = [];
-    if (action.type.startsWith(CREATE) || action.type.startsWith(UPDATE)) {
-        if (action.meta && action.meta.batch) {
-            //Batched actions
-            events = action.payload.map(({ payload }: { payload: ContractEvent }) => payload);
-        } else {
-            //Single action
-            events = [action.payload as ContractEvent];
-        }
+    if (ContractEventCRUD.actions.create.match(action) || ContractEventCRUD.actions.update.match(action)) {
+        events = [action.payload];
+    } else if (
+        ContractEventCRUD.actions.createBatched.match(action) ||
+        ContractEventCRUD.actions.updateBatched.match(action)
+    ) {
+        events = action.payload;
     }
 
+    const state = store.getState();
     //Update events
-    const setActions: SetEventAction[] = [];
-    events.forEach((e) => {
-        if (!e.returnValues && e.data) {
-            //Undefined returnValues but data present
-            //look to parse returnValues using contract event signature
-            const networkId = e.networkId;
-            const address = e.address;
-            const state = store.getState();
-            const contract = selectContract(state, { networkId, address });
-            if (!contract?.eventAbiBySignature) return;
-            const [eventSignature, ...topics] = e.topics ?? [];
-            if (!eventSignature) return;
-            const eventAbi = contract.eventAbiBySignature[eventSignature];
-            if (!eventAbi.inputs) return;
+    const updates = compact(
+        events
+            .filter((e) => !e.returnValues && e.data) //Filter events with data but no decoded values
+            .map((e) => {
+                //Undefined returnValues but data present
+                //look to parse returnValues using contract event signature
+                const networkId = e.networkId;
+                const address = e.address;
+                const contract = ContractCRUD.selectors.selectByIdSingle(state, { networkId, address });
+                if (!contract?.eventAbiBySignature) return;
+                const [eventSignature, ...topics] = e.topics ?? [];
+                if (!eventSignature) return;
+                const eventAbi = contract.eventAbiBySignature[eventSignature];
+                if (!eventAbi.inputs) return;
 
-            //https://web3js.readthedocs.io/en/v1.7.0/web3-eth-abi.html?#decodelog
-            //Skip the first topic for non-anonymous logs
-            const returnValues = coder.decodeLog(eventAbi.inputs, e.data, topics);
-            setActions.push(
-                setEvent({
-                    id: { networkId: e.networkId, blockHash: e.blockHash, logIndex: e.logIndex },
-                    key: 'returnValues',
-                    value: returnValues,
-                }),
-            );
-        }
-    });
+                //https://web3js.readthedocs.io/en/v1.7.0/web3-eth-abi.html?#decodelog
+                //Skip the first topic for non-anonymous logs
+                const returnValues = coder.decodeLog(eventAbi.inputs, e.data!, topics);
+                return {
+                    networkId,
+                    blockNumber: e.blockNumber,
+                    blockHash: e.blockHash,
+                    logIndex: e.logIndex,
+                    address,
+                    returnValues,
+                };
+            }),
+    );
 
     next(action);
 
-    const actionsBatched =
-        setActions.length > 0
-            ? batchActions(setActions, `${SET_EVENT('returnValues')}/${setActions.length}`)
-            : undefined;
-    if (actionsBatched) store.dispatch(actionsBatched);
+    if (updates.length > 0) store.dispatch(ContractEventCRUD.actions.updateBatched(updates));
 };
 
 export default onUpdate;

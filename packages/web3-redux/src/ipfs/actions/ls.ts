@@ -3,7 +3,7 @@ import type { IPFS } from 'ipfs';
 import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 
-interface Payload {
+export interface LSPayload {
     path: Parameters<IPFS['ls']>[0];
     options?: Parameters<IPFS['ls']>[1];
 }
@@ -11,11 +11,11 @@ interface Payload {
 /** @internal */
 export const LS = `${name}/LS`;
 /** @category Actions */
-export const ls = createAction(LS, (payload: Payload) => {
+export const ls = createAction(LS, (payload: LSPayload, uuid?: string) => {
     return {
         payload,
         meta: {
-            uuid: uuidv4(),
+            uuid: uuid ?? uuidv4(),
         },
     };
 });

@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import { name } from '../common.js';
 
 /** @internal */
@@ -11,7 +12,17 @@ export interface EventUnsubscribeActionInput {
     filter?: { [key: string]: any };
 }
 /** @category Actions */
-export const eventUnsubscribe = createAction<EventUnsubscribeActionInput>(EVENT_UNSUBSCRIBE);
+export const eventUnsubscribe = createAction(
+    EVENT_UNSUBSCRIBE,
+    (payload: EventUnsubscribeActionInput, uuid?: string) => {
+        return {
+            payload,
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    },
+);
 /** @internal */
 export type EventUnsubscribeAction = ReturnType<typeof eventUnsubscribe>;
 /** @internal */

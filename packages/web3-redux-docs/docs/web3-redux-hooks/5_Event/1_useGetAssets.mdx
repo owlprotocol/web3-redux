@@ -1,0 +1,10 @@
+# useGetAssets
+
+Fetch all tokenized assets for address.
+This is achieved by getting all ERC20/ERC721/ERC1155 `Transfer` events associated with an `address` to get a theoretical subset of all assets that `address` potentially owns. Not guaranteed to work with non-interface compliant assets but offers an alternative to off-chain indexing.
+
+**Reference:** [ContractEvent.useGetAssets](../../web3-redux-reference/namespaces/ContractEvent.md#usegetassets)
+
+:::warning
+This hook is experimental.
+:::

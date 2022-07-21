@@ -9,14 +9,14 @@ import { sleep } from '../../utils/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 
-import { BlockNumber as BlockNumberArtifact, Multicall } from '../../abis/index.js';
+import { BlockNumberArtifact, MulticallArtifact } from '../../abis/index.js';
 
 import { createStore, StoreType } from '../../store.js';
-import { create as createNetwork } from '../../network/index.js';
 
-import { ContractId } from '../model/index.js';
-import { selectContractCall } from '../selectors/index.js';
-import { create as createAction, callBatched as callBatchedAction } from '../actions/index.js';
+import { callBatched as callBatchedAction } from '../actions/index.js';
+import NetworkCRUD from '../../network/crud.js';
+import getContractCall from '../db/getContractCall.js';
+import ContractCRUD from '../crud.js';
 
 describe(`${name}.sagas.callBatched`, () => {
     let web3: Web3; //Web3 loaded from store
@@ -26,7 +26,6 @@ describe(`${name}.sagas.callBatched`, () => {
     let web3Contract: Web3Contract;
 
     let address: string;
-    let id: ContractId;
 
     /*
     let rpcLogger: ReturnType<typeof ganacheLogger>;
@@ -53,8 +52,8 @@ describe(`${name}.sagas.callBatched`, () => {
     });
 
     beforeEach(async () => {
-        ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3, web3Sender }));
+        store = createStore();
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3, web3Sender }));
 
         const tx = new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as AbiItem[]).deploy({
             data: BlockNumberArtifact.bytecode,
@@ -62,10 +61,9 @@ describe(`${name}.sagas.callBatched`, () => {
         const gas = await tx.estimateGas();
         web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '875000000' });
         address = web3Contract.options.address;
-        id = { networkId, address };
 
         store.dispatch(
-            createAction({
+            ContractCRUD.actions.create({
                 networkId,
                 address,
                 abi: cloneDeep(BlockNumberArtifact.abi) as AbiItem[],
@@ -97,9 +95,9 @@ describe(`${name}.sagas.callBatched`, () => {
             await sleep(300);
 
             //Selector
-            const getValue = selectContractCall(store.getState(), id, 'getValue');
+            const getValue = await getContractCall(store.getState(), networkId, address, 'getValue');
 
-            const blockNumber = selectContractCall(store.getState(), id, 'blockNumber');
+            const blockNumber = await getContractCall(store.getState(), networkId, address, 'blockNumber');
 
             assert.equal(getValue, 42, 'getValue');
             assert.equal(blockNumber, expectedBlockNumber, 'blockNumber');
@@ -117,12 +115,14 @@ describe(`${name}.sagas.callBatched`, () => {
             await tx2.send({ from: accounts[0], gas: await tx2.estimateGas() });
             await sleep(300);
 
-            const tx3 = new web3.eth.Contract(Multicall.abi as AbiItem[]).deploy({
-                data: Multicall.bytecode,
+            const tx3 = new web3.eth.Contract(MulticallArtifact.abi as AbiItem[]).deploy({
+                data: MulticallArtifact.bytecode,
             });
             const gas3 = await tx3.estimateGas();
             const multiCallContract = await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '875000000' });
-            store.dispatch(createNetwork({ networkId, web3, multicallAddress: multiCallContract.options.address }));
+            store.dispatch(
+                NetworkCRUD.actions.create({ networkId, web3, multicallAddress: multiCallContract.options.address }),
+            );
             await sleep(300);
 
             const expectedBlockNumber = await web3.eth.getBlockNumber();
@@ -139,9 +139,8 @@ describe(`${name}.sagas.callBatched`, () => {
             await sleep(300);
 
             //Selector
-            const getValue = selectContractCall(store.getState(), id, 'getValue');
-
-            const blockNumber = selectContractCall(store.getState(), id, 'blockNumber');
+            const getValue = await getContractCall(store.getState(), networkId, address, 'getValue');
+            const blockNumber = await getContractCall(store.getState(), networkId, address, 'blockNumber');
 
             assert.equal(getValue, 42, 'getValue');
             assert.equal(blockNumber, expectedBlockNumber, 'blockNumber');

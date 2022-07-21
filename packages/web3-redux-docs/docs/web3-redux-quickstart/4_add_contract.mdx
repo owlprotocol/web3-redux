@@ -1,0 +1,74 @@
+---
+sidebar_position: 4
+label: 'Configure Contract'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Configure Contract
+
+## Contract
+
+The [Contract](../web3-redux-reference/interfaces/Contract.Contract-1.md) entity is the most used model in Web3-Redux.
+In Web3-Redux, a contract can be one of:
+-   **Externally Owned Account (EOA)**: This is a simple Ethereum address that can have some balance, send transactions but that does not have any code. Can be used to track Ethereum balance of some address for example.
+-   **Smart Contract**: This is a program on the blockchain that stores and executes EVM bytecode. Can be used to track ERC20 token (eg. USDC) balance of some address for example.
+
+Both are stored in the same `Contract` model as they are indexed by `networkId-address` in the store.
+
+:::note
+We do not use the sole address alone for indexing as a EOA or Smart Contract can exist on multiple EVM blockchains with a distinct balance/state.
+:::
+
+## Add Contract
+
+Contracts can be used in multiple ways such as fetching native token balance (ETH), making smart contract calls, or listening for event logs. One you've added a network (as in the previous section), add a contract by dispatching a `Contract.create` action with the following parameters:
+
+-   `networkId` **(required)**: The network this contract lives on. Important to configure how data will be fetched.
+-   `address` **(required)**: The address of this contract.
+-   `abi`: **REQUIRED** for Smart Contracts to define their interface. EOAs do **NOT** have an abi.
+
+Below we've extended the example from the previous section and add a generic `IERC20` contract for `USDC`.
+
+<Tabs groupId="framework">
+<TabItem value="react" label="React">
+
+```tsx  title="src/App.tsx" showLineNumbers
+import { Abi, Network } from '@owlprotocol/web3-redux';
+
+const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+const defaultContract = { abi: Abi.IERC20.abi };
+
+const App = () => {
+    const [network] = Network.hooks.useNetwork('1', defaultNetwork)
+    //highlight-start
+    const [contract] = Contract.hooks.useContract('1', USDC, defaultContract);
+    // highlight-end
+
+    return <>{contract.address}</>
+};
+```
+
+:::caution
+The component must have access to the Redux context (see [Configure Store](./2_add_store.mdx)).
+:::
+
+</TabItem>
+<TabItem value="redux" label="Redux">
+
+```typescript title="src/createContract.ts" showLineNumbers
+import { store, Network } from '@owlprotocol/web3-redux';
+const defaultNetwork = { networkId: '1', web3Rpc: 'ws://localhost:8545' };
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+const defaultContract = { networkId: '1', address: USDC, abi: Abi.IERC20.abi };
+
+store.dispatch(Network.actions.upsert(defaultNetwork));
+// highlight-start
+store.dispatch(Contract.actions.upsert(defaultContract));
+// highlight-end
+```
+
+</TabItem>
+</Tabs>

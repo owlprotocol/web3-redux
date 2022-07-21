@@ -1,7 +1,3 @@
-import { CREATE, create, CreateAction, isCreateAction } from './create.js';
-import { REMOVE, remove, RemoveAction, isRemoveAction } from './remove.js';
-import { UPDATE, update, UpdateAction, isUpdateAction } from './update.js';
-import { SET, set, SetAction, isSetAction } from './set.js';
 import { GET_PAST_LOGS, getPastLogs, GetPastLogsAction, isGetPastLogsAction } from './getPastLogs.js';
 import { SUBSCRIBE_LOGS, subscribeLogs, SubscribeLogsAction, isSubscribeLogsAction } from './subscribeLogs.js';
 import {
@@ -13,43 +9,20 @@ import {
 import { GET_ASSETS, getAssets, GetAssetsAction, isGetAssetsAction } from './getAssets.js';
 
 /** @internal */
-export type ReducerAction = CreateAction | RemoveAction | UpdateAction | SetAction;
+export type SagaAction = GetPastLogsAction | SubscribeLogsAction | UnsubscribeLogsAction | GetAssetsAction;
 /** @internal */
-export function isReducerAction(action: { type: string }): action is ReducerAction {
-    return isCreateAction(action) || isRemoveAction(action) || isUpdateAction(action) || isSetAction(action);
+export function isSagaAction(action: { type: string }): action is SagaAction {
+    return (
+        isGetPastLogsAction(action) ||
+        isSubscribeLogsAction(action) ||
+        isUnsubscribeLogsAction(action) ||
+        isGetAssetsAction(action)
+    );
 }
 
-/** @internal */
-export type Action = ReducerAction;
-/** @internal */
-export function isAction(action: { type: string }): action is Action {
-    return isReducerAction(action);
-}
-
-export type {
-    CreateAction,
-    RemoveAction,
-    UpdateAction,
-    SetAction,
-    GetPastLogsAction,
-    SubscribeLogsAction,
-    UnsubscribeLogsAction,
-    GetAssetsAction,
-};
+export type { GetPastLogsAction, SubscribeLogsAction, UnsubscribeLogsAction, GetAssetsAction };
 
 export {
-    CREATE,
-    create,
-    isCreateAction,
-    REMOVE,
-    remove,
-    isRemoveAction,
-    UPDATE,
-    update,
-    isUpdateAction,
-    SET,
-    set,
-    isSetAction,
     GET_PAST_LOGS,
     getPastLogs,
     isGetPastLogsAction,

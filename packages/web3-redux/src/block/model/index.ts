@@ -1,5 +1,5 @@
-export { getId, getId as getBlockId, getIdDeconstructed } from './id.js';
-export { validate, validate as validateBlock } from './interface.js';
+export * from './interface.js';
+export * from './validate.js';
 
 export type { BlockId } from './id.js';
 export type { BlockHeader } from './BlockHeader.js';

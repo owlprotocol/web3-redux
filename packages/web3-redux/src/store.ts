@@ -1,62 +1,43 @@
 import { createStore as createReduxStore, applyMiddleware, compose } from 'redux';
-import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
-import { crashReporter, onPersistRehydrate } from './middleware/index.js';
+import { crashReporter } from './middleware/index.js';
 import { onBlockUpdate } from './block/middleware/index.js';
 import { onNetworkUpdate } from './network/middleware/index.js';
 import { onContractUpdate } from './contract/middleware/index.js';
 import { onEventUpdate } from './contractevent/middleware/index.js';
 
 import { isClient } from './utils/isClient.js';
-import {
-    rootReducer,
-    createRootReducer,
-    createReducerWeb3ReduxWithPersist,
-    getDefaultLocalStorage,
-} from './reducer.js';
+import { rootReducer } from './reducer.js';
 import { rootSaga as defaultRootSaga } from './saga.js';
-const defaultMiddleware: any[] = [
-    crashReporter,
-    onPersistRehydrate,
-    onNetworkUpdate,
-    onContractUpdate,
-    onBlockUpdate,
-    onEventUpdate,
-];
+const defaultMiddleware: any[] = [crashReporter, onNetworkUpdate, onContractUpdate, onBlockUpdate, onEventUpdate];
 
 /** @internal */
 interface CreateStoreOptions {
-    persistStorage?: any;
     middleware?: any[];
     rootSaga?: any;
 }
 /** @internal */
 export const createStore = (options?: CreateStoreOptions) => {
-    const { persistStorage, middleware, rootSaga } = options ?? {};
-
-    const reducer = persistStorage ? createRootReducer(createReducerWeb3ReduxWithPersist(persistStorage)) : rootReducer;
+    const { middleware, rootSaga } = options ?? {};
 
     //Enable redux-devtools support, tracing
-    const reduxDevToolsExists = isClient() && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    const composeEnhancers = reduxDevToolsExists ?
-        (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 10 })
+    const reduxDevToolsExists = isClient() && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+    const composeEnhancers = reduxDevToolsExists
+        ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 10 })
         : compose;
     const sagaMiddleware = createSagaMiddleware();
     const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);
-    const store = createReduxStore(reducer, composeEnhancers(rootMiddleware));
-    const persistor = persistStorage ? persistStore(store) : undefined;
 
+    const store = createReduxStore(rootReducer, composeEnhancers(rootMiddleware));
     sagaMiddleware.run(rootSaga ?? defaultRootSaga);
 
-    return { store, persistor };
+    return store;
 };
 
-export type StoreType = ReturnType<typeof createStore>['store'];
+export type StoreType = ReturnType<typeof createStore>;
 export type DispatchType = StoreType['dispatch'];
 
-const { store } = createStore();
-export const createStoreWithPersistor = () => createStore({ persistStorage: getDefaultLocalStorage() });
+const store = createStore();
 export { store };
-
 export default store;

@@ -1,11 +1,12 @@
 import { all, takeEvery, spawn } from 'typed-redux-saga';
-import fetch from './fetch.js';
+import fetchSaga from './fetch.js';
 import subscribeLoop from './subscribeLoop.js';
+import BlockCRUD from '../crud.js';
 import { FETCH } from '../actions/index.js';
 
 /** @internal */
-export function* saga() {
-    yield* all([takeEvery(FETCH, fetch), spawn(subscribeLoop)]);
+export function* rootSaga() {
+    yield* all([spawn(BlockCRUD.sagas.crudRootSaga), takeEvery(FETCH, fetchSaga), spawn(subscribeLoop)]);
 }
 
-export default saga;
+export default rootSaga;

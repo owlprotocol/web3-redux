@@ -1,5 +1,4 @@
 import * as esbuild from 'esbuild';
-import { copy } from 'esbuild-plugin-copy';
 //import alias from 'esbuild-plugin-alias';
 import { NodeResolvePlugin } from '@esbuild-plugins/node-resolve';
 import * as glob from 'glob';
@@ -18,16 +17,6 @@ const excludeNodeModulesPlugin = NodeResolvePlugin({
         }
         return resolved;
     },
-});
-
-const copyStaticFilesPlugin = copy({
-    assets: {
-        from: ['src/abis/**/*.json'],
-        to: ['abis'],
-    },
-    once: true,
-    verbose: false,
-    keepStructure: true,
 });
 
 /*
@@ -51,9 +40,9 @@ const watch = ESBUILD_WATCH
 const baseConfig = {
     sourcemap: 'external',
     //platform: 'node', //'browser',
-    //target: 'es6',
+    target: ['es2020'],
     inject: ['./react-shim.mjs'],
-    plugins: [excludeNodeModulesPlugin, copyStaticFilesPlugin],
+    plugins: [excludeNodeModulesPlugin],
     watch,
 };
 
@@ -67,7 +56,6 @@ await esbuild.default.build({
     ...baseConfig,
 });
 //ESM Library
-/*
 await esbuild.default.build({
     entryPoints: files,
     bundle: false,
@@ -75,7 +63,6 @@ await esbuild.default.build({
     format: 'esm',
     ...baseConfig,
 });
-*/
 
 //CJS Bundle
 await esbuild.default.build({

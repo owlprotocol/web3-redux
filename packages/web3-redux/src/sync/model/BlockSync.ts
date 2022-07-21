@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { BaseSync } from './BaseSync.js';
 
 /**
@@ -17,8 +18,10 @@ export function createBlockSyncEveryBlock(
     networkId: string,
     actions: BlockSync['actions'],
     matchBlockNumberModulo?: number,
+    uuid?: string,
 ): BlockSync {
     return {
+        id: uuid ?? uuidv4(),
         type: 'Block',
         networkId,
         actions,

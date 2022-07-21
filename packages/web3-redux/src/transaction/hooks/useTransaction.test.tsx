@@ -1,45 +1,53 @@
 import { assert } from 'chai';
-import Web3 from 'web3';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
-import { getWeb3Provider } from '../../test/index.js';
+import sinon from 'sinon';
 
-import { networkId, transaction1 } from '../../test/data.js';
-import { create as createNetwork } from '../../network/actions/index.js';
-import { create as createTransaction } from '../actions/index.js';
+import { network1336 } from '../../network/data.js';
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
 import { Transaction, validate } from '../model/interface.js';
+import NetworkCRUD from '../../network/crud.js';
+import TransactionCRUD from '../crud.js';
+import fetchAction from '../actions/fetch.js';
 import { useTransaction } from './index.js';
 
-import jsdom from 'mocha-jsdom';
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
 
-describe(`${name}/hooks/useTransaction.tsx`, () => {
-    jsdom({ url: 'http://localhost' });
-
+describe(`${name}/hooks/useTransaction.test.tsx`, () => {
     let store: StoreType;
+    let dispatchSpy: sinon.SinonSpy;
+    const createActionSpy = sinon.spy(TransactionCRUD.actions, 'create');
     let wrapper: any;
 
-    let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let expected: Transaction;
 
     before(async () => {
-        const provider = getWeb3Provider();
-        //@ts-ignore
-        web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();
     });
 
+    after(() => {
+        createActionSpy.restore();
+    });
+
     beforeEach(async () => {
-        ({ store } = createStore());
-        store.dispatch(createNetwork({ networkId, web3 }));
+        store = createStore();
+        dispatchSpy = sinon.spy(store, 'dispatch');
+        createActionSpy.resetHistory();
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
+
+        store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
 
         const txSent = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[1], value: '1' });
         const tx = await web3.eth.getTransaction(txSent.transactionHash);
         expected = validate({ networkId, ...tx });
+    });
+
+    afterEach(() => {
+        dispatchSpy.restore();
     });
 
     describe('useTransaction', () => {
@@ -48,21 +56,30 @@ describe(`${name}/hooks/useTransaction.tsx`, () => {
                 wrapper,
             });
 
-            await waitForNextUpdate();
+            await waitForNextUpdate(); //load undefined & fetch
+            await waitForNextUpdate(); //fetch result
 
-            const currentCall = result.current;
-            assert.deepEqual(currentCall, expected, 'result.current');
+            const current = result.current;
+            assert.deepEqual(current, expected, 'result.current');
+
+            assert.isTrue(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
+            assert.isTrue(createActionSpy.calledOnce, 'createAction called');
         });
 
         it('(networkId, hash, false)', async () => {
-            store.dispatch(createTransaction(transaction1));
+            store.dispatch(TransactionCRUD.actions.create(expected));
 
-            const { result } = renderHook(() => useTransaction(networkId, transaction1.hash, false), {
+            const { result, waitForNextUpdate } = renderHook(() => useTransaction(networkId, expected.hash, false), {
                 wrapper,
             });
 
-            const currentCall = result.current;
-            assert.deepEqual(currentCall, transaction1, 'result.current');
+            await waitForNextUpdate();
+
+            const current = result.current;
+            assert.deepEqual(current, expected, 'result.current');
+
+            assert.isFalse(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
+            assert.isTrue(createActionSpy.calledOnce, 'createAction called');
         });
 
         it('(networkId, hash, ifnull): null', async () => {
@@ -70,21 +87,30 @@ describe(`${name}/hooks/useTransaction.tsx`, () => {
                 wrapper,
             });
 
-            await waitForNextUpdate();
+            await waitForNextUpdate(); //load undefined & fetch
+            await waitForNextUpdate(); //fetch result
 
-            const currentCall = result.current;
-            assert.deepEqual(currentCall, expected, 'result.current');
+            const current = result.current;
+            assert.deepEqual(current, expected, 'result.current');
+
+            assert.isTrue(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
+            assert.isTrue(createActionSpy.calledOnce, 'createAction called');
         });
 
         it('(networkId, hash, ifnull): defined', async () => {
-            store.dispatch(createTransaction(transaction1));
+            store.dispatch(TransactionCRUD.actions.create(expected));
 
-            const { result } = renderHook(() => useTransaction(networkId, transaction1.hash, 'ifnull'), {
+            const { result, waitForNextUpdate } = renderHook(() => useTransaction(networkId, expected.hash, 'ifnull'), {
                 wrapper,
             });
 
-            const currentCall = result.current;
-            assert.deepEqual(currentCall, transaction1, 'result.current');
+            await waitForNextUpdate();
+
+            const current = result.current;
+            assert.deepEqual(current, expected, 'result.current');
+
+            assert.isFalse(dispatchSpy.calledWith(sinon.match(fetchAction.match)), 'fetchAction called');
+            assert.isTrue(createActionSpy.calledOnce, 'createAction called');
         });
     });
 });

@@ -1,48 +1,57 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
-import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import jsdom from 'mocha-jsdom';
-import { cloneDeep } from '../../utils/lodash/index.js';
-import { getWeb3Provider, expectThrowsAsync } from '../../test/index.js';
-import { BlockNumber as BlockNumberArtifact } from '../../abis/index.js';
+import sinon from 'sinon';
 
-import { create as createNetwork } from '../../network/actions/index.js';
-import { create as createTransaction } from '../../transaction/actions/index.js';
-import { create as createBlock } from '../../block/actions/index.js';
-import { create as createEvent } from '../../contractevent/actions/index.js';
+import { cloneDeep } from '../../utils/lodash/index.js';
+import { expectThrowsAsync } from '../../test/index.js';
+import { BlockNumberArtifact } from '../../abis/index.js';
+
+import { network1336 } from '../../network/data.js';
 
 import { name } from '../common.js';
-import { networkId } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
-import { create } from '../actions/index.js';
 
 import { useContractCall } from '../hooks/useContractCall.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
 import { ZERO_ADDRESS } from '../../utils/index.js';
+import ContractEventCRUD from '../../contractevent/crud.js';
+import BlockCRUD from '../../block/crud.js';
+import TransactionCRUD from '../../transaction/crud.js';
+import NetworkCRUD from '../../network/crud.js';
+import ContractCRUD from '../crud.js';
+
+const networkId = network1336.networkId;
+const web3 = network1336.web3!;
 
 describe(`${name}/hooks/useContractCall.test.tsx`, () => {
-    jsdom({ url: 'http://localhost' });
-
     let store: StoreType;
+    let dispatchSpy: sinon.SinonSpy;
+    const createActionSpy = sinon.spy(ContractCRUD.actions, 'create');
     let wrapper: any;
 
-    let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let web3Contract: Web3Contract;
     let address: string;
 
     before(async () => {
-        const provider = getWeb3Provider();
-        //@ts-ignore
-        web3 = new Web3(provider);
         accounts = await web3.eth.getAccounts();
     });
 
+    after(() => {
+        createActionSpy.restore();
+    });
+
     beforeEach(async () => {
-        ({ store } = createStore());
+        store = createStore();
+        dispatchSpy = sinon.spy(store, 'dispatch');
+        createActionSpy.resetHistory();
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
+    });
+
+    afterEach(() => {
+        dispatchSpy.restore();
     });
 
     describe('Errors', () => {
@@ -54,11 +63,12 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
-            assert.equal(currentCallError?.message, `networkId undefined`, 'error.message');
+            assert.equal(currentCallError?.message, 'networkId undefined', 'error.message');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -71,11 +81,12 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
-            assert.equal(currentCallError?.message, `address undefined`, 'error.message');
+            assert.equal(currentCallError?.message, 'address undefined', 'error.message');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
@@ -88,34 +99,18 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
-            assert.equal(currentCallError?.message, `method undefined`, 'error.message');
-
-            //No additional re-renders frm background tasks
-            await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-        });
-        it('Network {id} undefined', async () => {
-            const { result, waitForNextUpdate } = renderHook(
-                () => useContractCall(networkId, ZERO_ADDRESS, 'invalidFunction', [], { sync: 'once' }),
-                {
-                    wrapper,
-                },
-            );
-
-            const currentCall = result.current[0];
-            const currentCallError = result.current[1].error;
-            assert.isUndefined(currentCall, 'result.current');
-            assert.isDefined(currentCallError, 'error');
-            assert.equal(currentCallError?.message, `Network ${networkId} undefined`, 'error.message');
+            assert.equal(currentCallError?.message, 'method undefined', 'error.message');
 
             //No additional re-renders frm background tasks
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
         it('Contract {id} undefined', async () => {
-            store.dispatch(createNetwork({ networkId }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId }));
 
             const { result, waitForNextUpdate } = renderHook(
                 () => useContractCall(networkId, ZERO_ADDRESS, 'invalidFunction', [], { sync: 'once' }),
@@ -124,6 +119,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
+            await waitForNextUpdate();
+            await waitForNextUpdate(); //load error
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
@@ -134,9 +132,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
         it('Contract {id} has no web3 contract', async () => {
-            store.dispatch(createNetwork({ networkId }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId }));
             store.dispatch(
-                create({
+                ContractCRUD.actions.create({
                     networkId,
                     address: ZERO_ADDRESS,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,
@@ -150,6 +148,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
+            await waitForNextUpdate();
+            await waitForNextUpdate(); //load error
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
@@ -164,7 +165,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
         it('Contract {id} has no such method {method}', async () => {
-            store.dispatch(createNetwork({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
             web3Contract = await new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as any)
                 .deploy({
                     data: BlockNumberArtifact.bytecode,
@@ -172,7 +173,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address;
             store.dispatch(
-                create({
+                ContractCRUD.actions.create({
                     networkId,
                     address,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,
@@ -186,13 +187,17 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 },
             );
 
+            await waitForNextUpdate();
+            await waitForNextUpdate();
+            await waitForNextUpdate(); //load error
+
             const currentCall = result.current[0];
             const currentCallError = result.current[1].error;
             assert.isUndefined(currentCall, 'result.current');
             assert.isDefined(currentCallError, 'error');
             assert.equal(
                 currentCallError?.message,
-                `Contract ${networkId}-${address} has no such method invalidFunction`,
+                `Contract ${networkId},${address.toLowerCase()} has no such method invalidFunction`,
                 'error.message',
             );
 
@@ -203,16 +208,16 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
 
     describe('Network & Contract initialized', () => {
         beforeEach(async () => {
-            store.dispatch(createNetwork({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
 
             web3Contract = await new web3.eth.Contract(cloneDeep(BlockNumberArtifact.abi) as any)
                 .deploy({
                     data: BlockNumberArtifact.bytecode,
                 })
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
-            address = web3Contract.options.address;
+            address = web3Contract.options.address.toLowerCase();
             store.dispatch(
-                create({
+                ContractCRUD.actions.create({
                     networkId,
                     address,
                     abi: cloneDeep(BlockNumberArtifact.abi) as any,
@@ -230,6 +235,10 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 );
 
                 await waitForNextUpdate();
+                await waitForNextUpdate();
+                await waitForNextUpdate();
+                await waitForNextUpdate();
+                await waitForNextUpdate(); //load error
 
                 const currentCall = result.current[0];
                 const currentCallError = result.current[1].error;
@@ -237,7 +246,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 assert.isDefined(currentCallError, 'error');
                 assert.equal(
                     currentCallError?.message,
-                    'VM Exception while processing transaction: revert Transaction reverted',
+                    'VM Exception while processing transaction: reverted with reason string \'Transaction reverted\'',
                     'error.message',
                 );
 
@@ -254,11 +263,33 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 );
 
                 await waitForNextUpdate();
+                await waitForNextUpdate();
+                await waitForNextUpdate();
+                await waitForNextUpdate();
 
                 const currentCall = result.current[0];
                 assert.equal(currentCall, '0', 'result.current');
-                const allCalls = result.all.map((x) => (x as [any, any])[0]);
-                assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
+
+                //No additional re-renders frm background tasks
+                await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
+            });
+
+            it('(networkId, address, method, [], { sync: ifnull })', async () => {
+                const { result, waitForNextUpdate } = renderHook(
+                    () => useContractCall(networkId, address, 'getValue', [], { sync: 'ifnull' }),
+                    {
+                        wrapper,
+                    },
+                );
+
+                await waitForNextUpdate();
+                await waitForNextUpdate();
+                await waitForNextUpdate();
+                await waitForNextUpdate();
+
+                const currentCall = result.current[0];
+                assert.equal(currentCall, '0', 'result.current');
+
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
             });
@@ -271,39 +302,23 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                     },
                 );
 
+                await waitForNextUpdate();
+                await waitForNextUpdate();
+
                 const currentCall = result.current[0];
-                const { dispatchCallAction } = result.current[1];
+                const currentOptions = result.current[1];
                 assert.isUndefined(currentCall, 'result.current');
-                const allCalls = result.all.map((x) => (x as [any, any])[0]);
-                assert.deepEqual(allCalls, [undefined], 'result.all');
+                assert.isFalse(currentOptions.isLoading, 'isLoading');
+                assert.isDefined(currentOptions.callAction);
 
                 //Manual refresh
-                dispatchCallAction();
+                currentOptions.dispatchCallAction();
+                await waitForNextUpdate();
                 await waitForNextUpdate();
 
                 const currentCall2 = result.current[0];
                 assert.equal(currentCall2, '0', 'result.current');
-                const allCalls2 = result.all.map((x) => (x as [any, any])[0]);
-                assert.deepEqual(allCalls2, [undefined, '0'], 'result.all');
 
-                //No additional re-renders frm background tasks
-                //await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
-            });
-
-            it('(networkId, address, method, [], { sync: ifnull })', async () => {
-                const { result, waitForNextUpdate } = renderHook(
-                    () => useContractCall(networkId, address, 'getValue', [], { sync: 'ifnull' }),
-                    {
-                        wrapper,
-                    },
-                );
-
-                await waitForNextUpdate();
-
-                const currentCall = result.current[0];
-                assert.equal(currentCall, '0', 'result.current');
-                const allCalls = result.all.map((x) => (x as [any, any])[0]);
-                assert.deepEqual(allCalls, [undefined, '0'], 'result.all');
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
             });
@@ -317,12 +332,20 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 );
 
                 await waitForNextUpdate();
+                await waitForNextUpdate();
+
+                const currentCall = result.current[0];
+                const currentOptions = result.current[1];
+                assert.isUndefined(currentCall, 'result.current');
+                assert.isFalse(currentOptions.isLoading, 'isLoading');
+                assert.isDefined(currentOptions.callAction);
+
                 await web3Contract.methods
                     .setValue(42)
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create transaction, triggering a refresh
                 store.dispatch(
-                    createTransaction({
+                    TransactionCRUD.actions.create({
                         networkId,
                         hash: '0x1',
                         from: accounts[0],
@@ -331,10 +354,8 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 );
                 await waitForNextUpdate();
 
-                const currentCall = result.current[0];
-                assert.equal(currentCall, '42', 'result.current');
-                const allCalls = result.all.map((x) => (x as [any, any])[0]);
-                assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
+                const currentCall2 = result.current[0];
+                assert.equal(currentCall2, '42', 'result.current');
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
             });
@@ -348,27 +369,33 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 );
 
                 await waitForNextUpdate();
+                await waitForNextUpdate();
+
+                const currentCall = result.current[0];
+                const currentOptions = result.current[1];
+                assert.isUndefined(currentCall, 'result.current');
+                assert.isFalse(currentOptions.isLoading, 'isLoading');
+                assert.isDefined(currentOptions.callAction);
+
                 await web3Contract.methods
                     .setValue(42)
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create block, triggering a refresh
                 store.dispatch(
-                    createBlock({
+                    BlockCRUD.actions.create({
                         networkId,
                         number: 1,
                     }),
                 );
                 await waitForNextUpdate();
 
-                const currentCall = result.current[0];
-                assert.equal(currentCall, '42', 'result.current');
-                const allCalls = result.all.map((x) => (x as [any, any])[0]);
-                assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
+                const currentCall2 = result.current[0];
+                assert.equal(currentCall2, '42', 'result.current');
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
             });
 
-            it('(networkId, address, method, [], { sync: Event })', async () => {
+            it.skip('(networkId, address, method, [], { sync: Event })', async () => {
                 //Matches all NewValue updates
                 const eventSync = createEventSync(networkId, [], address, 'NewValue', {});
                 const { result, waitForNextUpdate } = renderHook(
@@ -379,14 +406,23 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 );
 
                 await waitForNextUpdate();
+                await waitForNextUpdate();
+
+                const currentCall = result.current[0];
+                const currentOptions = result.current[1];
+                assert.isUndefined(currentCall, 'result.current');
+                assert.isFalse(currentOptions.isLoading, 'isLoading');
+                assert.isDefined(currentOptions.callAction);
+
                 await web3Contract.methods
                     .setValue(42)
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create event, triggering a refresh
                 store.dispatch(
-                    createEvent({
+                    ContractEventCRUD.actions.create({
                         networkId,
                         address,
+                        blockNumber: 1,
                         blockHash: '0x1',
                         logIndex: 0,
                         name: 'NewValue',
@@ -395,10 +431,8 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 );
                 await waitForNextUpdate();
 
-                const currentCall = result.current[0];
-                assert.equal(currentCall, '42', 'result.current');
-                const allCalls = result.all.map((x) => (x as [any, any])[0]);
-                assert.deepEqual(allCalls, [undefined, '0', '42'], 'result.all');
+                const currentCall2 = result.current[0];
+                assert.equal(currentCall2, '42', 'result.current');
                 //No additional re-renders frm background tasks
                 await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
             });

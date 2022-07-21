@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectIpfs } from '../selectors/index.js';
-import { cat2 as catAction } from '../actions/index.js';
+import { useDispatch } from 'react-redux';
+import useAtPath from './useAtPath.js';
+import { catAction } from '../actions/index.js';
 
 /**
  * Reads IPFS content from store and makes a call to fetch content.
@@ -10,7 +10,7 @@ import { cat2 as catAction } from '../actions/index.js';
 export const useCat = (path: string | undefined) => {
     const dispatch = useDispatch();
 
-    const content = useSelector((state) => selectIpfs(state, path));
+    const content = useAtPath(path);
 
     const dataExists = !!content?.data;
     const action = useMemo(() => {

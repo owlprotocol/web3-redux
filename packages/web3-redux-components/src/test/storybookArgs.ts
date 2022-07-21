@@ -49,8 +49,7 @@ const networkLabels = {
     [10]: '10 - Optimism',
     [137]: '137 - Polygon',
     [42161]: '42161 - Arbitrum',
-    [1337]: '1337 - Ganache',
-    [4]: '4 - Rinkeby',
+    [1336]: '1336 - Ganache',
 };
 export const networkIdArgType = {
     options: Object.keys(networkLabels),

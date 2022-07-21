@@ -1,7 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { toChecksumAddress } from '../../utils/web3-utils/index.js';
-import { getId as getContractId } from '../../contract/model/interface.js';
-import { getTransactionId } from '../../transaction/model/index.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 
@@ -18,9 +15,12 @@ export enum ContractSendStatus {
     /** Transaction confirmations > 0. */
     CONFIRMED = 'CONFIRMED',
 }
-export interface ContractSend {
+
+export interface ContractSendId {
     /** unique uuid identifying send action */
     readonly uuid: string;
+}
+export interface ContractSend extends ContractSendId {
     /** Blockchain network id.
      * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
@@ -34,12 +34,8 @@ export interface ContractSend {
     readonly from: string;
     /** Value sent in wei */
     readonly value?: any;
-    /** redux-orm id of contract send `${networkId}-{address}` */
-    readonly contractId?: string;
     /** Transaction hash. Generated once data is signed.` */
     readonly transactionHash?: string;
-    /** redux-orm id of transaction `${networkId}-{transactionHash}` */
-    readonly transactionId?: string;
     /** Track status of send transaction */
     readonly status: ContractSendStatus;
     /** Error */
@@ -54,6 +50,8 @@ export interface ContractSend {
     readonly blockHash?: string;
 }
 
+export const ContractSendIndex = 'uuid, [networkId+address+from]';
+
 /** @internal */
 export function getArgsId(args?: any[]) {
     if (!args || args.length == 0) return '()';
@@ -67,29 +65,29 @@ export function getOptionsId(from: string | undefined, value: string | undefined
     if ((!from || from == ADDRESS_0) && (!value || value == '0')) return undefined;
 
     const options: any = {};
-    if (from) options.from = toChecksumAddress(from);
+    if (from) options.from = from.toLowerCase();
     if (value) options.value = value;
 
     return JSON.stringify(value);
 }
 
+/** @internal */
+export function validateId({ uuid }: ContractSendId) {
+    return {
+        uuid,
+    };
+}
 
 /** @internal */
 export function validate(item: ContractSend): ContractSend {
     const uuid = item.uuid ?? uuidv4();
-    const addressChecksum = toChecksumAddress(item.address);
-    const fromCheckSum = toChecksumAddress(item.from);
-    const contractId = getContractId(item);
-    const transactionId = item.transactionHash
-        ? getTransactionId({ hash: item.transactionHash, networkId: item.networkId })
-        : undefined;
+    const addressChecksum = item.address.toLowerCase();
+    const fromCheckSum = item.from.toLowerCase();
     return {
         ...item,
         uuid,
         address: addressChecksum,
         from: fromCheckSum,
-        contractId,
-        transactionId,
     };
 }
 

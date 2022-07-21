@@ -1,30 +1,27 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectByIdSingle as selectIpfs, selectPathHash } from '../selectors/index.js';
-import { fetchIpfs as fetchIpfsAction } from '../actions/index.js';
+import { useDispatch } from 'react-redux';
+import useAtPath from './useAtPath.js';
+import { catAction } from '../actions/index.js';
 
 /**
- * Reads IPFS content from store and makes a call to fetch content.
+ * Reads IPFS content from store and makes a call to cat content.
  * @category Hooks
  * */
-export const useIpfs = (path: string | undefined, fetch = 'ifnull' as 'ifnull' | true | false) => {
+export const useIpfs = (path: string | undefined) => {
     const dispatch = useDispatch();
 
-    const pathHash = useSelector((state) => selectPathHash(state, path));
-    const content = useSelector((state) => selectIpfs(state, pathHash));
+    const content = useAtPath(path);
 
     const dataExists = content?.data || false;
     const action = useMemo(() => {
-        if (path && ((fetch === 'ifnull' && !dataExists) || fetch === true)) {
-            return fetchIpfsAction(path);
-        }
-    }, [path, fetch, dataExists]);
+        if (path && !dataExists) return catAction({ path });
+    }, [path, dataExists]);
 
     useEffect(() => {
         if (action) dispatch(action);
     }, [dispatch, action]);
 
-    return { contentId: pathHash, data: content?.data };
+    return { contentId: content?.contentId, data: content?.data };
 };
 
 export default useIpfs;

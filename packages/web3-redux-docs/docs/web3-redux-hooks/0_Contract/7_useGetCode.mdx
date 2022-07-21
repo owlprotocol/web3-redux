@@ -1,0 +1,11 @@
+# useGetCode
+
+Get code at address. `0x` indicates an EOA. Uses [Web3.eth.getCode](https://web3js.readthedocs.io/en/v1.7.0/web3-eth.html#getcode)
+
+```tsx
+const code = Contract.hooks.useGetCode(networkId, address);
+```
+
+:::tip
+Use the `useGetCode` hook to determine if an address is an EOA or smart contract.
+:::

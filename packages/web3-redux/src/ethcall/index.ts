@@ -1,9 +1,34 @@
 /**
  * EVM call data module.
+ * Store EVM call data for caching and searchability.
  * @module EthCall
  */
 
-export * from './model/index.js';
-export * from './actions/index.js';
-export * from './selectors/index.js';
-export * from './reducer.js';
+import * as Actions from './actions/index.js';
+import CRUDModel from './crud.js';
+import rootSaga from './sagas/index.js';
+
+export const EthCall = {
+    name: CRUDModel.name,
+    actionTypes: CRUDModel.actionTypes,
+    actions: {
+        ...CRUDModel.actions,
+        fetch: Actions.fetch,
+    },
+    sagas: {
+        ...CRUDModel.sagas,
+        rootSaga,
+    },
+    hooks: {
+        ...CRUDModel.hooks,
+    },
+    selectors: CRUDModel.selectors,
+    isAction: CRUDModel.isAction,
+    reducer: CRUDModel.reducer,
+    validate: CRUDModel.validate,
+    validateId: CRUDModel.validateId,
+    hydrate: CRUDModel.hydrate,
+    encode: CRUDModel.encode,
+};
+
+export default EthCall;

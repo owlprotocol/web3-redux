@@ -1,4 +1,4 @@
-import { attr, fk, Model as ORMModel } from 'redux-orm';
+import { attr, Model as ORMModel } from 'redux-orm';
 import { name } from '../common.js';
 
 export default class Model extends ORMModel {
@@ -10,7 +10,7 @@ export default class Model extends ORMModel {
 
     static fields = {
         id: attr(),
-        networkId: fk({ to: 'Network', as: 'network' }),
+        networkId: attr(),
         account: attr(),
     };
 }

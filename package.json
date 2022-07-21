@@ -2,35 +2,32 @@
   "name": "@owlprotocol/web3-redux-monorepo",
   "version": "0.1.1",
   "private": true,
-  "description": "Lerna workspace for multipackage setup",
+  "description": "Owl Protocol Web3 Redux Monorepo",
   "keywords": [
-    "lerna",
+    "web3",
+    "redux",
     "pnpm",
     "workspace"
   ],
   "license": "MIT",
   "author": "Leo Vigna",
   "scripts": {
-    "build": "npm-run-all build:web3-redux build:web3-redux-components",
-    "build:web3-redux": "cd packages/web3-redux && npm run build",
-    "build:web3-redux-components": "cd packages/web3-redux-components && npm run build",
+    "start": "pnpm --stream -r run start",
+    "build": "pnpm --stream -r run build",
+    "build:web3-redux": "pnpm --filter '@owlprotocol/web3-redux' run build",
+    "build:web3-redux-components": "pnpm --filter '@owlprotocol/web3-redux-components' run build",
     "build:web3-redux-components-storybook": "cd packages/web3-redux-components && npm run build-storybook",
-    "build:web3-redux-docs": "cd packages/web3-redux-docs && npm run build",
-    "clean": "npm-run-all -p clean:lib clean:node_modules",
-    "clean:lib": "rimraf packages/*/lib packages/*/dist",
-    "clean:node_modules": "rimraf node_modules packages/*/node_modules",
+    "build:web3-redux-docs": "pnpm --filter '@owlprotocol/web3-redux-docs' run build",
+    "clean": "pnpm --stream -r run clean",
+    "test": "pnpm --stream -r run test",
+    "test:web3-redux": "pnpm --filter '@owlprotocol/web3-redux' run test",
+    "test:web3-redux-components": "pnpm --filter '@owlprotocol/web3-redux-components' run test",
     "husky:install": "husky install",
-    "test": "npm-run-all -p test:web3-redux test:web3-redux-components",
-    "test:web3-redux": "cd packages/web3-redux && npm run test",
-    "test:web3-redux-components": "cd packages/web3-redux-components && npm run test",
     "publish": "pnpm publish -r"
   },
   "dependencies": {
     "husky": "^7.0.4",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.2"
-  },
-  "devDependencies": {
+    "rimraf": "^3.0.2",
     "@changesets/cli": "^2.21.1"
   }
 }

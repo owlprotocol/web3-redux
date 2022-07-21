@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Config, Network, NetworkWithObjects } from '@owlprotocol/web3-redux';
-import { hooks } from '../connectors/metaMask.ts';
-import getLibrary from '../utils/getLibrary.ts';
+import { hooks } from '../connectors/metaMask.js';
+import getLibrary from '../utils/getLibrary.js';
 
 const { useChainId, useAccounts, useProvider } = hooks;
 

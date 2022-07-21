@@ -3,8 +3,8 @@ import { MetaMask } from '@web3-react/metamask';
 import { WalletConnect } from '@web3-react/walletconnect';
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet';
 import { Network } from '@web3-react/network';
-import getDisplayName from './getDisplayName.ts';
-import { hooks as metaMaskHooks, metaMask } from '../connectors/metaMask.ts';
+import getDisplayName from './getDisplayName.js';
+import { hooks as metaMaskHooks, metaMask } from '../connectors/metaMask.js';
 
 const connectors: [MetaMask | WalletConnect | CoinbaseWallet | Network, Web3ReactHooks][] = [
     [metaMask, metaMaskHooks],

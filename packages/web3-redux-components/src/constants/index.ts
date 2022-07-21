@@ -1,1 +1,1 @@
-export * from './themeColors.ts';
+export * from './themeColors.js';

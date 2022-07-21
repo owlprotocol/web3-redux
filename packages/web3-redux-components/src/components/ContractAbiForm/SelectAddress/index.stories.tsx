@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { networkIdArgType } from '../../../test/storybookArgs.ts';
+import { networkIdArgType } from '../../../test/storybookArgs.js';
 import SelectAddress, { Props } from '.';
 
 export default {

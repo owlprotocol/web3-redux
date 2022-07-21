@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AnyAction } from 'redux';
-import getDisplayName from './getDisplayName.ts';
+import getDisplayName from './getDisplayName.js';
 
 export const withActions = (WrappedComponent: any, actions: AnyAction[]) => {
     const Component = (props: any) => {

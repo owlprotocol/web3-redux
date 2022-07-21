@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { TestData } from '@owlprotocol/web3-redux';
-import { addressERC1155ArgType, networkIdArgType } from '../../../test/storybookArgs.ts';
+import { addressERC1155ArgType, networkIdArgType } from '../../../test/storybookArgs.js';
 import ERC1155Instance from '.';
 
 export default {

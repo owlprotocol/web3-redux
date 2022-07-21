@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { networkIdArgType, addressArgType } from '../../test/storybookArgs.ts';
+import { networkIdArgType, addressArgType } from '../../test/storybookArgs.js';
 import { ContractCode, Props } from '.';
 
 const Template: ComponentStory<typeof ContractCode> = (args: any) => <ContractCode {...args} />;

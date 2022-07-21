@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { mimeTypeArgType } from '../../../test/storybookArgs.ts';
+import { mimeTypeArgType } from '../../../test/storybookArgs.js';
 import FileUploadButton from '.';
 
 export default {

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2020",
+    "module": "es2020",
     "moduleResolution": "node",
     "jsx": "react-jsx",
     "sourceMap": false,
@@ -30,4 +31,10 @@
     "src/types/web3",
     "./**/node_modules/ipfs-utils/**/*"
   ],
+  "baseUrl": "src", // this must be specified if "paths" is specified.
+  "paths": {
+    "@artifacts/*": [
+      "artifacts/*"
+    ]
+  }
 }

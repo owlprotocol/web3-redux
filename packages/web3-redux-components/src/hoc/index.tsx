@@ -1,6 +1,6 @@
-export { withActions } from './withActions';
-export { withMockData } from './withMockData';
-export { withStoreProvider } from './withStoreProvider';
-export { withWeb3ReactProvider } from './withWeb3ReactProvider';
-export { getDisplayName } from './getDisplayName';
-export * from './withChakraProvider';
+export * from './withActions.js';
+export * from './withMockData.js';
+export * from './withStoreProvider.js';
+export * from './withWeb3ReactProvider.js';
+export * from './getDisplayName.js';
+export * from './withChakraProvider.js';

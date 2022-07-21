@@ -24,6 +24,6 @@ function* mainSaga() {
 describe('sagas/takeEveryBuffered.test.ts', () => {
     it('mainSaga()', async () => {
         expectSaga.DEFAULT_TIMEOUT = 1000;
-        const x = await expectSaga(mainSaga).run();
+        await expectSaga(mainSaga).run();
     });
 });

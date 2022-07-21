@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Box, useTheme, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import type { AbiType, StateMutabilityType } from 'web3-utils';
 import { Config, Contract, ContractSendStatus } from '@owlprotocol/web3-redux';
-import AbiItemInput from '../AbiItemInput';
+import AbiItemInput from '../AbiItemInput/index.js';
 
 //TODO
 //Formik integration

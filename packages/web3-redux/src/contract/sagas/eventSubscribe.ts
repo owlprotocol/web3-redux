@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { put, call, cancel, take, fork, select } from 'typed-redux-saga';
+import { put, call, cancel, take, fork } from 'typed-redux-saga';
 import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
 import type { Subscription } from 'web3-core-subscriptions';
 import { EventData } from 'web3-eth-contract';

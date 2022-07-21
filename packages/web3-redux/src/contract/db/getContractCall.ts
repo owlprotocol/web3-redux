@@ -8,12 +8,12 @@ import { BaseWeb3Contract } from '../model/index.js';
 export async function getContractCall<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
-    >(
-        state: any,
-        networkId: string | undefined,
-        address: string | undefined,
-        method: K | undefined,
-        args?: Parameters<T['methods'][K]>,
+>(
+    state: any,
+    networkId: string | undefined,
+    address: string | undefined,
+    method: K | undefined,
+    args?: Parameters<T['methods'][K]>,
 ) {
     const ethCall = await getEthCall(state, networkId, address, method, args);
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;

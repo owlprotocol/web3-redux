@@ -1,5 +1,5 @@
 import { useTheme, Box, Flex, HStack, Image, CloseButton } from '@chakra-ui/react';
-import Icon from '../Icon';
+import Icon from '../Icon/index.js';
 
 export interface PresenterProps {
     itemName?: string;

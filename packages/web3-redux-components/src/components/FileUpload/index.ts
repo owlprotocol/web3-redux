@@ -1,2 +1,2 @@
-export { FileUploadButton } from './FileUploadButton';
-export { FileUploadImage } from './FileUploadImage';
+export { FileUploadButton } from './FileUploadButton/index.js';
+export { FileUploadImage } from './FileUploadImage/index.js';

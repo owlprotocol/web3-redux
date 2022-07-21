@@ -1,1 +1,1 @@
-export * from './ERC1167Form';
+export * from './ERC1167Form/index.js';

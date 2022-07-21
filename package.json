@@ -1,36 +1,50 @@
 {
-  "name": "@owlprotocol/web3-redux-monorepo",
-  "version": "0.1.1",
-  "private": true,
-  "description": "Lerna workspace for multipackage setup",
-  "keywords": [
-    "lerna",
-    "pnpm",
-    "workspace"
-  ],
-  "license": "MIT",
-  "author": "Leo Vigna",
-  "scripts": {
-    "build": "npm-run-all build:web3-redux build:web3-redux-components",
-    "build:web3-redux": "cd packages/web3-redux && npm run build",
-    "build:web3-redux-components": "cd packages/web3-redux-components && npm run build",
-    "build:web3-redux-components-storybook": "cd packages/web3-redux-components && npm run build-storybook",
-    "build:web3-redux-docs": "cd packages/web3-redux-docs && npm run build",
-    "clean": "npm-run-all -p clean:lib clean:node_modules",
-    "clean:lib": "rimraf packages/*/lib packages/*/dist",
-    "clean:node_modules": "rimraf node_modules packages/*/node_modules",
-    "husky:install": "husky install",
-    "test": "npm-run-all -p test:web3-redux test:web3-redux-components",
-    "test:web3-redux": "cd packages/web3-redux && npm run test",
-    "test:web3-redux-components": "cd packages/web3-redux-components && npm run test",
-    "publish": "pnpm publish -r"
-  },
-  "dependencies": {
-    "husky": "^7.0.4",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.2"
-  },
-  "devDependencies": {
-    "@changesets/cli": "^2.21.1"
-  }
+    "name": "@owlprotocol/web3-redux-monorepo",
+    "version": "1.1.0",
+    "private": true,
+    "description": "Owl Protocol Web3 Redux Monorepo",
+    "keywords": [
+        "web3",
+        "redux",
+        "pnpm",
+        "workspace"
+    ],
+    "license": "MIT",
+    "author": "Leo Vigna",
+    "scripts": {
+        "start": "pnpm --stream -r run start",
+        "build": "pnpm --stream -r run build",
+        "build:web3-redux": "pnpm --filter '@owlprotocol/web3-redux' run build",
+        "build:web3-redux-components": "pnpm --filter '@owlprotocol/web3-redux-components' run build",
+        "build:web3-redux-components-storybook": "cd packages/web3-redux-components && npm run build-storybook",
+        "build:web3-redux-docs": "pnpm --filter '@owlprotocol/web3-redux-docs' run build",
+        "clean": "pnpm --stream -r run clean",
+        "test": "pnpm --stream -r run test",
+        "test:web3-redux": "pnpm --filter '@owlprotocol/web3-redux' run test",
+        "test:web3-redux-components": "pnpm --filter '@owlprotocol/web3-redux-components' run test",
+        "husky:install": "husky install",
+        "publish": "pnpm publish -r",
+        "lint": "eslint . --ext .ts,.tsx",
+        "lint:fix": "eslint . --ext .ts,.tsx --fix",
+        "lint:staged": "lint-staged"
+    },
+    "dependencies": {
+        "husky": "^7.0.4",
+        "rimraf": "^3.0.2",
+        "@changesets/cli": "^2.21.1",
+        "@typescript-eslint/eslint-plugin": "^5.14.0",
+        "@typescript-eslint/parser": "^5.14.0",
+        "eslint": "^8.10.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-import-resolver-typescript": "^2.5.0",
+        "eslint-plugin-import": "^2.25.4",
+        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-react": "^7.29.3",
+        "eslint-plugin-react-hooks": "^4.3.0",
+        "eslint-plugin-storybook": "^0.5.7",
+        "lint-staged": "^11.1.2",
+        "prettier": "^2.5.1",
+        "typescript": "^4.5.4"
+    }
 }

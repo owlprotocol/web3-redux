@@ -1,5 +1,5 @@
 import type { AbiType, StateMutabilityType } from 'web3-utils';
-import AbiItemForm from '../AbiItemForm';
+import AbiItemForm from '../AbiItemForm/index.js';
 interface AbiFormProps {
     name: string | undefined;
     inputs: {

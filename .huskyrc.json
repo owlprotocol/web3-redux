@@ -1,5 +1,0 @@
-{
-  "hooks": {
-    "pre-commit": "cd packages/web3-redux && npm run lint:staged"
-  }
-}

@@ -1,5 +1,5 @@
-import { createAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { createAction } from '../../utils/createAction.js';
 
 import { name } from '../common.js';
 import { ContractId } from '../model/interface.js';

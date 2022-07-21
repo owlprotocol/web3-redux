@@ -1,9 +1,11 @@
 //@ts-nocheck
 import { AnyAction, Store } from 'redux';
+/*
 import { Transaction } from '../../transaction/model/interface.js';
 import { isStrings } from '../../utils/index.js';
 import TransactionCRUD from '../../transaction/crud.js';
 import BlockCRUD from '../crud.js';
+*/
 
 /**
  * Middleware for whenever a block is created/updated.

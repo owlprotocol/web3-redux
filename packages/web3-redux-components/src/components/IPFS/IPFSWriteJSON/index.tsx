@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { IPFSCache } from '@owlprotocol/web3-redux';
-import FileUploadButton, { FileData } from '../../FileUpload/FileUploadButton';
+import FileUploadButton, { FileData } from '../../FileUpload/FileUploadButton/index.js';
 
 //https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
 export const IPFSWriteJSON = () => {

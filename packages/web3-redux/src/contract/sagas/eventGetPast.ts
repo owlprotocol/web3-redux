@@ -1,4 +1,4 @@
-import { put, call, select } from 'typed-redux-saga';
+import { put, call } from 'typed-redux-saga';
 import loadContract from './loadContract.js';
 import loadNetwork from '../../network/sagas/loadNetwork.js';
 import {

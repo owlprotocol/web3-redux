@@ -1,6 +1,6 @@
 import { useTheme, Box, IconButton, HStack, Image, Skeleton, VStack } from '@chakra-ui/react';
-import Icon from '../../Icon';
-import { FileUploadImage } from '../../FileUpload';
+import Icon from '../../Icon/index.js';
+import { FileUploadImage } from '../../FileUpload/index.js';
 
 export interface PresenterProps {
     ownerName: string;

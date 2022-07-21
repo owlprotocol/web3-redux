@@ -9,13 +9,12 @@ import { createStore, StoreType } from '../../store.js';
 import { setAccount } from '../actions/index.js';
 
 describe(`${name}/hooks/useAccount.test.tsx`, () => {
-
-
     let store: StoreType;
     let wrapper: any;
 
     beforeEach(() => {
         store = createStore();
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

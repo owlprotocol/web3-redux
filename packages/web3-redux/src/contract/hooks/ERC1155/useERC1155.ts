@@ -84,7 +84,7 @@ export function useERC1155(
             TransferFrom,
             TransferTo,
         };
-    }, [, /*totalSupply*/ uri, balanceOf, metadata, contentId, TransferFrom, TransferTo]);
+    }, [, uriParsed, balanceOf, metadata, contentId, TransferFrom, TransferTo]);
 
     return values;
 }

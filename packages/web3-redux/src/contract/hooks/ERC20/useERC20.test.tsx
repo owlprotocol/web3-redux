@@ -49,6 +49,7 @@ describe(`${name}/hooks/useERC20.test.tsx`, () => {
 
         store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

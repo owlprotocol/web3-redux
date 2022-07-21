@@ -1,5 +1,5 @@
 import { useTheme, VStack, HStack, Box } from '@chakra-ui/react';
-import Icon from '../Icon';
+import Icon from '../Icon/index.js';
 
 export interface Props {
     stage: number;

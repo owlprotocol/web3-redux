@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import getDisplayName from './getDisplayName';
-import theme from '../theme';
+import getDisplayName from './getDisplayName.js';
+import theme from '../theme/index.js';
 
 export const withChakraProvider = (WrappedComponent: any) => {
     const component = (props: any) => {

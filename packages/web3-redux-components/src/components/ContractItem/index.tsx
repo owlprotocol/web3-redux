@@ -1,6 +1,6 @@
 import { Box, useTheme } from '@chakra-ui/react';
-import { AddressDisplayPresenter as AddressDisplay } from '../AddressDisplay';
-import NetworkIcon from '../NetworkIcon';
+import { AddressDisplayPresenter as AddressDisplay } from '../AddressDisplay/index.js';
+import NetworkIcon from '../NetworkIcon/index.js';
 
 export interface Props {
     network: string;

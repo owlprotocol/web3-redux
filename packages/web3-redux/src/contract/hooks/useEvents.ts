@@ -30,15 +30,14 @@ export function useEvents<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends Record<string, any> = Record<string, any>,
-    >(
-        networkId: string | undefined,
-        address: string | undefined,
-        eventName: K | undefined,
-        filter?: Partial<U>,
-        options?: UseEventsOptions,
+>(
+    networkId: string | undefined,
+    address: string | undefined,
+    eventName: K | undefined,
+    filter?: Partial<U>,
+    options?: UseEventsOptions,
 ) {
     const { fromBlock, toBlock, past, sync } = options ?? {};
-    const blockBatch = options?.blockBatch ?? 10000000;
     const blocks = options?.blocks ?? 10000000;
     const reverse = options?.reverse ?? true;
     const offset = options?.offset ?? 0;
@@ -141,7 +140,7 @@ export function contractEventsHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['events'] = string,
     U extends Record<string, any> = Record<string, any>,
-    >(eventName: K) {
+>(eventName: K) {
     return (
         networkId: string | undefined,
         address: string | undefined,

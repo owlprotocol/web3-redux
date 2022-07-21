@@ -1,7 +1,7 @@
 import { Box, Select, IconButton, CloseButton, useTheme } from '@chakra-ui/react';
 import { useState } from 'react';
 import copy from 'copy-to-clipboard';
-import Icon from '../Icon';
+import Icon from '../Icon/index.js';
 
 export interface Props {
     address: string[];

@@ -1,6 +1,7 @@
-import { Action, createAction as createReduxAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { isUndefined, omitBy, pick } from '../utils/lodash';
+import type { Action } from '@reduxjs/toolkit';
+import { createAction as createReduxAction } from '../utils/createAction.js';
+import { isUndefined, omitBy, pick } from '../utils/lodash/index.js';
 
 /**
  *
@@ -17,12 +18,12 @@ export function createCRUDActions<
     T_Encoded extends T_ID = T_ID,
     T extends T_Encoded = T_Encoded,
     T_Idx = T_ID,
-    >(
-        name: U,
-        validators?: {
-            validateId?: (id: T_ID) => T_ID;
-            validate?: (item: T) => T;
-        },
+>(
+    name: U,
+    validators?: {
+        validateId?: (id: T_ID) => T_ID;
+        validate?: (item: T) => T;
+    },
 ) {
     const validateId = validators?.validateId ?? ((id: T_ID) => id);
     const validate = validators?.validate ?? ((item: T) => item);
@@ -123,22 +124,25 @@ export function createCRUDActions<
             },
         };
     });
-    const hydrateAction = createReduxAction(HYDRATE, (payload: { id: T_Idx, defaultItem?: T_Encoded }, uuid?: string) => {
-        const idxKeys = Object.keys(payload.id);
-        const idxValidate = validate(payload.id as unknown as T) as unknown as T_Idx
-        const defaultItemKeys = payload.defaultItem ? Object.keys(payload.defaultItem) : []
-        const defaultItemValidate = payload.defaultItem ? validate(payload.defaultItem as T) : {}
-        let p = {
-            id: pick(idxValidate, idxKeys) as T_Idx,
-            defaultItem: payload.defaultItem ? pick(defaultItemValidate, defaultItemKeys) : undefined
-        }
-        return {
-            payload: omitBy(p, isUndefined) as unknown as typeof p,
-            meta: {
-                uuid: uuid ?? uuidv4(),
-            },
-        };
-    });
+    const hydrateAction = createReduxAction(
+        HYDRATE,
+        (payload: { id: T_Idx; defaultItem?: T_Encoded }, uuid?: string) => {
+            const idxKeys = Object.keys(payload.id);
+            const idxValidate = validate(payload.id as unknown as T) as unknown as T_Idx;
+            const defaultItemKeys = payload.defaultItem ? Object.keys(payload.defaultItem) : [];
+            const defaultItemValidate = payload.defaultItem ? validate(payload.defaultItem as T) : {};
+            const p = {
+                id: pick(idxValidate, idxKeys) as T_Idx,
+                defaultItem: payload.defaultItem ? pick(defaultItemValidate, defaultItemKeys) : undefined,
+            };
+            return {
+                payload: omitBy(p, isUndefined) as unknown as typeof p,
+                meta: {
+                    uuid: uuid ?? uuidv4(),
+                },
+            };
+        },
+    );
     const hydrateBatchedAction = createReduxAction(HYDRATE_BATCHED, (payload: T_ID[], uuid?: string) => {
         return {
             payload: payload.map(validateId),

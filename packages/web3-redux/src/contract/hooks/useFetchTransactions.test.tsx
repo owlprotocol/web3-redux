@@ -14,8 +14,6 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 
 describe('contract/hooks/useFetchTransactions.test.tsx', () => {
-
-
     let store: StoreType;
     let wrapper: any;
 
@@ -40,6 +38,7 @@ describe('contract/hooks/useFetchTransactions.test.tsx', () => {
             }),
         );
         store.dispatch(ContractCRUD.actions.create({ networkId, address }));
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

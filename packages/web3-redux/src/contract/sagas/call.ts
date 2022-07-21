@@ -1,4 +1,4 @@
-import { put, call, select, takeEvery } from 'typed-redux-saga';
+import { put, call, takeEvery } from 'typed-redux-saga';
 import loadContract from './loadContract.js';
 import { create as createError } from '../../error/actions/index.js';
 

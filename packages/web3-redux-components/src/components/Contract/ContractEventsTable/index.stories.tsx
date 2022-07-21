@@ -1,8 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Contract, Abi, Network } from '@owlprotocol/web3-redux';
-import { AbiItem } from '@owlprotocol/web3-redux/src/utils/web3-utils';
+import type { AbiItem } from 'web3-utils';
 import { useEffect } from 'react';
-import { ContractWithObjects } from '@owlprotocol/web3-redux/src/contract/model';
+import type { ContractWithObjects } from '@owlprotocol/web3-redux/src/contract/model';
 import type { BlockNumber } from '@owlprotocol/web3-redux/src/abis';
 import ContractEventsTable, { ContractEventsTableProps } from '.';
 

@@ -46,6 +46,7 @@ describe('contract/hooks/useERC721.test.tsx', () => {
     beforeEach(async () => {
         store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
         web3Contract = (await new web3.eth.Contract(cloneDeep(ERC721PresetMinterPauserAutoIdArtifact.abi) as any)
             .deploy({

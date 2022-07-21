@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { networkIdArgType, addressArgType } from '../../test/storybookArgs';
+import { networkIdArgType, addressArgType } from '../../test/storybookArgs.js';
 import { ERC20DropDown, Props } from '.';
 
 export default {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Textarea, useTheme } from '@chakra-ui/react';
-import ContractAbiForm from '../ContractAbiForm';
-import AbiItemInput from '../AbiItemInput';
+import ContractAbiForm from '../ContractAbiForm/index.js';
+import AbiItemInput from '../AbiItemInput/index.js';
 
 interface Props {
     networkId: string;

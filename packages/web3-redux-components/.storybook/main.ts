@@ -32,7 +32,7 @@ module.exports = {
         storyStoreV7: true,
         interactionsDebugger: true,
     },
-    async viteFinal(config: any) {
+    async viteFinal(config) {
         const overrideConfig = {
             define: {
                 //patch ipfs utils
@@ -66,10 +66,10 @@ module.exports = {
                     },
                 }),
                 CheckerPlugin({
-                    typescript: true,
+                    typescript: { tsconfigPath: './tsconfig.json' },
                     overlay: true,
                     eslint: {
-                        lintCommand: 'eslint --ext .ts,.tsx src --fix',
+                        lintCommand: 'eslint .',
                     },
                 }),
             ],

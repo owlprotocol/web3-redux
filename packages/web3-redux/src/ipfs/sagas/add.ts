@@ -1,4 +1,4 @@
-import { call, put, select } from 'typed-redux-saga';
+import { call, put } from 'typed-redux-saga';
 import { AddAction, ADD } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
 import { IPFSDataType } from '../model/interface.js';

@@ -2,8 +2,8 @@ import { IPFSCache } from '@owlprotocol/web3-redux';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 //import { Base64 } from 'js-base64';
-import { FileUploadImage } from '../../FileUpload';
-import { FileData } from '../../FileUpload/FileUploadButton';
+import { FileUploadImage } from '../../FileUpload/index.js';
+import { FileData } from '../../FileUpload/FileUploadButton/index.js';
 
 //https://www.iana.org/assignments/media-types/media-types.xhtml#image
 export interface Props {

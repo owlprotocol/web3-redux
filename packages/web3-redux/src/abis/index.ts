@@ -1,8 +1,10 @@
 //@ts-nocheck
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
+/* eslint-disable node/file-extension-in-import */
 
-//Imports fail as using json files that are transpiled by esbuild to js modules
+
+//Imports fail as using js files that are transpiled by esbuild to js modules
 
 //Contracts
 export { default as BlockNumberArtifact } from '../artifacts/contracts/BlockNumber.sol/BlockNumber';

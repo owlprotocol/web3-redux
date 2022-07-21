@@ -37,9 +37,9 @@ export function useERC20(
     const onTransferSync =
         networkId && address && balanceOfAddress
             ? createEventSync(networkId, [], address, 'Transfer', [
-                { from: balanceOfAddress },
-                { to: balanceOfAddress },
-            ])
+                  { from: balanceOfAddress },
+                  { to: balanceOfAddress },
+              ])
             : false;
     const balanceOfSync = sync?.balanceOf === 'onTransfer' ? onTransferSync : sync?.balanceOf ?? 'ifnull'; //Sync user balance
     const TransferEventsOptions = sync?.TransferEventsOptions ?? { sync: false, past: false }; //Sync token Transfer events, default just reads data

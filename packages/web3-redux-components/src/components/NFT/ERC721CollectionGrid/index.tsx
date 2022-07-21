@@ -1,6 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { Contract } from '@owlprotocol/web3-redux';
-import ERC721Instance from '../ERC721Instance';
+import ERC721Instance from '../ERC721Instance/index.js';
 
 export interface ContractEventsTableProps {
     networkId: string | undefined;

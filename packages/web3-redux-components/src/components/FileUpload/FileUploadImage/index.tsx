@@ -1,6 +1,6 @@
 import { Box, Image, StyleProps } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
-import FileUploadButton, { FileData } from '../FileUploadButton';
+import FileUploadButton, { FileData } from '../FileUploadButton/index.js';
 
 //https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
 //Use the hacky way to hid the default file input

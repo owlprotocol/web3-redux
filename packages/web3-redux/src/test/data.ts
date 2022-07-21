@@ -156,11 +156,11 @@ export const contractOZTeam = ContractCRUD.validate({
     tags: ['ERC721'],
     label: 'OZ Team NFT',
 });
-export const contractCRYPTO_OWLS = validateContract({
+export const contractCRYPTO_OWLS = ContractCRUD.validate({
     networkId: '4',
     address: CRYPTO_OWLS,
     abi: cloneDeep(IERC721.abi) as any,
-    indexIds: ['ERC721'],
+    tags: ['ERC721'],
     label: 'CRYPTO OWLS',
 });
 
@@ -179,11 +179,11 @@ export const contractSkyWeaver = ContractCRUD.validate({
     tags: ['ERC1155'],
     label: 'Sky Weaver',
 });
-export const contractOWL_PARTS = validateContract({
+export const contractOWL_PARTS = ContractCRUD.validate({
     networkId: '4',
     address: OWL_PARTS,
     abi: cloneDeep(IERC1155.abi) as any,
-    indexIds: ['ERC1155'],
+    tags: ['ERC1155'],
     label: 'OWL PARTS',
 });
 

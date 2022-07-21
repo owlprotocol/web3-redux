@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { networkIdArgType } from '../../../test/storybookArgs';
-import { SwitchNetwork } from './index';
+import { networkIdArgType } from '../../../test/storybookArgs.js';
+import { SwitchNetwork } from './index.js';
 
 export default {
     title: 'Wallet/SwitchNetwork',

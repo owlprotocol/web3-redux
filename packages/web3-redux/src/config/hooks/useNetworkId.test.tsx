@@ -6,16 +6,13 @@ import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
 import { setNetworkId } from '../actions/index.js';
 
-
-
 describe(`${name}/hooks/useNetworkId.test.tsx`, () => {
-
-
     let store: StoreType;
     let wrapper: any;
 
     beforeEach(() => {
         store = createStore();
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

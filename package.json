@@ -1,6 +1,6 @@
 {
     "name": "@owlprotocol/web3-redux-monorepo",
-    "version": "0.1.1",
+    "version": "1.1.0",
     "private": true,
     "description": "Owl Protocol Web3 Redux Monorepo",
     "keywords": [

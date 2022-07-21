@@ -1,5 +1,5 @@
-import { EventChannel, eventChannel, END, TakeableChannel } from 'redux-saga';
-import { put, call, fork, take, select } from 'typed-redux-saga';
+import { EventChannel, eventChannel, END } from 'redux-saga';
+import { put, fork, take, select } from 'typed-redux-saga';
 import Web3 from 'web3';
 import blockFetch from './fetch.js';
 import { create as createError } from '../../error/actions/index.js';

@@ -1,11 +1,13 @@
 //@ts-nocheck
 import { AnyAction, Store } from 'redux';
 
+/*
 import { coder } from '../../utils/web3-eth-abi/index.js';
 import ContractCRUD from '../crud.js';
 import { Contract } from '../model/index.js';
 import { ContractEvent } from '../../contractevent/model/index.js';
 import ContractEventCRUD from '../../contractevent/crud.js';
+*/
 /**
  * Middleware for whenever a contract created/updated.
  * Use cases:

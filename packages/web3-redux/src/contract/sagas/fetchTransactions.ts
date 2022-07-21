@@ -2,7 +2,6 @@ import { select, put, call } from 'typed-redux-saga';
 import { AxiosResponse } from 'axios';
 import { FetchTransactionsAction } from '../actions/index.js';
 import TransactionCRUD from '../../transaction/crud.js';
-import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import loadNetwork from '../../network/sagas/loadNetwork.js';
 

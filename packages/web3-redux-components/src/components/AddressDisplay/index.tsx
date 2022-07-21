@@ -1,5 +1,5 @@
-import { AddressDisplay } from './AddressDisplay/index.js';
-export { AddressDisplayPresenter } from './AddressDisplayPresenter/index.js';
+import { AddressDisplay } from './AddressDisplay.js';
+export { AddressDisplayPresenter } from './AddressDisplayPresenter.js';
 
 export { AddressDisplay };
 export default AddressDisplay;

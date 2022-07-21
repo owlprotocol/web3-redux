@@ -2,7 +2,7 @@ import composeHooks from 'react-hooks-compose';
 import { useDispatch } from 'react-redux';
 import { Contract } from '@owlprotocol/web3-redux';
 import { useCallback, useMemo } from 'react';
-import AddressDisplayPresenter from './AddressDisplayPresenter/index.js';
+import AddressDisplayPresenter from './AddressDisplayPresenter.js';
 
 export interface HookProps {
     networkId: string;

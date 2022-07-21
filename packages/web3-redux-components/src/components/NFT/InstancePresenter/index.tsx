@@ -1,5 +1,5 @@
 import { useTheme, Box, Text, IconButton, HStack, Image, Skeleton, Tooltip } from '@chakra-ui/react';
-import { ReactComponent as PreMintIcon } from './assets/premint.svg';
+import { ReactComponent as PreMintIcon } from '../assets/premint.svg';
 import Icon from '../../Icon/index.js';
 import { shortenHash } from '../../../utils/index.js';
 import NetworkIcon from '../../NetworkIcon/index.js';
@@ -159,4 +159,4 @@ export const NFTInstancePresenter = ({
     );
 };
 
-export default InstancePresenter;
+export default NFTInstancePresenter;

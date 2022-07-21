@@ -2,8 +2,8 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Contract, Abi, Network } from '@owlprotocol/web3-redux';
 import type { AbiItem } from 'web3-utils';
 import { useEffect } from 'react';
-import type { ContractWithObjects } from '@owlprotocol/web3-redux/src/contract/model.js';
-import type { BlockNumber } from '@owlprotocol/web3-redux/src/abis.js';
+import type { ContractWithObjects } from '@owlprotocol/web3-redux/src/contract/model';
+import type { BlockNumber } from '@owlprotocol/web3-redux/src/abis';
 import ContractEventsTable, { ContractEventsTableProps } from '.';
 
 const abi = Abi.BlockNumberArtifact.abi as AbiItem[];

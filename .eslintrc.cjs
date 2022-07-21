@@ -52,7 +52,7 @@ module.exports = {
         "node/no-unpublished-import": 'off',
         "node/no-missing-import": 'off',
         "node/file-extension-in-import": [
-            "error",
+            "off",
             "always",
             {
                 "tryExtensions": [".js", ".ts", ".jsx", ".tsx", ".node"],

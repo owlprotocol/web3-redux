@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AddressDisplayPresenter, { Props } from './AddressDisplayPresenter/index.js';
+import AddressDisplayPresenter, { Props } from './AddressDisplayPresenter.js';
 import { addressArgType } from '../../test/storybookArgs.js';
 
 const Template: ComponentStory<typeof AddressDisplayPresenter> = (args: any) => <AddressDisplayPresenter {...args} />;

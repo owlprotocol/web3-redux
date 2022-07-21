@@ -117,7 +117,7 @@ export const SelectAddress = ({
                         //@ts-ignore
                         onChange={(data) => onChangeValidate(data?.value)}
                         chakraStyles={{
-                            container: (provided) => ({
+                            container: (provided: any) => ({
                                 ...provided,
                                 bg: themes.color6,
                                 color: themes.color8,
@@ -126,23 +126,23 @@ export const SelectAddress = ({
                                 borderRadius: '8px',
                                 p: '6px 4px',
                             }),
-                            downChevron: (provided) => ({
+                            downChevron: (provided: any) => ({
                                 ...provided,
                                 color: themes.color8,
                                 w: 24,
                                 h: 24,
                             }),
-                            placeholder: (provided) => ({
+                            placeholder: (provided: any) => ({
                                 ...provided,
                                 color: themes.color8,
                                 fontWeight: 600,
                                 fontSize: 16,
                             }),
-                            dropdownIndicator: (provided) => ({
+                            dropdownIndicator: (provided: any) => ({
                                 ...provided,
                                 bg: themes.color6,
                             }),
-                            indicatorSeparator: (provided) => ({
+                            indicatorSeparator: (provided: any) => ({
                                 ...provided,
                                 display: 'none',
                             }),
@@ -156,7 +156,7 @@ export const SelectAddress = ({
                         //@ts-ignore
                         onChange={(data) => onChangeValidate(data?.value)}
                         chakraStyles={{
-                            container: (provided) => ({
+                            container: (provided: any) => ({
                                 ...provided,
                                 bg: themes.color6,
                                 color: themes.color8,
@@ -165,23 +165,23 @@ export const SelectAddress = ({
                                 borderRadius: '8px',
                                 p: '6px 4px',
                             }),
-                            downChevron: (provided) => ({
+                            downChevron: (provided: any) => ({
                                 ...provided,
                                 color: themes.color8,
                                 w: 24,
                                 h: 24,
                             }),
-                            placeholder: (provided) => ({
+                            placeholder: (provided: any) => ({
                                 ...provided,
                                 color: themes.color8,
                                 fontWeight: 600,
                                 fontSize: 16,
                             }),
-                            dropdownIndicator: (provided) => ({
+                            dropdownIndicator: (provided: any) => ({
                                 ...provided,
                                 bg: themes.color6,
                             }),
-                            indicatorSeparator: (provided) => ({
+                            indicatorSeparator: (provided: any) => ({
                                 ...provided,
                                 display: 'none',
                             }),

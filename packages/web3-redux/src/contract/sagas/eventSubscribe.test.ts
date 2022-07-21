@@ -48,7 +48,6 @@ describe(`${name}.sagas.eventSubscribe`, () => {
         const gas = await tx.estimateGas();
         web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '875000000' });
         address = web3Contract.options.address;
-        id = { networkId, address };
 
         store.dispatch(
             ContractCRUD.actions.create({

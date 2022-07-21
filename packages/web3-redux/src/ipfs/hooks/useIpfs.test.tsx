@@ -5,7 +5,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import axios from 'axios';
 import * as moxios from 'moxios';
 
-
 import { useIpfs } from './useIpfs.js';
 import { expectThrowsAsync } from '../../test/index.js';
 import { HELLO_WORLD, HELLO_WORLD_QMHASH, NFT_COLLECTION_QMHASH, moxiosIPFS, NFT_0 } from '../../test/ipfs.js';
@@ -14,8 +13,6 @@ import { createStore, StoreType } from '../../store.js';
 import ConfigCRUD from '../../config/crud.js';
 
 describe('ipfs/hooks/useIpfs.test.tsx', () => {
-
-
     let store: StoreType;
     let wrapper: any;
     before(() => moxios.install(axios));

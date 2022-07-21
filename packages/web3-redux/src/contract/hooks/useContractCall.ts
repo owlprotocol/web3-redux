@@ -28,12 +28,12 @@ export function useContractCall<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
     P extends Partial<Parameters<T['methods'][K]>> = any,
-    >(
-        networkId: string | undefined,
-        address2: string | undefined,
-        method: K | undefined,
-        args?: P,
-        options?: UseContractCallOptions,
+>(
+    networkId: string | undefined,
+    address2: string | undefined,
+    method: K | undefined,
+    args?: P,
+    options?: UseContractCallOptions,
 ) {
     const address = address2?.toLowerCase();
     const sync = options?.sync ?? 'ifnull';
@@ -128,7 +128,7 @@ export function useContractCall<
 export function contractCallHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
-    >(method: K) {
+>(method: K) {
     return (
         networkId: string | undefined,
         address: string | undefined,

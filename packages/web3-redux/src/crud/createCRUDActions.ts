@@ -18,12 +18,12 @@ export function createCRUDActions<
     T_Encoded extends T_ID = T_ID,
     T extends T_Encoded = T_Encoded,
     T_Idx = T_ID,
-    >(
-        name: U,
-        validators?: {
-            validateId?: (id: T_ID) => T_ID;
-            validate?: (item: T) => T;
-        },
+>(
+    name: U,
+    validators?: {
+        validateId?: (id: T_ID) => T_ID;
+        validate?: (item: T) => T;
+    },
 ) {
     const validateId = validators?.validateId ?? ((id: T_ID) => id);
     const validate = validators?.validate ?? ((item: T) => item);

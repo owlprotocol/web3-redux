@@ -42,9 +42,9 @@ export function useERC1155(
     const onTransferSync =
         networkId && address && balanceOfAddress
             ? createEventSync(networkId, [], address, 'TransferSingle', [
-                { from: balanceOfAddress, id: balanceOfTokenId },
-                { to: balanceOfAddress, id: balanceOfTokenId },
-            ])
+                  { from: balanceOfAddress, id: balanceOfTokenId },
+                  { to: balanceOfAddress, id: balanceOfTokenId },
+              ])
             : false;
     const balanceOfSync = sync?.balanceOf === 'onTransfer' ? onTransferSync : sync?.balanceOf ?? 'ifnull'; //Sync user balance
     const TransferEventsOptions = sync?.TransferEventsOptions ?? { sync: false, past: false }; //Sync token Transfer events, default just reads data

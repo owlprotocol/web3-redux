@@ -19,6 +19,8 @@
     "build:web3-redux-components-storybook": "cd packages/web3-redux-components && npm run build-storybook",
     "build:web3-redux-docs": "pnpm --filter '@owlprotocol/web3-redux-docs' run build",
     "clean": "pnpm --stream -r run clean",
+    "lint": "pnpm --stream -r run lint",
+    "lint:fix": "pnpm --stream -r run lint:fix",
     "test": "pnpm --stream -r run test",
     "test:web3-redux": "pnpm --filter '@owlprotocol/web3-redux' run test",
     "test:web3-redux-components": "pnpm --filter '@owlprotocol/web3-redux-components' run test",

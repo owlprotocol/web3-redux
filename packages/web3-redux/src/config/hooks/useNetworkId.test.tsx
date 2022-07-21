@@ -6,11 +6,7 @@ import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
 import { setNetworkId } from '../actions/index.js';
 
-
-
 describe(`${name}/hooks/useNetworkId.test.tsx`, () => {
-
-
     let store: StoreType;
     let wrapper: any;
 

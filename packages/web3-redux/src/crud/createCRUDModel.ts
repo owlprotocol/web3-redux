@@ -32,15 +32,15 @@ export function createCRUDModel<
     T_Encoded extends T_ID = T_ID,
     T extends T_Encoded = T_Encoded,
     T_Idx = T_ID,
-    >(
-        name: U,
-        validators?: {
-            validateId?: (id: T_ID) => T_ID;
-            validate?: (item: T) => T;
-            hydrate?: (item: T, sess?: any) => T;
-            encode?: (item: T) => T_Encoded;
-            toPrimaryKey?: (id: T_ID) => IndexableType;
-        },
+>(
+    name: U,
+    validators?: {
+        validateId?: (id: T_ID) => T_ID;
+        validate?: (item: T) => T;
+        hydrate?: (item: T, sess?: any) => T;
+        encode?: (item: T) => T_Encoded;
+        toPrimaryKey?: (id: T_ID) => IndexableType;
+    },
 ) {
     const validateId = validators?.validateId ?? ((id: T_ID) => omitBy(id, isUndefined) as T_ID);
     const validate = validators?.validate ?? ((item: T) => omitBy(item, isUndefined) as T);

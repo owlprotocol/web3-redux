@@ -14,8 +14,6 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 
 describe('contract/hooks/useFetchTransactions.test.tsx', () => {
-
-
     let store: StoreType;
     let wrapper: any;
 

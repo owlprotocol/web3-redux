@@ -17,7 +17,7 @@ export class IPFSSingleton {
     static _totalNetworkGet = 0;
     static readonly local: { [key: string]: any } = {};
 
-    private constructor() { }
+    private constructor() {}
     public static setIPFS(ipfs: IPFS | string) {
         if (typeof ipfs === 'string') {
             //@ts-expect-error

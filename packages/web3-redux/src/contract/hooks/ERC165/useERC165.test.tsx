@@ -17,8 +17,6 @@ import { ERC165 } from '../../../typechain/ERC165.js';
 import { ERC165Artifact } from '../../../abis/index.js';
 
 describe(`${name}/hooks/useERC165.test.tsx`, () => {
-
-
     let store: StoreType;
     let wrapper: any;
 

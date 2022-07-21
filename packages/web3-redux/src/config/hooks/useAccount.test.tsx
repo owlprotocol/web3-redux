@@ -9,8 +9,6 @@ import { createStore, StoreType } from '../../store.js';
 import { setAccount } from '../actions/index.js';
 
 describe(`${name}/hooks/useAccount.test.tsx`, () => {
-
-
     let store: StoreType;
     let wrapper: any;
 

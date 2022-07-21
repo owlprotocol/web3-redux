@@ -26,13 +26,13 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
     args?: Parameters<T['methods'][K]>,
     options?: UseContractSendOptions,
 ): [
-        () => void,
-        {
-            sendAction: SendAction | undefined;
-            error: Error | undefined;
-            contractSend: ContractSend | undefined;
-        },
-    ] {
+    () => void,
+    {
+        sendAction: SendAction | undefined;
+        error: Error | undefined;
+        contractSend: ContractSend | undefined;
+    },
+] {
     const { value, from } = options ?? {};
     const dispatch = useDispatch();
     const [sendAction, setSendAction] = useState<SendAction | undefined>();
@@ -70,7 +70,7 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
 export function contractSendHookFactory<
     T extends BaseWeb3Contract = BaseWeb3Contract,
     K extends keyof T['methods'] = string,
-    >(method: K) {
+>(method: K) {
     return (networkId: string | undefined, address: string | undefined) => {
         return useContractSend<T, K>(networkId, address, method);
     };

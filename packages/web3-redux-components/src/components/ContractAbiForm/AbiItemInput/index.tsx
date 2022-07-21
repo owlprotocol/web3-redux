@@ -129,6 +129,9 @@ export const AbiItemInput = ({ type, name, onChange = (value, error) => console.
                                 <Checkbox
                                     bg={themes.color6}
                                     onChange={({ target }: any) => onChangeValidate(target.checked)}
+                                    onBlur={undefined}
+                                    defaultChecked={undefined}
+                                    checked={undefined}
                                 />
                                 <FormLabel color={themes.color8} m={0}>
                                     {placeholder}

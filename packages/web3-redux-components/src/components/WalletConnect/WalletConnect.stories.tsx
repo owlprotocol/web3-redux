@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { WalletConnect, WalletConnectPresenter, PresenterProps } from './index.js';
 import { networkIdArgType } from '../../test/storybookArgs.js';
+import { WalletConnect, WalletConnectPresenter, PresenterProps } from './index.js';
 
 export default {
     title: 'Wallet/WalletConnect',

@@ -66,10 +66,10 @@ module.exports = {
                     },
                 }),
                 CheckerPlugin({
-                    typescript: true,
+                    typescript: { tsconfigPath: './tsconfig.json' },
                     overlay: true,
                     eslint: {
-                        lintCommand: 'eslint --ext .ts,.tsx src --fix',
+                        lintCommand: 'eslint .',
                     },
                 }),
             ],

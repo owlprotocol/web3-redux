@@ -32,7 +32,7 @@ module.exports = {
         storyStoreV7: true,
         interactionsDebugger: true,
     },
-    async viteFinal(config: any) {
+    async viteFinal(config) {
         const overrideConfig = {
             define: {
                 //patch ipfs utils

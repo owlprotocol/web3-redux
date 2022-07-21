@@ -1,6 +1,6 @@
 import { Config, Network, Environment } from '@owlprotocol/web3-redux';
-import getDisplayName from './getDisplayName';
-import { getEnvironment } from '../environment';
+import getDisplayName from './getDisplayName.js';
+import { getEnvironment } from '../environment.js';
 
 Environment.setEnvironment(getEnvironment() as any);
 

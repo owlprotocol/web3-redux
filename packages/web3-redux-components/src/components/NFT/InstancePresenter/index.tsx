@@ -1,9 +1,9 @@
 import { useTheme, Box, Text, IconButton, HStack, Image, Skeleton, Tooltip } from '@chakra-ui/react';
 import { ReactComponent as PreMintIcon } from './assets/premint.svg';
-import Icon from '../../Icon';
-import { shortenHash } from '../../../utils';
-import NetworkIcon from '../../NetworkIcon';
-import { FileUploadImage } from '../../FileUpload';
+import Icon from '../../Icon/index.js';
+import { shortenHash } from '../../../utils/index.js';
+import NetworkIcon from '../../NetworkIcon/index.js';
+import { FileUploadImage } from '../../FileUpload/index.js';
 
 export interface PresenterProps {
     itemName: string;

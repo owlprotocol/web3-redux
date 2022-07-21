@@ -126,7 +126,7 @@ describe(`${name}/sagas/call.ts`, () => {
                 assert.isDefined(error, 'error');
                 assert.equal(
                     error?.errorMessage,
-                    'VM Exception while processing transaction: reverted with reason string \'Transaction reverted\'',
+                    "VM Exception while processing transaction: reverted with reason string 'Transaction reverted'",
                     'error.message',
                 );
             });

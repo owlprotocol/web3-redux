@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AddressDisplay, { Props } from './AddressDisplay';
-import { addressArgType, networkIdArgType } from '../../test/storybookArgs';
+import AddressDisplay, { Props } from './AddressDisplay/index.js';
+import { addressArgType, networkIdArgType } from '../../test/storybookArgs.ts';
 
 const Template: ComponentStory<typeof AddressDisplay> = (args: any) => <AddressDisplay {...args} />;
 export const Main = Template.bind({});

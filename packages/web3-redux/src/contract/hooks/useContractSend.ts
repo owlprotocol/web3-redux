@@ -48,7 +48,7 @@ export function useContractSend<T extends BaseWeb3Contract = BaseWeb3Contract, K
         });
         setSendAction(sendAction);
         dispatch(sendAction);
-    }, [networkId, address, method, JSON.stringify(args), value, args, dispatch]);
+    }, [networkId, address, method, JSON.stringify(args), value, args, from, dispatch]);
 
     const [reduxError] = ErrorCRUD.hooks.useGet(sendAction?.meta.uuid);
     const error = useMemo(() => {

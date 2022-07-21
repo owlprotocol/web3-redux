@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
-import { THEME_COLORS } from '../constants';
+import { THEME_COLORS } from '../constants/index.js';
 
 const CURRENT_THEME = 'theme1';
 

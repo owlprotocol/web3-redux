@@ -1,4 +1,4 @@
-import { validateTransactionHash } from './searchUtils';
+import { validateTransactionHash } from './searchUtils.ts';
 
 test('validateTransactionHash - return false for fake hash', () => {
     const string = 'asdasd';

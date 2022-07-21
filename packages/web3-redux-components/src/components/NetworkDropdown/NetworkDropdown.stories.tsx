@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import NetworkDropdown, { Props } from './index';
+import NetworkDropdown, { Props } from './index/index.js';
 
 export default {
     title: 'Network/NetworkDropdown',

@@ -1,4 +1,4 @@
-import { ContractEventId } from '../../contractevent/model';
+import { ContractEventId } from '../../contractevent/model/index.js';
 
 export interface ContractEventQueryId {
     /** Blockchain network id.

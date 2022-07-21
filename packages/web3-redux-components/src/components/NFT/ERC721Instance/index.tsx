@@ -1,6 +1,6 @@
 import { Contract } from '@owlprotocol/web3-redux';
 import composeHooks from 'react-hooks-compose';
-import InstancePresenter from '../InstancePresenter';
+import InstancePresenter from '../InstancePresenter/index.js';
 
 export interface HookProps {
     networkId: string | undefined;

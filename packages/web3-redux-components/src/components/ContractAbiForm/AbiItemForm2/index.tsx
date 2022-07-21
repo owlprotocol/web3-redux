@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { Box } from '@chakra-ui/react';
-import AbiItemInput from '../AbiItemInput';
-import { useArray } from '../../../hooks';
+import AbiItemInput from '../AbiItemInput/index.js';
+import { useArray } from '../../../hooks/index.js';
 
 //TODO
 //Formik integration

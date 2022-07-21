@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTheme, Flex, Box, Text, Button, IconButton, Input, StyleProps } from '@chakra-ui/react';
 import copy from 'copy-to-clipboard';
-import Icon from '../Icon';
-import NetworkIcon from '../NetworkIcon';
-import QRCodePopover from '../QRCodePopover';
+import Icon from '../Icon/index.js';
+import NetworkIcon from '../NetworkIcon/index.js';
+import QRCodePopover from '../QRCodePopover/index.js';
 
 export interface Props {
     address: string;

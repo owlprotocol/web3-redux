@@ -1,5 +1,5 @@
 import { useTheme, HStack, Box, Badge } from '@chakra-ui/react';
-import Icon from '../Icon';
+import Icon from '../Icon/index.js';
 
 export interface Props {
     token: string;

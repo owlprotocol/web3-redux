@@ -2,8 +2,8 @@ import { Box, Button, FormControl, FormErrorMessage, useTheme } from '@chakra-ui
 import { Contract, Config, ContractSendStatus } from '@owlprotocol/web3-redux';
 import { useCallback, useState } from 'react';
 import Web3 from 'web3';
-import AbiItemForm from '../../ContractAbiForm/AbiItemForm2';
-import SelectAddress from '../../ContractAbiForm/SelectAddress';
+import AbiItemForm from '../../ContractAbiForm/AbiItemForm2/index.js';
+import SelectAddress from '../../ContractAbiForm/SelectAddress/index.js';
 
 export interface Props {
     networkId: string;

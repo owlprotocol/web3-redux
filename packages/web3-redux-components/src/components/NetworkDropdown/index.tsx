@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Select, useTheme } from '@chakra-ui/react';
-import NetworkIcon from '../NetworkIcon';
+import NetworkIcon from '../NetworkIcon/index.js';
 
 const DEFAULT_CHAINS = ['ethereum', 'arbitrum', 'optimism', 'polygon', 'BNB Chain', 'moonbeam', 'moonriver'];
 

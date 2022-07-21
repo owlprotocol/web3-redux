@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Abi, TestData } from '@owlprotocol/web3-redux';
 import type { AbiItem } from 'web3-utils';
-import { addressArgType, networkIdArgType } from '../../../test/storybookArgs';
+import { addressArgType, networkIdArgType } from '../../../test/storybookArgs.ts';
 import AbiItemForm from '.';
 
 export default {

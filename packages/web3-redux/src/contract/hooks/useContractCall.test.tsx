@@ -47,6 +47,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
         store = createStore();
         dispatchSpy = sinon.spy(store, 'dispatch');
         createActionSpy.resetHistory();
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 
@@ -246,7 +247,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 assert.isDefined(currentCallError, 'error');
                 assert.equal(
                     currentCallError?.message,
-                    'VM Exception while processing transaction: reverted with reason string \'Transaction reverted\'',
+                    "VM Exception while processing transaction: reverted with reason string 'Transaction reverted'",
                     'error.message',
                 );
 

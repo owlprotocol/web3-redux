@@ -37,6 +37,7 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
             }),
         );
         store.dispatch(ContractCRUD.actions.create({ networkId, address }));
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

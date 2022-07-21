@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { store } from '@owlprotocol/web3-redux';
-import getDisplayName from './getDisplayName';
+import getDisplayName from './getDisplayName.ts';
 
 export const withStoreProvider = (WrappedComponent: any) => {
     const component = (props: any) => {

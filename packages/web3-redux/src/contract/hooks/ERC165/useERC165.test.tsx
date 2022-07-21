@@ -50,6 +50,7 @@ describe(`${name}/hooks/useERC165.test.tsx`, () => {
                 abi: ERC165Artifact.abi as any,
             }),
         );
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

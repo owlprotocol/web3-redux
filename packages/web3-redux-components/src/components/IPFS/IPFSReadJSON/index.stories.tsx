@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ipfsHashdArgType } from '../../../test/storybookArgs';
+import { ipfsHashdArgType } from '../../../test/storybookArgs.ts';
 import IPFSReadJSON from '.';
 
 export default {

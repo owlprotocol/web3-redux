@@ -1,5 +1,5 @@
 import { Config, Network, Environment } from '@owlprotocol/web3-redux';
-import { getEnvironment } from '../environment';
+import { getEnvironment } from '../environment.ts';
 
 Environment.setEnvironment(getEnvironment() as any);
 

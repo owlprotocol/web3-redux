@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
-import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 
@@ -50,6 +49,7 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
                 abi: cloneDeep(BlockNumberArtifact.abi) as any,
             }),
         );
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

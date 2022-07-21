@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { TestData } from '@owlprotocol/web3-redux';
-import { addressERC721ArgType, networkIdArgType } from '../../../test/storybookArgs';
+import { addressERC721ArgType, networkIdArgType } from '../../../test/storybookArgs.ts';
 import ERC721CollectionGrid from '.';
 
 export default {

@@ -38,7 +38,6 @@ export function useEvents<
     options?: UseEventsOptions,
 ) {
     const { fromBlock, toBlock, past, sync } = options ?? {};
-    const blockBatch = options?.blockBatch ?? 10000000;
     const blocks = options?.blocks ?? 10000000;
     const reverse = options?.reverse ?? true;
     const offset = options?.offset ?? 0;

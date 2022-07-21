@@ -1,4 +1,4 @@
-export { useArray } from './useArray';
-export { useConfigureFromWeb3React } from './useConfigureFromWeb3React';
-export { useProxyFactory } from './useProxyFactory';
-export * from './useMockData';
+export * from './useArray.js';
+export * from './useConfigureFromWeb3React.js';
+export * from './useProxyFactory.js';
+export * from './useMockData.js';

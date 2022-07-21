@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Contract, Abi, Network } from '@owlprotocol/web3-redux';
 //import { addressERC721ArgType, networkIdArgType } from '../../../test/storybookArgs';
+//eslint-disable-next-line node/file-extension-in-import
 import { AbiItem } from '@owlprotocol/web3-redux/src/utils/web3-utils';
 import ContractCall, { ContractCallProps } from '.';
 

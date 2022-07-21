@@ -12,7 +12,7 @@ import {
 import { ReactComponent as CardIcon } from './assets/card.svg';
 import { ReactComponent as InProgressIcon } from './assets/inprog.svg';
 import { ReactComponent as ConfirmedIcon } from './assets/confirmed.svg';
-import TransactionProgressBar from '../TransactionProgressBar';
+import TransactionProgressBar from '../TransactionProgressBar/index.js';
 
 export interface Props {
     isOpen: boolean;

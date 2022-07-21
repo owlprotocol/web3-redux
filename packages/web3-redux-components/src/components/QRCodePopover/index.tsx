@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger, PopoverBody, Box, IconButton, useTheme } from '@chakra-ui/react';
-import Erc20QRGenerator from '../Erc20QRGenerator';
-import Icon from '../Icon';
+import Erc20QRGenerator from '../Erc20QRGenerator/index.js';
+import Icon from '../Icon/index.js';
 
 export interface Props {
     address: string;

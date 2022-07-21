@@ -15,7 +15,6 @@ import { createStore, StoreType } from '../../store.js';
 
 import { validate as validatedContractEvent } from '../../contractevent/model/index.js';
 
-import { ContractId } from '../model/index.js';
 import { eventSubscribe as eventSubscribeAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
@@ -29,7 +28,6 @@ describe(`${name}.sagas.eventSubscribe`, () => {
     let web3Contract: Web3Contract;
 
     let address: string;
-    let id: ContractId;
 
     before(async () => {
         const provider = getWeb3Provider();

@@ -13,7 +13,7 @@ import ContractEventCRUD from '../../contractevent/crud.js';
  * Use cases:
  * - Decode events with undefined returnValues that are decodable with a contract abi
  */
-export const onUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
+export const onUpdate = (_: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
     next(action);
     /*
     let contracts: Contract[] = [];

@@ -5,7 +5,7 @@ import {
     addressERC20ArgType,
     addressERC721ArgType,
     networkIdArgType,
-} from '../../../test/storybookArgs';
+} from '../../../test/storybookArgs.ts';
 import ContractAbiForm from '.';
 
 export default {

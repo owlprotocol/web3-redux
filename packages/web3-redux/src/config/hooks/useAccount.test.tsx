@@ -14,6 +14,7 @@ describe(`${name}/hooks/useAccount.test.tsx`, () => {
 
     beforeEach(() => {
         store = createStore();
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

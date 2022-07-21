@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 declare const ReactLiveScope: {
     createFactory<T extends HTMLElement>(type: keyof React.ReactHTML): React.HTMLFactory<T>;
@@ -48,11 +49,11 @@ declare const ReactLiveScope: {
         P_10 extends {},
         T_6 extends React.Component<P_10, any, any>,
         C_1 extends React.ComponentClass<P_10, any>,
-    >(
-        type: React.ClassType<P_10, T_6, C_1>,
-        props?: (React.ClassAttributes<T_6> & P_10) | null | undefined,
-        ...children: React.ReactNode[]
-    ): React.CElement<P_10, T_6>;
+        >(
+            type: React.ClassType<P_10, T_6, C_1>,
+            props?: (React.ClassAttributes<T_6> & P_10) | null | undefined,
+            ...children: React.ReactNode[]
+        ): React.CElement<P_10, T_6>;
     createElement<P_11 extends {}>(
         type: string | React.FunctionComponent<P_11> | React.ComponentClass<P_11, any>,
         props?: (React.Attributes & P_11) | null | undefined,
@@ -109,9 +110,9 @@ declare const ReactLiveScope: {
         Component: T_15,
         propsAreEqual?:
             | ((
-                  prevProps: Readonly<React.ComponentProps<T_15>>,
-                  nextProps: Readonly<React.ComponentProps<T_15>>,
-              ) => boolean)
+                prevProps: Readonly<React.ComponentProps<T_15>>,
+                nextProps: Readonly<React.ComponentProps<T_15>>,
+            ) => boolean)
             | undefined,
     ): React.MemoExoticComponent<T_15>;
     lazy<T_16 extends React.ComponentType<any>>(

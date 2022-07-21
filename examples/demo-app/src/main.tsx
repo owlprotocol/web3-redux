@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { store, Environment } from '@owlprotocol/web3-redux';
-import { getEnvironment } from './environment';
+import { getEnvironment } from './environment.ts';
 import './index.css';
 import App from './App';
 

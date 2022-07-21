@@ -30,7 +30,7 @@ export function useDeploy(input: Partial<DeployActionInput> | undefined, address
     //Callback
     const deploy = useCallback(() => {
         if (action) dispatch(action);
-    }, [action]);
+    }, [dispatch, action]);
     //Effect
     //TODO: if address specified check with getCode
     useEffect(() => {

@@ -21,6 +21,7 @@ describe('ipfs/hooks/useIpfs.test.tsx', () => {
     beforeEach(async () => {
         store = createStore();
         store.dispatch(ConfigCRUD.actions.update({ id: '0' }));
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
     });
 

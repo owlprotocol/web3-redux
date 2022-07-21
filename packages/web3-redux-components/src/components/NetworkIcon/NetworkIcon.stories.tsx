@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { networkIdArgType } from '../../test/storybookArgs';
+import { networkIdArgType } from '../../test/storybookArgs.ts';
 import NetworkIcon from '.';
 
 export default {

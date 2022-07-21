@@ -197,6 +197,7 @@ describe(`${name}/crud.test.js`, () => {
         beforeEach(async () => {
             store = createStore();
             store.dispatch(EthCallCRUD.actions.create(ethCall1));
+            //eslint-disable-next-line react/display-name
             wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
         });
 

@@ -1,5 +1,4 @@
 import { AnyAction, Store } from 'redux';
-import Web3 from 'web3';
 
 import ContractCRUD from '../../contract/crud.js';
 import NetworkCRUD from '../crud.js';

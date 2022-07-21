@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ipfsHashdArgType, mimeTypeArgType } from '../../../test/storybookArgs';
+import { ipfsHashdArgType, mimeTypeArgType } from '../../../test/storybookArgs.ts';
 import IPFSReadImage from '.';
 
 export default {

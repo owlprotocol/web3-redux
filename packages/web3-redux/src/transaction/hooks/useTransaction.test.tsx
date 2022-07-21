@@ -37,6 +37,7 @@ describe(`${name}/hooks/useTransaction.test.tsx`, () => {
         store = createStore();
         dispatchSpy = sinon.spy(store, 'dispatch');
         createActionSpy.resetHistory();
+        //eslint-disable-next-line react/display-name
         wrapper = ({ children }: any) => <Provider store={store}> {children} </Provider>;
 
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));

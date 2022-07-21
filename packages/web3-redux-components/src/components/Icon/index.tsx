@@ -60,7 +60,9 @@ import { ReactComponent as QR } from './general/QR.svg';
 import { ReactComponent as QRHover } from './general/QR.hover.svg';
 import { ReactComponent as QRSelected } from './general/QR.selected.svg';
 import { ReactComponent as Clock } from './general/Clock.svg';
+import { ReactComponent as Calendar } from './general/Calendar.svg';
 import { ReactComponent as DNA } from './general/DNA.svg';
+import { ReactComponent as View } from './general/View.svg';
 
 // Functional Icons
 import { ReactComponent as Heart } from './functions/Heart.svg';
@@ -73,6 +75,7 @@ import { ReactComponent as AddRounded } from './functions/add-rounded.svg';
 // Signs
 import { ReactComponent as ExclamationMark } from './signs/ExclamationMark.svg';
 import { ReactComponent as FlowCheckMark } from './signs/FlowCheckMark.svg';
+import { ReactComponent as QuestionMark } from './signs/QuestionMark.svg';
 
 // @ts-ignore
 export const ICONS = {
@@ -122,15 +125,18 @@ export const ICONS = {
     'arrow-negative': <ArrowNegative />,
     heart: <Heart />,
     'heart.active': <HeartActive />,
+    view: <View />,
     copy: <Copy />,
     pencil: <Pencil />,
     search: <Search />,
     ExclamationMark: <ExclamationMark />,
     FlowCheckMark: <FlowCheckMark />,
+    QuestionMark: <QuestionMark />,
     QR: <QR />,
     QRHover: <QRHover />,
     QRSelected: <QRSelected />,
     Clock: <Clock />,
+    Calendar: <Calendar />,
     DNA: <DNA />,
     AddRounded: <AddRounded />,
 };

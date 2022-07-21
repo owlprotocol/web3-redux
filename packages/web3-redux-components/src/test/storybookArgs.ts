@@ -16,6 +16,8 @@ const {
     QM_SQUARE_BLUE_SVG,
     QM_SQUARE_GIF,
     QM_HELLO_JSON,
+    CRYPTO_OWLS,
+    OWL_PARTS,
 } = TestData;
 
 const ipfsHashLabels = {
@@ -90,6 +92,7 @@ export const addressERC20ArgType = {
 const addressERC721Labels = {
     [VEE_FRIENDS_SERIES2]: `${VEE_FRIENDS_SERIES2} - Vee Friends Series 2`,
     [OZ_TEAM]: `${OZ_TEAM} - OpenZeppelin Team`,
+    [CRYPTO_OWLS]: `${CRYPTO_OWLS} - Crypto Owls`,
 };
 export const addressERC721ArgType = {
     options: Object.keys(addressERC721Labels),
@@ -102,6 +105,7 @@ export const addressERC721ArgType = {
 const addressERC1155Labels = {
     [KITH_FRIENDS]: `${KITH_FRIENDS} - Kith Friends`,
     [SKYWEAVER]: `${SKYWEAVER} - SkyWeaver (Polygon)`,
+    [OWL_PARTS]: `${OWL_PARTS} - OWL_PARTS`,
 };
 export const addressERC1155ArgType = {
     options: Object.keys(addressERC1155Labels),

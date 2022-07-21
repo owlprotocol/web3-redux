@@ -24,7 +24,7 @@ export const IPFSReadImage = ({ cid, mimeType = 'image/png', alt = 'Loading...' 
 
     return (
         <>
-            <Image src={dataUrl} alt={alt} objectFit={'scale-down'} />
+            <Image src={dataUrl} alt={alt} h={'100%'} w={'100%'} objectFit={'scale-down'} />
         </>
     );
 };

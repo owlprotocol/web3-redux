@@ -13,6 +13,33 @@ const components = {
                 color: THEME_COLORS[CURRENT_THEME].color1,
             },
         },
+        variants: {
+            form: {
+                color: '#fff',
+                borderRadius: '12px',
+                backgroundColor: THEME_COLORS[CURRENT_THEME].color1,
+                _hover: {
+                    color: '#fff',
+                },
+            },
+        },
+    },
+    FormLabel: {
+        baseStyle: {
+            color: THEME_COLORS[CURRENT_THEME].color9,
+            fontSize: '16px',
+            fontWeight: 600,
+        },
+    },
+    Input: {
+        variants: {
+            form: {
+                height: '52px',
+                color: THEME_COLORS[CURRENT_THEME].color4,
+                backgroundColor: THEME_COLORS[CURRENT_THEME].color5,
+                borderRadius: '8px',
+            },
+        },
     },
     a: {
         hover: {

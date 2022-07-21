@@ -36,3 +36,19 @@ Editable.args = {
     price: '10',
     editable: true,
 };
+
+export const Preview = Template.bind({});
+
+Preview.args = {
+    itemName: 'NFT Name',
+};
+
+export const PreMint = Template.bind({});
+
+PreMint.args = {
+    preMint: true,
+    itemName: 'NFT Name',
+    ownerOf: '0xf6AEfc54843FDA83437D67A2DbEc7A9BB834ff4E',
+    handleFavorite: (a: any) => a,
+    networkId: '1',
+};

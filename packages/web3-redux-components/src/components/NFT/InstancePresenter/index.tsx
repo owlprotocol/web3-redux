@@ -1,13 +1,14 @@
-import { useTheme, Box, IconButton, HStack, Image } from '@chakra-ui/react';
+import { useTheme, Box, Text, IconButton, HStack, Image, Skeleton, Tooltip } from '@chakra-ui/react';
+import { ReactComponent as PreMintIcon } from './assets/premint.svg';
 import Icon from '../../Icon';
 import { shortenHash } from '../../../utils';
 import NetworkIcon from '../../NetworkIcon';
 import { FileUploadImage } from '../../FileUpload';
 
-export interface Props {
-    networkId: string;
+export interface PresenterProps {
     itemName: string;
-    price: string;
+    networkId?: string;
+    price?: string;
     isSelected?: boolean;
     isFavorite?: boolean;
     handleFavorite?: any;
@@ -20,21 +21,31 @@ export interface Props {
     metadata?: any | undefined;
     contentId?: string | undefined;
     editable?: boolean | undefined;
+    preMint?: boolean | undefined;
+    onClick?: any | undefined;
 }
 
-export const InstancePresenter = ({
+export const NFTInstancePresenter = ({
+    itemName = '',
     networkId,
-    itemName = 'Placeholder',
     ownerOf,
     price,
     isSelected,
     isFavorite,
     handleFavorite,
-    imageSrc = 'http://placehold.jp/228x196.png',
-    imageAlt = 'Placeholder',
+    imageSrc,
+    imageAlt = '',
     editable = false,
-}: Props) => {
+    preMint = false,
+    onClick,
+}: PresenterProps) => {
     const { themes } = useTheme();
+    const clickHandler = (e: PointerEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('hi mom ');
+        onClick && onClick();
+    };
 
     return (
         <Box
@@ -53,7 +64,7 @@ export const InstancePresenter = ({
                         accept={'image/*'}
                         buttonStyle={{ bg: 'transparent', w: '100%', borderRadius: 0, fontSize: 14 }}
                     />
-                ) : (
+                ) : imageSrc ? (
                     <Image
                         src={imageSrc}
                         borderRadius={16}
@@ -61,7 +72,12 @@ export const InstancePresenter = ({
                         h={'196px'}
                         alt={imageAlt}
                         objectFit={'scale-down'}
+                        // @ts-ignore
+                        onClick={clickHandler}
+                        cursor={'pointer'}
                     />
+                ) : (
+                    <Skeleton h={'100%'} speed={1} />
                 )}
             </Box>
             <Box
@@ -75,6 +91,9 @@ export const InstancePresenter = ({
                 textAlign="center"
                 fontWeight={700}
                 fontSize={14}
+                // @ts-ignore
+                onClick={clickHandler}
+                cursor={'pointer'}
             >
                 {itemName}
             </Box>
@@ -89,13 +108,21 @@ export const InstancePresenter = ({
 
                     <HStack>
                         {/** NFT Network */}
-                        <NetworkIcon networkId={networkId} size={18} />
-                        <IconButton
-                            onClick={handleFavorite}
-                            icon={isFavorite ? <Icon icon="heart.active" size={18} /> : <Icon icon="heart" size={18} />}
-                            bg={'transparent'}
-                            aria-label="mark as favorite"
-                        />
+                        {networkId && <NetworkIcon networkId={networkId} size={18} />}
+                        {handleFavorite && (
+                            <IconButton
+                                onClick={handleFavorite}
+                                icon={
+                                    isFavorite ? (
+                                        <Icon icon="heart.active" size={18} />
+                                    ) : (
+                                        <Icon icon="heart" size={18} />
+                                    )
+                                }
+                                bg={'transparent'}
+                                aria-label="mark as favorite"
+                            />
+                        )}
                     </HStack>
                 </HStack>
             )}
@@ -106,6 +133,26 @@ export const InstancePresenter = ({
                         {price} ETH
                     </Box>
                     {editable && <NetworkIcon networkId={networkId} size={18} />}
+                </HStack>
+            )}
+
+            {preMint && (
+                <HStack
+                    mr={3} // @ts-ignore
+                    onClick={clickHandler}
+                    cursor={'pointer'}
+                >
+                    <Box boxSize={9}>
+                        <PreMintIcon />
+                    </Box>
+                    <Text color={themes.color9} fontSize={16} flex={1}>
+                        Pre mint a new NFT
+                    </Text>
+                    <Tooltip label="Place more information here about this item">
+                        <Box boxSize={4}>
+                            <Icon icon={'QuestionMark'} size={15} />
+                        </Box>
+                    </Tooltip>
                 </HStack>
             )}
         </Box>

@@ -1,17 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
 import composeHooks from 'react-hooks-compose';
 import { useConfigureFromWeb3React, useMockData } from '../src/hooks/index.js'
 import { withChakraProvider, withMockData, withStoreProvider, withWeb3ReactProvider } from '../src/hoc/index.js';
 import { THEME_COLORS } from '../src/constants';
-
-import theme from '../src/theme';
 import { Provider } from 'react-redux';
 import { store } from '@owlprotocol/web3-redux';
 
 export const parameters = {
-    actions: { argTypesRegex: "^on[A-Z].*" },
+    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
         matchers: {
             color: /(background|color)$/i,
@@ -31,7 +28,7 @@ export const parameters = {
             },
         ],
     },
-}
+};
 
 export const decorators = [
     (Story) => {

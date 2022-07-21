@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useTheme, Box, Button, IconButton, Input, StyleProps } from '@chakra-ui/react';
+import { useTheme, Flex, Box, Text, Button, IconButton, Input, StyleProps } from '@chakra-ui/react';
 import copy from 'copy-to-clipboard';
 import Icon from '../Icon';
 import NetworkIcon from '../NetworkIcon';
@@ -74,20 +74,22 @@ export const AddressDisplayPresenter = ({
     }, [address]);
 
     return (
-        <Box
-            display={'flex'}
-            alignItems={'center'}
+        <Flex
             p={2}
+            h={'60px'}
+            alignItems={'center'}
+            justify={'space-between'}
             bg={bg || themes.color6}
             borderRadius={borderRadius}
-            h={'60px'}
             {...containerStyles}
         >
-            {controls.includes('qr') && <QRCodePopover address={address} />}
-            {controls.includes('icon') && <NetworkIcon networkId={networkId} size={20} />}
+            <Box flexShrink={0}>
+                {controls.includes('qr') && <QRCodePopover address={address} />}
+                {controls.includes('icon') && <NetworkIcon networkId={networkId} size={20} />}
+            </Box>
 
             {editLabel && (
-                <Box color={themes.color9} textAlign={'left'} flex={'1'}>
+                <Box color={themes.color9} textAlign={'left'} flex={1}>
                     <Input
                         h={'30px'}
                         border={0}
@@ -104,30 +106,31 @@ export const AddressDisplayPresenter = ({
             )}
 
             {!editLabel && (
-                <Box color={themes.color9} textAlign={'left'} flex={'1'}>
+                <Box color={themes.color9} fontSize={14} fontWeight={400} flex={1} mx={2} w={['30%', '40%', '75%']}>
                     {label ? (
-                        <div>
-                            {label} &lt; {address} &gt;
-                        </div>
+                        <Flex>
+                            <Text isTruncated maxW={'12%'} mx={1}>
+                                {label}
+                            </Text>
+                            &lt;<Text isTruncated>{address}</Text>&gt;
+                        </Flex>
                     ) : (
-                        <Box fontSize={12} fontWeight={400} ml={2}>
-                            {address}
-                        </Box>
+                        <Text isTruncated>{address}</Text>
                     )}
                 </Box>
             )}
 
             {editLabel ? (
-                <Box display={'flex'} alignItems={'center'}>
+                <Flex alignItems={'center'}>
                     <Button onClick={handleSave} bg={'transparent'} h={'35px'}>
                         Save
                     </Button>
                     <Button onClick={handleCancelOnClick} color={themes.color9} bg={'transparent'} h={'35px'}>
                         Cancel
                     </Button>
-                </Box>
+                </Flex>
             ) : (
-                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+                <Flex alignItems={'center'} justifyContent={'space-between'}>
                     {controls.includes('copy') && (
                         <IconButton
                             bg={'transparent'}
@@ -152,9 +155,9 @@ export const AddressDisplayPresenter = ({
                             icon={<Icon icon="pencil" />}
                         />
                     )}
-                </Box>
+                </Flex>
             )}
-        </Box>
+        </Flex>
     );
 };
 

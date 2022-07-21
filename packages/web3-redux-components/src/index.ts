@@ -2,7 +2,7 @@ export * from './components/AddressDisplay';
 export { default as ContractCode } from './components/ContractCode';
 export { default as Icon } from './components/Icon';
 export { default as BreedingNFTCard } from './components/BreedingNFTCard';
-export * from './components/NFTItemCard';
+export * from './components/SingleNFTInstance/ItemCardPresenter';
 export { default as WalletConnect } from './components/WalletConnect';
 export { default as AddressDropdown } from './components/AddressDropdown';
 export { default as ContractItem } from './components/ContractItem';

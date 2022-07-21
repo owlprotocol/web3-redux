@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
-import { Action } from '@reduxjs/toolkit';
 import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { createSelector } from 'redux-orm';
 import { useDispatch, useSelector } from 'react-redux';
 import { IndexableType, IndexableTypeArrayReadonly } from 'dexie';
+import type { Action } from '@reduxjs/toolkit';
 import createCRUDActions from './createCRUDActions.js';
 import { compact, filter, zip, isEqual, omitBy, isUndefined } from '../utils/lodash/index.js';
 import { create as createError } from '../error/actions/create.js';

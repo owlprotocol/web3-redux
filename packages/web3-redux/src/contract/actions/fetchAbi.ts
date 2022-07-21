@@ -1,4 +1,4 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAction } from '../../utils/createAction.js';
 import { v4 as uuidv4 } from 'uuid';
 
 import { name } from '../common.js';

@@ -35,16 +35,19 @@ describe('getInterfaceIdentifierForAbi', () => {
 describe('getFunctionIdentifier', () => {
     it('supportsInterface', () => {
         const abi = (IERC165Artifact.abi as AbiItem[]).find((a) => a.name === 'supportsInterface');
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         assert.equal(getFunctionIdentifier(abi!), '0x01ffc9a7');
     });
 
     it('tokenByIndex', () => {
         const abi = (IERC721EnumerableArtifact.abi as AbiItem[]).find((a) => a.name === 'tokenByIndex');
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         assert.equal(getFunctionIdentifier(abi!), '0x4f6ccce7');
     });
 
     it('name', () => {
         const abi = (IERC721MetadataArtifact.abi as AbiItem[]).find((a) => a.name === 'name');
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         assert.equal(getFunctionIdentifier(abi!), '0x06fdde03');
     });
 });

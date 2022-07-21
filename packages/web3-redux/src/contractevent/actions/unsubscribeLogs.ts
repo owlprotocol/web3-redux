@@ -1,4 +1,4 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAction } from '../../utils/createAction.js';
 import invariant from 'tiny-invariant';
 import { v4 as uuidv4 } from 'uuid';
 import { isHexStrict } from '../../utils/web3-utils/index.js';

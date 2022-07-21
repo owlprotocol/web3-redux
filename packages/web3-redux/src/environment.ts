@@ -2,7 +2,7 @@
  * Environment variable utilities.
  * @module Environment
  */
-import { isClient } from './utils/isClient.js';
+//import { isClient } from './utils/isClient.js';
 
 interface Environment {
     [k: string]: string | undefined;
@@ -11,6 +11,7 @@ interface Environment {
 let environment: Environment = {};
 
 //Avoid crashing if in browser context
+/*
 if (!isClient()) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const path = require('path');
@@ -24,6 +25,7 @@ if (!isClient()) {
     //Set local NodeJS env
     environment = process.env;
 }
+*/
 
 export const setEnvironment = (env: Partial<Environment>) => {
     //Merge

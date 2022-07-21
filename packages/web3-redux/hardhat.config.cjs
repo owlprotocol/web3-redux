@@ -5,9 +5,9 @@
 
 /*
 import type { HardhatUserConfig } from 'hardhat/types/config';
-import '@typechain/hardhat';
-import '@nomiclabs/hardhat-web3';
 */
+//import '@typechain/hardhat';
+//import '@nomiclabs/hardhat-web3';
 require('@typechain/hardhat');
 require('@nomiclabs/hardhat-web3');
 
@@ -30,4 +30,3 @@ const config = {
 
 //export default config;
 exports.default = config;
-//export { };

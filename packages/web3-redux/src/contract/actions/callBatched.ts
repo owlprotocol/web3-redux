@@ -1,4 +1,4 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAction } from '../../utils/createAction.js';
 import { name } from '../common.js';
 
 /** @internal */

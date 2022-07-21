@@ -1,4 +1,4 @@
-import { omit } from '../../utils/lodash';
+import { omit } from '../../utils/lodash/index.js';
 
 export interface ReduxErrorId {
     readonly id: string;

@@ -1,6 +1,6 @@
-import { createAction } from '@reduxjs/toolkit';
 import Web3 from 'web3';
 import { v4 as uuidv4 } from 'uuid';
+import { createAction } from '../../utils/createAction.js';
 
 import { name } from '../common.js';
 

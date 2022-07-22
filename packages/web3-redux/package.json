@@ -44,7 +44,7 @@
         "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
         "tsc": "tsc",
         "tsc:watch": "tsc -w",
-        "hardhat:compile": "hardhat compile --config hardhat.config.cjs",
+        "hardhat:compile": "hardhat compile",
         "clean": "rimraf lib && rimraf src/types/web3",
         "prepublishOnly": "npm run test",
         "publish": "pnpm publish --no-git-checks --access public",

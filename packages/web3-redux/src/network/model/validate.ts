@@ -1,8 +1,11 @@
 import axios from 'axios';
+import Web3 from 'web3';
+import { GSNConfig, RelayProvider } from '@opengsn/provider';
 import { Network, NetworkId, NetworkWithObjects } from './interface.js';
 import { defaultNetworks } from '../defaults.js';
 import { fromRpc } from '../../utils/web3/index.js';
 import { isUndefined, omit, omitBy } from '../../utils/lodash/index.js';
+import { Web3ProviderBaseInterface } from '@opengsn/common/dist/types/Aliases.js';
 
 /** @internal */
 export function validateId({ networkId }: NetworkId) {
@@ -26,6 +29,16 @@ export function validate(network: Network): Network {
     const explorerApiKey = network.explorerApiKey ?? defaultNetworkForId?.explorerApiKey;
     const web3Rpc = network.web3Rpc ?? defaultNetworkForId?.web3Rpc;
 
+    const gsnRelayHubAddress = network.relayHub ?? defaultNetworkForId?.relayHub;
+    const gsnForwarderAddress = network.forwarder ?? defaultNetworkForId?.forwarder;
+    const gsnVersionRegistry = network.versionRegistry ?? defaultNetworkForId?.versionRegistry;
+    const gsnPaymasterAddress = network.paymaster ?? defaultNetworkForId?.paymaster;
+
+    //GSN is valid if the following 2 addresses are defined for the network
+    if (gsnRelayHubAddress !== undefined && gsnForwarderAddress !== undefined) {
+        network.isGSN = true;
+    }
+
     return omitBy(
         {
             ...network,
@@ -34,6 +47,10 @@ export function validate(network: Network): Network {
             explorerApiUrl,
             explorerApiKey,
             web3Rpc,
+            gsnRelayHubAddress,
+            gsnForwarderAddress,
+            gsnVersionRegistry,
+            gsnPaymasterAddress,
         },
         isUndefined,
     ) as unknown as Network;
@@ -73,10 +90,31 @@ export function hydrate(network: NetworkWithObjects, sess: any): NetworkWithObje
         explorerApiClient = axios.create({ baseURL: explorerApiUrl });
     }
 
+    let web3WithGSN;
+    let gsnConfig: Partial<GSNConfig>;
+
+    if (network.isGSN) {
+        const gsnPaymasterAddress = network.paymaster;
+
+        gsnConfig = {
+            paymasterAddress: gsnPaymasterAddress,
+            loggerConfiguration: {
+                logLevel: 'error',
+            },
+            auditorsCount: 0,
+        };
+        const gsnProvider = RelayProvider.newProvider({
+            provider: web3?.currentProvider as Web3ProviderBaseInterface,
+            config: gsnConfig,
+        });
+        web3WithGSN = new Web3(gsnProvider);
+    }
+
     return omitBy(
         {
             ...network,
             web3,
+            web3WithGSN,
             explorerApiClient,
         },
         isUndefined,

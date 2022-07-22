@@ -29,6 +29,7 @@ module.exports = {
         'import/extensions': ['warn', 'ignorePackages', { json: 'always' }],
         'import/no-named-as-default': 'off',
         'import/no-commonjs': 'error',
+        'import/no-default-export': 'warn',
         'import/no-anonymous-default-export': 'error',
         'import/no-default-export': 'warn',
         'import/no-cycle': 'error',

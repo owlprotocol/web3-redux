@@ -9,7 +9,7 @@ module.exports = {
         'plugin:prettier/recommended',
         'plugin:import/typescript',
         'plugin:storybook/recommended',
-        'plugin:node/recommended'
+        'plugin:node/recommended',
     ],
     plugins: ['@typescript-eslint', 'prettier', 'import', 'react-hooks'],
     parserOptions: {
@@ -30,6 +30,7 @@ module.exports = {
         'import/no-named-as-default': 'off',
         'import/no-commonjs': 'error',
         'import/no-anonymous-default-export': 'error',
+        'import/no-default-export': 'warn',
         'import/no-cycle': 'error',
         'import/no-self-import': 'error',
         'import/no-unresolved': ['error', { ignore: ['.js$'] }],
@@ -46,17 +47,17 @@ module.exports = {
                 groups: ['external', 'builtin', 'internal', 'sibling', 'parent', 'index'],
             },
         ],
-        "node/no-extraneous-import": 'off',
-        "node/no-unsupported-features/es-syntax": 'off',
-        "node/no-unsupported-features/node-builtins": 'off',
-        "node/no-unpublished-import": 'off',
-        "node/no-missing-import": 'off',
-        "node/file-extension-in-import": [
-            "off",
-            "always",
+        'node/no-extraneous-import': 'off',
+        'node/no-unsupported-features/es-syntax': 'off',
+        'node/no-unsupported-features/node-builtins': 'off',
+        'node/no-unpublished-import': 'off',
+        'node/no-missing-import': 'off',
+        'node/file-extension-in-import': [
+            'off',
+            'always',
             {
-                "tryExtensions": [".js", ".ts", ".jsx", ".tsx", ".node"],
-            }
+                tryExtensions: ['.js', '.ts', '.jsx', '.tsx', '.node'],
+            },
         ],
         '@typescript-eslint/no-unused-vars': ['error', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
         '@typescript-eslint/explicit-function-return-type': 'off',

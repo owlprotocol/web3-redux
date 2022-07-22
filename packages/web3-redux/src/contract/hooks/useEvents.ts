@@ -16,7 +16,6 @@ export interface UseEventsOptions {
     blocks?: EventGetPastActionInput['blocks'];
     past?: boolean; //Send event get past action
     sync?: boolean; //Send event subscribe action
-    blockBatch?: number;
     //Hook params
     reverse?: boolean;
     offset?: number;

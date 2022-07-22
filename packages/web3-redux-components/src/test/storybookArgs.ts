@@ -18,6 +18,7 @@ const {
     QM_HELLO_JSON,
     CRYPTO_OWLS,
     OWL_PARTS,
+    POTATOZ,
 } = TestData;
 
 const ipfsHashLabels = {
@@ -92,6 +93,7 @@ export const addressERC20ArgType = {
 const addressERC721Labels = {
     [VEE_FRIENDS_SERIES2]: `${VEE_FRIENDS_SERIES2} - Vee Friends Series 2`,
     [OZ_TEAM]: `${OZ_TEAM} - OpenZeppelin Team`,
+    [POTATOZ]: `${POTATOZ} - The Potatoz`,
     [CRYPTO_OWLS]: `${CRYPTO_OWLS} - Crypto Owls`,
 };
 export const addressERC721ArgType = {

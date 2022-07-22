@@ -1,6 +1,6 @@
 import { useTheme, Box, HStack, Image, Skeleton } from '@chakra-ui/react';
 import { Contract } from '@owlprotocol/web3-redux';
-import { shortenHash } from '../../../utils/index.js';
+import { AddressLink } from '../../Address/index.js';
 import NetworkIcon from '../../NetworkIcon/index.js';
 
 export interface ERC721InstanceProps {
@@ -27,6 +27,7 @@ export const ERC721Instance = ({ networkId, address, tokenId, isSelected, onClic
         onClick && onClick();
     };
 
+    console.debug({ imageSrc });
     return (
         <Box
             bg={themes.color5}
@@ -38,20 +39,19 @@ export const ERC721Instance = ({ networkId, address, tokenId, isSelected, onClic
             borderColor={isSelected ? themes.color1 : themes.color5}
             boxShadow={'md'}
         >
-            <Box bg={themes.color6} marginBottom={'16px'} borderRadius={16} w={'100%'} h={'196px'} overflow={'hidden'}>
+            <Box marginBottom={'16px'} w={'100%'} h={'100%'} overflow={'hidden'}>
                 {imageSrc ? (
                     <Image
                         src={imageSrc}
-                        borderRadius={16}
                         w={'100%'}
-                        h={'196px'}
+                        h={'100%'}
                         objectFit={'scale-down'}
                         // @ts-ignore
                         onClick={clickHandler}
                         cursor={'pointer'}
                     />
                 ) : (
-                    <Skeleton h={'100%'} speed={1} />
+                    <Skeleton w={'100%'} h={'228px'} fadeDuration={4} />
                 )}
             </Box>
             <Box
@@ -75,7 +75,7 @@ export const ERC721Instance = ({ networkId, address, tokenId, isSelected, onClic
                 {ownerOf && (
                     <Box color={themes.color9} fontWeight={400} fontSize={14}>
                         {/*<Avatar size="2xs" mr={2} />*/}
-                        {shortenHash(ownerOf)}
+                        Owned by <AddressLink address={ownerOf} />
                     </Box>
                 )}
 

@@ -1,14 +1,16 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "files.watcherExclude": {
-    "**/lib/**": true,
-    "**/node_modules/**": true,
-  },
-  "search.exclude": {
-    "**/lib/**": true,
-    "**/node_modules/**": true,
-  },
-  "search.followSymlinks": false
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "files.watcherExclude": {
+        "**/dist/**": true,
+        "**/lib/**": true,
+        "**/node_modules/**": true
+    },
+    "search.exclude": {
+        "**/dist/**": true,
+        "**/lib/**": true,
+        "**/node_modules/**": true
+    },
+    "search.followSymlinks": false
 }

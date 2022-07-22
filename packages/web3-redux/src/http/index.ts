@@ -3,8 +3,8 @@
  */
 
 import * as Actions from './actions/index.js';
-import CRUDModel from './crud.js';
-import rootSaga from './sagas/index.js';
+import { HTTPCacheCRUD as CRUDModel } from './crud.js';
+import { HTTPCacheSaga as rootSaga } from './sagas/index.js';
 import * as Hooks from './hooks/index.js';
 
 const HTTPCache = {

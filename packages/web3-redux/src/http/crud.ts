@@ -1,6 +1,9 @@
 import { name } from './common.js';
-import { HTTPCacheId, Http } from './model/index.js';
+import { HTTPCacheId, HTTPCache, toPrimaryKey, validate, validateId } from './model/index.js';
 import createCRUDModel from '../crud/createCRUDModel.js';
 
-export const HTTPCacheCRUD = createCRUDModel<typeof name, HTTPCacheId, Http, Http, Http>(name);
-export default HTTPCacheCRUD;
+export const HTTPCacheCRUD = createCRUDModel<typeof name, HTTPCacheId, HTTPCache, HTTPCache, HTTPCache>(name, {
+    validateId,
+    toPrimaryKey,
+    validate,
+});

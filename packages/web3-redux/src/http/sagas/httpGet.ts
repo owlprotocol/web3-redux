@@ -4,10 +4,9 @@ import { put, call, select } from 'typed-redux-saga';
 import ConfigCRUD from '../../config/crud.js';
 import { create as createError } from '../../error/actions/index.js';
 import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
-
 import { HttpGetAction, HTTP_GET } from '../actions/index.js';
-import HTTPCacheCRUD from '../crud.js';
-import Http from '../model/interface.js';
+import { HTTPCacheCRUD } from '../crud.js';
+import { HTTPCache } from '../model/interface.js';
 
 const HTTP_GET_ERROR = `${HTTP_GET}/ERROR`;
 
@@ -21,7 +20,7 @@ export function* httpGet(action: HttpGetAction) {
         const { httpClient, corsProxy } = config ?? {};
         invariant(httpClient, 'Http client undefined!');
 
-        const httpCache = (yield* call(HTTPCacheCRUD.db.get, url)) as Http | undefined;
+        const httpCache = (yield* call(HTTPCacheCRUD.db.get, url)) as HTTPCache | undefined;
         if (!httpCache?.data) {
             try {
                 const response = (yield* call(httpClient.get, url)) as AxiosResponse;

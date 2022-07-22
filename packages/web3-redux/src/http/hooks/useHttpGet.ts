@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { httpGet as httpGetAction } from '../actions/index.js';
-import HTTPCacheCRUD from '../crud.js';
+import { HTTPCacheCRUD } from '../crud.js';
 
 /**
  * Get content for HTTP URI

@@ -20,6 +20,7 @@
     ],
     "scripts": {
         "start": "npm run storybook",
+        "dev": "vite dev",
         "build": "vite build",
         "build:watch": "vite build --watch",
         "storybook": "start-storybook -p 6006",

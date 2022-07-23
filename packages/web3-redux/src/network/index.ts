@@ -29,6 +29,7 @@ export const Network = {
     hooks: {
         ...CRUDModel.hooks,
         useAccounts: Hooks.useAccounts,
+        useDefaultNetworks: Hooks.useDefaultNetworks,
         useNetwork: Hooks.useNetwork,
         useLatestBlock: Hooks.useLatestBlock,
         useLatestBlockNumber: Hooks.useLatestBlockNumber,

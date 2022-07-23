@@ -107,6 +107,7 @@ export function hydrate(network: NetworkWithObjects, sess: any): NetworkWithObje
             provider: web3?.currentProvider as Web3ProviderBaseInterface,
             config: gsnConfig,
         });
+        //@ts-ignore
         web3WithGSN = new Web3(gsnProvider);
     }
 
@@ -114,8 +115,8 @@ export function hydrate(network: NetworkWithObjects, sess: any): NetworkWithObje
         {
             ...network,
             web3,
-            web3WithGSN,
             explorerApiClient,
+            web3WithGSN,
         },
         isUndefined,
     ) as unknown as NetworkWithObjects;

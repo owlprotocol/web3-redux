@@ -1,12 +1,9 @@
-export * from './components/AddressDisplay/index.js';
 export { default as ContractCode } from './components/ContractCode/index.js';
 export { default as Icon } from './components/Icon/index.js';
 export { default as BreedingNFTCard } from './components/BreedingNFTCard/index.js';
 export { default as WalletConnect } from './components/WalletConnect/index.js';
-export { default as AddressDropdown } from './components/AddressDropdown/index.js';
 export { default as ContractItem } from './components/ContractItem/index.js';
 export { default as TokenSlot } from './components/TokenSlot/index.js';
-export { default as AddressList } from './components/AddressList/index.js';
 export { default as NetworkDropdown } from './components/NetworkDropdown/index.js';
 export { default as TransactionFlowModal } from './components/TransactionFlowModal/index.js';
 export { default as ERC20DropDown } from './components/ERC20DropDown/index.js';

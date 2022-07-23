@@ -1,13 +1,13 @@
 import { Box, Select, IconButton, CloseButton, useTheme } from '@chakra-ui/react';
 import { useState } from 'react';
 import copy from 'copy-to-clipboard';
-import Icon from '../Icon/index.js';
+import Icon from '../../Icon/index.js';
 
-export interface Props {
+export interface AddressDropdownProps {
     address: string[];
 }
 
-const AddressDropdown = ({ address = [] }: Props) => {
+export const AddressDropdown = ({ address = [] }: AddressDropdownProps) => {
     const { themes } = useTheme();
 
     const [selectedAddress, setSelectedAddress] = useState('');
@@ -55,5 +55,3 @@ const AddressDropdown = ({ address = [] }: Props) => {
         </Box>
     );
 };
-
-export default AddressDropdown;

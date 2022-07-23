@@ -1,12 +1,13 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AddressDisplayPresenter, { Props } from './AddressDisplayPresenter.js';
-import { addressArgType } from '../../test/storybookArgs.js';
+import AddressDisplayPresenter, { AddressDisplayPresenterProps } from './AddressDisplayPresenter.js';
+import { addressArgType, networkIdArgType } from '../../../test/storybookArgs.js';
 
 const Template: ComponentStory<typeof AddressDisplayPresenter> = (args: any) => <AddressDisplayPresenter {...args} />;
 export const Main = Template.bind({});
 export const Alt = Template.bind({});
 
-const Args: Props = {
+const Args: AddressDisplayPresenterProps = {
+    networkId: networkIdArgType.options[0],
     address: addressArgType.options[0],
     label: 'Main',
     isFavorite: false,
@@ -17,7 +18,7 @@ Main.argTypes = {
     address: addressArgType,
 };
 
-const AltArgs: Props = {
+const AltArgs: AddressDisplayPresenterProps = {
     address: addressArgType.options[0],
     networkId: '1',
     controls: ['copy', 'icon'],

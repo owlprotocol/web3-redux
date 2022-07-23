@@ -1,35 +1,34 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTheme, Flex, Box, Text, Button, IconButton, Input, StyleProps } from '@chakra-ui/react';
 import copy from 'copy-to-clipboard';
-import Icon from '../Icon/index.js';
-import NetworkIcon from '../NetworkIcon/index.js';
-import QRCodePopover from '../QRCodePopover/index.js';
+import Icon from '../../Icon/index.js';
+import NetworkIcon from '../../NetworkIcon/index.js';
+import QRCodePopover from '../../QRCodePopover/index.js';
+import { Address } from '../../../interfaces/Address.js';
 
-export interface Props {
-    address: string;
+export interface AddressDisplayPresenterProps extends Address {
     label?: string;
     isFavorite?: boolean;
     borderRadius?: number;
     bg?: string;
-    setFavorite?: (v: boolean) => void;
+    toggleFavorite?: () => void;
     setLabel?: (v: string) => void;
     controls?: string[];
     containerStyles?: StyleProps;
-    networkId?: string;
 }
 
 export const AddressDisplayPresenter = ({
+    networkId,
     address,
     label,
     isFavorite,
     borderRadius = 12,
     bg,
-    setFavorite = (v) => console.log(`setFavorite(${v})`),
+    toggleFavorite = () => console.log('toggleFavorite()'),
     setLabel = (v) => console.log(`setLabel(${v})`),
     controls = ['qr', 'copy', 'favorite', 'edit'],
     containerStyles,
-    networkId,
-}: Props) => {
+}: AddressDisplayPresenterProps) => {
     const theme = useTheme();
     const themes = theme.themes ?? {};
 
@@ -64,10 +63,6 @@ export const AddressDisplayPresenter = ({
     const handleCancelOnClick = useCallback(() => {
         setEditLabel(false);
     }, [setEditLabel]);
-
-    const handleFavorite = useCallback(() => {
-        setFavorite(!isFavorite);
-    }, [setFavorite, isFavorite]);
 
     const handleCopy = useCallback(() => {
         copy(address);
@@ -142,7 +137,7 @@ export const AddressDisplayPresenter = ({
                     {controls.includes('favorite') && (
                         <IconButton
                             bg={'transparent'}
-                            onClick={handleFavorite}
+                            onClick={toggleFavorite}
                             aria-label={'mark as favorite'}
                             icon={<Icon icon={isFavorite ? 'heart.active' : 'heart'} />}
                         />

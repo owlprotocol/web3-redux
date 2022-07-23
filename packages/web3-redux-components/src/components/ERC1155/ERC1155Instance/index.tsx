@@ -2,10 +2,9 @@ import { useTheme, Box, HStack, Image, Skeleton } from '@chakra-ui/react';
 import { Contract } from '@owlprotocol/web3-redux';
 import { memo } from 'react';
 import { Token } from '../../../interfaces/Token.js';
-import { AddressLink } from '../../Address/index.js';
 import NetworkIcon from '../../NetworkIcon/index.js';
 
-export interface ERC721InstanceProps {
+export interface ERC1155InstanceProps {
     networkId: string | undefined;
     address: string | undefined;
     tokenId: string | undefined;
@@ -13,9 +12,8 @@ export interface ERC721InstanceProps {
     onClick?: ({ networkId, address, tokenId }: Partial<Token>) => any;
 }
 
-const ERC721Instance = memo(({ networkId, address, tokenId, isSelected, onClick }: ERC721InstanceProps) => {
-    const { metadata, ownerOf } = Contract.hooks.useERC721(networkId, address, tokenId, {
-        ownerOf: 'ifnull',
+const ERC1155Instance = memo(({ networkId, address, tokenId, isSelected, onClick }: ERC1155InstanceProps) => {
+    const { metadata } = Contract.hooks.useERC1155(networkId, address, undefined, tokenId, {
         metadata: true,
     });
     const name = metadata?.name;
@@ -73,13 +71,6 @@ const ERC721Instance = memo(({ networkId, address, tokenId, isSelected, onClick 
                 {name}
             </Box>
             <HStack justifyContent="space-between">
-                {ownerOf && (
-                    <Box color={themes.color9} fontWeight={400} fontSize={14}>
-                        {/*<Avatar size="2xs" mr={2} />*/}
-                        Owned by <AddressLink address={ownerOf} />
-                    </Box>
-                )}
-
                 <HStack>
                     {/** NFT Network */}
                     {<NetworkIcon networkId={networkId} size={18} />}
@@ -99,5 +90,5 @@ const ERC721Instance = memo(({ networkId, address, tokenId, isSelected, onClick 
     );
 });
 
-ERC721Instance.displayName = 'ERC721Instance';
-export { ERC721Instance };
+ERC1155Instance.displayName = 'ERC1155Instance';
+export { ERC1155Instance };

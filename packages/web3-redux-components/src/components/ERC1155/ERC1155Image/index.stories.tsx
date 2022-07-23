@@ -14,8 +14,8 @@ const Template: ComponentStory<typeof ERC1155Image> = (args: any) => <ERC1155Ima
 export const Main = Template.bind({});
 
 Main.args = {
-    networkId: networkIdArgType.options[0],
-    address: TestData.OZ_TEAM,
+    networkId: '137',
+    address: TestData.SKYWEAVER,
     tokenId: '1',
 };
 Main.argTypes = {

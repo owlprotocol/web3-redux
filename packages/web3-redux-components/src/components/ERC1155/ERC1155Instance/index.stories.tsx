@@ -1,10 +1,11 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { TestData } from '@owlprotocol/web3-redux';
 import { addressERC1155ArgType, networkIdArgType } from '../../../test/storybookArgs.js';
-import ERC1155Instance from '.';
+import { ERC1155Instance } from './index.js';
 
+// eslint-disable-next-line import/no-default-export
 export default {
-    title: 'NFT/ERC1155Instance',
+    title: 'ERC1155/ERC1155Instance',
     component: ERC1155Instance,
 } as ComponentMeta<typeof ERC1155Instance>;
 

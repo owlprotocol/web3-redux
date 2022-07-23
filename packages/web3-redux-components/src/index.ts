@@ -25,6 +25,8 @@ export { default as Theme } from './theme/index.js';
 export * as StorybookArgs from './test/storybookArgs.js';
 export * from './components/NFT/index.js';
 
+//Address
+export * from './components/Address/index.js';
 //ERC
 export * from './components/ERC721/index.js';
 export * from './components/ERC1155/index.js';

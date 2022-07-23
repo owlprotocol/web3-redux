@@ -16,3 +16,5 @@ export const AddressFavoriteButton = ({ networkId, address }: AddressFavoriteBut
         />
     );
 };
+
+export { useFavorite };

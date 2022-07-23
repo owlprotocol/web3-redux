@@ -15,7 +15,6 @@ export const ERC721CollectionGrid = ({ networkId, address }: ContractEventsTable
         fromBlock: 0,
     });
     const { error } = options;
-    console.debug({ tokenIds });
 
     if (error) return <>Error: {error.message}</>;
     else

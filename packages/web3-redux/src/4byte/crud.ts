@@ -1,6 +1,6 @@
 import { name } from './common.js';
 import { _4ByteSignature, _4ByteSignatureId } from './model/index.js';
-import createCRUDModel from '../crud/createCRUDModel.js';
+import { createCRUDModel } from '../crud/createCRUDModel.js';
 
 export const _4ByteCRUD = createCRUDModel<
     typeof name,

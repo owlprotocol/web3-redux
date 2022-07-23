@@ -37,7 +37,7 @@ module.exports = {
         storyStoreV7: true,
         interactionsDebugger: true,
     },
-    async viteFinal(config) {
+    async viteFinal(config: any) {
         const overrideConfig = {
             define: {
                 //patch ipfs utils
@@ -104,7 +104,7 @@ module.exports = {
                         //rollupPolyfills()
                     ],
                     output: {
-                        manualChunks(id) {
+                        manualChunks(id: any) {
                             const vendors = [
                                 { match: /web3@/, chunk: 'web3' },
                                 { match: /@web3-react/, chunk: 'web3-react' },

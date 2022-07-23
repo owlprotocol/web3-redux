@@ -1,33 +1,39 @@
 import { useTheme, Box, HStack, Image, Skeleton } from '@chakra-ui/react';
 import { Contract } from '@owlprotocol/web3-redux';
+import { memo } from 'react';
 import { AddressLink } from '../../Address/index.js';
 import NetworkIcon from '../../NetworkIcon/index.js';
+
+export interface Token {
+    networkId: string;
+    address: string;
+    tokenId: string;
+}
 
 export interface ERC721InstanceProps {
     networkId: string | undefined;
     address: string | undefined;
     tokenId: string | undefined;
     isSelected?: boolean;
-    onClick?: any | undefined;
+    onClick?: ({ networkId, address, tokenId }: Partial<Token>) => any;
 }
 
-export const ERC721Instance = ({ networkId, address, tokenId, isSelected, onClick }: ERC721InstanceProps) => {
+const ERC721Instance = memo(({ networkId, address, tokenId, isSelected, onClick }: ERC721InstanceProps) => {
     const { metadata, ownerOf } = Contract.hooks.useERC721(networkId, address, tokenId, {
         ownerOf: 'ifnull',
         metadata: true,
     });
     const name = metadata?.name;
     const imageSrc = metadata?.image;
+    const onClickDefined = onClick ?? console.log;
 
     const { themes } = useTheme();
     const clickHandler = (e: PointerEvent) => {
         e.stopPropagation();
         e.preventDefault();
-        console.log('hi mom ');
-        onClick && onClick();
+        onClickDefined({ networkId, address, tokenId });
     };
 
-    console.debug({ imageSrc });
     return (
         <Box
             bg={themes.color5}
@@ -96,4 +102,7 @@ export const ERC721Instance = ({ networkId, address, tokenId, isSelected, onClic
             </HStack>
         </Box>
     );
-};
+});
+
+ERC721Instance.displayName = 'ERC721Instance';
+export { ERC721Instance };

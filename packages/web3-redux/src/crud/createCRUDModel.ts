@@ -663,11 +663,14 @@ export function createCRUDModel<
         const itemReduxExists = !!itemRedux;
 
         //Reset state
+        const idxHash = JSON.stringify(idx);
+        const defaultItemHash = JSON.stringify(defaultItem);
         const action = useMemo(() => {
             if (idx && isDefinedRecord(idx)) {
                 return actions.hydrate({ id: idx, defaultItem });
             }
-        }, [JSON.stringify(idx), JSON.stringify(defaultItem)]);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [idxHash, defaultItemHash]);
 
         useEffect(() => {
             if (action && !itemReduxExists) {
@@ -711,5 +714,3 @@ export function createCRUDModel<
         toPrimaryKeyString,
     };
 }
-
-export default createCRUDModel;

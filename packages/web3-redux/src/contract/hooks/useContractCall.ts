@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 
 import { Await } from '../../types/promise.js';
 
-import { GenericSync } from '../../sync/model/index.js';
+import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
 
 import { BaseWeb3Contract, ContractWithObjects } from '../model/index.js';
-import { callSynced, call, CallAction } from '../actions/index.js';
+import { call, CallAction } from '../actions/index.js';
 import EthCallCRUD from '../../ethcall/crud.js';
 import SyncCRUD from '../../sync/crud.js';
 import ErrorCRUD from '../../error/crud.js';
@@ -55,36 +55,40 @@ export function useContractCall<
 
     const argsHash = JSON.stringify(args);
     const syncHash = JSON.stringify(sync);
+    const syncIfNull = sync === 'ifnull';
 
     useEffect(() => {
         if (networkId && address && method) {
-            if (!!sync && sync != 'ifnull' && sync != 'once') {
-                const { callAction, syncAction } = callSynced({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args: args as any[],
-                    sync,
-                });
-                setCallAction(callAction);
-                setSyncAction(syncAction);
-            } else {
-                const callAction = call({
-                    networkId,
-                    address,
-                    method: method as string,
-                    args: args as any[],
-                    ifnull: sync === 'ifnull',
-                });
-                setCallAction(callAction);
-                setSyncAction(undefined);
-            }
+            const callAction = call({
+                networkId,
+                address,
+                method: method as string,
+                args: args as any[],
+                ifnull: syncIfNull,
+            });
+            setCallAction(callAction);
         } else {
             setCallAction(undefined);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [networkId, address, method, argsHash, syncIfNull]);
+
+    useEffect(() => {
+        if (callAction && sync && sync != 'ifnull') {
+            const syncObj = createSyncForActions(
+                callAction.payload.networkId,
+                [callAction],
+                sync,
+                callAction.payload.address,
+            );
+            if (syncObj) syncObj.id = `${syncObj.type}-${JSON.stringify(callAction.payload)}`;
+            const syncAction = syncObj ? SyncCRUD.actions.upsert(syncObj, callAction.meta.uuid) : undefined;
+            setSyncAction(syncAction);
+        } else {
             setSyncAction(undefined);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [networkId, address, method, argsHash, syncHash]);
+    }, [callAction, syncHash]);
 
     //Error
     const [reduxError] = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);

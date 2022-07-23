@@ -93,16 +93,16 @@ export const POLYGON_RPC = () =>
     getEnvVar('POLYGON_RPC') ?? INFURA_API_KEY()
         ? `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY()}`
         : undefined;
-export const POLYGON_EXPLORER = () => getEnvVar('POLYGON_EXPLORER') ?? 'https://polygonscan.io/';
-export const POLYGON_EXPLORER_API = () => getEnvVar('POLYGON_EXPLORER_API') ?? 'https://api.polygonscan.io/api';
+export const POLYGON_EXPLORER = () => getEnvVar('POLYGON_EXPLORER') ?? 'https://polygonscan.com/';
+export const POLYGON_EXPLORER_API = () => getEnvVar('POLYGON_EXPLORER_API') ?? 'https://api.polygonscan.com/api';
 
 export const POLYGON_MUMBAI_RPC = () =>
     getEnvVar('POLYGON_MUMBAI_RPC') ?? INFURA_API_KEY()
         ? `https://polygon-mumbai.infura.io/v3/${INFURA_API_KEY()}`
         : undefined;
-export const POLYGON_MUMBAI_EXPLORER = () => getEnvVar('POLYGON_MUMBAI_EXPLORER') ?? 'https://testnet.polygonscan.io/';
+export const POLYGON_MUMBAI_EXPLORER = () => getEnvVar('POLYGON_MUMBAI_EXPLORER') ?? 'https://testnet.polygonscan.com/';
 export const POLYGON_MUMBAI_EXPLORER_API = () =>
-    getEnvVar('POLYGON_MUMBAI_EXPLORER_API') ?? 'https://api-testnet.polygonscan.io/api';
+    getEnvVar('POLYGON_MUMBAI_EXPLORER_API') ?? 'https://api-testnet.polygonscan.com/api';
 
 export const ARBITRUM_RPC = () =>
     getEnvVar('ARBITRUM_RPC') ?? INFURA_API_KEY()
@@ -124,6 +124,68 @@ export const OPTIMISM_KOVAN_RPC = () =>
     getEnvVar('OPTIMISM_KOVAN_RPC') ?? INFURA_API_KEY()
         ? `https://optimism-kovan.infura.io/v3/${INFURA_API_KEY()}`
         : undefined;
+
+export const OPTIMISM_GNOSIS_RPC = () =>
+    getEnvVar('OPTIMISM_GNOSIS_RPC') ?? INFURA_API_KEY()
+        ? `wss://optimism.gnosischain.com/wss/${INFURA_API_KEY()}`
+        : undefined;
+export const OPTIMISM_GNOSIS_EXPLORER = () =>
+    getEnvVar('OPTIMISM_GNOSIS_EXPLORER') ?? 'https://blockscout.com/xdai/optimism';
+export const OPTIMISM_GNOSIS_EXPLORER_API = () =>
+    getEnvVar('OPTIMISIM_GNOSIS_EXPLORER_API') ?? 'https://api.blockscout.com/xdai/optimism/api';
+
+export const AVALANCHE_RPC = () =>
+    getEnvVar('AVALANCHE_RPC') ?? INFURA_API_KEY()
+        ? `https://api.avax.network/ext/bc/C/rpc/${INFURA_API_KEY()}`
+        : undefined;
+export const AVALANCHE_EXPLORER = () => getEnvVar('AVALANCHE_EXPLORER') ?? 'https://snowtrace.io';
+export const AVALANCHE_EXPLORER_API = () => getEnvVar('AVALANCHE_EXPLORER_API') ?? 'https://api.snowtrace.io/api';
+
+export const AVALANCHE_FUJI_RPC = () =>
+    getEnvVar('AVALANCHE_FUJI_RPC') ?? INFURA_API_KEY()
+        ? `https://api.avax-test.network/ext/bc/C/rpc/${INFURA_API_KEY()}`
+        : undefined;
+export const AVALANCHE_FUJI_EXPLORER = () => getEnvVar('AVALANCHE_FUJI_EXPLORER') ?? 'https://testnet.snowtrace.io';
+export const AVALANCHE_FUJI_EXPLORER_API = () =>
+    getEnvVar('AVALANCHE_FUJI_EXPLORER_API') ?? 'https://api.testnet.snowtrace.io/api';
+
+export const BSC_MAINNET_RPC = () =>
+    getEnvVar('BSC_MAINNET_RPC') ?? INFURA_API_KEY() ? `wss://bsc-ws-node.nariox.org/${INFURA_API_KEY()}` : undefined;
+export const BSC_MAINNET_EXPLORER = () => getEnvVar('BSC_MAINNET_EXPLORER') ?? 'https://bscscan.com';
+export const BSC_MAINNET_EXPLORER_API = () => getEnvVar('BSC_MAINNET_EXPLORER_API') ?? 'https://api.bscscan.com/api';
+
+export const BSC_TESTNET_RPC = () =>
+    getEnvVar('BSC_TESTNET_RPC') ?? INFURA_API_KEY()
+        ? `https://data-seed-prebsc-2-s3.binance.org:8545/${INFURA_API_KEY()}`
+        : undefined;
+export const BSC_TESTNET_EXPLORER = () => getEnvVar('BSC_TESTNET_EXPLORER') ?? 'https://testnet.bscscan.com';
+export const BSC_TESTNET_EXPLORER_API = () =>
+    getEnvVar('BSC_TESTNET_EXPLORER_API') ?? 'https://api.testnet.bscscan.com/api';
+
+export const GNOSIS_CHAIN_RPC = () =>
+    getEnvVar('POLYGON_RPC') ?? INFURA_API_KEY()
+        ? `https://gnosis-mainnet.public.blastapi.io/${INFURA_API_KEY()}`
+        : undefined;
+export const GNOSIS_CHAIN_EXPLORER = () => getEnvVar('POLYGON_EXPLORER') ?? 'https://blockscout.com/xdai/mainnet';
+export const GNOSIS_CHAIN_EXPLORER_API = () =>
+    getEnvVar('POLYGON_EXPLORER_API') ?? 'https://api.blockscout.com/xdai/mainnet/api';
+
+export const ETC_MAINNET_RPC = () =>
+    getEnvVar('ETC_MAINNET_RPC') ?? INFURA_API_KEY()
+        ? `https://www.ethercluster.com/etc/${INFURA_API_KEY()}`
+        : undefined;
+export const ETC_MAINNET_EXPLORER = () => getEnvVar('ETC_MAINNET_EXPLORER') ?? 'https://blockscout.com/etc/mainnet';
+export const ETC_MAINNET_EXPLORER_API = () =>
+    getEnvVar('ETC_MAINNET_EXPLORER_API') ?? 'https://api.blockscout.com/etc/mainnet/api';
+
+export const ETC_KOTTI_RPC = () =>
+    getEnvVar('ETC_KOTTI_RPC') ?? INFURA_API_KEY()
+        ? `https://www.ethercluster.com/kotti/${INFURA_API_KEY()}`
+        : undefined;
+export const ETC_KOTTI_EXPLORER = () =>
+    getEnvVar('ETC_KOTTI_EXPLORER') ?? 'https://explorer.jade.builders/?network=kotti/';
+export const ETC_KOTTI_EXPLORER_API = () =>
+    getEnvVar('ETC_KOTTI_EXPLORER_API') ?? 'https://api.explorer.jade.builders/?network=kotti/api';
 
 //IPFS
 //Infura uses Basic Auth for IPFS

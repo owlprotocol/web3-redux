@@ -15,19 +15,29 @@
     },
     "license": "MIT",
     "type": "commonjs",
-    "main": "./dist/web3-redux-lib.cjs.js",
-    "module": "./dist/web3-redux-lib.es.js",
+    "main": "./dist/index.cjs.js",
+    "module": "./dist/index.es.js",
     "types": "./types/index.d.ts",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "require": "./dist/web3-redux-lib.cjs.js",
-            "import": "./dist/web3-redux-lib.es.js"
+            "require": "./dist/index.cjs.js",
+            "import": "./dist/index.es.js"
         },
-        "./dist/web3-redux-lib.cjs.js": "./dist/web3-redux-lib.cjs.js",
-        "./dist/web3-redux-lib.es.js": "./dist/web3-redux-lib.es.js",
-        "./dist/web3-redux-lib.cjs.min.js": "./dist/web3-redux-lib.cjs.min.js",
-        "./dist/web3-redux-lib.es.min.js": "./dist/web3-redux-lib.es.min.js"
+        "./dist/index.js": {
+            "types": "./types/index.d.ts",
+            "require": "./dist/index.cjs.js",
+            "import": "./dist/index.es.js"
+        },
+        "./dist/index.min.js": {
+            "types": "./types/index.d.ts",
+            "require": "./dist/index.min.cjs.js",
+            "import": "./dist/index.min.es.js"
+        },
+        "./dist/index.cjs.js": "./dist/index.cjs.js",
+        "./dist/index.es.js": "./dist/index.es.js",
+        "./dist/index.cjs.min.js": "./dist/index.cjs.min.js",
+        "./dist/index.es.min.js": "./dist/index.es.min.js"
     },
     "files": [
         "dist/*",

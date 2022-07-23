@@ -53,8 +53,10 @@ export function useContractCall<
     const [callAction, setCallAction] = useState<CallAction | undefined>();
     const [syncAction, setSyncAction] = useState<ReturnType<typeof SyncCRUD.actions.create> | undefined>();
 
+    const argsHash = JSON.stringify(args);
+    const syncHash = JSON.stringify(sync);
+
     useEffect(() => {
-        console.debug([networkId, address, method, JSON.stringify(args), JSON.stringify(sync)]);
         if (networkId && address && method) {
             if (!!sync && sync != 'ifnull' && sync != 'once') {
                 const { callAction, syncAction } = callSynced({
@@ -81,7 +83,8 @@ export function useContractCall<
             setCallAction(undefined);
             setSyncAction(undefined);
         }
-    }, [networkId, address, method, JSON.stringify(args), JSON.stringify(sync)]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [networkId, address, method, argsHash, syncHash]);
 
     //Error
     const [reduxError] = ErrorCRUD.hooks.useGet(callAction?.meta.uuid);
@@ -102,19 +105,20 @@ export function useContractCall<
     //Callback
     const dispatchCallAction = useCallback(() => {
         if (callAction) dispatch(callAction);
-    }, [dispatch, JSON.stringify(callAction)]);
+    }, [dispatch, callAction]);
     //Effects
     useEffect(() => {
         if (executeCall) dispatchCallAction();
     }, [dispatchCallAction, executeCall]);
 
-    const syncId = syncAction?.payload.id;
     useEffect(() => {
-        if (syncAction) dispatch(syncAction);
-        return () => {
-            if (syncId) dispatch(SyncCRUD.actions.delete({ id: syncId }));
-        };
-    }, [dispatch, syncAction, syncId]);
+        if (syncAction) {
+            dispatch(syncAction);
+            return () => {
+                dispatch(SyncCRUD.actions.delete({ id: syncAction.payload.id }));
+            };
+        }
+    }, [dispatch, syncAction]);
 
     const isLoading = ethCallLoading || ethCallLoading;
     const returnOptions = { error, dispatchCallAction, isLoading, callAction, syncAction };

@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AddressList from '.';
+import { AddressList } from '.';
 
+// eslint-disable-next-line import/no-default-export
 export default {
     title: 'Address/AddressList',
     component: AddressList,

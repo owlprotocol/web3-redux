@@ -31,13 +31,13 @@ const RCPaginationStyles = styled.div`
     }
 `;
 
-export interface Props {
+export interface AddressListProps {
     items: string[];
     handleRemoveAddress: any;
     pageSize: number;
 }
 
-const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: Props) => {
+export const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: AddressListProps) => {
     const { themes } = useTheme();
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -96,5 +96,3 @@ const AddressList = ({ items = [], handleRemoveAddress, pageSize = 20 }: Props) 
         </RCPaginationStyles>
     );
 };
-
-export default AddressList;

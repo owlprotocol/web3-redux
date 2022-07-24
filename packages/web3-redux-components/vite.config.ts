@@ -19,22 +19,19 @@ export default defineConfig({
     },
     plugins: [
         ReactPlugin(),
-        rollupInject({
-            Buffer: ['buffer', 'Buffer'],
-        }),
         SVGRPlugin({
             svgrOptions: {
                 icon: '100%',
             },
         }),
+        DTSPlugin(),
         CheckerPlugin({
             typescript: true,
             overlay: true,
             eslint: {
-                lintCommand: 'eslint .',
+                lintCommand: 'eslint .  --ext .ts,.tsx',
             },
         }),
-        DTSPlugin(),
     ],
     resolve: {
         alias: {
@@ -56,6 +53,11 @@ export default defineConfig({
             fileName: (format) => `web3-redux-components-lib.${format}.js`,
         },
         rollupOptions: {
+            plugins: [
+                rollupInject({
+                    Buffer: ['buffer', 'Buffer'],
+                }),
+            ],
             //Library Mode
             external: [
                 '@chakra-ui/react',

@@ -13,7 +13,7 @@
     "author": "Leo Vigna",
     "scripts": {
         "start": "pnpm --stream -r run start",
-        "build": "pnpm --stream -r run build",
+        "build": "pnpm --stream -r --filter '!@owlprotocol/web3-redux-docs' run build",
         "build:web3-redux": "pnpm --filter '@owlprotocol/web3-redux' run build",
         "build:web3-redux-components": "pnpm --filter '@owlprotocol/web3-redux-components' run build",
         "build:web3-redux-components-storybook": "pnpm --stream -r run build-storybook",

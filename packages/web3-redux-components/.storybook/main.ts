@@ -14,7 +14,7 @@ const { mergeConfig } = require('vite');
 //Vite Plugins
 //const EnvironmentPlugin = require('vite-plugin-environment').default;
 const CheckerPlugin = require('vite-plugin-checker').default;
-const SVGRPlugin = require('vite-plugin-svgr').default;
+const SVGRPlugin = require('vite-plugin-svgr');
 
 const path = require('path');
 
@@ -75,7 +75,7 @@ module.exports = {
                     typescript: { tsconfigPath: './tsconfig.json' },
                     overlay: true,
                     eslint: {
-                        lintCommand: 'eslint .',
+                        lintCommand: 'eslint .  --ext .ts,.tsx',
                     },
                 }),
             ],

@@ -1,0 +1,7 @@
+**/lib
+**/dist
+**/public
+**/storybook-static
+**/cache
+
+/examples

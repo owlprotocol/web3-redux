@@ -7,8 +7,8 @@ const { mergeConfig } = require('vite');
 //const NodeModulesPolyfillPlugin = require('@esbuild-plugins/node-modules-polyfill').NodeModulesPolyfillPlugin
 
 //Rollup Plugins
-//const rollupInject = require('@rollup/plugin-inject')
-//const rollupPolyfills = require('rollup-plugin-node-polyfills')
+const rollupInject = require('@rollup/plugin-inject')
+const rollupPolyfills = require('rollup-plugin-node-polyfills')
 //const rollupNodeResolve = require('@rollup/plugin-node-resolve').nodeResolve
 
 //Vite Plugins
@@ -42,7 +42,9 @@ module.exports = {
         const overrideConfig = {
             define: {
                 //patch ipfs utils
-                'globalThis.process.env.NODE_ENV': JSON.stringify('development')
+                'globalThis.process.env.NODE_ENV': JSON.stringify('development'),
+                //pathc @storybook/theming
+                'process.env.FORCE_SIMILAR_INSTEAD_OF_MAP': JSON.stringify(false)
             },
             optimizeDeps: {
                 include: [],
@@ -59,11 +61,6 @@ module.exports = {
                 }
             },
             plugins: [
-                /*
-                rollupInject({
-                    Buffer: ['buffer', 'Buffer'],
-                }),
-                */
                 //Expose envars with traditional process.env
                 //EnvironmentPlugin('all', { prefix: 'VITE_' }),
                 SVGRPlugin({
@@ -85,10 +82,10 @@ module.exports = {
                     events: 'rollup-plugin-node-polyfills/polyfills/events',
                     http: 'rollup-plugin-node-polyfills/polyfills/http',
                     https: 'rollup-plugin-node-polyfills/polyfills/http',
-                    //process: 'rollup-plugin-node-polyfills/polyfills/process',
+                    process: 'rollup-plugin-node-polyfills/polyfills/process',
                     stream: 'rollup-plugin-node-polyfills/polyfills/stream',
-                    //'string_decoder': 'rollup-plugin-node-polyfills/polyfills/string_decoder',
-                    //url: 'rollup-plugin-node-polyfills/polyfills/url',
+                    'string_decoder': 'rollup-plugin-node-polyfills/polyfills/string_decoder',
+                    url: 'rollup-plugin-node-polyfills/polyfills/url',
                     util: 'rollup-plugin-node-polyfills/polyfills/util',
                     web3: 'web3/dist/web3.min.js',
                     '@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/index.es.min.js',
@@ -102,7 +99,10 @@ module.exports = {
                 rollupOptions: {
                     plugins: [
                         //rollupNodeResolve(),
-                        //rollupPolyfills()
+                        rollupPolyfills(),
+                        rollupInject({
+                            Buffer: ['buffer', 'Buffer'],
+                        }),
                     ],
                     output: {
                         manualChunks(id: any) {

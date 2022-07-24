@@ -1,7 +1,11 @@
 [build]
-  command = "npx pnpm i -r --store=node_modules/.pnpm-store && npx pnpm run build:web3-redux && npx pnpm run build:web3-redux-components-storybook"
+  command = "npx pnpm i --store=node_modules/.pnpm-store --frozen-lockfile && npx pnpm run build:web3-redux && npx pnpm run build:web3-redux-components-storybook"
   publish = "packages/web3-redux-components/storybook-static"
 [build.environment]
   NODE_VERSION = "16"
   NODE_ENV = "development"
-  NPM_FLAGS="--version"
+  NPM_FLAGS="--version" # prevent Netlify npm install
+[[redirects]]
+  from = "/*"
+  to = "index.html"
+  status = 200

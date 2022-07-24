@@ -1,3 +1,1 @@
-import onUpdate from './onUpdate.js';
-
-export { onUpdate as onNetworkUpdate };
+export * from './onUpdate.js';

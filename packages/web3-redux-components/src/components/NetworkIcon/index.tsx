@@ -29,6 +29,8 @@ export const NetworkIcon = ({ networkId = '1', size = 30 }: Props) => {
                 return <MoonbeamIcon />;
             case 'moonriver':
                 return <MoonriverIcon />;
+            default:
+                return;
         }
     };
 

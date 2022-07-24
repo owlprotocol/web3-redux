@@ -7,12 +7,17 @@ const { mergeConfig } = require('vite');
 //const NodeModulesPolyfillPlugin = require('@esbuild-plugins/node-modules-polyfill').NodeModulesPolyfillPlugin
 
 //Rollup Plugins
-const rollupInject = require('@rollup/plugin-inject')
+//const rollupInject = require('@rollup/plugin-inject')
+//const rollupPolyfills = require('rollup-plugin-node-polyfills')
+//const rollupNodeResolve = require('@rollup/plugin-node-resolve').nodeResolve
 
 //Vite Plugins
 //const EnvironmentPlugin = require('vite-plugin-environment').default;
 const CheckerPlugin = require('vite-plugin-checker').default;
-const SVGRPlugin = require('vite-plugin-svgr').default;
+const SVGRPlugin = require('vite-plugin-svgr');
+
+const path = require('path');
+
 
 module.exports = {
     framework: "@storybook/react",
@@ -23,6 +28,7 @@ module.exports = {
     addons: [
         "@storybook/addon-links",
         "@storybook/addon-essentials",
+        "@storybook/addon-viewport"
         //"@storybook/addon-interactions",
     ],
     core: {
@@ -32,7 +38,7 @@ module.exports = {
         storyStoreV7: true,
         interactionsDebugger: true,
     },
-    async viteFinal(config) {
+    async viteFinal(config: any) {
         const overrideConfig = {
             define: {
                 //patch ipfs utils
@@ -69,19 +75,24 @@ module.exports = {
                     typescript: { tsconfigPath: './tsconfig.json' },
                     overlay: true,
                     eslint: {
-                        lintCommand: 'eslint .',
+                        lintCommand: 'eslint .  --ext .ts,.tsx',
                     },
                 }),
             ],
             resolve: {
                 alias: {
-                    stream: 'rollup-plugin-node-polyfills/polyfills/stream',
+                    buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
+                    events: 'rollup-plugin-node-polyfills/polyfills/events',
                     http: 'rollup-plugin-node-polyfills/polyfills/http',
                     https: 'rollup-plugin-node-polyfills/polyfills/http',
-                    buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
+                    //process: 'rollup-plugin-node-polyfills/polyfills/process',
+                    stream: 'rollup-plugin-node-polyfills/polyfills/stream',
+                    //'string_decoder': 'rollup-plugin-node-polyfills/polyfills/string_decoder',
+                    //url: 'rollup-plugin-node-polyfills/polyfills/url',
+                    util: 'rollup-plugin-node-polyfills/polyfills/util',
                     web3: 'web3/dist/web3.min.js',
-                    //'ipfs-http-client': 'ipfs-http-client/index.min.js'
-                    //'@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/web3-redux-lib.es.min.js'
+                    '@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/index.es.min.js',
+                    'ipfs-http-client': path.resolve('node_modules/ipfs-http-client/index.min.js')
                 },
             },
             build: {
@@ -89,10 +100,32 @@ module.exports = {
                     transformMixedEsModules: false,
                 },
                 rollupOptions: {
+                    plugins: [
+                        //rollupNodeResolve(),
+                        //rollupPolyfills()
+                    ],
                     output: {
-                        manualChunks: {
-                            //web3: ['web3'],
-                            //lodash: ['lodash']
+                        manualChunks(id: any) {
+                            const vendors = [
+                                { match: /web3@/, chunk: 'web3' },
+                                { match: /@web3-react/, chunk: 'web3-react' },
+                                { match: /@walletconnect/, chunk: 'walletconnect' },
+                                { match: /@fortawesome/, chunk: '@fortawesome' },
+                                { match: /lodash@/, chunck: 'lodash' },
+                                { match: /ipfs-http-client@/, chunk: 'ipfs-http-client' },
+                                //{ match: /@storybook/, chunk: 'storybook' },
+                                //{ match: /react@/, chunk: 'react' },
+                                //{ match: /react-dom@/, chunk: 'react-dom' },
+                                //{ match: /@emotion/, chunk: 'emotion' },
+                                //{ match: /@chakra-ui/, chunk: 'chakra-ui' },
+                            ]
+                            for (let v of vendors) {
+                                if (id.match(v.match)) return v.chunk;
+                            }
+
+                            if (id.includes('node_modules')) {
+                                return 'vendor';
+                            }
                         }
                     }
                 }

@@ -9,7 +9,7 @@ import {
     validateId,
     validate,
 } from './model/index.js';
-import createCRUDModel from '../crud/createCRUDModel.js';
+import { createCRUDModel } from '../crud/createCRUDModel.js';
 
 export const ConfigCRUD = createCRUDModel<typeof name, ConfigId, Config, ConfigWithObjects>(name, {
     hydrate,

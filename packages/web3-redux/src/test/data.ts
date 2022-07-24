@@ -63,6 +63,7 @@ export const CHAINLINK = '0x514910771af9ca656af840dff83e8264ecf986ca'.toLowerCas
 //ERC721
 export const VEE_FRIENDS_SERIES2 = '0x9378368ba6b85c1FbA5b131b530f5F5bEdf21A18'.toLowerCase();
 export const OZ_TEAM = '0x67ed2e5dd3d01ca342db045037be054dc6d8482a'.toLowerCase();
+export const POTATOZ = '0x39ee2c7b3cb80254225884ca001f57118c8f21b6'.toLowerCase();
 //ERC1155
 export const KITH_FRIENDS = '0x130cfab3817467f532c179d4e6502f5a7e7d44c7'.toLowerCase(); //metadata has no CORS
 export const SKYWEAVER = '0x631998e91476da5b870d741192fc5cbc55f5a52e'.toLowerCase();

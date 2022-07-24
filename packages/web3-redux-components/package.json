@@ -20,12 +20,12 @@
     ],
     "scripts": {
         "start": "npm run storybook",
+        "dev": "vite dev",
         "build": "vite build",
         "build:watch": "vite build --watch",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "cross-env NODE_OPTIONS='--max-old-space-size=4096' build-storybook",
-        "node:hardhat": "hardhat node",
-        "node:ganache": "ganache --chain.chainId 1336 --chain.networkId 1336"
+        "madge": "madge src/index.ts -c"
     },
     "dependencies": {
         "@chakra-ui/react": "1.8.8",
@@ -113,14 +113,13 @@
         "buffer": "^6.0.3",
         "cross-env": "^7.0.3",
         "esbuild": "^0.14.25",
-        "ganache": "^7.3.2",
+        "madge": "^5.0.1",
         "global": "^4.4.0",
-        "hardhat": "^2.10.0",
         "rc": "^1.2.8",
         "rollup": "^2.72.1",
         "rollup-plugin-node-polyfills": "^0.2.1",
         "typescript": "^4.5.4",
-        "vite": "^2.9.9",
+        "vite": "3.0.2",
         "vite-dts": "^1.0.4",
         "vite-plugin-checker": "^0.4.2",
         "vite-plugin-environment": "^1.1.1",

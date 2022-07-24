@@ -3,7 +3,7 @@ import axios from 'axios';
 import { httpGet } from './httpGet.js';
 import { httpGet as httpGetAction, HTTP_GET } from '../actions/index.js';
 import { create as createError } from '../../error/actions/index.js';
-import HTTPCacheCRUD from '../crud.js';
+import { HTTPCacheCRUD } from '../crud.js';
 import ConfigCRUD from '../../config/crud.js';
 
 describe('http/sagas/httpGet.test.ts', () => {

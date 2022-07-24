@@ -5,7 +5,7 @@ importers:
   .:
     specifiers:
       '@changesets/cli': ^2.21.1
-      '@owlprotocol/eslint-config': ../eslint-config
+      '@owlprotocol/eslint-config': ^1.0.0
       '@typescript-eslint/eslint-plugin': ^5.14.0
       '@typescript-eslint/parser': ^5.14.0
       eslint: ^8.10.0
@@ -25,7 +25,7 @@ importers:
       typescript: ^4.5.4
     dependencies:
       '@changesets/cli': 2.23.2
-      '@owlprotocol/eslint-config': link:../eslint-config
+      '@owlprotocol/eslint-config': 1.0.0
       '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
       '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
       eslint: 8.20.0
@@ -222,7 +222,6 @@ importers:
       '@ipld/dag-pb': ^2.1.16
       '@mdx-js/preact': ^2.1.2
       '@mdx-js/react': ^2.0.0
-      '@owlprotocol/eslint-config': ../../../eslint-config
       '@owlprotocol/web3-redux': ../web3-redux
       '@rollup/plugin-alias': ^3.1.9
       '@rollup/plugin-commonjs': ^22.0.0
@@ -351,7 +350,6 @@ importers:
       '@esbuild-plugins/node-modules-polyfill': 0.1.4_esbuild@0.14.49
       '@mdx-js/preact': 2.1.2
       '@mdx-js/react': 2.1.2_react@17.0.2
-      '@owlprotocol/eslint-config': link:../../../eslint-config
       '@rollup/plugin-alias': 3.1.9_rollup@2.77.0
       '@rollup/plugin-commonjs': 22.0.1_rollup@2.77.0
       '@rollup/plugin-inject': 4.0.4_rollup@2.77.0
@@ -5093,6 +5091,28 @@ packages:
   /@openzeppelin/contracts/4.7.0:
     resolution: {integrity: sha512-52Qb+A1DdOss8QvJrijYYPSf32GUg2pGaG/yCxtaA3cu4jduouTdg4XZSMLW9op54m1jH7J8hoajhHKOPsoJFw==}
     dev: true
+
+  /@owlprotocol/eslint-config/1.0.0:
+    resolution: {integrity: sha512-jcJ9ESFtZ24IrshZKW3BQLxRxBk6iGjptLzdWv1Ud69J4DrdZygtGsBmEFwpjWZ6wRzJWgnNBCpuZGAjDNcQvA==}
+    engines: {node: '>=16.0.0'}
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
+      '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
+      eslint: 8.20.0
+      eslint-config-prettier: 8.5.0_eslint@8.20.0
+      eslint-import-resolver-typescript: 2.7.1_afl3vkhn63baibzal45igheroq
+      eslint-plugin-import: 2.26.0_w3h2x6a7zgcj3scdfl3yk2yqgq
+      eslint-plugin-node: 11.1.0_eslint@8.20.0
+      eslint-plugin-prettier: 4.2.1_g4fztgbwjyq2fvmcscny2sj6fy
+      eslint-plugin-react: 7.30.1_eslint@8.20.0
+      eslint-plugin-react-hooks: 4.6.0_eslint@8.20.0
+      eslint-plugin-storybook: 0.5.13_he2ccbldppg44uulnyq4rwocfa
+      prettier: 2.7.1
+      typescript: 4.7.4
+    transitivePeerDependencies:
+      - eslint-import-resolver-webpack
+      - supports-color
+    dev: false
 
   /@pedrouid/environment/1.0.1:
     resolution: {integrity: sha512-HaW78NszGzRZd9SeoI3JD11JqY+lubnaOx7Pewj5pfjqWXOEATpeKIFb9Z4t2WBUK2iryiXX3lzWwmYWgUL0Ug==}

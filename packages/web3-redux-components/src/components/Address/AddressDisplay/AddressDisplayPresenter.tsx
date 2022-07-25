@@ -6,6 +6,7 @@ import NetworkIcon from '../../NetworkIcon/index.js';
 import QRCodePopover from '../../QRCodePopover/index.js';
 import { Address } from '../../../interfaces/Address.js';
 
+export type Control = 'qr' | 'copy' | 'favorite' | 'edit' | 'icon';
 export interface AddressDisplayPresenterProps extends Address {
     label?: string;
     isFavorite?: boolean;
@@ -13,7 +14,7 @@ export interface AddressDisplayPresenterProps extends Address {
     bg?: string;
     toggleFavorite?: () => void;
     setLabel?: (v: string) => void;
-    controls?: string[];
+    controls?: Control[];
     containerStyles?: StyleProps;
 }
 

@@ -18,6 +18,9 @@ const SVGRPlugin = require('vite-plugin-svgr');
 
 const path = require('path');
 
+//const MODE = import.meta.env.MODE;
+const NODE_ENV = process.env.NODE_ENV ?? 'development' /// process.env.MODE
+const production = NODE_ENV === 'production';
 
 module.exports = {
     framework: "@storybook/react",
@@ -42,7 +45,8 @@ module.exports = {
         const overrideConfig = {
             define: {
                 //patch ipfs utils
-                'globalThis.process.env.NODE_ENV': JSON.stringify('development'),
+                'globalThis.process.env.NODE_ENV': JSON.stringify(NODE_ENV),
+                //'globalThis."development"': JSON.stringify('development'),
                 //pathc @storybook/theming
                 'process.env.FORCE_SIMILAR_INSTEAD_OF_MAP': JSON.stringify(false)
             },
@@ -71,9 +75,11 @@ module.exports = {
                 CheckerPlugin({
                     typescript: { tsconfigPath: './tsconfig.json' },
                     overlay: true,
+                    /*
                     eslint: {
                         lintCommand: 'eslint .  --ext .ts,.tsx',
                     },
+                    */
                 }),
             ],
             resolve: {
@@ -89,10 +95,13 @@ module.exports = {
                     util: 'rollup-plugin-node-polyfills/polyfills/util',
                     web3: 'web3/dist/web3.min.js',
                     '@owlprotocol/web3-redux': '@owlprotocol/web3-redux/dist/index.es.min.js',
-                    'ipfs-http-client': path.resolve('node_modules/ipfs-http-client/index.min.js')
+                    'ipfs-http-client': production ? path.resolve('node_modules/ipfs-http-client/index.min.js') : 'ipfs-http-client'
                 },
             },
             build: {
+                resolve: {
+                    'ipfs-http-client': path.resolve('node_modules/ipfs-http-client/index.min.js')
+                },
                 commonjsOptions: {
                     transformMixedEsModules: false,
                 },

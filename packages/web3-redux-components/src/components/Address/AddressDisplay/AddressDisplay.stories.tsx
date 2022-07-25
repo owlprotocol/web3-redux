@@ -8,12 +8,17 @@ export const Main = Template.bind({});
 const Args: AddressDisplayProps = {
     networkId: networkIdArgType.options[0],
     address: addressArgType.options[0],
+    controls: ['copy'],
 };
 
 Main.args = Args;
 Main.argTypes = {
     networkId: networkIdArgType,
     address: addressArgType,
+    controls: {
+        control: 'check',
+        options: ['qr', 'copy', 'favorite', 'edit', 'icon'],
+    },
 };
 
 export default {

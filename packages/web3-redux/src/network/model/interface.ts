@@ -40,8 +40,6 @@ export interface Network extends NetworkId {
     /** Ens domain */
     readonly ens?: string;
 
-    /** True if the network is GSN compatible */
-    isGSN?: boolean;
     /** Relay Hub address */
     readonly relayHub?: string;
     /** Trusted Forwarder address */

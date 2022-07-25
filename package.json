@@ -13,12 +13,13 @@
     "author": "Leo Vigna",
     "scripts": {
         "start": "pnpm --stream -r run start",
-        "build": "pnpm --stream -r run build",
+        "build": "pnpm --stream -r --filter '!@owlprotocol/web3-redux-docs' run build",
         "build:web3-redux": "pnpm --filter '@owlprotocol/web3-redux' run build",
         "build:web3-redux-components": "pnpm --filter '@owlprotocol/web3-redux-components' run build",
-        "build:web3-redux-components-storybook": "cd packages/web3-redux-components && npm run build-storybook",
+        "build:web3-redux-components-storybook": "pnpm --stream -r run build-storybook",
         "build:web3-redux-docs": "pnpm --filter '@owlprotocol/web3-redux-docs' run build",
         "clean": "pnpm --stream -r run clean",
+        "clean:node_modules": "rimraf node_modules packages/*/node_modules",
         "test": "pnpm --stream -r run test",
         "test:web3-redux": "pnpm --filter '@owlprotocol/web3-redux' run test",
         "test:web3-redux-components": "pnpm --filter '@owlprotocol/web3-redux-components' run test",
@@ -29,11 +30,10 @@
         "lint:staged": "lint-staged"
     },
     "dependencies": {
-        "husky": "^7.0.4",
-        "rimraf": "^3.0.2",
         "@changesets/cli": "^2.21.1",
         "@typescript-eslint/eslint-plugin": "^5.14.0",
         "@typescript-eslint/parser": "^5.14.0",
+        "@owlprotocol/eslint-config": "^1.0.0",
         "eslint": "^8.10.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-import-resolver-typescript": "^2.5.0",
@@ -43,8 +43,11 @@
         "eslint-plugin-react": "^7.29.3",
         "eslint-plugin-react-hooks": "^4.3.0",
         "eslint-plugin-storybook": "^0.5.7",
+        "husky": "^7.0.4",
         "lint-staged": "^11.1.2",
         "prettier": "^2.5.1",
+        "rimraf": "^3.0.2",
+        "ts-node": "^10.9.1",
         "typescript": "^4.5.4"
     }
 }

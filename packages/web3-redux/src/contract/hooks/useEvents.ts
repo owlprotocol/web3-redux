@@ -16,7 +16,6 @@ export interface UseEventsOptions {
     blocks?: EventGetPastActionInput['blocks'];
     past?: boolean; //Send event get past action
     sync?: boolean; //Send event subscribe action
-    blockBatch?: number;
     //Hook params
     reverse?: boolean;
     offset?: number;
@@ -73,7 +72,9 @@ export function useEvents<
                 blocks,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [networkId, address, eventName, filterHash, fromBlock, toBlock, blocks]);
+
     const subscribeAction = useMemo(() => {
         if (networkId && address && eventName) {
             return eventSubscribe({
@@ -83,7 +84,9 @@ export function useEvents<
                 filter,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [networkId, address, eventName, filterHash]);
+
     const unsubscribeAction = useMemo(() => {
         if (networkId && address && eventName) {
             return eventUnsubscribe({
@@ -93,6 +96,7 @@ export function useEvents<
                 filter,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [networkId, address, eventName, filterHash]);
 
     //Callbacks
@@ -112,8 +116,10 @@ export function useEvents<
     }, [dispatchGetPastAction, past, web3ContractExists]);
 
     useEffect(() => {
-        if (sync && web3ContractExists) dispatchSubscribeAction();
-        return dispatchUnsubscribeAction;
+        if (sync && web3ContractExists) {
+            dispatchSubscribeAction();
+            return dispatchUnsubscribeAction;
+        }
     }, [dispatchSubscribeAction, dispatchUnsubscribeAction, sync, web3ContractExists]);
 
     //Error

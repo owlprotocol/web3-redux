@@ -9,7 +9,7 @@ import { sleep } from '../../utils/index.js';
 import { createStore, StoreType } from '../../store.js';
 
 //Actions
-import fetchEventSignatureAction from '../actions/fetchEventSignature.js';
+import { fetchEventSignatureAction } from '../actions/fetchEventSignature.js';
 import _4ByteCRUD from '../crud.js';
 import ConfigCRUD from '../../config/crud.js';
 

@@ -6,7 +6,7 @@ import { _4ByteSignatureId } from '../model/index.js';
 /** @internal */
 export const FETCH_FUNCTION_SIGNATURE = `${name}/FETCH_FUNCTION_SIGNATURE`;
 /** @category Actions */
-export const fetchFunctionSignature = createAction(
+export const fetchFunctionSignatureAction = createAction(
     FETCH_FUNCTION_SIGNATURE,
     (payload: _4ByteSignatureId, uuid?: string) => {
         return {
@@ -18,8 +18,6 @@ export const fetchFunctionSignature = createAction(
     },
 );
 /** @internal */
-export type FetchFunctionSignatureAction = ReturnType<typeof fetchFunctionSignature>;
+export type FetchFunctionSignatureAction = ReturnType<typeof fetchFunctionSignatureAction>;
 /** @internal */
-export const isFetchFunctionSignatureAction = fetchFunctionSignature.match;
-
-export default fetchFunctionSignature;
+export const isFetchFunctionSignatureAction = fetchFunctionSignatureAction.match;

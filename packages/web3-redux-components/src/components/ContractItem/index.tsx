@@ -1,5 +1,5 @@
 import { Box, useTheme } from '@chakra-ui/react';
-import { AddressDisplayPresenter as AddressDisplay } from '../AddressDisplay/index.js';
+import { AddressDisplay } from '../Address/AddressDisplay/index.js';
 import NetworkIcon from '../NetworkIcon/index.js';
 
 export interface Props {
@@ -10,7 +10,7 @@ export interface Props {
     isFavorite?: boolean;
 }
 
-const ContractItem = ({ network, address, label = '', interfaces, isFavorite = false }: Props) => {
+const ContractItem = ({ network, address, interfaces }: Props) => {
     const { themes } = useTheme();
 
     return (
@@ -22,7 +22,7 @@ const ContractItem = ({ network, address, label = '', interfaces, isFavorite = f
                 {network}
             </Box>
             <Box w={'65%'} flex={1}>
-                <AddressDisplay address={address} label={label} isFavorite={isFavorite} borderRadius={0} />
+                <AddressDisplay address={address} borderRadius={0} />
             </Box>
             <Box display={'flex'} alignItems={'center'} ml={6} color={themes.color1}>
                 <span>{interfaces?.join(', ')}</span>

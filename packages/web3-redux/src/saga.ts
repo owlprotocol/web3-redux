@@ -9,7 +9,7 @@ import contractEventQuerySaga from './contracteventquery/sagas/index.js';
 import contractSendSaga from './contractsend/sagas/index.js';
 import reduxErrorSaga from './error/sagas/index.js';
 import ethCallSaga from './ethcall/sagas/index.js';
-import HTTPCacheSaga from './http/sagas/index.js';
+import { HTTPCacheSaga } from './http/sagas/index.js';
 import IPFSCacheSaga from './ipfs/sagas/index.js';
 import networkSaga from './network/sagas/index.js';
 import syncSaga from './sync/sagas/index.js';

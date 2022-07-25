@@ -11,7 +11,7 @@ import { ContractEventQuery, ContractEventQueryIndex } from './contracteventquer
 import { ContractSend, ContractSendIndex } from './contractsend/model/index.js';
 import { ReduxError, ReduxErrorIndex } from './error/model/index.js';
 import { EthCall, EthCallIndex } from './ethcall/model/index.js';
-import { Http, HttpIndex } from './http/model/index.js';
+import { HTTPCache, HTTPCacheIndex } from './http/model/index.js';
 import { Ipfs, IpfsIndex } from './ipfs/model/index.js';
 import { Network, NetworkIndex } from './network/model/index.js';
 import { Sync, SyncIndex } from './sync/model/index.js';
@@ -44,7 +44,7 @@ export class Web3ReduxDexie extends Dexie {
     [ContractSendName]!: Table<ContractSend>;
     [ReduxErrorName]!: Table<ReduxError>;
     [EthCallName]!: Table<EthCall>;
-    [HTTPCacheName]!: Table<Http>;
+    [HTTPCacheName]!: Table<HTTPCache>;
     [IPFSCacheName]!: Table<Ipfs>;
     [NetworkName]!: Table<Network>;
     [SyncName]!: Table<Sync>;
@@ -62,7 +62,7 @@ export class Web3ReduxDexie extends Dexie {
             [ContractSendName]: ContractSendIndex,
             [ReduxErrorName]: ReduxErrorIndex,
             [EthCallName]: EthCallIndex,
-            [HTTPCacheName]: HttpIndex,
+            [HTTPCacheName]: HTTPCacheIndex,
             [IPFSCacheName]: IpfsIndex,
             [NetworkName]: NetworkIndex,
             [SyncName]: SyncIndex,

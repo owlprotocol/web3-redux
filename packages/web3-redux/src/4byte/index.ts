@@ -13,8 +13,8 @@ export const _4Byte = {
     name: CRUDModel.name,
     actions: {
         ...CRUDModel.actions,
-        fetchEventSignature: Actions.fetchEventSignature,
-        fetchFunctionSignature: Actions.fetchFunctionSignature,
+        fetchEventSignature: Actions.fetchEventSignatureAction,
+        fetchFunctionSignature: Actions.fetchFunctionSignatureAction,
     },
     actionTypes: CRUDModel.actionTypes,
     db: CRUDModel.db,

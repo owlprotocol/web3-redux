@@ -6,17 +6,18 @@ import { _4ByteSignatureId } from '../model/index.js';
 /** @internal */
 export const FETCH_EVENT_SIGNATURE = `${name}/FETCH_EVENT_SIGNATURE`;
 /** @category Actions */
-export const fetchEventSignature = createAction(FETCH_EVENT_SIGNATURE, (payload: _4ByteSignatureId, uuid?: string) => {
-    return {
-        payload,
-        meta: {
-            uuid: uuid ?? uuidv4(),
-        },
-    };
-});
+export const fetchEventSignatureAction = createAction(
+    FETCH_EVENT_SIGNATURE,
+    (payload: _4ByteSignatureId, uuid?: string) => {
+        return {
+            payload,
+            meta: {
+                uuid: uuid ?? uuidv4(),
+            },
+        };
+    },
+);
 /** @internal */
-export type FetchEventSignatureAction = ReturnType<typeof fetchEventSignature>;
+export type FetchEventSignatureAction = ReturnType<typeof fetchEventSignatureAction>;
 /** @internal */
-export const isFetchEventSignatureAction = fetchEventSignature.match;
-
-export default fetchEventSignature;
+export const isFetchEventSignatureAction = fetchEventSignatureAction.match;

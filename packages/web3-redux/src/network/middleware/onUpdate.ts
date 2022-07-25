@@ -5,7 +5,12 @@ import NetworkCRUD from '../crud.js';
 
 //When Network web3 or web3Sender is changed, update all corresponding contracts
 export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
-    if (NetworkCRUD.actions.create.match(action) || NetworkCRUD.actions.update.match(action)) {
+    if (
+        NetworkCRUD.actions.create.match(action) ||
+        NetworkCRUD.actions.update.match(action) ||
+        NetworkCRUD.actions.put.match(action) ||
+        NetworkCRUD.actions.upsert.match(action)
+    ) {
         const networkId = action.payload.networkId;
         const newWeb3 = action.payload.web3;
         const newWeb3Rpc = action.payload.web3Rpc;
@@ -30,5 +35,3 @@ export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => a
         next(action);
     }
 };
-
-export default onNetworkUpdate;

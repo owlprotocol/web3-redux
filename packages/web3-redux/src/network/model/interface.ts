@@ -39,6 +39,15 @@ export interface Network extends NetworkId {
     readonly explorerApiKey?: string;
     /** Ens domain */
     readonly ens?: string;
+
+    /** Relay Hub address */
+    readonly relayHub?: string;
+    /** Trusted Forwarder address */
+    readonly forwarder?: string;
+    /** Version Registry address */
+    readonly versionRegistry?: string;
+    /** Paymaster address */
+    readonly paymaster?: string;
 }
 
 export interface NetworkWithObjects extends Network {
@@ -50,6 +59,9 @@ export interface NetworkWithObjects extends Network {
     readonly multicallContract?: Web3Contract;
     /** Block explorer API HTTP Client */
     readonly explorerApiClient?: Axios;
+
+    /** Web3 GSN object. */
+    readonly web3WithGSN?: Web3;
 }
 
 export const NetworkIndex = 'networkId';

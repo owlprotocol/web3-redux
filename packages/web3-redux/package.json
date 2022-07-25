@@ -67,6 +67,8 @@
         "@ipld/dag-cbor": "^7.0.1",
         "@ipld/dag-json": "^7.0.1",
         "@ipld/dag-pb": "^2.1.16",
+        "@opengsn/common": "^2.2.6",
+        "@opengsn/provider": "^2.2.6",
         "@reduxjs/toolkit": "^1.6.2",
         "@types/chai-spies": "^1.0.3",
         "axios": "0.25.0",

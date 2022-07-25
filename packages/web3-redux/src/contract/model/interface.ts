@@ -49,6 +49,8 @@ export interface ContractWithObjects<T extends BaseWeb3Contract = BaseWeb3Contra
     readonly web3Contract?: T;
     /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance used for send transactions */
     readonly web3SenderContract?: T;
+    /** contract instance that is connected to GSN */
+    readonly web3GSNSenderContract?: T;
 }
 
 export type ContractIndexInput = ContractId | { networkId: string } | { label: string };
@@ -97,7 +99,7 @@ export function hydrate(contract: Contract, sess: any): ContractWithObjects {
     );
 
     const network: NetworkWithObjects | undefined = sess.Network.withId(networkId);
-    const { web3, web3Sender } = network ?? {};
+    const { web3, web3Sender, web3WithGSN } = network ?? {};
 
     let web3Contract: BaseWeb3Contract | undefined;
     if (contractORM?.web3Contract && abi === contractORM.abi) {
@@ -117,11 +119,23 @@ export function hydrate(contract: Contract, sess: any): ContractWithObjects {
         web3SenderContract = new web3Sender.eth.Contract(abi, address);
     }
 
+    let web3GSNSenderContract: BaseWeb3Contract | undefined;
+    if (network?.relayHub && network.forwarder) {
+        if (contractORM?.web3GSNSenderContract && abi === contractORM.abi) {
+            //Existing web3 contract
+            web3GSNSenderContract = contractORM.web3GSNSenderContract;
+        } else if (abi && web3WithGSN) {
+            //New web3 contract
+            web3GSNSenderContract = new web3WithGSN.eth.Contract(abi, address);
+        }
+    }
+
     return omitBy(
         {
             ...contract,
             web3Contract,
             web3SenderContract,
+            web3GSNSenderContract,
         },
         isUndefined,
     ) as unknown as ContractWithObjects;
@@ -132,7 +146,7 @@ export function hydrate(contract: Contract, sess: any): ContractWithObjects {
  * @param contract
  */
 export function encode(contract: ContractWithObjects): Contract {
-    return omit(contract, ['web3Contract', 'web3SenderContract']);
+    return omit(contract, ['web3Contract', 'web3SenderContract', 'web3GSNSenderContract']);
 }
 
 export default Contract;
